@@ -1,0 +1,12 @@
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\wsmcbl.back.exe
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\appsettings.Development.json
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\appsettings.json
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\wsmcbl.back.dll
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\wsmcbl.back.deps.json
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\wsmcbl.back.runtimeconfig.json
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\wsmcbl.back.pdb
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\Microsoft.AspNetCore.OpenApi.dll
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\Microsoft.OpenApi.dll
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\Swashbuckle.AspNetCore.Swagger.dll
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Proyect\wsmcbl.back\bin\Release\net7.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
