@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iM8tar3rtrMOWYeAneDMBYF2lWaEMcJXJ2Q0PfT11LNcNYWdwCVKvhbg/lR8+eknhqv1npaPGu4+TX2QQ1zkMg==",
+  "dgSpecHash": "+rz+E3LnOvTk5qwIZeMh/8SuPtNlgtUJ8AYayIZ5x+CHng0IFk/xu+LYlNZCBrOIFxysBVwpNVXszC9ZwAfy4Q==",
   "success": true,
-  "projectFilePath": "C:\\Proyect\\wsmcbl.back\\wsmcbl.back.csproj",
+  "projectFilePath": "c:\\Proyect\\wsmcbl.back\\wsmcbl.back.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\&\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.11\\microsoft.aspnetcore.openapi.7.0.11.nupkg.sha512",
     "C:\\Users\\&\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
