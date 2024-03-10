@@ -1,0 +1,5 @@
+# Directorys ignores
+.vscode/
+bin/
+obj/
+Properties/
