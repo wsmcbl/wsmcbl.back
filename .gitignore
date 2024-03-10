@@ -1,5 +1,8 @@
 # Directorys ignores
 .vscode/
+nginx/*.log
+
+
 bin/
 obj/
 Properties/
