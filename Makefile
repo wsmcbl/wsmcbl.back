@@ -23,11 +23,11 @@ restart: ## Restart the containers
 build: ## Rebuilds all the containers
 	U_ID=${UID} docker-compose build
 
-ssh-fe: ## ssh's into the be container
+ssh-be: ## ssh's into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} bash
 
 
 # Dotnet commands
 dn-pub: ## Dotnet publish command
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} rm -r bin publish
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} rm -r bin publish || true
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} dotnet publish "wsmcbl.back.csproj" -c Releae -o publish 
