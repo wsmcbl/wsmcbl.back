@@ -1,0 +1,6 @@
+@wsmcbl.back_HostAddress = http://localhost:5152
+
+GET {{wsmcbl.back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
