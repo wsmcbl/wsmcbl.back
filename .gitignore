@@ -1,0 +1,8 @@
+# Directorys ignores
+.idea/
+.vscode/
+nginx/*.log
+
+bin/
+obj/
+Properties/
