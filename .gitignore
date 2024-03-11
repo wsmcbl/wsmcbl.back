@@ -1,0 +1,6 @@
+# Directorys ignores
+.idea/
+.vscode/
+bin/
+obj/
+Properties/
