@@ -1,0 +1,25 @@
+name: Deploy into Somee.com (test)
+on:
+  push:
+    branches: ['develop']
+jobs:
+  web-deploy:
+    name: Desplegar a Somee.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3
+        
+      - name: Execute script
+        script: |
+          ./deploy.sh
+          
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: publish/
+          server-dir: /www.cbl.somee.com/
