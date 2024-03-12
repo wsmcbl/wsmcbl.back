@@ -1,22 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
+using wsmcbl.back.controller.business;
 using wsmcbl.back.dto.output;
 
-namespace wsmcbl.back.controller;
+namespace wsmcbl.back.controller.api;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class GetStudentsAction : ControllerBase
 {
+    private ICollectTariffController controller;
+    public GetStudentsAction(ICollectTariffController controller)
+    {
+        this.controller = controller;
+    }
+
     [HttpGet]
     [Route("/students")]
     public IActionResult getStudentList()
     {
-        List<StudentDto> students = new List<StudentDto>();
-
-        students.Add(new StudentDto("1", "Kenny Tinoco", "7A"));
-        students.Add(new StudentDto("2", "Ezequielito", "6A"));
-
-        return Ok(students.ToList());
+        StudentTransformerDto service = new StudentTransformerDto();
+        return Ok(service.getStudentList(controller.getStudentsList()));
     }   
     
     [HttpPost]

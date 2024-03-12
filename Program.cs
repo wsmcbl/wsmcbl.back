@@ -1,6 +1,11 @@
+using wsmcbl.back.controller.business;
+using wsmcbl.back.model.entity.accounting;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ICollectTariffController, CollectTariffController>();
+builder.Services.AddSingleton<StudentEntities>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
