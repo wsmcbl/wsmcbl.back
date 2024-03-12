@@ -8,13 +8,26 @@ namespace wsmcbl.back.controller;
 public class GetStudentsAction : ControllerBase
 {
     [HttpGet]
-    public List<StudentDto> getStudentList()
+    [Route("/students")]
+    public IActionResult getStudentList()
     {
         List<StudentDto> students = new List<StudentDto>();
 
         students.Add(new StudentDto("1", "Kenny Tinoco", "7A"));
         students.Add(new StudentDto("2", "Ezequielito", "6A"));
 
-        return students.ToList();
-    }    
+        return Ok(students.ToList());
+    }   
+    
+    [HttpPost]
+    [Route("/students")]
+    public IActionResult setStudent([FromBody]StudentDto student)
+    {
+        if(student.id != string.Empty)
+            return Ok();
+        else
+        {
+            return BadRequest();
+        }
+    }   
 }

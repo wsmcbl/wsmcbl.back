@@ -21,4 +21,10 @@
     <Content Include=".github\workflows\deploy.somee.yml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="controller\api\" />
+    <Folder Include="controller\business\" />
+    <Folder Include="data\dao\" />
+  </ItemGroup>
+
 </Project>
