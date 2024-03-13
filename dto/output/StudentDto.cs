@@ -1,10 +1,10 @@
-using wsmcbl.back.model.entity.accounting;
+using wsmcbl.back.model.entity.academy;
 
 namespace wsmcbl.back.dto.output;
 
 public class StudentDto
 {
-    public StudentDto(StudentEntity student) : this(student.getId(), student.fullName(), student.enrollment)
+    public StudentDto(StudentEntity student) : this(student.id, student.name, student.surname)
     {
     }
     
