@@ -4,7 +4,7 @@ namespace wsmcbl.back.dto.output;
 
 public class StudentDto
 {
-    public string id { get;}
+    public string studentId { get;}
     public string fullName { get; set; }
     public string schoolyear { get; set; }
     public string tutor { get; set; }
@@ -15,7 +15,7 @@ public class StudentDto
     
     public StudentDto(string id, string fullName, string schoolyear, string tutor)
     {
-        this.id = id;
+        this.studentId = id;
         this.fullName = fullName;
         this.schoolyear = schoolyear;
         this.tutor = tutor;

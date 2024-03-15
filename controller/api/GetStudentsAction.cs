@@ -27,7 +27,7 @@ public class GetStudentsAction : ControllerBase
     [Route("students")]
     public IActionResult setStudent([FromBody]StudentDto student)
     {
-        if(student.id != string.Empty)
+        if(student.studentId != string.Empty)
             return Ok();
         else
         {
