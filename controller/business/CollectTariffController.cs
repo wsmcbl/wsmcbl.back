@@ -4,21 +4,21 @@ namespace wsmcbl.back.controller.business;
 
 public class CollectTariffController : ICollectTariffController
 {
-    private IStudentDao studentEntities;
+    private IStudentDao dao;
     
-    public CollectTariffController(IStudentDao studentEntities)
+    public CollectTariffController(IStudentDao dao)
     {
-        this.studentEntities = studentEntities;
+        this.dao = dao;
     }
     
     public StudentEntity getStudent(string id)
     {
-        return studentEntities.read(id);
+        return dao.read(id);
     }
 
     public Task<List<StudentEntity>> getStudentsList()
     {
-        return studentEntities.getAll();
+        return dao.getAll();
     }
 
     public void setStudentId(string studentId)

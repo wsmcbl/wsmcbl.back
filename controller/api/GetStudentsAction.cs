@@ -4,7 +4,7 @@ using wsmcbl.back.dto.output;
 
 namespace wsmcbl.back.controller.api;
 
-[Route("[controller]")]
+[Route("v1/accounting")]
 [ApiController]
 public class GetStudentsAction : ControllerBase
 {
