@@ -1,4 +1,4 @@
-using wsmcbl.back.model.entity.academy;
+using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.dto.output;
 

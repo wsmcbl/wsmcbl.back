@@ -1,26 +1,61 @@
-create database wsmcbl.database;
-       
-       create table Student
-       (
-           id varchar(100),
-           name varchar(100),
-           secondName varchar(100),
-           surname varchar(100),
-           secondSurname varchar(100),
-           sex bool,
-           birthday date
-       );
+-- create database wsmcbl.database;
+
+create schema Academy;
+
+create table if not exists Academy.Enrollment
+(
+    enrollmentId varchar(20) primary key,
+    grade numeric not null,
+    section varchar(2) not null
+);
 
 
 
-INSERT INTO usuarios VALUES  
-('2024-0478KJTC', 'Kenny', 'Jordan', 'Tinoco', 'Cerda', false, '2000-05-07 21:50:02');
+create schema Accounting;
 
-INSERT INTO usuarios VALUES
-('2024-1104LAMM', 'Leonarno', 'Alberto', 'Muñoz', 'Morales', false, NOW());
+create table if not exists Accounting.Student
+(
+    studentId varchar(20) primary key,
+    enrollmentId varchar(20),
+    name varchar(50) not null,
+    secondName varchar(50),
+    surname varchar(50) not null ,
+    secondSurname varchar(50),
+    schoolyear varchar(4) not null,
+    tutor varchar(100),
+    foreign key (enrollmentId) references Academy.Enrollment
+);
 
-INSERT INTO usuarios VALUES
-    ('2025-4571EFBR', 'Emilio', 'Fabian', 'Brenes', 'Rodriguez', false, NOW());
+create table  if not exists Accounting.Cashier
+(
+    cashierId varchar(100) primary key,
+    name varchar(100) not null,
+    surname varchar(100) not null,
+    sex bool
+);
 
-INSERT INTO usuarios VALUES
-    ('2021-3041NAGM', 'Noelia', 'Abigail', 'Guzmán', 'Martínez', true, NOW());
+create table  if not exists Accounting.Tariff
+(
+    tariffId serial primary key,
+    concept varchar(100) not null,
+    amount float not null
+);
+
+create table  if not exists Accounting.Transaction
+(
+    transactionId varchar(100) primary key,
+    studentId varchar(100) not null,
+    cashierId varchar(100) not null,
+    total float not null,
+    date date not null,
+    discount float,
+    foreign key (studentId) references Accounting.Student
+);
+
+create table  if not exists Accounting.Tariff_Transaction
+(
+    transactionId varchar(100) not null,
+    tariffId serial not null,
+    foreign key (transactionId) references Accounting.Transaction,
+    foreign key (tariffId) references Accounting.Tariff
+)

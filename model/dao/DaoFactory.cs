@@ -1,3 +1,5 @@
+using wsmcbl.back.model.accounting;
+
 namespace wsmcbl.back.model.dao;
 
 public abstract class DaoFactory

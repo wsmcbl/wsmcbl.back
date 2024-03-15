@@ -15,15 +15,16 @@ public class GetStudentsAction : ControllerBase
     }
 
     [HttpGet]
-    [Route("/students")]
-    public IActionResult getStudentList()
+    [Route("students")]
+    public async Task<IActionResult> getStudentList()
     {
         StudentTransformerDto service = new StudentTransformerDto();
-        return Ok(service.getStudentList(controller.getStudentsList()));
+        var students = await controller.getStudentsList();
+        return Ok(service.getStudentList(students));
     }   
     
     [HttpPost]
-    [Route("/students")]
+    [Route("students")]
     public IActionResult setStudent([FromBody]StudentDto student)
     {
         if(student.id != string.Empty)

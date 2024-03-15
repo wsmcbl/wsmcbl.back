@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.entity.accounting;
+namespace wsmcbl.back.model.accounting;
 
 public class Tariff
 {

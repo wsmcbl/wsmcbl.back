@@ -1,5 +1,4 @@
-using wsmcbl.back.model.dao;
-using wsmcbl.back.model.entity.academy;
+using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.controller.business;
 
@@ -17,7 +16,7 @@ public class CollectTariffController : ICollectTariffController
         return studentEntities.read(id);
     }
 
-    public List<StudentEntity> getStudentsList()
+    public Task<List<StudentEntity>> getStudentsList()
     {
         return studentEntities.getAll();
     }

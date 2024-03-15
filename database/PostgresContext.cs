@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.model.entity.academy;
+using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.database;
 
@@ -19,27 +19,30 @@ public partial class PostgresContext : DbContext
     {
         modelBuilder.Entity<StudentEntity>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("student");
+            entity.HasKey(e => e.studentId).HasName("student_pkey");
 
-            entity.Property(e => e.birthday).HasColumnName("birthday");
-            entity.Property(e => e.id)
-                .HasMaxLength(100)
-                .HasColumnName("id");
+            entity.ToTable("student", "accounting");
+
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.studentId)
+                .HasMaxLength(20)
+                .HasColumnName("studentid");
             entity.Property(e => e.name)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("name");
             entity.Property(e => e.secondName)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("secondname");
             entity.Property(e => e.secondSurname)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("secondsurname");
-            entity.Property(e => e.sex).HasColumnName("sex");
+            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
             entity.Property(e => e.surname)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("surname");
+            entity.Property(e => e.enrollment)
+                .HasMaxLength(20)
+                .HasColumnName("enrollmentid");
         });
     }
 }

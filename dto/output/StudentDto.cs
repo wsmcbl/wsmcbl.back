@@ -1,21 +1,23 @@
-using wsmcbl.back.model.entity.academy;
+using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.dto.output;
 
 public class StudentDto
 {
-    public StudentDto(StudentEntity student) : this(student.id, student.name, student.surname)
+    public string id { get;}
+    public string fullName { get; set; }
+    public string schoolyear { get; set; }
+    public string tutor { get; set; }
+    
+    public StudentDto(StudentEntity student) : this(student.studentId, student.fullName(), student.schoolYear, student.tutor)
     {
     }
     
-    public StudentDto(string id, string fullName, string enrollment)
+    public StudentDto(string id, string fullName, string schoolyear, string tutor)
     {
         this.id = id;
         this.fullName = fullName;
-        this.enrollment = enrollment;
+        this.schoolyear = schoolyear;
+        this.tutor = tutor;
     }
-
-    public string id { get;}
-    public string fullName { get; set; }
-    public string enrollment { get; set; }
 }

@@ -6,5 +6,5 @@ public interface IGenericDao<T, ID>
     public T read(ID id);
     public void update(T entity);
     public void deleteById(ID id);
-    public List<T> getAll();
+    public Task<List<T>> getAll();
 }

@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.entity.accounting;
+namespace wsmcbl.back.model.accounting;
 
 public class StudentEntities
 {
@@ -6,25 +6,20 @@ public class StudentEntities
     {
         var students = new List<StudentEntity>();
 
-        var b = a();
+        var b = getStudent("w");
         b.name = "Jordan";
         
-        students.Add(a());
+        students.Add(getStudent("w"));
         students.Add(b);
 
         return students;
     }
     
     public StudentEntity getStudent(string studentId)
-    {
-        return a();
-    }
-    
-    private StudentEntity a()
-    {
+    {        
         var a = new StudentEntity();
         a.name = "Kenny";
-        a.lastName = "Tinoco";
+        a.surname = "Tinoco";
         a.enrollment = "9B";
         return a;
     }

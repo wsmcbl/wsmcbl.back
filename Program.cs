@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.controller.business;
 using wsmcbl.back.database;
-using wsmcbl.back.model.dao;
-using wsmcbl.back.model.entity.accounting;
+using wsmcbl.back.model.accounting;
 
 var builder = WebApplication.CreateBuilder(args);
 

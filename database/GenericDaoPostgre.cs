@@ -3,7 +3,7 @@ using wsmcbl.back.model.dao;
 
 namespace wsmcbl.back.database;
 
-public abstract class GenericDaoPostgre<T, ID> : IGenericDao<T, ID>
+public abstract class GenericDaoPostgre<T, ID> : IGenericDao<T, ID> where T : class
 {
     protected readonly PostgresContext context;
     protected GenericDaoPostgre(PostgresContext context)
@@ -32,8 +32,9 @@ public abstract class GenericDaoPostgre<T, ID> : IGenericDao<T, ID>
         throw new NotImplementedException();
     }
 
-    public List<T> getAll()
+    public async Task<List<T>> getAll()
     {
-        throw new NotImplementedException();
+        var elements = await context.Set<T>().ToListAsync();
+        return elements;
     }
 }
