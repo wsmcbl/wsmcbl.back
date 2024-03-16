@@ -17,9 +17,9 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: cblback.somee.com
+          server: wsmcbl-api.somee.com
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           local-dir: publish/
-          server-dir: /www.cblback.somee.com/
+          server-dir: /www.wsmcbl-api.somee.com/
