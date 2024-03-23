@@ -17,9 +17,10 @@ public abstract class GenericDaoPostgre<T, ID> : IGenericDao<T, ID> where T : cl
         throw new NotImplementedException();
     }
 
-    public T read(ID id)
+    public async Task<T?> getById(ID id)
     {
-        throw new NotImplementedException();
+        var element = await context.Set<T>().FindAsync(id);
+        return element;
     }
 
     public void update(T entity)

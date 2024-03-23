@@ -10,7 +10,6 @@ create table if not exists Academy.Enrollment
 );
 
 
-
 create schema Accounting;
 
 create table if not exists Accounting.Student
@@ -36,7 +35,7 @@ create table  if not exists Accounting.Cashier
 
 create table  if not exists Accounting.Tariff
 (
-    tariffId serial primary key,
+    tariffId serial unique primary key,
     concept varchar(100) not null,
     amount float not null
 );

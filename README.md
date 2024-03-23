@@ -1,6 +1,6 @@
 ## API WSMCBL
 
-* http://cblback.somee.com/students
+* http://wsmcbl-api.somee.com/v1/accounting/students
 
 ## See documentation
 

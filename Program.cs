@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.back.config;
 using wsmcbl.back.controller.business;
 using wsmcbl.back.database;
 using wsmcbl.back.model.accounting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v1")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

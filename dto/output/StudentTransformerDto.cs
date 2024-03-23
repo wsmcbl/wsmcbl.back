@@ -4,14 +4,13 @@ namespace wsmcbl.back.dto.output;
 
 public class StudentTransformerDto
 {
-    public List<StudentDto> getStudentList(List<StudentEntity> students)
+    public List<StudentDtoToList> getStudentList(List<StudentEntity> students)
     {
-        var studentDtos = new List<StudentDto>();
+        var studentDtos = new List<StudentDtoToList>();
         foreach (var student in students)
         {
-           studentDtos.Add(new StudentDto(student)); 
+           studentDtos.Add(new StudentDtoToList(student)); 
         }
-
         return studentDtos;
     }
 }

@@ -11,9 +11,9 @@ public class CollectTariffController : ICollectTariffController
         this.dao = dao;
     }
     
-    public StudentEntity getStudent(string id)
+    public Task<StudentEntity?> getStudent(string id)
     {
-        return dao.read(id);
+        return dao.getById(id);
     }
 
     public Task<List<StudentEntity>> getStudentsList()
