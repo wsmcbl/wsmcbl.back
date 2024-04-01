@@ -16,6 +16,7 @@ builder.Services.AddDbContext<PostgresContext>(options =>
 
 builder.Services.AddScoped<DaoFactoryPostgre>();
 builder.Services.AddScoped<IStudentDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().studentDao());
+builder.Services.AddScoped<ITransactionDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().transactionDao());
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 
 

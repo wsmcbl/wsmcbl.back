@@ -6,3 +6,8 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     
 }
+
+public interface ITransactionDao : IGenericDao<TransactionEntity, string>
+{
+    
+}

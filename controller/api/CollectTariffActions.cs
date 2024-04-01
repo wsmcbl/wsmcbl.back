@@ -17,7 +17,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         return Ok(service.getStudentList(students));
     } 
     
-    
     [HttpGet]
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById(string studentId)
@@ -29,5 +28,18 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         }
 
         return Ok(new StudentDtoFull(student));
+    } 
+    
+    [HttpGet]
+    [Route("transactions/{transactionId}")]
+    public async Task<IActionResult> getTransactionById(string transactionId)
+    {
+        var t = await controller.getTransaction(transactionId);
+        if (t == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(t);
     }
 }

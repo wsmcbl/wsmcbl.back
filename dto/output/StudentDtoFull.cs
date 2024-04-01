@@ -1,3 +1,4 @@
+using System.Collections;
 using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.dto.output;
@@ -12,7 +13,7 @@ public class StudentDtoFull
     public float areas { get; set; }
     public float discount { get; set; }
 
-    public ICollection<TransactionEntity> transactions { get; } = new List<TransactionEntity>();
+    public ICollection<TransactionEntity> transactions { get; }
 
     public StudentDtoFull(StudentEntity? student)
     {
@@ -24,19 +25,7 @@ public class StudentDtoFull
         areas = 4;
         discount = (float)0.15;
         
-        if (student.transactions.Count == 0)
-        {
-            var a = new TransactionEntity();
-            a.studentId = "saf";
-            a.cashierId = "saf";
-            a.transactionId = "saf";
-            transactions.Add(a);
-        }
-        else
-        {
-            transactions = student.transactions;
-            
-        }
-
+        transactions = new List<TransactionEntity>();
+        transactions = student.transactions;
     }
 }

@@ -12,3 +12,8 @@ public class StudentDaoPostgre(PostgresContext context) : GenericDaoPostgre<Stud
             .FirstOrDefault(e => e.studentId == id);
     }
 }
+
+
+public class TransactionDaoPostgre(PostgresContext context) : GenericDaoPostgre<TransactionEntity, string>(context), ITransactionDao
+{
+}

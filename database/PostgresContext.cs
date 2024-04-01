@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.model.academy;
+using wsmcbl.back.database.model.utils;
 using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.database;
@@ -90,6 +90,13 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("studentid");
             entity.Property(e => e.total)
                 .HasColumnName("total");
+            
+            entity.HasMany(t => t.tariffs)
+                .WithMany();
+            
+            entity.HasMany(t => t.tariffs)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("tariff_transaction", "accounting"));
         });
         
     }
