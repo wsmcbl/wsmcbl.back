@@ -6,5 +6,6 @@ public interface ICollectTariffController
 {
     public Task<StudentEntity?> getStudent(string id);
     public Task<List<StudentEntity>> getStudentsList();
-    public void setStudentId(string studentId);
+    public Task<List<TariffEntity>> getTariffList();
+    public Task saveTransaction(TransactionEntity transaction);
 }

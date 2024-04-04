@@ -2,7 +2,7 @@ using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.dto.output;
 
-public class StudentTransformerDto
+public class StudentDtoTransformer
 {
     public List<StudentDtoToList> getStudentList(List<StudentEntity> students)
     {

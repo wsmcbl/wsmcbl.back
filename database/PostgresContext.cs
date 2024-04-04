@@ -73,6 +73,9 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.transactionId)
                 .HasMaxLength(100)
                 .HasColumnName("transactionid");
+            entity.Property(e => e.studentId)
+                .HasMaxLength(100)
+                .HasColumnName("studentid");
             entity.Property(e => e.cashierId)
                 .HasMaxLength(100)
                 .HasColumnName("cashierid");
@@ -80,9 +83,6 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("date");
             entity.Property(e => e.discount)
                 .HasColumnName("discount");
-            entity.Property(e => e.studentId)
-                .HasMaxLength(100)
-                .HasColumnName("studentid");
             entity.Property(e => e.total)
                 .HasColumnName("total");
 

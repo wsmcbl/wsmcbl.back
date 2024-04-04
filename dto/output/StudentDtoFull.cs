@@ -22,7 +22,7 @@ public class StudentDtoFull
         enrollmentLabel = student.enrollment;
         schoolyear = student.schoolYear;
         tutor = student.tutor;
-        areas = 4;
+        areas = 50;
         discount = (float)0.15;
         
         transactions = new List<TransactionEntity>();
