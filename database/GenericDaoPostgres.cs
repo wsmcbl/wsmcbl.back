@@ -3,18 +3,19 @@ using wsmcbl.back.model.dao;
 
 namespace wsmcbl.back.database;
 
-public abstract class GenericDaoPostgre<T, ID> : IGenericDao<T, ID> where T : class
+public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : class
 {
     protected readonly PostgresContext context;
-    protected GenericDaoPostgre(PostgresContext context)
+    protected GenericDaoPostgres(PostgresContext context)
     {
         this.context = context;
     }
     
 
-    public void create(T entity)
+    public virtual async Task create(T entity)
     {
-        throw new NotImplementedException();
+        context.Set<T>().Add(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task<T?> getById(ID id)

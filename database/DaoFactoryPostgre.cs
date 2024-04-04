@@ -15,7 +15,21 @@ public class DaoFactoryPostgre : DaoFactory
     private IStudentDao _studentDao;
     public override IStudentDao studentDao()
     {
-        return _studentDao != null ? _studentDao : 
-            _studentDao = new StudentDaoPostgre(context);
+        return _studentDao is null ? _studentDao : 
+            _studentDao = new StudentDaoPostgres(context);
+    }
+
+    private ITariffDao _tariffDao;
+    public override ITariffDao tariffDao()
+    {
+        return _tariffDao != null ? _tariffDao : 
+            _tariffDao = new TariffDaoPostgres(context);
+    }
+
+    private ITransactionDao _transactionDao;
+
+    public override ITransactionDao transactionDao()
+    {
+        return _transactionDao != null ? _transactionDao : _transactionDao = new TransactionDaoPostgres(context);
     }
 }

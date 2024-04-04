@@ -4,25 +4,34 @@ namespace wsmcbl.back.controller.business;
 
 public class CollectTariffController : ICollectTariffController
 {
-    private IStudentDao dao;
+    private IStudentDao studentDao;
+    private ITariffDao tariffDao;
+    private ITransactionDao transactionDao;
     
-    public CollectTariffController(IStudentDao dao)
+    public CollectTariffController(IStudentDao studentDao, ITariffDao tariffDao, ITransactionDao transactionDao)
     {
-        this.dao = dao;
+        this.studentDao = studentDao;
+        this.tariffDao = tariffDao;
+        this.transactionDao = transactionDao;
     }
     
     public Task<StudentEntity?> getStudent(string id)
     {
-        return dao.getById(id);
+        return studentDao.getById(id);
     }
 
     public Task<List<StudentEntity>> getStudentsList()
     {
-        return dao.getAll();
+        return studentDao.getAll();
     }
 
-    public void setStudentId(string studentId)
+    public Task<List<TariffEntity>> getTariffList()
     {
-        
+        return tariffDao.getAll();
+    }
+
+    public async Task saveTransaction(TransactionEntity transaction)
+    {
+        await transactionDao.create(transaction);
     }
 }

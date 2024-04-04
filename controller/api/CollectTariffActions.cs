@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.back.controller.business;
+using wsmcbl.back.dto.input;
 using wsmcbl.back.dto.output;
 
 namespace wsmcbl.back.controller.api;
@@ -12,7 +13,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("students")]
     public async Task<IActionResult> getStudentList()
     {
-        StudentTransformerDto service = new StudentTransformerDto();
+        StudentDtoTransformer service = new StudentDtoTransformer();
         var students = await controller.getStudentsList();
         return Ok(service.getStudentList(students));
     } 
@@ -28,5 +29,21 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         }
 
         return Ok(new StudentDtoFull(student));
+    }
+
+    [HttpGet]
+    [Route("tariffs")]
+    public async Task<IActionResult> getTariffList()
+    {
+        return Ok(await controller.getTariffList());
+    }
+
+    [HttpPost]
+    [Route("transactions")]
+    public async Task saveTransaction([FromBody] TransactionDto transaction)
+    {
+        var service = new TransactionDtoTransformer();
+        var element = service.getTransaction(transaction);
+        await controller.saveTransaction(element);
     }
 }
