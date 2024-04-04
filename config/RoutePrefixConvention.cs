@@ -2,15 +2,8 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace wsmcbl.back.config;
 
-public class RoutePrefixConvention : IControllerModelConvention
+public class RoutePrefixConvention(string prefix) : IControllerModelConvention
 {
-    private readonly string prefix;
-
-    public RoutePrefixConvention(string prefix)
-    {
-        this.prefix = prefix;
-    }
-
     public void Apply(ControllerModel controller)
     {
         foreach (var selector in controller.Selectors)

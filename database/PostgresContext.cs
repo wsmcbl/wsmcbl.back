@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.model.academy;
+using wsmcbl.back.database.utils;
 using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.database;
@@ -10,13 +10,8 @@ public partial class PostgresContext : DbContext
     public virtual DbSet<TariffEntity> Tariff { get; set; } = null!;
     public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
     
-    public PostgresContext()
-    {
-    }
-
-    public PostgresContext(DbContextOptions<PostgresContext> options) : base(options)
-    {
-    }
+    public PostgresContext(){}
+    public PostgresContext(DbContextOptions<PostgresContext> options) : base(options){}
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -90,7 +85,18 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("studentid");
             entity.Property(e => e.total)
                 .HasColumnName("total");
+
+            entity.HasMany(t => t.tariffs)
+                .WithMany()
+                .UsingEntity<TransactionTariff>(
+                    j => j.HasOne(tt => tt.tariff).WithMany(),
+                    j => j.HasOne(tt => tt.transaction).WithMany(),
+                    j =>
+                    {
+                        j.ToTable("transaction_tariff", "accounting");
+                        j.HasKey(tt => new { transactionId = tt.transactionid, tariffId = tt.tariffid });
+                    });
+            
         });
-        
     }
 }

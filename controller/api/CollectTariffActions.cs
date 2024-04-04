@@ -17,7 +17,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         return Ok(service.getStudentList(students));
     } 
     
-    
     [HttpGet]
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById(string studentId)

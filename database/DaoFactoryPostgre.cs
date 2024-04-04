@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.dao;
 

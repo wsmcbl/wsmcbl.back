@@ -4,7 +4,7 @@ on:
     branches: ['develop']
 jobs:
   web-deploy:
-    name: Desplegar a Somee.com
+    name: Deploy into Somee.com
     runs-on: ubuntu-latest
     steps:
       - name: Get latest code
@@ -12,7 +12,7 @@ jobs:
         
       - name: Run the script deploy.sh
         run: |
-          ./deploy.sh
+          config/deploy.sh
         
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
