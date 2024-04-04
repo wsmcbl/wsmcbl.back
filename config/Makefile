@@ -30,4 +30,4 @@ ssh-be: ## ssh's into the be container
 # Dotnet commands
 dn-pub: ## Dotnet publish command
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} rm -rf bin publish || true
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} dotnet publish "wsmcbl.back.csproj" -c Releae -o publish 
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} dotnet publish "wsmcbl.back.csproj" -c Release -o publish 

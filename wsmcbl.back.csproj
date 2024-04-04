@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
+  
+  <PropertyGroup>
+    <AssemblyTitle>WSMCBL backend</AssemblyTitle>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <AssemblyDescription>API del proyecto WSMCBL desarrollado en ASP.NET.</AssemblyDescription>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -8,7 +14,24 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".github\workflows\deploy.somee.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="publish\web.config" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+    <_ContentIncludedByDefault Remove="publish\wsmcbl.back.deps.json" />
+    <_ContentIncludedByDefault Remove="publish\wsmcbl.back.runtimeconfig.json" />
   </ItemGroup>
 
 </Project>
