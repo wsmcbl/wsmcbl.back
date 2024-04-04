@@ -5,20 +5,20 @@ public class TransactionEntity
     public string transactionId { get; set; }
     public string cashierId { get; set; }
     public string studentId { get; set; }
-    public ICollection<TariffEntity> tariffs { get; set; } = new List<TariffEntity>();
-    private float areas { get; set; }
-    public DateTime dateTime { get; set; }
-    public float discount { get; set; }
     public float total { get; set; }
+    public float discount { get; set; }
+    public DateTime dateTime { get; set; }
+    public ICollection<TariffEntity> tariffs { get; set; } = new List<TariffEntity>();
 
-    public float getAmount()
+    public void computeTotal()
     {
-        float amount = 0;
+        float subtotal = 0;
         
         foreach (var tariff in tariffs)
         {
-            amount += tariff.amount;
+            subtotal += tariff.amount;
         }
-        return amount*(1 - areas);
+        
+        total = subtotal*(1 - discount);
     }
 }
