@@ -51,10 +51,11 @@ create table  if not exists Accounting.Transaction
     foreign key (studentId) references Accounting.Student
 );
 
-create table  if not exists Accounting.Tariff_Transaction
+create table  if not exists Accounting.Transaction_Tariff
 (
     transactionId varchar(100) not null,
     tariffId serial not null,
+    primary key (transactionId, tariffId),
     foreign key (transactionId) references Accounting.Transaction,
     foreign key (tariffId) references Accounting.Tariff
 )

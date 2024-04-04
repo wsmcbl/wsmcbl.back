@@ -20,10 +20,4 @@ public abstract class DaoFactory
     {
         return null;
     }
-
-    public virtual ITransactionDao transactionDao()
-    {
-        return null;
-    }
-
 }

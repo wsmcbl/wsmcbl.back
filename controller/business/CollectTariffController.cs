@@ -5,12 +5,10 @@ namespace wsmcbl.back.controller.business;
 public class CollectTariffController : ICollectTariffController
 {
     private IStudentDao dao;
-    private ITransactionDao tDao;
     
-    public CollectTariffController(IStudentDao dao, ITransactionDao tDao)
+    public CollectTariffController(IStudentDao dao)
     {
         this.dao = dao;
-        this.tDao = tDao;
     }
     
     public Task<StudentEntity?> getStudent(string id)
@@ -26,11 +24,5 @@ public class CollectTariffController : ICollectTariffController
     public void setStudentId(string studentId)
     {
         
-    }
-    
-    
-    public Task<TransactionEntity?> getTransaction(string id)
-    {
-        return tDao.getById(id);
     }
 }

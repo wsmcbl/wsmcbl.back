@@ -7,13 +7,22 @@ insert into academy.enrollment values
 ('10a', 10, 'A');
 
 insert into accounting.cashier values
+('caj-eurbina', 'Ezquielito', 'Urbina', false),
 ('caj-ktinoco', 'Kenny', 'Tinoco', false);
 
 insert into accounting.tariff(concept, amount) values
 ('Pago de matricula', 1800),
-('Pago mes marzo', 700),
-('Pago mes abril', 700),
-('Pago mes mayo', 700),
+('Pago mes febrero', 800),
+('Pago mes marzo', 800),
+('Pago mes abril', 800),
+('Pago mes mayo', 800),
+('Pago mes junio', 800),
+('Pago mes julio', 800),
+('Pago mes agosto', 800),
+('Pago mes septiembre', 800),
+('Pago mes octubre', 800),
+('Pago mes noviembre', 800),
+('Pago mes diciembre', 800),
 ('Pago buzo escolar', 500);
 
 insert into accounting.student values
@@ -192,5 +201,14 @@ insert into accounting.student values
 ('2024-2754DFRR', '10a', 'Diego','Fernando', 'Ruiz', 'Ruiz', 2024, 'Nuevos registros de prueba');
 
 insert into accounting.transaction values 
-('trans1222423', '2019-1000JARR', 'caj-ktinoco', 3000, now(), 0.15),
-('trans4562122', '2024-2963NSZL', 'caj-ktinoco', 800, now(), 0.0);                                
+('trans1222423', '2019-1000JARR', 'caj-ktinoco',  800, now(), 0.0),
+('trans1222424', '2024-2175MJOR', 'caj-ktinoco', 1600, now(), 0.0),
+('trans4562122', '2024-2963NSZL', 'caj-ktinoco', 3200, now(), 0.0);                                
+
+insert into accounting.transaction_tariff values
+('trans1222423',3),
+('trans1222424',2),
+('trans1222424',3),
+('trans4562122',2),
+('trans4562122',3),
+('trans4562122',4);                                            

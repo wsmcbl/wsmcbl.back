@@ -9,11 +9,7 @@ public class StudentDaoPostgre(PostgresContext context) : GenericDaoPostgre<Stud
     {
         return context.Student
             .Include(e => e.transactions)
+            .ThenInclude(t => t.tariffs)
             .FirstOrDefault(e => e.studentId == id);
     }
-}
-
-
-public class TransactionDaoPostgre(PostgresContext context) : GenericDaoPostgre<TransactionEntity, string>(context), ITransactionDao
-{
 }
