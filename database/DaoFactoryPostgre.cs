@@ -15,7 +15,7 @@ public class DaoFactoryPostgre : DaoFactory
     private IStudentDao _studentDao;
     public override IStudentDao studentDao()
     {
-        return _studentDao is null ? _studentDao : 
+        return _studentDao != null ? _studentDao : 
             _studentDao = new StudentDaoPostgres(context);
     }
 
