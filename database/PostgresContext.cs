@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using wsmcbl.back.config;
 using wsmcbl.back.database.utils;
 using wsmcbl.back.model.accounting;
 
@@ -80,7 +81,10 @@ public partial class PostgresContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("cashierid");
             entity.Property(e => e.dateTime)
-                .HasColumnName("date");
+                .HasColumnName("date")
+                .HasConversion(
+                    v => ConvertUtc.ConvertToUtc(v),
+                    v => ConvertUtc.ConvertFromUtc(v));
             entity.Property(e => e.discount)
                 .HasColumnName("discount");
             entity.Property(e => e.total)

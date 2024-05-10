@@ -1,5 +1,8 @@
 -- create database wsmcbl.database;
 
+-- show time zone;
+-- SET timezone TO 'UTC-6';
+
 create schema Academy;
 
 create table if not exists Academy.Enrollment

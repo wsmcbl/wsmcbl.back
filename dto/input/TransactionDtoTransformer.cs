@@ -12,7 +12,7 @@ public class TransactionDtoTransformer
             studentId = dto.studentId,
             cashierId = dto.cashierId,
             discount = dto.discount,
-            dateTime = dto.dateTime,
+            dateTime = dto.dateTime ?? DateTime.Now,
             tariffs = dto.tariffs
         };
 
