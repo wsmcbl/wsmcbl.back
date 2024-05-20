@@ -1,3 +1,4 @@
+using wsmcbl.back.dto.output;
 using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.controller.business;
@@ -37,12 +38,16 @@ public class CollectTariffController : ICollectTariffController
         await transactionDao.create(transaction);
     }
 
-    public async Task<TransactionEntity?> getLastTransactionByStudent(string studentId)
+    public async Task<TransactionDtoService?> getLastTransactionByStudent(string studentId)
     {
-        return await transactionDao.getLastByStudentId(studentId);
+        var transaction = await transactionDao.getLastByStudentId(studentId);
+        var cashier = await getCashier(transaction!.cashierId);
+        var student = await getStudent(studentId);
+
+        return new TransactionDtoService(transaction, student!, cashier!);
     }
     
-    public Task<CashierEntity?> getCashier(string id)
+    private Task<CashierEntity?> getCashier(string id)
     {
         return cashierDao.getById(id);
     }

@@ -1,4 +1,3 @@
-using System.Collections;
 using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.dto.output;
@@ -17,7 +16,7 @@ public class StudentDtoFull
 
     public StudentDtoFull(StudentEntity? student)
     {
-        studentId = student.studentId;
+        studentId = student!.studentId;
         fullName = student.fullName();
         enrollmentLabel = student.enrollment;
         schoolyear = student.schoolYear;

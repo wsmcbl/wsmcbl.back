@@ -39,16 +39,16 @@ public class StudentEntity
 
     public TransactionEntity getLastTransaction()
     {
-        var transa = transactions.FirstOrDefault()!;
-        
+        var transaction = transactions.FirstOrDefault();
+
         foreach (var item in transactions)
         {
-            if (item.dateTime >= transa.dateTime)
+            if (item.dateTime >= transaction!.dateTime)
             {
-                transa = item;
+                transaction = item;
             }
         }
         
-        return transa;
+        return transaction!;
     }
 }
