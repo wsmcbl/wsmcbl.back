@@ -15,6 +15,7 @@ builder.Services.AddDbContext<PostgresContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
 builder.Services.AddScoped<DaoFactoryPostgre>();
+builder.Services.AddScoped<ICashierDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().cashierDao());
 builder.Services.AddScoped<IStudentDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().studentDao());
 builder.Services.AddScoped<ITariffDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().tariffDao());
 builder.Services.AddScoped<ITransactionDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().transactionDao());
