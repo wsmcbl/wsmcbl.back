@@ -3,7 +3,11 @@ using wsmcbl.back.model.accounting;
 
 namespace wsmcbl.back.database;
 
-public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class CashierDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<CashierEntity, string>(context), ICashierDao;
+
+public class StudentDaoPostgres(PostgresContext context) 
+    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
     public new async Task<StudentEntity?> getById(string id)
     {
@@ -14,7 +18,15 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
     }
 }
 
-public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao;
+public class TariffDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
+{
+    public async Task<List<TariffEntity>> getAll()
+    {
+        var elements = await base.getAll();
+        return elements.OrderBy(e => e.tariffId).ToList();
+    }
+}
 
 public class TransactionDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<TransactionEntity, string>(context), ITransactionDao
@@ -27,5 +39,23 @@ public class TransactionDaoPostgres(PostgresContext context)
         }
 
         await base.create(entity);
+    }
+
+    public async Task<TransactionEntity?> GetLastByStudentId(string studentId)
+    {
+        var transactionEntity = await context.Transaction
+            .Where(t => t != null && t.studentId == studentId && t.dateTime.Date == DateTime.Today)
+            .FirstOrDefaultAsync();
+
+        return transactionEntity;
+    }
+    
+    public async Task<TransactionEntity?> getLastByStudentId(string studentId)
+    {
+        var service = new StudentDaoPostgres(context);
+
+        var student = await service.getById(studentId);
+
+        return student?.getLastTransaction();
     }
 }

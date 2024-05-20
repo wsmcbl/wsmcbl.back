@@ -7,15 +7,34 @@ namespace wsmcbl.back.database;
 
 public partial class PostgresContext : DbContext
 {
+    public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
     public virtual DbSet<StudentEntity> Student { get; set; } = null!;
     public virtual DbSet<TariffEntity> Tariff { get; set; } = null!;
-    public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
+    public virtual DbSet<TransactionEntity?> Transaction { get; set; } = null!;
     
     public PostgresContext(){}
     public PostgresContext(DbContextOptions<PostgresContext> options) : base(options){}
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<CashierEntity>(entity =>
+        {
+            entity.HasKey(e => e.cashierId).HasName("cashier_pkey");
+
+            entity.ToTable("cashier", "accounting");
+
+            entity.Property(e => e.cashierId)
+                .HasMaxLength(100)
+                .HasColumnName("cashierid");
+            entity.Property(e => e.name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
+            entity.Property(e => e.sex).HasColumnName("sex");
+            entity.Property(e => e.surname)
+                .HasMaxLength(100)
+                .HasColumnName("surname");
+        });
+        
         modelBuilder.Entity<StudentEntity>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");

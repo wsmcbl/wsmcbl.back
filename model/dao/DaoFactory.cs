@@ -16,6 +16,11 @@ public abstract class DaoFactory
         return factory;
     }
 
+    public virtual ICashierDao cashierDao()
+    {
+        return null;
+    }
+
     public virtual IStudentDao studentDao()
     {
         return null;

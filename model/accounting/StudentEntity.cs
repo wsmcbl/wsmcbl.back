@@ -36,4 +36,19 @@ public class StudentEntity
         var time = new DateTime();
         return time.Date.Year;
     }
+
+    public TransactionEntity getLastTransaction()
+    {
+        var transa = transactions.FirstOrDefault()!;
+        
+        foreach (var item in transactions)
+        {
+            if (item.dateTime >= transa.dateTime)
+            {
+                transa = item;
+            }
+        }
+        
+        return transa;
+    }
 }

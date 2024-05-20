@@ -12,6 +12,13 @@ public class DaoFactoryPostgre : DaoFactory
         this.context = context;
     }
 
+    private ICashierDao _cashierDao;
+    public override ICashierDao cashierDao()
+    {
+        return _cashierDao != null ? _cashierDao : 
+            _cashierDao = new CashierDaoPostgres(context);
+    }
+
     private IStudentDao _studentDao;
     public override IStudentDao studentDao()
     {

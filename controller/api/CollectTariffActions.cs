@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.back.controller.business;
 using wsmcbl.back.dto.input;
 using wsmcbl.back.dto.output;
+using TransactionDto = wsmcbl.back.dto.input.TransactionDto;
 
 namespace wsmcbl.back.controller.api;
 
@@ -45,5 +46,17 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         var service = new TransactionDtoTransformer();
         var element = service.getTransaction(transaction);
         await controller.saveTransaction(element);
+    }
+    
+    [HttpGet]
+    [Route("transactions/invoices/{studentId}")]
+    public async Task<IActionResult> getLastTransaction(string studentId)
+    {
+        var lastTransaction = await controller.getLastTransactionByStudent(studentId);
+        var student = await controller.getStudent(studentId);
+        var cashier = await controller.getCashier(lastTransaction!.cashierId);
+        
+        var transactionOutput = new dto.output.TransactionDto(lastTransaction, student, cashier); 
+        return Ok(transactionOutput);
     }
 }
