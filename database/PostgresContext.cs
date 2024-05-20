@@ -10,7 +10,7 @@ public partial class PostgresContext : DbContext
     public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
     public virtual DbSet<StudentEntity> Student { get; set; } = null!;
     public virtual DbSet<TariffEntity> Tariff { get; set; } = null!;
-    public virtual DbSet<TransactionEntity?> Transaction { get; set; } = null!;
+    public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
     
     public PostgresContext(){}
     public PostgresContext(DbContextOptions<PostgresContext> options) : base(options){}
@@ -40,7 +40,7 @@ public partial class PostgresContext : DbContext
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 
             entity.ToTable("student", "accounting");
-
+            
             entity.Property(e => e.tutor)
                 .HasColumnName("tutor");
             entity.Property(e => e.studentId)
@@ -90,6 +90,8 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("transaction", "accounting");
 
+            entity.Ignore(t => t.areas);
+            
             entity.Property(e => e.transactionId)
                 .HasMaxLength(100)
                 .HasColumnName("transactionid");

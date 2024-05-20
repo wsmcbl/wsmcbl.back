@@ -14,7 +14,7 @@ public class TransactionDto
         discount = transaction.discount;
         dateTime = transaction.dateTime;
         tariffs = transaction.tariffs;
-        areas = 50;
+        areas = transaction.areas;
     }
 
     public string transactionId { get; set; }

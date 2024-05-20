@@ -14,7 +14,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("students")]
     public async Task<IActionResult> getStudentList()
     {
-        StudentDtoTransformer service = new StudentDtoTransformer();
+        var service = new StudentDtoService();
         var students = await controller.getStudentsList();
         return Ok(service.getStudentList(students));
     } 
@@ -50,13 +50,9 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     
     [HttpGet]
     [Route("transactions/invoices/{studentId}")]
-    public async Task<IActionResult> getLastTransaction(string studentId)
+    public async Task<IActionResult> getInvoice(string studentId)
     {
-        var lastTransaction = await controller.getLastTransactionByStudent(studentId);
-        var student = await controller.getStudent(studentId);
-        var cashier = await controller.getCashier(lastTransaction!.cashierId);
-        
-        var transactionOutput = new dto.output.TransactionDto(lastTransaction, student, cashier); 
-        return Ok(transactionOutput);
+        var dtoService = await controller.getLastTransactionByStudent(studentId);
+        return Ok(dtoService!.getDto());
     }
 }

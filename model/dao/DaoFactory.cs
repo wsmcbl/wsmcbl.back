@@ -4,34 +4,34 @@ namespace wsmcbl.back.model.dao;
 
 public abstract class DaoFactory
 {
-    private DaoFactory factory = null;
+    private DaoFactory? factory;
 
-    public void setFactory(DaoFactory factory)
+    public void setFactory(DaoFactory _factory)
     {
-        this.factory = factory;
+        factory = _factory;
     }
 
-    public DaoFactory getFactory()
+    public DaoFactory? getFactory()
     {
         return factory;
     }
 
-    public virtual ICashierDao cashierDao()
+    public virtual ICashierDao? cashierDao()
     {
         return null;
     }
 
-    public virtual IStudentDao studentDao()
+    public virtual IStudentDao? studentDao()
     {
         return null;
     }
 
-    public virtual ITariffDao tariffDao()
+    public virtual ITariffDao? tariffDao()
     {
         return null;
     }
 
-    public virtual ITransactionDao transactionDao()
+    public virtual ITransactionDao? transactionDao()
     {
         return null;
     }

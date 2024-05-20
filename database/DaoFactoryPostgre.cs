@@ -12,31 +12,28 @@ public class DaoFactoryPostgre : DaoFactory
         this.context = context;
     }
 
-    private ICashierDao _cashierDao;
+    private ICashierDao? _cashierDao;
     public override ICashierDao cashierDao()
     {
-        return _cashierDao != null ? _cashierDao : 
-            _cashierDao = new CashierDaoPostgres(context);
+        return _cashierDao ??= new CashierDaoPostgres(context);
     }
 
-    private IStudentDao _studentDao;
+    private IStudentDao? _studentDao;
     public override IStudentDao studentDao()
     {
-        return _studentDao != null ? _studentDao : 
-            _studentDao = new StudentDaoPostgres(context);
+        return _studentDao ??= new StudentDaoPostgres(context);
     }
 
-    private ITariffDao _tariffDao;
+    private ITariffDao? _tariffDao;
     public override ITariffDao tariffDao()
     {
-        return _tariffDao != null ? _tariffDao : 
-            _tariffDao = new TariffDaoPostgres(context);
+        return _tariffDao ??= new TariffDaoPostgres(context);
     }
 
-    private ITransactionDao _transactionDao;
+    private ITransactionDao? _transactionDao;
 
     public override ITransactionDao transactionDao()
     {
-        return _transactionDao != null ? _transactionDao : _transactionDao = new TransactionDaoPostgres(context);
+        return _transactionDao ??= new TransactionDaoPostgres(context);
     }
 }

@@ -9,19 +9,19 @@ public class CashierDaoPostgres(PostgresContext context)
 public class StudentDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
-    public new async Task<StudentEntity?> getById(string id)
+    public new Task<StudentEntity?> getById(string id)
     {
-        return context.Student
+        return Task.FromResult(context.Student
             .Include(e => e.transactions)
             .ThenInclude(t => t.tariffs)
-            .FirstOrDefault(e => e.studentId == id);
+            .FirstOrDefault(e => e.studentId == id));
     }
 }
 
 public class TariffDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
-    public async Task<List<TariffEntity>> getAll()
+    public new async Task<List<TariffEntity>> getAll()
     {
         var elements = await base.getAll();
         return elements.OrderBy(e => e.tariffId).ToList();

@@ -4,7 +4,7 @@ namespace wsmcbl.back.dto.input;
 
 public class TransactionDtoTransformer
 {
-    public TransactionEntity getTransaction(TransactionDto dto)
+    public TransactionEntity getTransaction(TransactionDto? dto)
     {
         var transaction = new TransactionEntity
         {
