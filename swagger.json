@@ -105,18 +105,6 @@
           }
         }
       }
-    },
-    "/v1/documentation/swagger": {
-      "get": {
-        "tags": [
-          "SwaggerActions"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
     }
   },
   "components": {

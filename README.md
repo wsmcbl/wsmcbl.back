@@ -1,6 +1,6 @@
 ## API WSMCBL
 
-Download (copy) json in http://wsmcbl-api.somee.com/v1/documentation/swagger and put in https://editor-next.swagger.io
+Download (copy) json in https://github.com/wsmcbl/wsmcbl.back/blob/develop/swagger.json and put in https://editor-next.swagger.io
 
 ## See documentation
 
