@@ -35,4 +35,9 @@ public abstract class DaoFactory
     {
         return null;
     }
+
+    public virtual IUserDao? userDao()
+    {
+        return null;
+    }
 }

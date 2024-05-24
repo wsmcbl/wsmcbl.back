@@ -14,11 +14,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PostgresContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
-builder.Services.AddScoped<DaoFactoryPostgre>();
-builder.Services.AddScoped<ICashierDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().cashierDao());
-builder.Services.AddScoped<IStudentDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().studentDao());
-builder.Services.AddScoped<ITariffDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().tariffDao());
-builder.Services.AddScoped<ITransactionDao>(sp => sp.GetRequiredService<DaoFactoryPostgre>().transactionDao());
+builder.Services.AddScoped<DaoFactoryPostgres>();
+builder.Services.AddScoped<ICashierDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().cashierDao());
+builder.Services.AddScoped<IStudentDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().studentDao());
+builder.Services.AddScoped<ITariffDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().tariffDao());
+builder.Services.AddScoped<ITransactionDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().transactionDao());
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 
 

@@ -3,15 +3,8 @@ using wsmcbl.back.model.dao;
 
 namespace wsmcbl.back.database;
 
-public class DaoFactoryPostgre : DaoFactory
+public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
-    private readonly PostgresContext context;
-
-    public DaoFactoryPostgre(PostgresContext context)
-    {
-        this.context = context;
-    }
-
     private ICashierDao? _cashierDao;
     public override ICashierDao cashierDao()
     {
@@ -31,9 +24,14 @@ public class DaoFactoryPostgre : DaoFactory
     }
 
     private ITransactionDao? _transactionDao;
-
     public override ITransactionDao transactionDao()
     {
         return _transactionDao ??= new TransactionDaoPostgres(context);
+    }
+
+    private IUserDao? _userDao;
+    public override IUserDao userDao()
+    {
+        return _userDao ??= new UserDaoPostgres(context);
     }
 }

@@ -1,0 +1,176 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "wsmcbl.back",
+    "version": "1.0"
+  },
+  "paths": {
+    "/v1/accounting/students": {
+      "get": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/accounting/students/{studentId}": {
+      "get": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/accounting/tariffs": {
+      "get": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/accounting/transactions": {
+      "post": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/accounting/transactions/invoices/{studentId}": {
+      "get": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/documentation/swagger": {
+      "get": {
+        "tags": [
+          "SwaggerActions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DetailDto": {
+        "type": "object",
+        "properties": {
+          "tariffId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discount": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          },
+          "arrears": {
+            "type": "number",
+            "format": "float",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionDto": {
+        "required": [
+          "cashierId",
+          "dateTime",
+          "details",
+          "studentId"
+        ],
+        "type": "object",
+        "properties": {
+          "cashierId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "studentId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetailDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

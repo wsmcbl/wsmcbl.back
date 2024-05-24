@@ -9,5 +9,5 @@ public interface ICollectTariffController
     public Task<List<StudentEntity>> getStudentsList();
     public Task<List<TariffEntity>> getTariffList();
     public Task saveTransaction(TransactionEntity transaction);
-    public Task<TransactionDtoService?> getLastTransactionByStudent(string studentId);
+    public Task<InvoiceDto> getLastTransactionByStudent(string studentId);
 }

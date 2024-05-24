@@ -1,8 +1,6 @@
 ## API WSMCBL
 
-* http://wsmcbl-api.somee.com/v1/accounting/students (GET, SEARCH)
-* http://wsmcbl-api.somee.com/v1/accounting/tariffs (GET)
-* http://wsmcbl-api.somee.com/v1/accounting/transactions (POST)
+Download (copy) json in http://wsmcbl-api.somee.com/v1/documentation/swagger and put in https://editor-next.swagger.io
 
 ## See documentation
 
