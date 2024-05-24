@@ -2,4 +2,4 @@
 
 rm -rf bin publish || true
 dotnet publish "wsmcbl.back.csproj" -c Release -o publish
-mv swagger.json /publish
+cp swagger.json /publish
