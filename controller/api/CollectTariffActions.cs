@@ -14,9 +14,8 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("students")]
     public async Task<IActionResult> getStudentList()
     {
-        var service = new StudentDtoService();
         var students = await controller.getStudentsList();
-        return Ok(service.getStudentList(students));
+        return Ok(students.mapToDto());
     } 
     
     [HttpGet]
@@ -29,7 +28,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
             return NotFound();
         }
 
-        return Ok(new StudentDtoFull(student));
+        return Ok(student.mapToDto());
     }
 
     [HttpGet]
@@ -43,16 +42,14 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("transactions")]
     public async Task saveTransaction([FromBody] TransactionDto transaction)
     {
-        var service = new TransactionDtoTransformer();
-        var element = service.getTransaction(transaction);
-        await controller.saveTransaction(element);
+        await controller.saveTransaction(transaction.toEntity());
     }
     
     [HttpGet]
     [Route("transactions/invoices/{studentId}")]
     public async Task<IActionResult> getInvoice(string studentId)
     {
-        var dtoService = await controller.getLastTransactionByStudent(studentId);
-        return Ok(dtoService!.getDto());
+        var invoice = await controller.getLastTransactionByStudent(studentId);
+        return Ok(invoice);
     }
 }

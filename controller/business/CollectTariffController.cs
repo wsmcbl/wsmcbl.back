@@ -38,13 +38,13 @@ public class CollectTariffController : ICollectTariffController
         await transactionDao.create(transaction);
     }
 
-    public async Task<TransactionDtoService?> getLastTransactionByStudent(string studentId)
+    public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
     {
         var transaction = await transactionDao.getLastByStudentId(studentId);
         var cashier = await getCashier(transaction!.cashierId);
         var student = await getStudent(studentId);
-
-        return new TransactionDtoService(transaction, student!, cashier!);
+        
+        return transaction.mapToDto(student, cashier);
     }
     
     private Task<CashierEntity?> getCashier(string id)
