@@ -35,7 +35,21 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("tariffs")]
     public async Task<IActionResult> getTariffList()
     {
-        return Ok(await controller.getTariffList());
+        return Ok(await controller.getAllTariff());
+    }
+
+    [HttpGet]
+    [Route("arrears")]
+    public async Task<IActionResult> getArrearsTariff([FromHeader] string schoolYear)
+    {
+        return Ok(await controller.getUnexpiredTariff(schoolYear));
+    }
+
+    [HttpPut]
+    [Route("arrears/{tariffId}")]
+    public async Task applyArrears(int tariffId)
+    {
+        await controller.applyArrears(tariffId);
     }
 
     [HttpPost]

@@ -52,6 +52,52 @@
         }
       }
     },
+    "/v1/accounting/arrears": {
+      "get": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "parameters": [
+          {
+            "name": "schoolYear",
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/v1/accounting/arrears/{tariffId}": {
+      "put": {
+        "tags": [
+          "CollectTariffActions"
+        ],
+        "parameters": [
+          {
+            "name": "tariffId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/v1/accounting/transactions": {
       "post": {
         "tags": [

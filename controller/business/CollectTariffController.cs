@@ -28,7 +28,7 @@ public class CollectTariffController : ICollectTariffController
         return studentDao.getAll();
     }
 
-    public Task<List<TariffEntity>> getTariffList()
+    public Task<List<TariffEntity>> getAllTariff()
     {
         return tariffDao.getAll();
     }
@@ -46,7 +46,20 @@ public class CollectTariffController : ICollectTariffController
         
         return transaction.mapToDto(student, cashier);
     }
-    
+
+    public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear)
+    {
+        return tariffDao.getAll(schoolyear);
+    }
+
+    public async Task applyArrears(int tariffId)
+    {
+        var tariff = await tariffDao.getById(tariffId);
+        tariff!.isLate = true;
+        
+        tariffDao.update(tariff);
+    }
+
     private Task<CashierEntity?> getCashier(string id)
     {
         return cashierDao.getById(id);

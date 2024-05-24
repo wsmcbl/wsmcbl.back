@@ -31,6 +31,21 @@ public class TariffDaoPostgres(PostgresContext context)
         var elements = await base.getAll();
         return elements.OrderBy(e => e.tariffId).ToList();
     }
+
+    public async Task<List<TariffEntity>> getAll(string schoolyear)
+    {
+        var tariffs = await Task
+            .FromResult(context.Tariff
+                .Where(t => t.schoolYear == schoolyear && t.isLate == false && t.dueDate != null)
+                .ToList());
+
+        foreach (var item in tariffs)
+        {
+            item.checkDueDate();
+        }
+
+        return tariffs.Where(t => t.isLate == true).ToList();
+    }
 }
 
 public class StudentDaoPostgres(PostgresContext context) 
@@ -38,11 +53,12 @@ public class StudentDaoPostgres(PostgresContext context)
 {
     public new async Task<StudentEntity?> getById(string id)
     {
-        var student = await Task.FromResult(context.Student
-            .Include(d => d.discount)
-            .Include(e => e.transactions)
-            .ThenInclude(t => t.details)
-            .FirstOrDefault(e => e.studentId == id));
+        var student = await Task
+            .FromResult(context.Student
+                .Include(d => d.discount)
+                .Include(e => e.transactions)
+                .ThenInclude(t => t.details)
+                .FirstOrDefault(e => e.studentId == id));
 
         var service = new TransactionDaoPostgres(context);
         foreach (var transaction in student!.transactions)
