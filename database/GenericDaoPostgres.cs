@@ -19,9 +19,10 @@ public abstract class GenericDaoPostgres<T, ID>(PostgresContext context) : IGene
         return element;
     }
 
-    public void update(T entity)
+    public async Task update(T entity)
     {
-        throw new NotImplementedException();
+        context.Set<T>().Update(entity);
+        await context.SaveChangesAsync();
     }
 
     public void deleteById(ID id)

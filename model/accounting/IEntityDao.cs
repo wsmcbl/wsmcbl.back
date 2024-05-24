@@ -9,7 +9,10 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>;
 
 public interface IUserDao : IGenericDao<UserEntity, string>;
 
-public interface ITariffDao : IGenericDao<TariffEntity, int>;
+public interface ITariffDao : IGenericDao<TariffEntity, int>
+{
+    public Task<List<TariffEntity>> getAll(string schoolyear);
+}
 
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>
 {

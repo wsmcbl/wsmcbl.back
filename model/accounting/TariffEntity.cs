@@ -12,7 +12,7 @@ public class TariffEntity
 
     public void checkDueDate()
     {
-        if (dueDate >= DateOnly.FromDateTime(DateTime.Today))
+        if (DateOnly.FromDateTime(DateTime.Today) >= dueDate)
             isLate = true;
     }
 }
