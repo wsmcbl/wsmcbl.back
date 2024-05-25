@@ -2,25 +2,17 @@ namespace wsmcbl.back.model.accounting;
 
 public class StudentEntity
 {
-    public string studentId;
-    public string name { get; set; }
-    public string? secondName { get; set; }
-    public string surname { get; set; }
-    public string? secondSurname { get; set; }
-    public bool isActive { get; set; }
-    public string schoolYear { get; set; }
-    public string? tutor { get; set; }
-    public bool sex { get; set; }
-    public DateOnly birthday { get; set; }
-    public string? enrollmentLabel { get; set; }
+    public string studentId { get; set; }
+    public int discountId { get; set; }
     public DiscountEntity discount { get; set; }
-
-    public ICollection<TransactionEntity> transactions { get; set; } = new List<TransactionEntity>();
-
-    public string fullName()
-    {
-        return name + " " + secondName + " " + surname + " " + secondSurname;
-    }
+    public secretary.StudentEntity student { get; set; } = null!;
+    public ICollection<TransactionEntity> transactions { get; set; }
+    
+    public string fullName() => student.fullName();
+    public string? enrollmentLabel => student.enrollmentLabel;
+    public string schoolYear => student.schoolYear;
+    public string? tutor => student.tutor;
+    public bool isActive => student.isActive;
 
     public TransactionEntity getLastTransaction()
     {

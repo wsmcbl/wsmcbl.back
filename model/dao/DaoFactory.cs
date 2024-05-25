@@ -1,4 +1,7 @@
 using wsmcbl.back.model.accounting;
+using wsmcbl.back.model.secretary;
+using IStudentDao = wsmcbl.back.model.accounting.IStudentDao;
+using IStudentSecretaryDao = wsmcbl.back.model.secretary.IStudentDao;
 
 namespace wsmcbl.back.model.dao;
 
@@ -22,6 +25,11 @@ public abstract class DaoFactory
     }
 
     public virtual IStudentDao? studentDao()
+    {
+        return null;
+    }
+
+    public virtual IStudentSecretaryDao? studentSecretaryDao()
     {
         return null;
     }
