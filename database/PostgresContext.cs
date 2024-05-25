@@ -1,16 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
+using Student_Accounting = wsmcbl.back.model.accounting.StudentEntity;
+using Student_Secretary = wsmcbl.back.model.secretary.StudentEntity;
+
 
 namespace wsmcbl.back.database;
 
 public class PostgresContext : DbContext
 {
-    public virtual DbSet<StudentEntity> Student { get; set; } = null!;
-    public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
-    public virtual DbSet<UserEntity> User { get; set; } = null!;
     public virtual DbSet<TariffEntity> Tariff { get; set; } = null!;
+    public virtual DbSet<Student_Accounting> Student_accounting { get; set; } = null!;
+    public virtual DbSet<Student_Secretary> Student { get; set; } = null!;
+    public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
     public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
+    public virtual DbSet<UserEntity> User { get; set; } = null!;
 
     public PostgresContext()
     {
@@ -34,8 +38,36 @@ public class PostgresContext : DbContext
                 .WithMany()
                 .HasForeignKey(c => c.userId);
         });
+        
+        modelBuilder.Entity<Student_Accounting>(entity =>
+        {
+            entity.HasKey(e => e.studentId).HasName("student_pkey");
 
-        modelBuilder.Entity<StudentEntity>(entity =>
+            entity.ToTable("student", "accounting");
+
+            entity.Property(e => e.studentId)
+                .HasMaxLength(20)
+                .HasColumnName("studentid");
+            entity.Property(e => e.discountId).HasColumnName("discountid");
+
+            entity.HasOne(d => d.discount)
+                .WithMany()
+                .HasForeignKey(d => d.discountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("student_discountid_fkey");
+
+            entity.HasOne(d => d.student)
+                .WithOne()
+                .HasForeignKey<Student_Accounting>(d => d.studentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("student_studentid_fkey");
+            
+            entity.HasMany(s => s.transactions)
+                .WithOne()
+                .HasForeignKey(s => s.studentId);
+        });
+
+        modelBuilder.Entity<Student_Secretary>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 
@@ -69,12 +101,6 @@ public class PostgresContext : DbContext
                 .HasColumnName("sex");
             entity.Property(e => e.isActive)
                 .HasColumnName("studentstate");
-            entity.HasMany(s => s.transactions)
-                .WithOne()
-                .HasForeignKey(s => s.studentId);
-            entity.HasOne(e => e.discount)
-                .WithMany()
-                .HasForeignKey("discountid");
         });
 
         modelBuilder.Entity<DiscountEntity>(entity =>

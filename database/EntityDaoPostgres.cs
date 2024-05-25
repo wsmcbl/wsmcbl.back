@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
+using IStudentDao = wsmcbl.back.model.accounting.IStudentDao;
+using IStudentSecretaryDao = wsmcbl.back.model.secretary.IStudentDao;
+using StudentEntity = wsmcbl.back.model.accounting.StudentEntity;
+using StudentSecretaryEntity = wsmcbl.back.model.secretary.StudentEntity;
 
 namespace wsmcbl.back.database;
 
@@ -48,18 +52,26 @@ public class TariffDaoPostgres(PostgresContext context)
     }
 }
 
+public class StudentSecretaryDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentSecretaryEntity, string>(context), IStudentSecretaryDao;
+
 public class StudentDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
+    public new async Task<List<StudentEntity>> getAll()
+    {
+        return await Task.FromResult(context.Student_accounting.Include(d => d.student).ToList());
+    }
+
     public new async Task<StudentEntity?> getById(string id)
     {
-        var student = await Task
-            .FromResult(context.Student
+        var student = context.Student_accounting
+                .Include(d => d.student)
                 .Include(d => d.discount)
                 .Include(e => e.transactions)
                 .ThenInclude(t => t.details)
-                .FirstOrDefault(e => e.studentId == id));
-
+                .FirstOrDefault(e => e.studentId == id);
+        
         var service = new TransactionDaoPostgres(context);
         foreach (var transaction in student!.transactions)
         {
@@ -69,7 +81,7 @@ public class StudentDaoPostgres(PostgresContext context)
             }
         }
         
-        return student;
+        return await Task.FromResult(student);
     }
 }
 

@@ -25,7 +25,7 @@ create table if not exists Config.User
 
 create table if not exists Config.Rol
 (
-    rolId varchar(15) primary key ,
+    rolId varchar(15) primary key,
     nameRol varchar(50) not null
 );
 
@@ -112,21 +112,35 @@ create table if not exists Secretary.Student
     tutor varchar(100),
     sex boolean not null,
     birthday date not null,
-    enrollmentLabel varchar(20),
-    discountId smallint
+    enrollmentLabel varchar(20)
 );
 
 create table if not exists Secretary.Student_Enrollment
 (
-    id varchar(15) primary key,
-    schoolYear varchar(4) not null,
     studentId varchar(15) not null,
     enrollmentId varchar(15) not null,
+    schoolYear varchar(4) not null,
     foreign key (studentId) references Secretary.Student,
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
 --- ############################## ---
+
+create table if not exists Accounting.Discount
+(
+    discountId smallint primary key,
+    description varchar(200) not null,
+    amount float not null,
+    tag varchar(50)
+);
+
+create table if not exists Accounting.Student
+(
+    studentId varchar(20) not null primary key,
+    discountId smallint not null,
+    foreign key (studentId) references Secretary.Student,
+    foreign key (discountId) references Accounting.Discount
+);
 
 create table  if not exists Accounting.Cashier
 (
@@ -160,7 +174,7 @@ create table  if not exists Accounting.Transaction
     date timestamp with time zone not null,
     studentId varchar(15) not null,
     cashierId varchar(15) not null,
-    foreign key (studentId) references Secretary.Student,
+    foreign key (studentId) references Accounting.Student,
     foreign key (cashierId) references Accounting.Cashier
 );
 
@@ -175,12 +189,4 @@ create table if not exists Accounting.Transaction_Tariff
     primary key (transactionId, tariffId),
     foreign key (transactionId) references Accounting.Transaction,
     foreign key (tariffId) references Accounting.Tariff
-);
-
-create table if not exists Accounting.Discount
-(
-    discountId smallint primary key,
-    description varchar(200) not null,
-    amount float not null,
-    tag varchar(50)
 );
