@@ -1,18 +1,16 @@
+using wsmcbl.back.model.dao;
 using wsmcbl.back.model.secretary;
 
 namespace wsmcbl.back.controller.business;
 
-public class CreateOfficialEnrollmentController : ICreateOfficialEnrollmentController
+public class CreateOfficialEnrollmentController : BaseController, ICreateOfficialEnrollmentController
 {
-    private IStudentDao studentDao;
-
-    public CreateOfficialEnrollmentController(IStudentDao studentDao)
+    public CreateOfficialEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
     {
-        this.studentDao = studentDao;
     }
-
+        
     public Task<List<StudentEntity>> getStudentList()
     {
-        return studentDao.getAll();
+        return daoFactory.studentDao<StudentEntity>()!.getAll();
     }
 }
