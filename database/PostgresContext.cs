@@ -180,6 +180,7 @@ public class PostgresContext : DbContext
             entity.Property(e => e.tariffId)
                 .HasMaxLength(15)
                 .HasColumnName("tariffid");
+            entity.Property(e => e.amount).HasColumnName("amount");
             entity.Property(e => e.arrears).HasColumnName("arrears");
             entity.Property(e => e.discount).HasColumnName("discount");
             entity.Property(e => e.subTotal).HasColumnName("subtotal");

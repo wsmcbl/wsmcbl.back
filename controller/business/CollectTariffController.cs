@@ -1,46 +1,41 @@
 using wsmcbl.back.dto.output;
 using wsmcbl.back.model.accounting;
+using wsmcbl.back.model.dao;
 
 namespace wsmcbl.back.controller.business;
 
-public class CollectTariffController : ICollectTariffController
+public class CollectTariffController : BaseController, ICollectTariffController
 {
-    private IStudentDao studentDao;
-    private ITariffDao tariffDao;
-    private ITransactionDao transactionDao;
-    private ICashierDao cashierDao;
-    
-    public CollectTariffController(IStudentDao studentDao, ITariffDao tariffDao, ITransactionDao transactionDao, ICashierDao cashierDao)
+    public CollectTariffController(DaoFactory daoFactory) : base(daoFactory)
     {
-        this.studentDao = studentDao;
-        this.tariffDao = tariffDao;
-        this.transactionDao = transactionDao;
-        this.cashierDao = cashierDao;
     }
     
     public Task<StudentEntity?> getStudent(string id)
     {
-        return studentDao.getById(id);
+        return daoFactory.studentDao<StudentEntity>()!.getById(id);
     }
 
     public Task<List<StudentEntity>> getStudentsList()
     {
-        return studentDao.getAll();
+        return daoFactory.studentDao<StudentEntity>()!.getAll();
     }
 
     public Task<List<TariffEntity>> getAllTariff()
     {
-        return tariffDao.getAll();
+        return daoFactory.tariffDao!.getAll();
     }
 
     public async Task saveTransaction(TransactionEntity transaction)
     {
-        await transactionDao.create(transaction);
+        await daoFactory.transactionDao!.create(transaction);
     }
 
-    public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
+    public async Task<InvoiceDto>? getLastTransactionByStudent(string studentId)
     {
-        var transaction = await transactionDao.getLastByStudentId(studentId);
+        var transaction = await daoFactory.transactionDao.getLastByStudentId(studentId);
+        if (transaction is null)
+            return null;
+        
         var cashier = await getCashier(transaction!.cashierId);
         var student = await getStudent(studentId);
         
@@ -49,19 +44,19 @@ public class CollectTariffController : ICollectTariffController
 
     public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear)
     {
-        return tariffDao.getAll(schoolyear);
+        return daoFactory.tariffDao!.getAll(schoolyear);
     }
 
     public async Task applyArrears(int tariffId)
     {
-        var tariff = await tariffDao.getById(tariffId);
+        var tariff = await daoFactory.tariffDao!.getById(tariffId);
         tariff!.isLate = true;
         
-        tariffDao.update(tariff);
+        await daoFactory.tariffDao!.update(tariff);
     }
 
     private Task<CashierEntity?> getCashier(string id)
     {
-        return cashierDao.getById(id);
+        return daoFactory.cashierDao!.getById(id);
     }
 }

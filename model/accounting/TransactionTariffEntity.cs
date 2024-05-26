@@ -5,6 +5,8 @@ public class TransactionTariffEntity
     public string transactionId { get; set; } = null!;
 
     public int tariffId { get; set; }
+    
+    public float amount { get; set; }
 
     public float? discount { get; set; }
 
@@ -28,7 +30,8 @@ public class TransactionTariffEntity
 
     public void computeSubTotal()
     {
-        subTotal = (float)(tariff.amount - discount)!;
+        amount = tariff.amount;
+        subTotal = (float)(amount - discount)!;
     }
 
     public string concept()

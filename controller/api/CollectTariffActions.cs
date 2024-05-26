@@ -64,6 +64,10 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getInvoice(string studentId)
     {
         var invoice = await controller.getLastTransactionByStudent(studentId);
+        
+        if (invoice is null)
+            return BadRequest("This student no has transaction");
+        
         return Ok(invoice);
     }
 }

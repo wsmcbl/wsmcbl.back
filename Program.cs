@@ -2,9 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.config;
 using wsmcbl.back.controller.business;
 using wsmcbl.back.database;
-using wsmcbl.back.model.accounting;
-using IStudentDao = wsmcbl.back.model.accounting.IStudentDao;
-using IStudentSecretaryDao = wsmcbl.back.model.secretary.IStudentDao;
+using wsmcbl.back.model.dao;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,12 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PostgresContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
-builder.Services.AddScoped<DaoFactoryPostgres>();
-builder.Services.AddScoped<ICashierDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().cashierDao());
-builder.Services.AddScoped<IStudentDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().studentDao());
-builder.Services.AddScoped<IStudentSecretaryDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().studentSecretaryDao());
-builder.Services.AddScoped<ITariffDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().tariffDao());
-builder.Services.AddScoped<ITransactionDao>(sp => sp.GetRequiredService<DaoFactoryPostgres>().transactionDao());
+builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 

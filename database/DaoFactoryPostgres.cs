@@ -1,46 +1,40 @@
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.dao;
-using wsmcbl.back.model.secretary;
-using IStudentDao = wsmcbl.back.model.accounting.IStudentDao;
-using IStudentSecretaryDao = wsmcbl.back.model.secretary.IStudentDao;
 
 namespace wsmcbl.back.database;
 
 public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
     private ICashierDao? _cashierDao;
-    public override ICashierDao cashierDao()
-    {
-        return _cashierDao ??= new CashierDaoPostgres(context);
-    }
-
-    private IStudentDao? _studentDao;
-    public override IStudentDao studentDao()
-    {
-        return _studentDao ??= new StudentDaoPostgres(context);
-    }
-
-    private IStudentSecretaryDao? _studentSecretaryDao;
-    public override IStudentSecretaryDao studentSecretaryDao()
-    {
-        return _studentSecretaryDao ??= new StudentSecretaryDaoPostgres(context);
-    }
+    public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
 
     private ITariffDao? _tariffDao;
-    public override ITariffDao tariffDao()
-    {
-        return _tariffDao ??= new TariffDaoPostgres(context);
-    }
+    public override ITariffDao tariffDao => _tariffDao ??= new TariffDaoPostgres(context);
 
     private ITransactionDao? _transactionDao;
-    public override ITransactionDao transactionDao()
-    {
-        return _transactionDao ??= new TransactionDaoPostgres(context);
-    }
+    public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
 
     private IUserDao? _userDao;
-    public override IUserDao userDao()
+    public override IUserDao userDao => _userDao ??= new UserDaoPostgres(context);
+
+
+
+
+    private StudentDaoPostgres? _accountingStudentDao;
+    private SecretaryStudentDaoPostgres? _secretaryStudentDao;
+
+    public override IGenericDao<T, string>? studentDao<T>()
     {
-        return _userDao ??= new UserDaoPostgres(context);
+        if (typeof(T) == typeof(StudentEntity))
+        {
+            return (IGenericDao<T, string>?)(_accountingStudentDao ??= new StudentDaoPostgres(context));
+        }
+
+        if (typeof(T) == typeof(model.secretary.StudentEntity))
+        {
+            return (IGenericDao<T, string>?)(_secretaryStudentDao ??= new SecretaryStudentDaoPostgres(context));
+        }
+
+        return null;
     }
 }

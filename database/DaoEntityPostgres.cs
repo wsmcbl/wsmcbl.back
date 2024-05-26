@@ -1,13 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
-using IStudentDao = wsmcbl.back.model.accounting.IStudentDao;
-using IStudentSecretaryDao = wsmcbl.back.model.secretary.IStudentDao;
-using StudentEntity = wsmcbl.back.model.accounting.StudentEntity;
-using StudentSecretaryEntity = wsmcbl.back.model.secretary.StudentEntity;
 
 namespace wsmcbl.back.database;
-
 
 public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
@@ -51,9 +46,6 @@ public class TariffDaoPostgres(PostgresContext context)
         return tariffs.Where(t => t.isLate == true).ToList();
     }
 }
-
-public class StudentSecretaryDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentSecretaryEntity, string>(context), IStudentSecretaryDao;
 
 public class StudentDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
@@ -122,3 +114,6 @@ public class TransactionDaoPostgres(PostgresContext context)
         return student?.getLastTransaction();
     }
 }
+    
+public class SecretaryStudentDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao;
