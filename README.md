@@ -1,6 +1,6 @@
-## API WSMCBL
+## See Swagger documentation
 
----
+* http://wsmcbl-api.somee.com/index.html
 
 ## See documentation
 
