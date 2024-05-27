@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.back.exception;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
 
@@ -13,8 +14,14 @@ public class CashierDaoPostgres(PostgresContext context)
     public override async Task<CashierEntity?> getById(string id)
     {
         var cashier = await base.getById(id);
+
+        if (cashier is null)
+        {
+            throw new EntityNotFoundException("Cashier", id);
+        }
+        
         var service = new UserDaoPostgres(context);
-        var user = await service.getById(cashier!.userId);
+        var user = await service.getById(cashier.userId);
 
         cashier.user = user!;
         
@@ -63,9 +70,14 @@ public class StudentDaoPostgres(PostgresContext context)
                 .Include(e => e.transactions)
                 .ThenInclude(t => t.details)
                 .FirstOrDefault(e => e.studentId == id);
+
+        if (student is null)
+        {
+            throw new EntityNotFoundException("Student", id);
+        }
         
         var service = new TransactionDaoPostgres(context);
-        foreach (var transaction in student!.transactions)
+        foreach (var transaction in student.transactions)
         {
             foreach (var item in transaction.details)
             {
@@ -110,6 +122,11 @@ public class TransactionDaoPostgres(PostgresContext context)
         var service = new StudentDaoPostgres(context);
 
         var student = await service.getById(studentId);
+
+        if (student is null)
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
 
         return student?.getLastTransaction();
     }

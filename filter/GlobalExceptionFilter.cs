@@ -15,20 +15,10 @@ public class GlobalExceptionFilter : IExceptionFilter
 
     public void OnException(ExceptionContext context)
     {
-        switch (context.Exception)
+        if(context.Exception is EntityNotFoundException ex)
         {
-            case EntityNotFoundException ex:
-                context.Result = new NotFoundObjectResult(new { message = ex.Message });
-                context.ExceptionHandled = true;
-                break;
-            default:
-                _logger.LogError(context.Exception, "An unhandled exception occurred.");
-                context.Result = new ObjectResult(new { message = "An internal server error occurred." })
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError
-                };
-                context.ExceptionHandled = true;
-                break;
+            context.Result = new NotFoundObjectResult(new { message = ex.Message });
+            context.ExceptionHandled = true;
         }
     }
 }

@@ -13,7 +13,14 @@ public class CollectTariffController : BaseController, ICollectTariffController
     
     public Task<StudentEntity?> getStudent(string id)
     {
-        return daoFactory.studentDao<StudentEntity>()!.getById(id);
+        var student = daoFactory.studentDao<StudentEntity>()!.getById(id);
+
+        if (student is null)
+        {
+            throw new EntityNotFoundException("Student", id);
+        }
+        
+        return student;
     }
 
     public Task<List<StudentEntity>> getStudentsList()
@@ -36,7 +43,9 @@ public class CollectTariffController : BaseController, ICollectTariffController
         var transaction = await daoFactory.transactionDao!.getLastByStudentId(studentId);
         
         if (transaction is null)
-            throw new EntityNotFoundException("TransactionEntity", studentId);
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
         
         var cashier = await getCashier(transaction.cashierId);
         var student = await getStudent(studentId);
@@ -52,6 +61,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public async Task applyArrears(int tariffId)
     {
         var tariff = await daoFactory.tariffDao!.getById(tariffId);
+        
         tariff!.isLate = true;
         
         await daoFactory.tariffDao!.update(tariff);

@@ -22,12 +22,8 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getStudentById(string studentId)
     {
         var student = await controller.getStudent(studentId);
-        if (student == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(student.mapToDto());
+        
+        return Ok(student!.mapToDto());
     }
 
     [HttpGet]
@@ -45,7 +41,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     }
 
     [HttpPut]
-    [Route("arrears/{tariffId}")]
+    [Route("arrears/{tariffId:int}")]
     public async Task applyArrears(int tariffId)
     {
         await controller.applyArrears(tariffId);
