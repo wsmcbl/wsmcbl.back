@@ -76,7 +76,7 @@ public static class DtoMapper
             concept  = entity.concept(),
             amount = entity.officialAmount(),
             itPaidLate = entity.itPaidLate(),
-            schoolYear = entity.schooyear()
+            schoolYear = entity.schoolYear()
         };
     }
 

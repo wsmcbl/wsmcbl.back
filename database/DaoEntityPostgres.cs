@@ -111,10 +111,12 @@ public class TransactionDaoPostgres(PostgresContext context)
         var service = new TariffDaoPostgres(context);
         var tariff = await service.getById(detail.tariffId);
 
-        if (tariff != null)
+        if (tariff is null)
         {
-            detail.setTariff(tariff);
+            throw new EntityNotFoundException("Tariff", detail.tariffId.ToString());
         }
+        
+        detail.setTariff(tariff);
     }
     
     public async Task<TransactionEntity?> getLastByStudentId(string studentId)

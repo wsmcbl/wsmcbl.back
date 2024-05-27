@@ -16,9 +16,14 @@ public class TransactionTariffEntity
     
 
     private TariffEntity tariff = null!;
-    public void setTariff(TariffEntity? tariff)
+    public void setTariff(TariffEntity _tariff)
     {
-        this.tariff = tariff!;
+        if (_tariff is null)
+        {
+            throw new ArgumentException("Tariff objet is null");
+        }
+        
+        tariff = _tariff;
     }
 
     public void applyArrears()
@@ -49,7 +54,7 @@ public class TransactionTariffEntity
         return (bool) tariff.isLate!;
     }
 
-    public string schooyear()
+    public string schoolYear()
     {
         return tariff.schoolYear;
     }

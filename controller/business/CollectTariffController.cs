@@ -11,13 +11,13 @@ public class CollectTariffController : BaseController, ICollectTariffController
     {
     }
     
-    public Task<StudentEntity?> getStudent(string id)
+    public Task<StudentEntity?> getStudent(string studentId)
     {
-        var student = daoFactory.studentDao<StudentEntity>()!.getById(id);
+        var student = daoFactory.studentDao<StudentEntity>()!.getById(studentId);
 
         if (student is null)
         {
-            throw new EntityNotFoundException("Student", id);
+            throw new EntityNotFoundException("Student", studentId);
         }
         
         return student;
@@ -28,7 +28,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return daoFactory.studentDao<StudentEntity>()!.getAll();
     }
 
-    public Task<List<TariffEntity>> getAllTariff()
+    public Task<List<TariffEntity>> getTariffList()
     {
         return daoFactory.tariffDao!.getAll();
     }
@@ -36,6 +36,20 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public async Task saveTransaction(TransactionEntity transaction)
     {
         await daoFactory.transactionDao!.create(transaction);
+    }
+
+    public async Task applyArrears(int tariffId)
+    {
+        var tariff = await daoFactory.tariffDao!.getById(tariffId);
+
+        if (tariff is null)
+        {
+            throw new EntityNotFoundException("Tariff", tariffId.ToString());
+        }
+        
+        tariff.isLate = true;
+        
+        await daoFactory.tariffDao!.update(tariff);
     }
 
     public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
@@ -52,21 +66,13 @@ public class CollectTariffController : BaseController, ICollectTariffController
         
         return transaction.mapToDto(student, cashier);
     }
-
+    
     public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear)
     {
         return daoFactory.tariffDao!.getAll(schoolyear);
     }
-
-    public async Task applyArrears(int tariffId)
-    {
-        var tariff = await daoFactory.tariffDao!.getById(tariffId);
-        
-        tariff!.isLate = true;
-        
-        await daoFactory.tariffDao!.update(tariff);
-    }
-
+    
+    
     private Task<CashierEntity?> getCashier(string id)
     {
         return daoFactory.cashierDao!.getById(id);

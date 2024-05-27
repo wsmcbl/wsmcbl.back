@@ -7,7 +7,8 @@ public class TransactionDto
     [Required]
     public string cashierId { get; set; } = null!;
 
-    [Required] public string studentId { get; set; } = null!;
+    [Required]
+    public string studentId { get; set; } = null!;
     
     [Required]
     public DateTime dateTime { get; set; }
