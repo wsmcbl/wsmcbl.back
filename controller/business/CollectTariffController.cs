@@ -1,4 +1,5 @@
 using wsmcbl.back.dto.output;
+using wsmcbl.back.exception;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.dao;
 
@@ -30,13 +31,14 @@ public class CollectTariffController : BaseController, ICollectTariffController
         await daoFactory.transactionDao!.create(transaction);
     }
 
-    public async Task<InvoiceDto>? getLastTransactionByStudent(string studentId)
+    public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
     {
-        var transaction = await daoFactory.transactionDao.getLastByStudentId(studentId);
-        if (transaction is null)
-            return null;
+        var transaction = await daoFactory.transactionDao!.getLastByStudentId(studentId);
         
-        var cashier = await getCashier(transaction!.cashierId);
+        if (transaction is null)
+            throw new EntityNotFoundException("TransactionEntity", studentId);
+        
+        var cashier = await getCashier(transaction.cashierId);
         var student = await getStudent(studentId);
         
         return transaction.mapToDto(student, cashier);

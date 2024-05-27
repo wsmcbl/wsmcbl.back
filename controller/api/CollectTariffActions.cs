@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.back.controller.business;
 using wsmcbl.back.dto.input;
 using wsmcbl.back.dto.output;
-using TransactionDto = wsmcbl.back.dto.input.TransactionDto;
 
 namespace wsmcbl.back.controller.api;
 
@@ -54,7 +53,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
 
     [HttpPost]
     [Route("transactions")]
-    public async Task saveTransaction([FromBody] TransactionDto transaction)
+    public async Task saveTransaction([FromBody] dto.input.TransactionDto transaction)
     {
         await controller.saveTransaction(transaction.toEntity());
     }
@@ -64,10 +63,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getInvoice(string studentId)
     {
         var invoice = await controller.getLastTransactionByStudent(studentId);
-        
-        if (invoice is null)
-            return BadRequest("This student no has transaction");
-        
         return Ok(invoice);
     }
 }
