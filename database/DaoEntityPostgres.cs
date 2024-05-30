@@ -103,7 +103,14 @@ public class TransactionDaoPostgres(PostgresContext context)
         
         entity.computeTotal();
         
-        await base.create(entity);
+        try
+        {
+            await base.create(entity);
+        }
+        catch (DbUpdateException e)
+        {
+            throw new DbException("Transaction");
+        }
     }
 
     internal async Task setTariff(TransactionTariffEntity detail)

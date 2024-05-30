@@ -10,7 +10,6 @@ using wsmcbl.back.model.dao;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v1")));
-builder.Services.AddControllers(options => options.Filters.Add<ValidateModelFilter>());
 builder.Services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
 
 builder.Services.AddEndpointsApiExplorer();

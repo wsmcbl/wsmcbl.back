@@ -13,6 +13,7 @@ public class GlobalExceptionFilter : IExceptionFilter
         var statusCode = context.Exception switch
         {
             EntityNotFoundException => (int)HttpStatus.EntityNotFound,
+            DbException => (int)HttpStatus.ArgumentInvalid,
             _ => (int)HttpStatusCode.InternalServerError
         };
         
