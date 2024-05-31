@@ -36,6 +36,27 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     }
 
     [HttpGet]
+    [Route("tariffs/search")]
+    public async Task<IActionResult> getTariffByParameter([FromQuery] string q)
+    { 
+        if (string.IsNullOrEmpty(q))
+        {
+            return BadRequest("Query string 'q' is required.");
+        }
+
+        var queryParts = q.Split(':');
+        if (queryParts.Length != 2)
+        {
+            return BadRequest("Query string 'q' is not in the correct format.");
+        }
+
+        var key = queryParts[0];
+        var value = queryParts[1];
+        
+        return Ok(await controller.getTariffByStudent(value));
+    }
+
+    [HttpGet]
     [Route("arrears")]
     public async Task<IActionResult> getArrearsTariff([Required] [FromHeader] string schoolYear)
     {

@@ -1,11 +1,24 @@
 -- drop database wsmcbl_database;
 -- create database wsmcbl_database;
-    
+
+-- drop database api_bd_test;
+-- create database api_bd_test;
 
 create schema Academy;
 create schema Accounting;
 create schema Secretary;
 create schema Config;
+
+--- ############################## ---
+create table if not exists Secretary.Schoolyear
+(
+    schoolyearId varchar(20) primary key,
+    label varchar(100) not null,
+    startDate date not null,
+    deadline date not null,
+    isActive bool not null
+);
+--- ############################## ---
 
 
 --- ############################## ---
@@ -52,23 +65,24 @@ create table if not exists Config.Rol_Permission
 
 --- ############################## ---
 
-
 create table if not exists Academy.Grade
 (
     gradeId varchar(15) primary key,
-    schoolYear varchar(4) not null
+    schoolYear varchar(20) not null,
+    foreign key (schoolYear) references Secretary.Schoolyear
 );
 
 create table if not exists Academy.Enrollment
 (
     enrollmentId varchar(20) primary key,
     enrollmentLabel varchar(20) not null,
+    schoolYear varchar(20) not null,
     section varchar(2) not null,
-    schoolYear varchar(4) not null,
     capacity smallint,
     quantity smallint,
     gradeId varchar(15) not null,
-    foreign key (gradeId) references Academy.Grade
+    foreign key (gradeId) references Academy.Grade,
+    foreign key (schoolYear) references Secretary.Schoolyear
 );
 
 create table if not exists Academy.Teacher
@@ -108,18 +122,28 @@ create table if not exists Secretary.Student
     surname varchar(50) not null,
     secondSurname varchar(50),
     studentState boolean not null,
-    schoolyear varchar(4) not null,
+    schoolyear varchar(20) not null,
     tutor varchar(100),
     sex boolean not null,
     birthday date not null,
     enrollmentLabel varchar(20)
 );
 
+
+create table if not exists Secretary.Schoolyear_Student
+(
+    schoolyear varchar(20) not null,
+    studentId varchar(20) not null,
+    primary key (schoolyear, studentId),
+    foreign key (schoolyear) references Secretary.Schoolyear,
+    foreign key (studentId) references Secretary.Student
+);
+
 create table if not exists Secretary.Student_Enrollment
 (
     studentId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    schoolYear varchar(4) not null,
+    schoolYear varchar(20) not null,
     foreign key (studentId) references Secretary.Student,
     foreign key (enrollmentId) references Academy.Enrollment
 );
@@ -158,7 +182,7 @@ create table if not exists Accounting.TariffType
 create table if not exists Accounting.Tariff
 (
     tariffId serial unique primary key,
-    schoolYear varchar(4) not null,
+    schoolYear varchar(20) not null,
     concept varchar(200) not null,
     amount float not null,
     dueDate date,
@@ -188,5 +212,15 @@ create table if not exists Accounting.Transaction_Tariff
     subTotal float not null,
     primary key (transactionId, tariffId),
     foreign key (transactionId) references Accounting.Transaction,
+    foreign key (tariffId) references Accounting.Tariff
+);
+
+create table if not exists Accounting.DebtHistory
+(
+    studentId varchar(20) not null,
+    tariffId int not null,
+    isPaid bool not null,
+    primary key (studentId, tariffId),
+    foreign key (studentId) references Accounting.Student,
     foreign key (tariffId) references Accounting.Tariff
 );

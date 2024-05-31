@@ -33,6 +33,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return daoFactory.tariffDao!.getAll();
     }
 
+    public Task<List<TariffEntity>> getTariffByStudent(string studentId)
+    {
+        return daoFactory.tariffDao!.getAllByStudent(studentId);
+    }
+
     public async Task saveTransaction(TransactionEntity transaction)
     {
         await daoFactory.transactionDao!.create(transaction);

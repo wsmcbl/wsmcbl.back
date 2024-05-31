@@ -15,6 +15,7 @@ public class PostgresContext : DbContext
     public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
     public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
     public virtual DbSet<UserEntity> User { get; set; } = null!;
+    public virtual DbSet<DebtEntity> Debt { get; set; } = null!;
 
     public PostgresContext()
     {
@@ -37,6 +38,26 @@ public class PostgresContext : DbContext
             entity.HasOne(c => c.user)
                 .WithMany()
                 .HasForeignKey(c => c.userId);
+        });
+        
+        
+        modelBuilder.Entity<DebtEntity>(entity =>
+        {
+            entity.HasKey(e => new { e.studentId, e.tariffId }).HasName("debthistory_pkey");
+
+            entity.ToTable("debthistory", "accounting");
+
+            entity.Property(e => e.studentId)
+                .HasMaxLength(20)
+                .HasColumnName("studentid");
+            entity.Property(e => e.tariffId).HasColumnName("tariffid");
+            entity.Property(e => e.isPaid).HasColumnName("ispaid");
+            
+            entity.HasOne(d => d.tariff)
+                .WithMany()
+                .HasForeignKey(d => d.tariffId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("debthistory_tariffid_fkey");
         });
         
         modelBuilder.Entity<Student_Accounting>(entity =>
@@ -63,6 +84,10 @@ public class PostgresContext : DbContext
                 .HasConstraintName("student_studentid_fkey");
             
             entity.HasMany(s => s.transactions)
+                .WithOne()
+                .HasForeignKey(s => s.studentId);
+            
+            entity.HasMany(s => s.debts)
                 .WithOne()
                 .HasForeignKey(s => s.studentId);
         });

@@ -12,5 +12,6 @@ public interface ICollectTariffController
     
     public Task applyArrears(int tariffId);
     public Task<List<TariffEntity>> getTariffList();
+    public Task<List<TariffEntity>> getTariffByStudent(string studentId);
     public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear);
 }

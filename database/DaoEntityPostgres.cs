@@ -52,6 +52,30 @@ public class TariffDaoPostgres(PostgresContext context)
 
         return tariffs.Where(t => t.isLate == true).ToList();
     }
+
+    public async Task<List<TariffEntity>> getAllByStudent(string studentId)
+    {
+        var student = await Task
+            .FromResult(context.Student_accounting
+                .Where(s => s.studentId == studentId)
+                .Include(s => s.debts)
+                .ThenInclude(d => d.tariff)
+                .FirstOrDefault());
+
+        var schoolyear = DateTime.Today.Year.ToString();
+        var list = new List<TariffEntity>();
+        foreach (var debt in student!.debts)
+        {
+            if(debt.tariff.schoolYear == schoolyear)
+                list.Add(debt.tariff);
+            else if (debt.isPaid == false)
+            {
+                 list.Add(debt.tariff);
+            }
+        }
+        
+        return list;
+    }
 }
 
 public class StudentDaoPostgres(PostgresContext context) 
