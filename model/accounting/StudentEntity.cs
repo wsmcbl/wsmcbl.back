@@ -9,7 +9,6 @@ public class StudentEntity
     public DiscountEntity discount { get; set; }
     public secretary.StudentEntity student { get; set; } = null!;
     public ICollection<TransactionEntity> transactions { get; set; }
-    public ICollection<DebtEntity> debts { get; set; }
     
     public string fullName() => student.fullName();
     public string? enrollmentLabel => student.enrollmentLabel;

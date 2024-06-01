@@ -32,6 +32,7 @@ public class CashierDaoPostgres(PostgresContext context)
 public class TariffDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
+    private readonly string schoolyear = DateTime.Today.Year.ToString(); 
     public new async Task<List<TariffEntity>> getAll()
     {
         var elements = await base.getAll();
@@ -40,35 +41,30 @@ public class TariffDaoPostgres(PostgresContext context)
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        var schoolyear = DateTime.Now.Year.ToString();
-        
         var tariffs = await Task
             .FromResult(context.Tariff
-                .Where(t => t.schoolYear == schoolyear && t.isLate == false && t.dueDate != null)
+                .Where(t => t.schoolYear == schoolyear 
+                            && t.isLate == false 
+                            && t.dueDate != null)
                 .ToList());
 
-        foreach (var item in tariffs)
-        {
-            item.checkDueDate();
-        }
+        tariffs.ForEach(t => t.checkDueDate());
 
         return tariffs.Where(t => t.isLate == true).ToList();
     }
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        var student = await Task
-            .FromResult(context.Student_accounting
-                .Where(s => s.studentId == studentId)
-                .Include(s => s.debts)
-                .ThenInclude(d => d.tariff)
-                .FirstOrDefault());
-
-        var schoolyear = DateTime.Today.Year.ToString();
+        var debts = await Task
+            .FromResult(context.Debt
+                .Where(d => d.studentId == studentId)
+                .Include(d => d.tariff));
+        
         var list = new List<TariffEntity>();
-        foreach (var debt in student!.debts)
+        
+        foreach (var debt in debts)
         {
-            if(debt.tariff.schoolYear == schoolyear)
+            if(debt.schoolyear == schoolyear)
                 list.Add(debt.tariff);
             else if (debt.isPaid == false)
             {

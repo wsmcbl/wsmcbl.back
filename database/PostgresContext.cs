@@ -52,6 +52,7 @@ public class PostgresContext : DbContext
                 .HasColumnName("studentid");
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
             entity.Property(e => e.isPaid).HasColumnName("ispaid");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
             
             entity.HasOne(d => d.tariff)
                 .WithMany()
@@ -84,10 +85,6 @@ public class PostgresContext : DbContext
                 .HasConstraintName("student_studentid_fkey");
             
             entity.HasMany(s => s.transactions)
-                .WithOne()
-                .HasForeignKey(s => s.studentId);
-            
-            entity.HasMany(s => s.debts)
                 .WithOne()
                 .HasForeignKey(s => s.studentId);
         });

@@ -1,8 +1,8 @@
 CREATE OR REPLACE FUNCTION Accounting.insert_debt_history()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid)
-    SELECT s.studentId, NEW.tariffId, false
+    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear)
+    SELECT s.studentId, NEW.tariffId, false, NEW.schoolyear
     FROM Accounting.Student s
              INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId
     WHERE sec.studentState = true;

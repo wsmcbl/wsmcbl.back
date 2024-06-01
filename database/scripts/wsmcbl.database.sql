@@ -220,7 +220,9 @@ create table if not exists Accounting.DebtHistory
     studentId varchar(20) not null,
     tariffId int not null,
     isPaid bool not null,
+    schoolyear varchar(20) not null,
     primary key (studentId, tariffId),
     foreign key (studentId) references Accounting.Student,
-    foreign key (tariffId) references Accounting.Tariff
+    foreign key (tariffId) references Accounting.Tariff,
+    foreign key (schoolyear) references Secretary.Schoolyear
 );

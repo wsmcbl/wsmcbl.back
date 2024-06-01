@@ -9,4 +9,6 @@ public class DebtEntity
     public TariffEntity tariff { get; set; }
 
     public bool isPaid { get; set; }
+    
+    public string schoolyear { get; set; }
 }
