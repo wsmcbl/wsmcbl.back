@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using wsmcbl.back.config;
@@ -25,6 +26,10 @@ builder.Services.AddSwaggerGen(options =>
         });
     
     options.OperationFilter<SwaggerExceptionResponseFilter>();
+    
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<PostgresContext>(options =>

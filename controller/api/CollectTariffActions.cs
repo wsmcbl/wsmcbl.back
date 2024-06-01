@@ -35,34 +35,42 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         return Ok(await controller.getTariffList());
     }
 
+    
+    /// <summary>
+    /// Searches tariffs by student ID or state.
+    /// </summary>
+    /// <param name="q">The query string in the format "key:value". Supported keys are "student" and "state".
+    /// Exist only state:overdue.</param>
+    /// <returns>Returns the search results based on the provided query.</returns>
+    /// <response code="200">Returns the search results.</response>
+    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("tariffs/search")]
-    public async Task<IActionResult> getTariffByParameter([FromQuery] string q)
+    public async Task<IActionResult> getTariff([FromQuery] string q)
     { 
-        if (string.IsNullOrEmpty(q))
+        if (string.IsNullOrWhiteSpace(q))
         {
-            return BadRequest("Query string 'q' is required.");
+            return BadRequest("Query parameter 'q' is required.");
         }
 
-        var queryParts = q.Split(':');
-        if (queryParts.Length != 2)
+        var parts = q.Split(':');
+        if (parts.Length != 2)
         {
-            return BadRequest("Query string 'q' is not in the correct format.");
+            return BadRequest("Query parameter 'q' is not in the correct format.");
         }
 
-        var key = queryParts[0];
-        var value = queryParts[1];
-        
-        return Ok(await controller.getTariffByStudent(value));
-    }
+        var key = parts[0];
+        var value = parts[1];
 
-    [HttpGet]
-    [Route("arrears")]
-    public async Task<IActionResult> getArrearsTariff([Required] [FromHeader] string schoolYear)
-    {
-        return Ok(await controller.getUnexpiredTariff(schoolYear));
+        return key.ToLower() switch
+        {
+            "student" => Ok(await controller.getTariffListByStudent(value)),
+            "state" when value.Equals("overdue", StringComparison.CurrentCultureIgnoreCase)
+                => Ok(await controller.getOverdueTariffList()),
+            _ => BadRequest("Unknown search key.")
+        };
     }
-
+    
     [HttpPut]
     [Route("arrears/{tariffId:int}")]
     public async Task<IActionResult> applyArrears(int tariffId)

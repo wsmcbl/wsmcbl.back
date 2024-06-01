@@ -38,8 +38,10 @@ public class TariffDaoPostgres(PostgresContext context)
         return elements.OrderBy(e => e.tariffId).ToList();
     }
 
-    public async Task<List<TariffEntity>> getAll(string schoolyear)
+    public async Task<List<TariffEntity>> getOverdueList()
     {
+        var schoolyear = DateTime.Now.Year.ToString();
+        
         var tariffs = await Task
             .FromResult(context.Tariff
                 .Where(t => t.schoolYear == schoolyear && t.isLate == false && t.dueDate != null)
@@ -53,7 +55,7 @@ public class TariffDaoPostgres(PostgresContext context)
         return tariffs.Where(t => t.isLate == true).ToList();
     }
 
-    public async Task<List<TariffEntity>> getAllByStudent(string studentId)
+    public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
         var student = await Task
             .FromResult(context.Student_accounting

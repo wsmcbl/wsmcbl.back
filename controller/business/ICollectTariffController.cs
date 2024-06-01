@@ -7,11 +7,13 @@ public interface ICollectTariffController
 {
     public Task<StudentEntity?> getStudent(string studentId);
     public Task<List<StudentEntity>> getStudentsList();
-    public Task saveTransaction(TransactionEntity transaction);
-    public Task<InvoiceDto> getLastTransactionByStudent(string studentId);
+    
+    public Task<List<TariffEntity>> getTariffList();
+    public Task<List<TariffEntity>> getTariffListByStudent(string studentId);
+    public Task<List<TariffEntity>> getOverdueTariffList();
     
     public Task applyArrears(int tariffId);
-    public Task<List<TariffEntity>> getTariffList();
-    public Task<List<TariffEntity>> getTariffByStudent(string studentId);
-    public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear);
+    
+    public Task saveTransaction(TransactionEntity transaction);
+    public Task<InvoiceDto> getLastTransactionByStudent(string studentId);
 }

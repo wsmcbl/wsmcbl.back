@@ -11,8 +11,8 @@ public interface IUserDao : IGenericDao<UserEntity, string>;
 
 public interface ITariffDao : IGenericDao<TariffEntity, int>
 {
-    public Task<List<TariffEntity>> getAll(string schoolyear);
-    public Task<List<TariffEntity>> getAllByStudent(string studentId);
+    public Task<List<TariffEntity>> getOverdueList();
+    public Task<List<TariffEntity>> getListByStudent(string studentId);
 }
 
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>

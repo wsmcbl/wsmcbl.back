@@ -11,6 +11,12 @@ public class CollectTariffController : BaseController, ICollectTariffController
     {
     }
     
+
+    public Task<List<StudentEntity>> getStudentsList()
+    {
+        return daoFactory.studentDao<StudentEntity>()!.getAll();
+    }
+    
     public Task<StudentEntity?> getStudent(string studentId)
     {
         var student = daoFactory.studentDao<StudentEntity>()!.getById(studentId);
@@ -22,25 +28,20 @@ public class CollectTariffController : BaseController, ICollectTariffController
         
         return student;
     }
-
-    public Task<List<StudentEntity>> getStudentsList()
-    {
-        return daoFactory.studentDao<StudentEntity>()!.getAll();
-    }
-
+    
     public Task<List<TariffEntity>> getTariffList()
     {
         return daoFactory.tariffDao!.getAll();
     }
 
-    public Task<List<TariffEntity>> getTariffByStudent(string studentId)
+    public Task<List<TariffEntity>> getTariffListByStudent(string studentId)
     {
-        return daoFactory.tariffDao!.getAllByStudent(studentId);
+        return daoFactory.tariffDao!.getListByStudent(studentId);
     }
-
-    public async Task saveTransaction(TransactionEntity transaction)
+    
+    public Task<List<TariffEntity>> getOverdueTariffList()
     {
-        await daoFactory.transactionDao!.create(transaction);
+        return daoFactory.tariffDao!.getOverdueList();
     }
 
     public async Task applyArrears(int tariffId)
@@ -55,6 +56,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
         tariff.isLate = true;
         
         await daoFactory.tariffDao!.update(tariff);
+    }
+    
+    public async Task saveTransaction(TransactionEntity transaction)
+    {
+        await daoFactory.transactionDao!.create(transaction);
     }
 
     public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
@@ -71,12 +77,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
         
         return transaction.mapToDto(student, cashier);
     }
-    
-    public Task<List<TariffEntity>> getUnexpiredTariff(string schoolyear)
-    {
-        return daoFactory.tariffDao!.getAll(schoolyear);
-    }
-    
     
     private Task<CashierEntity?> getCashier(string id)
     {
