@@ -8,17 +8,17 @@ public static class DtoMapper
     {
         var dto = new StudentDto
         {
-            studentId = student.studentId,
+            studentId = student.studentId!,
             fullName = student.fullName(),
             enrollmentLabel = student.enrollmentLabel,
             schoolYear = student.schoolYear,
             tutor = student.tutor,
-            discount = student.discount.amount,
+            discount = student.discount!.amount,
             isActive = student.isActive,
             transactions = new List<TransactionDto>()
         };
 
-        foreach (var item in student.transactions)
+        foreach (var item in student.transactions!)
         {
             dto.transactions.Add(item.mapToDto());
         }
@@ -30,7 +30,7 @@ public static class DtoMapper
     {
         return new StudentBasicDto
         {
-            studentId = student.studentId,
+            studentId = student.studentId!,
             fullName = student.fullName(),
             enrollmentLabel = student.enrollmentLabel!,
             schoolyear = student.schoolYear,
@@ -49,9 +49,9 @@ public static class DtoMapper
         var element = new InvoiceDto
         {
             transactionId = transaction.transactionId!,
-            cashierName = cashier.fullName(),
+            cashierName = cashier!.fullName(),
             studentId = transaction.studentId,
-            studentName = student.fullName(),
+            studentName = student!.fullName(),
             total = transaction.total,
             dateTime = transaction.date,
             tariffs = new List<DetailDto>()

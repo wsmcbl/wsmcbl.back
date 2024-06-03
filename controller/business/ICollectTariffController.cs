@@ -14,6 +14,6 @@ public interface ICollectTariffController
     
     public Task applyArrears(int tariffId);
     
-    public Task saveTransaction(TransactionEntity transaction);
-    public Task<InvoiceDto> getLastTransactionByStudent(string studentId);
+    public Task<string> saveTransaction(TransactionEntity transaction);
+    public Task<InvoiceDto> getFullTransaction(string transactionId);
 }

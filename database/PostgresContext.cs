@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
 using Student_Accounting = wsmcbl.back.model.accounting.StudentEntity;
@@ -7,23 +8,12 @@ using Student_Secretary = wsmcbl.back.model.secretary.StudentEntity;
 
 namespace wsmcbl.back.database;
 
-public class PostgresContext : DbContext
+public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
 {
-    public virtual DbSet<TariffEntity> Tariff { get; set; } = null!;
-    public virtual DbSet<Student_Accounting> Student_accounting { get; set; } = null!;
-    public virtual DbSet<Student_Secretary> Student { get; set; } = null!;
-    public virtual DbSet<CashierEntity> Cashier { get; set; } = null!;
-    public virtual DbSet<TransactionEntity> Transaction { get; set; } = null!;
-    public virtual DbSet<UserEntity> User { get; set; } = null!;
-    public virtual DbSet<DebtEntity> Debt { get; set; } = null!;
-
-    public PostgresContext()
-    {
-    }
-
-    public PostgresContext(DbContextOptions<PostgresContext> options) : base(options)
-    {
-    }
+    public virtual DbSet<DebtEntity> Debt { get; init; } = null!;
+    public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
+    public virtual DbSet<TransactionEntity> Transaction { get; init; } = null!;
+    public virtual DbSet<Student_Accounting> Student_accounting { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -167,23 +157,17 @@ public class PostgresContext : DbContext
 
         modelBuilder.Entity<TransactionEntity>(entity =>
         {
+            entity.ToTable("transaction", "accounting");
             entity.HasKey(e => e.transactionId).HasName("transaction_pkey");
 
-            entity.ToTable("transaction", "accounting");
-
             entity.Property(e => e.transactionId)
-                .HasMaxLength(100)
+                .HasDefaultValueSql("accounting.generate_transaction_id()")
                 .HasColumnName("transactionid");
-            entity.Property(e => e.studentId)
-                .HasMaxLength(100)
-                .HasColumnName("studentid");
-            entity.Property(e => e.cashierId)
-                .HasMaxLength(100)
-                .HasColumnName("cashierid");
-            entity.Property(e => e.date)
-                .HasColumnName("date");
-            entity.Property(e => e.total)
-                .HasColumnName("total");
+            
+            entity.Property(e => e.studentId).HasMaxLength(100).HasColumnName("studentid");
+            entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
+            entity.Property(e => e.date).HasColumnName("date");
+            entity.Property(e => e.total).HasColumnName("total");
 
             entity.HasMany(t => t.details)
                 .WithOne()
@@ -196,12 +180,8 @@ public class PostgresContext : DbContext
 
             entity.ToTable("transaction_tariff", "accounting");
 
-            entity.Property(e => e.transactionId)
-                .HasMaxLength(15)
-                .HasColumnName("transactionid");
-            entity.Property(e => e.tariffId)
-                .HasMaxLength(15)
-                .HasColumnName("tariffid");
+            entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
+            entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
             entity.Property(e => e.arrears).HasColumnName("arrears");
             entity.Property(e => e.discount).HasColumnName("discount");

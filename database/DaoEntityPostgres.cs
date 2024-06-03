@@ -65,7 +65,9 @@ public class TariffDaoPostgres(PostgresContext context)
         foreach (var debt in debts)
         {
             if(debt.schoolyear == schoolyear)
+            {
                 list.Add(debt.tariff);
+            }
             else if (debt.isPaid == false)
             {
                  list.Add(debt.tariff);
@@ -73,6 +75,33 @@ public class TariffDaoPostgres(PostgresContext context)
         }
         
         return list;
+    }
+
+    public async Task<float[]> getGeneralBalance(string studentId)
+    {
+        var debts = await Task
+            .FromResult(context.Debt
+                .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
+                .Include(d => d.tariff));
+        
+        float[] balance = [0, 0];
+        
+        foreach (var debt in debts)
+        {
+            if (debt.tariff.type != 1)
+            {
+                continue;
+            }
+            
+            balance[1] += debt.tariff.amount;
+                
+            if (debt.isPaid)
+            {
+                balance[0] += debt.tariff.amount;
+            }
+        }
+
+        return balance;
     }
 }
 
@@ -87,9 +116,9 @@ public class StudentDaoPostgres(PostgresContext context)
     public new async Task<StudentEntity?> getById(string id)
     {
         var student = context.Student_accounting
-                .Include(d => d.student)
-                .Include(d => d.discount)
-                .Include(e => e.transactions)
+            .Include(d => d.student)
+            .Include(d => d.discount)
+            .Include(e => e.transactions)!
                 .ThenInclude(t => t.details)
                 .FirstOrDefault(e => e.studentId == id);
 
@@ -99,7 +128,7 @@ public class StudentDaoPostgres(PostgresContext context)
         }
         
         var service = new TransactionDaoPostgres(context);
-        foreach (var transaction in student.transactions)
+        foreach (var transaction in student.transactions!)
         {
             foreach (var item in transaction.details)
             {
@@ -114,6 +143,7 @@ public class StudentDaoPostgres(PostgresContext context)
 public class TransactionDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<TransactionEntity, string>(context), ITransactionDao
 {
+    
     public override async Task create(TransactionEntity entity)
     {
         foreach (var item in entity.details)
@@ -122,14 +152,13 @@ public class TransactionDaoPostgres(PostgresContext context)
             item.computeSubTotal();
             item.applyArrears();
         }
-        
         entity.computeTotal();
         
         try
         {
             await base.create(entity);
         }
-        catch (DbUpdateException e)
+        catch (DbUpdateException)
         {
             throw new DbException("Transaction");
         }
@@ -146,20 +175,6 @@ public class TransactionDaoPostgres(PostgresContext context)
         }
         
         detail.setTariff(tariff);
-    }
-    
-    public async Task<TransactionEntity?> getLastByStudentId(string studentId)
-    {
-        var service = new StudentDaoPostgres(context);
-
-        var student = await service.getById(studentId);
-
-        if (student is null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-
-        return student?.getLastTransaction();
     }
 }
     

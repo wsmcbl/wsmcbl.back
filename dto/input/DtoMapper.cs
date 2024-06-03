@@ -4,11 +4,10 @@ namespace wsmcbl.back.dto.input;
 
 public static class DtoMapper
 {
-    private static TransactionTariffEntity toEntity(this DetailDto dto, string transactionId)
+    private static TransactionTariffEntity toEntity(this DetailDto dto)
     {
         return new TransactionTariffEntity
         {
-            transactionId = transactionId,
             tariffId = dto.tariffId,
             discount = dto.discount,
             arrears = dto.arrears,
@@ -20,7 +19,6 @@ public static class DtoMapper
     {
         var transaction = new TransactionEntity
         {
-            transactionId = "trans1222" + getRandom(),
             studentId = dto.studentId,
             cashierId = dto.cashierId,
             date = dto.dateTime,
@@ -29,16 +27,9 @@ public static class DtoMapper
 
         foreach (var item in dto.details!)
         {
-            transaction.details.Add(item.toEntity(transaction.transactionId));
+            transaction.details.Add(item.toEntity());
         }
         
         return transaction;
-    }
-    
-    private static int getRandom()
-    {
-        var seed = Environment.TickCount;
-        var random = new Random(seed);
-        return random.Next(425, 999);
     }
 }

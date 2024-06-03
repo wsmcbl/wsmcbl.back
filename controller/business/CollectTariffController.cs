@@ -58,24 +58,30 @@ public class CollectTariffController : BaseController, ICollectTariffController
         await daoFactory.tariffDao!.update(tariff);
     }
     
-    public async Task saveTransaction(TransactionEntity transaction)
+    public async Task<string> saveTransaction(TransactionEntity transaction)
     {
         await daoFactory.transactionDao!.create(transaction);
+
+        return transaction.transactionId!;
     }
 
-    public async Task<InvoiceDto> getLastTransactionByStudent(string studentId)
+    public async Task<InvoiceDto> getFullTransaction(string transactionId)
     {
-        var transaction = await daoFactory.transactionDao!.getLastByStudentId(studentId);
+        var transaction = await daoFactory.transactionDao!.getById(transactionId);
         
         if (transaction is null)
         {
-            throw new EntityNotFoundException("Student", studentId);
+            throw new EntityNotFoundException("Transaction", transactionId);
         }
         
         var cashier = await getCashier(transaction.cashierId);
-        var student = await getStudent(studentId);
+        var student = await getStudent(transaction.studentId);
         
-        return transaction.mapToDto(student, cashier);
+        var dto = transaction.mapToDto(student, cashier);
+        
+        dto.generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
+        
+        return dto;
     }
     
     private Task<CashierEntity?> getCashier(string id)

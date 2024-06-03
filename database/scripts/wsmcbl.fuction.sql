@@ -35,3 +35,21 @@ CREATE TRIGGER trg_update_debt_history
     FOR EACH ROW
 EXECUTE FUNCTION Accounting.update_debt_history();
 
+
+
+
+CREATE SEQUENCE accounting.transaction_seq START 1;
+
+CREATE OR REPLACE FUNCTION Accounting.generate_transaction_id()
+    RETURNS varchar(20) AS $$
+DECLARE
+    year_part CHAR(2);
+    seq_part CHAR(6);
+BEGIN
+    year_part := TO_CHAR(NOW(), 'YY');
+
+    seq_part := LPAD(NEXTVAL('accounting.transaction_seq')::TEXT, 6, '0');
+
+    RETURN year_part || seq_part || 'tst';
+END;
+$$ LANGUAGE plpgsql;

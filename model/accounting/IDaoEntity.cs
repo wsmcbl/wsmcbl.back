@@ -9,13 +9,11 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>;
 
 public interface IUserDao : IGenericDao<UserEntity, string>;
 
+public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
+
 public interface ITariffDao : IGenericDao<TariffEntity, int>
 {
     public Task<List<TariffEntity>> getOverdueList();
     public Task<List<TariffEntity>> getListByStudent(string studentId);
-}
-
-public interface ITransactionDao : IGenericDao<TransactionEntity, string>
-{
-    public Task<TransactionEntity?> getLastByStudentId(string id);
+    public Task<float[]> getGeneralBalance(string studentId);
 }

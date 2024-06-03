@@ -193,7 +193,7 @@ create table if not exists Accounting.Tariff
 
 create table  if not exists Accounting.Transaction
 (
-    transactionId varchar(20) primary key,
+    transactionId varchar(20) primary key default accounting.generate_transaction_id(),
     total float not null,
     date timestamp with time zone not null,
     studentId varchar(15) not null,

@@ -1,15 +1,13 @@
-using wsmcbl.back.model.accounting;
-
 namespace wsmcbl.back.dto.output;
 
 public class InvoiceDto
 {
-    public string transactionId { get; set; }
-    public string cashierName { get; set; }
-    public string studentId { get; set; }
-    public string studentName { get; set; }
+    public string transactionId { get; set; } = null!;
+    public string cashierName { get; set; } = null!;
+    public string studentId { get; set; } = null!;
+    public string studentName { get; set; } = null!;
     public float total { get; set; }
     public DateTime dateTime { get; set; }
-    public ICollection<DetailDto> tariffs { get; set; }
-
+    public float[] generalBalance { get; set; } = null!;
+    public ICollection<DetailDto> tariffs { get; set; } = null!;
 }

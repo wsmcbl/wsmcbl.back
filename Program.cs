@@ -42,7 +42,7 @@ builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficia
 
 var app = builder.Build();
 
-app.UseMiddleware<CustomStatusCodeMiddleware>();
+//app.UseMiddleware<CustomStatusCodeMiddleware>();
 
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {

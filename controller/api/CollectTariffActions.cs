@@ -37,10 +37,9 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
 
     
     /// <summary>
-    /// Searches tariffs by student ID or state.
+    /// Gets tariffs by studentId or state.
     /// </summary>
-    /// <param name="q">The query string in the format "key:value". Supported keys are "student" and "state".
-    /// Exist only state:overdue.</param>
+    /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
     /// <returns>Returns the search results based on the provided query.</returns>
     /// <response code="200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
@@ -87,16 +86,23 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [HttpPost]
     [Route("transactions")]
     [ServiceFilter(typeof(ValidateModelFilter))]
-    public async Task saveTransaction([FromBody] dto.input.TransactionDto transaction)
+    public async Task<IActionResult> saveTransaction([FromBody] dto.input.TransactionDto transaction)
     {
-        await controller.saveTransaction(transaction.toEntity());
+        var transactionId = await controller.saveTransaction(transaction.toEntity());
+
+        if (transactionId is null)
+        {
+            throw new Exception("Save transaction failed");
+        }
+
+        return Ok(new { transactionId });
     }
     
     [HttpGet]
-    [Route("transactions/invoices/{studentId}")]
-    public async Task<IActionResult> getInvoice([Required] string studentId)
+    [Route("transactions/invoices/{transactionId}")]
+    public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
-        var invoice = await controller.getLastTransactionByStudent(studentId);
+        var invoice = await controller.getFullTransaction(transactionId);
         return Ok(invoice);
     }
 }
