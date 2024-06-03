@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Content Include=".github\workflows\deploy.somee.yml" />
+    <Content Include=".github\workflows\sonarcloud.yml" />
   </ItemGroup>
 
   <ItemGroup>

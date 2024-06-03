@@ -3,36 +3,20 @@ using System.Text.Json;
 
 namespace wsmcbl.back.middleware;
 
-public class CustomStatusCodeMiddleware
+public class CustomStatusCodeMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public CustomStatusCodeMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context)
     {
-        await _next(context);
+        await next(context);
 
-        var message = context.Response.StatusCode switch
+        if (context.Response.StatusCode == (int)HttpStatusCode.NotFound)
         {
-            (int)HttpStatusCode.NotFound => "Endpoint not found",
-            (int)HttpStatusCode.InternalServerError => "An unexpected error occurred",
-            _ => ""
-        };
-        
-        if(message == "")
-        {
-            return;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+            {
+                message = "Endpoint not found",
+                statusCode = context.Response.StatusCode
+            }));
         }
-
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync(JsonSerializer.Serialize(new
-        {
-            message,
-            statusCode = context.Response.StatusCode
-        }));
     }
 }

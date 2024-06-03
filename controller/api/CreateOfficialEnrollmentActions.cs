@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.back.controller.business;
+using wsmcbl.back.dto.input;
 
 namespace wsmcbl.back.controller.api;
 
@@ -13,5 +14,16 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         var students = await controller.getStudentList();
         return Ok(students);
-    } 
+    }
+
+    /// <summary>
+    ///  Post secretary student entity
+    /// </summary>
+    /// <param name="student"> True: Female. False: Man</param>
+    [HttpPost]
+    [Route("students")]
+    public async Task saveStudent([FromBody] StudentDto student)
+    {
+        await controller.saveStudent(student.toEntity());
+    }
 }

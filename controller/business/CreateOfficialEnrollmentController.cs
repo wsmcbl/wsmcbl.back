@@ -13,4 +13,9 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     {
         return daoFactory.studentDao<StudentEntity>()!.getAll();
     }
+
+    public Task saveStudent(StudentEntity student)
+    {
+        return daoFactory.studentDao<StudentEntity>()!.create(student);
+    }
 }
