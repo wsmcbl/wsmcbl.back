@@ -29,4 +29,4 @@ jobs:
         with:
           args: >
             -Dsonar.organization=wsmcblproyect2024
-            -Dsonar.projectKey=wsmcbl.back
+            -Dsonar.projectKey=wsmcbl_wsmcbl.back
