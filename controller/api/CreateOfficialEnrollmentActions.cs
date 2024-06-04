@@ -19,7 +19,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     /// <summary>
     ///  Post secretary student entity
     /// </summary>
-    /// <param name="student"> True: Female. False: Man</param>
+    /// <param name="student"> Value Sex: true-female, false-man</param>
     [HttpPost]
     [Route("students")]
     public async Task saveStudent([FromBody] StudentDto student)

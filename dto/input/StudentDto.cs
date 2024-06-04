@@ -7,8 +7,7 @@ public class StudentDto
     public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
     public bool sex { get; set; }
-    
-    public DateOnlyDto birthday { get; set; }
+    public DateOnlyDto birthday { get; set; } = null!;
     public string? tutor { get; set; }
 }
 

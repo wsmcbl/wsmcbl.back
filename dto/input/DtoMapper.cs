@@ -36,21 +36,16 @@ public static class DtoMapper
 
     public static StudentEntity toEntity(this StudentDto dto)
     {
-        var student = new StudentEntity
+        return new StudentEntity
         {
-            studentId = "2024.5451."+dto.name[0]+dto.surname[0],
             name = dto.name,
             secondName = dto.secondName,
             surname = dto.surname,
             secondSurname = dto.secondSurname,
             sex = dto.sex,
             birthday = dto.birthday.toDateOnly(),
-            tutor = dto.tutor,
-            isActive = true,
-            schoolYear = DateTime.Now.Year.ToString()
+            tutor = dto.tutor
         };
-
-        return student;
     }
 
     private static DateOnly toDateOnly(this DateOnlyDto dto)
