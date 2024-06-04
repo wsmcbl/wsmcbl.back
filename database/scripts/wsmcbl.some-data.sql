@@ -101,8 +101,6 @@ insert into secretary.student (name, secondname, surname, secondsurname, student
 
 
 insert into accounting.tariff(schoolyear, concept, amount, duedate, late, typeid)  values
-('2023', 'Pago mes septiembre', 700, '28/09/2023', true, 1),
-('2023', 'Pago mes octubre', 700, '28/10/2023', true, 1),
 ('2023', 'Pago mes noviembre', 700, '28/11/2023', true, 1),
 ('2023', 'Pago treceavo mes', 700, '28/12/2023', true, 1),
 ('2024', 'Pago de matricula', 1800, null, false, 1),

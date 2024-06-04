@@ -88,7 +88,7 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasColumnName("tutor");
             entity.Property(e => e.studentId)
                 .HasMaxLength(20)
-                .HasDefaultValueSql("secretary.generate_user_id()")
+                .HasDefaultValueSql("secretary.generate_student_id()")
                 .ValueGeneratedOnAdd()
                 .HasColumnName("studentid");
             

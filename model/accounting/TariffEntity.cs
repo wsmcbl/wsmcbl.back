@@ -7,7 +7,7 @@ public class TariffEntity
     public string concept { get; set; } = null!;
     public float amount { get; set; }
     public DateOnly? dueDate { get; set; }
-    public bool? isLate { get; set; }
+    public bool isLate { get; set; }
     public int type { get; set; }
 
     public void checkDueDate()

@@ -12,9 +12,10 @@ public class CollectTariffController : BaseController, ICollectTariffController
     }
     
 
-    public Task<List<StudentEntity>> getStudentsList()
+    public async Task<List<StudentEntity>> getStudentsList()
     {
-        return daoFactory.studentDao<StudentEntity>()!.getAll();
+        var result = await daoFactory.studentDao<StudentEntity>()!.getAll();
+        return result.OrderBy(e => e.fullName()).ToList();
     }
     
     public Task<StudentEntity?> getStudent(string studentId)
@@ -29,11 +30,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return student;
     }
     
-    public Task<List<TariffEntity>> getTariffList()
-    {
-        return daoFactory.tariffDao!.getAll();
-    }
-
     public Task<List<TariffEntity>> getTariffListByStudent(string studentId)
     {
         return daoFactory.tariffDao!.getListByStudent(studentId);

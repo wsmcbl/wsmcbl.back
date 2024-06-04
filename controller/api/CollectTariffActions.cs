@@ -27,14 +27,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         
         return Ok(student!.mapToDto());
     }
-
-    [HttpGet]
-    [Route("tariffs")]
-    public async Task<IActionResult> getTariffList()
-    {
-        return Ok(await controller.getTariffList());
-    }
-
     
     /// <summary>
     /// Gets tariffs by studentId or state.
