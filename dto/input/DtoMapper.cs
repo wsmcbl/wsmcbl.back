@@ -1,4 +1,5 @@
 using wsmcbl.back.model.accounting;
+using StudentEntity = wsmcbl.back.model.secretary.StudentEntity;
 
 namespace wsmcbl.back.dto.input;
 
@@ -31,5 +32,24 @@ public static class DtoMapper
         }
         
         return transaction;
+    }
+
+    public static StudentEntity toEntity(this StudentDto dto)
+    {
+        return new StudentEntity
+        {
+            name = dto.name,
+            secondName = dto.secondName,
+            surname = dto.surname,
+            secondSurname = dto.secondSurname,
+            sex = dto.sex,
+            birthday = dto.birthday.toDateOnly(),
+            tutor = dto.tutor
+        };
+    }
+
+    private static DateOnly toDateOnly(this DateOnlyDto dto)
+    {
+        return new DateOnly(dto.year, dto.month, dto.day);
     }
 }

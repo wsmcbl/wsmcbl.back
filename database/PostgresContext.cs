@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using wsmcbl.back.model.accounting;
 using wsmcbl.back.model.config;
 using Student_Accounting = wsmcbl.back.model.accounting.StudentEntity;
@@ -89,7 +88,10 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasColumnName("tutor");
             entity.Property(e => e.studentId)
                 .HasMaxLength(20)
+                .HasDefaultValueSql("secretary.generate_user_id()")
+                .ValueGeneratedOnAdd()
                 .HasColumnName("studentid");
+            
             entity.Property(e => e.name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
