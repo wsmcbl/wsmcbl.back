@@ -97,7 +97,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER set_student_id
+CREATE TRIGGER trg_generate_student_id
     BEFORE INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION secretary.generate_student_id();
 
@@ -117,3 +117,24 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_insert_debt_history_by_new_tariff
     AFTER INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION secretary.insert_schoolyear_student_by_new_student();
+
+
+
+
+
+
+-- ##################### TEMPORAL ###################### --
+CREATE OR REPLACE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING()
+    RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO Accounting.student(studentid, discountid) 
+    SELECT NEW.studentId, '1';
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TRG_INSERT_STUDENT_ACCOUNTING
+    AFTER INSERT ON secretary.student
+    FOR EACH ROW EXECUTE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING();
+-- ##################### TEMPORAL ###################### --

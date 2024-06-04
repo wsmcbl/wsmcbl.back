@@ -33,24 +33,17 @@ public class TariffDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
     private readonly string schoolyear = DateTime.Today.Year.ToString(); 
-    public new async Task<List<TariffEntity>> getAll()
-    {
-        var elements = await base.getAll();
-        return elements.OrderBy(e => e.tariffId).ToList();
-    }
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
         var tariffs = await Task
             .FromResult(context.Tariff
-                .Where(t => t.schoolYear == schoolyear 
-                            && t.isLate == false 
-                            && t.dueDate != null)
+                .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
                 .ToList());
 
         tariffs.ForEach(t => t.checkDueDate());
 
-        return tariffs.Where(t => t.isLate == true).ToList();
+        return tariffs.Where(t => t.isLate).OrderBy(t => t.tariffId).ToList();
     }
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
@@ -68,7 +61,7 @@ public class TariffDaoPostgres(PostgresContext context)
             {
                 list.Add(debt.tariff);
             }
-            else if (debt.isPaid == false)
+            else if (!debt.isPaid)
             {
                  list.Add(debt.tariff);
             }
