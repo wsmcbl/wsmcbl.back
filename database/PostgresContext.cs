@@ -4,7 +4,6 @@ using wsmcbl.back.model.config;
 using Student_Accounting = wsmcbl.back.model.accounting.StudentEntity;
 using Student_Secretary = wsmcbl.back.model.secretary.StudentEntity;
 
-
 namespace wsmcbl.back.database;
 
 public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)

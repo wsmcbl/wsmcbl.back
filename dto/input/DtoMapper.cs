@@ -47,8 +47,7 @@ public static class DtoMapper
             tutor = dto.tutor
         };
     }
-
-    private static DateOnly toDateOnly(this DateOnlyDto dto)
+    private static DateOnly toDateOnly(this DateDto dto)
     {
         return new DateOnly(dto.year, dto.month, dto.day);
     }
