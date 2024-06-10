@@ -36,10 +36,9 @@ public class TariffDaoPostgres(PostgresContext context)
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        var tariffs = await Task
-            .FromResult(context.Tariff
-                .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
-                .ToList());
+        var tariffs = await context.Tariff
+            .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
+            .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
 
