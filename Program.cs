@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(options =>
             Contact = new OpenApiContact { Name = "Client application", Url = new Uri("https://cbl.somee.com/") }
         });
     
-    options.OperationFilter<SwaggerExceptionResponseFilter>();
+    //options.OperationFilter<SwaggerExceptionResponseFilter>();
     
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
