@@ -62,6 +62,14 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         };
     }
     
+    /// <summary>
+    /// Update state of tariff.
+    /// </summary>
+    /// <param name="tariffId">ID of Tariff.</param>
+    /// <returns>Additional late fee applies.</returns>
+    /// <response code="200">Returns the search results.</response>
+    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
+    /// <response code="461">If the resource is already update.</response>
     [HttpPut]
     [Route("arrears/{tariffId:int}")]
     public async Task<IActionResult> applyArrears(int tariffId)

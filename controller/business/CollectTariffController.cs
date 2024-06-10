@@ -48,6 +48,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
         {
             throw new EntityNotFoundException("Tariff", tariffId.ToString());
         }
+
+        if (tariff.isLate)
+        {
+            throw new EntityUpdateException("The property isLate is already true.");
+        }
         
         tariff.isLate = true;
         

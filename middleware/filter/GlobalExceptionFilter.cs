@@ -14,6 +14,7 @@ public class GlobalExceptionFilter : IExceptionFilter
         {
             EntityNotFoundException => (int)HttpStatus.EntityNotFound,
             DbException => (int)HttpStatus.ArgumentInvalid,
+            EntityUpdateException => (int)HttpStatus.NotApplied,
             _ => (int)HttpStatusCode.InternalServerError
         };
         

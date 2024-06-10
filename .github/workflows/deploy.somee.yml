@@ -1,7 +1,8 @@
-name: Deploy into Somee.com (test)
+name: Deploy on Somee.com (development)
 on:
   push:
     branches: ['master']
+
 jobs:
   web-deploy:
     name: Deploy into Somee.com
