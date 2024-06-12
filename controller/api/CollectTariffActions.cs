@@ -16,7 +16,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getStudentList()
     {
         var students = await controller.getStudentsList();
-        return Ok(students.mapToDto());
+        return Ok(students.mapListToDto());
     } 
     
     [HttpGet]
@@ -91,12 +91,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> saveTransaction([FromBody] dto.input.TransactionDto transaction)
     {
         var transactionId = await controller.saveTransaction(transaction.toEntity());
-
-        if (transactionId is null)
-        {
-            throw new Exception("Save transaction failed");
-        }
-
+        
         return Ok(new { transactionId });
     }
     

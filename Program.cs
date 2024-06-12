@@ -22,7 +22,7 @@ builder.Services.AddSwaggerGen(options =>
         {
             Version = "v1", Title = "WSMCBL API",
             Description = "API for the Web System for Management of Colegio Bautista Libertad developed in .net 8",
-            Contact = new OpenApiContact { Name = "Client application", Url = new Uri("https://cbl.somee.com/") }
+            Contact = new OpenApiContact { Name = "Client application", Url = new Uri("https://cbl.somee.com") }
         });
     
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -54,4 +54,4 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 app.MapControllers();
 app.UseHttpsRedirection();
-app.Run();
+await app.RunAsync();
