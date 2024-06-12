@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace wsmcbl.back.model.accounting;
 
 public class TransactionEntity
@@ -16,7 +14,7 @@ public class TransactionEntity
         total = 0;
         foreach (var item in details)
         {
-            total += item.subTotal;
+            total += item.amount;
         }
     }
 }

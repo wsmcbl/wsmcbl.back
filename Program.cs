@@ -34,7 +34,7 @@ builder.Services.AddDbContext<PostgresContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
-builder.Services.AddScoped<ValidateModelFilter>();
+builder.Services.AddScoped<ValidateModelFilterAttribute>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 

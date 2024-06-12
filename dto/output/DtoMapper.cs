@@ -70,9 +70,9 @@ public static class DtoMapper
         return new DetailDto
         {
             tariffId = entity.tariffId,
-            arrears = entity.arrears,
-            discount = entity.discount,
-            subTotal = entity.subTotal,
+            //arrears = entity.arrears,
+            //discount = entity.discount,
+            //subTotal = entity.subTotal,
             concept  = entity.concept(),
             amount = entity.officialAmount(),
             itPaidLate = entity.itPaidLate(),

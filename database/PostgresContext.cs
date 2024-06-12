@@ -196,9 +196,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
-            entity.Property(e => e.arrears).HasColumnName("arrears");
-            entity.Property(e => e.discount).HasColumnName("discount");
-            entity.Property(e => e.subTotal).HasColumnName("subtotal");
         });
 
 

@@ -138,14 +138,6 @@ public class TransactionDaoPostgres(PostgresContext context)
     
     public override async Task create(TransactionEntity entity)
     {
-        var discount = await getStudentDiscount(entity.studentId);
-        foreach (var item in entity.details)
-        {
-            await setTariff(item);
-            item.discount = discount;
-            item.computeSubTotal();
-            item.applyArrears();
-        }
         entity.computeTotal();
         
         try
