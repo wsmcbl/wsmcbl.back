@@ -10,8 +10,7 @@ public static class DtoMapper
         return new TransactionTariffEntity
         {
             tariffId = dto.tariffId,
-            discount = dto.discount,
-            arrears = dto.arrears,
+            arrears = dto.applyArrear ? 0.10f : 0.0f,
             subTotal = 0
         }; 
     }

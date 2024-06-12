@@ -30,8 +30,7 @@ ssh-be: ## ssh's into the be container
 # Dotnet commands
 dn-pub: ## Dotnet publish command
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} rm -rf bin publish || true
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} dotnet publish "wsmcbl.back.csproj" -c Release -o publish 
-
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BACK} dotnet publish "wsmcbl.back.csproj" -c Release -o publish
 
 swagger: ## Make the Swagger documentation file
 	cd .. && rm swagger.json || true && wget --no-check-certificate https://localhost:7211/swagger/v1/swagger.json || true

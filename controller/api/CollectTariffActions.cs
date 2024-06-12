@@ -28,9 +28,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         return Ok(student!.mapToDto());
     }
     
-    /// <summary>
-    /// Gets tariffs by studentId or state.
-    /// </summary>
     /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
     /// <returns>Returns the search results based on the provided query.</returns>
     /// <response code="200">Returns the search results.</response>
@@ -62,9 +59,15 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         };
     }
     
-    /// <summary>
-    /// Update state of tariff.
-    /// </summary>
+    [HttpGet]
+    [Route("tariffs/types")]
+    public async Task<ActionResult> getTariffTypeList()
+    {
+        var result = await controller.getTariffTypeList();
+
+        return Ok(result);
+    }
+    
     /// <param name="tariffId">ID of Tariff.</param>
     /// <returns>Additional late fee applies.</returns>
     /// <response code="200">Returns the search results.</response>
@@ -76,7 +79,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     {
         if (tariffId < 0)
         {
-            return BadRequest("Invalid ID.");
+            return BadRequest("Invalid ID.");   
         }
 
         await controller.applyArrears(tariffId);

@@ -36,10 +36,9 @@ public class TariffDaoPostgres(PostgresContext context)
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        var tariffs = await Task
-            .FromResult(context.Tariff
-                .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
-                .ToList());
+        var tariffs = await context.Tariff
+            .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
+            .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
 
@@ -139,9 +138,11 @@ public class TransactionDaoPostgres(PostgresContext context)
     
     public override async Task create(TransactionEntity entity)
     {
+        var discount = await getStudentDiscount(entity.studentId);
         foreach (var item in entity.details)
         {
             await setTariff(item);
+            item.discount = discount;
             item.computeSubTotal();
             item.applyArrears();
         }
@@ -157,6 +158,27 @@ public class TransactionDaoPostgres(PostgresContext context)
         }
     }
 
+    private async Task<float> getStudentDiscount(string studentId)
+    {
+        var student = await context.Student_accounting
+            .Include(d => d.discount)
+            .FirstOrDefaultAsync(e => e.studentId == studentId);
+
+        if (student == null)
+        {
+            throw new EntityNotFoundException("Accounting.Student", studentId);
+        }
+    
+        var discount = 0.0f;
+
+        if (student.discount != null)
+        {
+            discount = student.discount.amount;
+        }
+
+        return discount;
+    }
+    
     internal async Task setTariff(TransactionTariffEntity detail)
     {
         var service = new TariffDaoPostgres(context);
@@ -173,3 +195,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     
 public class SecretaryStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao;
+
+
+public class TariffTypeDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;

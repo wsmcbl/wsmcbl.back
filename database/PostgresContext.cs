@@ -10,7 +10,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
 {
     public virtual DbSet<DebtEntity> Debt { get; init; } = null!;
     public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
-    public virtual DbSet<TransactionEntity> Transaction { get; init; } = null!;
     public virtual DbSet<Student_Accounting> Student_accounting { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -154,6 +153,19 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasMaxLength(4)
                 .HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
+        });
+        
+        
+        modelBuilder.Entity<TariffTypeEntity>(entity =>
+        {
+            entity.HasKey(e => e.typeId).HasName("tarifftype_pkey");
+
+            entity.ToTable("tarifftype", "accounting");
+
+            entity.Property(e => e.typeId).HasColumnName("typeid");
+            entity.Property(e => e.description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
         });
 
         modelBuilder.Entity<TransactionEntity>(entity =>

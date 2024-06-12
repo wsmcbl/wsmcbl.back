@@ -9,8 +9,8 @@ insert into config.user(userid, name, secondname, surname, secondsurname, userna
 
 insert into accounting.discount(discountid, description, amount, tag) values
 (1, 'Sin descuento', 0, 'Sin descuento'),
-(2, 'Descuento por hijos', 50, 'descuento básico'),
-(3, 'Descuento por hijos del personal', 400, 'descuento trabajadores');
+(2, 'Descuento por hijos', 0.11, 'descuento básico'),
+(3, 'Descuento por hijos del personal', 0.5, 'descuento trabajadores');
 
 insert into accounting.tarifftype(description) values
 ('Mensualidad'),
