@@ -138,9 +138,11 @@ public class TransactionDaoPostgres(PostgresContext context)
     
     public override async Task create(TransactionEntity entity)
     {
+        var discount = await getStudentDiscount(entity.studentId);
         foreach (var item in entity.details)
         {
             await setTariff(item);
+            item.discount = discount;
             item.computeSubTotal();
             item.applyArrears();
         }
@@ -156,6 +158,27 @@ public class TransactionDaoPostgres(PostgresContext context)
         }
     }
 
+    private async Task<float> getStudentDiscount(string studentId)
+    {
+        var student = await context.Student_accounting
+            .Include(d => d.discount)
+            .FirstOrDefaultAsync(e => e.studentId == studentId);
+
+        if (student == null)
+        {
+            throw new EntityNotFoundException("Accounting.Student", studentId);
+        }
+    
+        var discount = 0.0f;
+
+        if (student.discount != null)
+        {
+            discount = student.discount.amount;
+        }
+
+        return discount;
+    }
+    
     internal async Task setTariff(TransactionTariffEntity detail)
     {
         var service = new TariffDaoPostgres(context);

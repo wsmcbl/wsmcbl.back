@@ -6,7 +6,7 @@ public class DiscountEntity
 
     public string description { get; set; } = null!;
 
-    public double amount { get; set; }
+    public float amount { get; set; }
 
     public string? tag { get; set; }
 }

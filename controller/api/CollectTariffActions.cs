@@ -76,7 +76,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     {
         if (tariffId < 0)
         {
-            return BadRequest("Invalid ID.");
+            return BadRequest("Invalid ID.");   
         }
 
         await controller.applyArrears(tariffId);

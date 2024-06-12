@@ -10,33 +10,31 @@ public class TransactionTariffEntity
 
     public float? discount { get; set; }
 
-    public float? arrears { get; set; }
+    public float arrears { get; set; }
     
     public float subTotal { get; set; }
     
 
     private TariffEntity tariff = null!;
-    public void setTariff(TariffEntity _tariff)
+    public void setTariff(TariffEntity? _tariff)
     {
-        if (_tariff is null)
-        {
-            throw new ArgumentException("Tariff objet is null");
-        }
-        
-        tariff = _tariff;
+        tariff = _tariff ?? throw new ArgumentException("Tariff objet is null");
     }
 
     public void applyArrears()
     {
         tariff.checkDueDate();
+        
         if (itPaidLate())
-            subTotal += (float)arrears!;
+        {
+            subTotal *= (1 + arrears);
+        }
     }
 
     public void computeSubTotal()
     {
         amount = tariff.amount;
-        subTotal = (float)(amount - discount)!;
+        subTotal = (float)(amount * (1 - discount))!;
     }
 
     public string concept()
@@ -51,7 +49,7 @@ public class TransactionTariffEntity
 
     public bool itPaidLate()
     {
-        return (bool) tariff.isLate!;
+        return tariff.isLate;
     }
 
     public string schoolYear()
