@@ -13,4 +13,6 @@ public abstract class DaoFactory
     {
         return null;
     }
+    
+    public virtual ITariffTypeDao? tariffTypeDao => null;
 }

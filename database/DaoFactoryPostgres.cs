@@ -37,4 +37,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
         return null;
     }
+    
+    
+
+    private ITariffTypeDao? _tariffTypeDao;
+    public override ITariffTypeDao? tariffTypeDao => _tariffTypeDao ??= new TariffTypeDaoPostgres(context);
 }

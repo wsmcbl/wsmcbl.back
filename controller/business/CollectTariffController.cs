@@ -14,8 +14,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
 
     public async Task<List<StudentEntity>> getStudentsList()
     {
-        var result = await daoFactory.studentDao<StudentEntity>()!.getAll();
-        return result.OrderBy(e => e.fullName()).ToList();
+        return await daoFactory.studentDao<StudentEntity>()!.getAll();
     }
     
     public Task<StudentEntity?> getStudent(string studentId)
@@ -84,7 +83,12 @@ public class CollectTariffController : BaseController, ICollectTariffController
         
         return dto;
     }
-    
+
+    public Task<List<TariffTypeEntity>> getTariffTypeList()
+    {
+        return daoFactory.tariffTypeDao!.getAll();
+    }
+
     private Task<CashierEntity?> getCashier(string id)
     {
         return daoFactory.cashierDao!.getById(id);

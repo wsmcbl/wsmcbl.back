@@ -195,3 +195,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     
 public class SecretaryStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao;
+
+
+public class TariffTypeDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
