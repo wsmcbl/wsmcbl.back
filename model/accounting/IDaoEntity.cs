@@ -19,3 +19,8 @@ public interface ITariffDao : IGenericDao<TariffEntity, int>
 }
 
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
+
+public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
+{
+    public Task<List<DebtHistoryEntity>> getListByStudent(string studentId);
+}

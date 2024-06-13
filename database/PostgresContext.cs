@@ -8,8 +8,8 @@ namespace wsmcbl.back.database;
 
 public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
 {
-    public virtual DbSet<DebtEntity> Debt { get; init; } = null!;
     public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
+    public virtual DbSet<DebtHistoryEntity> DebtHistory { get; init; } = null!;
     public virtual DbSet<Student_Accounting> Student_accounting { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,27 +25,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.HasOne(c => c.user)
                 .WithMany()
                 .HasForeignKey(c => c.userId);
-        });
-        
-        
-        modelBuilder.Entity<DebtEntity>(entity =>
-        {
-            entity.HasKey(e => new { e.studentId, e.tariffId }).HasName("debthistory_pkey");
-
-            entity.ToTable("debthistory", "accounting");
-
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasColumnName("studentid");
-            entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.isPaid).HasColumnName("ispaid");
-            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
-            
-            entity.HasOne(d => d.tariff)
-                .WithMany()
-                .HasForeignKey(d => d.tariffId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("debthistory_tariffid_fkey");
         });
         
         modelBuilder.Entity<Student_Accounting>(entity =>
@@ -214,6 +193,30 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.Property(e => e.surname).HasMaxLength(50).HasColumnName("surname");
             entity.Property(e => e.username).HasMaxLength(45).HasColumnName("username");
             entity.Property(e => e.isActive).HasColumnName("userstate");
+        });
+        
+        modelBuilder.Entity<DebtHistoryEntity>(entity =>
+        {
+            entity.HasKey(e => new { e.studentId, e.tariffId }).HasName("debthistory_pkey");
+
+            entity.ToTable("debthistory", "accounting");
+
+            entity.Property(e => e.studentId)
+                .HasMaxLength(20)
+                .HasColumnName("studentid");
+            entity.Property(e => e.tariffId).HasColumnName("tariffid");
+            entity.Property(e => e.arrear).HasColumnName("arrear");
+            entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
+            entity.Property(e => e.discount).HasColumnName("discount");
+            entity.Property(e => e.isPaid).HasColumnName("ispaid");
+            entity.Property(e => e.schoolyear)
+                .HasMaxLength(20)
+                .HasColumnName("schoolyear");
+            
+            entity.HasOne(d => d.tariff).WithMany()
+                .HasForeignKey(d => d.tariffId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("debthistory_tariffid_fkey");
         });
     }
 }

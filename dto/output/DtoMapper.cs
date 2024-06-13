@@ -15,46 +15,51 @@ public static class DtoMapper
             studentName = student!.fullName(),
             total = transaction.total,
             dateTime = transaction.date,
-            tariffs = new List<DetailDto>()
+            detail = new List<DetailDto>()
         };
 
         foreach (var item in transaction.details)
         {
-            element.tariffs.Add(item.mapToDto());
+            element.detail.Add(item.mapToDto(student));
         }
 
         return element;
     }
 
-    private static DetailDto mapToDto(this TransactionTariffEntity entity)
+    private static DetailDto mapToDto(this TransactionTariffEntity entity, StudentEntity student)
     {
-        return new DetailDto
+        var detail = new DetailDto
         {
             tariffId = entity.tariffId,
             concept  = entity.concept(),
             amount = entity.officialAmount(),
+            discount = student.discount!.amount,
             itPaidLate = entity.itPaidLate(),
             schoolYear = entity.schoolYear()
         };
+
+        detail.discount = detail.amount*(1 - detail.discount);
+        detail.arrears = (float?)((bool)detail.itPaidLate ? detail.amount * 0.1 : 0);
+
+        return detail;
     }
 
-    private static TransactionDto mapToDto(this TransactionEntity entity)
+    private static TariffDto mapToDto(this DebtHistoryEntity entity)
     {
-        var t = new TransactionDto
+        var tariff = new TariffDto
         {
-            transactionId = entity.transactionId,
-            cashierId = entity.cashierId,
-            date = entity.date,
-            total = entity.total,
-            details = new List<DetailDto>()
+            tariffId = entity.tariffId,
+            concept  = entity.tariff.concept,
+            amount = entity.tariff.amount,
+            itPaidLate = entity.tariff.isLate,
+            schoolYear = entity.tariff.schoolYear,
+            subTotal = entity.subtotal(),
+            debtBalance = entity.debtBalance
         };
 
-        foreach (var item in entity.details)
-        {
-            t.details.Add(item.mapToDto());
-        }
-
-        return t;
+        tariff.discount = tariff.amount*entity.discount;
+        tariff.arrears = tariff.amount*entity.arrear;
+        return tariff;
     }
     
     public static StudentDto mapToDto(this StudentEntity student)
@@ -68,12 +73,12 @@ public static class DtoMapper
             tutor = student.tutor,
             discount = student.discount!.amount,
             isActive = student.isActive,
-            transactions = new List<TransactionDto>()
+            debtHistory = new List<TariffDto>()
         };
 
-        foreach (var item in student.transactions!)
+        foreach (var item in student.debtHistory!)
         {
-            dto.transactions.Add(item.mapToDto());
+            dto.debtHistory.Add(item.mapToDto());
         }
 
         return dto;
