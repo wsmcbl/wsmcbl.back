@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace wsmcbl.back.dto.input;
 
@@ -10,7 +11,7 @@ public class TransactionDto
     [Required]
     public string studentId { get; set; } = null!;
     
-    [Required]
+    [JsonRequired]
     public DateTime dateTime { get; set; }
     
     [Required]

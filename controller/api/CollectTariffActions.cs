@@ -16,7 +16,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getStudentList()
     {
         var students = await controller.getStudentsList();
-        return Ok(students.mapToDto());
+        return Ok(students.mapListToDto());
     } 
     
     [HttpGet]
@@ -67,8 +67,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
 
         return Ok(result);
     }
-    
-    /// <param name="tariffId">ID of Tariff.</param>
+
     /// <returns>Additional late fee applies.</returns>
     /// <response code="200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
@@ -88,16 +87,11 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
 
     [HttpPost]
     [Route("transactions")]
-    [ServiceFilter(typeof(ValidateModelFilter))]
+    [ServiceFilter(typeof(ValidateModelFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] dto.input.TransactionDto transaction)
     {
         var transactionId = await controller.saveTransaction(transaction.toEntity());
-
-        if (transactionId is null)
-        {
-            throw new Exception("Save transaction failed");
-        }
-
+        
         return Ok(new { transactionId });
     }
     

@@ -16,9 +16,6 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         return Ok(students);
     }
 
-    /// <summary>
-    ///  Post secretary student entity
-    /// </summary>
     /// <param name="student"> Value Sex: true-female, false-man</param>
     [HttpPost]
     [Route("students")]

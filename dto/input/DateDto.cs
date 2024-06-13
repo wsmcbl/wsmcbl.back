@@ -4,12 +4,11 @@ namespace wsmcbl.back.dto.input;
 
 public class DateDto
 {
-    [Required]
-    public int year { get; set; }
+    public required int year { get; set; }
     
     [Required]
-    public int month { get; set; }
+    public required int month { get; set; }
     
     [Required]
-    public int day { get; set; }
+    public required int day { get; set; }
 }

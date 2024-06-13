@@ -6,12 +6,11 @@ public class RoutePrefixConvention(string prefix) : IControllerModelConvention
 {
     public void Apply(ControllerModel controller)
     {
-        foreach (var selector in controller.Selectors)
+        foreach (var selector in controller.Selectors
+                     .Select(p => p.AttributeRouteModel)
+                     .Where(s => s != null))
         {
-            if (selector.AttributeRouteModel != null)
-            {
-                selector.AttributeRouteModel.Template = $"{prefix}/{selector.AttributeRouteModel.Template}";
-            }
+            selector!.Template = $"{prefix}/{selector.Template}";
         }
     }
 }

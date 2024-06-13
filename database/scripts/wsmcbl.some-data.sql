@@ -9,7 +9,7 @@ insert into config.user(userid, name, secondname, surname, secondsurname, userna
 
 insert into accounting.discount(discountid, description, amount, tag) values
 (1, 'Sin descuento', 0, 'Sin descuento'),
-(2, 'Descuento por hijos', 0.11, 'descuento básico'),
+(2, 'Descuento por hijos', 0.07, 'descuento básico'),
 (3, 'Descuento por hijos del personal', 0.5, 'descuento trabajadores');
 
 insert into accounting.tarifftype(description) values
@@ -103,7 +103,7 @@ insert into secretary.student (name, secondname, surname, secondsurname, student
 insert into accounting.tariff(schoolyear, concept, amount, duedate, late, typeid)  values
 ('2023', 'Pago mes noviembre', 700, '28/11/2023', true, 1),
 ('2023', 'Pago treceavo mes', 700, '28/12/2023', true, 1),
-('2024', 'Pago de matricula', 1800, null, false, 1),
+('2024', 'Pago de matricula', 1800, null, false, 3),
 ('2024', 'Pago mes febrero', 800, '28/02/2024', false, 1),
 ('2024', 'Pago mes marzo', 800, '28/03/2024', false, 1),
 ('2024', 'Pago mes abril', 800, '28/04/2024', false, 1),

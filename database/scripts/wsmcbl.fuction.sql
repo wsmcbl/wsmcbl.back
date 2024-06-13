@@ -2,9 +2,20 @@
 CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_tariff()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear)
-    SELECT s.studentId, NEW.tariffId, false, NEW.schoolyear FROM Accounting.Student s
-        INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId
+    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear, debtBalance, discount, arrear)
+    SELECT s.studentId, NEW.tariffId, false, NEW.schoolyear,
+           case when new.typeid = 1 
+               then NEW.amount*(1 - d.amount) 
+               else new.amount end, 
+           case when new.typeid = 1 
+               then d.amount
+               else 0 end, 
+            case when new.late 
+                then 0.1 
+                else 0.0 end 
+    FROM Accounting.Student s
+        JOIN Accounting.discount d ON d.discountid = s.discountid
+        INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId                                                                  
     WHERE sec.studentState = true;
 
     RETURN NEW;
@@ -24,11 +35,21 @@ EXECUTE FUNCTION Accounting.insert_debt_history_by_new_tariff();
 CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear)
-    SELECT NEW.studentId, t.tariffId, false, t.schoolyear FROM Accounting.tariff t
-        INNER JOIN Secretary.Student sec ON new.studentId = sec.studentId
+    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear, debtbalance, discount, arrear)
+    SELECT NEW.studentId, t.tariffId, false, t.schoolyear,
+           case when t.typeid = 1
+                    then t.amount*(1 - d.amount)
+                else t.amount end,
+           case when t.typeid = 1
+                    then d.amount
+                else 0 end, 
+        case when t.late then 0.1 else 0.0 end 
+    FROM Accounting.tariff t
+        INNER JOIN Secretary.Student sec ON sec.studentId = new.studentId
+        INNER JOIN Accounting.student s on s.studentid = sec.studentid
+        JOIN accounting.discount d on d.discountid = s.discountid                                                                           
     WHERE t.schoolyear = sec.schoolyear;
-
+    
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -45,9 +66,11 @@ CREATE TRIGGER trg_insert_debt_history_by_new_student
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history()
     RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE Accounting.DebtHistory SET isPaid = true
+    UPDATE Accounting.DebtHistory SET debtbalance = debtbalance - NEW.amount
     WHERE studentId = (SELECT studentId FROM Accounting.Transaction WHERE transactionId = NEW.transactionId)
       AND tariffId = NEW.tariffId;
+
+    UPDATE Accounting.DebtHistory SET ispaid = true WHERE debtbalance <= 0;
 
     RETURN NEW;
 END;
@@ -56,6 +79,8 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_update_debt_history
     AFTER INSERT ON Accounting.Transaction_Tariff
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history();
+
+
 
 
 
@@ -121,7 +146,7 @@ CREATE TRIGGER trg_insert_debt_history_by_new_tariff
 
 
 
-
+    
 
 -- ##################### TEMPORAL ###################### --
 CREATE OR REPLACE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING()
@@ -137,4 +162,24 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER TRG_INSERT_STUDENT_ACCOUNTING
     AFTER INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING();
+-- ##################### TEMPORAL ###################### --
+
+
+
+-- ##################### TEMPORAL ###################### --
+CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT()
+    RETURNS TRIGGER AS $$
+BEGIN
+    update Accounting.debthistory
+    set discount = (select amount from Accounting.discount where discountid = new.discountid),
+        debtbalance = (select amount from Accounting.tariff where tariff.tariffid = debthistory.tariffid)*(1 - (select amount from Accounting.discount where discountid = new.discountid))
+    WHERE studentid = new.studentid and (select typeid from Accounting.tariff where tariff.tariffid = debthistory.tariffid) = 1;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TRG_CHANGE_STUDENT_DISCOUNT
+    AFTER UPDATE ON accounting.student
+    FOR EACH ROW EXECUTE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT();
 -- ##################### TEMPORAL ###################### --
