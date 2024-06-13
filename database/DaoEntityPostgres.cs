@@ -48,7 +48,7 @@ public class TariffDaoPostgres(PostgresContext context)
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
         var debts = await Task
-            .FromResult(context.Debt
+            .FromResult(context.DebtHistory
                 .Where(d => d.studentId == studentId)
                 .Include(d => d.tariff));
         
@@ -72,7 +72,7 @@ public class TariffDaoPostgres(PostgresContext context)
     public async Task<float[]> getGeneralBalance(string studentId)
     {
         var debts = await Task
-            .FromResult(context.Debt
+            .FromResult(context.DebtHistory
                 .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
                 .Include(d => d.tariff));
         
@@ -170,3 +170,19 @@ public class SecretaryStudentDaoPostgres(PostgresContext context)
 
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
+
+public class DebtHistoryDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<DebtHistoryEntity, string>(context), IDebtHistoryDao
+{
+    private readonly string schoolyear = DateTime.Today.Year.ToString();
+    
+    public async Task<List<DebtHistoryEntity>> getListByStudent(string studentId)
+    {
+        var history = await context.DebtHistory
+            .Where(dh => dh.studentId == studentId && dh.schoolyear == schoolyear)
+            .Include(dh => dh.tariff)
+            .ToListAsync();
+
+        return history.Where(dh => dh.havePayments()).ToList();
+    }
+}

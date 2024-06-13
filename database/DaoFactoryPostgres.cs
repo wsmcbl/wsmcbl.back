@@ -43,4 +43,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     private ITariffTypeDao? _tariffTypeDao;
     public override ITariffTypeDao? tariffTypeDao => _tariffTypeDao ??= new TariffTypeDaoPostgres(context);
+    
+    private IDebtHistoryDao? _debtHistoryDao;
+    public override IDebtHistoryDao? debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
 }

@@ -17,14 +17,16 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return await daoFactory.studentDao<StudentEntity>()!.getAll();
     }
     
-    public Task<StudentEntity?> getStudent(string studentId)
+    public async Task<StudentEntity?> getStudent(string studentId)
     {
-        var student = daoFactory.studentDao<StudentEntity>()!.getById(studentId);
+        var student = await daoFactory.studentDao<StudentEntity>()!.getById(studentId);
 
         if (student is null)
         {
             throw new EntityNotFoundException("Student", studentId);
         }
+
+        student.debtHistory = await daoFactory.debtHistoryDao!.getListByStudent(student.studentId!);
         
         return student;
     }

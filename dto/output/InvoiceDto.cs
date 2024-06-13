@@ -9,5 +9,5 @@ public class InvoiceDto
     public float total { get; set; }
     public DateTime dateTime { get; set; }
     public float[] generalBalance { get; set; } = null!;
-    public ICollection<DetailDto> tariffs { get; set; } = null!;
+    public ICollection<DetailDto> detail { get; set; } = null!;
 }

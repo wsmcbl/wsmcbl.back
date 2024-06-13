@@ -15,4 +15,5 @@ public abstract class DaoFactory
     }
     
     public virtual ITariffTypeDao? tariffTypeDao => null;
+    public virtual IDebtHistoryDao? debtHistoryDao => null;
 }
