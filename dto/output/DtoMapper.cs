@@ -53,12 +53,12 @@ public static class DtoMapper
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
             schoolYear = entity.tariff.schoolYear,
-            subTotal = entity.subtotal(),
-            debtBalance = entity.debtBalance
+            arrear = entity.arrear,
+            subTotal = entity.amount,
+            debtBalance = (entity.amount - entity.debtBalance)
         };
 
-        tariff.discount = tariff.amount*entity.subAmount;
-        tariff.arrears = tariff.amount*entity.arrear;
+        tariff.discount = tariff.amount - entity.subAmount;
         return tariff;
     }
     

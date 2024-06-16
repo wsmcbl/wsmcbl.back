@@ -36,29 +36,14 @@ public static class DtoMapper
 
     public static List<DebtHistoryEntity> toEntity(this ICollection<DetailDto> listDto, string studentId)
     {
-        var list = new List<DebtHistoryEntity>();
-
-        foreach (var item in listDto)
-        {
-            if (item.applyArrear)
+        return listDto.Where(i => !i.applyArrear)
+            .Select(item => new DebtHistoryEntity
             {
-                list.Add(item.toEntity(studentId));
-            }
-        }
-        
-        return list;
+                studentId = studentId, 
+                tariffId = item.tariffId
+            })
+            .ToList();
     }
-
-
-    public static DebtHistoryEntity toEntity(this DetailDto dto, string studentId)
-    {
-        return new DebtHistoryEntity
-        {
-            studentId = studentId,
-            tariffId = dto.tariffId
-        };
-    }
-
 
     public static StudentEntity toEntity(this StudentDto dto)
     {

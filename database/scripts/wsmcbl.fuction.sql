@@ -22,11 +22,13 @@ CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_tariff()
     RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
-    SELECT s.studentId, NEW.tariffId, NEW.schoolyear,
+    SELECT s.studentId,
+           NEW.tariffId,
+           NEW.schoolyear,
            case when new.typeid = 1 then NEW.amount*(1 - d.amount) else new.amount end, 
            case when new.late then (new.amount*0.1) else 0 end,
-               0,
-               false
+           0,
+           false
     FROM Accounting.Student s
         JOIN Accounting.discount d ON d.discountid = s.discountid
         INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId                                                                  
@@ -36,10 +38,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_insert_debt_history_by_new_tariff
-    AFTER INSERT ON Accounting.Tariff
-    FOR EACH ROW
-EXECUTE FUNCTION Accounting.insert_debt_history_by_new_tariff();
+CREATE TRIGGER trg_insert_debt_history_by_new_tariff AFTER INSERT ON Accounting.Tariff
+    FOR EACH ROW EXECUTE FUNCTION Accounting.insert_debt_history_by_new_tariff();
 
 
 -- Insert in debt history by student
@@ -47,7 +47,9 @@ CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
-    SELECT NEW.studentId, t.tariffId, t.schoolyear,
+    SELECT NEW.studentId,
+           t.tariffId,
+           t.schoolyear,
            case when t.typeid = 1 then t.amount*(1 - d.amount) else t.amount end,
            case when t.late then t.amount*0.1 else 0.0 end,
            0,
@@ -62,15 +64,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_insert_debt_history_by_new_student
-    AFTER INSERT ON Accounting.student
+CREATE TRIGGER trg_insert_debt_history_by_new_student AFTER INSERT ON Accounting.student
     FOR EACH ROW EXECUTE FUNCTION Accounting.insert_debt_history_by_new_student();
 
 
-
-
-
--- Update debt history by transactions
+-- Update debt history by transactions --
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history()
     RETURNS TRIGGER AS $$
 BEGIN
@@ -86,11 +84,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_update_debt_history
-    AFTER INSERT ON Accounting.Transaction_Tariff
+CREATE TRIGGER trg_update_debt_history AFTER INSERT ON Accounting.Transaction_Tariff
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history();
 
 
+
+-- Update ispaid in debt history--
+CREATE OR REPLACE FUNCTION Accounting.update_ispaid_debt_history()
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.debtbalance >= (new.subamount + new.arrear) THEN
+        NEW.ispaid := TRUE;
+    ELSE
+        NEW.ispaid := FALSE;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_debt_history
+    BEFORE UPDATE ON Accounting.DebtHistory
+    FOR EACH ROW EXECUTE FUNCTION Accounting.update_ispaid_debt_history();
 
 -- Generate secretary.student id
 CREATE SEQUENCE secretary.student_id_seq START 1;
@@ -111,69 +126,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_generate_student_id
-    BEFORE INSERT ON secretary.student
+CREATE TRIGGER trg_generate_student_id BEFORE INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION secretary.generate_student_id();
-
-
 
 
 -- Insert in schoolyear_student by new student
 CREATE OR REPLACE FUNCTION secretary.insert_schoolyear_student_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO secretary.schoolyear_student(schoolyear, studentid) SELECT TO_CHAR(NOW(), 'YYYY'), NEW.studentid;
+    INSERT INTO secretary.schoolyear_student(schoolyear, studentid)
+    SELECT TO_CHAR(NOW(), 'YYYY'), NEW.studentid;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_insert_debt_history_by_new_tariff
-    AFTER INSERT ON secretary.student
+CREATE TRIGGER trg_insert_debt_history_by_new_tariff AFTER INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION secretary.insert_schoolyear_student_by_new_student();
-
-
-
-
-    
-
--- ##################### TEMPORAL ###################### --
-CREATE OR REPLACE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING()
-    RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO Accounting.student(studentid, discountid) 
-    SELECT NEW.studentId, '1';
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER TRG_INSERT_STUDENT_ACCOUNTING
-    AFTER INSERT ON secretary.student
-    FOR EACH ROW EXECUTE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING();
--- ##################### TEMPORAL ###################### --
-
-
-
--- ##################### TEMPORAL ###################### --
-CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT()
-    RETURNS TRIGGER AS $$
-BEGIN
-    WITH query_aux AS 
-        (SELECT d.studentid, d.tariffid, t.amount AS tariff, disc.amount AS discount, t.typeid as type
-                     FROM accounting.debthistory d 
-                         JOIN accounting.tariff t ON t.tariffid = d.tariffid 
-                         JOIN accounting.discount disc ON disc.discountid = new.discountid
-                     WHERE d.studentid = new.studentid)
-    UPDATE accounting.debthistory
-        SET subamount = round(q.tariff*(1 - q.discount))
-    FROM query_aux q WHERE debthistory.studentid = q.studentid AND debthistory.tariffid = q.tariffid AND q.type = 1;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER TRG_CHANGE_STUDENT_DISCOUNT
-    AFTER UPDATE ON accounting.student
-    FOR EACH ROW EXECUTE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT();
--- ##################### TEMPORAL ###################### --
