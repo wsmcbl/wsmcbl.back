@@ -9,5 +9,5 @@ public class StudentDto
     public string? tutor { get; set; }
     public double discount { get; set; }
     public bool isActive { get; set; }
-    public ICollection<TariffDto>? debtHistory { get; set; }
+    public ICollection<TariffDto>? paymentHistory { get; set; }
 }

@@ -10,9 +10,7 @@ public static class DtoMapper
         return new TransactionTariffEntity
         {
             tariffId = dto.tariffId,
-            //arrears = dto.applyArrear ? 0.10f : 0.0f,
-            amount = dto.amount,
-            //subTotal = 0
+            amount = dto.amount
         }; 
     }
 
@@ -33,6 +31,34 @@ public static class DtoMapper
         
         return transaction;
     }
+    
+    
+
+    public static List<DebtHistoryEntity> toEntity(this ICollection<DetailDto> listDto, string studentId)
+    {
+        var list = new List<DebtHistoryEntity>();
+
+        foreach (var item in listDto)
+        {
+            if (item.applyArrear)
+            {
+                list.Add(item.toEntity(studentId));
+            }
+        }
+        
+        return list;
+    }
+
+
+    public static DebtHistoryEntity toEntity(this DetailDto dto, string studentId)
+    {
+        return new DebtHistoryEntity
+        {
+            studentId = studentId,
+            tariffId = dto.tariffId
+        };
+    }
+
 
     public static StudentEntity toEntity(this StudentDto dto)
     {

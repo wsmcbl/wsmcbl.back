@@ -207,11 +207,10 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
             entity.Property(e => e.arrear).HasColumnName("arrear");
             entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
-            entity.Property(e => e.discount).HasColumnName("discount");
+            entity.Property(e => e.subAmount).HasColumnName("subamount");
             entity.Property(e => e.isPaid).HasColumnName("ispaid");
-            entity.Property(e => e.schoolyear)
-                .HasMaxLength(20)
-                .HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.amount).HasColumnName("amount");
             
             entity.HasOne(d => d.tariff).WithMany()
                 .HasForeignKey(d => d.tariffId)

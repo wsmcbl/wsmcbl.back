@@ -1,18 +1,32 @@
+-- Generate accounting.transaction id
+CREATE SEQUENCE accounting.transaction_id_seq START 1;
+
+CREATE OR REPLACE FUNCTION Accounting.generate_transaction_id()
+    RETURNS varchar(20) AS $$
+DECLARE
+    year_part CHAR(2);
+    seq_part CHAR(6);
+BEGIN
+    year_part := TO_CHAR(NOW(), 'YY');
+
+    seq_part := LPAD(NEXTVAL('accounting.transaction_id_seq')::TEXT, 6, '0');
+
+    RETURN year_part || seq_part || 'tst';
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 -- Insert in debt history by tariff
 CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_tariff()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear, debtBalance, discount, arrear)
-    SELECT s.studentId, NEW.tariffId, false, NEW.schoolyear,
-           case when new.typeid = 1 
-               then NEW.amount*(1 - d.amount) 
-               else new.amount end, 
-           case when new.typeid = 1 
-               then d.amount
-               else 0 end, 
-            case when new.late 
-                then 0.1 
-                else 0.0 end 
+    INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
+    SELECT s.studentId, NEW.tariffId, NEW.schoolyear,
+           case when new.typeid = 1 then NEW.amount*(1 - d.amount) else new.amount end, 
+           case when new.late then (new.amount*0.1) else 0 end,
+               0,
+               false
     FROM Accounting.Student s
         JOIN Accounting.discount d ON d.discountid = s.discountid
         INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId                                                                  
@@ -28,22 +42,16 @@ CREATE TRIGGER trg_insert_debt_history_by_new_tariff
 EXECUTE FUNCTION Accounting.insert_debt_history_by_new_tariff();
 
 
-
-
-
 -- Insert in debt history by student
 CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, isPaid, schoolyear, debtbalance, discount, arrear)
-    SELECT NEW.studentId, t.tariffId, false, t.schoolyear,
-           case when t.typeid = 1
-                    then t.amount*(1 - d.amount)
-                else t.amount end,
-           case when t.typeid = 1
-                    then d.amount
-                else 0 end, 
-        case when t.late then 0.1 else 0.0 end 
+    INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
+    SELECT NEW.studentId, t.tariffId, t.schoolyear,
+           case when t.typeid = 1 then t.amount*(1 - d.amount) else t.amount end,
+           case when t.late then t.amount*0.1 else 0.0 end,
+           0,
+           false
     FROM Accounting.tariff t
         INNER JOIN Secretary.Student sec ON sec.studentId = new.studentId
         INNER JOIN Accounting.student s on s.studentid = sec.studentid
@@ -66,11 +74,13 @@ CREATE TRIGGER trg_insert_debt_history_by_new_student
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history()
     RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE Accounting.DebtHistory SET debtbalance = debtbalance - NEW.amount
-    WHERE studentId = (SELECT studentId FROM Accounting.Transaction WHERE transactionId = NEW.transactionId)
-      AND tariffId = NEW.tariffId;
-
-    UPDATE Accounting.DebtHistory SET ispaid = true WHERE debtbalance <= 0;
+    UPDATE Accounting.DebtHistory dh 
+        SET debtbalance = dh.debtbalance + NEW.amount,
+            isPaid = (dh.debtbalance + NEW.amount >= amount)
+    FROM Accounting.Transaction t 
+    WHERE t.transactionId = NEW.transactionId
+      AND t.studentId = dh.studentId
+      AND dh.tariffId = NEW.tariffId;
 
     RETURN NEW;
 END;
@@ -79,27 +89,6 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_update_debt_history
     AFTER INSERT ON Accounting.Transaction_Tariff
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history();
-
-
-
-
-
--- Generate accounting.transaction id
-CREATE SEQUENCE accounting.transaction_id_seq START 1;
-
-CREATE OR REPLACE FUNCTION Accounting.generate_transaction_id()
-    RETURNS varchar(20) AS $$
-DECLARE
-    year_part CHAR(2);
-    seq_part CHAR(6);
-BEGIN
-    year_part := TO_CHAR(NOW(), 'YY');
-
-    seq_part := LPAD(NEXTVAL('accounting.transaction_id_seq')::TEXT, 6, '0');
-
-    RETURN year_part || seq_part || 'tst';
-END;
-$$ LANGUAGE plpgsql;
 
 
 
@@ -170,11 +159,16 @@ CREATE TRIGGER TRG_INSERT_STUDENT_ACCOUNTING
 CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT()
     RETURNS TRIGGER AS $$
 BEGIN
-    update Accounting.debthistory
-    set discount = (select amount from Accounting.discount where discountid = new.discountid),
-        debtbalance = (select amount from Accounting.tariff where tariff.tariffid = debthistory.tariffid)*(1 - (select amount from Accounting.discount where discountid = new.discountid))
-    WHERE studentid = new.studentid and (select typeid from Accounting.tariff where tariff.tariffid = debthistory.tariffid) = 1;
-    
+    WITH query_aux AS 
+        (SELECT d.studentid, d.tariffid, t.amount AS tariff, disc.amount AS discount, t.typeid as type
+                     FROM accounting.debthistory d 
+                         JOIN accounting.tariff t ON t.tariffid = d.tariffid 
+                         JOIN accounting.discount disc ON disc.discountid = new.discountid
+                     WHERE d.studentid = new.studentid)
+    UPDATE accounting.debthistory
+        SET subamount = round(q.tariff*(1 - q.discount))
+    FROM query_aux q WHERE debthistory.studentid = q.studentid AND debthistory.tariffid = q.tariffid AND q.type = 1;
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

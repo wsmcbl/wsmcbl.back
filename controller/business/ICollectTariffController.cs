@@ -16,4 +16,6 @@ public interface ICollectTariffController
     public Task<string> saveTransaction(TransactionEntity transaction);
     public Task<InvoiceDto> getFullTransaction(string transactionId);
     public Task<List<TariffTypeEntity>> getTariffTypeList();
+
+    public Task exonerateArrears(List<DebtHistoryEntity> debts);
 }

@@ -91,6 +91,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return daoFactory.tariffTypeDao!.getAll();
     }
 
+    public async Task exonerateArrears(List<DebtHistoryEntity> debts)
+    {
+        await daoFactory.debtHistoryDao!.exonerateArrears(debts);
+    }
+
     private Task<CashierEntity?> getCashier(string id)
     {
         return daoFactory.cashierDao!.getById(id);
