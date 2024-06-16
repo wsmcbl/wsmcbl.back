@@ -12,7 +12,7 @@ public class TariffDto
 
     public float discount { get; set; }
 
-    public float arrears { get; set; }
+    public float arrear { get; set; }
     
     public float subTotal { get; set; }
     

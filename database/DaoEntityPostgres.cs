@@ -174,12 +174,10 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 public class DebtHistoryDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<DebtHistoryEntity, string>(context), IDebtHistoryDao
 {
-    private readonly string schoolyear = DateTime.Today.Year.ToString();
-    
     public async Task<List<DebtHistoryEntity>> getListByStudent(string studentId)
     {
         var history = await context.DebtHistory
-            .Where(dh => dh.studentId == studentId && dh.schoolyear == schoolyear)
+            .Where(dh => dh.studentId == studentId)
             .Include(dh => dh.tariff)
             .ToListAsync();
 
@@ -194,7 +192,14 @@ public class DebtHistoryDaoPostgres(PostgresContext context)
                 .Where(dh => dh.studentId == item.studentId && dh.tariffId == item.tariffId)
                 .FirstOrDefaultAsync();
 
-            debt!.arrear = 0;
+            if (debt == null)
+            {
+                continue;
+            }
+            
+            debt.arrear = 0;
+            context.Update(debt);
         }
+        await context.SaveChangesAsync();
     }
 }
