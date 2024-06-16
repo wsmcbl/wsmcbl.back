@@ -69,7 +69,8 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     }
 
     /// <returns>Additional late fee applies.</returns>
-    /// <response code="200">Returns the search results.</response>
+    /// <response code=
+    /// "200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     /// <response code="461">If the resource is already update.</response>
     [HttpPut]
@@ -88,9 +89,10 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [HttpPost]
     [Route("transactions")]
     [ServiceFilter(typeof(ValidateModelFilterAttribute))]
-    public async Task<IActionResult> saveTransaction([FromBody] dto.input.TransactionDto transaction)
+    public async Task<IActionResult> saveTransaction([FromBody] TransactionDto transaction)
     {
         var transactionId = await controller.saveTransaction(transaction.toEntity());
+        await controller.exonerateArrears(transaction.details!.toEntity(transaction.studentId));
         
         return Ok(new { transactionId });
     }

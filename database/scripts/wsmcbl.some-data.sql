@@ -6,7 +6,7 @@ insert into config.user(userid, name, secondname, surname, secondsurname, userna
 ('1001', 'Ezequilito', 'De jesús', 'Urbina', 'Zeledón', 'ez-user1001', '12345', 'ezequielurbinaxoxoxo@gmail.com', true),
 ('1002', 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt-user1002', '54321', 'kennytinoco@gmail.com', true),
 ('1003', 'Mateo', 'José', 'Mercado', 'Parrila', 'mm-user1003', 'mjmp12345', 'ficticio@gmail.com', false);
-
+    
 insert into accounting.discount(discountid, description, amount, tag) values
 (1, 'Sin descuento', 0, 'Sin descuento'),
 (2, 'Descuento por hijos', 0.07, 'descuento básico'),

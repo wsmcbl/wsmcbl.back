@@ -185,4 +185,16 @@ public class DebtHistoryDaoPostgres(PostgresContext context)
 
         return history.Where(dh => dh.havePayments()).ToList();
     }
+
+    public async Task exonerateArrears(List<DebtHistoryEntity> list)
+    {
+        foreach (var item in list)
+        {
+            var debt = await context.DebtHistory
+                .Where(dh => dh.studentId == item.studentId && dh.tariffId == item.tariffId)
+                .FirstOrDefaultAsync();
+
+            debt!.arrear = 0;
+        }
+    }
 }

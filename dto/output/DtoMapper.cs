@@ -57,7 +57,7 @@ public static class DtoMapper
             debtBalance = entity.debtBalance
         };
 
-        tariff.discount = tariff.amount*entity.discount;
+        tariff.discount = tariff.amount*entity.subAmount;
         tariff.arrears = tariff.amount*entity.arrear;
         return tariff;
     }
@@ -73,12 +73,12 @@ public static class DtoMapper
             tutor = student.tutor,
             discount = student.discount!.amount,
             isActive = student.isActive,
-            debtHistory = new List<TariffDto>()
+            paymentHistory = new List<TariffDto>()
         };
 
         foreach (var item in student.debtHistory!)
         {
-            dto.debtHistory.Add(item.mapToDto());
+            dto.paymentHistory.Add(item.mapToDto());
         }
 
         return dto;

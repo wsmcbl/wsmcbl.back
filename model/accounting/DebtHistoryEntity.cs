@@ -12,15 +12,19 @@ public class DebtHistoryEntity
 
     public float debtBalance { get; set; }
 
-    public float discount { get; set; }
+    public float subAmount { get; set; }
 
     public float arrear { get; set; }
+    
+    
+    public double amount { get; set; }
+
 
     public TariffEntity tariff { get; set; } = null!;
 
     internal float subtotal()
     {
-        return tariff.amount * (1 - discount);
+        return tariff.amount * (1 - subAmount);
     }
 
     public bool havePayments()
