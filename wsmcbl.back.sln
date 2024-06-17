@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsmcbl.src", "src\wsmcbl.src.csproj", "{436059F1-3611-48D0-B94A-5A79B18F2CF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsmcbl.test", "test\wsmcbl.test.csproj", "{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{436059F1-3611-48D0-B94A-5A79B18F2CF0} = {436059F1-3611-48D0-B94A-5A79B18F2CF0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
