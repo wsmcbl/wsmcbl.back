@@ -102,12 +102,12 @@ public class StudentDaoPostgres(PostgresContext context)
 {
     public new async Task<List<StudentEntity>> getAll()
     {
-        return await context.Student_accounting.Include(d => d.student).ToListAsync();
+        return await context.Accounting_Student.Include(d => d.student).ToListAsync();
     }
 
     public new async Task<StudentEntity?> getById(string id)
     {
-        var student = await context.Student_accounting
+        var student = await context.Accounting_Student
             .Include(d => d.student)
             .Include(d => d.discount)
             .Include(e => e.transactions)!

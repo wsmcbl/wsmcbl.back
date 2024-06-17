@@ -13,10 +13,6 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private ITransactionDao? _transactionDao;
     public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
-
-    private IUserDao? _userDao;
-    public override IUserDao userDao => _userDao ??= new UserDaoPostgres(context);
-    
     
     private StudentDaoPostgres? _accountingStudentDao;
     private StudentDaoPostgres accountingStudentDao => _accountingStudentDao ??= new StudentDaoPostgres(context); 
@@ -42,8 +38,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     
     private ITariffTypeDao? _tariffTypeDao;
-    public override ITariffTypeDao? tariffTypeDao => _tariffTypeDao ??= new TariffTypeDaoPostgres(context);
+    public override ITariffTypeDao tariffTypeDao => _tariffTypeDao ??= new TariffTypeDaoPostgres(context);
     
     private IDebtHistoryDao? _debtHistoryDao;
-    public override IDebtHistoryDao? debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
+    public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
 }

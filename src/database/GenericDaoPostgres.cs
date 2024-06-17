@@ -25,11 +25,6 @@ public abstract class GenericDaoPostgres<T, ID>(PostgresContext context) : IGene
         await context.SaveChangesAsync();
     }
 
-    public void deleteById(ID id)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<List<T>> getAll()
     {
         var elements = await context.Set<T>().ToListAsync();

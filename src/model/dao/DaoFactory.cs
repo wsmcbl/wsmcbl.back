@@ -7,7 +7,6 @@ public abstract class DaoFactory
     public virtual ITariffDao? tariffDao => null;
     public virtual ICashierDao? cashierDao => null;
     public virtual ITransactionDao? transactionDao => null;
-    public virtual IUserDao? userDao => null;
     
     public virtual IGenericDao<T, string>? studentDao<T>()
     {

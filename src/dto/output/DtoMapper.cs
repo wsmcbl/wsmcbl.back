@@ -55,7 +55,7 @@ public static class DtoMapper
             schoolYear = entity.tariff.schoolYear,
             arrear = entity.arrear,
             subTotal = entity.amount,
-            debtBalance = (entity.amount - entity.debtBalance)
+            debtBalance = entity.amount - entity.debtBalance
         };
 
         tariff.discount = tariff.amount - entity.subAmount;
