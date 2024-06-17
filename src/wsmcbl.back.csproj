@@ -32,11 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include=".github\workflows\sonarcloud.build.yml" />
-    <Content Include=".github\workflows\deploy.somee.yml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="publish\web.config" />
     <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
     <_ContentIncludedByDefault Remove="publish\appsettings.json" />

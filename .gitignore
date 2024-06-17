@@ -3,7 +3,7 @@
 .vscode/
 bin/
 obj/
-Properties/
+src/Properties/
 
 Makefile
-.sonarqube/
+src/.sonarqube/
