@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace wsmcbl.src.config;
+namespace wsmcbl.src.utilities;
 
 public class RoutePrefixConvention(string prefix) : IControllerModelConvention
 {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
-using Student_Accounting = wsmcbl.src.model.accounting.StudentEntity;
-using Student_Secretary = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -10,7 +8,7 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
 {
     public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
     public virtual DbSet<DebtHistoryEntity> DebtHistory { get; init; } = null!;
-    public virtual DbSet<StudentEntity> Student_accounting { get; init; } = null!;
+    public virtual DbSet<StudentEntity> Accounting_Student { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

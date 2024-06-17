@@ -35,7 +35,7 @@ public static class DtoMapper
     
     
 
-    public static List<DebtHistoryEntity> toEntity(this ICollection<DetailDto> listDto, string studentId)
+    public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto, string studentId)
     {
         return listDto.Where(i => !i.applyArrear)
             .Select(item => new DebtHistoryEntity
