@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsmcbl.back", "src\wsmcbl.back.csproj", "{436059F1-3611-48D0-B94A-5A79B18F2CF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsmcbl.src", "src\wsmcbl.src.csproj", "{436059F1-3611-48D0-B94A-5A79B18F2CF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wsmcbl.test", "test\wsmcbl.test.csproj", "{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{436059F1-3611-48D0-B94A-5A79B18F2CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{436059F1-3611-48D0-B94A-5A79B18F2CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{436059F1-3611-48D0-B94A-5A79B18F2CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACFCB971-1E44-4FA3-B62E-3F0E81B39B8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

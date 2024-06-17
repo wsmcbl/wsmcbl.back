@@ -6,4 +6,6 @@ obj/
 src/Properties/
 
 Makefile
-src/.sonarqube/
+.sonarqube/
+
+*.user

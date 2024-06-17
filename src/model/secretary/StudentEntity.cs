@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.secretary;
+namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
 {

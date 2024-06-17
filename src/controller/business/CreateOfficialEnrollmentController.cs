@@ -1,7 +1,7 @@
-using wsmcbl.back.model.dao;
-using wsmcbl.back.model.secretary;
+using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.back.controller.business;
+namespace wsmcbl.src.controller.business;
 
 public class CreateOfficialEnrollmentController : BaseController, ICreateOfficialEnrollmentController
 {

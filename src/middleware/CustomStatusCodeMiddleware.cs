@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace wsmcbl.back.middleware;
+namespace wsmcbl.src.middleware;
 
 public class CustomStatusCodeMiddleware(RequestDelegate next)
 {

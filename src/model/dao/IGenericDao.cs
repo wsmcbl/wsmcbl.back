@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.dao;
+namespace wsmcbl.src.model.dao;
 
 public interface IGenericDao<T, ID>
 {

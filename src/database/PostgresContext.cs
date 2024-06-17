@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.model.accounting;
-using wsmcbl.back.model.config;
-using Student_Accounting = wsmcbl.back.model.accounting.StudentEntity;
-using Student_Secretary = wsmcbl.back.model.secretary.StudentEntity;
+using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
+using Student_Accounting = wsmcbl.src.model.accounting.StudentEntity;
+using Student_Secretary = wsmcbl.src.model.secretary.StudentEntity;
 
-namespace wsmcbl.back.database;
+namespace wsmcbl.src.database;
 
 public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
 {
     public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
     public virtual DbSet<DebtHistoryEntity> DebtHistory { get; init; } = null!;
-    public virtual DbSet<Student_Accounting> Student_accounting { get; init; } = null!;
+    public virtual DbSet<StudentEntity> Student_accounting { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,7 +27,7 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasForeignKey(c => c.userId);
         });
         
-        modelBuilder.Entity<Student_Accounting>(entity =>
+        modelBuilder.Entity<StudentEntity>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 
@@ -46,7 +46,7 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
 
             entity.HasOne(d => d.student)
                 .WithOne()
-                .HasForeignKey<Student_Accounting>(d => d.studentId)
+                .HasForeignKey<StudentEntity>(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
             
@@ -55,7 +55,7 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasForeignKey(s => s.studentId);
         });
 
-        modelBuilder.Entity<Student_Secretary>(entity =>
+        modelBuilder.Entity<model.secretary.StudentEntity>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.model.dao;
+using wsmcbl.src.model.dao;
 
-namespace wsmcbl.back.database;
+namespace wsmcbl.src.database;
 
 public abstract class GenericDaoPostgres<T, ID>(PostgresContext context) : IGenericDao<T, ID> where T : class
 {

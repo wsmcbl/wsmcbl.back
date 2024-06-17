@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.accounting;
+namespace wsmcbl.src.model.accounting;
 
 public class TransactionTariffEntity
 {

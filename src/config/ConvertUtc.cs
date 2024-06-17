@@ -1,4 +1,4 @@
-namespace wsmcbl.back.config;
+namespace wsmcbl.src.config;
 
 public static class ConvertUtc
 {

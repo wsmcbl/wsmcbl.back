@@ -1,6 +1,6 @@
-using wsmcbl.back.model.accounting;
+using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.back.model.academy;
+namespace wsmcbl.src.model.academy;
 
 public class EnrollmentEntity
 {

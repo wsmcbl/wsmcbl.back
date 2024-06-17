@@ -1,7 +1,7 @@
-using wsmcbl.back.model.accounting;
-using wsmcbl.back.model.dao;
+using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
-namespace wsmcbl.back.database;
+namespace wsmcbl.src.database;
 
 public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {

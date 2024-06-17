@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using wsmcbl.back.exception;
-using wsmcbl.back.model.accounting;
-using wsmcbl.back.model.config;
+using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 
-namespace wsmcbl.back.database;
+namespace wsmcbl.src.database;
 
 public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;

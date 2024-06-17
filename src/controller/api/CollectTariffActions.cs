@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using wsmcbl.back.controller.business;
-using wsmcbl.back.dto.input;
-using wsmcbl.back.dto.output;
-using wsmcbl.back.middleware.filter;
+using wsmcbl.src.dto.output;
+using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.input;
+using wsmcbl.src.middleware.filter;
 
-namespace wsmcbl.back.controller.api;
+namespace wsmcbl.src.controller.api;
 
 [Route("accounting")]
 [ApiController]

@@ -1,9 +1,9 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using wsmcbl.back.exception;
+using wsmcbl.src.exception;
 
-namespace wsmcbl.back.middleware.filter;
+namespace wsmcbl.src.middleware.filter;
 
 public class GlobalExceptionFilter : IExceptionFilter
 {

@@ -1,4 +1,4 @@
-namespace wsmcbl.back.dto.input;
+namespace wsmcbl.src.dto.input;
 
 public class StudentDto
 {

@@ -1,7 +1,7 @@
-using wsmcbl.back.model.config;
-using wsmcbl.back.model.dao;
+using wsmcbl.src.model.config;
+using wsmcbl.src.model.dao;
 
-namespace wsmcbl.back.model.accounting;
+namespace wsmcbl.src.model.accounting;
 
 public interface ICashierDao : IGenericDao<CashierEntity, string>;
 

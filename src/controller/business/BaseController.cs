@@ -1,6 +1,6 @@
-using wsmcbl.back.model.dao;
+using wsmcbl.src.model.dao;
 
-namespace wsmcbl.back.controller.business;
+namespace wsmcbl.src.controller.business;
 
 public class BaseController(DaoFactory daoFactory)
 {

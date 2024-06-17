@@ -1,4 +1,4 @@
-namespace wsmcbl.back.dto.output;
+namespace wsmcbl.src.dto.output;
 
 public class DetailDto
 {

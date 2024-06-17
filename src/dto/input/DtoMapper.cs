@@ -1,7 +1,8 @@
-using wsmcbl.back.model.accounting;
-using StudentEntity = wsmcbl.back.model.secretary.StudentEntity;
+using wsmcbl.src.model.accounting;
+using secretary_StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
-namespace wsmcbl.back.dto.input;
+namespace wsmcbl.src.dto.input;
 
 public static class DtoMapper
 {
@@ -45,9 +46,9 @@ public static class DtoMapper
             .ToList();
     }
 
-    public static StudentEntity toEntity(this StudentDto dto)
+    public static secretary_StudentEntity toEntity(this StudentDto dto)
     {
-        return new StudentEntity
+        return new secretary_StudentEntity
         {
             name = dto.name,
             secondName = dto.secondName,

@@ -1,12 +1,12 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using wsmcbl.back.config;
-using wsmcbl.back.controller.business;
-using wsmcbl.back.database;
-using wsmcbl.back.middleware;
-using wsmcbl.back.middleware.filter;
-using wsmcbl.back.model.dao;
+using wsmcbl.src.config;
+using wsmcbl.src.controller.business;
+using wsmcbl.src.database;
+using wsmcbl.src.middleware;
+using wsmcbl.src.middleware.filter;
+using wsmcbl.src.model.dao;
 
 var builder = WebApplication.CreateBuilder(args);
 

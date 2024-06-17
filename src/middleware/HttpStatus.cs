@@ -1,4 +1,4 @@
-namespace wsmcbl.back.middleware;
+namespace wsmcbl.src.middleware;
 
 public enum HttpStatus
 {

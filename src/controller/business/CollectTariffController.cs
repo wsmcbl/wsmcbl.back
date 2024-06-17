@@ -1,9 +1,9 @@
-using wsmcbl.back.dto.output;
-using wsmcbl.back.exception;
-using wsmcbl.back.model.accounting;
-using wsmcbl.back.model.dao;
+using wsmcbl.src.dto.output;
+using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
-namespace wsmcbl.back.controller.business;
+namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController : BaseController, ICollectTariffController
 {

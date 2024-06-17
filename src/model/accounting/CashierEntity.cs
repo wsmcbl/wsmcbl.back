@@ -1,6 +1,6 @@
-using wsmcbl.back.model.config;
+using wsmcbl.src.model.config;
 
-namespace wsmcbl.back.model.accounting;
+namespace wsmcbl.src.model.accounting;
 
 public class CashierEntity 
 {

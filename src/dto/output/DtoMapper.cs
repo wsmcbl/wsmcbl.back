@@ -1,6 +1,6 @@
-using wsmcbl.back.model.accounting;
+using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.back.dto.output;
+namespace wsmcbl.src.dto.output;
 
 public static class DtoMapper
 {

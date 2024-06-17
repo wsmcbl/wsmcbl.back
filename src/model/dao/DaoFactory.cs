@@ -1,6 +1,6 @@
-using wsmcbl.back.model.accounting;
+using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.back.model.dao;
+namespace wsmcbl.src.model.dao;
 
 public abstract class DaoFactory
 {

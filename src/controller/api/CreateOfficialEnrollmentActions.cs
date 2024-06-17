@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using wsmcbl.back.controller.business;
-using wsmcbl.back.dto.input;
+using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.input;
 
-namespace wsmcbl.back.controller.api;
+namespace wsmcbl.src.controller.api;
 
 [Route("secretary")]
 [ApiController]

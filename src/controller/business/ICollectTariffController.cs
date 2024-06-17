@@ -1,7 +1,7 @@
-using wsmcbl.back.dto.output;
-using wsmcbl.back.model.accounting;
+using wsmcbl.src.dto.output;
+using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.back.controller.business;
+namespace wsmcbl.src.controller.business;
 
 public interface ICollectTariffController
 {

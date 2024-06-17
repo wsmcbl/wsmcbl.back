@@ -1,4 +1,4 @@
-namespace wsmcbl.back.exception;
+namespace wsmcbl.src.exception;
 
 public class DbException : Exception
 {

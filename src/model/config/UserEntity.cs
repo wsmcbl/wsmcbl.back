@@ -1,4 +1,4 @@
-namespace wsmcbl.back.model.config;
+namespace wsmcbl.src.model.config;
 
 public class UserEntity
 {

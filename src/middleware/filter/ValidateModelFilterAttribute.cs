@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace wsmcbl.back.middleware.filter;
+namespace wsmcbl.src.middleware.filter;
 
 public class ValidateModelFilterAttribute : ActionFilterAttribute
 {
