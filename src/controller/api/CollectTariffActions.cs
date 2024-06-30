@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware.filter;
 
 namespace wsmcbl.src.controller.api;
@@ -24,8 +25,13 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var student = await controller.getStudent(studentId);
+
+        if (student == null)
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
         
-        return Ok(student!.mapToDto());
+        return Ok(student.mapToDto());
     }
     
     /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
@@ -34,7 +40,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("tariffs/search")]
-    public async Task<IActionResult> getTariff([FromQuery] string q)
+    public async Task<IActionResult> getTariffs([FromQuery] string q)
     { 
         if (string.IsNullOrWhiteSpace(q))
         {

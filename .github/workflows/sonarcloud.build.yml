@@ -44,6 +44,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"wsmcbl_wsmcbl.back" /o:"wsmcblproyect2024" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/*.sql, **/*Context.cs"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"wsmcbl_wsmcbl.back" /o:"wsmcblproyect2024" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/*.sql, **/*Context.cs" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
           dotnet build
+          dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./TestResults/
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

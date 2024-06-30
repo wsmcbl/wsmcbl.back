@@ -2,12 +2,19 @@ namespace wsmcbl.src.model.accounting;
 
 public class StudentEntity
 {
+
+    public StudentEntity()
+    {
+        transactions = new List<TransactionEntity>();
+        debtHistory = new List<DebtHistoryEntity>();
+    }
+    
     public string? studentId { get; set; }
     public int discountId { get; set; }
     public DiscountEntity? discount { get; set; }
     public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<TransactionEntity>? transactions { get; set; }
-    public ICollection<DebtHistoryEntity>? debtHistory { get; set; }
+    public ICollection<TransactionEntity> transactions { get; set; }
+    public ICollection<DebtHistoryEntity> debtHistory { get; set; }
     
     public string fullName() => student.fullName();
     public string? enrollmentLabel => student.enrollmentLabel;

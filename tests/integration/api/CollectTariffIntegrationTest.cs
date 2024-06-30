@@ -1,4 +1,4 @@
-namespace wsmcbl.test.integration.controller;
+namespace wsmcbl.tests.integration.api;
 
 public class CollectTariffIntegrationTest
 {

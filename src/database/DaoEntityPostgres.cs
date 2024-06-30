@@ -56,13 +56,9 @@ public class TariffDaoPostgres(PostgresContext context)
         
         foreach (var debt in debts)
         {
-            if(debt.schoolyear == schoolyear)
+            if(debt.schoolyear == schoolyear || !debt.isPaid)
             {
                 list.Add(debt.tariff);
-            }
-            else if (!debt.isPaid)
-            {
-                 list.Add(debt.tariff);
             }
         }
         
@@ -200,6 +196,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context)
             debt.arrear = 0;
             context.Update(debt);
         }
+        
         await context.SaveChangesAsync();
     }
 }
