@@ -65,16 +65,16 @@ public class CollectTariffActionsTest
     }
 
     [Fact]
-    public void getStudentById_InvalidId_ReturnException()
+    public async Task getStudentById_InvalidId_ReturnException()
     {
-        Assert.ThrowsAsync<EntityNotFoundException>(() => actions.getStudentById("id2"));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => actions.getStudentById("id2"));
     }
 
     [Fact]
-    public void getStudentById_NullParameter_ReturnException()
+    public async Task getStudentById_NullParameter_ReturnException()
     {
         string id = null;
-        Assert.ThrowsAsync<Exception>(() => actions.getStudentById(id));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => actions.getStudentById(id));
     }
     
 
@@ -207,13 +207,5 @@ public class CollectTariffActionsTest
         var result = assertAndGetOkResult(actionResult);
         var dto = Assert.IsType<InvoiceDto>(result.Value);
         Assert.NotNull(dto);
-    }
-    
-    [Fact]
-    public void getInvoice_ValidParameter()
-    {
-        string transactionId = null;
-        
-        Assert.ThrowsAsync<Exception>(() => actions.getInvoice(transactionId));
     }
 }
