@@ -15,9 +15,13 @@ public static class DtoMapper
         }; 
     }
 
+    private static TransactionEntity? transaction;
     public static TransactionEntity toEntity(this TransactionDto dto)
     {
-        var transaction = new TransactionEntity
+        if (transaction != null)
+            return transaction;
+        
+        transaction = new TransactionEntity
         {
             studentId = dto.studentId,
             cashierId = dto.cashierId,
@@ -32,18 +36,24 @@ public static class DtoMapper
         
         return transaction;
     }
-    
-    
 
+
+
+    private static List<DebtHistoryEntity>? debtHistoryList;
     public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto, string studentId)
     {
-        return listDto.Where(i => !i.applyArrear)
+        if (debtHistoryList != null)
+            return debtHistoryList;
+        
+        debtHistoryList = listDto.Where(i => !i.applyArrear)
             .Select(item => new DebtHistoryEntity
             {
                 studentId = studentId, 
                 tariffId = item.tariffId
             })
             .ToList();
+
+        return debtHistoryList;
     }
 
     public static secretary_StudentEntity toEntity(this StudentDto dto)

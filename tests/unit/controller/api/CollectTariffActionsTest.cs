@@ -5,6 +5,7 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
+using DtoMapper = wsmcbl.src.dto.input.DtoMapper;
 
 namespace wsmcbl.tests.unit.controller.api;
 
@@ -19,10 +20,14 @@ public class CollectTariffActionsTest
         actions = new CollectTariffActions(controller);
     }
     
+    private static OkObjectResult assertAndGetOkResult(IActionResult actionResult) =>
+        Assert.IsType<OkObjectResult>(actionResult);
+    
+    
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentsList().Returns(getObjectStudentList());
+        controller.getStudentsList().Returns(EntityMaker.getAStudentList());
         
         var actionResult = await actions.getStudentList();
 
@@ -30,38 +35,6 @@ public class CollectTariffActionsTest
         var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
         Assert.NotEmpty(list);
         Assert.Equal(2, list.Count);
-    }
-
-    private StudentEntity getObjetStudent(string studentId)
-    {
-        var secretaryStudent = new src.model.secretary.StudentEntity
-        {
-            name = "name1",
-            surname = "surname1",
-            tutor = "tutor1",
-            schoolYear = "2024",
-            enrollmentLabel = "7mo"
-        };
-
-        var discount = new DiscountEntity
-        {
-            discountId = 1,
-            amount = 1000,
-            description = "Description",
-            tag = "A"
-        };
-        
-        return new StudentEntity
-        {
-            studentId = studentId,
-            student = secretaryStudent,
-            discount = discount
-        };
-    }
-    
-    private List<StudentEntity> getObjectStudentList()
-    {
-        return [getObjetStudent("id1"), getObjetStudent("id2")];
     }
     
     [Fact]
@@ -76,12 +49,13 @@ public class CollectTariffActionsTest
         var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
         Assert.Empty(list);
     }
+    
 
     [Fact]
     public async Task getStudentById_ValidId_ReturnStudent()
     {
         const string studentId = "id1";
-        controller.getStudent(studentId).Returns(getObjetStudent(studentId));
+        controller.getStudent(studentId).Returns(EntityMaker.getAStudent(studentId));
 
         var actionResult = await actions.getStudentById(studentId);
 
@@ -99,16 +73,18 @@ public class CollectTariffActionsTest
     [Fact]
     public void getStudentById_NullParameter_ReturnException()
     {
-        Assert.ThrowsAsync<Exception>(() => actions.getStudentById(null));
+        string id = null;
+        Assert.ThrowsAsync<Exception>(() => actions.getStudentById(id));
     }
+    
 
     [Fact]
-    public async Task getTariff_ValidStudentParameter_ReturnsTariffList()
+    public async Task getTariffList_ValidStudentParameter_ReturnsList()
     {
         var studentId = "id1";
-        controller.getTariffListByStudent(studentId).Returns(getObjectTariffList());
+        controller.getTariffListByStudent(studentId).Returns(EntityMaker.getATariffList());
 
-        var actionResult = await actions.getTariffs($"student:{studentId}");
+        var actionResult = await actions.getTariffList($"student:{studentId}");
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<TariffEntity>>(result.Value);
@@ -117,11 +93,11 @@ public class CollectTariffActionsTest
     }
 
     [Fact]
-    public async Task getTariff_OverdueParameter_ReturnsTariffList()
+    public async Task getTariffList_OverdueParameter_ReturnsList()
     {
-        controller.getOverdueTariffList().Returns(getObjectTariffList());
+        controller.getOverdueTariffList().Returns(EntityMaker.getATariffList());
 
-        var actionResult = await actions.getTariffs("state:overdue");
+        var actionResult = await actions.getTariffList("state:overdue");
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<TariffEntity>>(result.Value);
@@ -129,28 +105,115 @@ public class CollectTariffActionsTest
         Assert.Equal(2, list.Count);
     }
 
-    private List<TariffEntity> getObjectTariffList()
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("par1")]
+    [InlineData("par1:par2")]
+    [InlineData("par1:par2:par3:par4")]
+    public async Task getTariffList_InvalidParameter_ReturnBadRequest(string parameter)
     {
-        var tariff = new TariffEntity
-        {
-            tariffId = 2,
-            amount = 1000,
-            concept = "concept",
-            dueDate = new DateOnly(),
-            isLate = true,
-            schoolYear = "2024",
-            type = 1
-        };
-
-        var list = new List<TariffEntity> { tariff };
-
-        tariff.tariffId = 1;
+        var actionResult = await actions.getTariffList(parameter);
         
-        list.Add(tariff);
-
-        return list;
+        Assert.IsType<BadRequestObjectResult>(actionResult);
     }
 
-    private ObjectResult assertAndGetOkResult(IActionResult actionResult) =>
-        Assert.IsType<OkObjectResult>(actionResult);
+    
+    [Fact]
+    public async Task getTariffTypeList_ReturnsList()
+    {
+        controller.getTariffTypeList().Returns(EntityMaker.getTariffTypeList());
+
+        var actionResult = await actions.getTariffTypeList();
+
+        var result = assertAndGetOkResult(actionResult);
+        var list = Assert.IsType<List<TariffTypeEntity>>(result.Value);
+        Assert.NotEmpty(list);
+        Assert.Equal(2, list.Count);
+    }
+    
+    [Fact]
+    public async Task getTariffTypeList_ListNull_ReturnsException()
+    {
+        controller.getTariffTypeList().Returns([]);
+        
+        var actionResult = await actions.getTariffTypeList();
+
+        var result = assertAndGetOkResult(actionResult);
+        var list = Assert.IsType<List<TariffTypeEntity>>(result.Value);
+        Assert.Empty(list);
+    }
+
+    
+    [Fact]
+    public async Task applyArrears_ArrearsApplied()
+    {
+        const int tariffId = 1;
+        controller.applyArrears(tariffId).Returns(Task.FromResult(true));
+
+        var actionResult = await actions.applyArrears(tariffId);
+
+        assertAndGetOkResult(actionResult);
+    }
+    
+    [Fact]
+    public async Task applyArrears_InvalidId()
+    {
+        var actionResult = await actions.applyArrears(-5);
+
+        Assert.IsType<BadRequestObjectResult>(actionResult);
+    }
+
+    
+    [Fact]
+    public async Task saveTransaction_ValidParameter_TransactionIsSave()
+    {
+        var dto = EntityMaker.getATransactionDto();
+        controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
+        controller.exonerateArrears(DtoMapper.toEntity(dto.details!, "std-id")).Returns(Task.FromResult("string"));
+        
+        var actionResult = await actions.saveTransaction(dto);
+
+        var result = assertAndGetOkResult(actionResult);
+        Assert.NotNull(result.Value);
+        var valueResult = result.Value.GetType().GetProperty("transactionId");
+        Assert.NotNull(valueResult);
+        var id = Assert.IsType<string>(valueResult.GetValue(result.Value));
+        Assert.Equal("tst-id", id);
+    }
+    
+    [Fact]
+    public async Task saveTransaction_InvalidParameter_ReturnsException()
+    {
+        var dto = EntityMaker.getAIncorrectTransactionDto();
+        controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("id");
+        controller.exonerateArrears(DtoMapper.toEntity(dto.details, "std-id"))
+            .Returns(_ => throw new DbException("Any exception"));
+        
+        var actionResult = await actions.saveTransaction(dto);
+
+        Assert.IsType<BadRequestObjectResult>(actionResult);
+    }
+
+
+    [Fact]
+    public async Task getInvoice_ValidParameter_ReturnsInvoice()
+    {
+        const string transactionId = "tst-id";
+        controller.getFullTransaction(transactionId).Returns(EntityMaker.getAInvoice());
+
+        var actionResult = await actions.getInvoice(transactionId);
+
+        var result = assertAndGetOkResult(actionResult);
+        var dto = Assert.IsType<InvoiceDto>(result.Value);
+        Assert.NotNull(dto);
+    }
+    
+    [Fact]
+    public void getInvoice_ValidParameter()
+    {
+        string transactionId = null;
+        
+        Assert.ThrowsAsync<Exception>(() => actions.getInvoice(transactionId));
+    }
 }

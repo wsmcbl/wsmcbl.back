@@ -40,7 +40,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("tariffs/search")]
-    public async Task<IActionResult> getTariffs([FromQuery] string q)
+    public async Task<IActionResult> getTariffList([FromQuery] string q)
     { 
         if (string.IsNullOrWhiteSpace(q))
         {
@@ -53,14 +53,13 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
             return BadRequest("Query parameter 'q' is not in the correct format.");
         }
 
-        var key = parts[0];
-        var value = parts[1];
+        var key = parts[0].ToLower();
+        var value = parts[1].ToLower();
 
-        return key.ToLower() switch
+        return key switch
         {
             "student" => Ok(await controller.getTariffListByStudent(value)),
-            "state" when value.Equals("overdue", StringComparison.CurrentCultureIgnoreCase)
-                => Ok(await controller.getOverdueTariffList()),
+            "state" when value.Equals("overdue") => Ok(await controller.getOverdueTariffList()),
             _ => BadRequest("Unknown search key.")
         };
     }
@@ -88,8 +87,15 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
             return BadRequest("Invalid ID.");   
         }
 
-        await controller.applyArrears(tariffId);
-        return Ok();
+        try
+        {
+            await controller.applyArrears(tariffId);
+            return Ok("Arrears applied");
+        }
+        catch(Exception e)
+        {
+            return BadRequest($"Server Error: {e.Message}");
+        }
     }
 
     [HttpPost]
@@ -97,10 +103,17 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [ServiceFilter(typeof(ValidateModelFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto transaction)
     {
-        var transactionId = await controller.saveTransaction(transaction.toEntity());
-        await controller.exonerateArrears(transaction.details!.toEntity(transaction.studentId));
-        
-        return Ok(new { transactionId });
+        try
+        {
+            var transactionId = await controller.saveTransaction(transaction.toEntity());
+            await controller.exonerateArrears(transaction.details.toEntity(transaction.studentId));
+            
+            return Ok(new { transactionId });
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"Server Error: {e.Message}");
+        }
     }
     
     [HttpGet]
