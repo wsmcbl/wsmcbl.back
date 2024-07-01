@@ -22,7 +22,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentsList().Returns(getObjectStudentList());
+        controller.getStudentsList().Returns(EntityMaker.getObjectStudentList());
         
         var actionResult = await actions.getStudentList();
 
@@ -30,38 +30,6 @@ public class CollectTariffActionsTest
         var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
         Assert.NotEmpty(list);
         Assert.Equal(2, list.Count);
-    }
-
-    private StudentEntity getObjetStudent(string studentId)
-    {
-        var secretaryStudent = new src.model.secretary.StudentEntity
-        {
-            name = "name1",
-            surname = "surname1",
-            tutor = "tutor1",
-            schoolYear = "2024",
-            enrollmentLabel = "7mo"
-        };
-
-        var discount = new DiscountEntity
-        {
-            discountId = 1,
-            amount = 1000,
-            description = "Description",
-            tag = "A"
-        };
-        
-        return new StudentEntity
-        {
-            studentId = studentId,
-            student = secretaryStudent,
-            discount = discount
-        };
-    }
-    
-    private List<StudentEntity> getObjectStudentList()
-    {
-        return [getObjetStudent("id1"), getObjetStudent("id2")];
     }
     
     [Fact]
@@ -81,7 +49,7 @@ public class CollectTariffActionsTest
     public async Task getStudentById_ValidId_ReturnStudent()
     {
         const string studentId = "id1";
-        controller.getStudent(studentId).Returns(getObjetStudent(studentId));
+        controller.getStudent(studentId).Returns(EntityMaker.getObjetStudent(studentId));
 
         var actionResult = await actions.getStudentById(studentId);
 
@@ -106,7 +74,7 @@ public class CollectTariffActionsTest
     public async Task getTariff_ValidStudentParameter_ReturnsTariffList()
     {
         var studentId = "id1";
-        controller.getTariffListByStudent(studentId).Returns(getObjectTariffList());
+        controller.getTariffListByStudent(studentId).Returns(EntityMaker.getObjectTariffList());
 
         var actionResult = await actions.getTariffs($"student:{studentId}");
 
@@ -119,7 +87,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariff_OverdueParameter_ReturnsTariffList()
     {
-        controller.getOverdueTariffList().Returns(getObjectTariffList());
+        controller.getOverdueTariffList().Returns(EntityMaker.getObjectTariffList());
 
         var actionResult = await actions.getTariffs("state:overdue");
 
@@ -128,29 +96,7 @@ public class CollectTariffActionsTest
         Assert.NotEmpty(list);
         Assert.Equal(2, list.Count);
     }
-
-    private List<TariffEntity> getObjectTariffList()
-    {
-        var tariff = new TariffEntity
-        {
-            tariffId = 2,
-            amount = 1000,
-            concept = "concept",
-            dueDate = new DateOnly(),
-            isLate = true,
-            schoolYear = "2024",
-            type = 1
-        };
-
-        var list = new List<TariffEntity> { tariff };
-
-        tariff.tariffId = 1;
-        
-        list.Add(tariff);
-
-        return list;
-    }
-
-    private ObjectResult assertAndGetOkResult(IActionResult actionResult) =>
+    
+    private static OkObjectResult assertAndGetOkResult(IActionResult actionResult) =>
         Assert.IsType<OkObjectResult>(actionResult);
 }
