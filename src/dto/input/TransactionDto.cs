@@ -15,5 +15,5 @@ public class TransactionDto
     public DateTime dateTime { get; set; }
     
     [Required]
-    public ICollection<DetailDto>? details { get; set; } = new List<DetailDto>();
+    public ICollection<DetailDto> details { get; set; } = new List<DetailDto>();
 }
