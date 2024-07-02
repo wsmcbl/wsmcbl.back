@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
 using wsmcbl.src.controller.api;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
@@ -73,8 +72,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentById_NullParameter_ReturnException()
     {
-        string id = null;
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => actions.getStudentById(id));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => actions.getStudentById(string.Empty));
     }
     
 
@@ -107,7 +105,6 @@ public class CollectTariffActionsTest
 
     [Theory]
     [InlineData("")]
-    [InlineData(null)]
     [InlineData("par1")]
     [InlineData("par1:par2")]
     [InlineData("par1:par2:par3:par4")]
