@@ -13,6 +13,7 @@ public class StudentEntity
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
     public string? enrollmentLabel { get; set; }
+ 
     public string fullName()
     {
         return name + " " + secondName + " " + surname + " " + secondSurname;

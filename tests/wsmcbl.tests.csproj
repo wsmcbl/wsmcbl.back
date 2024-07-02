@@ -26,8 +26,6 @@
 
     <ItemGroup>
       <Folder Include="integration\database\" />
-      <Folder Include="unit\controller\businnes\" />
-      <Folder Include="unit\model\" />
     </ItemGroup>
 
 </Project>

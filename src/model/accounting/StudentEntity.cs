@@ -2,7 +2,6 @@ namespace wsmcbl.src.model.accounting;
 
 public class StudentEntity
 {
-
     public StudentEntity()
     {
         transactions = new List<TransactionEntity>();

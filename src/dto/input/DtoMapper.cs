@@ -1,6 +1,5 @@
 using wsmcbl.src.model.accounting;
 using secretary_StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.dto.input;
 
