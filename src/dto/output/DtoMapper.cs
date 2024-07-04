@@ -6,7 +6,6 @@ public static class DtoMapper
 {
     public static InvoiceDto mapToDto(this TransactionEntity transaction, StudentEntity? student, CashierEntity? cashier)
     {
-        
         var element = new InvoiceDto
         {
             transactionId = transaction.transactionId!,

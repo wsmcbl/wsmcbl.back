@@ -2,6 +2,7 @@ using System.Runtime.InteropServices.JavaScript;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 using DetailDto = wsmcbl.src.dto.input.DetailDto;
 
 namespace wsmcbl.tests.unit.controller;
@@ -110,24 +111,14 @@ public static class EntityMaker
     public static TransactionDto getAIncorrectTransactionDto()
     {
         var transaction = getATransactionDto();
-        transaction.cashierId = null;
-        transaction.studentId = null;
+        transaction.cashierId = "";
+        transaction.studentId = "";
 
         return transaction;
     }
 
-    public static InvoiceDto getAInvoice()
+    public static (TransactionEntity, StudentEntity, CashierEntity, float[]) getAInvoice()
     {
-        return new InvoiceDto
-        {
-            studentId = "std-id",
-            cashierName = "cashier",
-            dateTime = DateTime.Now,
-            detail = new List<src.dto.output.DetailDto>(),
-            generalBalance = [1, 3],
-            studentName = "std name",
-            total = 1234,
-            transactionId = "tst-id" 
-        };
+        return (new TransactionEntity(), new StudentEntity{student = getASecretaryStudent("std")}, new CashierEntity{user = new UserEntity()}, [1.1f, 1]);
     }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.controller.business;
@@ -24,14 +25,16 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
-        var student = await controller.getStudent(studentId);
-
-        if (student == null)
+        try
+        {
+            var student = await controller.getStudent(studentId);
+        
+            return Ok(student.mapToDto());
+        }
+        catch
         {
             throw new EntityNotFoundException("Student", studentId);
         }
-        
-        return Ok(student.mapToDto());
     }
     
     /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
@@ -120,7 +123,10 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("transactions/invoices/{transactionId}")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
-        var invoice = await controller.getFullTransaction(transactionId);
-        return Ok(invoice);
+        var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(transactionId);
+        var dto = transaction.mapToDto(student, cashier);
+        dto.generalBalance = generalBalance;
+
+        return Ok(dto);
     }
 }

@@ -1,4 +1,3 @@
-using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -17,7 +16,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return await daoFactory.studentDao<StudentEntity>()!.getAll();
     }
     
-    public async Task<StudentEntity?> getStudent(string studentId)
+    public async Task<StudentEntity> getStudent(string studentId)
     {
         var student = await daoFactory.studentDao<StudentEntity>()!.getById(studentId);
 
@@ -67,7 +66,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return transaction.transactionId!;
     }
 
-    public async Task<InvoiceDto> getFullTransaction(string transactionId)
+    public async Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId)
     {
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
         
@@ -76,14 +75,12 @@ public class CollectTariffController : BaseController, ICollectTariffController
             throw new EntityNotFoundException("Transaction", transactionId);
         }
         
-        var cashier = await getCashier(transaction.cashierId);
+        var cashier = await daoFactory.cashierDao!.getById(transaction.cashierId);
         var student = await getStudent(transaction.studentId);
         
-        var dto = transaction.mapToDto(student, cashier);
-        
-        dto.generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
-        
-        return dto;
+        var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
+
+        return (transaction, student, cashier!, generalBalance);
     }
 
     public Task<List<TariffTypeEntity>> getTariffTypeList()
@@ -94,10 +91,5 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public async Task exonerateArrears(List<DebtHistoryEntity> debts)
     {
         await daoFactory.debtHistoryDao!.exonerateArrears(debts);
-    }
-
-    private Task<CashierEntity?> getCashier(string id)
-    {
-        return daoFactory.cashierDao!.getById(id);
     }
 }
