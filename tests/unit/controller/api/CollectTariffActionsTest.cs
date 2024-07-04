@@ -79,15 +79,16 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffList_ValidStudentParameter_ReturnsList()
     {
-        var studentId = "id1";
-        controller.getTariffListByStudent(studentId).Returns(EntityMaker.getATariffList());
+        const string studentId = "id1";
+        var initList = EntityMaker.getATariffList();
+        controller.getTariffListByStudent(studentId).Returns(initList);
 
         var actionResult = await actions.getTariffList($"student:{studentId}");
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<TariffEntity>>(result.Value);
         Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
+        Assert.Equal(initList, list);
     }
 
     [Fact]
@@ -154,16 +155,26 @@ public class CollectTariffActionsTest
     }
     
     [Fact]
-    public async Task applyArrears_InvalidId()
+    public async Task applyArrears_InvalidId_ReturnsBadRequestObject()
     {
-        var actionResult = await actions.applyArrears(-5);
+        var actionResult = await actions.applyArrears(-1);
+
+        Assert.IsType<BadRequestObjectResult>(actionResult);
+    }
+    
+    [Fact]
+    public async Task applyArrears_ExceptionOccurs_ReturnsBadRequestObject()
+    {
+        controller.applyArrears(1).Returns(_ => throw new Exception("Internal error"));
+        
+        var actionResult = await actions.applyArrears(1);
 
         Assert.IsType<BadRequestObjectResult>(actionResult);
     }
 
     
     [Fact]
-    public async Task saveTransaction_ValidParameter_TransactionIsSave()
+    public async Task saveTransaction_TransactionIsSave()
     {
         var dto = EntityMaker.getATransactionDto();
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
