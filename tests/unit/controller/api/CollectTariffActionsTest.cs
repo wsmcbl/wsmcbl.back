@@ -4,6 +4,7 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
+using wsmcbl.tests.utilities;
 using DtoMapper = wsmcbl.src.dto.input.DtoMapper;
 
 namespace wsmcbl.tests.unit.controller.api;
@@ -12,11 +13,13 @@ public class CollectTariffActionsTest
 {
     private readonly ICollectTariffController controller;
     private readonly CollectTariffActions actions;
+    private readonly TestEntityGenerator entityGenerator;
 
     public CollectTariffActionsTest()
     {
         controller = Substitute.For<ICollectTariffController>();
         actions = new CollectTariffActions(controller);
+        entityGenerator = new TestEntityGenerator();
     }
     
     private static OkObjectResult assertAndGetOkResult(IActionResult actionResult) =>
@@ -26,7 +29,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentsList().Returns(EntityMaker.getAStudentList());
+        controller.getStudentsList().Returns(entityGenerator.aStudentList());
         
         var actionResult = await actions.getStudentList();
 
@@ -54,7 +57,7 @@ public class CollectTariffActionsTest
     public async Task getStudentById_ValidId_ReturnStudent()
     {
         const string studentId = "id1";
-        controller.getStudent(studentId).Returns(EntityMaker.getAStudent(studentId));
+        controller.getStudent(studentId).Returns(entityGenerator.aStudent(studentId));
 
         var actionResult = await actions.getStudentById(studentId);
 
@@ -80,7 +83,7 @@ public class CollectTariffActionsTest
     public async Task getTariffList_ValidStudentParameter_ReturnsList()
     {
         const string studentId = "id1";
-        var initList = EntityMaker.getATariffList();
+        var initList = entityGenerator.aTariffList();
         controller.getTariffListByStudent(studentId).Returns(initList);
 
         var actionResult = await actions.getTariffList($"student:{studentId}");
@@ -94,7 +97,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffList_OverdueParameter_ReturnsList()
     {
-        controller.getOverdueTariffList().Returns(EntityMaker.getATariffList());
+        controller.getOverdueTariffList().Returns(entityGenerator.aTariffList());
 
         var actionResult = await actions.getTariffList("state:overdue");
 
@@ -120,7 +123,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffTypeList_ReturnsList()
     {
-        controller.getTariffTypeList().Returns(EntityMaker.getTariffTypeList());
+        controller.getTariffTypeList().Returns(entityGenerator.aTariffTypeList());
 
         var actionResult = await actions.getTariffTypeList();
 
@@ -176,7 +179,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task saveTransaction_TransactionIsSave()
     {
-        var dto = EntityMaker.getATransactionDto();
+        var dto = entityGenerator.aTransactionDto();
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
         controller.exonerateArrears(DtoMapper.toEntity(dto.details!, "std-id")).Returns(Task.FromResult("string"));
         
@@ -193,7 +196,10 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task saveTransaction_InvalidParameter_ReturnsException()
     {
-        var dto = EntityMaker.getAIncorrectTransactionDto();
+        var dto = entityGenerator.aTransactionDto();
+        dto.cashierId = "";
+        dto.studentId = "";
+        
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("id");
         controller.exonerateArrears(DtoMapper.toEntity(dto.details, "std-id"))
             .Returns(_ => throw new DbException("Any exception"));
@@ -208,7 +214,7 @@ public class CollectTariffActionsTest
     public async Task getInvoice_ValidParameter_ReturnsInvoice()
     {
         const string transactionId = "tst-id";
-        controller.getFullTransaction(transactionId).Returns(EntityMaker.getAInvoice());
+        controller.getFullTransaction(transactionId).Returns(entityGenerator.aTupleInvoice());
 
         var actionResult = await actions.getInvoice(transactionId);
 

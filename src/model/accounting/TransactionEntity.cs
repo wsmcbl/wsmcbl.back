@@ -7,11 +7,12 @@ public class TransactionEntity
     public string studentId { get; set; } = null!;
     public float total { get; set; }
     public DateTime date { get; set; }
-    public ICollection<TransactionTariffEntity> details { get; set; } = new List<TransactionTariffEntity>();
+    public ICollection<TransactionTariffEntity> details { get; set; } = [];
 
     public void computeTotal()
     {
         total = 0;
+        
         foreach (var item in details)
         {
             total += item.amount;

@@ -1,6 +1,6 @@
-namespace wsmcbl.src.middleware;
+namespace wsmcbl.src.utilities;
 
-public enum HttpStatus
+public enum HttpStatusEnum
 {
     EntityNotFound = 410,
     ArgumentInvalid = 460,

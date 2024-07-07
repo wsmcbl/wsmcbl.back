@@ -4,8 +4,8 @@ public class StudentEntity
 {
     public StudentEntity()
     {
-        transactions = new List<TransactionEntity>();
-        debtHistory = new List<DebtHistoryEntity>();
+        transactions = [];
+        debtHistory = [];
     }
     
     public string? studentId { get; set; }

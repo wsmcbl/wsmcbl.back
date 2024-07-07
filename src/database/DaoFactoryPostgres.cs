@@ -14,8 +14,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     private ITransactionDao? _transactionDao;
     public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
     
-    private StudentDaoPostgres? _accountingStudentDao;
-    private StudentDaoPostgres accountingStudentDao => _accountingStudentDao ??= new StudentDaoPostgres(context); 
+    
+    private IStudentDao? _accountingStudentDao;
+    private IStudentDao accountingStudentDao => _accountingStudentDao ??= new StudentDaoPostgres(context); 
         
     private SecretaryStudentDaoPostgres? _secretaryStudentDao;
     private SecretaryStudentDaoPostgres secretaryStudentDao =>
@@ -25,12 +26,12 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         if (typeof(T) == typeof(StudentEntity))
         {
-            return (IGenericDao<T, string>?) accountingStudentDao;
-        }
-
+            return accountingStudentDao as IGenericDao<T, string>;
+        } 
+        
         if (typeof(T) == typeof(model.secretary.StudentEntity))
         {
-            return (IGenericDao<T, string>?) secretaryStudentDao;
+            return secretaryStudentDao as IGenericDao<T, string>;
         }
 
         return null;

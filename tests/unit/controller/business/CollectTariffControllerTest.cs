@@ -1,9 +1,9 @@
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
+using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.controller.business;
 
@@ -13,6 +13,7 @@ public class CollectTariffControllerTest
     private readonly DaoFactory daoFactory;
     private readonly IStudentDao studentDao;
     private readonly ITariffDao tariffDao;
+    private readonly TestEntityGenerator entityGenerator;
 
     public CollectTariffControllerTest()
     {
@@ -21,12 +22,14 @@ public class CollectTariffControllerTest
         
         daoFactory = Substitute.For<DaoFactory>();
         controller = new CollectTariffController(daoFactory);
+
+        entityGenerator = new TestEntityGenerator();
     }
 
     [Fact]
     public async Task getStudentsList_ReturnsList()
     {
-        var list = EntityMaker.getAStudentList();
+        var list = entityGenerator.aStudentList();
         studentDao.getAll().Returns(list);
         daoFactory.studentDao<StudentEntity>().Returns(studentDao);
 
@@ -54,7 +57,7 @@ public class CollectTariffControllerTest
     public async Task getStudent_ReturnsStudent()
     {
         const string studentId = "std";
-        studentDao.getById(studentId).Returns(EntityMaker.getAStudent(studentId));
+        studentDao.getById(studentId).Returns(entityGenerator.aStudent(studentId));
         daoFactory.studentDao<StudentEntity>().Returns(studentDao);
 
         var result = await controller.getStudent(studentId);
@@ -79,7 +82,7 @@ public class CollectTariffControllerTest
     public async Task getTariffListByStudent_ReturnsList()
     {
         const string studentId = "std";
-        var list = EntityMaker.getATariffList();
+        var list = entityGenerator.aTariffList();
         tariffDao.getListByStudent(studentId).Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 
@@ -94,7 +97,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getOverdueTariffList_ReturnsList()
     {
-        var list = EntityMaker.getATariffList();
+        var list = entityGenerator.aTariffList();
         tariffDao.getOverdueList().Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 
@@ -156,22 +159,19 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getFullTransaction_ReturnsInvoice()
     {
-        var initTransaction = Substitute.For<TransactionEntity>();
-        initTransaction.studentId = "std";
-        initTransaction.transactionId = "std";
-        initTransaction.cashierId = "csh";
-        
-        var transactionDao = Substitute.For<ITransactionDao>();
-        var cashierDao = Substitute.For<ICashierDao>();
-        
-        var initStudent = EntityMaker.getAStudent("std");
+        var initStudent = entityGenerator.aStudent("std");
         var initCashier = new CashierEntity{cashierId = "csh", user = new UserEntity()};
+        var initTransaction = new TransactionEntity { transactionId = "std", studentId = "std", cashierId = "csh" };
+        
+        var cashierDao = Substitute.For<ICashierDao>();
+        var transactionDao = Substitute.For<ITransactionDao>();
 
         cashierDao.getById("csh").Returns(initCashier);
         tariffDao.getGeneralBalance("std").Returns([1, 2]);
         transactionDao.getById(initTransaction.transactionId).Returns(initTransaction);
-        daoFactory.cashierDao.Returns(cashierDao);
+        
         daoFactory.tariffDao.Returns(tariffDao);
+        daoFactory.cashierDao.Returns(cashierDao);
         daoFactory.transactionDao.Returns(transactionDao);
         
         controller.getStudent("std").Returns(initStudent);
@@ -184,11 +184,22 @@ public class CollectTariffControllerTest
         Assert.Equal([1, 2], generalBalance);
     }
     
+    [Fact]
+    public async Task getFullTransaction_TransactionNull_ReturnsException()
+    {
+        const string transactionId = "std";
+        var transactionDao = Substitute.For<ITransactionDao>();
+        transactionDao.getById(transactionId).Returns(Task.FromResult<TransactionEntity?>(null));
+        daoFactory.transactionDao.Returns(transactionDao);
+
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getFullTransaction(transactionId));
+    }
+    
     
     [Fact]
     public async Task getTariffTypeList_ReturnsList()
     {
-        var list = EntityMaker.getTariffTypeList();
+        var list = entityGenerator.aTariffTypeList();
         var tariffTypeDao = Substitute.For<ITariffTypeDao>();
         tariffTypeDao.getAll().Returns(list);
         daoFactory.tariffTypeDao.Returns(tariffTypeDao);

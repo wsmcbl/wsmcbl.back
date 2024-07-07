@@ -1,6 +1,7 @@
 using wsmcbl.src.controller.business;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.controller.business;
 
@@ -21,7 +22,8 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getStudentList()
     {
-        studentDao.getAll().Returns(EntityMaker.getASecretaryStudentList());
+        var entityGenerator = new TestEntityGenerator();
+        studentDao.getAll().Returns(entityGenerator.aSecretaryStudentList());
         daoFactory.studentDao<StudentEntity>().Returns(studentDao);
 
         var result = await controller.getStudentList();

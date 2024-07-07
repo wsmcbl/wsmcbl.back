@@ -51,18 +51,10 @@ public class TariffDaoPostgres(PostgresContext context)
             .FromResult(context.DebtHistory
                 .Where(d => d.studentId == studentId)
                 .Include(d => d.tariff));
-        
-        var list = new List<TariffEntity>();
-        
-        foreach (var debt in debts)
-        {
-            if(debt.schoolyear == schoolyear || !debt.isPaid)
-            {
-                list.Add(debt.tariff);
-            }
-        }
-        
-        return list;
+
+        return debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
+            .Select(d => d.tariff)
+            .ToList();
     }
 
     public async Task<float[]> getGeneralBalance(string studentId)
