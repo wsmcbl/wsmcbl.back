@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.api;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.model.secretary;
+using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.controller.api;
 
@@ -23,7 +24,8 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentList().Returns(EntityMaker.getASecretaryStudentList());
+        var entityGenerator = new TestEntityGenerator();
+        controller.getStudentList().Returns(entityGenerator.aSecretaryStudentList());
 
         var actionResult = await actions.getStudentList();
 

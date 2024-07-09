@@ -56,12 +56,14 @@ public class CollectTariffController : BaseController, ICollectTariffController
         
         tariff.isLate = true;
         
-        await daoFactory.tariffDao!.update(tariff);
+        daoFactory.tariffDao!.update(tariff);
+        await daoFactory.execute();
     }
     
     public async Task<string> saveTransaction(TransactionEntity transaction)
     {
-        await daoFactory.transactionDao!.create(transaction);
+        daoFactory.transactionDao!.create(transaction);
+        await daoFactory.execute();
 
         return transaction.transactionId!;
     }
@@ -91,5 +93,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public async Task exonerateArrears(List<DebtHistoryEntity> debts)
     {
         await daoFactory.debtHistoryDao!.exonerateArrears(debts);
+        await daoFactory.execute();
     }
 }

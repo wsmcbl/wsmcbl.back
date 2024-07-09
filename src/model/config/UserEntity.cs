@@ -19,4 +19,9 @@ public class UserEntity
     public string? email { get; set; }
 
     public bool isActive { get; set; }
+    
+    public string fullName() 
+    {
+        return name + " " + secondName + " " + surname + " " + secondsurName;
+    }
 }

@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using wsmcbl.src.exception;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.middleware.filter;
 
@@ -12,9 +13,9 @@ public class GlobalExceptionFilter : IExceptionFilter
         
         var statusCode = context.Exception switch
         {
-            EntityNotFoundException => (int)HttpStatus.EntityNotFound,
-            DbException => (int)HttpStatus.ArgumentInvalid,
-            EntityUpdateException => (int)HttpStatus.NotApplied,
+            EntityNotFoundException => (int)HttpStatusEnum.EntityNotFound,
+            DbException => (int)HttpStatusEnum.ArgumentInvalid,
+            EntityUpdateException => (int)HttpStatusEnum.NotApplied,
             _ => (int)HttpStatusCode.InternalServerError
         };
         
