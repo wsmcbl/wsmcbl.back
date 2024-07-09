@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <AssemblyTitle>WSMCBL backend</AssemblyTitle>
-    <AssemblyVersion>v1.0.0-beta</AssemblyVersion>
+    <AssemblyVersion>1.0.0-beta</AssemblyVersion>
     <AssemblyDescription>API del proyecto WSMCBL desarrollado en ASP.NET.</AssemblyDescription>
   </PropertyGroup>
   
