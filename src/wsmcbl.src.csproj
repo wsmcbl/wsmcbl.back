@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   
   <PropertyGroup>
-    <AssemblyTitle>WSMCBL backend</AssemblyTitle>
+    <AssemblyTitle>API WSMCBL Beta</AssemblyTitle>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <AssemblyDescription>API del proyecto WSMCBL desarrollado en ASP.NET.</AssemblyDescription>
   </PropertyGroup>
