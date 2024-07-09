@@ -19,7 +19,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     private IStudentDao accountingStudentDao => _accountingStudentDao ??= new StudentDaoPostgres(context); 
         
     private SecretaryStudentDaoPostgres? _secretaryStudentDao;
-    private SecretaryStudentDaoPostgres secretaryStudentDao =>
+    private SecretaryStudentDaoPostgres secretaryStudentDao => 
         _secretaryStudentDao ??= new SecretaryStudentDaoPostgres(context);
 
     public override IGenericDao<T, string>? studentDao<T>()
@@ -43,4 +43,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     private IDebtHistoryDao? _debtHistoryDao;
     public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
+    
+    public override async Task execute()
+    {
+        await context.SaveChangesAsync();
+    }
 }

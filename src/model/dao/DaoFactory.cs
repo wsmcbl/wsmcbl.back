@@ -11,4 +11,6 @@ public abstract class DaoFactory
     public virtual IDebtHistoryDao? debtHistoryDao => null;
     
     public virtual IGenericDao<T, string>? studentDao<T>() => null;
+
+    public virtual Task execute() => Task.CompletedTask;
 }

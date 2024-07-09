@@ -14,10 +14,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return daoFactory.studentDao<StudentEntity>()!.getAll();
     }
 
-    public Task saveStudent(StudentEntity student)
+    public async Task saveStudent(StudentEntity student)
     {
         student.isActive = true;
         student.schoolYear = DateTime.Now.Year.ToString();
-        return daoFactory.studentDao<StudentEntity>()!.create(student);
+        daoFactory.studentDao<StudentEntity>()!.create(student);
+        await daoFactory.execute();
     }
 }

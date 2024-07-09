@@ -3,31 +3,34 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public abstract class GenericDaoPostgres<T, ID>(PostgresContext context) : IGenericDao<T, ID> where T : class
+public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : class
 {
-    protected readonly PostgresContext context = context;
+    protected readonly DbSet<T> entities;
+    protected PostgresContext context { get; }
 
-    public virtual async Task create(T entity)
+    protected GenericDaoPostgres(PostgresContext context)
     {
-        context.Set<T>().Add(entity);
-        await context.SaveChangesAsync();
+         entities = context.Set<T>();
+         this.context = context;
+    }
+
+    public virtual void create(T entity)
+    {
+        entities.Add(entity);
     }
 
     public virtual async Task<T?> getById(ID id)
     {
-        var element = await context.Set<T>().FindAsync(id);
-        return element;
+        return await entities.FindAsync(id);
     }
 
-    public async Task update(T entity)
+    public void update(T entity)
     {
-        context.Set<T>().Update(entity);
-        await context.SaveChangesAsync();
+        entities.Update(entity);
     }
 
     public async Task<List<T>> getAll()
     {
-        var elements = await context.Set<T>().ToListAsync();
-        return elements;
+        return await entities.ToListAsync();
     }
 }
