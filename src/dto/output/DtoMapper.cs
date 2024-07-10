@@ -75,7 +75,9 @@ public static class DtoMapper
             paymentHistory = new List<TariffDto>()
         };
 
-        foreach (var item in student.debtHistory!)
+        student.debtHistory ??= [];
+        
+        foreach (var item in student.debtHistory)
         {
             dto.paymentHistory.Add(item.mapToDto());
         }

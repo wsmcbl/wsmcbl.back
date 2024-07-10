@@ -219,8 +219,8 @@ public class CollectTariffControllerTest
         var debtHistoryDao = Substitute.For<IDebtHistoryDao>();
         daoFactory.debtHistoryDao.Returns(debtHistoryDao);
 
-        await controller.exonerateArrears(list);
+        await controller.exonerateArrears("std-1", list);
 
-        await debtHistoryDao.Received().exonerateArrears(list);
+        await debtHistoryDao.Received().exonerateArrears("std-1", list);
     }
 }

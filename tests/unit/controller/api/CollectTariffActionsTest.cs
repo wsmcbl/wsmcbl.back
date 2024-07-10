@@ -6,6 +6,7 @@ using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 using DtoMapper = wsmcbl.src.dto.input.DtoMapper;
+using OutDtoMapper = wsmcbl.src.dto.output.DtoMapper;
 
 namespace wsmcbl.tests.unit.controller.api;
 
@@ -56,14 +57,15 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentById_ValidId_ReturnStudent()
     {
-        const string studentId = "id1";
-        controller.getStudent(studentId).Returns(entityGenerator.aStudent(studentId));
+        var student = entityGenerator.aStudent("std-1");
+        controller.getStudent(student.studentId!).Returns(student);
 
-        var actionResult = await actions.getStudentById(studentId);
+        var actionResult = await actions.getStudentById(student.studentId!);
 
         var result = assertAndGetOkResult(actionResult);
         var studentDto = Assert.IsType<StudentDto>(result.Value);
         Assert.NotNull(studentDto);
+        Assert.Equivalent(OutDtoMapper.mapToDto(student), studentDto);
     }
 
     [Fact]
@@ -97,14 +99,15 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffList_OverdueParameter_ReturnsList()
     {
-        controller.getOverdueTariffList().Returns(entityGenerator.aTariffList());
+        var listInit = entityGenerator.aTariffList();
+        controller.getOverdueTariffList().Returns(listInit);
 
         var actionResult = await actions.getTariffList("state:overdue");
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<TariffEntity>>(result.Value);
         Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
+        Assert.Equal(listInit, list);
     }
 
     [Theory]
@@ -181,7 +184,7 @@ public class CollectTariffActionsTest
     {
         var dto = entityGenerator.aTransactionDto();
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
-        controller.exonerateArrears(DtoMapper.toEntity(dto.details!, "std-id")).Returns(Task.FromResult("string"));
+        controller.exonerateArrears(dto.studentId, DtoMapper.toEntity(dto.details!)).Returns(Task.FromResult("string"));
         
         var actionResult = await actions.saveTransaction(dto);
 
@@ -201,7 +204,7 @@ public class CollectTariffActionsTest
         dto.studentId = "";
         
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("id");
-        controller.exonerateArrears(DtoMapper.toEntity(dto.details, "std-id"))
+        controller.exonerateArrears(dto.studentId, DtoMapper.toEntity(dto.details))
             .Returns(_ => throw new DbException("Any exception"));
         
         var actionResult = await actions.saveTransaction(dto);

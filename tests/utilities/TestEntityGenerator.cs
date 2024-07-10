@@ -8,25 +8,26 @@ namespace wsmcbl.tests.utilities;
 
 public class TestEntityGenerator
 {
-    private SecretaryStudentEntity? _secretaryStudent;
-    private SecretaryStudentEntity aSecretaryStudent(string studentId)
-    {
-        return _secretaryStudent ??= new SecretaryStudentEntity
-        {
-            studentId = studentId, 
-            name = "name_1", 
-            surname = "surname1", 
-            tutor = "tutor1", 
-            schoolYear = "2024", 
-            enrollmentLabel = "7mo"
-        };
-    }
-
+    private UserEntity? _userEntity;
+    private TariffEntity? _tariffEntity;
     private StudentEntity? _studentEntity;
-    private DiscountEntity? discount;
+    private CashierEntity? _cashierEntity;
+    private DiscountEntity? _discountEntity;
+    private DebtHistoryEntity? _debtHistoryEntity;
+    private TransactionEntity? _transactionEntity;
+    private SecretaryStudentEntity? _secretaryStudent;
+
+
+    private List<TariffEntity>? _aTariffList;
+    private List<StudentEntity>? _aStudentList;
+    private List<TariffTypeEntity>? _aTariffTypeList;
+    private List<DebtHistoryEntity>? _aDebtHistoryList;
+    private List<SecretaryStudentEntity>? _aSecretaryStudentList;
+
+
     public StudentEntity aStudent(string studentId)
     {
-        discount ??= new DiscountEntity
+        _discountEntity ??= new DiscountEntity
         {
             discountId = 1,
             amount = 1000,
@@ -37,7 +38,19 @@ public class TestEntityGenerator
         _studentEntity ??= new StudentEntity
         {
             student = aSecretaryStudent(studentId),
-            discount = discount
+            discount = _discountEntity,
+            transactions = new List<TransactionEntity>
+            {
+                aTransaction(studentId,
+                [
+                    new TransactionTariffEntity
+                    {
+                        amount = 2,
+                        tariffId = aTariff().tariffId,
+                        transactionId = "w"
+                    }
+                ])
+            }
         };
 
         _studentEntity.studentId = studentId;
@@ -45,21 +58,24 @@ public class TestEntityGenerator
         return _studentEntity;
     }
 
-    
-    private List<StudentEntity>? _aStudentList;
-    public List<StudentEntity> aStudentList() => _aStudentList ??= [aStudent("id1"), aStudent("id2")];
-
-
-    private List<SecretaryStudentEntity>? _aSecretaryStudentList;
-    public List<SecretaryStudentEntity> aSecretaryStudentList() => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
-
-
-    private List<TariffEntity>? _aTariffList;
-    public List<TariffEntity> aTariffList()
+    private SecretaryStudentEntity aSecretaryStudent(string studentId)
     {
-        var tariff1 = new TariffEntity
+        return _secretaryStudent ??= new SecretaryStudentEntity
         {
-            tariffId = 2,
+            studentId = studentId,
+            name = "name_1",
+            surname = "surname1",
+            tutor = "tutor1",
+            schoolYear = "2024",
+            enrollmentLabel = "7mo"
+        };
+    }
+
+    public TariffEntity aTariff()
+    {
+        return _tariffEntity ??= new TariffEntity
+        {
+            tariffId = 10,
             amount = 1000,
             concept = "The concept",
             dueDate = new DateOnly(),
@@ -67,41 +83,100 @@ public class TestEntityGenerator
             schoolYear = "2024",
             type = 1
         };
+    }
 
-        var tariff2 = tariff1;
-        
-        tariff2.tariffId = 3;
-        tariff2.amount = 800;
-        tariff2.type = 2;
+    public TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
+    {
+        return _transactionEntity ??= new TransactionEntity
+        {
+            transactionId = "tst-1",
+            cashierId = "e",
+            date = DateTime.Now,
+            studentId = studentId,
+            total = 1,
+            details = detail
+        };
+    }
 
-        return _aTariffList ??= [tariff1, tariff2];
+    private UserEntity aUser(string userId)
+    {
+        return _userEntity ??= new UserEntity
+        {
+            userId = userId,
+            name = "name-v",
+            surname = "surname-v",
+            username = "username-1",
+            password = "12345-password"
+        };
+    }
+
+    public CashierEntity aCashier(string cashierId)
+    {
+        return _cashierEntity ??= new CashierEntity
+        {
+            cashierId = cashierId,
+            userId = "user-1",
+            user = aUser("user-1")
+        };
+    }
+
+    private DebtHistoryEntity aDebtHistory(string studentId)
+    {
+        return _debtHistoryEntity ??= new DebtHistoryEntity
+        {
+            studentId = studentId,
+            schoolyear = DateTime.Now.Year.ToString(),
+            tariff = aTariff(),
+            isPaid = false,
+            debtBalance = 10,
+            arrear = 10
+        };
+    }
+    
+
+
+    public List<StudentEntity> aStudentList() => _aStudentList ??= [aStudent("id1"), aStudent("id2")];
+
+    public List<SecretaryStudentEntity> aSecretaryStudentList()
+        => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
+
+    public List<TariffEntity> aTariffList()
+    {
+        var tariff1 = aTariff();
+
+        return _aTariffList ??= [tariff1];
     }
 
     public List<TariffTypeEntity> aTariffTypeList()
     {
-        var tariffType1 = new TariffTypeEntity
-        {
-            typeId = 1,
-            description = "description 1"
-        };
-        
-        var tariffType2 = new TariffTypeEntity
-        {
-            typeId = 2,
-            description = "description aslk"
-        };
+        _aTariffTypeList ??=
+        [
+            new TariffTypeEntity
+            {
+                typeId = 1,
+                description = "description 1"
+            },
 
-        return [tariffType1, tariffType2];
+            new TariffTypeEntity
+            {
+                typeId = 2,
+                description = "description aslk"
+            }
+        ];
+
+        return _aTariffTypeList;
     }
 
     public (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
     {
-        return (new TransactionEntity(), aStudent("std-1"), new CashierEntity{user = new UserEntity()}, [1.1f, 1]);
+        return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }
-    
-    
-    
-    
+
+    public List<DebtHistoryEntity> aDebtHistoryList(string studentId)
+    {
+        return _aDebtHistoryList ??= [aDebtHistory(studentId)];
+    }
+
 
     public TransactionDto aTransactionDto()
     {
@@ -112,7 +187,7 @@ public class TestEntityGenerator
             dateTime = DateTime.Now,
             details = new List<DetailDto>()
         };
-        
+
         transactionDto.details.Add(new DetailDto
         {
             amount = 1000,

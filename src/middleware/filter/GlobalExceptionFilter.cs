@@ -13,9 +13,9 @@ public class GlobalExceptionFilter : IExceptionFilter
         
         var statusCode = context.Exception switch
         {
-            EntityNotFoundException => (int)HttpStatusEnum.EntityNotFound,
-            DbException => (int)HttpStatusEnum.ArgumentInvalid,
-            EntityUpdateException => (int)HttpStatusEnum.NotApplied,
+            EntityNotFoundException => (int)HttpStatus.EntityNotFound,
+            DbException => (int)HttpStatus.ArgumentInvalid,
+            EntityUpdateException => (int)HttpStatus.NotApplied,
             _ => (int)HttpStatusCode.InternalServerError
         };
         
