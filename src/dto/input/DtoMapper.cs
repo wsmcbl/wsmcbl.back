@@ -39,7 +39,7 @@ public static class DtoMapper
 
 
     private static List<DebtHistoryEntity>? debtHistoryList;
-    public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto, string studentId)
+    public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
     {
         if (debtHistoryList != null)
             return debtHistoryList;
@@ -47,7 +47,6 @@ public static class DtoMapper
         debtHistoryList = listDto.Where(i => !i.applyArrear)
             .Select(item => new DebtHistoryEntity
             {
-                studentId = studentId, 
                 tariffId = item.tariffId
             })
             .ToList();

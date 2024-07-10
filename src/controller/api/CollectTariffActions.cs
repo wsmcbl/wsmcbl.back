@@ -109,7 +109,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         try
         {
             var transactionId = await controller.saveTransaction(transaction.toEntity());
-            await controller.exonerateArrears(transaction.details.toEntity(transaction.studentId));
+            await controller.exonerateArrears(transaction.studentId, transaction.details.toEntity());
             
             return Ok(new { transactionId });
         }

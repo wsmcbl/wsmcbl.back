@@ -90,9 +90,9 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return daoFactory.tariffTypeDao!.getAll();
     }
 
-    public async Task exonerateArrears(List<DebtHistoryEntity> debts)
+    public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> debts)
     {
-        await daoFactory.debtHistoryDao!.exonerateArrears(debts);
+        await daoFactory.debtHistoryDao!.exonerateArrears(studentId, debts);
         await daoFactory.execute();
     }
 }

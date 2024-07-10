@@ -36,8 +36,7 @@ public class TariffDaoPostgres(PostgresContext context)
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        var tariffs = await entities
-            .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
+        var tariffs = await entities.Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -47,22 +46,21 @@ public class TariffDaoPostgres(PostgresContext context)
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        var debts = await Task
-            .FromResult(context.DebtHistory
-                .Where(d => d.studentId == studentId)
-                .Include(d => d.tariff));
+        var debts = context.DebtHistory.Where(d => d.studentId == studentId);
+        
+        debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
+            .Include(d => d.tariff);
+        
+        var list = debts.Select(d => d.tariff);
 
-        return await debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
-            .Select(d => d.tariff)
-            .ToListAsync();
+        return await list.ToListAsync();
     }
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
-        var debts = await Task
-            .FromResult(context.DebtHistory
+        var debts = await context.DebtHistory
                 .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
-                .Include(d => d.tariff));
+                .Include(d => d.tariff).ToListAsync();
         
         float[] balance = [0, 0];
         
@@ -96,23 +94,23 @@ public class StudentDaoPostgres(PostgresContext context)
     public new async Task<StudentEntity?> getById(string id)
     {
         var student = await entities
-            .Include(d => d.student)
-            .Include(d => d.discount)
-            .Include(e => e.transactions)
-                .ThenInclude(t => t.details)
-                .FirstOrDefaultAsync(e => e.studentId == id);
-
+            .Include(e => e.discount)
+            .Include(e => e.student)
+            .Include(e => e.transactions)!
+            .ThenInclude(t => t.details)
+            .FirstOrDefaultAsync(e => e.studentId == id);
+        
         if (student is null)
         {
             throw new EntityNotFoundException("Student", id);
         }
         
-        var service = new TransactionDaoPostgres(context);
-        foreach (var transaction in student.transactions)
+        foreach (var transaction in student.transactions!)
         {
             foreach (var item in transaction.details)
             {
-                await service.setTariff(item);
+                var tariff = await context.Tariff.FirstOrDefaultAsync(t => t.tariffId == item.tariffId);
+                item.setTariff(tariff);
             }
         }
         
@@ -127,19 +125,6 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         entity.computeTotal();
         base.create(entity);
-    }
-
-    internal async Task setTariff(TransactionTariffEntity detail)
-    {
-        var service = new TariffDaoPostgres(context);
-        var tariff = await service.getById(detail.tariffId);
-
-        if (tariff is null)
-        {
-            throw new EntityNotFoundException("Tariff", detail.tariffId.ToString());
-        }
-        
-        detail.setTariff(tariff);
     }
 }
     
@@ -162,13 +147,13 @@ public class DebtHistoryDaoPostgres(PostgresContext context)
         return history.Where(dh => dh.havePayments()).ToList();
     }
 
-    public async Task exonerateArrears(List<DebtHistoryEntity> list)
+    public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> list)
     {
+        var debts = await entities.Where(dh => dh.studentId == studentId).ToListAsync();
+        
         foreach (var item in list)
         {
-            var debt = await entities
-                .Where(dh => dh.studentId == item.studentId && dh.tariffId == item.tariffId)
-                .FirstOrDefaultAsync();
+            var debt = debts.Find(dh => dh.tariffId == item.tariffId);
 
             if (debt == null)
             {
