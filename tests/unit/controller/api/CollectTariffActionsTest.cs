@@ -182,7 +182,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task saveTransaction_TransactionIsSave()
     {
-        var dto = entityGenerator.aTransactionDto();
+        var dto = new TestDtoGenerator().aTransactionDto();
         controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
         controller.exonerateArrears(dto.studentId, DtoMapper.toEntity(dto.details!)).Returns(Task.FromResult("string"));
         
@@ -199,7 +199,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task saveTransaction_InvalidParameter_ReturnsException()
     {
-        var dto = entityGenerator.aTransactionDto();
+        var dto = new TestDtoGenerator().aTransactionDto();
         dto.cashierId = "";
         dto.studentId = "";
         

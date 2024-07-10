@@ -47,7 +47,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         var student = entityGenerator.aStudent("std-1");
         var tariff = entityGenerator.aTariff();
         
-        context = TestDbContext.getInMemory("studendao");
+        context = TestDbContext.getInMemory();
         await context.Set<StudentEntity>().AddAsync(student);
         await context.Set<TariffEntity>().AddAsync(tariff);
         await context.SaveChangesAsync();
@@ -63,7 +63,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getById_StudentNotFount_ReturnsException()
     {
-        context = TestDbContext.getInMemory("studendao");
+        context = TestDbContext.getInMemory();
 
         dao = new StudentDaoPostgres(context);
 

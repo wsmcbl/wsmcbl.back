@@ -5,7 +5,7 @@ namespace wsmcbl.tests.utilities;
 
 public abstract class TestDbContext
 {
-    internal static PostgresContext getInMemory(string name)
+    internal static PostgresContext getInMemory()
     {
         var options = new DbContextOptionsBuilder<PostgresContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())

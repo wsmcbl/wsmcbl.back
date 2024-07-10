@@ -1,7 +1,5 @@
-using wsmcbl.src.dto.input;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
-using DetailDto = wsmcbl.src.dto.input.DetailDto;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.tests.utilities;
@@ -16,6 +14,7 @@ public class TestEntityGenerator
     private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionEntity? _transactionEntity;
     private SecretaryStudentEntity? _secretaryStudent;
+    private TransactionTariffEntity? _transactionTariffEntity;
 
 
     private List<TariffEntity>? _aTariffList;
@@ -30,7 +29,7 @@ public class TestEntityGenerator
         _discountEntity ??= new DiscountEntity
         {
             discountId = 1,
-            amount = 1000,
+            amount = 0.1f,
             description = "Description",
             tag = "A"
         };
@@ -63,8 +62,10 @@ public class TestEntityGenerator
         return _secretaryStudent ??= new SecretaryStudentEntity
         {
             studentId = studentId,
-            name = "name_1",
-            surname = "surname1",
+            name = "name-v",
+            secondName = "sn",
+            surname = "surname-v",
+            secondSurname = "ssn",
             tutor = "tutor1",
             schoolYear = "2024",
             enrollmentLabel = "7mo"
@@ -76,11 +77,11 @@ public class TestEntityGenerator
         return _tariffEntity ??= new TariffEntity
         {
             tariffId = 10,
-            amount = 1000,
+            amount = 700,
             concept = "The concept",
             dueDate = new DateOnly(),
             isLate = true,
-            schoolYear = "2024",
+            schoolYear = DateTime.Now.Year.ToString(),
             type = 1
         };
     }
@@ -91,20 +92,22 @@ public class TestEntityGenerator
         {
             transactionId = "tst-1",
             cashierId = "e",
-            date = DateTime.Now,
+            date = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
             studentId = studentId,
-            total = 1,
+            total = 700,
             details = detail
         };
     }
 
-    private UserEntity aUser(string userId)
+    public UserEntity aUser(string userId)
     {
         return _userEntity ??= new UserEntity
         {
             userId = userId,
             name = "name-v",
+            secondName = "sn",
             surname = "surname-v",
+            secondsurName = "ssn",
             username = "username-1",
             password = "12345-password"
         };
@@ -120,17 +123,35 @@ public class TestEntityGenerator
         };
     }
 
-    private DebtHistoryEntity aDebtHistory(string studentId)
+    public DebtHistoryEntity aDebtHistory(string studentId)
     {
         return _debtHistoryEntity ??= new DebtHistoryEntity
         {
             studentId = studentId,
-            schoolyear = DateTime.Now.Year.ToString(),
+            tariffId = aTariff().tariffId,
             tariff = aTariff(),
+            schoolyear = DateTime.Now.Year.ToString(),
             isPaid = false,
             debtBalance = 10,
-            arrear = 10
+            arrear = 10,    
+            subAmount = 110,
+            amount = 100
         };
+    }
+
+
+    public TransactionTariffEntity aTransactionTariffEntity()
+    {
+        _transactionTariffEntity ??= new TransactionTariffEntity
+        {
+            transactionId = "tst-1",
+            tariffId = 10,
+            amount = 700,
+        };
+
+        _transactionTariffEntity.setTariff(aTariff());
+        
+        return _transactionTariffEntity;
     }
     
 
@@ -175,26 +196,5 @@ public class TestEntityGenerator
     public List<DebtHistoryEntity> aDebtHistoryList(string studentId)
     {
         return _aDebtHistoryList ??= [aDebtHistory(studentId)];
-    }
-
-
-    public TransactionDto aTransactionDto()
-    {
-        var transactionDto = new TransactionDto
-        {
-            cashierId = "caj-ktinoco",
-            studentId = "std-id",
-            dateTime = DateTime.Now,
-            details = new List<DetailDto>()
-        };
-
-        transactionDto.details.Add(new DetailDto
-        {
-            amount = 1000,
-            applyArrear = true,
-            tariffId = 1
-        });
-
-        return transactionDto;
     }
 }

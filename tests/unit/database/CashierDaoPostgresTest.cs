@@ -15,7 +15,7 @@ public class CashierDaoPostgresTest : BaseDaoPostgresTest
         var entityGenerator = new TestEntityGenerator();
         var cashier = entityGenerator.aCashier("csh-1");
 
-        context = TestDbContext.getInMemory("cashierdao");
+        context = TestDbContext.getInMemory();
         await context.Set<CashierEntity>().AddAsync(cashier);
         await context.SaveChangesAsync();
         
@@ -31,7 +31,7 @@ public class CashierDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getById_CashierNotFound_ReturnsException()
     {
-        context = TestDbContext.getInMemory("cashierdao");
+        context = TestDbContext.getInMemory();
         dao = new CashierDaoPostgres(context);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => dao.getById("csh-1"));

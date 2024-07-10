@@ -7,5 +7,4 @@ public class BaseDaoPostgresTest
 {
     protected PostgresContext context =
         Substitute.For<PostgresContext>(new DbContextOptions<PostgresContext>());
-    
 }

@@ -19,4 +19,9 @@ public class TariffDto
     public float debtBalance { get; set; }
     
     public bool itPaidLate { get; set; }
+
+    public void setDiscount(float value)
+    {
+        discount = amount - value;
+    }
 }
