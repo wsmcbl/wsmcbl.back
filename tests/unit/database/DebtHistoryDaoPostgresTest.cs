@@ -40,14 +40,13 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
     }
 
 
-
     [Fact]
     public async Task exonerateArrears_ArrearsExonerate()
     {
         var entityGenerator = new TestEntityGenerator();
         var list = entityGenerator.aDebtHistoryList("std-1");
 
-        context = TestDbContext.getInMemory("debtdao");
+        context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(list);
         await context.SaveChangesAsync();
 

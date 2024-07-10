@@ -49,7 +49,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         var tariffList = entityGenerator.aTariffList();
         var debtList = entityGenerator.aDebtHistoryList("std-1");
 
-        context = TestDbContext.getInMemory("tariffdao");
+        context = TestDbContext.getInMemory();
         context.Set<TariffEntity>().AddRange(tariffList);
         context.Set<DebtHistoryEntity>().AddRange(debtList);
         await context.SaveChangesAsync();
@@ -65,7 +65,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getListByStudent_EmptyList()
     {
-        context = TestDbContext.getInMemory("tariffdao");
+        context = TestDbContext.getInMemory();
 
         dao = new TariffDaoPostgres(context);
 
@@ -82,7 +82,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         var entityGenerator = new TestEntityGenerator();
         var debtList = entityGenerator.aDebtHistoryList("std-1");
 
-        context = TestDbContext.getInMemory("tariffdao");
+        context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
         await context.SaveChangesAsync();
 
@@ -91,13 +91,13 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         var result = await dao.getGeneralBalance("std-1");
         
         Assert.IsType<float[]>(result);
-        Assert.Equal([0,1000], result);
+        Assert.Equal([0,700], result);
     }
     
     [Fact]
     public async Task getGeneralBalance_EmptyDebList_ReturnsFloatArray()
     {
-        context = TestDbContext.getInMemory("tariffdao");
+        context = TestDbContext.getInMemory();
 
         dao = new TariffDaoPostgres(context);
         

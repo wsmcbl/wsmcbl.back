@@ -4,28 +4,23 @@ namespace wsmcbl.src.dto.output;
 
 public static class DtoMapper
 {
-    public static InvoiceDto mapToDto(this TransactionEntity transaction, StudentEntity? student, CashierEntity? cashier)
+    public static InvoiceDto mapToDto(this TransactionEntity transaction, StudentEntity student, CashierEntity cashier)
     {
         var element = new InvoiceDto
         {
             transactionId = transaction.transactionId!,
-            cashierName = cashier!.fullName(),
+            cashierName = cashier.fullName(),
             studentId = transaction.studentId,
-            studentName = student!.fullName(),
+            studentName = student.fullName(),
             total = transaction.total,
             dateTime = transaction.date,
-            detail = new List<DetailDto>()
+            detail = transaction.details.Select(t => t.mapToDto(student)).ToList()
         };
-
-        foreach (var item in transaction.details)
-        {
-            element.detail.Add(item.mapToDto(student));
-        }
 
         return element;
     }
 
-    private static DetailDto mapToDto(this TransactionTariffEntity entity, StudentEntity student)
+    public static DetailDto mapToDto(this TransactionTariffEntity entity, StudentEntity student)
     {
         var detail = new DetailDto
         {
@@ -37,13 +32,13 @@ public static class DtoMapper
             schoolYear = entity.schoolYear()
         };
 
-        detail.discount = detail.amount*(1 - detail.discount);
-        detail.arrears = (float?)((bool)detail.itPaidLate ? detail.amount * 0.1 : 0);
+        detail.computeDiscount();
+        detail.computeArrears();
 
         return detail;
     }
 
-    private static TariffDto mapToDto(this DebtHistoryEntity entity)
+    public static TariffDto mapToDto(this DebtHistoryEntity entity)
     {
         var tariff = new TariffDto
         {
@@ -57,7 +52,8 @@ public static class DtoMapper
             debtBalance = entity.amount - entity.debtBalance
         };
 
-        tariff.discount = tariff.amount - entity.subAmount;
+        tariff.setDiscount(entity.subAmount);
+        
         return tariff;
     }
     
@@ -72,7 +68,7 @@ public static class DtoMapper
             tutor = student.tutor,
             discount = student.discount!.amount,
             isActive = student.isActive,
-            paymentHistory = new List<TariffDto>()
+            paymentHistory = []
         };
 
         student.debtHistory ??= [];

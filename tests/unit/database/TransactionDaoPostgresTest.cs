@@ -7,8 +7,6 @@ namespace wsmcbl.tests.unit.database;
 
 public class TransactionDaoPostgresTest : BaseDaoPostgresTest
 {
-    private TransactionDaoPostgres dao;
-
     [Fact]
     public async Task create_EntityCreate()
     {
@@ -18,7 +16,7 @@ public class TransactionDaoPostgresTest : BaseDaoPostgresTest
         var transactionEntities = TestDbSet<TransactionEntity>.getFake([transaction]);
         context.Set<TransactionEntity>().Returns(transactionEntities);
 
-        dao = new TransactionDaoPostgres(context);
+        var dao = new TransactionDaoPostgres(context);
         
         dao.create(transaction);
 
@@ -27,6 +25,4 @@ public class TransactionDaoPostgresTest : BaseDaoPostgresTest
         
         Assert.Equal(transaction, createdTransaction[0]);
     }
-    
-    
 }
