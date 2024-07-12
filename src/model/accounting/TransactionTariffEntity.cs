@@ -8,8 +8,9 @@ public class TransactionTariffEntity
     
     public float amount { get; set; }
     
-
+    
     private TariffEntity tariff = null!;
+    
     public void setTariff(TariffEntity? _tariff)
     {
         tariff = _tariff ?? throw new ArgumentException("Tariff object is null");
@@ -28,6 +29,11 @@ public class TransactionTariffEntity
     public bool itPaidLate()
     {
         return tariff.isLate;
+    }
+
+    public float calculateArrear()
+    {
+        return (float)(itPaidLate() ? officialAmount()*0.1 : 0);
     }
 
     public string schoolYear()

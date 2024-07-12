@@ -17,4 +17,16 @@ public class DebtHistoryEntity
     {
         return debtBalance > 0;
     }
+
+    public float getDebtBalance()
+    {
+        var debt = amount - debtBalance;
+
+        if (debt < 0)
+        {
+            return 0;
+        }
+
+        return debt;
+    }
 }

@@ -59,12 +59,11 @@ public class TestDtoGenerator
             schoolYear = tariff.schoolYear,
             concept = tariff.concept,
             amount = tariff.amount,
-            discount = student.discount!.amount,
+            discount = student.calculateDiscount(tariff.amount),
             itPaidLate = tariff.isLate
         };
         
-        _detailDto.computeDiscount();
-        _detailDto.computeArrears();
+        _detailDto.arrears = (float)(_detailDto.itPaidLate ? _detailDto.amount * 0.1 : 0);
 
         return _detailDto;
     }
