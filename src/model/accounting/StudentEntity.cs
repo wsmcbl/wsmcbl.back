@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.accounting;
 
 public class StudentEntity
 {
-    public string? studentId { get; set; }
+    public string studentId { get; set; }
     public int discountId { get; set; }
     public DiscountEntity? discount { get; set; }
     public secretary.StudentEntity student { get; set; } = null!;
@@ -14,4 +14,34 @@ public class StudentEntity
     public string schoolYear => student.schoolYear;
     public string? tutor => student.tutor;
     public bool isActive => student.isActive;
+
+    public float getDiscount()
+    {
+        if (discount == null)
+        {
+            return 0;
+        }
+        
+        return discount!.amount;
+    }
+    
+    public float calculateDiscount(float amount)
+    {
+        if (discount == null)
+        {
+            return amount;
+        }
+        
+        return amount*getDiscount();
+    }
+
+    public async Task loadDebtHistory(IDebtHistoryDao? dao)
+    {
+        if (dao == null)
+        {
+            return;
+        }
+        
+        debtHistory = await dao.getListByStudent(studentId!);
+    }
 }

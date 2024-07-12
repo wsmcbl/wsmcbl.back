@@ -78,9 +78,7 @@ public class DaoFactoryPostgresTest
         Assert.NotNull(result);
         Assert.IsAssignableFrom<TDao>(result);
     }
-
-
-
+    
     [Fact]
     public async Task execute_CallDbContext()
     {

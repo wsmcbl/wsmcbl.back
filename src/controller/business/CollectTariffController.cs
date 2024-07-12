@@ -9,7 +9,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public CollectTariffController(DaoFactory daoFactory) : base(daoFactory)
     {
     }
-    
 
     public async Task<List<StudentEntity>> getStudentsList()
     {
@@ -25,7 +24,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
             throw new EntityNotFoundException("Student", studentId);
         }
 
-        student.debtHistory = await daoFactory.debtHistoryDao!.getListByStudent(student.studentId!);
+        await student.loadDebtHistory(daoFactory.debtHistoryDao);
         
         return student;
     }

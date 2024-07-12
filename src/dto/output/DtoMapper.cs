@@ -27,14 +27,12 @@ public static class DtoMapper
             tariffId = entity.tariffId,
             concept  = entity.concept(),
             amount = entity.officialAmount(),
-            discount = student.discount!.amount,
+            arrears = entity.calculateArrear(),
+            discount = student.calculateDiscount(entity.officialAmount()),
             itPaidLate = entity.itPaidLate(),
             schoolYear = entity.schoolYear()
         };
-
-        detail.computeDiscount();
-        detail.computeArrears();
-
+        
         return detail;
     }
 
@@ -49,7 +47,7 @@ public static class DtoMapper
             schoolYear = entity.tariff.schoolYear,
             arrear = entity.arrear,
             subTotal = entity.amount,
-            debtBalance = entity.amount - entity.debtBalance
+            debtBalance = entity.getDebtBalance()
         };
 
         tariff.setDiscount(entity.subAmount);
@@ -66,7 +64,7 @@ public static class DtoMapper
             enrollmentLabel = student.enrollmentLabel,
             schoolYear = student.schoolYear,
             tutor = student.tutor,
-            discount = student.discount!.amount,
+            discount = student.getDiscount(),
             isActive = student.isActive,
             paymentHistory = []
         };
