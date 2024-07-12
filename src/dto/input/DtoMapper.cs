@@ -5,6 +5,11 @@ namespace wsmcbl.src.dto.input;
 
 public static class DtoMapper
 {
+
+    private static TransactionEntity? transaction;
+    private static List<DebtHistoryEntity>? debtHistoryList;
+    
+    
     private static TransactionTariffEntity toEntity(this DetailDto dto)
     {
         return new TransactionTariffEntity
@@ -13,8 +18,7 @@ public static class DtoMapper
             amount = dto.amount
         }; 
     }
-
-    private static TransactionEntity? transaction;
+    
     public static TransactionEntity toEntity(this TransactionDto dto)
     {
         if (transaction != null)
@@ -35,10 +39,7 @@ public static class DtoMapper
         
         return transaction;
     }
-
-
-
-    private static List<DebtHistoryEntity>? debtHistoryList;
+    
     public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
     {
         if (debtHistoryList != null)
@@ -67,6 +68,7 @@ public static class DtoMapper
             tutor = dto.tutor
         };
     }
+    
     private static DateOnly toDateOnly(this DateDto dto)
     {
         return new DateOnly(dto.year, dto.month, dto.day);

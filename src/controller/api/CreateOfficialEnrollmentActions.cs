@@ -23,4 +23,12 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         await controller.saveStudent(student.toEntity());
     }
+
+    [HttpGet]
+    [Route("grades")]
+    public async Task<IActionResult> getGradeList()
+    {
+        var grades = await controller.getGradeList();
+        return Ok(grades);
+    }
 }

@@ -16,9 +16,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task saveStudent(StudentEntity student)
     {
-        student.isActive = true;
-        student.schoolYear = DateTime.Now.Year.ToString();
+        student.init();
         daoFactory.studentDao<StudentEntity>()!.create(student);
         await daoFactory.execute();
+    }
+
+    public async Task<List<GradeEntity>> getGradeList()
+    {
+        return await daoFactory.gradeDao!.getAll();
     }
 }

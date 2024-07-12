@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
+using wsmcbl.src.model.secretary;
+using IStudentDao = wsmcbl.src.model.accounting.IStudentDao;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -165,3 +168,6 @@ public class DebtHistoryDaoPostgres(PostgresContext context)
         }
     }
 }
+
+public class GradeDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao;
