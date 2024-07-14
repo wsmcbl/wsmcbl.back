@@ -1,4 +1,6 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 using secretary_StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.dto.input;
@@ -8,22 +10,22 @@ public static class DtoMapper
 
     private static TransactionEntity? transaction;
     private static List<DebtHistoryEntity>? debtHistoryList;
-    
-    
+
+
     private static TransactionTariffEntity toEntity(this DetailDto dto)
     {
         return new TransactionTariffEntity
         {
             tariffId = dto.tariffId,
             amount = dto.amount
-        }; 
+        };
     }
-    
+
     public static TransactionEntity toEntity(this TransactionDto dto)
     {
         if (transaction != null)
             return transaction;
-        
+
         transaction = new TransactionEntity
         {
             studentId = dto.studentId,
@@ -36,15 +38,15 @@ public static class DtoMapper
         {
             transaction.details.Add(item.toEntity());
         }
-        
+
         return transaction;
     }
-    
+
     public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
     {
         if (debtHistoryList != null)
             return debtHistoryList;
-        
+
         debtHistoryList = listDto.Where(i => !i.applyArrear)
             .Select(item => new DebtHistoryEntity
             {
@@ -68,7 +70,18 @@ public static class DtoMapper
             tutor = dto.tutor
         };
     }
+
+    public static GradeEntity toEntity(this GradeDto dto)
+    {
+        return new GradeEntity();
+    }
+
+    public static EnrollmentEntity toEntity(this EnrollmentDto dto)
+    {
+        return new EnrollmentEntity();
+    }
     
+
     private static DateOnly toDateOnly(this DateDto dto)
     {
         return new DateOnly(dto.year, dto.month, dto.day);
