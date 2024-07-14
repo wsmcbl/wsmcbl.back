@@ -55,16 +55,6 @@ internal class AcademyContext
                 .HasColumnName("enrollmentid");
             entity.Property(e => e.exam).HasColumnName("exam");
             entity.Property(e => e.finalScore).HasColumnName("finalscore");
-
-            entity.HasOne(d => d.subject).WithMany(p => p.scores)
-                .HasForeignKey(d => d.subjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("note_subjectid_fkey");
-
-            entity.HasOne(d => d.student).WithMany(p => p.scores)
-                .HasForeignKey(d => new { Studentid = d.studentId, Enrollmentid = d.enrollmentId })
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("note_studentid_enrollmentid_fkey");
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -83,11 +73,6 @@ internal class AcademyContext
             entity.Property(e => e.schoolYear)
                 .HasMaxLength(20)
                 .HasColumnName("schoolyear");
-
-            entity.HasOne(d => d.enrollment).WithMany(p => p.students)
-                .HasForeignKey(d => d.enrollmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("student_enrollmentid_fkey");
 
             entity.HasOne(d => d.student).WithMany()
                 .HasForeignKey(d => d.studentId)

@@ -13,8 +13,4 @@ public class ScoreEntity
     public double? exam { get; set; }
 
     public double? finalScore { get; set; }
-
-    public StudentEntity student { get; set; } = null!;
-
-    public SubjectEntity subject { get; set; } = null!;
 }
