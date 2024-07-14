@@ -12,7 +12,7 @@ public interface ICreateOfficialEnrollmentController
     public Task<List<GradeEntity>> getGradeList();
     public Task createGrade(GradeEntity entity);
     public Task updateGrade(GradeEntity entity);
-    public Task updateSubjects(string gradeId, List<SubjectEntity> list);
+    public Task updateSubjects(int gradeId, List<SubjectEntity> list);
     public Task<List<SubjectEntity>> getSubjectList();
     public Task updateEnrollment(EnrollmentEntity entity);
     public Task<List<EnrollmentEntity>> getEnrollmentList();

@@ -42,13 +42,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    public async Task updateSubjects(string gradeId, List<SubjectEntity> list)
+    public async Task updateSubjects(int gradeId, List<SubjectEntity> list)
     {
         var grade = await daoFactory.gradeDao!.getById(gradeId);
 
         if (grade == null)
         {
-            throw new EntityNotFoundException("Grade", gradeId);
+            throw new EntityNotFoundException("Grade", gradeId.ToString());
         }
 
         grade.setSubjects(list);

@@ -89,7 +89,7 @@ internal class AcademyContext
 
             entity.HasMany(d => d.scores)
                 .WithOne()
-                .HasForeignKey(d => d.studentId);
+                .HasForeignKey(e => new { e.studentId, e.enrollmentId });
         });
         
         modelBuilder.Entity<SubjectEntity>(entity =>

@@ -1,6 +1,6 @@
 namespace wsmcbl.src.model.secretary;
 
-public class SchoolyearEntity
+public class SchoolYearEntity
 {
     public string schoolYearId { get; set; } = null!;
 

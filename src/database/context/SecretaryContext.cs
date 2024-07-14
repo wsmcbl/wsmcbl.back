@@ -37,7 +37,7 @@ internal class SecretaryContext
                 .HasForeignKey(d => d.gradeId);
         });
 
-        modelBuilder.Entity<SchoolyearEntity>(entity =>
+        modelBuilder.Entity<SchoolYearEntity>(entity =>
         {
             entity.HasKey(e => e.schoolYearId).HasName("schoolyear_pkey");
 

@@ -9,7 +9,7 @@ public class SubjectsToUpdateDto
         throw new NotImplementedException();
     }
 
-    public string getGradeId()
+    public int getGradeId()
     {
         throw new NotImplementedException();
     }
