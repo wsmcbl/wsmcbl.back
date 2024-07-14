@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using wsmcbl.src.database;
+using wsmcbl.src.database.context;
 
 namespace wsmcbl.tests.utilities;
 

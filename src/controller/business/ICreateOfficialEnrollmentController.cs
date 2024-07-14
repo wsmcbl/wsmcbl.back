@@ -1,5 +1,7 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -10,7 +12,7 @@ public interface ICreateOfficialEnrollmentController
     public Task<List<GradeEntity>> getGradeList();
     public Task createGrade(GradeEntity entity);
     public Task updateGrade(GradeEntity entity);
-    public Task updateSubjects(string gradeId, List<SubjectEntity> list);
+    public Task updateSubjects(int gradeId, List<SubjectEntity> list);
     public Task<List<SubjectEntity>> getSubjectList();
     public Task updateEnrollment(EnrollmentEntity entity);
     public Task<List<EnrollmentEntity>> getEnrollmentList();
