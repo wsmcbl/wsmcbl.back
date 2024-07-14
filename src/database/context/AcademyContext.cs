@@ -16,152 +16,132 @@ internal class AcademyContext
     {
         modelBuilder.Entity<EnrollmentEntity>(entity =>
         {
-            entity.HasKey(e => e.Enrollmentid).HasName("enrollment_pkey");
+            entity.HasKey(e => e.enrollmentId).HasName("enrollment_pkey");
 
             entity.ToTable("enrollment", "academy");
 
-            entity.Property(e => e.Enrollmentid)
+            entity.Property(e => e.enrollmentId)
                 .HasMaxLength(15)
                 .HasColumnName("enrollmentid");
-            entity.Property(e => e.Capacity).HasColumnName("capacity");
-            entity.Property(e => e.Enrollmentlabel)
+            entity.Property(e => e.capacity).HasColumnName("capacity");
+            entity.Property(e => e.label)
                 .HasMaxLength(20)
                 .HasColumnName("enrollmentlabel");
-            entity.Property(e => e.Gradeid).HasColumnName("gradeid");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Schoolyear)
+            entity.Property(e => e.gradeId).HasColumnName("gradeid");
+            entity.Property(e => e.quantity).HasColumnName("quantity");
+            entity.Property(e => e.schoolYear)
                 .HasMaxLength(20)
                 .HasColumnName("schoolyear");
-            entity.Property(e => e.Section)
+            entity.Property(e => e.section)
                 .HasMaxLength(2)
                 .HasColumnName("section");
-
-            entity.HasOne(d => d.Grade).WithMany(p => p.Enrollments)
-                .HasForeignKey(d => d.Gradeid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("enrollment_gradeid_fkey");
-
-            entity.HasOne(d => d.SchoolyearNavigation).WithMany()
-                .HasForeignKey(d => d.Schoolyear)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("enrollment_schoolyear_fkey");
         });
         
-        modelBuilder.Entity<NoteEntity>(entity =>
+        modelBuilder.Entity<ScoreEntity>(entity =>
         {
-            entity.HasKey(e => new { e.Studentid, e.Subjectid }).HasName("note_pkey");
+            entity.HasKey(e => new { Studentid = e.studentId, Subjectid = e.subjectId }).HasName("note_pkey");
 
             entity.ToTable("note", "academy");
 
-            entity.Property(e => e.Studentid)
+            entity.Property(e => e.studentId)
                 .HasMaxLength(15)
                 .HasColumnName("studentid");
-            entity.Property(e => e.Subjectid)
+            entity.Property(e => e.subjectId)
                 .HasMaxLength(15)
                 .HasColumnName("subjectid");
-            entity.Property(e => e.Cumulative).HasColumnName("cumulative");
-            entity.Property(e => e.Enrollmentid)
+            entity.Property(e => e.cumulative).HasColumnName("cumulative");
+            entity.Property(e => e.enrollmentId)
                 .HasMaxLength(15)
                 .HasColumnName("enrollmentid");
-            entity.Property(e => e.Exam).HasColumnName("exam");
-            entity.Property(e => e.Finalscore).HasColumnName("finalscore");
+            entity.Property(e => e.exam).HasColumnName("exam");
+            entity.Property(e => e.finalScore).HasColumnName("finalscore");
 
-            entity.HasOne(d => d.Subject).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Subjectid)
+            entity.HasOne(d => d.subject).WithMany(p => p.scores)
+                .HasForeignKey(d => d.subjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("note_subjectid_fkey");
 
-            entity.HasOne(d => d.Student2).WithMany(p => p.Notes)
-                .HasForeignKey(d => new { d.Studentid, d.Enrollmentid })
+            entity.HasOne(d => d.student).WithMany(p => p.scores)
+                .HasForeignKey(d => new { Studentid = d.studentId, Enrollmentid = d.enrollmentId })
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("note_studentid_enrollmentid_fkey");
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
         {
-            entity.HasKey(e => new { e.Studentid, e.Enrollmentid }).HasName("student_pkey");
+            entity.HasKey(e => new { Studentid = e.studentId, Enrollmentid = e.enrollmentId }).HasName("student_pkey");
 
             entity.ToTable("student", "academy");
 
-            entity.Property(e => e.Studentid)
+            entity.Property(e => e.studentId)
                 .HasMaxLength(15)
                 .HasColumnName("studentid");
-            entity.Property(e => e.Enrollmentid)
+            entity.Property(e => e.enrollmentId)
                 .HasMaxLength(15)
                 .HasColumnName("enrollmentid");
-            entity.Property(e => e.Isapproved).HasColumnName("isapproved");
-            entity.Property(e => e.Schoolyear)
+            entity.Property(e => e.isApproved).HasColumnName("isapproved");
+            entity.Property(e => e.schoolYear)
                 .HasMaxLength(20)
                 .HasColumnName("schoolyear");
 
-            entity.HasOne(d => d.Enrollment).WithMany(p => p.Student2s)
-                .HasForeignKey(d => d.Enrollmentid)
+            entity.HasOne(d => d.enrollment).WithMany(p => p.students)
+                .HasForeignKey(d => d.enrollmentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_enrollmentid_fkey");
 
-            entity.HasOne(d => d.Student).WithMany()
-                .HasForeignKey(d => d.Studentid)
+            entity.HasOne(d => d.student).WithMany()
+                .HasForeignKey(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
         });
         
         modelBuilder.Entity<SubjectEntity>(entity =>
         {
-            entity.HasKey(e => e.Subjectid).HasName("subject_pkey");
+            entity.HasKey(e => e.subjectId).HasName("subject_pkey");
 
             entity.ToTable("subject", "academy");
 
-            entity.Property(e => e.Subjectid)
+            entity.Property(e => e.subjectId)
                 .HasMaxLength(15)
                 .HasColumnName("subjectid");
-            entity.Property(e => e.Basesubjectid)
+            entity.Property(e => e.baseSubjectId)
                 .HasMaxLength(15)
                 .HasColumnName("basesubjectid");
-            entity.Property(e => e.Enrollmentid)
+            entity.Property(e => e.enrollmentId)
                 .HasMaxLength(15)
                 .HasColumnName("enrollmentid");
-            entity.Property(e => e.Teacherid)
+            entity.Property(e => e.teacherId)
                 .HasMaxLength(15)
                 .HasColumnName("teacherid");
 
-            entity.HasOne(d => d.Basesubject).WithMany(p => p.Subjects)
-                .HasForeignKey(d => d.Basesubjectid)
+            entity.HasOne(d => d.baseSubject).WithMany(p => p.subjects)
+                .HasForeignKey(d => d.baseSubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("subject_basesubjectid_fkey");
-
-            entity.HasOne(d => d.Enrollment).WithMany(p => p.Subjects)
-                .HasForeignKey(d => d.Enrollmentid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("subject_enrollmentid_fkey");
-
-            entity.HasOne(d => d.Teacher).WithMany(p => p.Subjects)
-                .HasForeignKey(d => d.Teacherid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("subject_teacherid_fkey");
         });
         
         modelBuilder.Entity<TeacherEntity>(entity =>
         {
-            entity.HasKey(e => e.Teacherid).HasName("teacher_pkey");
+            entity.HasKey(e => e.teacherId).HasName("teacher_pkey");
 
             entity.ToTable("teacher", "academy");
 
-            entity.Property(e => e.Teacherid)
+            entity.Property(e => e.teacherId)
                 .HasMaxLength(15)
                 .HasColumnName("teacherid");
-            entity.Property(e => e.Enrollmentid)
+            entity.Property(e => e.enrollmentId)
                 .HasMaxLength(20)
                 .HasColumnName("enrollmentid");
-            entity.Property(e => e.Userid)
+            entity.Property(e => e.userId)
                 .HasMaxLength(15)
                 .HasColumnName("userid");
 
-            entity.HasOne(d => d.Enrollment).WithMany(p => p.Teachers)
-                .HasForeignKey(d => d.Enrollmentid)
+            entity.HasOne(d => d.enrollment).WithMany(p => p.teachers)
+                .HasForeignKey(d => d.enrollmentId)
                 .HasConstraintName("teacher_enrollmentid_fkey");
 
-            entity.HasOne(d => d.User).WithMany()
-                .HasForeignKey(d => d.Userid)
+            entity.HasOne(d => d.user).WithMany()
+                .HasForeignKey(d => d.userId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
         });

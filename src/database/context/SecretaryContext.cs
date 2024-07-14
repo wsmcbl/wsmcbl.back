@@ -16,41 +16,36 @@ internal class SecretaryContext
     {
         modelBuilder.Entity<GradeEntity>(entity =>
         {
-            entity.HasKey(e => e.Gradeid).HasName("grade_pkey");
+            entity.HasKey(e => e.gradeId).HasName("grade_pkey");
 
             entity.ToTable("grade", "secretary");
 
-            entity.Property(e => e.Gradeid).HasColumnName("gradeid");
-            entity.Property(e => e.Gradelabel)
+            entity.Property(e => e.gradeId).HasColumnName("gradeid");
+            entity.Property(e => e.label)
                 .HasMaxLength(25)
                 .HasColumnName("gradelabel");
-            entity.Property(e => e.Schoolyear)
+            entity.Property(e => e.schoolYear)
                 .HasMaxLength(15)
                 .HasColumnName("schoolyear");
-
-            entity.HasOne(d => d.SchoolyearNavigation).WithMany(p => p.Grades)
-                .HasForeignKey(d => d.Schoolyear)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("grade_schoolyear_fkey");
         });
 
         modelBuilder.Entity<SchoolyearEntity>(entity =>
         {
-            entity.HasKey(e => e.Schoolyearid).HasName("schoolyear_pkey");
+            entity.HasKey(e => e.schoolYearId).HasName("schoolyear_pkey");
 
             entity.ToTable("schoolyear", "secretary");
 
-            entity.Property(e => e.Schoolyearid)
+            entity.Property(e => e.schoolYearId)
                 .HasMaxLength(15)
                 .HasColumnName("schoolyearid");
-            entity.Property(e => e.Deadline).HasColumnName("deadline");
-            entity.Property(e => e.Isactive).HasColumnName("isactive");
-            entity.Property(e => e.Label)
+            entity.Property(e => e.deadLine).HasColumnName("deadline");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.label)
                 .HasMaxLength(100)
                 .HasColumnName("label");
-            entity.Property(e => e.Startdate).HasColumnName("startdate");
+            entity.Property(e => e.startDate).HasColumnName("startdate");
 
-            entity.HasMany(d => d.Students).WithMany()
+            entity.HasMany(d => d.students).WithMany()
                 .UsingEntity<Dictionary<string, object>>(
                     "SchoolyearStudent",
                     r => r.HasOne<StudentEntity>().WithMany()
@@ -115,22 +110,17 @@ internal class SecretaryContext
         
         modelBuilder.Entity<SubjectEntity>(entity =>
         {
-            entity.HasKey(e => e.Subjectid).HasName("subject_pkey");
+            entity.HasKey(e => e.subjectId).HasName("subject_pkey");
 
             entity.ToTable("subject", "secretary");
 
-            entity.Property(e => e.Subjectid)
+            entity.Property(e => e.subjectId)
                 .HasMaxLength(15)
                 .HasColumnName("subjectid");
-            entity.Property(e => e.Gradeid).HasColumnName("gradeid");
-            entity.Property(e => e.Name)
+            entity.Property(e => e.gradeId).HasColumnName("gradeid");
+            entity.Property(e => e.name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
-
-            entity.HasOne(d => d.Grade).WithMany(p => p.subjects)
-                .HasForeignKey(d => d.Gradeid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("subject_gradeid_fkey");
         });
     }
 }

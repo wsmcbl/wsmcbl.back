@@ -4,15 +4,15 @@ namespace wsmcbl.src.model.academy;
 
 public class TeacherEntity
 {
-    public string Teacherid { get; set; } = null!;
 
-    public string Userid { get; set; } = null!;
+    public string userId { get; set; } = null!;
+    public string teacherId { get; set; } = null!;
 
-    public string? Enrollmentid { get; set; }
+    public string? enrollmentId { get; set; }
 
-    public virtual EnrollmentEntity? Enrollment { get; set; }
+    public EnrollmentEntity? enrollment { get; set; }
 
-    public virtual ICollection<SubjectEntity> Subjects { get; set; } = new List<SubjectEntity>();
+    public ICollection<SubjectEntity> subjects { get; set; } = new List<SubjectEntity>();
 
-    public virtual UserEntity User { get; set; } = null!;
+    public UserEntity user { get; set; } = null!;
 }

@@ -2,17 +2,17 @@ namespace wsmcbl.src.model.academy;
 
 public class StudentEntity
 {
-    public string Studentid { get; set; } = null!;
+    public string studentId { get; set; } = null!;
 
-    public string Enrollmentid { get; set; } = null!;
+    public string enrollmentId { get; set; } = null!;
 
-    public string Schoolyear { get; set; } = null!;
+    public string schoolYear { get; set; } = null!;
 
-    public bool? Isapproved { get; set; }
+    public bool isApproved { get; set; }
 
-    public virtual EnrollmentEntity Enrollment { get; set; } = null!;
+    public EnrollmentEntity enrollment { get; set; } = null!;
 
-    public virtual ICollection<NoteEntity> Notes { get; set; } = new List<NoteEntity>();
+    public ICollection<ScoreEntity> scores { get; set; } = new List<ScoreEntity>();
 
-    public virtual secretary.StudentEntity Student { get; set; } = null!;
+    public secretary.StudentEntity student { get; set; } = null!;
 }
