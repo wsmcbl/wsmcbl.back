@@ -1,5 +1,8 @@
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
+using IStudentDao = wsmcbl.src.model.accounting.IStudentDao;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -43,6 +46,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     private IDebtHistoryDao? _debtHistoryDao;
     public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
+
+
+    private IGradeDao? _gradeDao;
+    public override IGradeDao gradeDao => _gradeDao ??= new GradeDaoPostgres(context);
     
     public override async Task execute()
     {

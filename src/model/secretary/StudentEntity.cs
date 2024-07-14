@@ -18,4 +18,10 @@ public class StudentEntity
     {
         return name + " " + secondName + " " + surname + " " + secondSurname;
     }
+
+    public void init()
+    {
+        isActive = true;
+        schoolYear = DateTime.Now.Year.ToString();
+    }
 }

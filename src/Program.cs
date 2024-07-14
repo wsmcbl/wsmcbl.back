@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen(options =>
             Description = "API for the Web System for Management of Colegio Bautista Libertad developed in .net 8",
             Contact = new OpenApiContact { Name = "Client application", Url = new Uri("https://cbl.somee.com") }
         });
-    
+
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
@@ -42,15 +42,12 @@ var app = builder.Build();
 
 app.UseMiddleware<CustomStatusCodeMiddleware>();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "WSMCBL API v1");
-        c.RoutePrefix = string.Empty;
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "WSMCBL API v1");
+    c.RoutePrefix = string.Empty;
+});
 
 app.MapControllers();
 app.UseHttpsRedirection();
