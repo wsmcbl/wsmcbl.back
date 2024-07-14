@@ -20,7 +20,7 @@ public class EnrollmentEntity
 
     public ICollection<SubjectEntity> subjects { get; set; }
 
-    public ICollection<TeacherEntity> teachers { get; set; }
+    public List<TeacherEntity> teachers { get; set; }
     
     
     public void assignTeacher(string subjectId, TeacherEntity teacher)

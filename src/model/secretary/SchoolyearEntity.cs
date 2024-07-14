@@ -11,9 +11,4 @@ public class SchoolyearEntity
     public DateOnly deadLine { get; set; }
 
     public bool isActive { get; set; }
-    
-
-    public ICollection<GradeEntity> grades { get; set; } = new List<GradeEntity>();
-
-    public ICollection<StudentEntity> students { get; set; } = new List<StudentEntity>();
 }

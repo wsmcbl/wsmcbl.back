@@ -35,6 +35,14 @@ internal class AcademyContext
             entity.Property(e => e.section)
                 .HasMaxLength(2)
                 .HasColumnName("section");
+
+            entity.HasMany(d => d.students)
+                .WithOne()
+                .HasForeignKey(d => d.enrollmentId);
+
+            entity.HasMany(d => d.subjects)
+                .WithOne()
+                .HasForeignKey(d => d.enrollmentId);
         });
         
         modelBuilder.Entity<ScoreEntity>(entity =>
@@ -78,6 +86,10 @@ internal class AcademyContext
                 .HasForeignKey(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
+
+            entity.HasMany(d => d.scores)
+                .WithOne()
+                .HasForeignKey(d => d.studentId);
         });
         
         modelBuilder.Entity<SubjectEntity>(entity =>
@@ -103,6 +115,10 @@ internal class AcademyContext
                 .HasForeignKey(d => d.baseSubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("subject_basesubjectid_fkey");
+
+            entity.HasMany(d => d.scores)
+                .WithOne()
+                .HasForeignKey(e => e.subjectId);
         });
         
         modelBuilder.Entity<TeacherEntity>(entity =>
@@ -121,14 +137,20 @@ internal class AcademyContext
                 .HasMaxLength(15)
                 .HasColumnName("userid");
 
-            entity.HasOne(d => d.enrollment).WithMany(p => p.teachers)
+            entity.HasOne(d => d.enrollment)
+                .WithMany()
                 .HasForeignKey(d => d.enrollmentId)
                 .HasConstraintName("teacher_enrollmentid_fkey");
 
-            entity.HasOne(d => d.user).WithMany()
+            entity.HasOne(d => d.user)
+                .WithMany()
                 .HasForeignKey(d => d.userId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
+
+            entity.HasMany(d => d.subjects)
+                .WithOne()
+                .HasForeignKey(d => d.teacherId);
         });
 
     }

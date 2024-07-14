@@ -27,6 +27,14 @@ internal class SecretaryContext
             entity.Property(e => e.schoolYear)
                 .HasMaxLength(15)
                 .HasColumnName("schoolyear");
+
+            entity.HasMany(e => e.enrollments)
+                .WithOne()
+                .HasForeignKey(d => d.gradeId);
+
+            entity.HasMany(e => e.subjects)
+                .WithOne()
+                .HasForeignKey(d => d.gradeId);
         });
 
         modelBuilder.Entity<SchoolyearEntity>(entity =>
@@ -44,29 +52,6 @@ internal class SecretaryContext
                 .HasMaxLength(100)
                 .HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
-
-            entity.HasMany(d => d.students).WithMany()
-                .UsingEntity<Dictionary<string, object>>(
-                    "SchoolyearStudent",
-                    r => r.HasOne<StudentEntity>().WithMany()
-                        .HasForeignKey("Studentid")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("schoolyear_student_studentid_fkey"),
-                    l => l.HasOne<SchoolyearEntity>().WithMany()
-                        .HasForeignKey("Schoolyear")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("schoolyear_student_schoolyear_fkey"),
-                    j =>
-                    {
-                        j.HasKey("Schoolyear", "Studentid").HasName("schoolyear_student_pkey");
-                        j.ToTable("schoolyear_student", "secretary");
-                        j.IndexerProperty<string>("Schoolyear")
-                            .HasMaxLength(15)
-                            .HasColumnName("schoolyear");
-                        j.IndexerProperty<string>("Studentid")
-                            .HasMaxLength(20)
-                            .HasColumnName("studentid");
-                    });
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
