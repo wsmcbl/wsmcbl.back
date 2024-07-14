@@ -1,4 +1,4 @@
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
@@ -9,7 +9,7 @@ public class SubjectsToUpdateDto
         throw new NotImplementedException();
     }
 
-    public string getGradeId()
+    public int getGradeId()
     {
         throw new NotImplementedException();
     }

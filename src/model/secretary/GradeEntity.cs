@@ -4,9 +4,16 @@ namespace wsmcbl.src.model.secretary;
 
 public class GradeEntity
 {
-    public string gradeId { get; set; }
+    public int gradeId { get; set; }
 
-    private List<SubjectEntity>? subjects;
+    public string label { get; set; } = null!;
+
+    public string schoolYear { get; set; } = null!;
+
+    
+    public ICollection<EnrollmentEntity> enrollments { get; set; } = new List<EnrollmentEntity>();
+
+    public ICollection<SubjectEntity> subjects { get; set; } = new List<SubjectEntity>();
 
     public void setSubjects(List<SubjectEntity> list)
     {

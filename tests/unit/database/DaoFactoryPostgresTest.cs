@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database;
+using wsmcbl.src.database.context;
 using wsmcbl.src.model.accounting;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 

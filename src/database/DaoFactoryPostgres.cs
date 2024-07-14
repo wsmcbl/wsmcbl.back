@@ -1,3 +1,4 @@
+using wsmcbl.src.database.context;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;

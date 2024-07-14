@@ -14,7 +14,7 @@ public abstract class DaoFactory
     public virtual IGenericDao<T, string>? studentDao<T>() => null;
     public virtual IGradeDao? gradeDao => null;
     public virtual IEnrollmentDao? enrollmentDao => null;
-    public virtual ISubjectDao? subjectDao => null;
+    public virtual secretary.ISubjectDao? subjectDao => null;
     public virtual ITeacherDao? teacherDao => null; 
         
     public virtual Task execute() => Task.CompletedTask;

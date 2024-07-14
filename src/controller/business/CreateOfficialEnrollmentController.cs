@@ -2,6 +2,8 @@ using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -40,13 +42,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    public async Task updateSubjects(string gradeId, List<SubjectEntity> list)
+    public async Task updateSubjects(int gradeId, List<SubjectEntity> list)
     {
         var grade = await daoFactory.gradeDao!.getById(gradeId);
 
         if (grade == null)
         {
-            throw new EntityNotFoundException("Grade", gradeId);
+            throw new EntityNotFoundException("Grade", gradeId.ToString());
         }
 
         grade.setSubjects(list);
