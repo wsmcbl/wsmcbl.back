@@ -1,5 +1,7 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 

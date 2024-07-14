@@ -1,4 +1,4 @@
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 

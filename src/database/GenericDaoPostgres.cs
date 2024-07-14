@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.database.context;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;

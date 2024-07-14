@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
