@@ -1,16 +1,10 @@
-using wsmcbl.src.model.secretary;
+using System.ComponentModel.DataAnnotations;
 
 namespace wsmcbl.src.dto.input;
 
 public class SubjectsToUpdateDto
 {
-    public List<SubjectEntity> getSubjectList()
-    {
-        throw new NotImplementedException();
-    }
-
-    public int getGradeId()
-    {
-        throw new NotImplementedException();
-    }
+    [Required]
+    public int gradeId { get; set; }
+    public List<string> subjectIdsList { get; set; } = null!;
 }

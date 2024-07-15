@@ -1,21 +1,10 @@
-using wsmcbl.src.model.academy;
+using System.ComponentModel.DataAnnotations;
 
 namespace wsmcbl.src.dto.input;
 
 public class TeacherToAssignDto
 {
-    public TeacherEntity getTeacher()
-    {
-        throw new NotImplementedException();
-    }
-
-    public string getSubjectId()
-    {
-        throw new NotImplementedException();
-    }
-
-    public string getEnrollmentId()
-    {
-        throw new NotImplementedException();
-    }
+    [Required] public string teacherId { get; set; } = null!;
+    [Required] public string subjectId { get; set; } = null!;
+    [Required] public string enrollmentId { get; set; } = null!;
 }

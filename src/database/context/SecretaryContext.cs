@@ -36,7 +36,7 @@ internal class SecretaryContext
                 .WithOne()
                 .HasForeignKey(d => d.gradeId);
 
-            entity.HasMany(e => e.subjects)
+            entity.HasMany(e => e.subjectList)
                 .WithOne()
                 .HasForeignKey(d => d.gradeId);
         });
