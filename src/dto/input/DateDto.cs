@@ -4,6 +4,7 @@ namespace wsmcbl.src.dto.input;
 
 public class DateDto
 {
+    [Required]
     public required int year { get; set; }
     
     [Required]

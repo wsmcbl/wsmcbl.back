@@ -111,7 +111,7 @@ internal class AcademyContext
                 .HasMaxLength(15)
                 .HasColumnName("teacherid");
 
-            entity.HasOne(d => d.baseSubject).WithMany(p => p.subjects)
+            entity.HasOne(d => d.baseSubject).WithMany(p => p.academySubjectList)
                 .HasForeignKey(d => d.baseSubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("subject_basesubjectid_fkey");

@@ -10,6 +10,12 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
+public class AcademySubjectDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<model.academy.SubjectEntity, string>(context), model.academy.ISubjectDao;
+
+public class TeacherDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao;
+
 public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
     

@@ -6,6 +6,7 @@ using wsmcbl.src.model.secretary;
 using IStudentDao = wsmcbl.src.model.accounting.IStudentDao;
 using ISubjectDao = wsmcbl.src.model.secretary.ISubjectDao;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
@@ -15,17 +16,6 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         await context.SaveChangesAsync();
     }
-    
-    private ICashierDao? _cashierDao;
-    public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
-
-    
-    private ITariffDao? _tariffDao;
-    public override ITariffDao tariffDao => _tariffDao ??= new TariffDaoPostgres(context);
-
-    
-    private ITransactionDao? _transactionDao;
-    public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
     
     
     private IStudentDao? _accountingStudentDao; 
@@ -46,6 +36,18 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
         return null;
     }
+
+    
+    private ICashierDao? _cashierDao;
+    public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
+
+    
+    private ITariffDao? _tariffDao;
+    public override ITariffDao tariffDao => _tariffDao ??= new TariffDaoPostgres(context);
+
+    
+    private ITransactionDao? _transactionDao;
+    public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
     
     
     private ITariffTypeDao? _tariffTypeDao;
@@ -59,11 +61,19 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     private IGradeDao? _gradeDao;
     public override IGradeDao gradeDao => _gradeDao ??= new GradeDaoPostgres(context);
 
-
-    private ISubjectDao? _subjectDao;
-    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
-
     
     private IEnrollmentDao? _enrollmentDao;
     public override IEnrollmentDao enrollmentDao => _enrollmentDao ??= new EnrollmentDaoPostgres(context);
+
+
+    private ITeacherDao? _teacherDao;
+    public override ITeacherDao teacherDao => _teacherDao ??= new TeacherDaoPostgres(context);
+    
+    
+    private ISubjectDao? _subjectDao;
+    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
+    
+    
+    private model.academy.ISubjectDao? _academySubjectDao;
+    public override model.academy.ISubjectDao academySubjectDao => _academySubjectDao ??= new AcademySubjectDaoPostgres(context);
 }
