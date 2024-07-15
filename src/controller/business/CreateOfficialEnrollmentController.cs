@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
-using ISubjectDao = wsmcbl.src.model.academy.ISubjectDao;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
@@ -17,13 +15,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         
     public Task<List<StudentEntity>> getStudentList()
     {
-        return daoFactory.studentDao<StudentEntity>()!.getAll();
+        return daoFactory.secretaryStudentDao!.getAll();
     }
 
     public async Task saveStudent(StudentEntity student)
     {
         student.init();
-        daoFactory.studentDao<StudentEntity>()!.create(student);
+        daoFactory.secretaryStudentDao!.create(student);
         await daoFactory.execute();
     }
 

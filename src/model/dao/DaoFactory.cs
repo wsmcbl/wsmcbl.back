@@ -14,10 +14,11 @@ public abstract class DaoFactory
     public virtual ITransactionDao? transactionDao => null;
     public virtual ITariffTypeDao? tariffTypeDao => null;
     public virtual IDebtHistoryDao? debtHistoryDao => null;
-    public virtual IGenericDao<T, string>? studentDao<T>() => null;
+    public virtual accounting.IStudentDao? studentDao => null;
+    public virtual secretary.IStudentDao? secretaryStudentDao => null;
     public virtual IGradeDao? gradeDao => null;
     public virtual IEnrollmentDao? enrollmentDao => null;
     public virtual ISubjectDao? subjectDao => null;
-    public virtual model.academy.ISubjectDao? academySubjectDao => null;
+    public virtual academy.ISubjectDao? academySubjectDao => null;
     public virtual ITeacherDao? teacherDao => null;
 }

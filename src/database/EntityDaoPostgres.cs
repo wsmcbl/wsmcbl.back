@@ -13,9 +13,6 @@ namespace wsmcbl.src.database;
 public class AcademySubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.SubjectEntity, string>(context), model.academy.ISubjectDao;
 
-public class TeacherDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao;
-
 public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
     
@@ -80,5 +77,15 @@ public class EnrollmentDaoPostgres(PostgresContext context)
             .Include(e => e.students)
             .Include(e => e.subjects)
             .ToListAsync();
+    }
+}
+
+public class TeacherDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao
+{
+    public new async Task<TeacherEntity?> getById(string id)
+    {
+        return await entities.Include(e => e.subjects)
+            .FirstOrDefaultAsync(e => e.teacherId == id);
     }
 }

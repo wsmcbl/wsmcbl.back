@@ -10,8 +10,8 @@ public class EnrollmentEntity
     public int quantity { get; set; }
     public int gradeId { get; set; }
 
-    public ICollection<StudentEntity> students { get; set; }
-    public ICollection<SubjectEntity> subjects { get; set; }
+    public ICollection<StudentEntity> students { get; set; } = null!;
+    public ICollection<SubjectEntity> subjects { get; set; } = null!;
 
     public void assignSubject(SubjectEntity subject)
     {

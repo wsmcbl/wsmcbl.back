@@ -9,6 +9,7 @@ public class GradeEntity
     public string schoolYear { get; private set; } = null!;
     public int quantity { get; private set; }
     public string modality { get; private set; } = null!;
+    
     public ICollection<EnrollmentEntity>? enrollments { get; set; }
     public ICollection<SubjectEntity>? subjectList { get; set; }
     
@@ -48,7 +49,7 @@ public class GradeEntity
     public void computeQuantity()
     {
         quantity = 0;
-        foreach (var item in enrollments)
+        foreach (var item in enrollments!)
         {
             quantity += item.quantity;
         }

@@ -21,7 +21,7 @@ public class DaoFactoryPostgresTest
     [Fact]
     public void getAccountingStudentDao_ReturnsDao()
     {
-        var result = daoFactory.studentDao<StudentEntity>();
+        var result = daoFactory.studentDao;
 
         Assert.NotNull(result);
         Assert.IsType<StudentDaoPostgres>(result);
@@ -30,7 +30,7 @@ public class DaoFactoryPostgresTest
     [Fact]
     public void getSecretaryStudentDao_ReturnsDao()
     {
-        var result = daoFactory.studentDao<SecretaryStudentEntity>();
+        var result = daoFactory.secretaryStudentDao;
 
         Assert.NotNull(result);
         Assert.IsType<SecretaryStudentDaoPostgres>(result);
