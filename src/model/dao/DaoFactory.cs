@@ -6,6 +6,8 @@ namespace wsmcbl.src.model.dao;
 
 public abstract class DaoFactory
 {
+    public virtual Task execute() => Task.CompletedTask;
+    
     public virtual ITariffDao? tariffDao => null;
     public virtual ICashierDao? cashierDao => null;
     public virtual ITransactionDao? transactionDao => null;
@@ -15,7 +17,4 @@ public abstract class DaoFactory
     public virtual IGradeDao? gradeDao => null;
     public virtual IEnrollmentDao? enrollmentDao => null;
     public virtual secretary.ISubjectDao? subjectDao => null;
-    public virtual ITeacherDao? teacherDao => null; 
-        
-    public virtual Task execute() => Task.CompletedTask;
 }

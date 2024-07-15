@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.exception;
+using DtoMapper = wsmcbl.src.dto.output.DtoMapper;
 
 namespace wsmcbl.src.controller.api;
 
@@ -31,7 +32,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeList()
     {
         var grades = await controller.getGradeList();
-        return Ok(grades);
+        return Ok(DtoMapper.mapListToDto(grades));
     }
     
     [HttpPost]
