@@ -10,6 +10,11 @@ public class TeacherEntity
 
     
     public UserEntity user { get; set; } = null!;
-    public EnrollmentEntity? enrollment { get; set; }
-    public ICollection<SubjectEntity> subjects { get; set; }
+    public EnrollmentEntity? enrollment { get; }
+    public ICollection<SubjectEntity> subjects { get; }
+
+    public void assignSubject(SubjectEntity subject)
+    {
+        subjects.Add(subject);
+    }
 }

@@ -116,7 +116,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("enrollments/teachers")]
     public async Task<IActionResult> assignTeacher(TeacherToAssignDto dto)
     {
-        await controller.assignTeacher(dto.teacherId!, dto.subjectId!, dto.enrollmentId!);
+        await controller.assignTeacher(dto.teacherId, dto.subjectId, dto.enrollmentId);
         return Ok();
     }
 }

@@ -5,10 +5,10 @@ namespace wsmcbl.src.model.secretary;
 public class GradeEntity
 {
     public int gradeId { get; private set; }
-    public string label { get; private set; }
-    public string schoolYear { get; private set; }
+    public string label { get; private set; } = null!;
+    public string schoolYear { get; private set; } = null!;
     public int quantity { get; private set; }
-    public string modality { get; private set; }
+    public string modality { get; private set; } = null!;
     public ICollection<EnrollmentEntity>? enrollments { get; set; }
     public ICollection<SubjectEntity>? subjectList { get; set; }
     

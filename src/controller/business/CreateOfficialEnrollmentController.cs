@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
@@ -107,12 +108,25 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task assignTeacher(string teacherId, string subjectId, string enrollmentId)
     {
-        var enrollment = await getEnrollment(enrollmentId);
+        var teacher = await daoFactory.teacherDao!.getById(teacherId);
 
-        await enrollment.subjectExistOrSet(subjectId, daoFactory.academySubjectDao!);
-        await enrollment.teacherExistOrSet(teacherId, daoFactory.teacherDao!);
-        enrollment.assignTeacher(subjectId, teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("teacher", teacherId);
+        }
         
+        var enrollment = await getEnrollment(enrollmentId);
+        var subject = await daoFactory.academySubjectDao!.getById(subjectId);
+
+        if (subject == null)
+        {
+            throw new EntityNotFoundException("subject", subjectId);
+        }
+        
+        teacher.assignSubject(subject);
+        enrollment.assignSubject(subject);
+        
+        daoFactory.teacherDao!.update(teacher);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
     }
