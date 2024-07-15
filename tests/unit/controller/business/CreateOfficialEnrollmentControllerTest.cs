@@ -24,7 +24,7 @@ public class CreateOfficialEnrollmentControllerTest
     {
         var entityGenerator = new TestEntityGenerator();
         studentDao.getAll().Returns(entityGenerator.aSecretaryStudentList());
-        daoFactory.studentDao<StudentEntity>().Returns(studentDao);
+        daoFactory.secretaryStudentDao.Returns(studentDao);
 
         var result = await controller.getStudentList();
 

@@ -6,12 +6,14 @@ public class TeacherEntity
 {
     public string userId { get; set; } = null!;
     public string teacherId { get; set; } = null!;
-
     public string? enrollmentId { get; set; }
-
-    public EnrollmentEntity? enrollment { get; set; }
-
-    public ICollection<SubjectEntity> subjects { get; set; } = new List<SubjectEntity>();
-
+    
     public UserEntity user { get; set; } = null!;
+    public EnrollmentEntity? enrollment { get; }
+    public ICollection<SubjectEntity> subjects { get; } = null!;
+
+    public void assignSubject(SubjectEntity subject)
+    {
+        subjects.Add(subject);
+    }
 }

@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.accounting;
 
 public class StudentEntity
 {
-    public string studentId { get; set; }
+    public string? studentId { get; set; }
     public int discountId { get; set; }
     public DiscountEntity? discount { get; set; }
     public secretary.StudentEntity student { get; set; } = null!;

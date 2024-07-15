@@ -33,7 +33,7 @@ internal class AcademyContext
                 .HasMaxLength(20)
                 .HasColumnName("schoolyear");
             entity.Property(e => e.section)
-                .HasMaxLength(2)
+                .HasMaxLength(10)
                 .HasColumnName("section");
 
             entity.HasMany(d => d.students)
@@ -111,7 +111,7 @@ internal class AcademyContext
                 .HasMaxLength(15)
                 .HasColumnName("teacherid");
 
-            entity.HasOne(d => d.baseSubject).WithMany(p => p.subjects)
+            entity.HasOne(d => d.baseSubject).WithMany(p => p.academySubjectList)
                 .HasForeignKey(d => d.baseSubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("subject_basesubjectid_fkey");
