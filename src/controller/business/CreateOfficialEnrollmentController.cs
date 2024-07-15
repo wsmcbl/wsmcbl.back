@@ -68,7 +68,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    public async Task<List<SubjectEntity>> getSubjectList()
+    public async Task<List<SubjectEntity>> getSubjectListByGrade()
     {
         return await daoFactory.subjectDao!.getAll();
     }

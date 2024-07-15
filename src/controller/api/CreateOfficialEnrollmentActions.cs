@@ -39,8 +39,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("grades")]
     public async Task<IActionResult> createGrade(GradeToCreateDto gradeToCreate)
     {
-        var id = await controller.createGrade(gradeToCreate.toEntity(), gradeToCreate.subjects);
-        return Ok(id);
+        var gradeId = await controller.createGrade(gradeToCreate.toEntity(), gradeToCreate.subjects);
+        return Ok(new { gradeId });
     }
 
     [HttpPut]
@@ -60,9 +60,9 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
 
     [HttpGet]
     [Route("grades/subjects")]
-    public async Task<IActionResult> getSubjectList()
+    public async Task<IActionResult> getSubjectListByGrade()
     {
-        var subjects = await controller.getSubjectList();
+        var subjects = await controller.getSubjectListByGrade();
         return Ok(subjects);
     }
 
