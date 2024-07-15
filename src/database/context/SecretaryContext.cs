@@ -20,6 +20,10 @@ internal class SecretaryContext
 
             entity.ToTable("grade", "secretary");
 
+
+            entity.Ignore(e => e.quantity);
+            entity.Ignore(e => e.modality);
+            
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.label)
                 .HasMaxLength(25)
