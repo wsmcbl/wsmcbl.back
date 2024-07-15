@@ -33,7 +33,7 @@ internal class AcademyContext
                 .HasMaxLength(20)
                 .HasColumnName("schoolyear");
             entity.Property(e => e.section)
-                .HasMaxLength(2)
+                .HasMaxLength(10)
                 .HasColumnName("section");
 
             entity.HasMany(d => d.students)

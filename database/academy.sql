@@ -5,7 +5,7 @@ create table if not exists Academy.Enrollment
     enrollmentId varchar(15) primary key,
     enrollmentLabel varchar(20) not null,
     schoolYear varchar(20) not null,
-    section varchar(2) not null,
+    section varchar(10) not null,
     capacity smallint,
     quantity smallint,
     gradeId int not null,

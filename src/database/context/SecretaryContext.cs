@@ -28,9 +28,17 @@ internal class SecretaryContext
             entity.Property(e => e.label)
                 .HasMaxLength(25)
                 .HasColumnName("gradelabel");
+            
             entity.Property(e => e.schoolYear)
                 .HasMaxLength(15)
                 .HasColumnName("schoolyear");
+            
+            entity.Property(e => e.quantity)
+                .HasColumnName("quantity");
+            
+            entity.Property(e => e.modality)
+                .HasMaxLength(50)
+                .HasColumnName("modality");
 
             entity.HasMany(e => e.enrollments)
                 .WithOne()
@@ -63,6 +71,8 @@ internal class SecretaryContext
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 
             entity.ToTable("student", "secretary");
+            
+            entity.Ignore(e => e.enrollmentLabel);
 
             entity.Property(e => e.tutor)
                 .HasColumnName("tutor");
@@ -86,9 +96,6 @@ internal class SecretaryContext
                 .HasColumnName("surname");
             entity.Property(e => e.schoolYear)
                 .HasColumnName("schoolyear");
-            entity.Property(e => e.enrollmentLabel)
-                .HasMaxLength(20)
-                .HasColumnName("enrollmentlabel");
             entity.Property(e => e.birthday)
                 .HasColumnName("birthday");
             entity.Property(e => e.sex)

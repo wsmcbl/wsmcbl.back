@@ -12,8 +12,7 @@ create table if not exists Secretary.Student
     schoolyear varchar(15) not null,
     tutor varchar(100),
     sex boolean not null,
-    birthday date not null,
-    enrollmentLabel varchar(20)
+    birthday date not null
 );
 
 create table if not exists Secretary.Schoolyear
@@ -40,6 +39,8 @@ create table if not exists Secretary.Grade
     gradeId serial primary key ,
     gradeLabel varchar(25) not null,
     schoolYear varchar(15) not null,
+    modality varchar(50) not null,
+    quantity int not null,
     foreign key (schoolYear) references Secretary.Schoolyear
 );
 
