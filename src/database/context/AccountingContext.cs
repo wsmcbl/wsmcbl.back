@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.config;
 
-namespace wsmcbl.src.database;
+namespace wsmcbl.src.database.context;
 
-public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
+internal class AccountingContext
 {
-    public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
-    public virtual DbSet<DebtHistoryEntity> DebtHistory { get; init; } = null!;
-    public virtual DbSet<StudentEntity> Accounting_Student { get; init; } = null!;
+    private readonly ModelBuilder modelBuilder;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public AccountingContext(ModelBuilder modelBuilder)
+    {
+        this.modelBuilder = modelBuilder;
+    }
+
+    public void create()
     {
         modelBuilder.Entity<CashierEntity>(entity =>
         {
@@ -53,45 +55,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasForeignKey(s => s.studentId);
         });
 
-        modelBuilder.Entity<model.secretary.StudentEntity>(entity =>
-        {
-            entity.HasKey(e => e.studentId).HasName("student_pkey");
-
-            entity.ToTable("student", "secretary");
-
-            entity.Property(e => e.tutor)
-                .HasColumnName("tutor");
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasDefaultValueSql("secretary.generate_student_id()")
-                .ValueGeneratedOnAdd()
-                .HasColumnName("studentid");
-            
-            entity.Property(e => e.name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.secondName)
-                .HasMaxLength(50)
-                .HasColumnName("secondname");
-            entity.Property(e => e.secondSurname)
-                .HasMaxLength(50)
-                .HasColumnName("secondsurname");
-            entity.Property(e => e.surname)
-                .HasMaxLength(50)
-                .HasColumnName("surname");
-            entity.Property(e => e.schoolYear)
-                .HasColumnName("schoolyear");
-            entity.Property(e => e.enrollmentLabel)
-                .HasMaxLength(20)
-                .HasColumnName("enrollmentlabel");
-            entity.Property(e => e.birthday)
-                .HasColumnName("birthday");
-            entity.Property(e => e.sex)
-                .HasColumnName("sex");
-            entity.Property(e => e.isActive)
-                .HasColumnName("studentstate");
-        });
-
         modelBuilder.Entity<DiscountEntity>(entity =>
         {
             entity.HasKey(e => e.discountId).HasName("discount_pkey");
@@ -131,7 +94,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
                 .HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
         });
-        
         
         modelBuilder.Entity<TariffTypeEntity>(entity =>
         {
@@ -173,24 +135,6 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
-        });
-
-
-        modelBuilder.Entity<UserEntity>(entity =>
-        {
-            entity.HasKey(e => e.userId).HasName("user_pkey");
-
-            entity.ToTable("user", "config");
-
-            entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
-            entity.Property(e => e.email).HasMaxLength(100).HasColumnName("email");
-            entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
-            entity.Property(e => e.password).HasMaxLength(100).HasColumnName("password");
-            entity.Property(e => e.secondName).HasMaxLength(50).HasColumnName("secondname");
-            entity.Property(e => e.secondsurName).HasMaxLength(50).HasColumnName("secondsurname");
-            entity.Property(e => e.surname).HasMaxLength(50).HasColumnName("surname");
-            entity.Property(e => e.username).HasMaxLength(45).HasColumnName("username");
-            entity.Property(e => e.isActive).HasColumnName("userstate");
         });
         
         modelBuilder.Entity<DebtHistoryEntity>(entity =>

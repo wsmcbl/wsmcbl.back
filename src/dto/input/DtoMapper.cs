@@ -47,11 +47,8 @@ public static class DtoMapper
         if (debtHistoryList != null)
             return debtHistoryList;
 
-        debtHistoryList = listDto.Where(i => !i.applyArrear)
-            .Select(item => new DebtHistoryEntity
-            {
-                tariffId = item.tariffId
-            })
+        debtHistoryList = listDto
+            .Where(i => !i.applyArrear).Select(item => new DebtHistoryEntity{tariffId = item.tariffId})
             .ToList();
 
         return debtHistoryList;
@@ -71,17 +68,33 @@ public static class DtoMapper
         };
     }
 
+    public static GradeEntity toEntity(this GradeToCreateDto dto)
+    {
+        var entity = new GradeEntity();
+        entity.init(dto.label, dto.schoolYear, dto.modality);
+        return entity;
+    }
+
     public static GradeEntity toEntity(this GradeDto dto)
     {
-        return new GradeEntity();
+        var entity = new GradeEntity();
+        entity.setGradeId(dto.gradeId);
+        entity.init(dto.label!, dto.schoolYear!, dto.modality!);
+        return entity;
     }
 
     public static EnrollmentEntity toEntity(this EnrollmentDto dto)
     {
-        return new EnrollmentEntity();
+        var enrollment = new EnrollmentEntity
+        {
+            enrollmentId = dto.enrollmentId!
+        };
+        
+        enrollment.updateData(dto.label!, dto.schoolYear!, dto.section!, dto.capacity);
+        
+        return enrollment;
     }
     
-
     private static DateOnly toDateOnly(this DateDto dto)
     {
         return new DateOnly(dto.year, dto.month, dto.day);

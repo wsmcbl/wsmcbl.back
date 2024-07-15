@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.exception;
+using DtoMapper = wsmcbl.src.dto.output.DtoMapper;
 
 namespace wsmcbl.src.controller.api;
 
@@ -31,24 +32,24 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeList()
     {
         var grades = await controller.getGradeList();
-        return Ok(grades);
+        return Ok(DtoMapper.mapListToDto(grades));
     }
     
     [HttpPost]
     [Route("grades")]
-    public async Task<IActionResult> createGrade(GradeDto grade)
+    public async Task<IActionResult> createGrade(GradeToCreateDto gradeToCreate)
     {
-        await controller.createGrade(grade.toEntity());
-        return Ok();
+        var id = await controller.createGrade(gradeToCreate.toEntity(), gradeToCreate.subjects);
+        return Ok(id);
     }
 
     [HttpPut]
     [Route("grades")]
-    public async Task<IActionResult> updateGrade(GradeDto grade)
+    public async Task<IActionResult> updateGrade(GradeDto gradeDto)
     {
         try
         {
-            await controller.updateGrade(grade.toEntity());
+            await controller.updateGrade(gradeDto.toEntity());
             return Ok();
         }
         catch (EntityNotFoundException e)
@@ -69,12 +70,9 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("grades/subjects")]
     public async Task<IActionResult> updateSubjects(SubjectsToUpdateDto dto)
     {
-        var list = dto.getSubjectList();
-        var gradeId = dto.getGradeId();
-
         try
         {
-            await controller.updateSubjects(gradeId, list);
+            await controller.updateSubjects(dto.gradeId, dto.subjectIdsList);
             return Ok();
         }
         catch (EntityNotFoundException e)
@@ -115,10 +113,10 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
 
     [HttpPut]
-    [Route("enrollments/subjects")]
+    [Route("enrollments/teachers")]
     public async Task<IActionResult> assignTeacher(TeacherToAssignDto dto)
     {
-        await controller.assignTeacher(dto.getEnrollmentId(), dto.getSubjectId(), dto.getTeacher());
+        await controller.assignTeacher(dto.teacherId, dto.subjectId, dto.enrollmentId);
         return Ok();
     }
 }
