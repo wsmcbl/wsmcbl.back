@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.academy;
 
 public class EnrollmentEntity
 {
-    public string enrollmentId { get; set; } = null!;
+    public string enrollmentId { get; init; } = null!;
 
     public string label { get; set; } = null!;
 
@@ -19,9 +19,6 @@ public class EnrollmentEntity
     public ICollection<StudentEntity> students { get; set; }
 
     public ICollection<SubjectEntity> subjects { get; set; }
-
-    public List<TeacherEntity> teachers { get; set; }
-    
     
     public void assignTeacher(string subjectId, TeacherEntity teacher)
     {

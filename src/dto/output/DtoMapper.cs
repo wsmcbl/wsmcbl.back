@@ -1,4 +1,6 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.dto.output;
 
@@ -91,8 +93,24 @@ public static class DtoMapper
         };
     }
     
+    private static GradeBasicDto mapToDto(this GradeEntity grade)
+    {
+        return new GradeBasicDto
+        {
+            gradeId = grade.gradeId,
+            label = grade.label,
+            modality = grade.modality,
+            quantity = grade.quantity,
+            schoolYear = grade.schoolYear
+        };
+    }
+    
     public static List<StudentBasicDto> mapListToDto(this IEnumerable<StudentEntity> students)
     {
         return students.Select(student => student.mapToBasicDto()).ToList();
+    }
+    public static List<GradeBasicDto> mapListToDto(this IEnumerable<GradeEntity> grades)
+    {
+        return grades.Select(e => e.mapToDto()).ToList();
     }
 }

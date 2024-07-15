@@ -4,12 +4,21 @@ namespace wsmcbl.src.model.secretary;
 
 public class GradeEntity
 {
-    public int gradeId { get; set; }
+    public int gradeId { get; }
+    public string label { get; private set; } = null!;
+    public string schoolYear { get; private set; } = null!;
+    public int quantity { get; private set; }
 
-    public string label { get; set; } = null!;
+    public string modality => "sin implementar";
 
-    public string schoolYear { get; set; } = null!;
-
+    public void computeQuantity()
+    {
+        quantity = 0;
+        foreach (var item in enrollments)
+        {
+            quantity += item.quantity;
+        }
+    }
     
     public ICollection<EnrollmentEntity> enrollments { get; set; } = new List<EnrollmentEntity>();
 
@@ -17,6 +26,7 @@ public class GradeEntity
 
     public void setSubjects(List<SubjectEntity> list)
     {
+        /*temporal*/
         subjects = list;
     }
 }
