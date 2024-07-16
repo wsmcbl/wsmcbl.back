@@ -105,7 +105,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [ServiceFilter(typeof(ValidateModelFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     { 
-        var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetail());
+        var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrear());
         return Ok(new { transactionId });
     }
     

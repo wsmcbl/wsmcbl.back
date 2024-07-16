@@ -16,7 +16,7 @@ public static class DtoMapper
         };
     }
 
-    public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
+    public static List<DebtHistoryEntity> toEntity(this List<DetailDto> listDto)
     {
         var debtHistoryList = listDto
             .Where(i => !i.applyArrear).Select(item => new DebtHistoryEntity{tariffId = item.tariffId})

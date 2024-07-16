@@ -9,7 +9,14 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 {
     public new async Task<List<StudentEntity>> getAll()
     {
-        return await entities.Include(d => d.student).ToListAsync();
+        var list = await entities.Include(d => d.student).ToListAsync();
+
+        foreach (var item in list)
+        {
+            item.enrollmentLabel = await getEnrollmentLabel(item.studentId!);
+        }
+
+        return list;
     }
 
     public new async Task<StudentEntity?> getById(string id)
@@ -25,6 +32,8 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         {
             throw new EntityNotFoundException("Student", id);
         }
+
+        student.enrollmentLabel = await getEnrollmentLabel(student.studentId!);
         
         foreach (var transaction in student.transactions!)
         {
@@ -36,5 +45,21 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         }
         
         return student;
+    }
+
+    private async Task<string> getEnrollmentLabel(string studentId)
+    {
+        var academyStudent = await context.Set<model.academy.StudentEntity>()
+            .FirstOrDefaultAsync(e => e.studentId == studentId);
+
+        if (academyStudent == null)
+        {
+            return "";
+        }
+        
+        var enrollment = await context.Set<model.academy.EnrollmentEntity>()
+            .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
+
+        return enrollment != null ? enrollment.label : "";
     }
 }

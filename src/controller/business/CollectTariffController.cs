@@ -61,8 +61,9 @@ public class CollectTariffController : BaseController, ICollectTariffController
     
     public async Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
-        daoFactory.transactionDao!.create(transaction);
+        await daoFactory.debtHistoryDao!.checkIsPaid(transaction);
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
+        daoFactory.transactionDao!.create(transaction);
         await daoFactory.execute();
 
         return transaction.transactionId!;

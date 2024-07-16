@@ -6,29 +6,19 @@ namespace wsmcbl.src.dto.input;
 
 public class TransactionDto
 {
-    [Required]
-    public string cashierId { get; set; } = null!;
-
-    [Required]
-    public string studentId { get; set; } = null!;
+    [Required] public string? cashierId { get; set; }
+    [Required] public string? studentId { get; set; }
+    [JsonRequired] public DateTime dateTime { get; set; }
+    [Required] public List<DetailDto> details { get; set; } = [];
     
-    [JsonRequired]
-    public DateTime dateTime { get; set; }
-    
-    [Required]
-    public ICollection<DetailDto> details { get; set; } = new List<DetailDto>();
-
-    public virtual List<DebtHistoryEntity> getDetail()
-    {
-        return details.toEntity();
-    }
+    public virtual List<DebtHistoryEntity> getDetailToApplyArrear() => details.toEntity();
 
     public virtual TransactionEntity toEntity()
     {
         var transaction = new TransactionEntity
         {
-            studentId = studentId,
-            cashierId = cashierId,
+            studentId = studentId!,
+            cashierId = cashierId!,
             date = dateTime,
             total = 0
         };

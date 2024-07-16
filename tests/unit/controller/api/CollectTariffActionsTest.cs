@@ -190,7 +190,7 @@ public class CollectTariffActionsTest
         dto.toEntity().Returns(entity);
         
         var detail = new List<DebtHistoryEntity>();
-        dto.getDetail().Returns(detail);
+        dto.getDetailToApplyArrear().Returns(detail);
 
         controller.saveTransaction(entity, detail).Returns("tst-id");
         

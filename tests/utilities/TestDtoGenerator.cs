@@ -9,30 +9,8 @@ public class TestDtoGenerator
     private TariffDto? _tariffDto;
     private InvoiceDto? _invoiceDto;
     private StudentBasicDto? _studentBasicDto;
-    private src.dto.input.TransactionDto? _transactionDto;
 
     private List<StudentBasicDto>? _studentBasicDtoList;
-
-
-    public src.dto.input.TransactionDto aTransactionDto()
-    {
-        _transactionDto = new src.dto.input.TransactionDto
-        {
-            cashierId = "caj-ktinoco",
-            studentId = "std-id",
-            dateTime = DateTime.Now,
-            details = new List<src.dto.input.DetailDto>()
-        };
-
-        _transactionDto.details.Add(new src.dto.input.DetailDto
-        {
-            amount = 1000,
-            applyArrear = true,
-            tariffId = 1
-        });
-
-        return _transactionDto;
-    }
     
     public InvoiceDto aInvoiceDto()
     {

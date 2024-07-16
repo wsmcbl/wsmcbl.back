@@ -30,6 +30,11 @@ public class TransactionDaoPostgres(PostgresContext context)
 {
     public override void create(TransactionEntity entity)
     {
+        if (!entity.checkData())
+        {
+            throw new DbException("incorrect transaction data");
+        }
+        
         entity.computeTotal();
         base.create(entity);
     }
