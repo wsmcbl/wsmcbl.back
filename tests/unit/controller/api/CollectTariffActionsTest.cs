@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.api;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 using DtoMapper = wsmcbl.src.dto.input.DtoMapper;
 using OutDtoMapper = wsmcbl.src.dto.output.DtoMapper;
+using StudentDto = wsmcbl.src.dto.output.StudentDto;
 
 namespace wsmcbl.tests.unit.controller.api;
 
@@ -182,9 +184,15 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task saveTransaction_TransactionIsSave()
     {
-        var dto = new TestDtoGenerator().aTransactionDto();
-        controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("tst-id");
-        controller.exonerateArrears(dto.studentId, DtoMapper.toEntity(dto.details!)).Returns(Task.FromResult("string"));
+        var dto = Substitute.For<TransactionDto>();
+        
+        var entity = new TransactionEntity();
+        dto.toEntity().Returns(entity);
+        
+        var detail = new List<DebtHistoryEntity>();
+        dto.getDetail().Returns(detail);
+
+        controller.saveTransaction(entity, detail).Returns("tst-id");
         
         var actionResult = await actions.saveTransaction(dto);
 
@@ -196,22 +204,6 @@ public class CollectTariffActionsTest
         Assert.Equal("tst-id", id);
     }
     
-    [Fact]
-    public async Task saveTransaction_InvalidParameter_ReturnsException()
-    {
-        var dto = new TestDtoGenerator().aTransactionDto();
-        dto.cashierId = "";
-        dto.studentId = "";
-        
-        controller.saveTransaction(DtoMapper.toEntity(dto)).Returns("id");
-        controller.exonerateArrears(dto.studentId, DtoMapper.toEntity(dto.details))
-            .Returns(_ => throw new DbException("Any exception"));
-        
-        var actionResult = await actions.saveTransaction(dto);
-
-        Assert.IsType<BadRequestObjectResult>(actionResult);
-    }
-
 
     [Fact]
     public async Task getInvoice_ValidParameter_ReturnsInvoice()

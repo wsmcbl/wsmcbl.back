@@ -7,12 +7,7 @@ namespace wsmcbl.src.dto.input;
 
 public static class DtoMapper
 {
-
-    private static TransactionEntity? transaction;
-    private static List<DebtHistoryEntity>? debtHistoryList;
-
-
-    private static TransactionTariffEntity toEntity(this DetailDto dto)
+    public static TransactionTariffEntity toEntity(this DetailDto dto)
     {
         return new TransactionTariffEntity
         {
@@ -21,33 +16,9 @@ public static class DtoMapper
         };
     }
 
-    public static TransactionEntity toEntity(this TransactionDto dto)
-    {
-        if (transaction != null)
-            return transaction;
-
-        transaction = new TransactionEntity
-        {
-            studentId = dto.studentId,
-            cashierId = dto.cashierId,
-            date = dto.dateTime,
-            total = 0
-        };
-
-        foreach (var item in dto.details!)
-        {
-            transaction.details.Add(item.toEntity());
-        }
-
-        return transaction;
-    }
-
     public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
     {
-        if (debtHistoryList != null)
-            return debtHistoryList;
-
-        debtHistoryList = listDto
+        var debtHistoryList = listDto
             .Where(i => !i.applyArrear).Select(item => new DebtHistoryEntity{tariffId = item.tariffId})
             .ToList();
 
