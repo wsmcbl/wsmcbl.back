@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.database;
 
@@ -15,8 +17,7 @@ public class CashierDaoPostgres(PostgresContext context) : GenericDaoPostgres<Ca
             throw new EntityNotFoundException("Cashier", id);
         }
         
-        var service = new UserDaoPostgres(context);
-        var user = await service.getById(cashier.userId);
+        var user = await context.Set<UserEntity>().FirstOrDefaultAsync(e => e.userId == cashier.userId);
 
         cashier.user = user!;
         

@@ -59,8 +59,10 @@ public class CollectTariffController : BaseController, ICollectTariffController
         await daoFactory.execute();
     }
     
-    public async Task<string> saveTransaction(TransactionEntity transaction)
+    public async Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
+        await daoFactory.debtHistoryDao!.checkIsPaid(transaction);
+        await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
         daoFactory.transactionDao!.create(transaction);
         await daoFactory.execute();
 
@@ -87,11 +89,5 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public Task<List<TariffTypeEntity>> getTariffTypeList()
     {
         return daoFactory.tariffTypeDao!.getAll();
-    }
-
-    public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> debts)
-    {
-        await daoFactory.debtHistoryDao!.exonerateArrears(studentId, debts);
-        await daoFactory.execute();
     }
 }

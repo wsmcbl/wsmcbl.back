@@ -33,6 +33,8 @@ internal class AccountingContext
 
             entity.ToTable("student", "accounting");
 
+            entity.Ignore(d => d.enrollmentLabel);
+
             entity.Property(e => e.studentId)
                 .HasMaxLength(20)
                 .HasColumnName("studentid");

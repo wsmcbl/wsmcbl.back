@@ -103,19 +103,10 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [HttpPost]
     [Route("transactions")]
     [ServiceFilter(typeof(ValidateModelFilterAttribute))]
-    public async Task<IActionResult> saveTransaction([FromBody] TransactionDto transaction)
-    {
-        try
-        {
-            var transactionId = await controller.saveTransaction(transaction.toEntity());
-            await controller.exonerateArrears(transaction.studentId, transaction.details.toEntity());
-            
-            return Ok(new { transactionId });
-        }
-        catch (Exception e)
-        {
-            return BadRequest($"Server Error: {e.Message}");
-        }
+    public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
+    { 
+        var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrear());
+        return Ok(new { transactionId });
     }
     
     [HttpGet]
