@@ -3,9 +3,9 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class SchoolYearToCreateDto : IBaseDto<GradeEntity>
+public class SchoolYearToCreateDto 
 {
-    public GradeEntity toEntity()
+    public GradeEntity getGrade()
     {
         throw new NotImplementedException();
     }

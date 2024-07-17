@@ -8,18 +8,23 @@ namespace wsmcbl.src.controller.business;
 
 public interface ICreateOfficialEnrollmentController
 {
-    public Task<List<StudentEntity>> getStudentList();
-    public Task saveStudent(StudentEntity student);
     public Task<List<GradeEntity>> getGradeList();
-    public Task<int> createGrade(GradeEntity entity);
-    public Task updateGrade(GradeEntity entity);
-    public Task updateSubjects(int gradeId, List<string> subjectIdsList);
-    public Task<List<SubjectEntity>> getSubjectListByGrade();
-    public Task updateEnrollment(EnrollmentEntity entity);
-    public Task<List<EnrollmentEntity>> getEnrollmentList();
-    public Task<EnrollmentEntity> getEnrollment(string enrollmentId);
-    public Task assignTeacher(string teacherId, string subjectId, string enrollmentId);
     public Task<List<SchoolYearEntity>> getSchoolYearList();
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
-    public Task createSubject(List<TariffEntity> getTariffList);
+    
+    public Task createTariff(TariffEntity tariff);
+    public Task createSubject(SubjectEntity subjectList);
+    public Task createSchoolYear(GradeEntity grade, List<TariffEntity> tariffList);
+    
+    
+    
+    public Task<List<StudentEntity>> getStudentList();
+    public Task saveStudent(StudentEntity student);
+    
+    
+    
+    public Task createEnrollments(int gradeId, int quantity);
+    public Task updateEnrollment(EnrollmentEntity enrollment);
+    public Task<GradeEntity?> getGradeById(int gradeId);
+    public Task<List<TeacherEntity>> getTeacherList();
 }

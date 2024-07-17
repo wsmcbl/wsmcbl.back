@@ -1,5 +1,4 @@
 using wsmcbl.src.model.accounting;
-using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.dto.output;
 

@@ -9,12 +9,12 @@ public static class SecretaryDtoMapper
         return new SchoolYearDto();
     }
     
-    public static List<SchoolYearDto> mapToDto(this List<SchoolYearEntity> list)
+    public static List<SchoolYearDto> mapListToDto(this List<SchoolYearEntity> list)
     {
         return list.Select(e => e.mapToDto()).ToList();
     }
     
-    private static GradeBasicDto mapToDto(this GradeEntity grade)
+    private static GradeBasicDto mapToBasicDto(this GradeEntity grade)
     {
         return new GradeBasicDto
         {
@@ -28,6 +28,12 @@ public static class SecretaryDtoMapper
     
     public static List<GradeBasicDto> mapListToDto(this IEnumerable<GradeEntity> grades)
     {
-        return grades.Select(e => e.mapToDto()).ToList();
+        return grades.Select(e => e.mapToBasicDto()).ToList();
+    }
+
+
+    public static GradeDto mapToDto(this GradeEntity grade)
+    {
+        return new GradeDto();
     }
 }
