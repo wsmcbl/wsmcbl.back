@@ -63,4 +63,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     private model.academy.ISubjectDao? _academySubjectDao;
     public override model.academy.ISubjectDao academySubjectDao => _academySubjectDao ??= new AcademySubjectDaoPostgres(context);
+
+
+    private ISchoolyearDao? _schoolyearDao;
+    public override ISchoolyearDao? schoolyearDao => _schoolyearDao ??= new SchoolyearDaoPostgres(context);
 }
