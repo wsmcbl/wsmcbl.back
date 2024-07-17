@@ -17,7 +17,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> getStudentList()
     {
         var students = await controller.getStudentsList();
-        return Ok(students.mapListToDto());
+        return Ok(students.mapListTo());
     } 
     
     [HttpGet]

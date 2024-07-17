@@ -1,5 +1,5 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
@@ -10,19 +10,21 @@ namespace wsmcbl.src.controller.business;
 public class CreateOfficialEnrollmentController : BaseController, ICreateOfficialEnrollmentController
 {
     public CreateOfficialEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
+    {}
+
+    public async Task createSchoolYear(GradeEntity grade, List<TariffEntity> tariffList)
     {
-    }
         
-    public Task<List<StudentEntity>> getStudentList()
-    {
-        return daoFactory.secretaryStudentDao!.getAll();
     }
 
-    public async Task saveStudent(StudentEntity student)
+    public async Task createSubject(SubjectEntity subjectList)
     {
-        student.init();
-        daoFactory.secretaryStudentDao!.create(student);
-        await daoFactory.execute();
+        throw new NotImplementedException();
+    }
+
+    public async Task createTariff(TariffEntity tariff)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<List<GradeEntity>> getGradeList()
@@ -30,101 +32,56 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.gradeDao!.getAll();
     }
 
-    public async Task<int> createGrade(GradeEntity entity, List<string> subjectIdsList)
+    public async Task<List<SchoolYearEntity>> getSchoolYearList()
     {
-        await entity.setSubjects(daoFactory.subjectDao!, subjectIdsList);
-        daoFactory.gradeDao!.create(entity);
-        await daoFactory.execute();
-
-        return entity.gradeId;
+        throw new NotImplementedException();
     }
 
-    public async Task updateGrade(GradeEntity entity)
+    public async Task<SchoolYearEntity> getNewSchoolYearInformation()
     {
-        var grade = await daoFactory.gradeDao!.getById(entity.gradeId);
-
-        if (grade == null)
-        {
-            throw new EntityNotFoundException("grade", entity.gradeId.ToString());
-        }
-        
-        grade.init(entity.label, grade.schoolYear, grade.modality);
-        grade.computeQuantity();
-        daoFactory.gradeDao!.update(grade);
-        await daoFactory.execute();
+        throw new NotImplementedException();
     }
+    
+    
+    
 
-    public async Task updateSubjects(int gradeId, List<string> subjectIdsList)
+    
+    
+    
+    
+    public Task<List<StudentEntity>> getStudentList()
     {
-        var grade = await daoFactory.gradeDao!.getById(gradeId);
-
-        if (grade == null)
-        {
-            throw new EntityNotFoundException("Grade", gradeId.ToString());
-        }
-
-        await grade.setSubjects(daoFactory.subjectDao!, subjectIdsList);
-        daoFactory.gradeDao.update(grade);
+        return daoFactory.secretaryStudentDao!.getAll();
+    }
+    
+    public async Task saveStudent(StudentEntity student)
+    {
+        student.init();
+        daoFactory.secretaryStudentDao!.create(student);
         await daoFactory.execute();
     }
+    
+    
+    
+    
 
-    public async Task<List<SubjectEntity>> getSubjectListByGrade()
+    public async Task<GradeEntity?> getGradeById(int gradeId)
     {
-        return await daoFactory.subjectDao!.getAll();
+        return await daoFactory.gradeDao!.getById(gradeId);
     }
 
-    public async Task updateEnrollment(EnrollmentEntity entity)
+    public async Task<List<TeacherEntity>> getTeacherList()
     {
-        var enrollment = await daoFactory.enrollmentDao!.getById(entity.enrollmentId);
-
-        if (enrollment == null)
-        {
-            throw new EntityNotFoundException("Enrollment", entity.enrollmentId);
-        }
-
-        enrollment.updateData(entity.label, entity.schoolYear, entity.section, entity.capacity);
-        daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
+        return await daoFactory.teacherDao!.getAll();
     }
 
-    public async Task<List<EnrollmentEntity>> getEnrollmentList()
+    public async Task createEnrollments(int gradeId, int quantity)
     {
-        return await daoFactory.enrollmentDao!.getAll();
+        throw new NotImplementedException();
     }
 
-    public async Task<EnrollmentEntity> getEnrollment(string enrollmentId)
+    public async Task updateEnrollment(EnrollmentEntity enrollment)
     {
-        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
-
-        if (enrollment == null)
-        {
-            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
-        }
-
-        return enrollment;
-    }
-
-    public async Task assignTeacher(string teacherId, string subjectId, string enrollmentId)
-    {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("teacher", teacherId);
-        }
-        
-        var enrollment = await getEnrollment(enrollmentId);
-        var subject = await daoFactory.academySubjectDao!.getById(subjectId);
-
-        if (subject == null)
-        {
-            throw new EntityNotFoundException("subject", subjectId);
-        }
-        
-        teacher.assignSubject(subject);
-        enrollment.assignSubject(subject);
-        
-        daoFactory.teacherDao!.update(teacher);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
     }
