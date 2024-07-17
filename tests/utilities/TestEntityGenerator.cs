@@ -34,10 +34,12 @@ public class TestEntityGenerator
             tag = "A"
         };
 
-        _studentEntity ??= new StudentEntity
+        _studentEntity = new StudentEntity
         {
+            studentId = studentId,
             student = aSecretaryStudent(studentId),
             discount = _discountEntity,
+            enrollmentLabel = "",
             transactions = new List<TransactionEntity>
             {
                 aTransaction(studentId,
@@ -52,14 +54,12 @@ public class TestEntityGenerator
             }
         };
 
-        _studentEntity.studentId = studentId;
-
         return _studentEntity;
     }
 
     private SecretaryStudentEntity aSecretaryStudent(string studentId)
     {
-        return _secretaryStudent ??= new SecretaryStudentEntity
+        return _secretaryStudent = new SecretaryStudentEntity
         {
             studentId = studentId,
             name = "name-v",
@@ -155,7 +155,7 @@ public class TestEntityGenerator
     
 
 
-    public List<StudentEntity> aStudentList() => _aStudentList ??= [aStudent("id1"), aStudent("id2")];
+    public List<StudentEntity> aStudentList() => _aStudentList = [aStudent("id1"), aStudent("id2")];
 
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];

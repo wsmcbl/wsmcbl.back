@@ -109,6 +109,7 @@ public static class DtoMapper
     {
         return students.Select(student => student.mapToBasicDto()).ToList();
     }
+    
     public static List<GradeBasicDto> mapListToDto(this IEnumerable<GradeEntity> grades)
     {
         return grades.Select(e => e.mapToDto()).ToList();

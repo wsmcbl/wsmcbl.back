@@ -18,6 +18,11 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> list)
     {
+        if (list.Count == 0)
+        {
+            return;
+        }
+        
         var debts = await entities.Where(dh => dh.studentId == studentId).ToListAsync();
         
         foreach (var item in list)
@@ -28,9 +33,25 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             {
                 continue;
             }
-            
+
             debt.arrear = 0;
             update(debt);
+        }
+    }
+
+    public async Task checkIsPaid(TransactionEntity transaction)
+    {
+        var debts = await entities
+            .Where(e => e.studentId == transaction.studentId)
+            .Where(e => e.isPaid)
+            .ToListAsync();
+
+        var detail = transaction.details
+            .FirstOrDefault(t => debts.Exists(e => e.tariffId == t.tariffId));
+        
+        if(detail != null)
+        {
+            throw new ArgumentException($"Tariff with ID: {detail.tariffId} is already paid");
         }
     }
 }

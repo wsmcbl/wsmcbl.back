@@ -20,7 +20,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        var debts = context.DebtHistory.Where(d => d.studentId == studentId);
+        var debts = context.Set<DebtHistoryEntity>().Where(d => d.studentId == studentId);
         
         debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
             .Include(d => d.tariff);
@@ -32,7 +32,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
-        var debts = await context.DebtHistory
+        var debts = await context.Set<DebtHistoryEntity>()
             .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
             .Include(d => d.tariff).ToListAsync();
         
