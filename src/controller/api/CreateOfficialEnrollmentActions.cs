@@ -2,8 +2,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
-using DtoMapper = wsmcbl.src.dto.output.DtoMapper;
+using DtoMapper = wsmcbl.src.dto.input.DtoMapper;
+using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;
 
@@ -32,15 +34,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeList()
     {
         var grades = await controller.getGradeList();
-        return Ok(DtoMapper.mapListToDto(grades));
-    }
-    
-    [HttpPost]
-    [Route("grades")]
-    public async Task<IActionResult> createGrade(GradeToCreateDto gradeToCreate)
-    {
-        var gradeId = await controller.createGrade(gradeToCreate.toEntity(), gradeToCreate.subjects);
-        return Ok(new { gradeId });
+        return Ok(grades.mapListToDto());
     }
 
     [HttpPut]
@@ -117,6 +111,43 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> assignTeacher(TeacherToAssignDto dto)
     {
         await controller.assignTeacher(dto.teacherId, dto.subjectId, dto.enrollmentId);
+        return Ok();
+    }
+
+
+    [HttpGet]
+    [Route("configurations/schoolyears")]
+    public async Task<IActionResult> getAllSchoolYears([FromQuery] string q)
+    {
+        if (string.IsNullOrWhiteSpace(q))
+        {
+            return BadRequest("Query parameter 'q' is required.");
+        }
+
+        var value = q.ToLower();
+
+        if (value.Equals("all"))
+        {
+            var list = await controller.getSchoolYearList();
+            return Ok(SecretaryDtoMapper.mapToDto(list));
+        }
+        
+        if (value.Equals("new"))
+        {
+            var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
+            return Ok(schoolyearBaseInformation.mapToDto());
+        }
+
+        
+        return BadRequest("Unknown search value.");
+    }
+    
+    [HttpPost]
+    [Route("configurations/schoolyears")]
+    public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
+    {
+        await controller.createGrade(dto.toEntity());
+        await controller.createSubject(dto.getTariffList());
         return Ok();
     }
 }

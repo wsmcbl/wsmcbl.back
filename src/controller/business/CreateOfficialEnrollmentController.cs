@@ -1,5 +1,6 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
@@ -30,9 +31,9 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.gradeDao!.getAll();
     }
 
-    public async Task<int> createGrade(GradeEntity entity, List<string> subjectIdsList)
+    public async Task<int> createGrade(GradeEntity entity)
     {
-        await entity.setSubjects(daoFactory.subjectDao!, subjectIdsList);
+        await entity.setSubjects(daoFactory.subjectDao!, []);
         daoFactory.gradeDao!.create(entity);
         await daoFactory.execute();
 
@@ -127,5 +128,20 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.teacherDao!.update(teacher);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
+    }
+    
+    public async Task<List<SchoolYearEntity>> getSchoolYearList()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<SchoolYearEntity> getNewSchoolYearInformation()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task createSubject(List<TariffEntity> getTariffList)
+    {
+        throw new NotImplementedException();
     }
 }
