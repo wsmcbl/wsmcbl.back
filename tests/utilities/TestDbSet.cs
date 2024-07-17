@@ -6,18 +6,18 @@ namespace wsmcbl.tests.utilities;
 
 public abstract class TestDbSet<T> where T : class
 {
-    public static DbSet<T> getFake(List<T> data)
+    public static DbSet<T> getFake(IEnumerable<T> list)
     {
-        var _data = data.AsQueryable();
+        var data = list.AsQueryable();
         var fakeDbSet = Substitute.For<DbSet<T>, IQueryable<T>, IAsyncEnumerable<T>>();
 
-        ((IQueryable<T>)fakeDbSet).Provider.Returns(new TestAsyncQueryProvider<T>(_data.Provider));
-        ((IQueryable<T>)fakeDbSet).Expression.Returns(_data.Expression);
-        ((IQueryable<T>)fakeDbSet).ElementType.Returns(_data.ElementType);
-        ((IQueryable<T>)fakeDbSet).GetEnumerator().Returns(_data.GetEnumerator());
+        ((IQueryable<T>)fakeDbSet).Provider.Returns(new TestAsyncQueryProvider<T>(data.Provider));
+        ((IQueryable<T>)fakeDbSet).Expression.Returns(data.Expression);
+        ((IQueryable<T>)fakeDbSet).ElementType.Returns(data.ElementType);
+        ((IQueryable<T>)fakeDbSet).GetEnumerator().Returns(data.GetEnumerator());
 
         ((IAsyncEnumerable<T>)fakeDbSet).GetAsyncEnumerator(Arg.Any<CancellationToken>())
-            .Returns(new TestAsyncEnumerator<T>(_data.GetEnumerator()));
+            .Returns(new TestAsyncEnumerator<T>(data.GetEnumerator()));
 
         fakeDbSet.AsQueryable().Returns(fakeDbSet);
 

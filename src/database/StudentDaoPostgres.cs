@@ -10,7 +10,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
     public new async Task<List<StudentEntity>> getAll()
     {
         var list = await entities.Include(d => d.student).ToListAsync();
-
+        
         foreach (var item in list)
         {
             item.enrollmentLabel = await getEnrollmentLabel(item.studentId!);
@@ -39,7 +39,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         {
             foreach (var item in transaction.details)
             {
-                var tariff = await context.Tariff.FirstOrDefaultAsync(t => t.tariffId == item.tariffId);
+                var tariff = await context.Set<TariffEntity>().FirstOrDefaultAsync(t => t.tariffId == item.tariffId);
                 item.setTariff(tariff);
             }
         }

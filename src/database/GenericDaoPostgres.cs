@@ -11,8 +11,8 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
 
     protected GenericDaoPostgres(PostgresContext context)
     {
-         entities = context.Set<T>();
-         this.context = context;
+        entities = context.Set<T>();
+        this.context = context;
     }
 
     public virtual void create(T entity)

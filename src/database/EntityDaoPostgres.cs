@@ -32,7 +32,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         if (!entity.checkData())
         {
-            throw new DbException("Incorrect transaction data");
+            throw new IncorrectDataException("transaction");
         }
         
         entity.computeTotal();
