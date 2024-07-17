@@ -15,14 +15,16 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         var entityGenerator = new TestEntityGenerator();
         var list = entityGenerator.aStudentList();
 
-        var entities = TestDbSet<StudentEntity>.getFake(list);
-        context.Set<StudentEntity>().Returns(entities);
+        context = TestDbContext.getInMemory();
+        context.Set<StudentEntity>().AddRange(list);
+        await context.SaveChangesAsync();
+        
         dao = new StudentDaoPostgres(context);
 
         var result = await dao.getAll();
 
         Assert.NotEmpty(result);
-        Assert.Equal(list, result);
+        Assert.Equivalent(list, result);
     }
 
     [Fact]
