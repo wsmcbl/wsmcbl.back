@@ -38,12 +38,13 @@ create table if not exists Accounting.Tariff
     dueDate date,
     late boolean,
     typeId int not null,
+    modality int not null,
     foreign key (typeId) references Accounting.TariffType
 );
 
 
 -- Generate accounting.transaction id
-CREATE SEQUENCE accounting.transaction_id_seq START 1;
+CREATE SEQUENCE if not exists accounting.transaction_id_seq START 10;
 
 CREATE OR REPLACE FUNCTION Accounting.generate_transaction_id()
     RETURNS varchar(20) AS $$

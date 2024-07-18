@@ -1,5 +1,5 @@
 -- Generate secretary.student id
-CREATE SEQUENCE secretary.student_id_seq START 1;
+CREATE SEQUENCE if not exists secretary.student_id_seq START 1;
 
 CREATE OR REPLACE FUNCTION secretary.generate_student_id()
     RETURNS TRIGGER AS $$
@@ -26,7 +26,7 @@ CREATE OR REPLACE FUNCTION secretary.insert_schoolyear_student_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO secretary.schoolyear_student(schoolyear, studentid)
-    SELECT TO_CHAR(NOW(), 'YYYY'), NEW.studentid;
+    SELECT s.schoolyearid, NEW.studentid from secretary.schoolyear s where s.label = TO_CHAR(NOW(), 'YYYY');
 
     RETURN NEW;
 END;

@@ -95,6 +95,7 @@ internal class AccountingContext
                 .HasMaxLength(4)
                 .HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
+            entity.Property(e => e.modality).HasColumnName("modality");
         });
         
         modelBuilder.Entity<TariffTypeEntity>(entity =>
