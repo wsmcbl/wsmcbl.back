@@ -13,6 +13,10 @@ public class TariffEntity
     public int type { get; set; }
     public int modality { get; set; }
 
+    public TariffEntity()
+    {
+    }
+    
     public TariffEntity(TariffDataEntity tariffData, string schoolYear)
     {
         this.schoolYear = schoolYear;
