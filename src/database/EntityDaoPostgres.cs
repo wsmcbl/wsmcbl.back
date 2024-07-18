@@ -10,6 +10,12 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
+public class TariffDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TariffDataEntity, string>(context), ITariffDataDao;
+
+public class SubjectDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
+
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao;
 
@@ -43,8 +49,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class GradeDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
 {
     public new async Task<List<GradeEntity>> getAll()
     {
@@ -59,34 +64,17 @@ public class GradeDaoPostgres(PostgresContext context)
 
         return list;
     }
-}
 
-public class EnrollmentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
-{
-    public new async Task<EnrollmentEntity?> getById(string id)
+    public void createList(List<GradeEntity> gradeList)
     {
-        var entity = await entities
-            .Include(e => e.students)
-            .Include(e => e.subjects)
-            .FirstOrDefaultAsync(e => e.enrollmentId == id);
-
-        if (entity == null)
+        foreach (var grade in gradeList)
         {
-            throw new EntityNotFoundException("Enrollment", id);
+            create(grade);
         }
-        
-        return entity;
-    }
-
-    public new async Task<List<EnrollmentEntity>> getAll()
-    {
-        return await entities
-            .Include(e => e.students)
-            .Include(e => e.subjects)
-            .ToListAsync();
     }
 }
+
+
 
 public class TeacherDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao

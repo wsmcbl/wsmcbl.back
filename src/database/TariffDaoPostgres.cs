@@ -55,4 +55,12 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
         return balance;
     }
+
+    public void createList(List<TariffEntity> tariffs)
+    {
+        foreach (var item in tariffs)
+        {
+            create(item);
+        }
+    }
 }

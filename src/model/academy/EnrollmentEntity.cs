@@ -11,18 +11,25 @@ public class EnrollmentEntity
     public int gradeId { get; set; }
 
     public ICollection<StudentEntity> students { get; set; } = null!;
-    public ICollection<SubjectEntity> subjects { get; set; } = null!;
+    public ICollection<SubjectEntity>? subjects { get; private set;}
 
-    public void assignSubject(SubjectEntity subject)
+    public void setSubject(ICollection<secretary.SubjectEntity>? subjectList)
     {
-        subjects.Add(subject);
-    }
+        if (subjectList == null || subjectList.Count == 0)
+        {
+            return;
+        }
 
-    public void updateData(string label, string schoolYear, string section, int capacity)
-    {
-        this.label = label;
-        this.schoolYear = schoolYear;
-        this.section = section;
-        this.capacity = capacity;
+        if (subjects == null)
+        {
+            subjects = new List<SubjectEntity>();
+        }
+
+        foreach (var item in subjectList)
+        {
+            var subject = new SubjectEntity();
+            subject.baseSubject = item;
+            subjects.Add(subject);
+        }
     }
 }
