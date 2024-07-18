@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.output;
@@ -27,7 +28,19 @@ public static class DtoMapperSecretary
             schoolYear = grade.schoolYear
         };
     }
-    
+
+    public static GradeDto mapToDto(this GradeEntity grade)
+    {
+        return new GradeDto
+        {
+            gradeId = grade.gradeId!,
+            label = grade.label,
+            schoolYear = grade.schoolYear,
+            quantity = grade.quantity,
+            modality = grade.modality,
+            enrollments = grade.enrollments!.ToList()
+        };
+    }
     
     
     
