@@ -1,14 +1,29 @@
 create schema if not exists Academy;
 
+
+-- Generate secretary.subject id
+CREATE SEQUENCE if not exists academy.enrollment_id_seq START 10;
+
+CREATE OR REPLACE FUNCTION academy.generate_enrollment_id()
+    RETURNS varchar(20) AS $$
+DECLARE
+    seq_part CHAR(5);
+BEGIN
+    seq_part := LPAD(NEXTVAL('academy.enrollment_id_seq')::TEXT, 5, '0');
+
+    Return 'enr' || seq_part;
+END;
+$$ LANGUAGE plpgsql;
+
 create table if not exists Academy.Enrollment
 (
-    enrollmentId varchar(15) primary key,
+    enrollmentId varchar(15) primary key default academy.generate_enrollment_id(),
     enrollmentLabel varchar(20) not null,
     schoolYear varchar(20) not null,
     section varchar(10) not null,
     capacity smallint,
     quantity smallint,
-    gradeId int not null,
+    gradeId varchar(25) not null,
     foreign key (gradeId) references secretary.Grade,
     foreign key (schoolYear) references Secretary.Schoolyear
 );
@@ -24,11 +39,11 @@ create table if not exists Academy.Teacher
 
 create table if not exists Academy.Subject
 (
-    subjectId varchar(15) primary key,
-    baseSubjectId varchar(15) not null,
+    subjectId varchar(15) not null ,
     teacherId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    foreign key (baseSubjectId) references Secretary.Subject,
+    primary key (subjectId, enrollmentId),
+    foreign key (subjectId) references Secretary.Subject,
     foreign key (teacherId) references Academy.Teacher,
     foreign key (enrollmentId) references Academy.Enrollment
 );
@@ -54,5 +69,5 @@ create table if not exists Academy.Note
     finalScore float,
     primary key (studentId, subjectId),
     foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
-    foreign key (subjectId) references Academy.Subject
+    foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId)
 );
