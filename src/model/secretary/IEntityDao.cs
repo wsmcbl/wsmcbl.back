@@ -6,7 +6,11 @@ public interface IGradeDao : IGenericDao<GradeEntity, int>
 {
     public void createList(List<GradeEntity> gradeList);
 }
-public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>;
+public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
+{
+    public Task<SchoolYearEntity> getNewSchoolYear();
+}
+
 public interface IStudentDao : IGenericDao<StudentEntity, string>;
 public interface ISubjectDao : IGenericDao<SubjectEntity, string>;
 

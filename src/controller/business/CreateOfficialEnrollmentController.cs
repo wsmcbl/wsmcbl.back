@@ -1,30 +1,21 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
-using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class CreateOfficialEnrollmentController : BaseController, ICreateOfficialEnrollmentController
 {
     public CreateOfficialEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
-    {}
-
-    public async Task createSchoolYear(GradeEntity grade, List<TariffEntity> tariffList)
     {
-        
     }
-
-    public async Task createSubject(SubjectEntity subjectList)
+    
+    public async Task<List<TeacherEntity>> getTeacherList()
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task createTariff(TariffEntity tariff)
-    {
-        throw new NotImplementedException();
+        return await daoFactory.teacherDao!.getAll();
     }
 
     public async Task<List<GradeEntity>> getGradeList()
@@ -32,57 +23,73 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.gradeDao!.getAll();
     }
 
-    public async Task<List<SchoolYearEntity>> getSchoolYearList()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<SchoolYearEntity> getNewSchoolYearInformation()
-    {
-        throw new NotImplementedException();
-    }
-    
-    
-    
-
-    
-    
-    
-    
-    public Task<List<StudentEntity>> getStudentList()
-    {
-        return daoFactory.secretaryStudentDao!.getAll();
-    }
-    
-    public async Task saveStudent(StudentEntity student)
-    {
-        student.init();
-        daoFactory.secretaryStudentDao!.create(student);
-        await daoFactory.execute();
-    }
-    
-    
-    
-    
-
     public async Task<GradeEntity?> getGradeById(int gradeId)
     {
         return await daoFactory.gradeDao!.getById(gradeId);
     }
 
-    public async Task<List<TeacherEntity>> getTeacherList()
+    public async Task<List<SchoolYearEntity>> getSchoolYearList()
     {
-        return await daoFactory.teacherDao!.getAll();
+        return await daoFactory.schoolyearDao!.getAll();
+    }
+
+    public async Task<SchoolYearEntity> getNewSchoolYearInformation()
+    {
+        var gradeList = await daoFactory.gradeDataDao!.getAll();
+        var tariffList = await daoFactory.tariffDataDao!.getAll();
+
+        var newSchoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+
+        return newSchoolYear;
+    }
+
+    public async Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList)
+    {
+        daoFactory.gradeDao!.createList(gradeList);
+        daoFactory.tariffDao!.createList(tariffList);
+        await daoFactory.execute();
+    }
+
+    public async Task createTariff(TariffDataEntity tariff)
+    {
+        daoFactory.tariffDataDao!.create(tariff);
+        await daoFactory.execute();
+    }
+
+    public async Task createSubject(SubjectDataEntity subject)
+    {
+        daoFactory.subjectDataDao!.create(subject);
+        await daoFactory.execute();
     }
 
     public async Task createEnrollments(int gradeId, int quantity)
     {
-        throw new NotImplementedException();
+        var grade = await daoFactory.gradeDao!.getById(gradeId);
+
+        if (grade == null)
+        {
+            throw new EntityNotFoundException("Grade", gradeId.ToString());
+        }
+       
+        grade.createEnrollments(daoFactory.enrollmentDao!, quantity);
+        await daoFactory.execute();
     }
 
     public async Task updateEnrollment(EnrollmentEntity enrollment)
     {
         daoFactory.enrollmentDao!.update(enrollment);
+        await daoFactory.execute();
+    }
+
+    public async Task<List<StudentEntity>> getStudentList()
+    {
+        return await daoFactory.secretaryStudentDao!.getAll();
+    }
+
+    public async Task saveStudent(StudentEntity student)
+    {
+        student.init();
+        daoFactory.secretaryStudentDao!.create(student);
         await daoFactory.execute();
     }
 }
