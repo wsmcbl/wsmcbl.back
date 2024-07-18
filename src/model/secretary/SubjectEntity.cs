@@ -9,6 +9,10 @@ public class SubjectEntity
     
     public ICollection<academy.SubjectEntity> academySubjectList { get; set; } = null!;
 
+    public SubjectEntity()
+    {
+    }
+    
     public SubjectEntity(SubjectDataEntity subjectData)
     {
         name = subjectData.name;

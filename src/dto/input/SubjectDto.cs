@@ -1,19 +1,21 @@
 using System.ComponentModel.DataAnnotations;
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class SubjectDto
+public class SubjectDto : IBaseDto<SubjectEntity>
 {
-    [Required] public string subjectId { get; set; }
-    [Required] public string teacherId { get; set; }
+    public int gradeId { get; set; }
+    [Required] public string name { get; set; }
+    public bool isMandatory { get; set; }
     
-    public SubjectEntity toEntity(string enrollmentId)
+    public SubjectEntity toEntity()
     {
         return new SubjectEntity
         {
-            subjectId = subjectId,
-            teacherId = teacherId
+            gradeId = gradeId,
+            name = name,
+            isMandatory = isMandatory
         };
     }
 }

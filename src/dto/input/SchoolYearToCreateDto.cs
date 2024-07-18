@@ -3,15 +3,18 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class SchoolYearToCreateDto 
+public class SchoolYearToCreateDto
 {
-    public List<TariffEntity> getTariffList()
-    {
-        throw new NotImplementedException();
-    }
+    public List<GradeDto> grades { get; set; }
+    public List<TariffDto> tariffs { get; set; }
 
     public List<GradeEntity> getGradeList()
     {
-        throw new NotImplementedException();
+        return grades.Select(e => e.toEntity()).ToList();
+    }
+
+    public List<TariffEntity> getTariffList()
+    {
+        return tariffs.Select(e => e.toEntity()).ToList();
     }
 }

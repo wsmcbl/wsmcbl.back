@@ -9,7 +9,7 @@ public class EnrollmentDto : IBaseDto<EnrollmentEntity>
     [Required] public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
-    public List<SubjectDto> subjects { get; set;}
+    public List<EnrollmentSubjectDto> subjects { get; set;}
     
     public EnrollmentEntity toEntity()
     {

@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace wsmcbl.src.dto.input;
 
 public class EnrollmentToCreateDto
 {
-    public string gradeId { get; set; }
-    public int quantity { get; set; }
+    [Required] public string gradeId { get; set; }
+    [Required] public int quantity { get; set; }
 }
