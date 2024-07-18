@@ -108,7 +108,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
 
     [HttpPost]
     [Route("configurations/schoolyears/subjects")]
-    public async Task<IActionResult> createSubject(SubjectToCreateDto dto)
+    public async Task<IActionResult> createSubject(SubjectDataDto dto)
     {
         try
         {
@@ -123,7 +123,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
 
     [HttpPost]
     [Route("configurations/schoolyears/tariffs")]
-    public async Task<IActionResult> createTariff(TariffToCreateDto dto)
+    public async Task<IActionResult> createTariff(TariffDataDto dto)
     {
         await controller.createTariff(dto.toEntity());
         return Ok();

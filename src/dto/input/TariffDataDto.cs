@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class TariffToCreateDto : IBaseDto<TariffDataEntity>
+public class TariffDataDto : IBaseDto<TariffDataEntity>
 {
     [Required] public string concept { get; set; }
     public float amount { get; set; }

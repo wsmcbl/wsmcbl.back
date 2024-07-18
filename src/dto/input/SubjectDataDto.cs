@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class SubjectToCreateDto : IBaseDto<SubjectDataEntity>
+public class SubjectDataDto : IBaseDto<SubjectDataEntity>
 {
     [Required] public int gradeIntId { get; set; }
     [Required] public string name { get; set; }
