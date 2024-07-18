@@ -49,7 +49,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
-        return Ok(grade.mapToDto());
+        
+        return Ok(grade);
     }
     
     [HttpPost]
@@ -92,7 +93,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         if (value.Equals("new"))
         {
             var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-            return Ok(schoolyearBaseInformation.mapToDto());
+            return Ok(schoolyearBaseInformation);
         }
         
         return BadRequest("Unknown type value.");

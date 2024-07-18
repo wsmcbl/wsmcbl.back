@@ -128,6 +128,7 @@ internal class AcademyContext
             entity.Property(e => e.userId)
                 .HasMaxLength(15)
                 .HasColumnName("userid");
+            entity.Property(e => e.isGuide).HasColumnName("isguide");
 
             entity.HasOne(d => d.enrollment)
                 .WithMany()

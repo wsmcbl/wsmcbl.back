@@ -25,7 +25,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task<GradeEntity?> getGradeById(string gradeId)
     {
-        return await daoFactory.gradeDao!.getById(gradeId);
+        var grade = await daoFactory.gradeDao!.getById(gradeId);
+        if (grade == null)
+        {
+            throw new EntityNotFoundException("Grade", gradeId);
+        }
+
+        return grade;
     }
 
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
