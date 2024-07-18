@@ -55,4 +55,9 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
         return balance;
     }
+
+    public void createList(List<TariffEntity> tariffs)
+    {
+        throw new NotImplementedException();
+    }
 }
