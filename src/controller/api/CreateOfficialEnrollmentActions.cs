@@ -45,8 +45,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
     
     [HttpGet]
-    [Route("grades/{gradeId:int}")]
-    public async Task<IActionResult> getGradeById([Required] int gradeId)
+    [Route("grades/{gradeId}")]
+    public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
         return Ok(grade.mapToDto());

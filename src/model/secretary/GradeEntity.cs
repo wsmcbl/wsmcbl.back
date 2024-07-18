@@ -4,7 +4,7 @@ namespace wsmcbl.src.model.secretary;
 
 public class GradeEntity
 {
-    public int gradeId { get; set; }
+    public string gradeId { get; set; }
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public int quantity { get; private set; }
