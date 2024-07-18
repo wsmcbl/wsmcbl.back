@@ -58,6 +58,9 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public void createList(List<TariffEntity> tariffs)
     {
-        throw new NotImplementedException();
+        foreach (var item in tariffs)
+        {
+            create(item);
+        }
     }
 }

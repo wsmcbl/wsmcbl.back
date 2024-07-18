@@ -10,6 +10,12 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
+public class TariffDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TariffDataEntity, string>(context), ITariffDataDao;
+
+public class SubjectDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
+
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao;
 
@@ -43,8 +49,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class GradeDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
 {
     public new async Task<List<GradeEntity>> getAll()
     {
@@ -58,6 +63,14 @@ public class GradeDaoPostgres(PostgresContext context)
         }
 
         return list;
+    }
+
+    public void createList(List<GradeEntity> gradeList)
+    {
+        foreach (var grade in gradeList)
+        {
+            create(grade);
+        }
     }
 }
 

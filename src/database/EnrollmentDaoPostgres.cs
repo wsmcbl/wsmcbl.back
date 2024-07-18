@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.database.context;
+namespace wsmcbl.src.database;
 
-public class EnrollmentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
+public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
 {
     public new async Task<EnrollmentEntity?> getById(string id)
     {
@@ -28,10 +28,5 @@ public class EnrollmentDaoPostgres(PostgresContext context)
             .Include(e => e.students)
             .Include(e => e.subjects)
             .ToListAsync();
-    }
-
-    public async Task createEnrollments(int gradeId, int quantity)
-    {
-        throw new NotImplementedException();
     }
 }

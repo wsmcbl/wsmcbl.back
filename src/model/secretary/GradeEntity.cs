@@ -59,4 +59,22 @@ public class GradeEntity
     {
         this.gradeId = gradeId;
     }
+    
+
+    private readonly string[] typeLabels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+    
+    public void createEnrollments(IEnrollmentDao dao, int enrollmentQuantity)
+    {
+        for (var i = 0; i < enrollmentQuantity; i++)
+        {
+            var enrollment = new EnrollmentEntity
+            {
+                gradeId = gradeId,
+                schoolYear = schoolYear,
+                label = label + " " + typeLabels[i]
+            };
+            enrollment.setSubject(subjectList);
+            dao.create(enrollment);
+        }
+    }
 }
