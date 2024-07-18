@@ -33,6 +33,9 @@ public class GradeEntity
 
     public void computeQuantity()
     {
+        if(enrollments == null)
+            return;
+        
         quantity = 0;
         foreach (var item in enrollments!)
         {
