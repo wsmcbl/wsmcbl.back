@@ -16,13 +16,28 @@ public class TariffDataDaoPostgres(PostgresContext context)
 public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
 
+public class GradeDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao;
+
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
 {
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
-        throw new NotImplementedException();
+        var schoolYearEntity = new SchoolYearEntity();
+        var year = isNextYear() ? DateTime.Today.Year : DateTime.Today.Year + 1;
+        schoolYearEntity.label = year.ToString();
+        schoolYearEntity.startDate = new DateOnly(year, 1, 1);
+        schoolYearEntity.deadLine = new DateOnly(year, 12, 31);
+        schoolYearEntity.isActive = true;
+        
+        create(schoolYearEntity);
+        await context.SaveChangesAsync();
+
+        return schoolYearEntity;
     }
+
+    private bool isNextYear() => DateTime.Today.Month < 4;
 }
 
 public class AcademySubjectDaoPostgres(PostgresContext context)

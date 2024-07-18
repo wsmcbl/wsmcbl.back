@@ -62,7 +62,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     
     [HttpPut]
     [Route("grades/enrollments")]
-    public async Task<IActionResult> updateEnrollment(dto.input.EnrollmentDto dto)
+    public async Task<IActionResult> updateEnrollment(EnrollmentDto dto)
     {
         await controller.updateEnrollment(dto.toEntity());
         return Ok();
