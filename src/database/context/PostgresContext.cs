@@ -32,5 +32,12 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
             entity.Property(e => e.username).HasMaxLength(45).HasColumnName("username");
             entity.Property(e => e.isActive).HasColumnName("userstate");
         });
+        
+        modelBuilder.HasSequence("enrollment_id_seq", "academy").StartsAt(10L);
+        modelBuilder.HasSequence("grade_id_seq", "secretary").StartsAt(10L);
+        modelBuilder.HasSequence("schoolyear_id_seq", "secretary").StartsAt(10L);
+        modelBuilder.HasSequence("student_id_seq", "secretary");
+        modelBuilder.HasSequence("subject_id_seq", "secretary").StartsAt(10L);
+        modelBuilder.HasSequence("transaction_id_seq", "accounting").StartsAt(10L);
     }
 }

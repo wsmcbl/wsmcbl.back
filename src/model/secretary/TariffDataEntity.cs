@@ -6,7 +6,7 @@ public class TariffDataEntity
 
     public string concept { get; set; } = null!;
 
-    public double amount { get; set; }
+    public float amount { get; set; }
 
     public DateOnly? dueDate { get; set; }
 

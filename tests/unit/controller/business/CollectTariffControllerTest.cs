@@ -113,7 +113,9 @@ public class CollectTariffControllerTest
     public async Task applyArrears_ValidId_ArrearsApplied()
     {
         const int tariffId = 10;
-        var tariff = new TariffEntity{ tariffId = tariffId, isLate = false };
+        var tariff = new TariffEntity();
+        tariff.tariffId = tariffId;
+        tariff.isLate = false; 
         
         tariffDao.getById(tariffId).Returns(tariff);
         daoFactory.tariffDao.Returns(tariffDao);
@@ -133,7 +135,9 @@ public class CollectTariffControllerTest
     public async Task applyArrears_TariffAlreadyUpdate_ReturnsException()
     {
         const int tariffId = 10;
-        var tariff = new TariffEntity{ tariffId = tariffId, isLate = true };
+        var tariff = new TariffEntity();
+        tariff.tariffId = tariffId;
+        tariff.isLate = true;
         
         tariffDao.getById(tariffId).Returns(tariff);
         daoFactory.tariffDao.Returns(tariffDao);
