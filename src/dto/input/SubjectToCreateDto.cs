@@ -3,13 +3,12 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class SubjectsToUpdateDto : IBaseDto<SubjectEntity>
+public class SubjectToCreateDto : IBaseDto<SubjectDataEntity>
 {
     [Required]
     public int gradeId { get; set; }
-    public List<string> subjectIdsList { get; set; } = null!;
-    
-    public SubjectEntity toEntity()
+
+    public SubjectDataEntity toEntity()
     {
         throw new NotImplementedException();
     }

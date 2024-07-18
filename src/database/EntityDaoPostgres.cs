@@ -17,7 +17,13 @@ public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
 
 public class SchoolyearDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao;
+    : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
+{
+    public async Task<SchoolYearEntity> getNewSchoolYear()
+    {
+        throw new NotImplementedException();
+    }
+}
 
 public class AcademySubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.SubjectEntity, string>(context), model.academy.ISubjectDao;
