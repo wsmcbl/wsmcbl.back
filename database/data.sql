@@ -42,11 +42,11 @@ insert into secretary.grade(gradelabel, schoolyear, quantity, modality) values
 ('11vo', 'sch010', 100, 'secundaria');
 
 -- puede fallar por el gradeId autogenerado
-insert into secretary.subject(gradeid, name) values
-('gd00034', 'Matematicas'),
-('gd00033', 'Español'),
-('gd00034', 'Quimica'),
-('gd00034', 'Español');
+insert into secretary.subject(gradeid, name, ismandatory) values
+('gd00034', 'Matematicas', true),
+('gd00033', 'Español', true),
+('gd00034', 'Quimica', true),
+('gd00034', 'Español', true);
 
 insert into secretary.student(name, secondname, surname, secondsurname, studentstate, schoolyear, tutor, sex, birthday) values
 ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', 'Felix Tinoco', false, '01/05/2001'),
