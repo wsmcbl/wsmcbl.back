@@ -33,7 +33,6 @@ create table if not exists Secretary.Schoolyear_Student
     foreign key (studentId) references Secretary.Student
 );
 
-
 create table if not exists Secretary.Grade
 (
     gradeId serial primary key ,
@@ -50,4 +49,23 @@ create table if not exists Secretary.Subject
     gradeId int not null,
     name varchar(100) not null,
     foreign key (gradeId) references Secretary.Grade
+);
+
+
+
+
+
+create table if not exists Secretary.GradeCatalog
+(
+    gradeId serial primary key ,
+    gradeLabel varchar(25) not null,
+    modality varchar(50) not null
+);
+
+create table if not exists Secretary.SubjectCatalog
+(
+    subjectId varchar(15) primary key,
+    gradeId int not null,
+    name varchar(100) not null,
+    foreign key (gradeId) references Secretary.GradeCatalog
 );
