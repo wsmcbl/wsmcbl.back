@@ -23,19 +23,19 @@ internal class SecretaryContext
 
             entity.Ignore(e => e.quantity);
             entity.Ignore(e => e.modality);
-            
+
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.label)
                 .HasMaxLength(25)
                 .HasColumnName("gradelabel");
-            
+
             entity.Property(e => e.schoolYear)
                 .HasMaxLength(15)
                 .HasColumnName("schoolyear");
-            
+
             entity.Property(e => e.quantity)
                 .HasColumnName("quantity");
-            
+
             entity.Property(e => e.modality)
                 .HasMaxLength(50)
                 .HasColumnName("modality");
@@ -65,7 +65,7 @@ internal class SecretaryContext
                 .HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
         });
-        
+
         modelBuilder.Entity<StudentEntity>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");
@@ -79,7 +79,7 @@ internal class SecretaryContext
                 .HasDefaultValueSql("secretary.generate_student_id()")
                 .ValueGeneratedOnAdd()
                 .HasColumnName("studentid");
-            
+
             entity.Property(e => e.name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
@@ -101,7 +101,7 @@ internal class SecretaryContext
             entity.Property(e => e.isActive)
                 .HasColumnName("studentstate");
         });
-        
+
         modelBuilder.Entity<SubjectEntity>(entity =>
         {
             entity.HasKey(e => e.subjectId).HasName("subject_pkey");
@@ -115,6 +115,50 @@ internal class SecretaryContext
             entity.Property(e => e.name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
+            entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
+        });
+
+        modelBuilder.Entity<GradeDataEntity>(entity =>
+        {
+            entity.HasKey(e => e.gradeDataId).HasName("gradecatalog_pkey");
+
+            entity.ToTable("gradecatalog", "secretary");
+
+            entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
+            entity.Property(e => e.label)
+                .HasMaxLength(50)
+                .HasColumnName("gradelabel");
+            entity.Property(e => e.modality).HasColumnName("modality");
+        });
+
+        modelBuilder.Entity<SubjectDataEntity>(entity =>
+        {
+            entity.HasKey(e => e.subjectDataId).HasName("subjectcatalog_pkey");
+
+            entity.ToTable("subjectcatalog", "secretary");
+
+            entity.Property(e => e.subjectDataId).HasColumnName("subjectcatalogid");
+            entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
+            entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
+            entity.Property(e => e.name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<TariffDataEntity>(entity =>
+        {
+            entity.HasKey(e => e.tariffDataId).HasName("tariffcatalog_pkey");
+
+            entity.ToTable("tariffcatalog", "secretary");
+
+            entity.Property(e => e.tariffDataId).HasColumnName("tariffcatalogid");
+            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.concept)
+                .HasMaxLength(200)
+                .HasColumnName("concept");
+            entity.Property(e => e.dueDate).HasColumnName("duedate");
+            entity.Property(e => e.modality).HasColumnName("modality");
+            entity.Property(e => e.typeId).HasColumnName("typeid");
         });
     }
 }
