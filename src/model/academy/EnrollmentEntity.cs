@@ -3,14 +3,14 @@ namespace wsmcbl.src.model.academy;
 public class EnrollmentEntity
 {
     public string enrollmentId { get; set; } = null!;
+    public string gradeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
-    public string gradeId { get; set; }
 
-    public ICollection<StudentEntity> studentList { get; set; } = null!;
+    public ICollection<StudentEntity>? studentList { get; }
     public ICollection<SubjectEntity>? subjectList { get; private set;}
 
     public void setSubject(List<SubjectEntity> subjects)

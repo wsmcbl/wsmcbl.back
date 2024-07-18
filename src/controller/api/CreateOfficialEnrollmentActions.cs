@@ -49,8 +49,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
-        
-        return Ok(grade);
+        return Ok(grade.mapToDto());
     }
     
     [HttpPost]

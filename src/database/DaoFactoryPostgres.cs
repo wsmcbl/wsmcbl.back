@@ -68,6 +68,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override ISchoolyearDao schoolyearDao => _schoolyearDao ??= new SchoolyearDaoPostgres(context);
 
 
+    private IGradeDataDao? _gradeDataDao;
+    public override IGradeDataDao gradeDataDao => _gradeDataDao ??= new GradeDataDaoPostgres(context);
+
+
     private ISubjectDataDao? _subjectDataDao;
     public override ISubjectDataDao subjectDataDao => _subjectDataDao ??= new SubjectDataDaoPostgres(context);
 
