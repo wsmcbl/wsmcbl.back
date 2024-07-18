@@ -55,7 +55,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao
 {
     public new async Task<List<GradeEntity>> getAll()
     {

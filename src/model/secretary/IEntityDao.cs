@@ -2,7 +2,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.secretary;
 
-public interface IGradeDao : IGenericDao<GradeEntity, int>
+public interface IGradeDao : IGenericDao<GradeEntity, string>
 {
     public void createList(List<GradeEntity> gradeList);
 }

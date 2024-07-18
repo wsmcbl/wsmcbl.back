@@ -36,11 +36,11 @@ internal class AcademyContext
                 .HasMaxLength(10)
                 .HasColumnName("section");
 
-            entity.HasMany(d => d.students)
+            entity.HasMany(d => d.studentList)
                 .WithOne()
                 .HasForeignKey(d => d.enrollmentId);
 
-            entity.HasMany(d => d.subjects)
+            entity.HasMany(d => d.subjectList)
                 .WithOne()
                 .HasForeignKey(d => d.enrollmentId);
         });
@@ -128,6 +128,7 @@ internal class AcademyContext
             entity.Property(e => e.userId)
                 .HasMaxLength(15)
                 .HasColumnName("userid");
+            entity.Property(e => e.isGuide).HasColumnName("isguide");
 
             entity.HasOne(d => d.enrollment)
                 .WithMany()
