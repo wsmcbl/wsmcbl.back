@@ -49,8 +49,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
-        
-        return Ok(grade);
+        return Ok(grade.mapToDto());
     }
     
     [HttpPost]
@@ -63,7 +62,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     
     [HttpPut]
     [Route("grades/enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentDto dto)
+    public async Task<IActionResult> updateEnrollment(dto.input.EnrollmentDto dto)
     {
         await controller.updateEnrollment(dto.toEntity());
         return Ok();
