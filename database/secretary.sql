@@ -95,6 +95,7 @@ create table if not exists Secretary.Subject
     subjectId varchar(15) primary key default secretary.generate_subject_id(),
     gradeId varchar(25) not null,
     name varchar(100) not null,
+    isMandatory boolean not null,
     foreign key (gradeId) references Secretary.Grade
 );
 
