@@ -20,28 +20,21 @@ internal class AcademyContext
 
             entity.ToTable("enrollment", "academy");
 
-            entity.Property(e => e.enrollmentId)
-                .HasMaxLength(15)
+            entity.Property(e => e.enrollmentId).HasMaxLength(15)
+                .HasDefaultValueSql("academy.generate_enrollment_id()")
                 .HasColumnName("enrollmentid");
+            
             entity.Property(e => e.capacity).HasColumnName("capacity");
-            entity.Property(e => e.label)
-                .HasMaxLength(20)
-                .HasColumnName("enrollmentlabel");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("enrollmentlabel");
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.schoolYear)
-                .HasMaxLength(20)
-                .HasColumnName("schoolyear");
-            entity.Property(e => e.section)
-                .HasMaxLength(10)
-                .HasColumnName("section");
+            entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.section).HasMaxLength(10).HasColumnName("section");
 
-            entity.HasMany(d => d.studentList)
-                .WithOne()
+            entity.HasMany(d => d.studentList).WithOne()
                 .HasForeignKey(d => d.enrollmentId);
-
-            entity.HasMany(d => d.subjectList)
-                .WithOne()
+            
+            entity.HasMany(d => d.subjectList).WithOne()
                 .HasForeignKey(d => d.enrollmentId);
         });
         
