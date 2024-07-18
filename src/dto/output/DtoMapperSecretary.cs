@@ -8,7 +8,7 @@ public static class DtoMapperSecretary
     {
         return new SchoolYearBasicDto
         {
-            schoolYearId = schoolYear.schoolYearId,
+            schoolYearId = schoolYear.id,
             label = schoolYear.label,
             isActive = schoolYear.isActive,
             startDate = schoolYear.startDate,
