@@ -21,4 +21,8 @@ public abstract class DaoFactory
     public virtual ISubjectDao? subjectDao => null;
     public virtual academy.ISubjectDao? academySubjectDao => null;
     public virtual ITeacherDao? teacherDao => null;
+    public virtual ISchoolyearDao? schoolyearDao => null;
+    public virtual IGradeDataDao? gradeDataDao => null;
+    public virtual ISubjectDataDao? subjectDataDao => null;
+    public virtual ITariffDataDao? tariffDataDao => null;
 }

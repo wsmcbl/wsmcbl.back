@@ -18,4 +18,11 @@ public class TransactionEntity
             total += item.amount;
         }
     }
+
+    public bool checkData()
+    {
+        return !string.IsNullOrWhiteSpace(studentId) &&
+               !string.IsNullOrWhiteSpace(cashierId) &&
+               details.Count > 0;
+    }
 }

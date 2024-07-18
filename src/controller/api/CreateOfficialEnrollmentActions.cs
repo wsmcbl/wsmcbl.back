@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.output;
 using wsmcbl.src.exception;
-using DtoMapper = wsmcbl.src.dto.output.DtoMapper;
+using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;
 
@@ -28,95 +29,103 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
     
     [HttpGet]
+    [Route("teachers")]
+    public async Task<IActionResult> getTeacherList()
+    {
+        var list = await controller.getTeacherList();
+        return Ok(list.mapListToDto());
+    }
+    
+    [HttpGet]
     [Route("grades")]
     public async Task<IActionResult> getGradeList()
     {
         var grades = await controller.getGradeList();
-        return Ok(DtoMapper.mapListToDto(grades));
+        return Ok(grades.mapListToDto());
+    }
+    
+    [HttpGet]
+    [Route("grades/{gradeId:int}")]
+    public async Task<IActionResult> getGradeById([Required] int gradeId)
+    {
+        var grade = await controller.getGradeById(gradeId);
+        return Ok(grade.mapToDto());
     }
     
     [HttpPost]
-    [Route("grades")]
-    public async Task<IActionResult> createGrade(GradeToCreateDto gradeToCreate)
+    [Route("grades/enrollments")]
+    public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
-        var id = await controller.createGrade(gradeToCreate.toEntity(), gradeToCreate.subjects);
-        return Ok(id);
+        await controller.createEnrollments(dto.gradeId, dto.quantity);
+        return Ok();
     }
-
+    
     [HttpPut]
-    [Route("grades")]
-    public async Task<IActionResult> updateGrade(GradeDto gradeDto)
+    [Route("grades/enrollments")]
+    public async Task<IActionResult> updateEnrollment(EnrollmentDto dto)
     {
-        try
-        {
-            await controller.updateGrade(gradeDto.toEntity());
-            return Ok();
-        }
-        catch (EntityNotFoundException e)
-        {
-            return BadRequest(e.Message);
-        }
+        await controller.updateEnrollment(dto.toEntity());
+        return Ok();
     }
-
+    
+    /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
+    /// <returns>Returns the search results based on the provided query.</returns>
+    /// <response code="200">Returns the search results.</response>
+    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
-    [Route("grades/subjects")]
-    public async Task<IActionResult> getSubjectList()
+    [Route("configurations/schoolyears")]
+    public async Task<IActionResult> getAllSchoolYears([FromQuery] string q)
     {
-        var subjects = await controller.getSubjectList();
-        return Ok(subjects);
-    }
-
-    [HttpPut]
-    [Route("grades/subjects")]
-    public async Task<IActionResult> updateSubjects(SubjectsToUpdateDto dto)
-    {
-        try
+        if (string.IsNullOrWhiteSpace(q))
         {
-            await controller.updateSubjects(dto.gradeId, dto.subjectIdsList);
-            return Ok();
+            return BadRequest("Query parameter 'q' is required.");
         }
-        catch (EntityNotFoundException e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
 
-    [HttpGet]
-    [Route("enrollments")]
-    public async Task<IActionResult> getEnrollmentList()
-    {
-        var list = await controller.getEnrollmentList();
-        return Ok(list);
-    }
+        var value = q.ToLower();
 
-    [HttpGet]
-    [Route("enrollments/{enrollmentId}")]
-    public async Task<IActionResult> getEnrollment([Required] string enrollmentId)
-    {
-        try
+        if (value.Equals("all"))
         {
-            var enrollment = await controller.getEnrollment(enrollmentId);
-            return Ok(enrollment);
+            var list = await controller.getSchoolYearList();
+            return Ok(list.mapListToDto());
         }
-        catch (EntityNotFoundException e)
+        
+        if (value.Equals("new"))
         {
-            return BadRequest(e.Message);
+            var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
+            return Ok(schoolyearBaseInformation.mapToDto());
         }
+        
+        return BadRequest("Unknown type value.");
     }
-
-    [HttpPut]
-    [Route("enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentDto enrollment)
+    
+    [HttpPost]
+    [Route("configurations/schoolyears")]
+    public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
     {
-        await controller.updateEnrollment(enrollment.toEntity());
+        await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
         return Ok();
     }
 
-    [HttpPut]
-    [Route("enrollments/teachers")]
-    public async Task<IActionResult> assignTeacher(TeacherToAssignDto dto)
+    [HttpPost]
+    [Route("configurations/schoolyears/subjects")]
+    public async Task<IActionResult> createSubject(SubjectToCreateDto dto)
     {
-        await controller.assignTeacher(dto.teacherId, dto.subjectId, dto.enrollmentId);
+        try
+        {
+            await controller.createSubject(dto.toEntity());
+            return Ok();
+        }
+        catch (EntityNotFoundException e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route("configurations/schoolyears/tariffs")]
+    public async Task<IActionResult> createTariff(TariffToCreateDto dto)
+    {
+        await controller.createTariff(dto.toEntity());
         return Ok();
     }
 }

@@ -71,8 +71,6 @@ internal class SecretaryContext
             entity.HasKey(e => e.studentId).HasName("student_pkey");
 
             entity.ToTable("student", "secretary");
-            
-            entity.Ignore(e => e.enrollmentLabel);
 
             entity.Property(e => e.tutor)
                 .HasColumnName("tutor");

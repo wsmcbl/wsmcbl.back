@@ -149,7 +149,7 @@ public class CollectTariffControllerTest
         var transactionDao = Substitute.For<ITransactionDao>();
         daoFactory.transactionDao.Returns(transactionDao);
 
-        var result = await controller.saveTransaction(entity);
+        var result = await controller.saveTransaction(entity, []);
 
         transactionDao.Received().create(entity);
         Assert.Equal(entity.transactionId, result);
@@ -209,18 +209,5 @@ public class CollectTariffControllerTest
         Assert.IsType<List<TariffTypeEntity>>(result);
         Assert.NotEmpty(result);
         Assert.Equal(list, result);
-    }
-
-    
-    [Fact]
-    public async Task exonerateArrears_ArrearsAreExonerates()
-    {
-        List<DebtHistoryEntity> list = [];
-        var debtHistoryDao = Substitute.For<IDebtHistoryDao>();
-        daoFactory.debtHistoryDao.Returns(debtHistoryDao);
-
-        await controller.exonerateArrears("std-1", list);
-
-        await debtHistoryDao.Received().exonerateArrears("std-1", list);
     }
 }

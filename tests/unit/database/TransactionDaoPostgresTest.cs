@@ -11,7 +11,7 @@ public class TransactionDaoPostgresTest : BaseDaoPostgresTest
     public async Task create_EntityCreate()
     {
         var entityGenerator = new TestEntityGenerator();
-        var transaction = entityGenerator.aTransaction("std-1", []);
+        var transaction = entityGenerator.aTransaction("std-1", [new TransactionTariffEntity()]);
 
         var transactionEntities = TestDbSet<TransactionEntity>.getFake([transaction]);
         context.Set<TransactionEntity>().Returns(transactionEntities);

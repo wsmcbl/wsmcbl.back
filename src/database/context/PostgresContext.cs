@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.database.context;
 
 public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
 {
-    public virtual DbSet<TariffEntity> Tariff { get; init; } = null!;
-    public virtual DbSet<DebtHistoryEntity> DebtHistory { get; init; } = null!;
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var academy = new AcademyContext(modelBuilder);
