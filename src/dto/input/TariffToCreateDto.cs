@@ -1,10 +1,10 @@
-using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class TariffToCreateDto : IBaseDto<TariffEntity>
+public class TariffToCreateDto : IBaseDto<TariffDataEntity>
 {
-    public TariffEntity toEntity()
+    public TariffDataEntity toEntity()
     {
         throw new NotImplementedException();
     }

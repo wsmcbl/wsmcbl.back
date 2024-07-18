@@ -102,13 +102,13 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("configurations/schoolyears")]
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
     {
-        await controller.createSchoolYear(dto.getGrade(), dto.getTariffList());
+        await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
         return Ok();
     }
 
     [HttpPost]
     [Route("configurations/schoolyears/subjects")]
-    public async Task<IActionResult> createSubject(SubjectsToUpdateDto dto)
+    public async Task<IActionResult> createSubject(SubjectToCreateDto dto)
     {
         try
         {
