@@ -9,13 +9,13 @@ public interface ICreateOfficialEnrollmentController
 {
     public Task<List<TeacherEntity>> getTeacherList();
     public Task<List<GradeEntity>> getGradeList();
-    public Task<GradeEntity?> getGradeById(int gradeId);
+    public Task<GradeEntity?> getGradeById(string gradeId);
     public Task<List<SchoolYearEntity>> getSchoolYearList();
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
     public Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList);
     public Task createTariff(TariffDataEntity tariff);
     public Task createSubject(SubjectDataEntity subject);
-    public Task createEnrollments(int gradeId, int quantity);
+    public Task createEnrollments(string gradeId, int quantity);
     public Task updateEnrollment(EnrollmentEntity enrollment);
     
     

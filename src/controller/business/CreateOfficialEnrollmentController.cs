@@ -23,9 +23,15 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.gradeDao!.getAll();
     }
 
-    public async Task<GradeEntity?> getGradeById(int gradeId)
+    public async Task<GradeEntity?> getGradeById(string gradeId)
     {
-        return await daoFactory.gradeDao!.getById(gradeId);
+        var grade = await daoFactory.gradeDao!.getById(gradeId);
+        if (grade == null)
+        {
+            throw new EntityNotFoundException("Grade", gradeId);
+        }
+
+        return grade;
     }
 
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
@@ -39,6 +45,8 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
         var newSchoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+        newSchoolYear.setGradeDataList(gradeList);
+        newSchoolYear.setTariffDataList(tariffList);
 
         return newSchoolYear;
     }
@@ -62,7 +70,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    public async Task createEnrollments(int gradeId, int quantity)
+    public async Task createEnrollments(string gradeId, int quantity)
     {
         var grade = await daoFactory.gradeDao!.getById(gradeId);
 
