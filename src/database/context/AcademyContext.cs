@@ -101,20 +101,12 @@ internal class AcademyContext
             entity.Property(e => e.subjectId)
                 .HasMaxLength(15)
                 .HasColumnName("subjectid");
-            entity.Property(e => e.baseSubjectId)
-                .HasMaxLength(15)
-                .HasColumnName("basesubjectid");
             entity.Property(e => e.enrollmentId)
                 .HasMaxLength(15)
                 .HasColumnName("enrollmentid");
             entity.Property(e => e.teacherId)
                 .HasMaxLength(15)
                 .HasColumnName("teacherid");
-
-            entity.HasOne(d => d.baseSubject).WithMany(p => p.academySubjectList)
-                .HasForeignKey(d => d.baseSubjectId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("subject_basesubjectid_fkey");
 
             entity.HasMany(d => d.scores)
                 .WithOne()
