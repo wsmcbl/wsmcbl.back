@@ -20,49 +20,38 @@ internal class SecretaryContext
 
             entity.ToTable("grade", "secretary");
 
-
-            entity.Ignore(e => e.quantity);
-            entity.Ignore(e => e.modality);
-
-            entity.Property(e => e.gradeId).HasColumnName("gradeid");
-            entity.Property(e => e.label)
+            entity.Property(e => e.gradeId)
                 .HasMaxLength(25)
-                .HasColumnName("gradelabel");
+                .HasDefaultValueSql("secretary.generate_grade_id()")
+                .HasColumnName("gradeid");
+            entity.Property(e => e.label).HasMaxLength(25).HasColumnName("gradelabel");
+            entity.Property(e => e.schoolYear).HasMaxLength(15).HasColumnName("schoolyear");
+            entity.Property(e => e.quantity).HasColumnName("quantity");
+            entity.Property(e => e.modality).HasMaxLength(50).HasColumnName("modality");
 
-            entity.Property(e => e.schoolYear)
-                .HasMaxLength(15)
-                .HasColumnName("schoolyear");
-
-            entity.Property(e => e.quantity)
-                .HasColumnName("quantity");
-
-            entity.Property(e => e.modality)
-                .HasMaxLength(50)
-                .HasColumnName("modality");
-
-            entity.HasMany(e => e.enrollments)
-                .WithOne()
+            entity.HasMany(e => e.enrollments).WithOne()
                 .HasForeignKey(d => d.gradeId);
 
-            entity.HasMany(e => e.subjectList)
-                .WithOne()
+            entity.HasMany(e => e.subjectList).WithOne()
                 .HasForeignKey(d => d.gradeId);
         });
 
         modelBuilder.Entity<SchoolYearEntity>(entity =>
         {
-            entity.HasKey(e => e.schoolYearId).HasName("schoolyear_pkey");
+            entity.HasKey(e => e.id).HasName("schoolyear_pkey");
 
             entity.ToTable("schoolyear", "secretary");
 
-            entity.Property(e => e.schoolYearId)
+            entity.Ignore(e => e.gradeList);
+            entity.Ignore(e => e.tariffList);
+
+            entity.Property(e => e.id)
                 .HasMaxLength(15)
+                .HasDefaultValueSql("secretary.generate_schoolyear_id()")
                 .HasColumnName("schoolyearid");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
-            entity.Property(e => e.label)
-                .HasMaxLength(100)
-                .HasColumnName("label");
+            entity.Property(e => e.label).HasMaxLength(100).HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
         });
 
@@ -72,34 +61,21 @@ internal class SecretaryContext
 
             entity.ToTable("student", "secretary");
 
-            entity.Property(e => e.tutor)
-                .HasColumnName("tutor");
             entity.Property(e => e.studentId)
                 .HasMaxLength(20)
                 .HasDefaultValueSql("secretary.generate_student_id()")
                 .ValueGeneratedOnAdd()
                 .HasColumnName("studentid");
 
-            entity.Property(e => e.name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.secondName)
-                .HasMaxLength(50)
-                .HasColumnName("secondname");
-            entity.Property(e => e.secondSurname)
-                .HasMaxLength(50)
-                .HasColumnName("secondsurname");
-            entity.Property(e => e.surname)
-                .HasMaxLength(50)
-                .HasColumnName("surname");
-            entity.Property(e => e.schoolYear)
-                .HasColumnName("schoolyear");
-            entity.Property(e => e.birthday)
-                .HasColumnName("birthday");
-            entity.Property(e => e.sex)
-                .HasColumnName("sex");
-            entity.Property(e => e.isActive)
-                .HasColumnName("studentstate");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
+            entity.Property(e => e.secondName).HasMaxLength(50).HasColumnName("secondname");
+            entity.Property(e => e.secondSurname).HasMaxLength(50).HasColumnName("secondsurname");
+            entity.Property(e => e.surname).HasMaxLength(50).HasColumnName("surname");
+            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
+            entity.Property(e => e.birthday).HasColumnName("birthday");
+            entity.Property(e => e.sex).HasColumnName("sex");
+            entity.Property(e => e.isActive).HasColumnName("studentstate");
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>
@@ -110,11 +86,10 @@ internal class SecretaryContext
 
             entity.Property(e => e.subjectId)
                 .HasMaxLength(15)
+                .HasDefaultValueSql("secretary.generate_subject_id()")
                 .HasColumnName("subjectid");
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
-            entity.Property(e => e.name)
-                .HasMaxLength(100)
-                .HasColumnName("name");
+            entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
         });
 
@@ -125,9 +100,7 @@ internal class SecretaryContext
             entity.ToTable("gradecatalog", "secretary");
 
             entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
-            entity.Property(e => e.label)
-                .HasMaxLength(50)
-                .HasColumnName("gradelabel");
+            entity.Property(e => e.label).HasMaxLength(50).HasColumnName("gradelabel");
             entity.Property(e => e.modality).HasColumnName("modality");
         });
 
@@ -140,9 +113,7 @@ internal class SecretaryContext
             entity.Property(e => e.subjectDataId).HasColumnName("subjectcatalogid");
             entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
-            entity.Property(e => e.name)
-                .HasMaxLength(100)
-                .HasColumnName("name");
+            entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
         });
 
         modelBuilder.Entity<TariffDataEntity>(entity =>
@@ -153,9 +124,7 @@ internal class SecretaryContext
 
             entity.Property(e => e.tariffDataId).HasColumnName("tariffcatalogid");
             entity.Property(e => e.amount).HasColumnName("amount");
-            entity.Property(e => e.concept)
-                .HasMaxLength(200)
-                .HasColumnName("concept");
+            entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.modality).HasColumnName("modality");
             entity.Property(e => e.typeId).HasColumnName("typeid");

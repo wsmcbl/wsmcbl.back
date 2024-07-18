@@ -16,13 +16,28 @@ public class TariffDataDaoPostgres(PostgresContext context)
 public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
 
+public class GradeDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao;
+
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
 {
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
-        throw new NotImplementedException();
+        var schoolYearEntity = new SchoolYearEntity();
+        var year = isNextYear() ? DateTime.Today.Year : DateTime.Today.Year + 1;
+        schoolYearEntity.label = year.ToString();
+        schoolYearEntity.startDate = new DateOnly(year, 1, 1);
+        schoolYearEntity.deadLine = new DateOnly(year, 12, 31);
+        schoolYearEntity.isActive = true;
+        
+        create(schoolYearEntity);
+        await context.SaveChangesAsync();
+
+        return schoolYearEntity;
     }
+
+    private bool isNextYear() => DateTime.Today.Month < 4;
 }
 
 public class AcademySubjectDaoPostgres(PostgresContext context)
@@ -55,20 +70,20 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao
 {
-    public new async Task<List<GradeEntity>> getAll()
+    public new async Task<GradeEntity?> getById(string id)
     {
-        var list = await entities
-            .Include(e => e.enrollments)
-            .ToListAsync();
-        
-        foreach (var item in list)
+        var grade = await entities.Include(e => e.enrollments)
+            .Include(e => e.subjectList)
+            .FirstOrDefaultAsync(e => e.gradeId == id);
+
+        if (grade == null)
         {
-            item.computeQuantity();
+            throw new EntityNotFoundException("Grade", id);
         }
 
-        return list;
+        return grade;
     }
 
     public void createList(List<GradeEntity> gradeList)
@@ -82,12 +97,11 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 
 
 
-public class TeacherDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao
+public class TeacherDaoPostgres(PostgresContext context) 
+    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao 
 {
-    public new async Task<TeacherEntity?> getById(string id)
+    public new async Task<List<TeacherEntity>> getAll()
     {
-        return await entities.Include(e => e.subjects)
-            .FirstOrDefaultAsync(e => e.teacherId == id);
+        return await entities.Include(e => e.user).ToListAsync();
     }
 }

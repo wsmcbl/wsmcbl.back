@@ -10,8 +10,8 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
     public new async Task<EnrollmentEntity?> getById(string id)
     {
         var entity = await entities
-            .Include(e => e.students)
-            .Include(e => e.subjects)
+            .Include(e => e.studentList)
+            .Include(e => e.subjectList)
             .FirstOrDefaultAsync(e => e.enrollmentId == id);
 
         if (entity == null)
@@ -25,8 +25,8 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
     public new async Task<List<EnrollmentEntity>> getAll()
     {
         return await entities
-            .Include(e => e.students)
-            .Include(e => e.subjects)
+            .Include(e => e.studentList)
+            .Include(e => e.subjectList)
             .ToListAsync();
     }
 }

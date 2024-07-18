@@ -4,11 +4,11 @@ namespace wsmcbl.src.model.secretary;
 
 public class GradeEntity
 {
-    public int gradeId { get; set; }
+    public string? gradeId { get; set; }
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public int quantity { get; private set; }
-    public string modality { get; private set; } = null!;
+    public string modality { get; set; } = null!;
     
     public ICollection<EnrollmentEntity>? enrollments { get; set; }
     public ICollection<SubjectEntity>? subjectList { get; set; }
@@ -33,6 +33,9 @@ public class GradeEntity
 
     public void computeQuantity()
     {
+        if(enrollments == null)
+            return;
+        
         quantity = 0;
         foreach (var item in enrollments!)
         {
@@ -48,12 +51,17 @@ public class GradeEntity
         {
             var enrollment = new EnrollmentEntity
             {
-                gradeId = gradeId,
+                gradeId = gradeId!,
                 schoolYear = schoolYear,
                 label = label + " " + typeLabels[i]
             };
             enrollment.setSubject(subjectList);
             dao.create(enrollment);
         }
+    }
+
+    public void setSubjectList(List<SubjectEntity> subjects)
+    {
+        subjectList = subjects;
     }
 }

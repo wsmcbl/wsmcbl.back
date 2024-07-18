@@ -16,6 +16,7 @@ builder.Services.AddControllers(options => options.Filters.Add<GlobalExceptionFi
 
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -3,33 +3,38 @@ namespace wsmcbl.src.model.academy;
 public class EnrollmentEntity
 {
     public string enrollmentId { get; set; } = null!;
+    public string gradeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
-    public int gradeId { get; set; }
 
-    public ICollection<StudentEntity> students { get; set; } = null!;
-    public ICollection<SubjectEntity>? subjects { get; private set;}
+    public ICollection<StudentEntity>? studentList { get; }
+    public ICollection<SubjectEntity>? subjectList { get; private set;}
 
-    public void setSubject(ICollection<secretary.SubjectEntity>? subjectList)
+    public void setSubject(List<SubjectEntity> subjects)
     {
-        if (subjectList == null || subjectList.Count == 0)
+        subjectList = subjects;
+    }
+
+    public void setSubject(ICollection<secretary.SubjectEntity>? subjects)
+    {
+        if (subjects == null || subjects.Count == 0)
         {
             return;
         }
 
-        if (subjects == null)
+        if (subjectList == null)
         {
-            subjects = new List<SubjectEntity>();
+            subjectList = new List<SubjectEntity>();
         }
 
-        foreach (var item in subjectList)
+        foreach (var item in subjects)
         {
             var subject = new SubjectEntity();
             subject.baseSubject = item;
-            subjects.Add(subject);
+            subjectList.Add(subject);
         }
     }
 }

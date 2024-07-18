@@ -45,8 +45,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
     
     [HttpGet]
-    [Route("grades/{gradeId:int}")]
-    public async Task<IActionResult> getGradeById([Required] int gradeId)
+    [Route("grades/{gradeId}")]
+    public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
         return Ok(grade.mapToDto());
@@ -92,7 +92,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         if (value.Equals("new"))
         {
             var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-            return Ok(schoolyearBaseInformation.mapToDto());
+            return Ok(schoolyearBaseInformation);
         }
         
         return BadRequest("Unknown type value.");
@@ -108,7 +108,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
 
     [HttpPost]
     [Route("configurations/schoolyears/subjects")]
-    public async Task<IActionResult> createSubject(SubjectToCreateDto dto)
+    public async Task<IActionResult> createSubject(SubjectDataDto dto)
     {
         try
         {
@@ -123,7 +123,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
 
     [HttpPost]
     [Route("configurations/schoolyears/tariffs")]
-    public async Task<IActionResult> createTariff(TariffToCreateDto dto)
+    public async Task<IActionResult> createTariff(TariffDataDto dto)
     {
         await controller.createTariff(dto.toEntity());
         return Ok();
