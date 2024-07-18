@@ -57,18 +57,18 @@ public class TransactionDaoPostgres(PostgresContext context)
 
 public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao
 {
-    public new async Task<List<GradeEntity>> getAll()
+    public new async Task<GradeEntity?> getById(string id)
     {
-        var list = await entities
-            .Include(e => e.enrollments)
-            .ToListAsync();
-        
-        foreach (var item in list)
+        var grade = await entities.Include(e => e.enrollments)
+            .Include(e => e.subjectList)
+            .FirstOrDefaultAsync(e => e.gradeId == id);
+
+        if (grade == null)
         {
-            item.computeQuantity();
+            throw new EntityNotFoundException("Grade", id);
         }
 
-        return list;
+        return grade;
     }
 
     public void createList(List<GradeEntity> gradeList)
@@ -82,12 +82,11 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 
 
 
-public class TeacherDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao
+public class TeacherDaoPostgres(PostgresContext context) 
+    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao 
 {
-    public new async Task<TeacherEntity?> getById(string id)
+    public new async Task<List<TeacherEntity>> getAll()
     {
-        return await entities.Include(e => e.subjects)
-            .FirstOrDefaultAsync(e => e.teacherId == id);
+        return await entities.Include(e => e.user).ToListAsync();
     }
 }
