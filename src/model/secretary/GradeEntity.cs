@@ -10,8 +10,8 @@ public class GradeEntity
     public int quantity { get; private set; }
     public string modality { get; set; } = null!;
     
-    public ICollection<EnrollmentEntity>? enrollments { get; set; }
-    public ICollection<SubjectEntity>? subjectList { get; set; }
+    public ICollection<EnrollmentEntity> enrollments { get; set; }
+    public ICollection<SubjectEntity> subjectList { get; set; }
     
     public GradeEntity()
     {
@@ -19,8 +19,9 @@ public class GradeEntity
         subjectList = [];
     }
 
-    public GradeEntity(GradeDataEntity gradeData)
+    public GradeEntity(GradeDataEntity gradeData, string schoolYear)
     {
+        this.schoolYear = schoolYear;
         label = gradeData.label;
         modality = gradeData.getModalityName();
 
@@ -31,32 +32,23 @@ public class GradeEntity
         }
     }
 
-    public void computeQuantity()
-    {
-        if(enrollments == null)
-            return;
-        
-        quantity = 0;
-        foreach (var item in enrollments!)
-        {
-            quantity += item.quantity;
-        }
-    }
-
     private readonly string[] typeLabels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
     
-    public void createEnrollments(IEnrollmentDao dao, int enrollmentQuantity)
+    public void createEnrollments(int enrollmentQuantity)
     {
+        enrollments = [];
         for (var i = 0; i < enrollmentQuantity; i++)
         {
             var enrollment = new EnrollmentEntity
             {
                 gradeId = gradeId!,
                 schoolYear = schoolYear,
-                label = label + " " + typeLabels[i]
+                label = label + " " + typeLabels[i],
+                section = ""
             };
+            
             enrollment.setSubject(subjectList);
-            dao.create(enrollment);
+            enrollments.Add(enrollment);
         }
     }
 

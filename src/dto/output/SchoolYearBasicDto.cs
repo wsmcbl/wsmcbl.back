@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.output;
 
@@ -9,4 +10,13 @@ public class SchoolYearBasicDto
     [Required] public DateOnly startDate { get; set; }
     [Required] public DateOnly deadLine { get; set; }
     [Required] public bool isActive { get; set; }
+
+    public SchoolYearBasicDto(SchoolYearEntity schoolYear)
+    {
+        schoolYearId = schoolYear.id;
+        label = schoolYear.label;
+        isActive = schoolYear.isActive;
+        startDate = schoolYear.startDate;
+        deadLine = schoolYear.deadLine;
+    }
 }

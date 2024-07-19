@@ -10,7 +10,7 @@ create table if not exists Accounting.Discount
 
 create table if not exists Accounting.Student
 (
-    studentId varchar(20) not null primary key,
+    studentId varchar(20) primary key,
     discountId smallint not null,
     foreign key (studentId) references Secretary.Student,
     foreign key (discountId) references Accounting.Discount

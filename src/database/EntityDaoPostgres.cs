@@ -17,7 +17,13 @@ public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
 
 public class GradeDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao;
+    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao
+{
+    public new async Task<List<GradeDataEntity>> getAll()
+    {
+        return await entities.Include(e => e.subjectList).ToListAsync();
+    }
+}
 
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
@@ -25,7 +31,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
         var schoolYearEntity = new SchoolYearEntity();
-        var year = isNextYear() ? DateTime.Today.Year : DateTime.Today.Year + 1;
+        var year = isMiddleYear() ? DateTime.Today.Year + 1 : DateTime.Today.Year;
         schoolYearEntity.label = year.ToString();
         schoolYearEntity.startDate = new DateOnly(year, 1, 1);
         schoolYearEntity.deadLine = new DateOnly(year, 12, 31);
@@ -37,7 +43,9 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return schoolYearEntity;
     }
 
-    private bool isNextYear() => DateTime.Today.Month < 4;
+    
+    /*asdflaksdflkajsldkfjalsdkfjlñaskjdflkasjdfñlkjasldfkjaslkdjflaskjdflñaksjdflkj*/
+    private bool isMiddleYear() => DateTime.Today.Month < 4;
 }
 
 public class AcademySubjectDaoPostgres(PostgresContext context)
@@ -76,6 +84,7 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
     {
         var grade = await entities.Include(e => e.enrollments)
             .Include(e => e.subjectList)
+            .AsNoTracking()
             .FirstOrDefaultAsync(e => e.gradeId == id);
 
         if (grade == null)
