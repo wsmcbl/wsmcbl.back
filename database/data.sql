@@ -7,6 +7,23 @@ values ('1002', 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt-user1002', '54321', 'k
 
 
 -- ############################## ---
+insert into accounting.discount(discountid, description, amount, tag)
+values (1, 'Sin descuento', 0, 'Sin descuento'),
+       (2, 'Descuento por hijos', 0.07, 'descuento básico'),
+       (3, 'Descuento por hijos del personal', 0.5, 'descuento trabajadores');
+
+insert into accounting.tarifftype(description)
+values ('Mensualidad'),
+       ('Utiles'),
+       ('Otros');
+
+insert into accounting.cashier(cashierid, userid)
+values ('caj-eurbina', '1001'),
+       ('caj-ktinoco', '1002'),
+       ('caj-mmercado', '1003');
+
+
+-- ############################## ---
 insert into secretary.student(name, secondname, surname, secondsurname, studentstate, schoolyear, tutor, sex, birthday)
 values ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', 'Felix Tinoco', false, '01/05/2001'),
        ('Leonarno', 'Alberto', 'Muñoz', 'Morales', false, 'sch012', 'Isabel Morales', false, '05/08/2002'),
@@ -31,29 +48,7 @@ values ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', 'Felix Tinoco', fa
 
 
 -- ############################## ---
-insert into academy.teacher(teacherid, userid, enrollmentid, isguide)
-values ('tch-001', '1001', 'enr00086', true),
-       ('tch-002', '1002', 'enr00086', true),
-       ('tch-003', '1001', 'enr00088', true);
-
--- puede fallar el studentId autogenerado
-insert into academy.student(studentid, enrollmentid, schoolyear, isapproved)
-values ('2024-0081-kjtc', 'enr00086', 'sch010', false),
-       ('2024-0085-jarr', 'enr00086', 'sch010', false);
-
-
--- ############################## ---
-insert into accounting.discount(discountid, description, amount, tag)
-values (1, 'Sin descuento', 0, 'Sin descuento'),
-       (2, 'Descuento por hijos', 0.07, 'descuento básico'),
-       (3, 'Descuento por hijos del personal', 0.5, 'descuento trabajadores');
-
-insert into accounting.tarifftype(description)
-values ('Mensualidad'),
-       ('Utiles'),
-       ('Otros');
-
-insert into accounting.cashier(cashierid, userid)
-values ('caj-eurbina', '1001'),
-       ('caj-ktinoco', '1002'),
-       ('caj-mmercado', '1003');
+insert into academy.teacher(teacherid, userid, isguide)
+values ('tch-001', '1001', true),
+       ('tch-002', '1002', true),
+       ('tch-003', '1001', true);

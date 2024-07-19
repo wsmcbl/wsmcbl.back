@@ -3,7 +3,7 @@ namespace wsmcbl.src.model.academy;
 public class StudentEntity
 {
     public string studentId { get; set; } = null!;
-    public string enrollmentId { get; set; } = null!;
+    public string? enrollmentId { get; set; }
     public string schoolYear { get; set; } = null!;
     public bool isApproved { get; set; }
     

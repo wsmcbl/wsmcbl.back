@@ -73,7 +73,7 @@ create table if not exists Secretary.SubjectCatalog
 create table if not exists Secretary.TariffCatalog
 (
     tariffCatalogId serial primary key,
-    concept varchar(200) not null,
+    concept varchar(100) not null,
     amount float not null,
     dueDate date,
     typeId int not null,

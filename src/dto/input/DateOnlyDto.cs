@@ -13,10 +13,13 @@ public class DateOnlyDto : IBaseDto<DateOnly>
         return new DateOnly(year, month, day);
     }
 
-    public DateOnlyDto(DateOnly date)
+    public static DateOnlyDto init(DateOnly date)
     {
-        year = date.Year;
-        month = date.Month;
-        day = date.Day;
+        return new DateOnlyDto
+        {
+            year = date.Year,
+            month = date.Month,
+            day = date.Day
+        };
     }
 }

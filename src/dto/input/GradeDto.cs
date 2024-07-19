@@ -27,12 +27,14 @@ public class GradeDto : IBaseDto<GradeEntity>
         return grade;
     }
 
-    internal GradeDto(GradeEntity grade)
+    internal static GradeDto init(GradeEntity grade)
     {
-        label = grade.label;
-        modality = grade.modality;
-        schoolYear = grade.schoolYear;
-        
-        subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto();
+        return new GradeDto
+        {
+            label = grade.label,
+            modality = grade.modality,
+            schoolYear = grade.schoolYear,
+            subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto()
+        };
     }
 }

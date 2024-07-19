@@ -6,6 +6,7 @@ public class SubjectEntity
     public string gradeId { get; set; }
     public string name { get; set; }
     public bool isMandatory { get; set; }
+    public int semester { get; set; }
 
     public SubjectEntity()
     {
@@ -15,5 +16,6 @@ public class SubjectEntity
     {
         name = subjectData.name;
         isMandatory = subjectData.isMandatory;
+        semester = subjectData.semester;
     }
 }
