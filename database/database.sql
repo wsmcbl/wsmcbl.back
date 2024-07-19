@@ -6,6 +6,7 @@ create database wsmcbl_database;
 
 -- **Sequence to create**
 -- config
+-- secretary generate_id
 -- secretary
 -- academy
 -- accounting
