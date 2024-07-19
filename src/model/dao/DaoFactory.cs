@@ -8,7 +8,10 @@ namespace wsmcbl.src.model.dao;
 public abstract class DaoFactory
 {
     public virtual Task execute() => Task.CompletedTask;
-    
+
+    public virtual void Detached<T>(T element) where T : class
+    {}
+
     public virtual ITariffDao? tariffDao => null;
     public virtual ICashierDao? cashierDao => null;
     public virtual ITransactionDao? transactionDao => null;

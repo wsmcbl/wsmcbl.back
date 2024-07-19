@@ -12,6 +12,6 @@ public class GradeDataEntity
     private readonly List<string> modalities = ["Preescolar", "Primaria", "Secundaria"];
     public string getModalityName()
     {
-        return modalities[modality];
+        return modalities[modality-1];
     }
 }

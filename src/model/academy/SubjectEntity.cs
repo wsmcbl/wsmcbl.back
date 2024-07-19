@@ -6,6 +6,6 @@ public class SubjectEntity
     public string teacherId { get; set; } = null!;
     public string enrollmentId { get; set; } = null!;
 
-    public secretary.SubjectEntity baseSubject { get; set; } = null!;
+    public secretary.SubjectEntity? secretarySubject { get; set; }
     public ICollection<ScoreEntity> scores { get; set; } = new List<ScoreEntity>();
 }

@@ -2,11 +2,11 @@ namespace wsmcbl.src.model.academy;
 
 public class EnrollmentEntity
 {
-    public string enrollmentId { get; set; } = null!;
+    public string enrollmentId { get; set; }
     public string gradeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
-    public string section { get; set; } = null!;
+    public string section { get; set; }
     public int capacity { get; set; }
     public int quantity { get; set; }
 
@@ -33,7 +33,8 @@ public class EnrollmentEntity
         foreach (var item in subjects)
         {
             var subject = new SubjectEntity();
-            subject.baseSubject = item;
+            subject.subjectId = item.subjectId;
+            
             subjectList.Add(subject);
         }
     }

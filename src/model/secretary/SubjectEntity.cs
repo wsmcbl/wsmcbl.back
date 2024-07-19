@@ -6,8 +6,6 @@ public class SubjectEntity
     public string gradeId { get; set; }
     public string name { get; set; }
     public bool isMandatory { get; set; }
-    
-    public ICollection<academy.SubjectEntity> academySubjectList { get; set; } = null!;
 
     public SubjectEntity()
     {

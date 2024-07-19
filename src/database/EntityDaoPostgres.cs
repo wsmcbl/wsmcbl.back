@@ -17,7 +17,13 @@ public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
 
 public class GradeDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao;
+    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao
+{
+    public new async Task<List<GradeDataEntity>> getAll()
+    {
+        return await entities.Include(e => e.subjectList).ToListAsync();
+    }
+}
 
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
@@ -76,6 +82,7 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
     {
         var grade = await entities.Include(e => e.enrollments)
             .Include(e => e.subjectList)
+            .AsNoTracking()
             .FirstOrDefaultAsync(e => e.gradeId == id);
 
         if (grade == null)

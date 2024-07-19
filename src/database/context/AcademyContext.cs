@@ -91,19 +91,13 @@ internal class AcademyContext
 
             entity.ToTable("subject", "academy");
 
-            entity.Property(e => e.subjectId)
-                .HasMaxLength(15)
-                .HasColumnName("subjectid");
-            entity.Property(e => e.enrollmentId)
-                .HasMaxLength(15)
-                .HasColumnName("enrollmentid");
-            entity.Property(e => e.teacherId)
-                .HasMaxLength(15)
-                .HasColumnName("teacherid");
+            entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
+            entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
+            entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
 
-            entity.HasMany(d => d.scores)
-                .WithOne()
-                .HasForeignKey(e => e.subjectId);
+            entity.HasOne(e => e.secretarySubject).WithMany().HasForeignKey(e => e.subjectId);
+            
+            entity.HasMany(d => d.scores).WithOne().HasForeignKey(e => e.subjectId);
         });
         
         modelBuilder.Entity<TeacherEntity>(entity =>
