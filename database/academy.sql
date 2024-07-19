@@ -33,6 +33,7 @@ create table if not exists Academy.Teacher
     teacherId varchar(15) primary key,
     userId varchar(15) not null,
     enrollmentId varchar(20),
+    isGuide boolean not null,
     foreign key (userId) references Config.User,
     foreign key (enrollmentId) references Academy.Enrollment
 );
