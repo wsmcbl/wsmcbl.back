@@ -7,6 +7,7 @@ public class SubjectDto : IBaseDto<SubjectEntity>
 {
     [Required] public string name { get; set; }
     public bool isMandatory { get; set; }
+    public int semester { get; set; }
     
     public SubjectEntity toEntity()
     {

@@ -49,6 +49,7 @@ create table if not exists Secretary.Subject
     gradeId varchar(25) not null,
     name varchar(100) not null,
     isMandatory boolean not null,
+    semester int not null,
     foreign key (gradeId) references Secretary.Grade
 );
 
