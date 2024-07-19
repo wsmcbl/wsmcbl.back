@@ -35,17 +35,17 @@ create table if not exists Academy.Teacher
     enrollmentId varchar(20),
     isGuide boolean not null,
     foreign key (userId) references Config.User,
-    foreign key (enrollmentId) references Academy.Enrollment
+    foreign key (enrollmentId) references Academy.Enrollment on delete set null
 );
 
 create table if not exists Academy.Subject
 (
-    subjectId varchar(15) not null ,
-    teacherId varchar(15) not null,
+    subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
+    teacherId varchar(15),
     primary key (subjectId, enrollmentId),
     foreign key (subjectId) references Secretary.Subject,
-    foreign key (teacherId) references Academy.Teacher,
+    foreign key (teacherId) references Academy.Teacher on delete set null,
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
