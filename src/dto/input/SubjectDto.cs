@@ -14,7 +14,8 @@ public class SubjectDto : IBaseDto<SubjectEntity>
         return new SubjectEntity
         {
             name = name,
-            isMandatory = isMandatory
+            isMandatory = isMandatory,
+            semester = semester
         };
     }
 
@@ -22,5 +23,6 @@ public class SubjectDto : IBaseDto<SubjectEntity>
     {
         name = subject.name;
         isMandatory = subject.isMandatory;
+        semester = subject.semester;
     }
 }

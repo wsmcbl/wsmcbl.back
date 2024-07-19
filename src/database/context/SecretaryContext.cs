@@ -49,6 +49,7 @@ internal class SecretaryContext
                 .HasMaxLength(15)
                 .HasDefaultValueSql("secretary.generate_schoolyear_id()")
                 .HasColumnName("schoolyearid");
+            
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(100).HasColumnName("label");
@@ -88,9 +89,11 @@ internal class SecretaryContext
                 .HasMaxLength(15)
                 .HasDefaultValueSql("secretary.generate_subject_id()")
                 .HasColumnName("subjectid");
+            
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
+            entity.Property(e => e.semester).HasColumnName("semester");
         });
 
         modelBuilder.Entity<GradeDataEntity>(entity =>
@@ -115,8 +118,9 @@ internal class SecretaryContext
 
             entity.Property(e => e.subjectDataId).HasColumnName("subjectcatalogid");
             entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
-            entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
+            entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
+            entity.Property(e => e.semester).HasColumnName("semester");
         });
 
         modelBuilder.Entity<TariffDataEntity>(entity =>
@@ -127,7 +131,7 @@ internal class SecretaryContext
 
             entity.Property(e => e.tariffDataId).HasColumnName("tariffcatalogid");
             entity.Property(e => e.amount).HasColumnName("amount");
-            entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
+            entity.Property(e => e.concept).HasMaxLength(100).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.modality).HasColumnName("modality");
             entity.Property(e => e.typeId).HasColumnName("typeid");

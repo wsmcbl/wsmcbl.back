@@ -6,7 +6,7 @@ namespace wsmcbl.src.dto.input;
 public class EnrollmentDto : IBaseDto<EnrollmentEntity>
 {
     [Required] public string enrollmentId { get; set; }
-    [Required] public string section { get; set; } = null!;
+    [Required] public string section { get; set; }
     public int capacity { get; set; }
     public int quantity { get; set; }
     public List<SubjectEnrollDto> subjects { get; set;}
