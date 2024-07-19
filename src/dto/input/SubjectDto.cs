@@ -19,10 +19,13 @@ public class SubjectDto : IBaseDto<SubjectEntity>
         };
     }
 
-    public SubjectDto(SubjectEntity subject)
+    internal static SubjectDto init(SubjectEntity subject)
     {
-        name = subject.name;
-        isMandatory = subject.isMandatory;
-        semester = subject.semester;
+        return new SubjectDto
+        {
+            name = subject.name,
+            isMandatory = subject.isMandatory,
+            semester = subject.semester
+        };
     }
 }
