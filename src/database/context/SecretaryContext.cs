@@ -102,6 +102,9 @@ internal class SecretaryContext
             entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
             entity.Property(e => e.label).HasMaxLength(50).HasColumnName("gradelabel");
             entity.Property(e => e.modality).HasColumnName("modality");
+            
+            entity.HasMany(e => e.subjectList).WithOne()
+                .HasForeignKey(d => d.gradeDataId);
         });
 
         modelBuilder.Entity<SubjectDataEntity>(entity =>

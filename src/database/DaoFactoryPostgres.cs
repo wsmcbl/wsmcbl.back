@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
@@ -14,8 +15,13 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         await context.SaveChangesAsync();
     }
-    
-    
+
+    public override void Detached<T>(T element)
+    {
+        context.Entry(element).State = EntityState.Detached;
+    }
+
+
     private IStudentDao? _accountingStudentDao; 
     public override IStudentDao studentDao => _accountingStudentDao ??= new StudentDaoPostgres(context);
     

@@ -76,11 +76,21 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
         if (grade == null)
         {
-            throw new EntityNotFoundException("Grade", gradeId.ToString());
+            throw new EntityNotFoundException("Grade", gradeId);
         }
        
-        grade.createEnrollments(daoFactory.enrollmentDao!, quantity);
-        await daoFactory.execute();
+        grade.createEnrollments(quantity);
+
+        foreach (var enrollment in grade.enrollments!)
+        {
+            daoFactory.enrollmentDao!.create(enrollment);
+            await daoFactory.execute();
+        
+            foreach (var subject in enrollment.subjectList!)
+            {
+                daoFactory.Detached(subject);
+            }
+        }
     }
 
     public async Task updateEnrollment(EnrollmentEntity enrollment)

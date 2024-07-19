@@ -5,7 +5,6 @@ namespace wsmcbl.src.dto.input;
 
 public class SubjectDto : IBaseDto<SubjectEntity>
 {
-    [Required] public string gradeId { get; set; }
     [Required] public string name { get; set; }
     public bool isMandatory { get; set; }
     
@@ -13,7 +12,6 @@ public class SubjectDto : IBaseDto<SubjectEntity>
     {
         return new SubjectEntity
         {
-            gradeId = gradeId,
             name = name,
             isMandatory = isMandatory
         };
