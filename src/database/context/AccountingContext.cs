@@ -22,9 +22,7 @@ internal class AccountingContext
             entity.Property(e => e.cashierId).HasMaxLength(15).HasColumnName("cashierid");
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             
-            entity.HasOne(c => c.user)
-                .WithMany()
-                .HasForeignKey(c => c.userId);
+            entity.HasOne(c => c.user).WithMany().HasForeignKey(c => c.userId);
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -35,19 +33,15 @@ internal class AccountingContext
 
             entity.Ignore(d => d.enrollmentLabel);
 
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasColumnName("studentid");
+            entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
             entity.Property(e => e.discountId).HasColumnName("discountid");
 
-            entity.HasOne(d => d.discount)
-                .WithMany()
+            entity.HasOne(d => d.discount).WithMany()
                 .HasForeignKey(d => d.discountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_discountid_fkey");
 
-            entity.HasOne(d => d.student)
-                .WithOne()
+            entity.HasOne(d => d.student).WithOne()
                 .HasForeignKey<StudentEntity>(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
@@ -63,16 +57,10 @@ internal class AccountingContext
 
             entity.ToTable("discount", "accounting");
 
-            entity.Property(e => e.discountId)
-                .ValueGeneratedNever()
-                .HasColumnName("discountid");
+            entity.Property(e => e.discountId).ValueGeneratedNever().HasColumnName("discountid");
             entity.Property(e => e.amount).HasColumnName("amount");
-            entity.Property(e => e.description)
-                .HasMaxLength(200)
-                .HasColumnName("description");
-            entity.Property(e => e.tag)
-                .HasMaxLength(50)
-                .HasColumnName("tag");
+            entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
+            entity.Property(e => e.tag).HasMaxLength(50).HasColumnName("tag");
         });
 
         modelBuilder.Entity<TariffEntity>(entity =>
@@ -81,19 +69,12 @@ internal class AccountingContext
 
             entity.ToTable("tariff", "accounting");
 
-            entity.Property(e => e.tariffId)
-                .HasColumnName("tariffid");
-            entity.Property(e => e.amount)
-                .HasColumnName("amount");
-            entity.Property(e => e.concept)
-                .HasMaxLength(200)
-                .HasColumnName("concept");
-
+            entity.Property(e => e.tariffId).HasColumnName("tariffid");
+            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
-            entity.Property(e => e.schoolYear)
-                .HasMaxLength(4)
-                .HasColumnName("schoolyear");
+            entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
             entity.Property(e => e.modality).HasColumnName("modality");
         });
@@ -105,9 +86,7 @@ internal class AccountingContext
             entity.ToTable("tarifftype", "accounting");
 
             entity.Property(e => e.typeId).HasColumnName("typeid");
-            entity.Property(e => e.description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.description).HasMaxLength(50).HasColumnName("description");
         });
 
         modelBuilder.Entity<TransactionEntity>(entity =>
@@ -124,8 +103,7 @@ internal class AccountingContext
             entity.Property(e => e.date).HasColumnName("date");
             entity.Property(e => e.total).HasColumnName("total");
 
-            entity.HasMany(t => t.details)
-                .WithOne()
+            entity.HasMany(t => t.details).WithOne()
                 .HasForeignKey(tt => tt.transactionId);
         });
 
