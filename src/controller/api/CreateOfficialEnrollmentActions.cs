@@ -41,7 +41,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeList()
     {
         var grades = await controller.getGradeList();
-        return Ok(grades.mapListToDto());
+        return Ok(grades.mapListToBasicDto());
     }
     
     [HttpGet]
@@ -92,7 +92,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         if (value.Equals("new"))
         {
             var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-            return Ok(schoolyearBaseInformation);
+            return Ok(schoolyearBaseInformation.mapToDto());
         }
         
         return BadRequest("Unknown type value.");

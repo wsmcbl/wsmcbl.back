@@ -16,4 +16,10 @@ public class SubjectDto : IBaseDto<SubjectEntity>
             isMandatory = isMandatory
         };
     }
+
+    public SubjectDto(SubjectEntity subject)
+    {
+        name = subject.name;
+        isMandatory = subject.isMandatory;
+    }
 }

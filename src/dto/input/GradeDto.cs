@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using wsmcbl.src.dto.output;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
@@ -24,5 +25,14 @@ public class GradeDto : IBaseDto<GradeEntity>
         grade.setSubjectList(list);
 
         return grade;
+    }
+
+    internal GradeDto(GradeEntity grade)
+    {
+        label = grade.label;
+        modality = grade.modality;
+        schoolYear = grade.schoolYear;
+        
+        subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto();
     }
 }

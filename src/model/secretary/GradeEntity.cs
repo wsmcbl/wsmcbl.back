@@ -10,8 +10,8 @@ public class GradeEntity
     public int quantity { get; private set; }
     public string modality { get; set; } = null!;
     
-    public ICollection<EnrollmentEntity>? enrollments { get; set; }
-    public ICollection<SubjectEntity>? subjectList { get; set; }
+    public ICollection<EnrollmentEntity> enrollments { get; set; }
+    public ICollection<SubjectEntity> subjectList { get; set; }
     
     public GradeEntity()
     {
@@ -19,8 +19,9 @@ public class GradeEntity
         subjectList = [];
     }
 
-    public GradeEntity(GradeDataEntity gradeData)
+    public GradeEntity(GradeDataEntity gradeData, string schoolYear)
     {
+        this.schoolYear = schoolYear;
         label = gradeData.label;
         modality = gradeData.getModalityName();
 
