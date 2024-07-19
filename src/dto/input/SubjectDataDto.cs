@@ -8,6 +8,7 @@ public class SubjectDataDto : IBaseDto<SubjectDataEntity>
     [Required] public int gradeIntId { get; set; }
     [Required] public string name { get; set; }
     [Required] public bool isMandatory { get; set; }
+    public int semester { get; set; }
 
     public SubjectDataEntity toEntity()
     {

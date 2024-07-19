@@ -7,6 +7,7 @@ public class SubjectDto : IBaseDto<SubjectEntity>
 {
     [Required] public string name { get; set; }
     public bool isMandatory { get; set; }
+    public int semester { get; set; }
     
     public SubjectEntity toEntity()
     {
@@ -15,5 +16,11 @@ public class SubjectDto : IBaseDto<SubjectEntity>
             name = name,
             isMandatory = isMandatory
         };
+    }
+
+    public SubjectDto(SubjectEntity subject)
+    {
+        name = subject.name;
+        isMandatory = subject.isMandatory;
     }
 }

@@ -30,6 +30,8 @@ public class TariffEntity
     public void checkDueDate()
     {
         if (DateOnly.FromDateTime(DateTime.Today) >= dueDate)
+        {
             isLate = true;
+        }
     }
 }

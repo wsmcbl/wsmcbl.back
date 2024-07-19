@@ -1,56 +1,31 @@
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.output;
 
 public static class DtoMapperSecretary
 {
-    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear)
-    {
-        return new SchoolYearBasicDto
-        {
-            schoolYearId = schoolYear.id,
-            label = schoolYear.label,
-            isActive = schoolYear.isActive,
-            startDate = schoolYear.startDate,
-            deadLine = schoolYear.deadLine
-        };
-    }
+    private static GradeBasicDto mapToBasicDto(this GradeEntity grade) => new(grade);
+    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
+    public static GradeDto mapToDto(this GradeEntity grade) => new(grade);
+    public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     
-    private static GradeBasicDto mapToBasicDto(this GradeEntity grade)
-    {
-        return new GradeBasicDto
-        {
-            gradeId = grade.gradeId!,
-            label = grade.label,
-            modality = grade.modality,
-            quantity = grade.quantity,
-            schoolYear = grade.schoolYear
-        };
-    }
+    
+    
+    public static List<SchoolYearBasicDto> mapListToDto(this IEnumerable<SchoolYearEntity> list) 
+        => list.Select(e => e.mapToBasicDto()).ToList();
+    
+    public static List<input.SubjectDto> mapListToDto(this IEnumerable<SubjectEntity> subjects)
+        => subjects.Select(e => new input.SubjectDto(e)).ToList();
 
-    public static GradeDto mapToDto(this GradeEntity grade)
-    {
-        return new GradeDto
-        {
-            gradeId = grade.gradeId!,
-            label = grade.label,
-            schoolYear = grade.schoolYear,
-            quantity = grade.quantity,
-            modality = grade.modality,
-            enrollments = grade.enrollments!.ToList()
-        };
-    }
+    public static List<input.TariffDto> mapListToDto(this IEnumerable<TariffEntity> tariffs)
+        => tariffs.Select(e => new input.TariffDto(e)).ToList();
+
+    public static List<input.GradeDto> mapListToDto(this IEnumerable<GradeEntity> grades)
+        => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
     
+    private static input.GradeDto mapToNewSchoolyearDto(this GradeEntity grade) => new(grade);
     
-    
-    public static List<SchoolYearBasicDto> mapListToDto(this IEnumerable<SchoolYearEntity> list)
-    {
-        return list.Select(e => e.mapToBasicDto()).ToList();
-    }
-    
-    public static List<GradeBasicDto> mapListToDto(this IEnumerable<GradeEntity> grades)
-    {
-        return grades.Select(e => e.mapToBasicDto()).ToList();
-    }
+    public static List<GradeBasicDto> mapListToBasicDto(this IEnumerable<GradeEntity> grades) 
+        => grades.Select(e => e.mapToBasicDto()).ToList();
 }

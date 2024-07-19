@@ -31,7 +31,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
         var schoolYearEntity = new SchoolYearEntity();
-        var year = isNextYear() ? DateTime.Today.Year : DateTime.Today.Year + 1;
+        var year = isMiddleYear() ? DateTime.Today.Year + 1 : DateTime.Today.Year;
         schoolYearEntity.label = year.ToString();
         schoolYearEntity.startDate = new DateOnly(year, 1, 1);
         schoolYearEntity.deadLine = new DateOnly(year, 12, 31);
@@ -43,7 +43,9 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return schoolYearEntity;
     }
 
-    private bool isNextYear() => DateTime.Today.Month < 4;
+    
+    /*asdflaksdflkajsldkfjalsdkfjlñaskjdflkasjdfñlkjasldfkjaslkdjflaskjdflñaksjdflkj*/
+    private bool isMiddleYear() => DateTime.Today.Month < 4;
 }
 
 public class AcademySubjectDaoPostgres(PostgresContext context)
