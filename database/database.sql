@@ -13,6 +13,7 @@ create database wsmcbl_database;
     
 -- functions
 -- temporal functions
+-- data.catalog
 -- data
 
 

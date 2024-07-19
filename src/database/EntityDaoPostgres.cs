@@ -30,22 +30,30 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 {
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
-        var schoolYearEntity = new SchoolYearEntity();
-        var year = isMiddleYear() ? DateTime.Today.Year + 1 : DateTime.Today.Year;
-        schoolYearEntity.label = year.ToString();
-        schoolYearEntity.startDate = new DateOnly(year, 1, 1);
-        schoolYearEntity.deadLine = new DateOnly(year, 12, 31);
-        schoolYearEntity.isActive = true;
+        var year = getYear();
+
+        var schoolYearEntity = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
+
+        if (schoolYearEntity != null)
+        {
+            return schoolYearEntity;
+        }
+        
+        schoolYearEntity = new SchoolYearEntity
+        {
+            label = year.ToString(),
+            startDate = new DateOnly(year, 1, 1),
+            deadLine = new DateOnly(year, 12, 31),
+            isActive = true
+        };
         
         create(schoolYearEntity);
         await context.SaveChangesAsync();
 
         return schoolYearEntity;
     }
-
     
-    /*asdflaksdflkajsldkfjalsdkfjlñaskjdflkasjdfñlkjasldfkjaslkdjflaskjdflñaksjdflkj*/
-    private bool isMiddleYear() => DateTime.Today.Month < 4;
+    private static int getYear() => DateTime.Today.Month > 4 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
 }
 
 public class AcademySubjectDaoPostgres(PostgresContext context)
