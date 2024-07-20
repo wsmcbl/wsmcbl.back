@@ -129,7 +129,7 @@ public class TestEntityGenerator
         };
     }
 
-    public TariffEntity aTariff()
+    public static TariffEntity aTariff()
     {
         return new TariffEntity
         {
@@ -218,7 +218,7 @@ public class TestEntityGenerator
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
 
-    public List<TariffEntity> aTariffList()
+    public static List<TariffEntity> aTariffList()
     {
         return [aTariff()];
     }

@@ -87,7 +87,7 @@ public class CollectTariffActionsTest
     public async Task getTariffList_ValidStudentParameter_ReturnsList()
     {
         const string studentId = "id1";
-        var initList = entityGenerator.aTariffList();
+        var initList = TestEntityGenerator.aTariffList();
         controller.getTariffListByStudent(studentId).Returns(initList);
 
         var actionResult = await actions.getTariffList($"student:{studentId}");
@@ -101,7 +101,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffList_OverdueParameter_ReturnsList()
     {
-        var listInit = entityGenerator.aTariffList();
+        var listInit = TestEntityGenerator.aTariffList();
         controller.getOverdueTariffList().Returns(listInit);
 
         var actionResult = await actions.getTariffList("state:overdue");

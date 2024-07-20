@@ -47,7 +47,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     {
         var entityGenerator = new TestEntityGenerator();
         var student = entityGenerator.aStudent("std-1");
-        var tariff = entityGenerator.aTariff();
+        var tariff = TestEntityGenerator.aTariff();
         
         context = TestDbContext.getInMemory();
         await context.Set<StudentEntity>().AddAsync(student);

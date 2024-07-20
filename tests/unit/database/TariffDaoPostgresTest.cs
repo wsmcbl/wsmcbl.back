@@ -11,8 +11,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getOverdueList_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var list = entityGenerator.aTariffList();
+        var list = TestEntityGenerator.aTariffList();
 
         var tariffEntities = TestDbSet<TariffEntity>.getFake(list);
         context.Set<TariffEntity>().Returns(tariffEntities);
@@ -46,7 +45,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     public async Task getListByStudent_ReturnsList()
     {
         var entityGenerator = new TestEntityGenerator();
-        var tariffList = entityGenerator.aTariffList();
+        var tariffList = TestEntityGenerator.aTariffList();
         var debtList = entityGenerator.aDebtHistoryList("std-1");
 
         context = TestDbContext.getInMemory();
