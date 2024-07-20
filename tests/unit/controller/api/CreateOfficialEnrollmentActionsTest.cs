@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.api;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
-using wsmcbl.src.exception;
 using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
 
@@ -21,10 +20,33 @@ public class CreateOfficialEnrollmentActionsTest
     
     private static OkObjectResult assertAndGetOkResult(IActionResult actionResult) =>
         Assert.IsType<OkObjectResult>(actionResult);
-
+    
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData("other")]
+    public async Task getSchoolYears_InvalidParameter_ReturnsBadRequestResult(string query)
+    {
+        var actionResult = await actions.getSchoolYears(query);
+        
+        Assert.IsType<BadRequestObjectResult>(actionResult);
+    }
 
     [Fact]
-    public async Task getSchoolYears_ReturnsList()
+    public async Task getSchoolYears_ParameterNew_ReturnsNewSchoolYear()
+    {
+        var schoolyear = TestDtoGenerator.ASchoolYearList()[0];
+        controller.getNewSchoolYearInformation().Returns(schoolyear);
+
+        var actionResult = await actions.getSchoolYears("new");
+
+        var result = assertAndGetOkResult(actionResult);
+        var value = Assert.IsType<SchoolYearDto>(result.Value);
+        Assert.Equivalent(schoolyear.mapToDto(), value);
+    }
+
+    [Fact]
+    public async Task getSchoolYears_ParameterAll_ReturnsList()
     {
         var schoolyearList = TestDtoGenerator.ASchoolYearList();
         controller.getSchoolYearList().Returns(schoolyearList);
