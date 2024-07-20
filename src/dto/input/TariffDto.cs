@@ -11,31 +11,42 @@ public class TariffDto : IBaseDto<TariffEntity>
     public DateOnlyDto? dueDate { get; set; }
     public int type { get; set; }
     public int modality { get; set; }
-    
+
     public TariffEntity toEntity()
     {
-        return new TariffEntity
+        var tariff = new TariffEntity
         {
             schoolYear = schoolYear,
             concept = concept,
             amount = amount,
-            dueDate = dueDate!.toEntity(),
             type = type,
             modality = modality
         };
+
+        if (dueDate != null)
+        {
+            tariff.dueDate = dueDate.toEntity();
+        }
+
+        return tariff;
     }
 
-    public TariffDto(TariffEntity tariff)
+    internal static TariffDto init(TariffEntity tariff)
     {
-        schoolYear = tariff.schoolYear;
-        concept = tariff.concept;
-        amount = tariff.amount;
-        type = tariff.type;
-        modality = tariff.modality;
+        var dto = new TariffDto
+        {
+            schoolYear = tariff.schoolYear,
+            concept = tariff.concept,
+            amount = tariff.amount,
+            type = tariff.type,
+            modality = tariff.modality,
+        };
 
         if (tariff.dueDate != null)
-        { 
-            dueDate = new DateOnlyDto((DateOnly)tariff.dueDate);   
+        {
+            dto.dueDate = DateOnlyDto.init((DateOnly)tariff.dueDate);
         }
+
+        return dto;
     }
 }

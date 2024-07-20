@@ -44,16 +44,10 @@ internal class AcademyContext
 
             entity.ToTable("note", "academy");
 
-            entity.Property(e => e.studentId)
-                .HasMaxLength(15)
-                .HasColumnName("studentid");
-            entity.Property(e => e.subjectId)
-                .HasMaxLength(15)
-                .HasColumnName("subjectid");
+            entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
+            entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
             entity.Property(e => e.cumulative).HasColumnName("cumulative");
-            entity.Property(e => e.enrollmentId)
-                .HasMaxLength(15)
-                .HasColumnName("enrollmentid");
+            entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
             entity.Property(e => e.exam).HasColumnName("exam");
             entity.Property(e => e.finalScore).HasColumnName("finalscore");
         });
@@ -64,16 +58,10 @@ internal class AcademyContext
 
             entity.ToTable("student", "academy");
 
-            entity.Property(e => e.studentId)
-                .HasMaxLength(15)
-                .HasColumnName("studentid");
-            entity.Property(e => e.enrollmentId)
-                .HasMaxLength(15)
-                .HasColumnName("enrollmentid");
+            entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
+            entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
             entity.Property(e => e.isApproved).HasColumnName("isapproved");
-            entity.Property(e => e.schoolYear)
-                .HasMaxLength(20)
-                .HasColumnName("schoolyear");
+            entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
 
             entity.HasOne(d => d.student).WithMany()
                 .HasForeignKey(d => d.studentId)
@@ -106,30 +94,19 @@ internal class AcademyContext
 
             entity.ToTable("teacher", "academy");
 
-            entity.Property(e => e.teacherId)
-                .HasMaxLength(15)
-                .HasColumnName("teacherid");
-            entity.Property(e => e.enrollmentId)
-                .HasMaxLength(20)
-                .HasColumnName("enrollmentid");
-            entity.Property(e => e.userId)
-                .HasMaxLength(15)
-                .HasColumnName("userid");
+            entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
+            entity.Property(e => e.enrollmentId).HasMaxLength(20).HasColumnName("enrollmentid");
+            entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             entity.Property(e => e.isGuide).HasColumnName("isguide");
 
-            entity.HasOne(d => d.enrollment)
-                .WithMany()
-                .HasForeignKey(d => d.enrollmentId)
-                .HasConstraintName("teacher_enrollmentid_fkey");
+            entity.HasOne(d => d.enrollment).WithMany()
+                .HasForeignKey(d => d.enrollmentId).HasConstraintName("teacher_enrollmentid_fkey");
 
-            entity.HasOne(d => d.user)
-                .WithMany()
-                .HasForeignKey(d => d.userId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+            entity.HasOne(d => d.user).WithMany()
+                .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
 
-            entity.HasMany(d => d.subjects)
-                .WithOne()
+            entity.HasMany(d => d.subjects).WithOne()
                 .HasForeignKey(d => d.teacherId);
         });
 
