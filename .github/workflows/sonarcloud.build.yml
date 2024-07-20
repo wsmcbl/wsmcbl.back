@@ -42,6 +42,13 @@ jobs:
           mkdir -p ./.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
           dotnet tool install --global dotnet-coverage
+      
+      - name: Add .NET tools to PATH
+        shell: bash
+        run: echo "$(dirname $(dirname $(which dotnet)))/tools" >> $GITHUB_PATH
+
+      - name: Verify dotnet-coverage installation
+        run: dotnet-coverage --version
 
       - name: Build and analyze
         env:
