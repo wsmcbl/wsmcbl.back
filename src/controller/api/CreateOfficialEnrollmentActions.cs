@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
-using wsmcbl.src.exception;
 using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;
@@ -23,9 +22,10 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     /// <param name="student"> Value Sex: true-female, false-man</param>
     [HttpPost]
     [Route("students")]
-    public async Task saveStudent([FromBody] StudentDto student)
+    public async Task<IActionResult> saveStudent([FromBody] StudentDto student)
     {
         await controller.saveStudent(student.toEntity());
+        return Ok();
     }
     
     [HttpGet]
@@ -33,7 +33,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getTeacherList()
     {
         var list = await controller.getTeacherList();
-        return Ok(list.mapListToDto());
+        return Ok(list.mapListToBasicDto());
     }
     
     [HttpGet]
@@ -110,15 +110,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("configurations/schoolyears/subjects")]
     public async Task<IActionResult> createSubject(SubjectDataDto dto)
     {
-        try
-        {
-            await controller.createSubject(dto.toEntity());
-            return Ok();
-        }
-        catch (EntityNotFoundException e)
-        {
-            return BadRequest(e.Message);
-        }
+        await controller.createSubject(dto.toEntity());
+        return Ok();
     }
 
     [HttpPost]
