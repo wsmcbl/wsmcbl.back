@@ -4,14 +4,12 @@ using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
-using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
 
 public class TestEntityGenerator
 {
     private UserEntity? _userEntity;
-    private TariffEntity? _tariffEntity;
     private StudentEntity? _studentEntity;
     private CashierEntity? _cashierEntity;
     private DiscountEntity? _discountEntity;
@@ -19,15 +17,46 @@ public class TestEntityGenerator
     private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
     
-    private List<TariffEntity>? _aTariffList;
     private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
+    
+    
+    public static List<GradeEntity> aGradeList()
+    {
+        return [aGrade("gd-10")];
+    }
 
+    public static List<SchoolYearEntity> aSchoolYearList()
+    {
+        return
+        [
+            new SchoolYearEntity
+            {
+                id = "sch001",
+                label = "2024",
+                isActive = true,
+                deadLine = new DateOnly(2000,1,1),
+                startDate = new DateOnly(2000,12,1)
+            }
+        ];
+    }
 
+    public static List<TeacherEntity> aTeacherList()
+    {
+        return [
+            new TeacherEntity()
+            {
+                teacherId = "tc-1",
+                enrollmentId = "en001",
+                userId = "u001",
+                isGuide = true
+            }
+        ];
+    }
 
-
-    public static src.model.secretary.SubjectEntity aSubject()
+    
+    private static src.model.secretary.SubjectEntity aSubject()
     {
         return new src.model.secretary.SubjectEntity
         {
@@ -102,14 +131,14 @@ public class TestEntityGenerator
 
     public TariffEntity aTariff()
     {
-        return _tariffEntity ??= new TariffEntity
+        return new TariffEntity
         {
-            tariffId = 10,
-            amount = 700,
-            concept = "The concept",
-            dueDate = new DateOnly(),
+            tariffId = 1,
+            amount = 1000,
+            concept = "pago mes de abril",
             isLate = true,
-            schoolYear = DateTime.Now.Year.ToString(),
+            modality = 1,
+            schoolYear = "sch001",
             type = 1
         };
     }
@@ -191,9 +220,7 @@ public class TestEntityGenerator
 
     public List<TariffEntity> aTariffList()
     {
-        var tariff1 = aTariff();
-
-        return _aTariffList ??= [tariff1];
+        return [aTariff()];
     }
 
     public List<TariffTypeEntity> aTariffTypeList()

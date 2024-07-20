@@ -54,6 +54,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList)
     {
+        if (gradeList.Count == 0 || tariffList.Count == 0)
+        {
+            throw new ArgumentException("GradeLis or TariffList are not valid");
+        }
+        
         daoFactory.gradeDao!.createList(gradeList);
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();

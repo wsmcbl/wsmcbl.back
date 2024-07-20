@@ -19,6 +19,59 @@ public class CreateOfficialEnrollmentControllerTest
         sut = new CreateOfficialEnrollmentController(daoFactory);
     }
 
+
+    [Fact]
+    public async Task createSchoolYear_ShouldCreateSchoolYear_WhenParametersAreValid()
+    {
+         var gradeList = TestEntityGenerator.aGradeList();
+    }
+    
+    
+    
+    [Fact]
+    public async Task getSchoolYearList_ShouldReturnsSchoolYearList_WhenCalled()
+    {
+        var list = TestEntityGenerator.aSchoolYearList();
+        var dao = Substitute.For<ISchoolyearDao>();
+        dao.getAll().Returns(list);
+        daoFactory.schoolyearDao.Returns(dao);
+
+        var result = await sut.getSchoolYearList();
+
+        Assert.NotNull(result);
+        Assert.Equivalent(list, result);
+    }
+
+    
+    [Fact]
+    public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
+    {
+        var list = TestEntityGenerator.aGradeList();
+        var dao = Substitute.For<IGradeDao>();
+        dao.getAll().Returns(list);
+        daoFactory.gradeDao.Returns(dao);
+
+        var result = await sut.getGradeList();
+
+        Assert.NotNull(result);
+        Assert.Equivalent(list, result);
+    }
+
+    [Fact]
+    public async Task getTeacherList_ShouldReturnsTeacherList_WhenCalled()
+    {
+        var teacherList = TestEntityGenerator.aTeacherList();
+        var teacherDao = Substitute.For<ITeacherDao>();
+        teacherDao.getAll().Returns(teacherList);
+        daoFactory.teacherDao.Returns(teacherDao);
+
+        var result = await sut.getTeacherList();
+
+        Assert.NotNull(result);
+        Assert.Equivalent(teacherList, result);
+    }
+    
+
     [Theory]
     [InlineData(0)]
     [InlineData(8)]
