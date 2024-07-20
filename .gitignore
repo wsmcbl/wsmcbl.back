@@ -1,12 +1,12 @@
 # Directorys ignores
 .idea/
 .vscode/
+.sonarqube/
+
 bin/
 obj/
 src/Properties/
 
-Makefile
-.sonarqube/
-
 *.user
-*/coverage.xml
+Makefile
+coverage.xml
