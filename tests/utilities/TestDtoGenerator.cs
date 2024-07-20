@@ -1,5 +1,10 @@
+using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
+using DetailDto = wsmcbl.src.dto.output.DetailDto;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using TariffDto = wsmcbl.src.dto.output.TariffDto;
 
 namespace wsmcbl.tests.utilities;
 
@@ -11,6 +16,34 @@ public class TestDtoGenerator
     private StudentBasicDto? _studentBasicDto;
 
     private List<StudentBasicDto>? _studentBasicDtoList;
+
+
+
+
+
+    public static List<SchoolYearEntity> ASchoolYearList()
+    {
+        return
+        [
+            new SchoolYearEntity()
+            {
+                id = "sch1",
+                label = "2024",
+                isActive = true,
+                startDate = new DateOnly(2024, 1, 1),
+                deadLine = new DateOnly(2024, 12, 1)
+            }
+        ];
+    }
+
+    public static EnrollmentToCreateDto aEnrollmentDto()
+    {
+        return new EnrollmentToCreateDto
+        {
+            gradeId = "gd01",
+            quantity = 40
+        };
+    }
     
     public InvoiceDto aInvoiceDto()
     {

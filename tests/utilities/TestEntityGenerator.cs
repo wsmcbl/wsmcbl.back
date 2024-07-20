@@ -1,6 +1,8 @@
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
+using wsmcbl.src.model.secretary;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.tests.utilities;
 
@@ -13,17 +15,28 @@ public class TestEntityGenerator
     private DiscountEntity? _discountEntity;
     private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionEntity? _transactionEntity;
-    private SecretaryStudentEntity? _secretaryStudent;
     private TransactionTariffEntity? _transactionTariffEntity;
-
-
+    
     private List<TariffEntity>? _aTariffList;
-    private List<StudentEntity>? _aStudentList;
     private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
 
 
+
+    public static GradeEntity aGrade(string gradeId)
+    {
+        return new GradeEntity
+        {
+            gradeId = gradeId,
+            label = "11vo",
+            modality = "secundaria",
+            schoolYear = "sch2024",
+            enrollments = [],
+            subjectList = []
+        };
+    }
+    
     public StudentEntity aStudent(string studentId)
     {
         _discountEntity ??= new DiscountEntity
@@ -59,7 +72,7 @@ public class TestEntityGenerator
 
     private SecretaryStudentEntity aSecretaryStudent(string studentId)
     {
-        return _secretaryStudent = new SecretaryStudentEntity
+        return new SecretaryStudentEntity
         {
             studentId = studentId,
             name = "name-v",
@@ -155,7 +168,7 @@ public class TestEntityGenerator
     
 
 
-    public List<StudentEntity> aStudentList() => _aStudentList = [aStudent("id1"), aStudent("id2")];
+    public List<StudentEntity> aStudentList() => [aStudent("id1"), aStudent("id2")];
 
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];

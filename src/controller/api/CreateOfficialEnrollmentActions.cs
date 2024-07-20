@@ -49,7 +49,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getGradeById([Required] string gradeId)
     {
         var grade = await controller.getGradeById(gradeId);
-        return Ok(grade.mapToDto());
+        return Ok(grade!.mapToDto());
     }
     
     [HttpPost]
@@ -74,7 +74,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("configurations/schoolyears")]
-    public async Task<IActionResult> getAllSchoolYears([FromQuery] string q)
+    public async Task<IActionResult> getSchoolYears([FromQuery] string q)
     {
         if (string.IsNullOrWhiteSpace(q))
         {
