@@ -25,7 +25,7 @@ public class DtoMapperTest
     public void getDetailDto_ReturnsDto()
     {
         var entityGenerator = new TestEntityGenerator();
-        var detailDto = new TestDtoGenerator().aDetailDto(entityGenerator.aTariff(), entityGenerator.aStudent("std-1"));
+        var detailDto = new TestDtoGenerator().aDetailDto(TestEntityGenerator.aTariff(), entityGenerator.aStudent("std-1"));
         
         var transactionTariff = entityGenerator.aTransactionTariffEntity();
 

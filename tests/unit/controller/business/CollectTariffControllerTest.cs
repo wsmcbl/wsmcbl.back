@@ -82,7 +82,7 @@ public class CollectTariffControllerTest
     public async Task getTariffListByStudent_ReturnsList()
     {
         const string studentId = "std";
-        var list = entityGenerator.aTariffList();
+        var list = TestEntityGenerator.aTariffList();
         tariffDao.getListByStudent(studentId).Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 
@@ -97,7 +97,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getOverdueTariffList_ReturnsList()
     {
-        var list = entityGenerator.aTariffList();
+        var list = TestEntityGenerator.aTariffList();
         tariffDao.getOverdueList().Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 

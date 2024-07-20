@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
@@ -9,7 +10,6 @@ namespace wsmcbl.tests.utilities;
 public class TestEntityGenerator
 {
     private UserEntity? _userEntity;
-    private TariffEntity? _tariffEntity;
     private StudentEntity? _studentEntity;
     private CashierEntity? _cashierEntity;
     private DiscountEntity? _discountEntity;
@@ -17,13 +17,97 @@ public class TestEntityGenerator
     private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
     
-    private List<TariffEntity>? _aTariffList;
     private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
 
 
 
+    public static EnrollmentEntity aEnrollment()
+    {
+        return new EnrollmentEntity
+        {
+            enrollmentId = "en-1", 
+            gradeId = "gd1",
+            capacity = 20,
+            label = "A",
+            quantity = 20,
+            schoolYear = "sch22",
+            section = "A"
+        };
+    }
+
+    public static SubjectDataEntity aSubjectData()
+    {
+        return new SubjectDataEntity()
+        {
+            gradeDataId = 1,
+            subjectDataId = 1,
+            isMandatory = true,
+            name = "Español",
+            semester = 1
+        };
+    }
+
+    public static TariffDataEntity aTariffData()
+    {
+        return new TariffDataEntity
+        {
+            tariffDataId = 1,
+            typeId = 1,
+            concept = "Pago mes de enero",
+            amount = 1000,
+            modality = 1
+        };
+    }
+    
+    public static List<GradeEntity> aGradeList()
+    {
+        return [aGrade("gd-10")];
+    }
+
+    public static List<SchoolYearEntity> aSchoolYearList()
+    {
+        return
+        [
+            new SchoolYearEntity
+            {
+                id = "sch001",
+                label = DateTime.Now.Year.ToString(),
+                isActive = true,
+                deadLine = new DateOnly(2000,1,1),
+                startDate = new DateOnly(2000,12,1)
+            }
+        ];
+    }
+
+    public static List<TeacherEntity> aTeacherList()
+    {
+        return [
+            new TeacherEntity()
+            {
+                teacherId = "tc-1",
+                enrollmentId = "en001",
+                userId = "u001",
+                isGuide = true
+            }
+        ];
+    }
+
+    
+    private static src.model.secretary.SubjectEntity aSubject()
+    {
+        return new src.model.secretary.SubjectEntity
+        {
+            subjectId = "sub1",
+            gradeId = "gd-1",
+            isMandatory = true,
+            name = "Español",
+            semester = 3
+        };
+    }
+    
+    
     public static GradeEntity aGrade(string gradeId)
     {
         return new GradeEntity
@@ -31,9 +115,9 @@ public class TestEntityGenerator
             gradeId = gradeId,
             label = "11vo",
             modality = "secundaria",
-            schoolYear = "sch2024",
+            schoolYear = "sch001",
             enrollments = [],
-            subjectList = []
+            subjectList = [aSubject()]
         };
     }
     
@@ -84,16 +168,16 @@ public class TestEntityGenerator
         };
     }
 
-    public TariffEntity aTariff()
+    public static TariffEntity aTariff()
     {
-        return _tariffEntity ??= new TariffEntity
+        return new TariffEntity
         {
             tariffId = 10,
-            amount = 700,
-            concept = "The concept",
-            dueDate = new DateOnly(),
+            amount = 1000,
+            concept = "pago mes de abril",
             isLate = true,
-            schoolYear = DateTime.Now.Year.ToString(),
+            modality = 1,
+            schoolYear = "sch001",
             type = 1
         };
     }
@@ -142,7 +226,7 @@ public class TestEntityGenerator
             studentId = studentId,
             tariffId = aTariff().tariffId,
             tariff = aTariff(),
-            schoolyear = DateTime.Now.Year.ToString(),
+            schoolyear = "sch001",
             isPaid = false,
             debtBalance = 10,
             arrear = 10,    
@@ -173,11 +257,9 @@ public class TestEntityGenerator
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
 
-    public List<TariffEntity> aTariffList()
+    public static List<TariffEntity> aTariffList()
     {
-        var tariff1 = aTariff();
-
-        return _aTariffList ??= [tariff1];
+        return [aTariff()];
     }
 
     public List<TariffTypeEntity> aTariffTypeList()

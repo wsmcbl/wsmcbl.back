@@ -47,7 +47,7 @@ public class GradeEntity
                 section = ""
             };
             
-            enrollment.setSubject(subjectList);
+            enrollment.setSubjectList(subjectList);
             enrollments.Add(enrollment);
         }
     }

@@ -54,6 +54,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList)
     {
+        if (gradeList.Count == 0 || tariffList.Count == 0)
+        {
+            throw new ArgumentException("GradeLis or TariffList are not valid");
+        }
+        
         daoFactory.gradeDao!.createList(gradeList);
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
@@ -73,9 +78,9 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task createEnrollments(string gradeId, int quantity)
     {
-        if (quantity < 0 || quantity > 7)
+        if (quantity > 7 || quantity < 1)
         {
-            throw new Exception("Quantity in not valid");
+            throw new ArgumentException("Quantity in not valid");
         }
         
         var grade = await daoFactory.gradeDao!.getById(gradeId);
@@ -105,6 +110,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
+    
+    
+    
+    
+    
     public async Task<List<StudentEntity>> getStudentList()
     {
         return await daoFactory.secretaryStudentDao!.getAll();
