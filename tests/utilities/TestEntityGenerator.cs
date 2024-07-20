@@ -73,7 +73,7 @@ public class TestEntityGenerator
             new SchoolYearEntity
             {
                 id = "sch001",
-                label = "2024",
+                label = DateTime.Now.Year.ToString(),
                 isActive = true,
                 deadLine = new DateOnly(2000,1,1),
                 startDate = new DateOnly(2000,12,1)
@@ -115,7 +115,7 @@ public class TestEntityGenerator
             gradeId = gradeId,
             label = "11vo",
             modality = "secundaria",
-            schoolYear = "sch2024",
+            schoolYear = "sch001",
             enrollments = [],
             subjectList = [aSubject()]
         };
@@ -172,7 +172,7 @@ public class TestEntityGenerator
     {
         return new TariffEntity
         {
-            tariffId = 1,
+            tariffId = 10,
             amount = 1000,
             concept = "pago mes de abril",
             isLate = true,
@@ -226,7 +226,7 @@ public class TestEntityGenerator
             studentId = studentId,
             tariffId = aTariff().tariffId,
             tariff = aTariff(),
-            schoolyear = DateTime.Now.Year.ToString(),
+            schoolyear = "sch001",
             isPaid = false,
             debtBalance = 10,
             arrear = 10,    
