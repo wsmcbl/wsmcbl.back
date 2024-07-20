@@ -23,7 +23,7 @@ public class EnrollmentDto : IBaseDto<EnrollmentEntity>
 
         var subjectList = subjects.Select(item => item.toEntity(enrollmentId)).ToList();
 
-        enrollment.setSubject(subjectList);
+        enrollment.setSubjectList(subjectList);
         
         return enrollment;
     }

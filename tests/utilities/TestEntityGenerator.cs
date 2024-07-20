@@ -1,8 +1,10 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
 
@@ -24,6 +26,20 @@ public class TestEntityGenerator
 
 
 
+
+    public static src.model.secretary.SubjectEntity aSubject()
+    {
+        return new src.model.secretary.SubjectEntity
+        {
+            subjectId = "sub1",
+            gradeId = "gd-1",
+            isMandatory = true,
+            name = "Español",
+            semester = 3
+        };
+    }
+    
+    
     public static GradeEntity aGrade(string gradeId)
     {
         return new GradeEntity
@@ -33,7 +49,7 @@ public class TestEntityGenerator
             modality = "secundaria",
             schoolYear = "sch2024",
             enrollments = [],
-            subjectList = []
+            subjectList = [aSubject()]
         };
     }
     
