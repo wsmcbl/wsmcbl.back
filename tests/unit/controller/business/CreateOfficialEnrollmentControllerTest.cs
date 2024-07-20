@@ -19,6 +19,31 @@ public class CreateOfficialEnrollmentControllerTest
         sut = new CreateOfficialEnrollmentController(daoFactory);
     }
 
+
+    [Fact]
+    public async Task getNewSchoolYearInformation_ShouldNewSchoolInformation_WhenCalled()
+    {
+        var schoolyear = TestEntityGenerator.aSchoolYear();
+        var dao = Substitute.For<ISchoolyearDao>();
+        dao.getNewSchoolYear().Returns(schoolyear);
+
+        List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
+        List<GradeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
+
+        var tariffDataDao = Substitute.For<ITariffDataDao>();
+        tariffDataDao.getAll().Returns(tariffData);
+
+        var gradaDataDao = Substitute.For<IGradeDataDao>();
+        gradaDataDao.getAll().Returns(gradeData);
+
+        daoFactory.schoolyearDao.Returns(dao);
+        daoFactory.tariffDataDao.Returns(tariffDataDao);
+        daoFactory.gradeDataDao.Returns(gradaDataDao);
+        
+        var result = await sut.getNewSchoolYearInformation();
+
+        Assert.NotNull(result);
+    }
     
     [Fact]
     public async Task updateEnrollment_ShouldUpdateEnrollment_WhenParameterIsValid()
@@ -119,8 +144,15 @@ public class CreateOfficialEnrollmentControllerTest
         Assert.NotNull(result);
         Assert.Equivalent(teacherList, result);
     }
-    
 
+    
+    
+    [Fact]
+    public async Task createEnrollments_ShouldThrowException_WhenGradeNotExist()
+    {
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.createEnrollments("gd-1", 1));
+    }
+    
     [Theory]
     [InlineData(0)]
     [InlineData(8)]
@@ -145,7 +177,7 @@ public class CreateOfficialEnrollmentControllerTest
         await sut.createEnrollments("gd-1", 1);
         
         daoFactory.enrollmentDao!.Received().create(grade.enrollments.First());
-        daoFactory.Received().Detached(grade.enrollments.First().subjectList.First());
+        daoFactory.Received().Detached(grade.enrollments.First().subjectList!.First());
     }
 
     [Fact]

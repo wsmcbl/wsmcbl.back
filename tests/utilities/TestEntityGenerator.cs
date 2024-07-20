@@ -23,6 +23,17 @@ public class TestEntityGenerator
 
 
 
+    public static GradeDataEntity aGradeData()
+    {
+        return new GradeDataEntity()
+        {
+            gradeDataId = 1,
+            label = "4to",
+            modality = 2,
+            subjectList = []
+        };
+    }
+
     public static EnrollmentEntity aEnrollment()
     {
         return new EnrollmentEntity
@@ -66,19 +77,22 @@ public class TestEntityGenerator
         return [aGrade("gd-10")];
     }
 
+
+    public static SchoolYearEntity aSchoolYear()
+    {
+        return new SchoolYearEntity
+        {
+            id = "sch001",
+            label = DateTime.Now.Year.ToString(),
+            isActive = true,
+            deadLine = new DateOnly(2000, 1, 1),
+            startDate = new DateOnly(2000, 12, 1)
+        };
+    }
+    
     public static List<SchoolYearEntity> aSchoolYearList()
     {
-        return
-        [
-            new SchoolYearEntity
-            {
-                id = "sch001",
-                label = DateTime.Now.Year.ToString(),
-                isActive = true,
-                deadLine = new DateOnly(2000,1,1),
-                startDate = new DateOnly(2000,12,1)
-            }
-        ];
+        return [aSchoolYear()];
     }
 
     public static List<TeacherEntity> aTeacherList()
