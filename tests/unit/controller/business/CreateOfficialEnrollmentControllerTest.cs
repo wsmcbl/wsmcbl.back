@@ -19,14 +19,63 @@ public class CreateOfficialEnrollmentControllerTest
         sut = new CreateOfficialEnrollmentController(daoFactory);
     }
 
+    
+    [Fact]
+    public async Task updateEnrollment_ShouldUpdateEnrollment_WhenParameterIsValid()
+    {
+        var enrollment = TestEntityGenerator.aEnrollment();
+        var dao = Substitute.For<IEnrollmentDao>();
+        daoFactory.enrollmentDao.Returns(dao);
+    
+        await sut.updateEnrollment(enrollment);
+        
+        dao.Received(1).update(enrollment);
+        await daoFactory.Received(1).execute();
+    }
+    
 
+    [Fact]
+    public async Task createSubject_ShouldCreateTariff_WhenParameterIsValid()
+    {
+        var subject = TestEntityGenerator.aSubjectData();
+        var dao = Substitute.For<ISubjectDataDao>();
+        daoFactory.subjectDataDao.Returns(dao);
+
+        await sut.createSubject(subject);
+        
+        dao.Received(1).create(subject);
+        await daoFactory.Received(1).execute();
+    }
+    
+    [Fact]
+    public async Task createTariff_ShouldCreateTariff_WhenParameterIsValid()
+    {
+        var tariff = TestEntityGenerator.aTariffData();
+        var dao = Substitute.For<ITariffDataDao>();
+        daoFactory.tariffDataDao.Returns(dao);
+
+        await sut.createTariff(tariff);
+        
+        dao.Received(1).create(tariff);
+        await daoFactory.Received(1).execute();
+    }
+
+    [Fact]
+    public async Task createSchoolYear_ShouldReturnException_WhenParameterAreNotValid()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() => sut.createSchoolYear([], []));
+    }
+    
     [Fact]
     public async Task createSchoolYear_ShouldCreateSchoolYear_WhenParametersAreValid()
     {
          var gradeList = TestEntityGenerator.aGradeList();
+         var tariffList = TestEntityGenerator.aTariffList();
+
+         await sut.createSchoolYear(gradeList, tariffList);
+
+         await daoFactory.Received(1).execute();
     }
-    
-    
     
     [Fact]
     public async Task getSchoolYearList_ShouldReturnsSchoolYearList_WhenCalled()

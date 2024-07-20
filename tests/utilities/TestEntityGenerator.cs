@@ -20,7 +20,46 @@ public class TestEntityGenerator
     private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
-    
+
+
+
+    public static EnrollmentEntity aEnrollment()
+    {
+        return new EnrollmentEntity
+        {
+            enrollmentId = "en-1", 
+            gradeId = "gd1",
+            capacity = 20,
+            label = "A",
+            quantity = 20,
+            schoolYear = "sch22",
+            section = "A"
+        };
+    }
+
+    public static SubjectDataEntity aSubjectData()
+    {
+        return new SubjectDataEntity()
+        {
+            gradeDataId = 1,
+            subjectDataId = 1,
+            isMandatory = true,
+            name = "Español",
+            semester = 1
+        };
+    }
+
+    public static TariffDataEntity aTariffData()
+    {
+        return new TariffDataEntity
+        {
+            tariffDataId = 1,
+            typeId = 1,
+            concept = "Pago mes de enero",
+            amount = 1000,
+            modality = 1
+        };
+    }
     
     public static List<GradeEntity> aGradeList()
     {
