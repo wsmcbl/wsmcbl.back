@@ -13,12 +13,12 @@ public class EnrollmentEntity
     public ICollection<StudentEntity>? studentList { get; }
     public ICollection<SubjectEntity>? subjectList { get; private set;}
 
-    public void setSubject(List<SubjectEntity> subjects)
+    public void setSubjectList(List<SubjectEntity> subjects)
     {
         subjectList = subjects;
     }
 
-    public void setSubject(ICollection<secretary.SubjectEntity>? subjects)
+    public void setSubjectList(ICollection<secretary.SubjectEntity>? subjects)
     {
         if (subjects == null || subjects.Count == 0)
         {

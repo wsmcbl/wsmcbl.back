@@ -1,15 +1,36 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
 public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
-    private readonly string schoolyear = DateTime.Today.Year.ToString(); 
+    private string? schoolyear;
+    
+    private async Task initSchoolyear()
+    {
+        if (schoolyear != null)
+        {
+            return;
+        }
+        
+        var year = DateTime.Today.Year.ToString();
+        var element = await context.Set<SchoolYearEntity>().FirstOrDefaultAsync(e => e.label == year);
 
+        if (element == null)
+        {
+            throw new ArgumentException("Schoolyear no exist");
+        }
+        
+        schoolyear = element.id;
+    }
+    
     public async Task<List<TariffEntity>> getOverdueList()
     {
+        await initSchoolyear();
+        
         var tariffs = await entities.Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
             .ToListAsync();
 
@@ -20,6 +41,8 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
+        await initSchoolyear();
+        
         var debts = context.Set<DebtHistoryEntity>().Where(d => d.studentId == studentId);
         
         debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
@@ -32,6 +55,8 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
+        await initSchoolyear();
+        
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
             .Include(d => d.tariff).ToListAsync();

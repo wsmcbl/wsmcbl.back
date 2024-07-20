@@ -6,7 +6,9 @@ namespace wsmcbl.src.dto.output;
 public static class DtoMapperSecretary
 {
     private static GradeBasicDto mapToBasicDto(this GradeEntity grade) => new(grade);
-    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
+
+    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear)
+        => SchoolYearBasicDto.init(schoolYear);
     public static GradeDto mapToDto(this GradeEntity grade) => new(grade);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     

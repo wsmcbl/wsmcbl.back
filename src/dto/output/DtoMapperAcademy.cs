@@ -14,7 +14,7 @@ public static class DtoMapperAcademy
         };
     }
     
-    public static List<TeacherBasicDto> mapListToDto(this IEnumerable<TeacherEntity> teacherList)
+    public static List<TeacherBasicDto> mapListToBasicDto(this IEnumerable<TeacherEntity> teacherList)
     {
         return teacherList.Select(e => e.mapToBasicDto()).ToList();
     }

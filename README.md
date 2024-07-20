@@ -9,7 +9,7 @@
 ## Actions state
 
 ![Deploy](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/deploy.somee.yml/badge.svg?branch=master)
-![Sonarcloud build](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/sonarcloud.build.yml/badge.svg?branch=master)
+![Sonarcloud build](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/sonarcloud.build.yml/badge.svg?branch=develop)
 
 ## SonarCloud analysis
 
