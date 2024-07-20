@@ -26,6 +26,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     public async Task<GradeEntity?> getGradeById(string gradeId)
     {
         var grade = await daoFactory.gradeDao!.getById(gradeId);
+        
         if (grade == null)
         {
             throw new EntityNotFoundException("Grade", gradeId);
@@ -72,6 +73,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task createEnrollments(string gradeId, int quantity)
     {
+        if (quantity < 0 || quantity > 7)
+        {
+            throw new Exception("Quantity in not valid");
+        }
+        
         var grade = await daoFactory.gradeDao!.getById(gradeId);
 
         if (grade == null)
