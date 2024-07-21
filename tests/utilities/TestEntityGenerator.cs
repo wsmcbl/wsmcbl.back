@@ -9,10 +9,7 @@ namespace wsmcbl.tests.utilities;
 
 public class TestEntityGenerator
 {
-    private UserEntity? _userEntity;
-    private CashierEntity? _cashierEntity;
     private DebtHistoryEntity? _debtHistoryEntity;
-    private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
 
     private List<TariffTypeEntity>? _aTariffTypeList;
@@ -133,7 +130,7 @@ public class TestEntityGenerator
         };
     }
 
-    public StudentEntity aStudent(string studentId)
+    public static StudentEntity aStudent(string studentId)
     {
         var discountEntity = new DiscountEntity
         {
@@ -192,9 +189,9 @@ public class TestEntityGenerator
         };
     }
 
-    public TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
+    public static TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
     {
-        return _transactionEntity ??= new TransactionEntity
+        return new TransactionEntity
         {
             transactionId = "tst-1",
             cashierId = "e",
@@ -205,9 +202,9 @@ public class TestEntityGenerator
         };
     }
 
-    public UserEntity aUser(string userId)
+    public static UserEntity aUser(string userId)
     {
-        return _userEntity ??= new UserEntity
+        return new UserEntity
         {
             userId = userId,
             name = "name-v",
@@ -219,9 +216,9 @@ public class TestEntityGenerator
         };
     }
 
-    public CashierEntity aCashier(string cashierId)
+    public static CashierEntity aCashier(string cashierId)
     {
-        return _cashierEntity ??= new CashierEntity
+        return new CashierEntity
         {
             cashierId = cashierId,
             userId = "user-1",
@@ -303,10 +300,9 @@ public class TestEntityGenerator
         return [aTariff()];
     }
 
-    public List<TariffTypeEntity> aTariffTypeList()
+    public static List<TariffTypeEntity> aTariffTypeList()
     {
-        _aTariffTypeList ??=
-        [
+        return [
             new TariffTypeEntity
             {
                 typeId = 1,
@@ -319,10 +315,9 @@ public class TestEntityGenerator
                 description = "description aslk"
             }
         ];
-        return _aTariffTypeList;
     }
 
-    public (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
+    public static (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
     {
         return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }

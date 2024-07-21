@@ -13,7 +13,7 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     public async Task create_UserCreated()
     {
         var entityGenerator = new TestEntityGenerator();
-        var user = entityGenerator.aUser("user-1");
+        var user = TestEntityGenerator.aUser("user-1");
 
         var userEntities = TestDbSet<UserEntity>.getFake([user]);
         context.Set<UserEntity>().Returns(userEntities);
@@ -34,7 +34,7 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     public async Task getById_ReturnsUser()
     {
         var entityGenerator = new TestEntityGenerator();
-        var user = entityGenerator.aUser("user-1");
+        var user = TestEntityGenerator.aUser("user-1");
 
         context = TestDbContext.getInMemory();
         context.Set<UserEntity>().Add(user);
@@ -65,7 +65,7 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     public async Task update_UserUpdate()
     {
         var entityGenerator = new TestEntityGenerator();
-        var user = entityGenerator.aUser("user-1");
+        var user = TestEntityGenerator.aUser("user-1");
 
         var userEntities = TestDbSet<UserEntity>.getFake([user]);
         context.Set<UserEntity>().Returns(userEntities);
@@ -86,7 +86,7 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     public async Task getAll_ReturnsList()
     {
         var entityGenerator = new TestEntityGenerator();
-        List<UserEntity> list = [ entityGenerator.aUser("user-1") ];
+        List<UserEntity> list = [ TestEntityGenerator.aUser("user-1") ];
 
         var entities = TestDbSet<UserEntity>.getFake(list);
         context.Set<UserEntity>().Returns(entities);

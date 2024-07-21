@@ -205,11 +205,11 @@ public class TestDtoGenerator
         return _tariffDto;
     }
 
-    public StudentBasicDto aStudentBasicDto()
+    private static StudentBasicDto aStudentBasicDto()
     {
-        var entity = new TestEntityGenerator().aStudent("std-1");
+        var entity = TestEntityGenerator.aStudent("std-1");
         
-        return _studentBasicDto ??= new StudentBasicDto
+        return new StudentBasicDto
         {
             studentId = entity.studentId!,
             fullName = entity.fullName(),
@@ -219,8 +219,8 @@ public class TestDtoGenerator
         };
     }
     
-    public List<StudentBasicDto> aStudentBasicDtoList()
+    public static List<StudentBasicDto> aStudentBasicDtoList()
     {
-        return _studentBasicDtoList ??= [aStudentBasicDto()];
+        return [aStudentBasicDto()];
     }
 }

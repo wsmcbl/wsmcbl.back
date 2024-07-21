@@ -9,12 +9,11 @@ public class DtoMapperTest
     [Fact]
     public void getInvoiceDto_ReturnsDto()
     {
-        var entityGenerator = new TestEntityGenerator();
         var invoiceDto = new TestDtoGenerator().aInvoiceDto();
         
-        var transactionEntity = entityGenerator.aTransaction("std-1", []);
+        var transactionEntity = TestEntityGenerator.aTransaction("std-1", []);
 
-        var result = transactionEntity.mapToDto(entityGenerator.aStudent("std-1"), entityGenerator.aCashier("csh-1"));
+        var result = transactionEntity.mapToDto(TestEntityGenerator.aStudent("std-1"), TestEntityGenerator.aCashier("csh-1"));
         
         Assert.NotNull(result);
         Assert.Equivalent(invoiceDto, result);
@@ -25,11 +24,11 @@ public class DtoMapperTest
     public void getDetailDto_ReturnsDto()
     {
         var entityGenerator = new TestEntityGenerator();
-        var detailDto = new TestDtoGenerator().aDetailDto(TestEntityGenerator.aTariff(), entityGenerator.aStudent("std-1"));
+        var detailDto = new TestDtoGenerator().aDetailDto(TestEntityGenerator.aTariff(), TestEntityGenerator.aStudent("std-1"));
         
         var transactionTariff = entityGenerator.aTransactionTariffEntity();
 
-        var result = transactionTariff.mapToDto(entityGenerator.aStudent("std-1"));
+        var result = transactionTariff.mapToDto(TestEntityGenerator.aStudent("std-1"));
 
         Assert.NotNull(result);
         Assert.Equivalent(detailDto, result);
@@ -53,10 +52,9 @@ public class DtoMapperTest
     [Fact]
     public void getStudentBasicDtoList_ReturnsListDto()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var studentBasicDtoList = new TestDtoGenerator().aStudentBasicDtoList();
+        var studentBasicDtoList = TestDtoGenerator.aStudentBasicDtoList();
 
-        List<StudentEntity> studentList = [entityGenerator.aStudent("std-1")];
+        List<StudentEntity> studentList = [TestEntityGenerator.aStudent("std-1")];
 
         var result = studentList.mapListTo();
 

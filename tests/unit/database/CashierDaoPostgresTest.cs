@@ -13,7 +13,7 @@ public class CashierDaoPostgresTest : BaseDaoPostgresTest
     public async Task getById_ReturnsCashier()
     {
         var entityGenerator = new TestEntityGenerator();
-        var cashier = entityGenerator.aCashier("csh-1");
+        var cashier = TestEntityGenerator.aCashier("csh-1");
 
         context = TestDbContext.getInMemory();
         await context.Set<CashierEntity>().AddAsync(cashier);
