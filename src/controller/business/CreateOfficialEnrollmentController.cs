@@ -58,6 +58,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         {
             throw new ArgumentException("GradeLis or TariffList are not valid");
         }
+
+        var tariffsNotValid = tariffList.Select(e => e.amount < 1).ToList().Count;
+
+        if (tariffsNotValid > 0)
+        {
+            throw new ArgumentException($"{tariffsNotValid} tariffs do not have a valid Amount.");
+        }
         
         daoFactory.gradeDao!.createList(gradeList);
         daoFactory.tariffDao!.createList(tariffList);
