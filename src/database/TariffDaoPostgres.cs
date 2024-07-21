@@ -59,17 +59,14 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
-            .Include(d => d.tariff).ToListAsync();
+            .Include(d => d.tariff)
+            .Where(d => d.tariff.type == 1)
+            .ToListAsync();
         
         float[] balance = [0, 0];
         
         foreach (var debt in debts)
         {
-            if (debt.tariff.type != 1)
-            {
-                continue;
-            }
-            
             balance[1] += debt.tariff.amount;
                 
             if (debt.isPaid)

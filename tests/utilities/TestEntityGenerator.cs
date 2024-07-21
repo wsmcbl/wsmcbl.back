@@ -185,6 +185,20 @@ public class TestEntityGenerator
             type = 1
         };
     }
+    
+    private static TariffEntity aTariffNotMensual()
+    {
+        return new TariffEntity
+        {
+            tariffId = 11,
+            amount = 900,
+            concept = "Pago excursion",
+            isLate = true,
+            modality = 1,
+            schoolYear = "sch001",
+            type = 2
+        };
+    }
 
     public static TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
     {
@@ -323,6 +337,22 @@ public class TestEntityGenerator
 
     public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)
     {
-        return [aDebtHistory(studentId, isPaid)];
+        return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMensual(studentId)];
+    }
+
+    private static DebtHistoryEntity aDebtHistoryNotMensual(string studentId)
+    {
+        return new DebtHistoryEntity
+        {
+            studentId = studentId,
+            tariffId = aTariffNotMensual().tariffId,
+            tariff = aTariffNotMensual(),
+            schoolyear = "sch001",
+            isPaid = true,
+            debtBalance = 10,
+            arrear = 10,
+            subAmount = 110,
+            amount = 100
+        };
     }
 }
