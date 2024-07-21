@@ -10,9 +10,7 @@ namespace wsmcbl.tests.utilities;
 public class TestEntityGenerator
 {
     private UserEntity? _userEntity;
-    private StudentEntity? _studentEntity;
     private CashierEntity? _cashierEntity;
-    private DiscountEntity? _discountEntity;
     private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
@@ -137,7 +135,7 @@ public class TestEntityGenerator
     
     public StudentEntity aStudent(string studentId)
     {
-        _discountEntity ??= new DiscountEntity
+        var discountEntity = new DiscountEntity
         {
             discountId = 1,
             amount = 0.1f,
@@ -145,11 +143,11 @@ public class TestEntityGenerator
             tag = "A"
         };
 
-        _studentEntity = new StudentEntity
+        return new StudentEntity
         {
             studentId = studentId,
             student = aSecretaryStudent(studentId),
-            discount = _discountEntity,
+            discount = discountEntity,
             enrollmentLabel = "",
             transactions = new List<TransactionEntity>
             {
@@ -164,11 +162,9 @@ public class TestEntityGenerator
                 ])
             }
         };
-
-        return _studentEntity;
     }
 
-    private SecretaryStudentEntity aSecretaryStudent(string studentId)
+    private static SecretaryStudentEntity aSecretaryStudent(string studentId)
     {
         return new SecretaryStudentEntity
         {
