@@ -54,6 +54,18 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         Assert.Empty(result);
     }
 
+    [Fact]
+    public async Task exonerateArrears_ShouldNoExonerate_WhenListIsEmpty()
+    {
+        context = TestDbContext.getInMemory();
+        
+        sut = new DebtHistoryDaoPostgres(context);
+        await sut.exonerateArrears("std-1", []);
+
+        await context.SaveChangesAsync();
+        var result = await context.Set<DebtHistoryEntity>().AnyAsync();
+        Assert.False(result);
+    }
 
     [Fact]
     public async Task exonerateArrears_ArrearsExonerate()
