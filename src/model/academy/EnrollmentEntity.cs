@@ -22,6 +22,7 @@ public class EnrollmentEntity
     {
         if (subjects == null || subjects.Count == 0)
         {
+            subjectList = [];
             return;
         }
 

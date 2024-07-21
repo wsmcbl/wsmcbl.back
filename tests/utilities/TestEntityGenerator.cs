@@ -16,6 +16,12 @@ public class TestEntityGenerator
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
 
+    
+    
+    
+    
+    
+    
     public static GradeDataEntity aGradeData()
     {
         return new GradeDataEntity()
@@ -26,7 +32,7 @@ public class TestEntityGenerator
             subjectList = [aSubjectData()]
         };
     }
-
+    
     public static EnrollmentEntity aEnrollment()
     {
         return new EnrollmentEntity
@@ -61,7 +67,8 @@ public class TestEntityGenerator
             typeId = 1,
             concept = "Pago mes de enero",
             amount = 1000,
-            modality = 1
+            modality = 1,
+            dueDate = new DateOnly(2020, 1, 1)
         };
     }
 
