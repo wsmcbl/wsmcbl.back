@@ -16,9 +16,6 @@ public class TestDtoGenerator
     private DetailDto? _detailDto;
     private TariffDto? _tariffDto;
     private InvoiceDto? _invoiceDto;
-    private StudentBasicDto? _studentBasicDto;
-
-    private List<StudentBasicDto>? _studentBasicDtoList;
 
     public static List<GradeEntity> aGradeList()
     {
@@ -205,22 +202,22 @@ public class TestDtoGenerator
         return _tariffDto;
     }
 
-    public StudentBasicDto aStudentBasicDto()
+    private static StudentBasicDto aStudentBasicDto()
     {
-        var entity = new TestEntityGenerator().aStudent("std-1");
+        var entity = TestEntityGenerator.aStudent("std-1");
         
-        return _studentBasicDto ??= new StudentBasicDto
+        return new StudentBasicDto
         {
             studentId = entity.studentId!,
             fullName = entity.fullName(),
             enrollmentLabel = entity.enrollmentLabel!,
             schoolyear = entity.schoolYear,
-            tutor = entity.tutor!
+            tutor = entity.tutor!,
         };
     }
     
-    public List<StudentBasicDto> aStudentBasicDtoList()
+    public static List<StudentBasicDto> aStudentBasicDtoList()
     {
-        return _studentBasicDtoList ??= [aStudentBasicDto()];
+        return [aStudentBasicDto()];
     }
 }

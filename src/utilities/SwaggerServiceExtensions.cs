@@ -14,23 +14,23 @@ public static class SwaggerServiceExtensions
     
     public static void AddSwaggerDocumentation(this IServiceCollection services)
     {
-        services.AddSwaggerGen(options =>
+        services.AddSwaggerGen(setupAction: options =>
         {
-            options.SwaggerDoc("v1",
-                new OpenApiInfo
+            options.SwaggerDoc(name: "v1",
+                info: new OpenApiInfo
                 {
                     Version = "v1", Title = "WSMCBL API",
                     Description = "API for the Web System for Management of Colegio Bautista Libertad developed in .net 8",
                     Contact = new OpenApiContact
                     {
                         Name = "Client application",
-                        Url = new Uri("https://cbl.somee.com")
+                        Url = new Uri(uriString: $"https://cbl.somee.com")
                     }
                 });
 
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            options.IncludeXmlComments(xmlPath);
+            var xmlPath = Path.Combine(path1: AppContext.BaseDirectory, path2: xmlFile);
+            options.IncludeXmlComments(filePath: xmlPath);
         });
     }
 }

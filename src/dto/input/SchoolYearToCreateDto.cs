@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
@@ -5,8 +6,8 @@ namespace wsmcbl.src.dto.input;
 
 public class SchoolYearToCreateDto
 {
-    public List<GradeDto> grades { get; set; }
-    public List<TariffDto> tariffs { get; set; }
+    [JsonRequired] public List<GradeDto> grades { get; set; } = null!;
+    [JsonRequired] public List<TariffDto> tariffs { get; set; } = null!;
 
     public List<GradeEntity> getGradeList()
     {

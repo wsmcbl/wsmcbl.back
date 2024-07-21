@@ -7,7 +7,7 @@ public class GradeEntity
     public string? gradeId { get; set; }
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
-    public int quantity { get; private set; }
+    public int quantity { get; set; }
     public string modality { get; set; } = null!;
     
     public ICollection<EnrollmentEntity> enrollments { get; set; }

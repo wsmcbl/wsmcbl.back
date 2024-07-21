@@ -1,13 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
 public class SubjectDto : IBaseDto<SubjectEntity>
 {
-    [Required] public string name { get; set; }
-    public bool isMandatory { get; set; }
-    public int semester { get; set; }
+    [Required] public string name { get; set; } = null!;
+    [JsonRequired] public bool isMandatory { get; set; }
+    [JsonRequired] public int semester { get; set; }
     
     public SubjectEntity toEntity()
     {

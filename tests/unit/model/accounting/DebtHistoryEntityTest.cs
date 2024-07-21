@@ -4,17 +4,29 @@ namespace wsmcbl.tests.unit.model.accounting;
 
 public class DebtHistoryEntityTest
 {
-    private DebtHistoryEntity? entity;
+    [Fact]
+    public void getDebtBalance_ShouldReturnZero_WhenDebtIsLessThanZero()
+    {
+        var sut = new DebtHistoryEntity
+        {
+            amount = 50,
+            debtBalance = 200
+        };
 
+        var result = sut.getDebtBalance();
+        
+        Assert.Equal(0, result);
+    }
+    
     [Fact]
     public void havePayments_ReturnsTrue()
     {
-        entity = new DebtHistoryEntity
+        var sut = new DebtHistoryEntity
         {
             debtBalance = 45
         };
 
-        var result = entity.havePayments();
+        var result = sut.havePayments();
         
         Assert.True(result);
     }

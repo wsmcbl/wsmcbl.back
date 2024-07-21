@@ -21,6 +21,6 @@ public class StudentEntity
     public void init()
     {
         isActive = true;
-        schoolYear = DateTime.Now.Year.ToString();
+        schoolYear = "";
     }
 }

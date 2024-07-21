@@ -16,13 +16,11 @@ public class CollectTariffActionsTest
 {
     private readonly ICollectTariffController controller;
     private readonly CollectTariffActions actions;
-    private readonly TestEntityGenerator entityGenerator;
 
     public CollectTariffActionsTest()
     {
         controller = Substitute.For<ICollectTariffController>();
         actions = new CollectTariffActions(controller);
-        entityGenerator = new TestEntityGenerator();
     }
     
     private static OkObjectResult assertAndGetOkResult(IActionResult actionResult) =>
@@ -32,14 +30,15 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentsList().Returns(entityGenerator.aStudentList());
+        var initList = TestEntityGenerator.aStudentList();
+        controller.getStudentsList().Returns(initList);
         
         var actionResult = await actions.getStudentList();
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
         Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
+        Assert.Equivalent(initList.mapListTo(), list);
     }
     
     [Fact]
@@ -59,7 +58,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentById_ValidId_ReturnStudent()
     {
-        var student = entityGenerator.aStudent("std-1");
+        var student = TestEntityGenerator.aStudent("std-1");
         controller.getStudent(student.studentId!).Returns(student);
 
         var actionResult = await actions.getStudentById(student.studentId!);
@@ -128,7 +127,7 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getTariffTypeList_ReturnsList()
     {
-        controller.getTariffTypeList().Returns(entityGenerator.aTariffTypeList());
+        controller.getTariffTypeList().Returns(TestEntityGenerator.aTariffTypeList());
 
         var actionResult = await actions.getTariffTypeList();
 
@@ -209,7 +208,7 @@ public class CollectTariffActionsTest
     public async Task getInvoice_ValidParameter_ReturnsInvoice()
     {
         const string transactionId = "tst-id";
-        controller.getFullTransaction(transactionId).Returns(entityGenerator.aTupleInvoice());
+        controller.getFullTransaction(transactionId).Returns(TestEntityGenerator.aTupleInvoice());
 
         var actionResult = await actions.getInvoice(transactionId);
 

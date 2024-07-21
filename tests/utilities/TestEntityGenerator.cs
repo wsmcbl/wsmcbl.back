@@ -4,25 +4,24 @@ using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
 
 public class TestEntityGenerator
 {
-    private UserEntity? _userEntity;
-    private StudentEntity? _studentEntity;
-    private CashierEntity? _cashierEntity;
-    private DiscountEntity? _discountEntity;
     private DebtHistoryEntity? _debtHistoryEntity;
-    private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
-    
-    private List<TariffTypeEntity>? _aTariffTypeList;
+
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
 
-
-
+    
+    
+    
+    
+    
+    
     public static GradeDataEntity aGradeData()
     {
         return new GradeDataEntity()
@@ -30,15 +29,15 @@ public class TestEntityGenerator
             gradeDataId = 1,
             label = "4to",
             modality = 2,
-            subjectList = []
+            subjectList = [aSubjectData()]
         };
     }
-
+    
     public static EnrollmentEntity aEnrollment()
     {
         return new EnrollmentEntity
         {
-            enrollmentId = "en-1", 
+            enrollmentId = "en-1",
             gradeId = "gd1",
             capacity = 20,
             label = "A",
@@ -68,10 +67,11 @@ public class TestEntityGenerator
             typeId = 1,
             concept = "Pago mes de enero",
             amount = 1000,
-            modality = 1
+            modality = 1,
+            dueDate = new DateOnly(2020, 1, 1)
         };
     }
-    
+
     public static List<GradeEntity> aGradeList()
     {
         return [aGrade("gd-10")];
@@ -89,7 +89,7 @@ public class TestEntityGenerator
             startDate = new DateOnly(2000, 12, 1)
         };
     }
-    
+
     public static List<SchoolYearEntity> aSchoolYearList()
     {
         return [aSchoolYear()];
@@ -97,7 +97,8 @@ public class TestEntityGenerator
 
     public static List<TeacherEntity> aTeacherList()
     {
-        return [
+        return
+        [
             new TeacherEntity()
             {
                 teacherId = "tc-1",
@@ -108,10 +109,10 @@ public class TestEntityGenerator
         ];
     }
 
-    
-    private static src.model.secretary.SubjectEntity aSubject()
+
+    public static SubjectEntity aSubject()
     {
-        return new src.model.secretary.SubjectEntity
+        return new SubjectEntity
         {
             subjectId = "sub1",
             gradeId = "gd-1",
@@ -120,8 +121,8 @@ public class TestEntityGenerator
             semester = 3
         };
     }
-    
-    
+
+
     public static GradeEntity aGrade(string gradeId)
     {
         return new GradeEntity
@@ -134,10 +135,10 @@ public class TestEntityGenerator
             subjectList = [aSubject()]
         };
     }
-    
-    public StudentEntity aStudent(string studentId)
+
+    public static StudentEntity aStudent(string studentId)
     {
-        _discountEntity ??= new DiscountEntity
+        var discountEntity = new DiscountEntity
         {
             discountId = 1,
             amount = 0.1f,
@@ -145,11 +146,12 @@ public class TestEntityGenerator
             tag = "A"
         };
 
-        _studentEntity = new StudentEntity
+        return new StudentEntity
         {
             studentId = studentId,
             student = aSecretaryStudent(studentId),
-            discount = _discountEntity,
+            discount = discountEntity,
+            discountId = 1,
             enrollmentLabel = "",
             transactions = new List<TransactionEntity>
             {
@@ -164,11 +166,9 @@ public class TestEntityGenerator
                 ])
             }
         };
-
-        return _studentEntity;
     }
 
-    private SecretaryStudentEntity aSecretaryStudent(string studentId)
+    private static SecretaryStudentEntity aSecretaryStudent(string studentId)
     {
         return new SecretaryStudentEntity
         {
@@ -196,9 +196,9 @@ public class TestEntityGenerator
         };
     }
 
-    public TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
+    public static TransactionEntity aTransaction(string studentId, List<TransactionTariffEntity> detail)
     {
-        return _transactionEntity ??= new TransactionEntity
+        return new TransactionEntity
         {
             transactionId = "tst-1",
             cashierId = "e",
@@ -209,9 +209,9 @@ public class TestEntityGenerator
         };
     }
 
-    public UserEntity aUser(string userId)
+    public static UserEntity aUser(string userId)
     {
-        return _userEntity ??= new UserEntity
+        return new UserEntity
         {
             userId = userId,
             name = "name-v",
@@ -219,13 +219,15 @@ public class TestEntityGenerator
             surname = "surname-v",
             secondsurName = "ssn",
             username = "username-1",
-            password = "12345-password"
+            password = "12345-password",
+            isActive = true,
+            email = "user@mail.com"
         };
     }
 
-    public CashierEntity aCashier(string cashierId)
+    public static CashierEntity aCashier(string cashierId)
     {
-        return _cashierEntity ??= new CashierEntity
+        return new CashierEntity
         {
             cashierId = cashierId,
             userId = "user-1",
@@ -243,7 +245,7 @@ public class TestEntityGenerator
             schoolyear = "sch001",
             isPaid = false,
             debtBalance = 10,
-            arrear = 10,    
+            arrear = 10,
             subAmount = 110,
             amount = 100
         };
@@ -260,13 +262,44 @@ public class TestEntityGenerator
         };
 
         _transactionTariffEntity.setTariff(aTariff());
-        
+
         return _transactionTariffEntity;
     }
-    
 
 
-    public List<StudentEntity> aStudentList() => [aStudent("id1"), aStudent("id2")];
+    public static List<StudentEntity> aStudentList() =>
+    [
+        //aStudent("id1")
+        new StudentEntity
+        {
+            studentId = "std-10",
+            student = aSecretaryStudent("std-10"),
+            discount = new DiscountEntity
+            {
+                discountId = 1,
+                amount = 0.1f,
+                description = "Description",
+                tag = "A"
+            },
+            enrollmentLabel = "",
+            transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity
+                {
+                    transactionId = "tst-1",
+                    cashierId = "e",
+                    date = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
+                    studentId = "std-10",
+                    total = 700,
+                    details =
+                    [
+                        new TransactionTariffEntity
+                            { amount = 2, tariffId = aTariff().tariffId, transactionId = "w" }
+                    ]
+                }
+            }
+        }
+    ];
 
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
@@ -276,9 +309,9 @@ public class TestEntityGenerator
         return [aTariff()];
     }
 
-    public List<TariffTypeEntity> aTariffTypeList()
+    public static List<TariffTypeEntity> aTariffTypeList()
     {
-        _aTariffTypeList ??=
+        return
         [
             new TariffTypeEntity
             {
@@ -292,11 +325,9 @@ public class TestEntityGenerator
                 description = "description aslk"
             }
         ];
-
-        return _aTariffTypeList;
     }
 
-    public (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
+    public static (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
     {
         return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }

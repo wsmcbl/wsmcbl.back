@@ -4,12 +4,21 @@ namespace wsmcbl.tests.unit.model.secretary;
 
 public class StudentEntityTest
 {
-    private StudentEntity? entity;
-
+    [Fact]
+    public void init_ShouldInitAttribute_WhenCalled()
+    {
+        var sut = new StudentEntity();
+        
+        sut.init();
+        
+        Assert.Empty(sut.schoolYear);
+        Assert.True(sut.isActive);
+    }
+    
     [Fact]
     public void fullName_ReturnsFullName()
     {
-        entity = new StudentEntity
+        var sut = new StudentEntity
         {
             name = "A",
             secondName = "B",
@@ -17,7 +26,7 @@ public class StudentEntityTest
             secondSurname = "D"
         };
 
-        var result = entity.fullName();
+        var result = sut.fullName();
 
         Assert.IsType<string>(result);
         Assert.Equal("A B C D", result);

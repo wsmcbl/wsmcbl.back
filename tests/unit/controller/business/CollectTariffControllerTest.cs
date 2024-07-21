@@ -13,7 +13,6 @@ public class CollectTariffControllerTest
     private readonly DaoFactory daoFactory;
     private readonly IStudentDao studentDao;
     private readonly ITariffDao tariffDao;
-    private readonly TestEntityGenerator entityGenerator;
 
     public CollectTariffControllerTest()
     {
@@ -22,14 +21,12 @@ public class CollectTariffControllerTest
         
         daoFactory = Substitute.For<DaoFactory>();
         controller = new CollectTariffController(daoFactory);
-
-        entityGenerator = new TestEntityGenerator();
     }
 
     [Fact]
     public async Task getStudentsList_ReturnsList()
     {
-        var list = entityGenerator.aStudentList();
+        var list = TestEntityGenerator.aStudentList();
         studentDao.getAll().Returns(list);
         daoFactory.studentDao.Returns(studentDao);
 
@@ -57,7 +54,7 @@ public class CollectTariffControllerTest
     public async Task getStudent_ReturnsStudent()
     {
         const string studentId = "std";
-        studentDao.getById(studentId).Returns(entityGenerator.aStudent(studentId));
+        studentDao.getById(studentId).Returns(TestEntityGenerator.aStudent(studentId));
         daoFactory.studentDao.Returns(studentDao);
 
         var result = await controller.getStudent(studentId);
@@ -163,7 +160,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getFullTransaction_ReturnsInvoice()
     {
-        var initStudent = entityGenerator.aStudent("std");
+        var initStudent = TestEntityGenerator.aStudent("std");
         var initCashier = new CashierEntity{cashierId = "csh", user = new UserEntity()};
         var initTransaction = new TransactionEntity { transactionId = "std", studentId = "std", cashierId = "csh" };
         
@@ -203,7 +200,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getTariffTypeList_ReturnsList()
     {
-        var list = entityGenerator.aTariffTypeList();
+        var list = TestEntityGenerator.aTariffTypeList();
         var tariffTypeDao = Substitute.For<ITariffTypeDao>();
         tariffTypeDao.getAll().Returns(list);
         daoFactory.tariffTypeDao.Returns(tariffTypeDao);
