@@ -12,7 +12,6 @@ public class CashierDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getById_ReturnsCashier()
     {
-        var entityGenerator = new TestEntityGenerator();
         var cashier = TestEntityGenerator.aCashier("csh-1");
 
         context = TestDbContext.getInMemory();

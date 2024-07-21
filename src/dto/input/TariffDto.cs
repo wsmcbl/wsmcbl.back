@@ -1,16 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.input;
 
 public class TariffDto : IBaseDto<TariffEntity>
 {
-    [Required] public string schoolYear { get; set; }
-    [Required] public string concept { get; set; }
-    public float amount { get; set; }
+    [Required] public string schoolYear { get; set; } = null!;
+    [Required] public string concept { get; set; } = null!;
+    [JsonRequired] public float amount { get; set; }
     public DateOnlyDto? dueDate { get; set; }
-    public int type { get; set; }
-    public int modality { get; set; }
+    [JsonRequired] public int type { get; set; }
+    [JsonRequired] public int modality { get; set; }
 
     public TariffEntity toEntity()
     {

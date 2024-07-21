@@ -12,7 +12,6 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task create_UserCreated()
     {
-        var entityGenerator = new TestEntityGenerator();
         var user = TestEntityGenerator.aUser("user-1");
 
         var userEntities = TestDbSet<UserEntity>.getFake([user]);
@@ -33,7 +32,6 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getById_ReturnsUser()
     {
-        var entityGenerator = new TestEntityGenerator();
         var user = TestEntityGenerator.aUser("user-1");
 
         context = TestDbContext.getInMemory();
@@ -64,7 +62,6 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task update_UserUpdate()
     {
-        var entityGenerator = new TestEntityGenerator();
         var user = TestEntityGenerator.aUser("user-1");
 
         var userEntities = TestDbSet<UserEntity>.getFake([user]);
@@ -85,7 +82,6 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getAll_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
         List<UserEntity> list = [ TestEntityGenerator.aUser("user-1") ];
 
         var entities = TestDbSet<UserEntity>.getFake(list);

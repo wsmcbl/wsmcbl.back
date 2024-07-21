@@ -6,11 +6,11 @@ namespace wsmcbl.src.dto.input;
 
 public class GradeDto : IBaseDto<GradeEntity>
 {
-    [Required] public string label { get; set; }
-    [Required] public string schoolYear { get; set; }
-    [Required] public string modality { get; set; }
+    [Required] public string label { get; set; } = null!;
+    [Required] public string schoolYear { get; set; } = null!;
+    [Required] public string modality { get; set; } = null!;
     
-    public List<SubjectDto> subjects { get; set; }
+    public List<SubjectDto>? subjects { get; set; }
     
     public GradeEntity toEntity()
     {
@@ -21,7 +21,7 @@ public class GradeDto : IBaseDto<GradeEntity>
             modality = modality
         };
 
-        var list = subjects.Select(e => e.toEntity()).ToList();
+        var list = subjects!.Select(e => e.toEntity()).ToList();
         grade.setSubjectList(list);
 
         return grade;

@@ -5,8 +5,8 @@ namespace wsmcbl.src.dto.input;
 
 public class SubjectEnrollDto
 {
-    [Required] public string subjectId { get; set; }
-    [Required] public string teacherId { get; set; }
+    [Required] public string subjectId { get; set; } = null!;
+    [Required] public string teacherId { get; set; } = null!;
     
     public SubjectEntity toEntity(string enrollmentId)
     {
