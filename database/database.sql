@@ -1,6 +1,3 @@
--- drop database api_bd_test;
--- create database api_bd_test;
-
 drop database if exists wsmcbl_database;
 create database wsmcbl_database;
 

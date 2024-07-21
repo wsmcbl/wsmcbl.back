@@ -9,9 +9,8 @@ public class GradeDto : IBaseDto<GradeEntity>
     [Required] public string label { get; set; } = null!;
     [Required] public string schoolYear { get; set; } = null!;
     [Required] public string modality { get; set; } = null!;
-    
-    public List<SubjectDto>? subjects { get; set; }
-    
+    [Required] public List<SubjectDto>? subjects { get; set; }
+
     public GradeEntity toEntity()
     {
         var grade = new GradeEntity
@@ -27,14 +26,21 @@ public class GradeDto : IBaseDto<GradeEntity>
         return grade;
     }
 
-    internal static GradeDto init(GradeEntity grade)
+    public class Builder
     {
-        return new GradeDto
+        private readonly GradeDto? dto;
+
+        public Builder(GradeEntity grade)
         {
-            label = grade.label,
-            modality = grade.modality,
-            schoolYear = grade.schoolYear,
-            subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto()
-        };
+            dto = new GradeDto
+            {
+                label = grade.label,
+                modality = grade.modality,
+                schoolYear = grade.schoolYear,
+                subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto()
+            };
+        }
+
+        public GradeDto build() => dto!;
     }
 }

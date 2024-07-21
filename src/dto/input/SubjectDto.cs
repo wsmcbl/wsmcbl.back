@@ -19,14 +19,21 @@ public class SubjectDto : IBaseDto<SubjectEntity>
             semester = semester
         };
     }
-
-    internal static SubjectDto init(SubjectEntity subject)
+    
+    public class Builder
     {
-        return new SubjectDto
+        private readonly SubjectDto? dto;
+
+        public Builder(SubjectEntity subject)
         {
-            name = subject.name,
-            isMandatory = subject.isMandatory,
-            semester = subject.semester
-        };
+            dto = new SubjectDto()
+            {
+                name = subject.name,
+                isMandatory = subject.isMandatory,
+                semester = subject.semester
+            };
+        }
+
+        public SubjectDto build() => dto!;
     }
 }

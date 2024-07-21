@@ -182,7 +182,8 @@ public class TestEntityGenerator
             isLate = true,
             modality = 1,
             schoolYear = "sch001",
-            type = 1
+            type = 1,
+            dueDate = new DateOnly(2024,1,1)
         };
     }
     

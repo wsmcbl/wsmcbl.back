@@ -14,13 +14,19 @@ public class TariffDataDto : IBaseDto<TariffDataEntity>
     
     public TariffDataEntity toEntity()
     {
-        return new TariffDataEntity
+        var entity = new TariffDataEntity
         {
             concept = concept,
             amount = amount,
-            dueDate = dueDate.toEntity(),
             typeId = typeId,
             modality = modality
         };
+
+        if (dueDate != null)
+        {
+            entity.dueDate = dueDate.toEntity();
+        }
+
+        return entity;
     }
 }

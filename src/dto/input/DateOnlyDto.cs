@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace wsmcbl.src.dto.input;
@@ -14,13 +13,12 @@ public class DateOnlyDto : IBaseDto<DateOnly>
         return new DateOnly(year, month, day);
     }
 
-    public static DateOnlyDto init(DateOnly date)
+    public DateOnlyDto(int year, int month, int day)
     {
-        return new DateOnlyDto
-        {
-            year = date.Year,
-            month = date.Month,
-            day = date.Day
-        };
+        this.year = year;
+        this.month = month;
+        this.day = day;
     }
+
+    public DateOnlyDto(DateOnly date) : this(date.Year, date.Month, date.Day) {}
 }

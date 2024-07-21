@@ -9,7 +9,7 @@ public class DtoMapperTest
     [Fact]
     public void getInvoiceDto_ReturnsDto()
     {
-        var invoiceDto = new TestDtoGenerator().aInvoiceDto();
+        var invoiceDto = new TestDtoOutputGenerator().aInvoiceDto();
         
         var transactionEntity = TestEntityGenerator.aTransaction("std-1", []);
 
@@ -24,7 +24,7 @@ public class DtoMapperTest
     public void getDetailDto_ReturnsDto()
     {
         var entityGenerator = new TestEntityGenerator();
-        var detailDto = new TestDtoGenerator().aDetailDto(TestEntityGenerator.aTariff(), TestEntityGenerator.aStudent("std-1"));
+        var detailDto = new TestDtoOutputGenerator().aDetailDto(TestEntityGenerator.aTariff(), TestEntityGenerator.aStudent("std-1"));
         
         var transactionTariff = entityGenerator.aTransactionTariffEntity();
 
@@ -39,7 +39,7 @@ public class DtoMapperTest
     public void getTariffDto_ReturnsDto()
     {
         var debtHistory = TestEntityGenerator.aDebtHistory("std-1", false);
-        var tariffDto = new TestDtoGenerator().aTariffDto(debtHistory);
+        var tariffDto = new TestDtoOutputGenerator().aTariffDto(debtHistory);
 
         var result = debtHistory.mapToDto();
 
@@ -51,7 +51,7 @@ public class DtoMapperTest
     [Fact]
     public void getStudentBasicDtoList_ReturnsListDto()
     {
-        var studentBasicDtoList = TestDtoGenerator.aStudentBasicDtoList();
+        var studentBasicDtoList = TestDtoOutputGenerator.aStudentBasicDtoList();
 
         List<StudentEntity> studentList = [TestEntityGenerator.aStudent("std-1")];
 
