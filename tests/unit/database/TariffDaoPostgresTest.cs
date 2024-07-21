@@ -46,8 +46,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getListByStudent_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var debtList = entityGenerator.aDebtHistoryList("std-1");
+        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
@@ -81,8 +80,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getGeneralBalance_ReturnsFloatArray()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var debtList = entityGenerator.aDebtHistoryList("std-1");
+        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);

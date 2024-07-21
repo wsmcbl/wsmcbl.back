@@ -8,6 +8,20 @@ namespace wsmcbl.tests.unit.database;
 public class GradeDaoPostgresTest
 {
     [Fact]
+    public async Task crateList_ShouldCreateList_WhenCalled()
+    {
+        var grade = TestEntityGenerator.aGrade("gd-001");
+        var context = TestDbContext.getInMemory();
+        
+        var sut = new GradeDaoPostgres(context);
+        
+        sut.createList([grade]);
+        
+        await context.SaveChangesAsync();
+        Assert.Equal(grade, context.Set<GradeEntity>().First(e => e.gradeId == "gd-001"));
+    }
+    
+    [Fact]
     public async Task getById_ShouldThrowException_WhenGradeNotExist()
     {
         var context = TestDbContext.getInMemory();

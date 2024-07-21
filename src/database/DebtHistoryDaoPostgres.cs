@@ -39,7 +39,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         }
     }
 
-    public async Task checkIsPaid(TransactionEntity transaction)
+    public async Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction)
     {
         var debts = await entities
             .Where(e => e.studentId == transaction.studentId)
@@ -49,9 +49,6 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         var detail = transaction.details
             .FirstOrDefault(t => debts.Exists(e => e.tariffId == t.tariffId));
         
-        if(detail != null)
-        {
-            throw new ArgumentException($"Tariff with ID: {detail.tariffId} is already paid");
-        }
+        return detail != null;
     }
 }

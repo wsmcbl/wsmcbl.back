@@ -10,18 +10,9 @@ namespace wsmcbl.tests.utilities;
 
 public class TestEntityGenerator
 {
-    private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
 
-    private List<DebtHistoryEntity>? _aDebtHistoryList;
-    private List<SecretaryStudentEntity>? _aSecretaryStudentList;
 
-    
-    
-    
-    
-    
-    
     public static GradeDataEntity aGradeData()
     {
         return new GradeDataEntity()
@@ -32,7 +23,7 @@ public class TestEntityGenerator
             subjectList = [aSubjectData()]
         };
     }
-    
+
     public static EnrollmentEntity aEnrollment()
     {
         return new EnrollmentEntity
@@ -153,18 +144,17 @@ public class TestEntityGenerator
             discount = discountEntity,
             discountId = 1,
             enrollmentLabel = "",
-            transactions = new List<TransactionEntity>
-            {
-                aTransaction(studentId,
-                [
-                    new TransactionTariffEntity
-                    {
-                        amount = 2,
-                        tariffId = aTariff().tariffId,
-                        transactionId = "w"
-                    }
-                ])
-            }
+            transactions = [aTransaction(studentId, [aTransactionTariff()])]
+        };
+    }
+
+    public static TransactionTariffEntity aTransactionTariff()
+    {
+        return new TransactionTariffEntity
+        {
+            amount = 100,
+            tariffId = aTariff().tariffId,
+            transactionId = "tst-0001"
         };
     }
 
@@ -235,15 +225,15 @@ public class TestEntityGenerator
         };
     }
 
-    public DebtHistoryEntity aDebtHistory(string studentId)
+    public static DebtHistoryEntity aDebtHistory(string studentId, bool isPaid)
     {
-        return _debtHistoryEntity ??= new DebtHistoryEntity
+        return new DebtHistoryEntity
         {
             studentId = studentId,
             tariffId = aTariff().tariffId,
             tariff = aTariff(),
             schoolyear = "sch001",
-            isPaid = false,
+            isPaid = isPaid,
             debtBalance = 10,
             arrear = 10,
             subAmount = 110,
@@ -301,8 +291,7 @@ public class TestEntityGenerator
         }
     ];
 
-    public List<SecretaryStudentEntity> aSecretaryStudentList()
-        => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
+    public static List<SecretaryStudentEntity> aSecretaryStudentList() => [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
 
     public static List<TariffEntity> aTariffList()
     {
@@ -332,8 +321,8 @@ public class TestEntityGenerator
         return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }
 
-    public List<DebtHistoryEntity> aDebtHistoryList(string studentId)
+    public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)
     {
-        return _aDebtHistoryList ??= [aDebtHistory(studentId)];
+        return [aDebtHistory(studentId, isPaid)];
     }
 }

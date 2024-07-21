@@ -5,7 +5,6 @@ using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using IStudentDao = wsmcbl.src.model.accounting.IStudentDao;
-using ISubjectDao = wsmcbl.src.model.secretary.ISubjectDao;
 
 namespace wsmcbl.src.database;
 
@@ -62,14 +61,6 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override ITeacherDao teacherDao => _teacherDao ??= new TeacherDaoPostgres(context);
     
     
-    private ISubjectDao? _subjectDao;
-    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
-    
-    
-    private model.academy.ISubjectDao? _academySubjectDao;
-    public override model.academy.ISubjectDao academySubjectDao => _academySubjectDao ??= new AcademySubjectDaoPostgres(context);
-
-
     private ISchoolyearDao? _schoolyearDao;
     public override ISchoolyearDao schoolyearDao => _schoolyearDao ??= new SchoolyearDaoPostgres(context);
 

@@ -163,8 +163,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
-        controller.getStudentList().Returns(entityGenerator.aSecretaryStudentList());
+        controller.getStudentList().Returns(TestEntityGenerator.aSecretaryStudentList());
 
         var actionResult = await actions.getStudentList();
 
