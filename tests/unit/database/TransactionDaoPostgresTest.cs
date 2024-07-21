@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 
@@ -7,6 +8,17 @@ namespace wsmcbl.tests.unit.database;
 
 public class TransactionDaoPostgresTest : BaseDaoPostgresTest
 {
+    [Fact]
+    public void create_ShouldThrowException_WhenDataTransactionIsInvalid()
+    {
+        var transaction = TestEntityGenerator.aTransaction("", []);
+        context = TestDbContext.getInMemory();
+        
+        var sut = new TransactionDaoPostgres(context);
+
+        Assert.Throws<IncorrectDataException>(() => sut.create(transaction));
+    }
+    
     [Fact]
     public async Task create_EntityCreate()
     {

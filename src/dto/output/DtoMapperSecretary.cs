@@ -18,15 +18,16 @@ public static class DtoMapperSecretary
         => list.Select(e => e.mapToBasicDto()).ToList();
     
     public static List<input.SubjectDto> mapListToDto(this IEnumerable<SubjectEntity> subjects)
-        => subjects.Select(input.SubjectDto.init).ToList();
+        => subjects.Select(e => new input.SubjectDto.Builder(e).build()).ToList();
 
     public static List<input.TariffDto> mapListToDto(this IEnumerable<TariffEntity> tariffs)
-        => tariffs.Select(input.TariffDto.init).ToList();
+        => tariffs.Select(e => new input.TariffDto.Builder(e).build()).ToList();
 
     public static List<input.GradeDto> mapListToDto(this IEnumerable<GradeEntity> grades)
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
     
-    private static input.GradeDto mapToNewSchoolyearDto(this GradeEntity grade) => input.GradeDto.init(grade);
+    private static input.GradeDto mapToNewSchoolyearDto(this GradeEntity grade)
+        => new input.GradeDto.Builder(grade).build();
     
     public static List<GradeBasicDto> mapListToBasicDto(this IEnumerable<GradeEntity> grades) 
         => grades.Select(e => e.mapToBasicDto()).ToList();

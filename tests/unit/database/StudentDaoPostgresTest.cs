@@ -29,9 +29,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getStudentList_EmptyList()
     {
-        List<StudentEntity> list = [];
-
-        var entities = TestDbSet<StudentEntity>.getFake(list);
+        var entities = TestDbSet<StudentEntity>.getFake([]);
         context.Set<StudentEntity>().Returns(entities);
         dao = new StudentDaoPostgres(context);
 

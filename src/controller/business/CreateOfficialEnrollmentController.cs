@@ -59,7 +59,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             throw new ArgumentException("GradeLis or TariffList are not valid");
         }
 
-        var tariffsNotValid = tariffList.Select(e => e.amount < 1).ToList().Count;
+        var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
 
         if (tariffsNotValid > 0)
         {

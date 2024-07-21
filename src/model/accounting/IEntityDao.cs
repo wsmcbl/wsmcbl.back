@@ -21,5 +21,5 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
 {
     public Task<List<DebtHistoryEntity>> getListByStudent(string studentId);
     public Task exonerateArrears(string studentId, List<DebtHistoryEntity> list);
-    public Task checkIsPaid(TransactionEntity transaction);
+    public Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction);
 }

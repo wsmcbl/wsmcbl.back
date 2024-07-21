@@ -61,7 +61,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
     
     public async Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
-        await daoFactory.debtHistoryDao!.checkIsPaid(transaction);
+        if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
+        {
+            throw new ArgumentException($"Some tariff is already paid");
+        }
+        
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
         daoFactory.transactionDao!.create(transaction);
         await daoFactory.execute();

@@ -7,7 +7,22 @@ namespace wsmcbl.tests.unit.database;
 
 public class TariffDaoPostgresTest : BaseDaoPostgresTest
 {
-    private TariffDaoPostgres? dao;
+    private TariffDaoPostgres? sut;
+
+    [Fact]
+    public async Task createList_ShouldCreateList_WhenCalled()
+    {
+        var tariff = TestEntityGenerator.aTariff();
+        context = TestDbContext.getInMemory();
+        
+        sut = new TariffDaoPostgres(context);
+        
+        sut.createList([tariff]);
+        
+        await context.SaveChangesAsync();
+        Assert.Equal(tariff, context.Set<TariffEntity>().First(e => e.tariffId == tariff.tariffId));
+    }
+    
 
     [Fact]
     public async Task getOverdueList_ReturnsList()
@@ -19,9 +34,9 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
         
-        var result = await dao.getOverdueList();
+        var result = await sut.getOverdueList();
         
         Assert.NotEmpty(result);
         Assert.Equal(list, result);
@@ -34,29 +49,27 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
         
-        var result = await dao.getOverdueList();
+        var result = await sut.getOverdueList();
         
         Assert.Empty(result);
     }
-
 
     
     [Fact]
     public async Task getListByStudent_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var debtList = entityGenerator.aDebtHistoryList("std-1");
+        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
 
-        var result = await dao.getListByStudent("std-1");
+        var result = await sut.getListByStudent("std-1");
         
         Assert.NotEmpty(result);
         Assert.Equivalent(TestEntityGenerator.aTariffList(), result);
@@ -69,9 +82,9 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
 
-        var result = await dao.getListByStudent("std-1");
+        var result = await sut.getListByStudent("std-1");
         
         Assert.Empty(result);
     }
@@ -81,17 +94,16 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getGeneralBalance_ReturnsFloatArray()
     {
-        var entityGenerator = new TestEntityGenerator();
-        var debtList = entityGenerator.aDebtHistoryList("std-1");
+        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
         
-        var result = await dao.getGeneralBalance("std-1");
+        var result = await sut.getGeneralBalance("std-1");
         
         Assert.IsType<float[]>(result);
         Assert.Equal([0,1000], result);
@@ -104,12 +116,11 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
-        dao = new TariffDaoPostgres(context);
+        sut = new TariffDaoPostgres(context);
         
-        var result = await dao.getGeneralBalance("std-1");
+        var result = await sut.getGeneralBalance("std-1");
         
         Assert.IsType<float[]>(result);
         Assert.Equal([0,0], result);
-
     }
 }

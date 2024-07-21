@@ -31,23 +31,27 @@ public class TariffDto : IBaseDto<TariffEntity>
 
         return tariff;
     }
-
-    internal static TariffDto init(TariffEntity tariff)
+    
+    public class Builder
     {
-        var dto = new TariffDto
+        private readonly TariffDto? dto;
+        public Builder(TariffEntity tariff)
         {
-            schoolYear = tariff.schoolYear,
-            concept = tariff.concept,
-            amount = tariff.amount,
-            type = tariff.type,
-            modality = tariff.modality,
-        };
+            dto = new TariffDto
+            {
+                schoolYear = tariff.schoolYear,
+                concept = tariff.concept,
+                amount = tariff.amount,
+                type = tariff.type,
+                modality = tariff.modality,
+            };
 
-        if (tariff.dueDate != null)
-        {
-            dto.dueDate = DateOnlyDto.init((DateOnly)tariff.dueDate);
+            if (tariff.dueDate != null)
+            {
+                dto.dueDate = new DateOnlyDto((DateOnly)tariff.dueDate);
+            }
         }
 
-        return dto;
+        public TariffDto build() => dto!;
     }
 }

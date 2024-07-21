@@ -24,7 +24,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getGradeList_ReturnsList()
     {
-        var gradeList = TestDtoGenerator.aGradeList();
+        var gradeList = TestDtoOutputGenerator.aGradeList();
         controller.getGradeList().Returns(gradeList);
 
         var actionResult = await actions.getGradeList();
@@ -38,7 +38,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getTeacherList_ReturnsList()
     {
-        var teacherList = TestDtoGenerator.aTeacherList();
+        var teacherList = TestDtoOutputGenerator.aTeacherList();
         controller.getTeacherList().Returns(teacherList);
 
         var actionResult = await actions.getTeacherList();
@@ -51,7 +51,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task createTariff_TariffCreated()
     {
-        var tariffDataDto = TestDtoGenerator.aTariffDataDto();
+        var tariffDataDto = TestDtoInputGenerator.aTariffDataDto();
 
         var actionResult = await actions.createTariff(tariffDataDto);
 
@@ -62,7 +62,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task createSubject_SubjectCreated()
     {
-        var subjectdDataDto = TestDtoGenerator.aSubjectDataDto();
+        var subjectdDataDto = TestDtoInputGenerator.aSubjectDataDto();
 
         var actionResult = await actions.createSubject(subjectdDataDto);
 
@@ -72,7 +72,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task createSchoolYear_SchoolyearCreated()
     {
-        var schoolyearDto = TestDtoGenerator.aSchoolYearToCreateDto();
+        var schoolyearDto = TestDtoInputGenerator.aSchoolYearToCreateDto();
 
         var actionResult = await actions.createSchoolYear(schoolyearDto);
 
@@ -93,7 +93,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getSchoolYears_ParameterNew_ReturnsNewSchoolYear()
     {
-        var schoolyear = TestDtoGenerator.aSchoolYearList()[0];
+        var schoolyear = TestDtoOutputGenerator.aSchoolYearList()[0];
         controller.getNewSchoolYearInformation().Returns(schoolyear);
 
         var actionResult = await actions.getSchoolYears("new");
@@ -106,7 +106,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getSchoolYears_ParameterAll_ReturnsList()
     {
-        var schoolyearList = TestDtoGenerator.aSchoolYearList();
+        var schoolyearList = TestDtoOutputGenerator.aSchoolYearList();
         controller.getSchoolYearList().Returns(schoolyearList);
 
         var actionResult = await actions.getSchoolYears("all");
@@ -119,7 +119,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task updateEnrollment_EnrollmentUpdate()
     {
-        var enrollmentDto = TestDtoGenerator.aEnrollmentDto();
+        var enrollmentDto = TestDtoInputGenerator.aEnrollmentDto();
         
         var actionResult = await actions.updateEnrollment(enrollmentDto);
 
@@ -129,7 +129,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task createEnrollment_EnrollmentCreated()
     {
-        var enrollmentDto = TestDtoGenerator.aEnrollmentToCreateDto();
+        var enrollmentDto = TestDtoInputGenerator.aEnrollmentToCreateDto();
         
         var actionResult = await actions.createEnrollment(enrollmentDto);
 
@@ -152,7 +152,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task saveStudent_StudentSaved()
     {
-        var studentDto = TestDtoGenerator.aStudentDto();
+        var studentDto = TestDtoInputGenerator.aStudentDto();
 
         var actionResult = await actions.saveStudent(studentDto);
 
@@ -163,8 +163,7 @@ public class CreateOfficialEnrollmentActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        var entityGenerator = new TestEntityGenerator();
-        controller.getStudentList().Returns(entityGenerator.aSecretaryStudentList());
+        controller.getStudentList().Returns(TestEntityGenerator.aSecretaryStudentList());
 
         var actionResult = await actions.getStudentList();
 

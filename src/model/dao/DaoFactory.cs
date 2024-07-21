@@ -1,7 +1,6 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
-using ISubjectDao = wsmcbl.src.model.secretary.ISubjectDao;
 
 namespace wsmcbl.src.model.dao;
 
@@ -21,8 +20,6 @@ public abstract class DaoFactory
     public virtual secretary.IStudentDao? secretaryStudentDao => null;
     public virtual IGradeDao? gradeDao => null;
     public virtual IEnrollmentDao? enrollmentDao => null;
-    public virtual ISubjectDao? subjectDao => null;
-    public virtual academy.ISubjectDao? academySubjectDao => null;
     public virtual ITeacherDao? teacherDao => null;
     public virtual ISchoolyearDao? schoolyearDao => null;
     public virtual IGradeDataDao? gradeDataDao => null;
