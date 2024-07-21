@@ -16,9 +16,6 @@ public class TestDtoGenerator
     private DetailDto? _detailDto;
     private TariffDto? _tariffDto;
     private InvoiceDto? _invoiceDto;
-    private StudentBasicDto? _studentBasicDto;
-
-    private List<StudentBasicDto>? _studentBasicDtoList;
 
     public static List<GradeEntity> aGradeList()
     {
@@ -215,7 +212,7 @@ public class TestDtoGenerator
             fullName = entity.fullName(),
             enrollmentLabel = entity.enrollmentLabel!,
             schoolyear = entity.schoolYear,
-            tutor = entity.tutor!
+            tutor = entity.tutor!,
         };
     }
     

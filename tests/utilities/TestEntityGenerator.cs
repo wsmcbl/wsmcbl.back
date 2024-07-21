@@ -4,6 +4,7 @@ using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
 
@@ -12,10 +13,8 @@ public class TestEntityGenerator
     private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
 
-    private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
-
 
     public static GradeDataEntity aGradeData()
     {
@@ -24,7 +23,7 @@ public class TestEntityGenerator
             gradeDataId = 1,
             label = "4to",
             modality = 2,
-            subjectList = []
+            subjectList = [aSubjectData()]
         };
     }
 
@@ -104,9 +103,9 @@ public class TestEntityGenerator
     }
 
 
-    private static src.model.secretary.SubjectEntity aSubject()
+    public static SubjectEntity aSubject()
     {
-        return new src.model.secretary.SubjectEntity
+        return new SubjectEntity
         {
             subjectId = "sub1",
             gradeId = "gd-1",
@@ -145,6 +144,7 @@ public class TestEntityGenerator
             studentId = studentId,
             student = aSecretaryStudent(studentId),
             discount = discountEntity,
+            discountId = 1,
             enrollmentLabel = "",
             transactions = new List<TransactionEntity>
             {
@@ -212,7 +212,9 @@ public class TestEntityGenerator
             surname = "surname-v",
             secondsurName = "ssn",
             username = "username-1",
-            password = "12345-password"
+            password = "12345-password",
+            isActive = true,
+            email = "user@mail.com"
         };
     }
 
@@ -302,7 +304,8 @@ public class TestEntityGenerator
 
     public static List<TariffTypeEntity> aTariffTypeList()
     {
-        return [
+        return
+        [
             new TariffTypeEntity
             {
                 typeId = 1,
