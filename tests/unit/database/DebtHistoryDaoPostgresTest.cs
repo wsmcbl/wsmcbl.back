@@ -29,8 +29,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getListByStudent_EmptyList()
     {
-        List<DebtHistoryEntity> list = [];
-        var debtEntities = TestDbSet<DebtHistoryEntity>.getFake(list);
+        var debtEntities = TestDbSet<DebtHistoryEntity>.getFake([]);
         context.Set<DebtHistoryEntity>().Returns(debtEntities);
         dao = new DebtHistoryDaoPostgres(context);
         

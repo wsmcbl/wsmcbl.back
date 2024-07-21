@@ -47,6 +47,7 @@ internal class SecretaryContext
 
             entity.Property(e => e.id)
                 .HasMaxLength(15)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("secretary.generate_schoolyear_id()")
                 .HasColumnName("schoolyearid");
             
