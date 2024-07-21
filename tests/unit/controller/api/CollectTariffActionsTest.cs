@@ -32,14 +32,15 @@ public class CollectTariffActionsTest
     [Fact]
     public async Task getStudentList_ReturnsList()
     {
-        controller.getStudentsList().Returns(entityGenerator.aStudentList());
+        var initList = TestEntityGenerator.aStudentList();
+        controller.getStudentsList().Returns(initList);
         
         var actionResult = await actions.getStudentList();
 
         var result = assertAndGetOkResult(actionResult);
         var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
         Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
+        Assert.Equivalent(initList.mapListTo(), list);
     }
     
     [Fact]

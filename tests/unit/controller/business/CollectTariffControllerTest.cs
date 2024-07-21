@@ -29,7 +29,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getStudentsList_ReturnsList()
     {
-        var list = entityGenerator.aStudentList();
+        var list = TestEntityGenerator.aStudentList();
         studentDao.getAll().Returns(list);
         daoFactory.studentDao.Returns(studentDao);
 

@@ -14,11 +14,10 @@ public class TestEntityGenerator
     private DebtHistoryEntity? _debtHistoryEntity;
     private TransactionEntity? _transactionEntity;
     private TransactionTariffEntity? _transactionTariffEntity;
-    
+
     private List<TariffTypeEntity>? _aTariffTypeList;
     private List<DebtHistoryEntity>? _aDebtHistoryList;
     private List<SecretaryStudentEntity>? _aSecretaryStudentList;
-
 
 
     public static GradeDataEntity aGradeData()
@@ -36,7 +35,7 @@ public class TestEntityGenerator
     {
         return new EnrollmentEntity
         {
-            enrollmentId = "en-1", 
+            enrollmentId = "en-1",
             gradeId = "gd1",
             capacity = 20,
             label = "A",
@@ -69,7 +68,7 @@ public class TestEntityGenerator
             modality = 1
         };
     }
-    
+
     public static List<GradeEntity> aGradeList()
     {
         return [aGrade("gd-10")];
@@ -87,7 +86,7 @@ public class TestEntityGenerator
             startDate = new DateOnly(2000, 12, 1)
         };
     }
-    
+
     public static List<SchoolYearEntity> aSchoolYearList()
     {
         return [aSchoolYear()];
@@ -95,7 +94,8 @@ public class TestEntityGenerator
 
     public static List<TeacherEntity> aTeacherList()
     {
-        return [
+        return
+        [
             new TeacherEntity()
             {
                 teacherId = "tc-1",
@@ -106,7 +106,7 @@ public class TestEntityGenerator
         ];
     }
 
-    
+
     private static src.model.secretary.SubjectEntity aSubject()
     {
         return new src.model.secretary.SubjectEntity
@@ -118,8 +118,8 @@ public class TestEntityGenerator
             semester = 3
         };
     }
-    
-    
+
+
     public static GradeEntity aGrade(string gradeId)
     {
         return new GradeEntity
@@ -132,7 +132,7 @@ public class TestEntityGenerator
             subjectList = [aSubject()]
         };
     }
-    
+
     public StudentEntity aStudent(string studentId)
     {
         var discountEntity = new DiscountEntity
@@ -239,7 +239,7 @@ public class TestEntityGenerator
             schoolyear = "sch001",
             isPaid = false,
             debtBalance = 10,
-            arrear = 10,    
+            arrear = 10,
             subAmount = 110,
             amount = 100
         };
@@ -256,13 +256,44 @@ public class TestEntityGenerator
         };
 
         _transactionTariffEntity.setTariff(aTariff());
-        
+
         return _transactionTariffEntity;
     }
-    
 
 
-    public List<StudentEntity> aStudentList() => [aStudent("id1"), aStudent("id2")];
+    public static List<StudentEntity> aStudentList() =>
+    [
+        //aStudent("id1")
+        new StudentEntity
+        {
+            studentId = "std-10",
+            student = aSecretaryStudent("std-10"),
+            discount = new DiscountEntity
+            {
+                discountId = 1,
+                amount = 0.1f,
+                description = "Description",
+                tag = "A"
+            },
+            enrollmentLabel = "",
+            transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity
+                {
+                    transactionId = "tst-1",
+                    cashierId = "e",
+                    date = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
+                    studentId = "std-10",
+                    total = 700,
+                    details =
+                    [
+                        new TransactionTariffEntity
+                            { amount = 2, tariffId = aTariff().tariffId, transactionId = "w" }
+                    ]
+                }
+            }
+        }
+    ];
 
     public List<SecretaryStudentEntity> aSecretaryStudentList()
         => _aSecretaryStudentList ??= [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
@@ -288,7 +319,6 @@ public class TestEntityGenerator
                 description = "description aslk"
             }
         ];
-
         return _aTariffTypeList;
     }
 
