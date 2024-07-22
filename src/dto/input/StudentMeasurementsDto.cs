@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class PhysicalDataDto : IBaseDto<StudentMeasurementsEntity>
+public class StudentMeasurementsDto : IBaseDto<StudentMeasurementsEntity>
 {
     [JsonRequired] public int height { get; set; }
     [JsonRequired] public int weight { get; set; }
