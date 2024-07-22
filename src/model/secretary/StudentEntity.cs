@@ -13,9 +13,9 @@ public class StudentEntity
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
     
-    public ContactInformationEntity contact { get; set; }
-    public PhysicalDataEntity physicalData { get; set; }
-    public StudentRecordEntity record { get; set; }
+    public StudentContactEntity studentContact { get; set; }
+    public StudentMeasurementsEntity studentMeasurements { get; set; }
+    public StudentFileEntity file { get; set; }
 
     public string fullName()
     {
@@ -99,21 +99,21 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setRecord(StudentRecordEntity record)
+        public Builder setRecord(StudentFileEntity file)
         {
-            entity.record = record;
+            entity.file = file;
             return this;
         }
 
-        public Builder setContact(ContactInformationEntity contact)
+        public Builder setContact(StudentContactEntity studentContact)
         {
-            entity.contact = contact;
+            entity.studentContact = studentContact;
             return this;
         }
 
-        public Builder setPhysicalData(PhysicalDataEntity physicalData)
+        public Builder setPhysicalData(StudentMeasurementsEntity studentMeasurements)
         {
-            entity.physicalData = physicalData;
+            entity.studentMeasurements = studentMeasurements;
             return this;
         }
     }
