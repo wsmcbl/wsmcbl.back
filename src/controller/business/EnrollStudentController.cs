@@ -4,7 +4,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory), IEnrollStudentController
+public class EnrollStudentController(DaoFactory daoFactory, IPrintDocumentsController printController) : BaseController(daoFactory), IEnrollStudentController
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
@@ -41,6 +41,6 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
-        throw new NotImplementedException();
+        return await printController.getEnrollDocument(studentId);
     }
 }
