@@ -39,82 +39,82 @@ public class StudentEntity
 
         public StudentEntity build() => entity;
 
-        public StudentEntity setId(string studentId)
+        public Builder setId(string studentId)
         {
             entity.studentId = studentId;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setName(string name)
+        public Builder setName(string name)
         {
             entity.name = name;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setSecondName(string secondName)
+        public Builder setSecondName(string secondName)
         {
             entity.secondName = secondName;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setSurname(string surname)
+        public Builder setSurname(string surname)
         {
             entity.surname = surname;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setSecondSurname(string secondSurname)
+        public Builder setSecondSurname(string secondSurname)
         {
             entity.secondSurname = secondSurname;
-            return entity;
+            return this;
         }
 
-        public StudentEntity isActive(bool isActive)
+        public Builder isActive(bool isActive)
         {
             entity.isActive = isActive;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setSchoolYear(string schoolYear)
+        public Builder setSchoolYear(string schoolYear)
         {
             entity.schoolYear = schoolYear;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setTutor(string tutor)
+        public Builder setTutor(string tutor)
         {
             entity.tutor = tutor;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setSex(bool sex)
+        public Builder setSex(bool sex)
         {
             entity.sex = sex;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setBirthday(DateOnly birthday)
+        public Builder setBirthday(DateOnly birthday)
         {
             entity.birthday = birthday;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setRecord(StudentRecordEntity record)
+        public Builder setRecord(StudentRecordEntity record)
         {
             entity.record = record;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setContact(ContactInformationEntity contact)
+        public Builder setContact(ContactInformationEntity contact)
         {
             entity.contact = contact;
-            return entity;
+            return this;
         }
 
-        public StudentEntity setPhysicalData(PhysicalDataEntity physicalData)
+        public Builder setPhysicalData(PhysicalDataEntity physicalData)
         {
             entity.physicalData = physicalData;
-            return entity;
+            return this;
         }
     }
 }
