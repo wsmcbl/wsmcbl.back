@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.output;
 
 namespace wsmcbl.src.controller.api;
 
@@ -14,7 +15,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentsList()
     {
         var result = await controller.getStudentList();
-        return Ok(result);
+        return Ok(result.mapToListBasicDto());
     }
 
     [HttpGet]
@@ -22,7 +23,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
-        return Ok(result);
+        return Ok(result.mapToDto());
     }
 
     [HttpGet]
@@ -30,7 +31,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getGradeList()
     {
         var result = await controller.getGradeList();
-        return Ok(result);
+        return Ok(result.mapToListBasicDto());
     }
 
     [HttpPut]
@@ -38,7 +39,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> saveEnroll(StudentToEnrollDto dto)
     {
         var result = await controller.saveEnroll(dto.toEntity(), dto.enrollmentId);
-        return Ok(result);
+        return Ok(result.mapToDto());
     }
 
     [HttpGet]
