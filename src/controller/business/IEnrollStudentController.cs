@@ -8,5 +8,5 @@ public interface IEnrollStudentController
     public Task<StudentEntity> getStudentById(string studentId);
     public Task<List<GradeEntity>> getGradeList();
     public Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId);
-    public Task<object> printEnrollDocument(string studentId);
+    public Task<byte[]> getEnrollDocument(string studentId);
 }
