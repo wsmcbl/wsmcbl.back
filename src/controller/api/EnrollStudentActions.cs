@@ -6,7 +6,7 @@ using wsmcbl.src.dto.output;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("secretary/registrations/")]
+[Route("secretary/enrollments/")]
 [ApiController]
 public class EnrollStudentActions(IEnrollStudentController controller) : ControllerBase
 {
