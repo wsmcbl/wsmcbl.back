@@ -137,5 +137,32 @@ internal class SecretaryContext
             entity.Property(e => e.modality).HasColumnName("modality");
             entity.Property(e => e.typeId).HasColumnName("typeid");
         });
+
+        modelBuilder.Entity<StudentFileEntity>(entity =>
+        {
+            entity.HasKey(e => e.fileId);
+
+            entity.ToTable("studentfile", "secretary");
+
+            entity.Property(e => e.fileId).HasColumnName("fileid");
+        });
+
+        modelBuilder.Entity<StudentContactEntity>(entity =>
+        {
+            entity.HasKey(e => e.contactId);
+
+            entity.ToTable("studentcontact", "secretary");
+
+            entity.Property(e => e.contactId).HasColumnName("contactid");
+        });
+
+        modelBuilder.Entity<StudentMeasurementsEntity>(entity =>
+        {
+            entity.HasKey(e => e.measurementId);
+
+            entity.ToTable("studentmeasurements", "secretary");
+
+            entity.Property(e => e.measurementId).HasColumnName("measurementid");
+        });
     }
 }
