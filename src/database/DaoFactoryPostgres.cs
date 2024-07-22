@@ -4,7 +4,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
-using IStudentDao = wsmcbl.src.model.accounting.IStudentDao;
+using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
 
 namespace wsmcbl.src.database;
 
@@ -19,14 +19,6 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         context.Entry(element).State = EntityState.Detached;
     }
-
-
-    private IStudentDao? _accountingStudentDao; 
-    public override IStudentDao studentDao => _accountingStudentDao ??= new StudentDaoPostgres(context);
-    
-    
-    private SecretaryStudentDaoPostgres? _secretaryStudentDao;
-    public override model.secretary.IStudentDao secretaryStudentDao => _secretaryStudentDao ??= new SecretaryStudentDaoPostgres(context);
     
     
     private ICashierDao? _cashierDao;
@@ -75,4 +67,17 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private ITariffDataDao? _tariffDataDao;
     public override ITariffDataDao tariffDataDao => _tariffDataDao ??= new TariffDataDaoPostgres(context);
+    
+    
+    private IStudentDao? _studentDao;
+    public override IStudentDao studentDao => _studentDao ??= new StudentDaoPostgres(context);
+
+    private model.academy.IStudentDao? _academyStudentDao;
+
+    public override model.academy.IStudentDao academyStudentDao =>
+        _academyStudentDao ??= new AcademyStudentDaoPostgres(context);
+    
+    private model.accounting.IStudentDao? _accountingStudentDao;
+    public override model.accounting.IStudentDao accountingStudentDao 
+        => _accountingStudentDao ??= new AccountingStudentDaoPostgres(context);
 }

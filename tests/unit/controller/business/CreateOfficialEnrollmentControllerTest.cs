@@ -206,7 +206,7 @@ public class CreateOfficialEnrollmentControllerTest
     {
         var studentDao = Substitute.For<src.model.secretary.IStudentDao>();
         studentDao.getAll().Returns(TestEntityGenerator.aSecretaryStudentList());
-        daoFactory.secretaryStudentDao.Returns(studentDao);
+        daoFactory.studentDao.Returns(studentDao);
 
         var result = await sut.getStudentList();
 

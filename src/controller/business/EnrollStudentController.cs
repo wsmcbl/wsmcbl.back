@@ -8,12 +8,12 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
-        return await daoFactory.secretaryStudentDao!.getAll();
+        return await daoFactory.studentDao!.getAll();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var student = await daoFactory.secretaryStudentDao!.getById(studentId);
+        var student = await daoFactory.studentDao!.getById(studentId);
 
         if (student == null)
         {
@@ -30,10 +30,10 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        daoFactory.secretaryStudentDao!.create(student);
+        daoFactory.studentDao!.create(student);
 
         var academyStudent = new model.academy.StudentEntity();
-        daoFactory.studentDao!.create(new model.accounting.StudentEntity());
+        daoFactory.accountingStudentDao!.create(new model.accounting.StudentEntity());
         await daoFactory.execute();
 
         return student;

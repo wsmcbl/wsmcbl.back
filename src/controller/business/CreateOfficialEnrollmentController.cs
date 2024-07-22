@@ -124,13 +124,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     
     public async Task<List<StudentEntity>> getStudentList()
     {
-        return await daoFactory.secretaryStudentDao!.getAll();
+        return await daoFactory.studentDao!.getAll();
     }
 
     public async Task saveStudent(StudentEntity student)
     {
         student.init();
-        daoFactory.secretaryStudentDao!.create(student);
+        daoFactory.studentDao!.create(student);
         await daoFactory.execute();
     }
 }
