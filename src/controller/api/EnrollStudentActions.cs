@@ -43,7 +43,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     }
 
     [HttpGet]
-    [Route("{studentId}")]
+    [Route("documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId);
