@@ -33,6 +33,8 @@ builder.Services.AddDbContext<PostgresContext>(options =>
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<ValidateModelFilterAttribute>();
+
+builder.Services.AddTransient<IPrintDocumentsController, PrintDocumentsController>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
