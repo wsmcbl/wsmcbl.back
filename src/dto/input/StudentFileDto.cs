@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class RecordDto : IBaseDto<StudentFileEntity>
+public class StudentFileDto : IBaseDto<StudentFileEntity>
 {
     [JsonRequired] public bool haveTransferSheet { get; set; }
     [JsonRequired] public bool haveBirthDocument { get; set; }

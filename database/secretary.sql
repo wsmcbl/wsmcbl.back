@@ -79,3 +79,18 @@ create table if not exists Secretary.TariffCatalog
     typeId int not null,
     modality int not null
 );
+
+create table if not exists Secretary.StudentFile
+(
+    fileId varchar(10) primary key 
+);
+
+create table if not exists Secretary.StudentContact
+(
+    contactId varchar(10) primary key
+);
+
+create table if not exists Secretary.StudentMeasurements
+(
+    measurementId varchar(10) primary key
+);

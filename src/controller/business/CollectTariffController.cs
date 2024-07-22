@@ -12,12 +12,12 @@ public class CollectTariffController : BaseController, ICollectTariffController
 
     public async Task<List<StudentEntity>> getStudentsList()
     {
-        return await daoFactory.studentDao!.getAll();
+        return await daoFactory.accountingStudentDao!.getAll();
     }
     
     public async Task<StudentEntity> getStudent(string studentId)
     {
-        var student = await daoFactory.studentDao!.getById(studentId);
+        var student = await daoFactory.accountingStudentDao!.getById(studentId);
 
         if (student is null)
         {

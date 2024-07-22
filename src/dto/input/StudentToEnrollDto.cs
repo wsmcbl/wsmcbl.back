@@ -19,9 +19,9 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
     [Required] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
 
-    [JsonRequired] public ContactDto contact { get; set; } = null!;
-    [JsonRequired] public RecordDto record { get; set; } = null!;
-    [JsonRequired] public PhysicalDataDto physicalData { get; set; } = null!;
+    [JsonRequired] public StudentContactDto studentContact { get; set; } = null!;
+    [JsonRequired] public StudentFileDto studentFile { get; set; } = null!;
+    [JsonRequired] public StudentMeasurementsDto studentMeasurements { get; set; } = null!;
 
     public StudentEntity toEntity()
     {
@@ -36,9 +36,9 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
             .setTutor(tutor)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
-            .setContact(contact.toEntity())
-            .setPhysicalData(physicalData.toEntity())
-            .setRecord(record.toEntity())
+            .setContact(studentContact.toEntity())
+            .setPhysicalData(studentMeasurements.toEntity())
+            .setRecord(studentFile.toEntity())
             .build();
     }
 }

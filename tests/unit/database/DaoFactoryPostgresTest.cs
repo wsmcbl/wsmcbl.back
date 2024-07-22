@@ -22,19 +22,19 @@ public class DaoFactoryPostgresTest
     [Fact]
     public void getAccountingStudentDao_ReturnsDao()
     {
-        var result = sut.studentDao;
+        var result = sut.accountingStudentDao;
 
         Assert.NotNull(result);
-        Assert.IsType<StudentDaoPostgres>(result);
+        Assert.IsType<AccountingStudentDaoPostgres>(result);
     }
     
     [Fact]
     public void getSecretaryStudentDao_ReturnsDao()
     {
-        var result = sut.secretaryStudentDao;
+        var result = sut.studentDao;
 
         Assert.NotNull(result);
-        Assert.IsType<SecretaryStudentDaoPostgres>(result);
+        Assert.IsType<StudentDaoPostgres>(result);
     }
 
 

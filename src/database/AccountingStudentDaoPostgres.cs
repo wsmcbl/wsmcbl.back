@@ -5,7 +5,7 @@ using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
     public new async Task<List<StudentEntity>> getAll()
     {
