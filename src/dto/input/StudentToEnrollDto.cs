@@ -19,10 +19,13 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
     [Required] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
 
+    [JsonRequired] public ContactDto contact { get; set; } = null!;
+    [JsonRequired] public RecordDto record { get; set; } = null!;
+    [JsonRequired] public PhysicalDataDto physicalData { get; set; } = null!;
+
     public StudentEntity toEntity()
     {
-        return new StudentEntity
-            .Builder()
+        return new StudentEntity.Builder()
             .setId(studentId)
             .setName(name)
             .setSecondName(secondName)
@@ -33,6 +36,9 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
             .setTutor(tutor)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
+            .setContact(contact.toEntity())
+            .setPhysicalData(physicalData.toEntity())
+            .setRecord(record.toEntity())
             .build();
     }
 }
