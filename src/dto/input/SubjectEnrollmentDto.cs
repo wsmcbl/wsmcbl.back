@@ -3,7 +3,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.input;
 
-public class SubjectEnrollDto
+public class SubjectEnrollmentDto
 {
     [Required] public string subjectId { get; set; } = null!;
     [Required] public string teacherId { get; set; } = null!;
