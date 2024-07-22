@@ -16,9 +16,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectEnrollDto aSubjectEnrollDto()
+    public static SubjectEnrollmentDto aSubjectEnrollDto()
     {
-        return new SubjectEnrollDto
+        return new SubjectEnrollmentDto
         {
             subjectId = "sub001",
             teacherId = "tch001"

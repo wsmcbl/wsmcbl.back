@@ -2,7 +2,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
 
-public class SubjectEnrollDtoTest
+public class SubjectEnrollmentDtoTest
 {
     [Fact]
     public void toEntity_ShouldReturnSubjectEntity_WhenCalled()
