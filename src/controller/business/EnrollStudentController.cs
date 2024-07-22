@@ -33,7 +33,13 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         daoFactory.studentDao!.create(student);
         await daoFactory.execute();
 
-        var academyStudent = new model.academy.StudentEntity();
+        var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+        var academyStudent = new model.academy.StudentEntity
+            .Builder(student.studentId!, enrollmentId)
+            .setSchoolyear(schoolYear.id!)
+            .isNewEnroll()
+            .build();
+        
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 
