@@ -107,15 +107,14 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 {
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
-        var year = getYear();
-
-        var schoolYearEntity = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
+        var schoolYearEntity = await getCurrentSchoolYear();
 
         if (schoolYearEntity != null)
         {
             return schoolYearEntity;
         }
         
+        var year = getYear();
         schoolYearEntity = new SchoolYearEntity
         {
             label = year.ToString(),
@@ -129,6 +128,11 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 
         return schoolYearEntity;
     }
-    
+
+    public async Task<SchoolYearEntity?> getCurrentSchoolYear()
+    {
+        return await entities.FirstOrDefaultAsync(e => e.label == getYear().ToString());
+    }
+
     private static int getYear() => DateTime.Today.Month > 4 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
 }
