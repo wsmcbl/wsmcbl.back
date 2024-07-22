@@ -13,9 +13,9 @@ public class StudentEntity
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
     
-    public StudentContactEntity studentContact { get; set; }
-    public StudentMeasurementsEntity studentMeasurements { get; set; }
-    public StudentFileEntity file { get; set; }
+    public StudentContactEntity? contact { get; set; }
+    public StudentMeasurementsEntity? measurements { get; set; }
+    public StudentFileEntity? file { get; set; }
 
     public string fullName()
     {
@@ -107,13 +107,13 @@ public class StudentEntity
 
         public Builder setContact(StudentContactEntity studentContact)
         {
-            entity.studentContact = studentContact;
+            entity.contact = studentContact;
             return this;
         }
 
         public Builder setPhysicalData(StudentMeasurementsEntity studentMeasurements)
         {
-            entity.studentMeasurements = studentMeasurements;
+            entity.measurements = studentMeasurements;
             return this;
         }
     }
