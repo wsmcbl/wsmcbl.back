@@ -21,6 +21,18 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
 
     public StudentEntity toEntity()
     {
-        return new StudentEntity();
+        return new StudentEntity
+            .Builder()
+            .setId(studentId)
+            .setName(name)
+            .setSecondName(secondName)
+            .setSurname(surname)
+            .setSecondSurname(secondSurname)
+            .isActive(isActive)
+            .setSchoolYear(schoolYear)
+            .setTutor(tutor)
+            .setSex(sex)
+            .setBirthday(birthday.toEntity())
+            .build();
     }
 }
