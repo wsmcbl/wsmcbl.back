@@ -6,6 +6,7 @@ using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using ISubjectDao = wsmcbl.src.model.secretary.ISubjectDao;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
@@ -63,7 +64,13 @@ public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
     
 public class SecretaryStudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao;
+    : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao
+{
+    public async Task<List<StudentEntity>> getAllWithSolvency()
+    {
+        throw new NotImplementedException();
+    }
+}
 
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
@@ -109,6 +116,11 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
         {
             create(grade);
         }
+    }
+
+    public async Task<List<GradeEntity>> getAllForTheCurrentSchoolyear()
+    {
+        throw new NotImplementedException();
     }
 }
 

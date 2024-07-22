@@ -16,8 +16,9 @@ public abstract class DaoFactory
     public virtual ITransactionDao? transactionDao => null;
     public virtual ITariffTypeDao? tariffTypeDao => null;
     public virtual IDebtHistoryDao? debtHistoryDao => null;
-    public virtual accounting.IStudentDao? studentDao => null;
     public virtual secretary.IStudentDao? secretaryStudentDao => null;
+    public virtual academy.IStudentDao? academyStudentDao => null;
+    public virtual accounting.IStudentDao? studentDao => null;
     public virtual IGradeDao? gradeDao => null;
     public virtual IEnrollmentDao? enrollmentDao => null;
     public virtual ITeacherDao? teacherDao => null;
