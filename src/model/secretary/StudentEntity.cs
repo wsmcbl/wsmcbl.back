@@ -51,7 +51,7 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setSecondName(string secondName)
+        public Builder setSecondName(string? secondName)
         {
             entity.secondName = secondName;
             return this;
@@ -63,7 +63,7 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setSecondSurname(string secondSurname)
+        public Builder setSecondSurname(string? secondSurname)
         {
             entity.secondSurname = secondSurname;
             return this;
