@@ -204,9 +204,9 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getStudentList()
     {
-        var studentDao = Substitute.For<IStudentDao>();
+        var studentDao = Substitute.For<src.model.secretary.IStudentDao>();
         studentDao.getAll().Returns(TestEntityGenerator.aSecretaryStudentList());
-        daoFactory.secretaryStudentDao.Returns(studentDao);
+        daoFactory.studentDao.Returns(studentDao);
 
         var result = await sut.getStudentList();
 

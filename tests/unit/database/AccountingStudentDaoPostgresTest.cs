@@ -5,9 +5,9 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.database;
 
-public class StudentDaoPostgresTest : BaseDaoPostgresTest
+public class AccountingStudentDaoPostgresTest : BaseDaoPostgresTest
 {
-    private StudentDaoPostgres? dao;
+    private AccountingStudentDaoPostgres? dao;
 
     [Fact]
     public async Task getStudentList_ReturnsList()
@@ -18,7 +18,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         context.Set<StudentEntity>().AddRange(list);
         await context.SaveChangesAsync();
         
-        dao = new StudentDaoPostgres(context);
+        dao = new AccountingStudentDaoPostgres(context);
 
         var result = await dao.getAll();
 
@@ -31,7 +31,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     {
         var entities = TestDbSet<StudentEntity>.getFake([]);
         context.Set<StudentEntity>().Returns(entities);
-        dao = new StudentDaoPostgres(context);
+        dao = new AccountingStudentDaoPostgres(context);
 
         var result = await dao.getAll();
 
@@ -50,7 +50,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         await context.Set<TariffEntity>().AddAsync(tariff);
         await context.SaveChangesAsync();
 
-        dao = new StudentDaoPostgres(context);
+        dao = new AccountingStudentDaoPostgres(context);
 
         var result = await dao.getById("std-1");
 
@@ -63,7 +63,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     {
         context = TestDbContext.getInMemory();
 
-        dao = new StudentDaoPostgres(context);
+        dao = new AccountingStudentDaoPostgres(context);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => dao.getById("std-1"));
     }
