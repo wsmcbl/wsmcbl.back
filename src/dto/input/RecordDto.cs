@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class RecordDto : IBaseDto<StudentRecordEntity>
+public class RecordDto : IBaseDto<StudentFileEntity>
 {
     [JsonRequired] public bool haveTransferSheet { get; set; }
     [JsonRequired] public bool haveBirthDocument { get; set; }
@@ -12,8 +12,8 @@ public class RecordDto : IBaseDto<StudentRecordEntity>
     [JsonRequired] public bool haveConductDocument { get; set; }
     [JsonRequired] public bool haveFinancialSolvency { get; set; }
     
-    public StudentRecordEntity toEntity()
+    public StudentFileEntity toEntity()
     {
-        return new StudentRecordEntity();
+        return new StudentFileEntity();
     }
 }
