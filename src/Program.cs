@@ -35,6 +35,7 @@ builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<ValidateModelFilterAttribute>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
+builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
 
 var app = builder.Build();
 
