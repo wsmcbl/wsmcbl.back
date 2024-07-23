@@ -1,5 +1,3 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.database;
@@ -20,9 +18,7 @@ builder.Services.AddControllers(options =>
     }
 });
 
-builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
+builder.Services.AddFluentValidationConfig();
 
 builder.Services.AddEndpointsApiExplorer();
 

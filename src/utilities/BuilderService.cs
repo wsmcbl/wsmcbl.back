@@ -1,3 +1,7 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using wsmcbl.src.middleware.filter;
+
 namespace wsmcbl.src.utilities;
 
 public static class BuilderService
@@ -7,5 +11,13 @@ public static class BuilderService
         return builder.Environment.IsDevelopment()
             ? builder.Configuration.GetConnectionString("PostgresConnectionString.Test")
             : builder.Configuration.GetConnectionString("PostgresConnectionString");
+    }
+
+    public static void AddFluentValidationConfig(this IServiceCollection Services)
+    {
+        Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+        
+        Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
     }
 }
