@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  back:
+    build:
+      context: .
+      dockerfile: tests/config/dotnet/Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=mydb;User Id=myuser;Password=mypassword;
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: tests/config/postgres/Dockerfile
+    ports:
+      - "5432:5432"

@@ -28,8 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerDocumentation();
 
-builder.Services.AddDbContext<PostgresContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
+builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(builder.getConnectionString()));
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<ValidateModelFilterAttribute>();
