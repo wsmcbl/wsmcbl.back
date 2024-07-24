@@ -34,3 +34,17 @@ dn-ss: ## dotnet sonarscanner
 	dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true
+
+
+run: ## Start the containers
+	docker network create network-test || true
+	docker-compose up -d
+
+stop: ## Stop the containers
+	docker-compose stop
+
+restart: ## Restart the containers
+	$(MAKE) stop && $(MAKE) run
+
+build: ## Rebuilds all the containers
+	docker-compose build

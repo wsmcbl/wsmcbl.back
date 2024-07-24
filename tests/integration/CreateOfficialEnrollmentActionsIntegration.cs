@@ -15,4 +15,5 @@ public class CreateOfficialEnrollmentActionsIntegration
 
         Assert.NotNull(result);
     }
+
 }

@@ -5,28 +5,32 @@ services:
     container_name: wsmcbl.api
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: tests/config/dotnet/Dockerfile
     ports:
       - "5000:80"
       - "5001:443"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=mydb;User Id=myuser;Password=mypassword;
       - ASPNETCORE_ENVIRONMENT=Test
+      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=mydb;User Id=myuser;Password=mypassword;
     depends_on:
       - db
     networks:
       - network-test
-    command: ["sh", "-c", "dotnet ef database update && dotnet wsmcbl.src.dll"]
 
   db:
     container_name: database
     build:
       context: .
-      dockerfile: postgres/Dockerfile
+      dockerfile: tests/config/postgres/Dockerfile
     ports:
       - "5432:5432"
     networks:
       - network-test
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
     
     
 networks:
