@@ -2,11 +2,11 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentMeasurementsEntity
 {
-    public string Measurementid { get; set; } = null!;
+    public string measurementId { get; set; } = null!;
 
-    public string Studentid { get; set; } = null!;
+    public string studentId { get; set; } = null!;
 
-    public double Weight { get; set; }
+    public double weight { get; set; }
 
-    public int Height { get; set; }
+    public int height { get; set; }
 }

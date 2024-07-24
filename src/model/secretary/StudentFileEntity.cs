@@ -2,19 +2,19 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentFileEntity
 {
-    public string Fileid { get; set; } = null!;
+    public string fileId { get; set; } = null!;
 
-    public string Studentid { get; set; } = null!;
+    public string studentId { get; set; } = null!;
 
-    public bool Transfersheet { get; set; }
+    public bool transferSheet { get; set; }
 
-    public bool Birthdocument { get; set; }
+    public bool birthDocument { get; set; }
 
-    public bool Parentidentifier { get; set; }
+    public bool parentIdentifier { get; set; }
 
-    public bool Updatedgradereport { get; set; }
+    public bool updatedGradeReport { get; set; }
 
-    public bool Conductdocument { get; set; }
+    public bool conductDocument { get; set; }
 
-    public bool Financialsolvency { get; set; }
+    public bool financialSolvency { get; set; }
 }

@@ -2,19 +2,19 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentParentEntity
 {
-    public string Parentid { get; set; } = null!;
+    public string parentId { get; set; } = null!;
 
-    public string Studentid { get; set; } = null!;
+    public string studentId { get; set; } = null!;
 
-    public bool Type { get; set; }
+    public bool type { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string name { get; set; } = null!;
 
-    public string Address { get; set; } = null!;
+    public string address { get; set; } = null!;
 
-    public string? Idcard { get; set; }
+    public string? idCard { get; set; }
 
-    public string? Phone { get; set; }
+    public string? phone { get; set; }
 
-    public string? Occupation { get; set; }
+    public string? occupation { get; set; }
 }
