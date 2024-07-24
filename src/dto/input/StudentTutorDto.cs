@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class StudentContactDto : IBaseDto<StudentTutorEntity>
+public class StudentTutorDto : IBaseDto<StudentTutorEntity>
 {
     [Required] public string name { get; set; }
     [Required] public string number { get; set; }
