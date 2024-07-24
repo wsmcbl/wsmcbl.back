@@ -1,6 +1,6 @@
 namespace wsmcbl.src.utilities;
 
-public class TestProgram : Program
+public class PublicProgram : Program
 {
     
 }

@@ -3,11 +3,11 @@ using wsmcbl.src.utilities;
 
 namespace wsmcbl.tests.integration;
 
-public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<TestProgram>>
+public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<PublicProgram>>
 {
     private readonly HttpClient _client;
 
-    public ApiIntegrationTests(WebApplicationFactory<TestProgram> factory)
+    public ApiIntegrationTests(WebApplicationFactory<PublicProgram> factory)
     {
         _client = factory.CreateClient();
     }
