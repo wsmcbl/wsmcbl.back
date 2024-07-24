@@ -50,7 +50,7 @@ internal class SecretaryContext
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("secretary.generate_schoolyear_id()")
                 .HasColumnName("schoolyearid");
-            
+
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(100).HasColumnName("label");
@@ -90,7 +90,7 @@ internal class SecretaryContext
                 .HasMaxLength(15)
                 .HasDefaultValueSql("secretary.generate_subject_id()")
                 .HasColumnName("subjectid");
-            
+
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
@@ -106,7 +106,7 @@ internal class SecretaryContext
             entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
             entity.Property(e => e.label).HasMaxLength(50).HasColumnName("gradelabel");
             entity.Property(e => e.modality).HasColumnName("modality");
-            
+
             entity.HasMany(e => e.subjectList).WithOne()
                 .HasForeignKey(d => d.gradeDataId);
         });
@@ -140,29 +140,88 @@ internal class SecretaryContext
 
         modelBuilder.Entity<StudentFileEntity>(entity =>
         {
-            entity.HasKey(e => e.fileId);
+            entity.HasKey(e => e.Fileid).HasName("studentfile_pkey");
 
             entity.ToTable("studentfile", "secretary");
 
-            entity.Property(e => e.fileId).HasColumnName("fileid");
-        });
-
-        modelBuilder.Entity<StudentTutorEntity>(entity =>
-        {
-            entity.HasKey(e => e.contactId);
-
-            entity.ToTable("studentcontact", "secretary");
-
-            entity.Property(e => e.contactId).HasColumnName("contactid");
+            entity.Property(e => e.Fileid)
+                .HasMaxLength(10)
+                .HasColumnName("fileid");
+            entity.Property(e => e.Birthdocument).HasColumnName("birthdocument");
+            entity.Property(e => e.Conductdocument).HasColumnName("conductdocument");
+            entity.Property(e => e.Financialsolvency).HasColumnName("financialsolvency");
+            entity.Property(e => e.Parentidentifier).HasColumnName("parentidentifier");
+            entity.Property(e => e.Studentid)
+                .HasMaxLength(15)
+                .HasColumnName("studentid");
+            entity.Property(e => e.Transfersheet).HasColumnName("transfersheet");
+            entity.Property(e => e.Updatedgradereport).HasColumnName("updatedgradereport");
         });
 
         modelBuilder.Entity<StudentMeasurementsEntity>(entity =>
         {
-            entity.HasKey(e => e.measurementId);
+            entity.HasKey(e => e.Measurementid).HasName("studentmeasurements_pkey");
 
             entity.ToTable("studentmeasurements", "secretary");
 
-            entity.Property(e => e.measurementId).HasColumnName("measurementid");
+            entity.Property(e => e.Measurementid)
+                .HasMaxLength(10)
+                .HasColumnName("measurementid");
+            entity.Property(e => e.Height).HasColumnName("height");
+            entity.Property(e => e.Studentid)
+                .HasMaxLength(15)
+                .HasColumnName("studentid");
+            entity.Property(e => e.Weight).HasColumnName("weight");
+        });
+
+        modelBuilder.Entity<StudentParentEntity>(entity =>
+        {
+            entity.HasKey(e => e.Parentid).HasName("studentparent_pkey");
+
+            entity.ToTable("studentparent", "secretary");
+
+            entity.Property(e => e.Parentid)
+                .HasMaxLength(15)
+                .HasColumnName("parentid");
+            entity.Property(e => e.Address)
+                .HasMaxLength(100)
+                .HasColumnName("address");
+            entity.Property(e => e.Idcard)
+                .HasMaxLength(15)
+                .HasColumnName("idcard");
+            entity.Property(e => e.Name)
+                .HasMaxLength(70)
+                .HasColumnName("name");
+            entity.Property(e => e.Occupation)
+                .HasMaxLength(30)
+                .HasColumnName("occupation");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(12)
+                .HasColumnName("phone");
+            entity.Property(e => e.Studentid)
+                .HasMaxLength(15)
+                .HasColumnName("studentid");
+            entity.Property(e => e.Type).HasColumnName("type");
+        });
+
+        modelBuilder.Entity<StudentTutorEntity>(entity =>
+        {
+            entity.HasKey(e => e.Tutorid).HasName("studenttutor_pkey");
+
+            entity.ToTable("studenttutor", "secretary");
+
+            entity.Property(e => e.Tutorid)
+                .HasMaxLength(15)
+                .HasColumnName("tutorid");
+            entity.Property(e => e.Name)
+                .HasMaxLength(70)
+                .HasColumnName("name");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(12)
+                .HasColumnName("phone");
+            entity.Property(e => e.Studentid)
+                .HasMaxLength(15)
+                .HasColumnName("studentid");
         });
     }
 }
