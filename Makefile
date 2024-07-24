@@ -29,8 +29,22 @@ git-master: ## make master branch
 	git branch master 
 
 dn-ss: ## dotnet sonarscanner
-	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, **/Test*.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, **/Test*.cs, PublicProgram.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 	dotnet build --no-incremental
 	dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true
+
+
+run: ## Start the containers
+	docker network create network-test || true
+	docker-compose up -d
+
+stop: ## Stop the containers
+	docker-compose stop
+
+restart: ## Restart the containers
+	$(MAKE) stop && $(MAKE) run
+
+build: ## Rebuilds all the containers
+	docker-compose build
