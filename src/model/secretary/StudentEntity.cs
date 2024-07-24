@@ -13,7 +13,7 @@ public class StudentEntity
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
     
-    public StudentContactEntity? contact { get; set; }
+    public StudentTutorEntity? contact { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
     public StudentFileEntity? file { get; set; }
 
@@ -105,9 +105,9 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setContact(StudentContactEntity studentContact)
+        public Builder setContact(StudentTutorEntity studentTutor)
         {
-            entity.contact = studentContact;
+            entity.contact = studentTutor;
             return this;
         }
 
