@@ -1,4 +1,4 @@
-namespace wsmcbl.src;
+namespace wsmcbl.src.utilities;
 
 public class TestProgram : Program
 {

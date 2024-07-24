@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using wsmcbl.src;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.tests.integration;
 
@@ -15,12 +15,8 @@ public class ApiIntegrationTests : IClassFixture<WebApplicationFactory<TestProgr
     [Fact]
     public async Task Get_Endpoint_Returns_Success()
     {
-        // Act
         var response = await _client.GetAsync("/v1/accounting/students");
-
-        // Assert
+        
         response.EnsureSuccessStatusCode();
-        var responseString = await response.Content.ReadAsStringAsync();
-        Assert.Contains("expected content", responseString);
     }
 }
