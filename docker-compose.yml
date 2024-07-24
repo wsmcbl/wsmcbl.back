@@ -1,22 +1,6 @@
 version: '3.8'
 
 services:
-  api:
-    container_name: wsmcbl.api
-    build:
-      context: .
-      dockerfile: tests/config/dotnet/Dockerfile
-    ports:
-      - "5000:80"
-      - "5001:443"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__DefaultConnection=Server=db;Port=5432;Database=mydb;User Id=myuser;Password=mypassword;
-    depends_on:
-      - db
-    networks:
-      - network-test
-
   db:
     container_name: database
     build:
