@@ -33,12 +33,11 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
             .setSecondSurname(secondSurname)
             .isActive(isActive)
             .setSchoolYear(schoolYear)
-            .setTutor(tutor)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
-            .setContact(studentTutor.toEntity())
-            .setPhysicalData(studentMeasurements.toEntity())
-            .setRecord(studentFile.toEntity())
+            .setTutor(studentTutor.toEntity())
+            .setMeasurements(studentMeasurements.toEntity())
+            .setFile(studentFile.toEntity())
             .build();
     }
 }
