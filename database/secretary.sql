@@ -80,17 +80,47 @@ create table if not exists Secretary.TariffCatalog
     modality int not null
 );
 
-create table if not exists Secretary.StudentFile
+create table if not exists Secretary.StudentParent
 (
-    fileId varchar(10) primary key 
+    parentId varchar(15) not null primary key,
+    studentId varchar(15) not null,
+    type bool not null,
+    name varchar(70) not null,
+    address varchar(100) not null,
+    idCard varchar(15),
+    phone varchar(12),
+    occupation varchar(30),
+    foreign key (studentId) references Secretary.Student
 );
 
-create table if not exists Secretary.StudentContact
+create table if not exists Secretary.StudentTutor
 (
-    contactId varchar(10) primary key
+    tutorId varchar(15) not null primary key,
+    studentId varchar(15) not null,
+    name varchar(70) not null,
+    phone varchar(12) not null,
+    foreign key (studentId) references Secretary.Student
+);
+
+
+create table if not exists Secretary.StudentFile
+(
+    fileId varchar(10) primary key,
+    studentId varchar(15) not null,
+    transferSheet boolean not null,
+    birthDocument boolean not null,
+    parentIdentifier boolean not null,
+    updatedGradeReport boolean not null,
+    conductDocument boolean not null,
+    financialSolvency boolean not null,
+    foreign key (studentId) references Secretary.Student
 );
 
 create table if not exists Secretary.StudentMeasurements
 (
-    measurementId varchar(10) primary key
+    measurementId varchar(10) primary key,
+    studentId varchar(15) not null,
+    weight float not null,
+    height int not null,
+    foreign key (studentId) references Secretary.Student
 );
