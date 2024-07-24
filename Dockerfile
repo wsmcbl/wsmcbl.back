@@ -3,11 +3,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Copia el archivo de proyecto y restaura las dependencias
-COPY ../../../src/*.csproj .
+COPY src/*.csproj .
 RUN dotnet restore
+RUN dotnet build -c Release -o out
 
 # Copia el resto de los archivos y compila la aplicación
-COPY ../../../src/. .
+COPY src/. .
 RUN dotnet publish -c Release -o out
 
 # Usa la imagen de runtime de .NET para ejecutar la aplicación
