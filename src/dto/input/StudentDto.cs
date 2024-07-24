@@ -22,8 +22,7 @@ public class StudentDto : IBaseDto<StudentEntity>
             surname = surname,
             secondSurname = secondSurname,
             sex = sex,
-            birthday = birthday.toEntity(),
-            tutor = tutor
+            birthday = birthday.toEntity()
         };
     }
 }
