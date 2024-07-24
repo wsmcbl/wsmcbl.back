@@ -147,7 +147,7 @@ internal class SecretaryContext
             entity.Property(e => e.fileId).HasColumnName("fileid");
         });
 
-        modelBuilder.Entity<StudentContactEntity>(entity =>
+        modelBuilder.Entity<StudentTutorEntity>(entity =>
         {
             entity.HasKey(e => e.contactId);
 
