@@ -7,5 +7,7 @@ bin/
 obj/
 src/Properties/
 
+Migrations/
+
 *.user
 coverage.xml

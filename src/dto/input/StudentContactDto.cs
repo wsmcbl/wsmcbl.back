@@ -3,13 +3,13 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class StudentContactDto : IBaseDto<StudentContactEntity>
+public class StudentContactDto : IBaseDto<StudentTutorEntity>
 {
     [Required] public string name { get; set; }
     [Required] public string number { get; set; }
     
-    public StudentContactEntity toEntity()
+    public StudentTutorEntity toEntity()
     {
-        return new StudentContactEntity();
+        return new StudentTutorEntity();
     }
 }
