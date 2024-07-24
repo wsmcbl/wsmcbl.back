@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using wsmcbl.src.database;
 using wsmcbl.src.model.config;
 using wsmcbl.tests.utilities;

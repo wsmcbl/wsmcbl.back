@@ -167,7 +167,6 @@ public class TestEntityGenerator
             secondName = "sn",
             surname = "surname-v",
             secondSurname = "ssn",
-            tutor = "tutor1",
             schoolYear = "2024"
         };
     }
