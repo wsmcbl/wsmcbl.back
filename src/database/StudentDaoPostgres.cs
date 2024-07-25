@@ -1,12 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
 public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
+    public async Task update(StudentEntity entity, DaoFactory daoFactory)
+    {
+        var existingStudent = await getById(entity.studentId!);
+
+        existingStudent!.updateData(entity);
+        base.update(existingStudent);
+
+        var file = entity.file;
+        var existingFile = await daoFactory.studentFileDao.getById(file.fileId);
+    }
+
     public new async Task<StudentEntity?> getById(string id)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.studentId == id);

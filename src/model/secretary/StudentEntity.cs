@@ -31,6 +31,19 @@ public class StudentEntity
         schoolYear = "";
     }
     
+    public void updateData(StudentEntity entity)
+    {
+        name = entity.name;
+        secondName = entity.secondName;
+        surname = entity.surname;
+        secondSurname = entity.secondSurname;
+        isActive = entity.isActive;
+        sex = entity.sex;
+        birthday = entity.birthday;
+        religion = entity.religion;
+        diseases = entity.diseases;
+    }
+    
     public class Builder
     {
         private readonly StudentEntity entity;

@@ -5,6 +5,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -21,6 +22,18 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao;
+
+public class StudentFileDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentFileEntity, string>(context), IStudentFileDao;
+
+public class StudentTutorDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao;
+
+public class StudentParentDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentParentEntity, string>(context), IStudentParentDao;
+
+public class StudentMeasurementsDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentMeasurementsEntity, string>(context), IStudentMeasurementsDao;
 
 
 
