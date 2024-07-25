@@ -13,6 +13,8 @@ public class DateOnlyDto : IBaseDto<DateOnly>
         return new DateOnly(year, month, day);
     }
 
+    public DateOnlyDto(){}
+
     public DateOnlyDto(int year, int month, int day)
     {
         this.year = year;

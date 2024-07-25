@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using wsmcbl.src.database.context;
 
 namespace wsmcbl.tests.unit.database;

@@ -10,6 +10,6 @@ public class StudentMeasurementsDto : IBaseDto<StudentMeasurementsEntity>
     
     public StudentMeasurementsEntity toEntity()
     {
-        return new StudentMeasurementsEntity();
+        return new StudentMeasurementsEntity(weight, height);
     }
 }
