@@ -13,7 +13,7 @@ public class StudentEntity
     
     public string fullName() => student.fullName();
     public string schoolYear => student.schoolYear;
-    public string? tutor => student.tutor;
+    public string? tutor => "";
     public bool isActive => student.isActive;
 
     public float getDiscount()

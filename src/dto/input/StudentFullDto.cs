@@ -4,10 +4,8 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.input;
 
-public class StudentToEnrollDto : IBaseDto<StudentEntity>
+public class StudentFullDto : IBaseDto<StudentEntity>
 {
-    [Required] public string enrollmentId { get; set; } = null!;
-
     [Required] public string studentId { get; set; } = null!;
     [Required] public string name { get; set; } = null!;
     [Required] public string? secondName { get; set; }
@@ -15,13 +13,16 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
     [Required] public string? secondSurname { get; set; }
     [JsonRequired] public bool isActive { get; set; }
     [Required] public string schoolYear { get; set; } = null!;
-    [Required] public string tutor { get; set; } = null!;
     [Required] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
+    [Required] public string religion { get; set; }
+    [Required] public string diseases { get; set; } 
 
-    [JsonRequired] public StudentContactDto studentContact { get; set; } = null!;
-    [JsonRequired] public StudentFileDto studentFile { get; set; } = null!;
-    [JsonRequired] public StudentMeasurementsDto studentMeasurements { get; set; } = null!;
+
+    [JsonRequired] public List<StudentParentDto> parents { get; set; }
+    [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
+    [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
+    [JsonRequired] public StudentFileDto file { get; set; } = null!;
 
     public StudentEntity toEntity()
     {
@@ -33,12 +34,14 @@ public class StudentToEnrollDto : IBaseDto<StudentEntity>
             .setSecondSurname(secondSurname)
             .isActive(isActive)
             .setSchoolYear(schoolYear)
-            .setTutor(tutor)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
-            .setContact(studentContact.toEntity())
-            .setPhysicalData(studentMeasurements.toEntity())
-            .setRecord(studentFile.toEntity())
+            .setDiseases(diseases)
+            .setReligion(religion)
+            .setMeasurements(measurements.toEntity())
+            .setParents(parents.toEntity())
+            .setTutor(tutor.toEntity())
+            .setFile(file.toEntity())
             .build();
     }
 }

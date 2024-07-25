@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.accounting;
@@ -14,27 +15,26 @@ public class DaoFactoryPostgresTest
 
     public DaoFactoryPostgresTest()
     {
-        context = Substitute
-            .For<PostgresContext>(new DbContextOptions<PostgresContext>());
+        context = Substitute.For<PostgresContext>(new DbContextOptions<PostgresContext>());
         sut = new DaoFactoryPostgres(context);
     }
 
     [Fact]
     public void getAccountingStudentDao_ReturnsDao()
     {
-        var result = sut.studentDao;
+        var result = sut.accountingStudentDao;
 
         Assert.NotNull(result);
-        Assert.IsType<StudentDaoPostgres>(result);
+        Assert.IsType<AccountingStudentDaoPostgres>(result);
     }
     
     [Fact]
     public void getSecretaryStudentDao_ReturnsDao()
     {
-        var result = sut.secretaryStudentDao;
+        var result = sut.studentDao;
 
         Assert.NotNull(result);
-        Assert.IsType<SecretaryStudentDaoPostgres>(result);
+        Assert.IsType<StudentDaoPostgres>(result);
     }
 
 

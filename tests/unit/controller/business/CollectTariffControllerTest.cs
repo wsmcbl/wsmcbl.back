@@ -1,3 +1,4 @@
+using NSubstitute;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
@@ -28,7 +29,7 @@ public class CollectTariffControllerTest
     {
         var list = TestEntityGenerator.aStudentList();
         studentDao.getAll().Returns(list);
-        daoFactory.studentDao.Returns(studentDao);
+        daoFactory.accountingStudentDao.Returns(studentDao);
 
         var result = await controller.getStudentsList();
 
@@ -41,7 +42,7 @@ public class CollectTariffControllerTest
     public async Task getStudentsList_EmptyList()
     {
         studentDao.getAll().Returns([]);
-        daoFactory.studentDao.Returns(studentDao);
+        daoFactory.accountingStudentDao.Returns(studentDao);
 
         var result = await controller.getStudentsList();
 
@@ -55,7 +56,7 @@ public class CollectTariffControllerTest
     {
         const string studentId = "std";
         studentDao.getById(studentId).Returns(TestEntityGenerator.aStudent(studentId));
-        daoFactory.studentDao.Returns(studentDao);
+        daoFactory.accountingStudentDao.Returns(studentDao);
 
         var result = await controller.getStudent(studentId);
 
@@ -69,7 +70,7 @@ public class CollectTariffControllerTest
     {
         const string studentId = "std";
         studentDao.getById(studentId).Returns(Task.FromResult<StudentEntity?>(null));
-        daoFactory.studentDao.Returns(studentDao);
+        daoFactory.accountingStudentDao.Returns(studentDao);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getStudent(studentId));
     }

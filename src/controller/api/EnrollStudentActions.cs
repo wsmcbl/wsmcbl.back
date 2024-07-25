@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
+using StudentFullDto = wsmcbl.src.dto.input.StudentFullDto;
 
 namespace wsmcbl.src.controller.api;
 
@@ -36,17 +37,17 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
 
     [HttpPut]
     [Route("")]
-    public async Task<IActionResult> saveEnroll(StudentToEnrollDto dto)
+    public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
-        var result = await controller.saveEnroll(dto.toEntity(), dto.enrollmentId);
+        var result = await controller.saveEnroll(dto.student.toEntity(), dto.enrollmentId);
         return Ok(result.mapToDto());
     }
 
     [HttpGet]
-    [Route("{studentId}")]
-    public async Task<IActionResult> printEnrollDocument([Required] string studentId)
+    [Route("documents/{studentId}")]
+    public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
-        var result = await controller.printEnrollDocument(studentId);
-        return Ok(result);
+        var result = await controller.getEnrollDocument(studentId);
+        return Ok(File(result, "a.pdf"));
     }
 }

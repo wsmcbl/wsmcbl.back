@@ -1,4 +1,4 @@
-
+using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -8,26 +8,47 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
-        throw new NotImplementedException();
+        return await daoFactory.studentDao!.getAll();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        throw new NotImplementedException();
+        var student = await daoFactory.studentDao!.getById(studentId);
+
+        if (student == null)
+        {
+            throw new EntityNotFoundException("Secretary Student", studentId);
+        }
+
+        return student;
     }
 
     public async Task<List<GradeEntity>> getGradeList()
     {
-        throw new NotImplementedException();
+        return await daoFactory.gradeDao!.getAll();
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        throw new NotImplementedException();
+        daoFactory.studentDao!.create(student);
+        await daoFactory.execute();
+
+        var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+        var academyStudent = new model.academy.StudentEntity
+            .Builder(student.studentId!, enrollmentId)
+            .setSchoolyear(schoolYear.id!)
+            .isNewEnroll()
+            .build();
+        
+        daoFactory.academyStudentDao!.create(academyStudent);
+        await daoFactory.execute();
+
+        return student;
     }
 
-    public async Task<object> printEnrollDocument(string studentId)
+    public async Task<byte[]> getEnrollDocument(string studentId)
     {
-        throw new NotImplementedException();
+        var printController = new PrintDocumentsController(daoFactory);
+        return await printController.getEnrollDocument(studentId);
     }
 }
