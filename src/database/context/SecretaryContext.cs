@@ -77,6 +77,8 @@ internal class SecretaryContext
             entity.Property(e => e.birthday).HasColumnName("birthday");
             entity.Property(e => e.sex).HasColumnName("sex");
             entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.diseases).HasColumnName("diseases");
+            entity.Property(e => e.religion).HasColumnName("religion");
             
             entity.HasOne(d => d.file).WithMany()
                 .HasForeignKey(d => d.studentId)

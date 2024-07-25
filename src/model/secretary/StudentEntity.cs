@@ -12,6 +12,10 @@ public class StudentEntity
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
     
+    public string religion { get; set; }
+    
+    public string diseases { get; set; } 
+    
     public ICollection<StudentParentEntity> parents { get; set; }
     public StudentTutorEntity tutor { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
@@ -95,6 +99,18 @@ public class StudentEntity
         public Builder setBirthday(DateOnly birthday)
         {
             entity.birthday = birthday;
+            return this;
+        }
+
+        public Builder setReligion(string religion)
+        {
+            entity.religion = religion;
+            return this;
+        }
+
+        public Builder setDiseases(string diseases)
+        {
+            entity.diseases = diseases;
             return this;
         }
 
