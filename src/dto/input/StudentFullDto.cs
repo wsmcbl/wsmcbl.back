@@ -36,6 +36,8 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setSchoolYear(schoolYear)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
+            .setDiseases(diseases)
+            .setReligion(religion)
             .setMeasurements(measurements.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())

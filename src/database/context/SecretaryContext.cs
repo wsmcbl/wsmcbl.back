@@ -77,6 +77,8 @@ internal class SecretaryContext
             entity.Property(e => e.birthday).HasColumnName("birthday");
             entity.Property(e => e.sex).HasColumnName("sex");
             entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.diseases).HasColumnName("diseases");
+            entity.Property(e => e.religion).HasColumnName("religion");
             
             entity.HasOne(d => d.file).WithMany()
                 .HasForeignKey(d => d.studentId)
@@ -136,7 +138,7 @@ internal class SecretaryContext
             entity.Property(e => e.occupation).HasMaxLength(30).HasColumnName("occupation");
             entity.Property(e => e.phone).HasMaxLength(12).HasColumnName("phone");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
-            entity.Property(e => e.sex).HasColumnName("type");
+            entity.Property(e => e.sex).HasColumnName("sex");
         });
 
         modelBuilder.Entity<StudentTutorEntity>(entity =>
