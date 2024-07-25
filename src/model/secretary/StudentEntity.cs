@@ -43,6 +43,8 @@ public class StudentEntity
             entity.file = new StudentFileEntity();
             entity.tutor = new StudentTutorEntity();
             entity.measurements = new StudentMeasurementsEntity();
+
+            entity.schoolYear = "";
         }
 
         public StudentEntity build() => entity;
@@ -116,23 +118,31 @@ public class StudentEntity
         public Builder setFile(StudentFileEntity file)
         {
             entity.file = file;
+            entity.file.fileId = "1223";
             return this;
         }
 
         public Builder setTutor(StudentTutorEntity tutor)
         {
             entity.tutor = tutor;
+            entity.tutor.tutorId = "asdf";
             return this;
         }
 
         public Builder setMeasurements(StudentMeasurementsEntity studentMeasurements)
         {
             entity.measurements = studentMeasurements;
+            entity.measurements.measurementId = "asasfa";
             return this;
         }
 
         public Builder setParents(List<StudentParentEntity> parents)
         {
+            foreach (var item in parents)
+            {
+                item.parentId = item.idCard;
+            }
+            
             entity.parents = parents;
             return this;
         }

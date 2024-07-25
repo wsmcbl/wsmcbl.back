@@ -11,9 +11,4 @@ public static class DtoMapper
             .Select(item => new DebtHistoryEntity{tariffId = item.tariffId})
             .ToList();
     }
-
-    public static List<StudentParentEntity> toEntity(this IEnumerable<StudentParentDto> list)
-    {
-        return list.Select(item => item.toEntity()).ToList();
-    }
 }

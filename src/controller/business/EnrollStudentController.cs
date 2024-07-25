@@ -13,8 +13,14 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var student = await daoFactory.studentDao!.getById(studentId);
-        return student;
+        var result = await daoFactory.studentDao!.getById(studentId);
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
+
+        return result;
     }
 
     public async Task<List<GradeEntity>> getGradeList()
@@ -24,16 +30,15 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        daoFactory.studentDao!.create(student);
+        daoFactory.studentDao!.update(student);
         await daoFactory.execute();
 
         var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        var academyStudent = new model.academy.StudentEntity
-            .Builder(student.studentId!, enrollmentId)
+        var academyStudent = new model.academy.StudentEntity.Builder(student.studentId!, enrollmentId)
             .setSchoolyear(schoolYear.id!)
             .isNewEnroll()
             .build();
-        
+
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 

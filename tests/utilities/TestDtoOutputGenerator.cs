@@ -10,7 +10,7 @@ namespace wsmcbl.tests.utilities;
 public class TestDtoOutputGenerator
 {
     private DetailDto? _detailDto;
-    private TariffDto? _tariffDto;
+    private PaymentItemDto? _paymentItemDto;
     private InvoiceDto? _invoiceDto;
 
     public static List<GradeEntity> aGradeList()
@@ -98,12 +98,12 @@ public class TestDtoOutputGenerator
         return _detailDto;
     }
 
-    public TariffDto aTariffDto(DebtHistoryEntity entity)
+    public PaymentItemDto aPaymentDto(DebtHistoryEntity entity)
     {
-        if (_tariffDto != null)
-            return _tariffDto;
+        if (_paymentItemDto != null)
+            return _paymentItemDto;
         
-        _tariffDto = new TariffDto
+        _paymentItemDto = new PaymentItemDto()
         {
             tariffId = entity.tariffId,
             concept  = entity.tariff.concept,
@@ -115,16 +115,16 @@ public class TestDtoOutputGenerator
             debtBalance = entity.amount - entity.debtBalance
         };
 
-        _tariffDto.setDiscount(entity.subAmount);
+        _paymentItemDto.setDiscount(entity.subAmount);
        
-        return _tariffDto;
+        return _paymentItemDto;
     }
 
-    private static StudentBasicDto aStudentBasicDto()
+    private static BasicStudentDto aStudentBasicDto()
     {
         var entity = TestEntityGenerator.aStudent("std-1");
         
-        return new StudentBasicDto
+        return new BasicStudentDto
         {
             studentId = entity.studentId!,
             fullName = entity.fullName(),
@@ -134,7 +134,7 @@ public class TestDtoOutputGenerator
         };
     }
     
-    public static List<StudentBasicDto> aStudentBasicDtoList()
+    public static List<BasicStudentDto> aStudentBasicDtoList()
     {
         return [aStudentBasicDto()];
     }
