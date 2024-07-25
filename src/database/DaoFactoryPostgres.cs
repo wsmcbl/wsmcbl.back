@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -12,7 +13,14 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
     public override async Task execute()
     {
-        await context.SaveChangesAsync();
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new ForbiddenException("Failed to perform transaction");
+        }
     }
 
     public override void Detached<T>(T element)
