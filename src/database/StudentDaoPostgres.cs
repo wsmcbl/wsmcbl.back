@@ -17,9 +17,12 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         }
 
         result.tutor = await context.Set<StudentTutorEntity>().FirstOrDefaultAsync(e => e.studentId == id);
+        
         result.measurements = await context.Set<StudentMeasurementsEntity>()
             .FirstOrDefaultAsync(e => e.studentId == id);
+        
         result.file = await context.Set<StudentFileEntity>().FirstOrDefaultAsync(e => e.studentId == id);
+        
         result.parents = await context.Set<StudentParentEntity>().Where(e => e.studentId == id).ToListAsync();
 
         return result;
@@ -27,6 +30,26 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
     
     public async Task<List<StudentEntity>> getAllWithSolvency()
     {
-        return await entities.ToListAsync();
+        var schoolyear = await (new SchoolyearDaoPostgres(context))
+            .getSchoolYearByLabel(DateTime.Today.Year);
+        
+        var tariff = await context.Set<model.accounting.TariffEntity>()
+            .Where(e => e.schoolYear == schoolyear.id)
+            .Where(e => e.type == 10)
+            .FirstOrDefaultAsync();
+
+        if (tariff == null)
+        {
+            throw new EntityNotFoundException("tariff", "(type) 10");
+        }
+
+        FormattableString query = 
+            $@"select * from secretary.student s
+            inner join accounting.debthistory d on d.studentid = s.studentid
+            where d.tariffid = {tariff.tariffId} and (d.debtbalance / d.amount) > 0.45";
+
+        var list = await entities.FromSqlInterpolated(query).ToListAsync();
+
+        return list;
     }
 }

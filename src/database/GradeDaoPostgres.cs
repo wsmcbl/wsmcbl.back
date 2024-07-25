@@ -32,9 +32,12 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 
     public async Task<List<GradeEntity>> getAllForTheCurrentSchoolyear()
     {
-        var currentSchoolyear = await (new SchoolyearDaoPostgres(context)).getCurrentSchoolYear();
+        var dao = new SchoolyearDaoPostgres(context);
+        var currentSchoolyear = await dao.getSchoolYearByLabel(DateTime.Today.Year);
 
-        var list = entities.Where(e => e.schoolYear == currentSchoolyear!.id);
+        var list = entities
+            .Where(e => e.schoolYear == currentSchoolyear.id)
+            .Include(e => e.enrollments);
 
         return await list.ToListAsync();
     }

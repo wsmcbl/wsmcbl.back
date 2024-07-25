@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -13,8 +12,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var student = await daoFactory.studentDao!.getById(studentId);
-        return student;
+        return await daoFactory.studentDao!.getById(studentId);
     }
 
     public async Task<List<GradeEntity>> getGradeList()
