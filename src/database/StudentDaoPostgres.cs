@@ -35,7 +35,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         
         var tariff = await context.Set<model.accounting.TariffEntity>()
             .Where(e => e.schoolYear == schoolyear.id)
-            .Where(e => e.type == 10)
+            .Where(e => e.type == 4)
             .FirstOrDefaultAsync();
 
         if (tariff == null)
