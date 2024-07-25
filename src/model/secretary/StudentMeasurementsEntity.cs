@@ -6,4 +6,12 @@ public class StudentMeasurementsEntity
     public string studentId { get; set; } = null!;
     public double weight { get; set; }
     public int height { get; set; }
+
+    public StudentMeasurementsEntity(){}
+
+    public StudentMeasurementsEntity(double weight, int height)
+    {
+        this.weight = weight;
+        this.height = height;
+    }
 }

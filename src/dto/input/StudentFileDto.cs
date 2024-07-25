@@ -5,15 +5,23 @@ namespace wsmcbl.src.dto.input;
 
 public class StudentFileDto : IBaseDto<StudentFileEntity>
 {
-    [JsonRequired] public bool haveTransferSheet { get; set; }
-    [JsonRequired] public bool haveBirthDocument { get; set; }
-    [JsonRequired] public bool haveParentIdentifier { get; set; }
-    [JsonRequired] public bool haveUpdatedGradeReport { get; set; }
-    [JsonRequired] public bool haveConductDocument { get; set; }
-    [JsonRequired] public bool haveFinancialSolvency { get; set; }
+    [JsonRequired] public bool transferSheet { get; set; }
+    [JsonRequired] public bool birthDocument { get; set; }
+    [JsonRequired] public bool parentIdentifier { get; set; }
+    [JsonRequired] public bool updatedGradeReport { get; set; }
+    [JsonRequired] public bool conductDocument { get; set; }
+    [JsonRequired] public bool financialSolvency { get; set; }
     
     public StudentFileEntity toEntity()
     {
-        return new StudentFileEntity();
+        return new StudentFileEntity
+        {
+            transferSheet = transferSheet,
+            birthDocument = birthDocument,
+            parentIdentifier = parentIdentifier,
+            updatedGradeReport = updatedGradeReport,
+            conductDocument = conductDocument,
+            financialSolvency = financialSolvency
+        };
     }
 }
