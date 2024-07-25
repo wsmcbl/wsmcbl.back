@@ -10,13 +10,6 @@ using wsmcbl.src.utilities;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v1")));
-builder.Services.AddControllers(options =>
-{
-    if (!builder.Environment.IsDevelopment())
-    {
-        options.Filters.Add<GlobalExceptionFilter>();
-    }
-});
 
 builder.Services.AddFluentValidationConfig();
 
@@ -36,7 +29,7 @@ builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>
 
 var app = builder.Build();
 
-app.UseMiddleware<CustomStatusCodeMiddleware>();
+app.UseMiddleware<ApiExceptionHandler>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerUIConfig());

@@ -50,7 +50,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
 
         if (tariff.isLate)
         {
-            throw new EntityUpdateException("The property isLate is already true.");
+            throw new EntityUpdateConflictException("The property isLate is already true.");
         }
         
         tariff.isLate = true;

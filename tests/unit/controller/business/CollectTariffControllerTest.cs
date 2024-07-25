@@ -140,7 +140,7 @@ public class CollectTariffControllerTest
         tariffDao.getById(tariffId).Returns(tariff);
         daoFactory.tariffDao.Returns(tariffDao);
         
-        await Assert.ThrowsAsync<EntityUpdateException>(() => controller.applyArrears(tariffId));
+        await Assert.ThrowsAsync<EntityUpdateConflictException>(() => controller.applyArrears(tariffId));
     }
     
     
