@@ -30,12 +30,11 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        daoFactory.studentDao!.create(student);
+        daoFactory.studentDao!.update(student);
         await daoFactory.execute();
 
         var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        var academyStudent = new model.academy.StudentEntity
-                .Builder(student.studentId!, enrollmentId)
+        var academyStudent = new model.academy.StudentEntity.Builder(student.studentId!, enrollmentId)
             .setSchoolyear(schoolYear.id!)
             .isNewEnroll()
             .build();
