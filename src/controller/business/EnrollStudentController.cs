@@ -8,7 +8,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
-        return await daoFactory.studentDao!.getAll();
+        return await daoFactory.studentDao!.getAllWithSolvency();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
@@ -25,7 +25,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<List<GradeEntity>> getGradeList()
     {
-        return await daoFactory.gradeDao!.getAll();
+        return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)

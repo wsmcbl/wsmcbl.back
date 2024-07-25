@@ -41,39 +41,6 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao
-{
-    public new async Task<GradeEntity?> getById(string id)
-    {
-        var grade = await entities.Include(e => e.enrollments)
-            .Include(e => e.subjectList)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.gradeId == id);
-
-        if (grade == null)
-        {
-            throw new EntityNotFoundException("Grade", id);
-        }
-
-        return grade;
-    }
-
-    public void createList(List<GradeEntity> gradeList)
-    {
-        foreach (var grade in gradeList)
-        {
-            create(grade);
-        }
-    }
-
-    public async Task<List<GradeEntity>> getAllForTheCurrentSchoolyear()
-    {
-        throw new NotImplementedException();
-    }
-}
-
-
-
 public class TeacherDaoPostgres(PostgresContext context) 
     : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao 
 {
@@ -83,9 +50,9 @@ public class TeacherDaoPostgres(PostgresContext context)
     }
 }
 
-    
+
 public class StudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<model.secretary.StudentEntity, string>(context), model.secretary.IStudentDao
+    : GenericDaoPostgres<StudentEntity, string>(context), model.secretary.IStudentDao
 {
     public async Task<List<StudentEntity>> getAllWithSolvency()
     {
@@ -102,37 +69,3 @@ public class GradeDataDaoPostgres(PostgresContext context)
     }
 }
 
-public class SchoolyearDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
-{
-    public async Task<SchoolYearEntity> getNewSchoolYear()
-    {
-        var schoolYearEntity = await getCurrentSchoolYear();
-
-        if (schoolYearEntity != null)
-        {
-            return schoolYearEntity;
-        }
-        
-        var year = getYear();
-        schoolYearEntity = new SchoolYearEntity
-        {
-            label = year.ToString(),
-            startDate = new DateOnly(year, 1, 1),
-            deadLine = new DateOnly(year, 12, 31),
-            isActive = true
-        };
-        
-        create(schoolYearEntity);
-        await context.SaveChangesAsync();
-
-        return schoolYearEntity;
-    }
-
-    public async Task<SchoolYearEntity?> getCurrentSchoolYear()
-    {
-        return await entities.FirstOrDefaultAsync(e => e.label == getYear().ToString());
-    }
-
-    private static int getYear() => DateTime.Today.Month > 4 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
-}
