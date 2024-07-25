@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
+using wsmcbl.src.dto.secretary;
 using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;

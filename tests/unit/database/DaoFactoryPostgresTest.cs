@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.accounting;
@@ -14,8 +15,7 @@ public class DaoFactoryPostgresTest
 
     public DaoFactoryPostgresTest()
     {
-        context = Substitute
-            .For<PostgresContext>(new DbContextOptions<PostgresContext>());
+        context = Substitute.For<PostgresContext>(new DbContextOptions<PostgresContext>());
         sut = new DaoFactoryPostgres(context);
     }
 

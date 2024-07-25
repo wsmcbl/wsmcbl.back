@@ -9,11 +9,14 @@ public class StudentEntity
     public string? secondSurname { get; set; }
     public bool isActive { get; set; }
     public string schoolYear { get; set; } = null!;
-    public string? tutor { get; set; }
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
+    public string? religion { get; set; }
+    public string? diseases { get; set; } 
     
-    public StudentContactEntity? contact { get; set; }
+    
+    public ICollection<StudentParentEntity>? parents { get; set; }
+    public StudentTutorEntity? tutor { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
     public StudentFileEntity? file { get; set; }
 
@@ -35,6 +38,13 @@ public class StudentEntity
         public Builder()
         {
             entity = new StudentEntity();
+            
+            entity.parents = [];
+            entity.file = new StudentFileEntity();
+            entity.tutor = new StudentTutorEntity();
+            entity.measurements = new StudentMeasurementsEntity();
+
+            entity.schoolYear = "";
         }
 
         public StudentEntity build() => entity;
@@ -80,13 +90,7 @@ public class StudentEntity
             entity.schoolYear = schoolYear;
             return this;
         }
-
-        public Builder setTutor(string tutor)
-        {
-            entity.tutor = tutor;
-            return this;
-        }
-
+        
         public Builder setSex(bool sex)
         {
             entity.sex = sex;
@@ -99,21 +103,39 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setRecord(StudentFileEntity file)
+        public Builder setReligion(string religion)
+        {
+            entity.religion = religion;
+            return this;
+        }
+
+        public Builder setDiseases(string diseases)
+        {
+            entity.diseases = diseases;
+            return this;
+        }
+
+        public Builder setFile(StudentFileEntity file)
         {
             entity.file = file;
             return this;
         }
 
-        public Builder setContact(StudentContactEntity studentContact)
+        public Builder setTutor(StudentTutorEntity tutor)
         {
-            entity.contact = studentContact;
+            entity.tutor = tutor;
             return this;
         }
 
-        public Builder setPhysicalData(StudentMeasurementsEntity studentMeasurements)
+        public Builder setMeasurements(StudentMeasurementsEntity studentMeasurements)
         {
             entity.measurements = studentMeasurements;
+            return this;
+        }
+
+        public Builder setParents(List<StudentParentEntity> parents)
+        {
+            entity.parents = parents;
             return this;
         }
     }

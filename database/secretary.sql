@@ -10,10 +10,56 @@ create table if not exists Secretary.Student
     secondSurname varchar(50),
     studentState boolean not null,
     schoolyear varchar(15) not null,
-    tutor varchar(100),
     sex boolean not null,
-    birthday date not null
+    birthday date not null,
+    diseases varchar(150) not null,
+    religion varchar(20) not null 
 );
+
+create table if not exists Secretary.StudentParent
+(
+    parentId varchar(15) not null primary key,
+    studentId varchar(15) not null,
+    sex bool not null,
+    name varchar(70) not null,
+    address varchar(100) not null,
+    idCard varchar(15),
+    phone varchar(12),
+    occupation varchar(30),
+    foreign key (studentId) references Secretary.Student
+);
+
+create table if not exists Secretary.StudentTutor
+(
+    tutorId varchar(15) not null primary key,
+    studentId varchar(15) not null,
+    name varchar(70) not null,
+    phone varchar(12) not null,
+    foreign key (studentId) references Secretary.Student
+);
+
+create table if not exists Secretary.StudentFile
+(
+    fileId varchar(10) primary key,
+    studentId varchar(15) not null,
+    transferSheet boolean not null,
+    birthDocument boolean not null,
+    parentIdentifier boolean not null,
+    updatedGradeReport boolean not null,
+    conductDocument boolean not null,
+    financialSolvency boolean not null,
+    foreign key (studentId) references Secretary.Student
+);
+
+create table if not exists Secretary.StudentMeasurements
+(
+    measurementId varchar(10) primary key,
+    studentId varchar(15) not null,
+    weight float not null,
+    height int not null,
+    foreign key (studentId) references Secretary.Student
+);
+
 
 create table if not exists Secretary.Schoolyear
 (
@@ -78,19 +124,4 @@ create table if not exists Secretary.TariffCatalog
     dueDate date,
     typeId int not null,
     modality int not null
-);
-
-create table if not exists Secretary.StudentFile
-(
-    fileId varchar(10) primary key 
-);
-
-create table if not exists Secretary.StudentContact
-(
-    contactId varchar(10) primary key
-);
-
-create table if not exists Secretary.StudentMeasurements
-(
-    measurementId varchar(10) primary key
 );

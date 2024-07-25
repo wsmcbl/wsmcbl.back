@@ -1,5 +1,5 @@
 using FluentValidation;
-using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.middleware.filter;
 

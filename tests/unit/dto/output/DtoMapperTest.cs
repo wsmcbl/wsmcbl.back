@@ -39,7 +39,7 @@ public class DtoMapperTest
     public void getTariffDto_ReturnsDto()
     {
         var debtHistory = TestEntityGenerator.aDebtHistory("std-1", false);
-        var tariffDto = new TestDtoOutputGenerator().aTariffDto(debtHistory);
+        var tariffDto = new TestDtoOutputGenerator().aPaymentDto(debtHistory);
 
         var result = debtHistory.mapToDto();
 
