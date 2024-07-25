@@ -11,13 +11,12 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!;
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
+    public string? religion { get; set; }
+    public string? diseases { get; set; } 
     
-    public string religion { get; set; }
     
-    public string diseases { get; set; } 
-    
-    public ICollection<StudentParentEntity> parents { get; set; }
-    public StudentTutorEntity tutor { get; set; }
+    public ICollection<StudentParentEntity>? parents { get; set; }
+    public StudentTutorEntity? tutor { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
     public StudentFileEntity? file { get; set; }
 
