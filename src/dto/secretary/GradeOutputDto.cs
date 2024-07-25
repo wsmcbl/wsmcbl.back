@@ -1,9 +1,9 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.secretary;
 
-public class GradeDto
+public class GradeOutputDto
 {
     public string gradeId { get; set; }
     public string label { get; set; }
@@ -13,7 +13,7 @@ public class GradeDto
     
     public List<EnrollmentEntity> enrollments { get; set; }
 
-    public GradeDto(GradeEntity grade)
+    public GradeOutputDto(GradeEntity grade)
     {
         gradeId = grade.gradeId!;
         label = grade.label;

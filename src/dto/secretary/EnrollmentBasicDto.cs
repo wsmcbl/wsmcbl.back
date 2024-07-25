@@ -1,6 +1,6 @@
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.secretary;
 
 public class EnrollmentBasicDto
 {

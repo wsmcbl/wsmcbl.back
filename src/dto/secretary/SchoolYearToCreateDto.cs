@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class SchoolYearToCreateDto
 {

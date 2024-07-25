@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class EnrollmentToCreateDto
 {

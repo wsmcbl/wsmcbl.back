@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.input;
-using wsmcbl.src.dto.output;
-using StudentFullDto = wsmcbl.src.dto.input.StudentFullDto;
+using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
 

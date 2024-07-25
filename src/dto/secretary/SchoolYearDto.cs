@@ -1,7 +1,7 @@
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.secretary;
 
 public class SchoolYearDto
 {
@@ -11,8 +11,8 @@ public class SchoolYearDto
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<input.GradeDto>? grades { get; set; }
-    public List<input.TariffDto>? tariffs { get; set; }
+    public List<GradeDto>? grades { get; set; }
+    public List<TariffDto>? tariffs { get; set; }
 
     public SchoolYearDto(SchoolYearEntity schoolYear)
     {
@@ -26,7 +26,7 @@ public class SchoolYearDto
         tariffs = getTariffs(schoolYear.tariffList);
     }
 
-    private static List<input.GradeDto> getGrades(List<GradeEntity>? list)
+    private static List<GradeDto> getGrades(List<GradeEntity>? list)
     {
         if (list == null || list.Count == 0)
         {
@@ -36,7 +36,7 @@ public class SchoolYearDto
         return list.mapListToDto();
     }
 
-    private List<input.TariffDto> getTariffs(List<TariffEntity>? list)
+    private List<TariffDto> getTariffs(List<TariffEntity>? list)
     {
         if (list == null || list.Count == 0)
         {

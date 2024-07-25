@@ -38,8 +38,4 @@
     <_ContentIncludedByDefault Remove="publish\wsmcbl.back.runtimeconfig.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="dto\secretary\" />
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,6 @@
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.secretary;
 
 public class GradeBasicDto
 {
