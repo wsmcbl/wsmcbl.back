@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
-using wsmcbl.src.dto.input;
+using wsmcbl.src.dto;
+using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.tests.integration;
 

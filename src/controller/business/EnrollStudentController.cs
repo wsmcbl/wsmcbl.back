@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -8,24 +7,17 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
-        return await daoFactory.studentDao!.getAll();
+        return await daoFactory.studentDao!.getAllWithSolvency();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var student = await daoFactory.studentDao!.getById(studentId);
-
-        if (student == null)
-        {
-            throw new EntityNotFoundException("Secretary Student", studentId);
-        }
-
-        return student;
+        return await daoFactory.studentDao!.getById(studentId);
     }
 
     public async Task<List<GradeEntity>> getGradeList()
     {
-        return await daoFactory.gradeDao!.getAll();
+        return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)

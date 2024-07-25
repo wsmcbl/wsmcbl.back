@@ -3,6 +3,7 @@ using NSubstitute;
 using wsmcbl.src.controller.api;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
 
@@ -31,7 +32,7 @@ public class CreateOfficialEnrollmentActionsTest
         var actionResult = await actions.getGradeList();
 
         var result = assertAndGetOkResult(actionResult);
-        var list = Assert.IsType<List<GradeBasicDto>>(result.Value);
+        var list = Assert.IsType<List<BasicGradeDto>>(result.Value);
         Assert.Equivalent(gradeList.mapListToBasicDto(), list);
     }
     
@@ -113,7 +114,7 @@ public class CreateOfficialEnrollmentActionsTest
         var actionResult = await actions.getSchoolYears("all");
 
         var result = assertAndGetOkResult(actionResult);
-        var values = Assert.IsType<List<SchoolYearBasicDto>>(result.Value);
+        var values = Assert.IsType<List<BasicSchoolYearDto>>(result.Value);
         Assert.Equivalent(schoolyearList.mapListToDto(), values);
     }
 
@@ -146,7 +147,7 @@ public class CreateOfficialEnrollmentActionsTest
         var actionResult = await actions.getGradeById("gd-1");
 
         var result = assertAndGetOkResult(actionResult);
-        var value = Assert.IsType<GradeDto>(result.Value);
+        var value = Assert.IsType<GradeToCreateDto>(result.Value);
         Assert.Equivalent(grade.mapToDto(), value);
     }
 

@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.input;
-using wsmcbl.src.dto.output;
-using StudentFullDto = wsmcbl.src.dto.input.StudentFullDto;
+using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
 
@@ -24,7 +22,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
-        return Ok(result.mapToDto());
+        return Ok(result);
     }
 
     [HttpGet]

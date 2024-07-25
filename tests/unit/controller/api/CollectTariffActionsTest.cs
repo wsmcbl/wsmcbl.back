@@ -37,7 +37,7 @@ public class CollectTariffActionsTest
         var actionResult = await actions.getStudentList();
 
         var result = assertAndGetOkResult(actionResult);
-        var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
+        var list = Assert.IsType<List<BasicStudentDto>>(result.Value);
         Assert.NotEmpty(list);
         Assert.Equivalent(initList.mapListTo(), list);
     }
@@ -51,7 +51,7 @@ public class CollectTariffActionsTest
         var actionResult = await actions.getStudentList();
 
         var result = assertAndGetOkResult(actionResult);
-        var list = Assert.IsType<List<StudentBasicDto>>(result.Value);
+        var list = Assert.IsType<List<BasicStudentDto>>(result.Value);
         Assert.Empty(list);
     }
     
