@@ -11,15 +11,16 @@ public class SchoolYearBasicDto
     [Required] public DateOnly deadLine { get; set; }
     [Required] public bool isActive { get; set; }
 
-    public static SchoolYearBasicDto init(SchoolYearEntity schoolYear)
+    public SchoolYearBasicDto()
     {
-        return new SchoolYearBasicDto
-        {
-            schoolYearId = schoolYear.id,
-            label = schoolYear.label,
-            isActive = schoolYear.isActive,
-            startDate = schoolYear.startDate,
-            deadLine = schoolYear.deadLine
-        };
+    }
+
+    public SchoolYearBasicDto(SchoolYearEntity schoolYear)
+    {
+        schoolYearId = schoolYear.id;
+        label = schoolYear.label;
+        isActive = schoolYear.isActive;
+        startDate = schoolYear.startDate;
+        deadLine = schoolYear.deadLine;
     }
 }

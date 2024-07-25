@@ -43,6 +43,8 @@ public class StudentEntity
             entity.file = new StudentFileEntity();
             entity.tutor = new StudentTutorEntity();
             entity.measurements = new StudentMeasurementsEntity();
+
+            entity.schoolYear = "";
         }
 
         public StudentEntity build() => entity;

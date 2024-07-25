@@ -1,29 +1,33 @@
+using wsmcbl.src.dto.input;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.dto.output;
 
 public static class DtoMapperSecretary
 {
 
-    public static StudentFullDto mapToDto(this StudentEntity student) => new StudentFullDto();
+    public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
     public static GradeDto mapToDto(this GradeEntity grade) => new(grade);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
 
 
 
-    private static GradeBasicToEnrollDto mapToBasicEnrollDto(this GradeEntity grade) => new GradeBasicToEnrollDto();
-    private static StudentBasicToEnrollDto mapToBasicDto(this StudentEntity student)
-        => new StudentBasicToEnrollDto(student);
+    private static GradeBasicToEnrollDto mapToBasicEnrollDto(this GradeEntity grade) => new(grade);
+    private static StudentBasicToEnrollDto mapToBasicDto(this StudentEntity student) => new(student);
     private static GradeBasicDto mapToBasicDto(this GradeEntity grade) => new(grade);
-    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear)
-        => SchoolYearBasicDto.init(schoolYear);
+    private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
+    private static EnrollmentBasicDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
 
 
 
     public static List<GradeBasicToEnrollDto> mapToListBasicDto(this IEnumerable<GradeEntity> list)
         => list.Select(e => e.mapToBasicEnrollDto()).ToList();
+    public static List<EnrollmentBasicDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
+        => list.Select(e => e.mapToBasicDto()).ToList();
     
     public static List<StudentBasicToEnrollDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
