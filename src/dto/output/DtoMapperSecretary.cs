@@ -15,7 +15,7 @@ public static class DtoMapperSecretary
 
     private static GradeBasicToEnrollDto mapToBasicEnrollDto(this GradeEntity grade) => new GradeBasicToEnrollDto();
     private static StudentBasicToEnrollDto mapToBasicDto(this StudentEntity student)
-        => new StudentBasicToEnrollDto();
+        => new StudentBasicToEnrollDto(student);
     private static GradeBasicDto mapToBasicDto(this GradeEntity grade) => new(grade);
     private static SchoolYearBasicDto mapToBasicDto(this SchoolYearEntity schoolYear)
         => SchoolYearBasicDto.init(schoolYear);

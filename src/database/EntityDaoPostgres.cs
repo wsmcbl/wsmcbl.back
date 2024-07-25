@@ -51,15 +51,6 @@ public class TeacherDaoPostgres(PostgresContext context)
 }
 
 
-public class StudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentEntity, string>(context), model.secretary.IStudentDao
-{
-    public async Task<List<StudentEntity>> getAllWithSolvency()
-    {
-        throw new NotImplementedException();
-    }
-}
-
 public class GradeDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao
 {
