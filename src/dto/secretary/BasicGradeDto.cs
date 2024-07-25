@@ -2,7 +2,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeBasicDto
+public class BasicGradeDto
 {
     public string gradeId { get; set; }
     public string? label { get; set; }
@@ -10,7 +10,7 @@ public class GradeBasicDto
     public int quantity { get; set; }
     public string? modality { get; set; }
 
-    public GradeBasicDto(GradeEntity grade)
+    public BasicGradeDto(GradeEntity grade)
     {
         gradeId = grade.gradeId!;
         label = grade.label;

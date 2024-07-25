@@ -1,4 +1,4 @@
-using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
@@ -10,7 +10,7 @@ public class SubjectDtoTest
     {
         var entity = TestEntityGenerator.aSubject();
 
-        var result = new SubjectDto.Builder(entity).build();
+        var result = new SubjectDto(entity);
         
         Assert.NotNull(result);
         Assert.NotNull(result.name);

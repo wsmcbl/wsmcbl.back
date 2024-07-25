@@ -1,6 +1,6 @@
 namespace wsmcbl.src.dto.output;
 
-public class TariffDto
+public class PaymentItemDto
 {
     public int tariffId { get; set; }
     public string schoolYear { get; set; } = null!;

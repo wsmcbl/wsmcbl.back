@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class SchoolYearBasicDto
+public class BasicSchoolYearDto
 {
     [Required] public string schoolYearId { get; set; }
     [Required] public string label { get; set; }
@@ -11,11 +11,11 @@ public class SchoolYearBasicDto
     [Required] public DateOnly deadLine { get; set; }
     [Required] public bool isActive { get; set; }
 
-    public SchoolYearBasicDto()
+    public BasicSchoolYearDto()
     {
     }
 
-    public SchoolYearBasicDto(SchoolYearEntity schoolYear)
+    public BasicSchoolYearDto(SchoolYearEntity schoolYear)
     {
         schoolYearId = schoolYear.id;
         label = schoolYear.label;

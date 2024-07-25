@@ -2,17 +2,17 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeBasicToEnrollDto
+public class BasicGradeToEnrollDto
 {
     public string? gradeId { get; set; }
     public string label { get; set; } = null!;
     public string modality { get; set; } = null!;
     
-    public ICollection<EnrollmentBasicDto> enrollments { get; set; }
+    public ICollection<BasicEnrollmentDto> enrollments { get; set; }
 
-    public GradeBasicToEnrollDto(){}
+    public BasicGradeToEnrollDto(){}
 
-    public GradeBasicToEnrollDto(GradeEntity grade)
+    public BasicGradeToEnrollDto(GradeEntity grade)
     {
         gradeId = grade.gradeId;
         label = grade.label;

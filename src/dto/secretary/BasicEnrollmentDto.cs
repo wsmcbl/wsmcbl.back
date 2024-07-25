@@ -2,7 +2,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class EnrollmentBasicDto
+public class BasicEnrollmentDto
 {
     public string? enrollmentId { get; set; }
     public string label { get; set; }
@@ -10,11 +10,11 @@ public class EnrollmentBasicDto
     public int capacity { get; set; }
     public int quantity { get; set; }
 
-    public EnrollmentBasicDto()
+    public BasicEnrollmentDto()
     {
     }
 
-    public EnrollmentBasicDto(EnrollmentEntity enrollment)
+    public BasicEnrollmentDto(EnrollmentEntity enrollment)
     {
         enrollmentId = enrollment.enrollmentId;
         label = enrollment.label;

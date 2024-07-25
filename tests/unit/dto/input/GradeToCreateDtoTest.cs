@@ -1,16 +1,16 @@
-using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
 
-public class GradeDtoTest
+public class GradeToCreateDtoTest
 {
     [Fact]
     public void init_ShouldReturnDto_WhenCalled()
     {
         var entity = TestEntityGenerator.aGrade("gd1");
 
-        var result = new GradeDto.Builder(entity).build();
+        var result = new GradeToCreateDto(entity);
         
         Assert.NotNull(result);
         Assert.NotNull(result.schoolYear);

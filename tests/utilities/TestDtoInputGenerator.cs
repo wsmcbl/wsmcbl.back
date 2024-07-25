@@ -1,4 +1,6 @@
+using wsmcbl.src.dto;
 using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.tests.utilities;
 
@@ -16,9 +18,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectEnrollmentDto aSubjectEnrollDto()
+    public static SubjectToAssignDto aSubjectEnrollDto()
     {
-        return new SubjectEnrollmentDto
+        return new SubjectToAssignDto
         {
             subjectId = "sub001",
             teacherId = "tch001"
@@ -36,9 +38,9 @@ public static class TestDtoInputGenerator
     }
     
     
-    public static GradeDto aGradeDto()
+    public static GradeToCreateDto aGradeDto()
     {
-        return new GradeDto()
+        return new GradeToCreateDto()
         {
             label = "5to",
             schoolYear = "sch01",
@@ -57,9 +59,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static TariffDto aTariffDto()
+    public static TariffToCreateDto aTariffDto()
     {
-        return new TariffDto
+        return new TariffToCreateDto
         {
             schoolYear = "sch001",
             amount = 700,
