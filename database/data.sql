@@ -15,7 +15,8 @@ values (1, 'Sin descuento', 0, 'Sin descuento'),
 insert into accounting.tarifftype(description)
 values ('Mensualidad'),
        ('Utiles'),
-       ('Otros');
+       ('Otros'),
+       ('Matricula');
 
 insert into accounting.cashier(cashierid, userid)
 values ('caj-eurbina', '1001'),
