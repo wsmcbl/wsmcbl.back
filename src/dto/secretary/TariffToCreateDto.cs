@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
-public class TariffDto : IBaseDto<TariffEntity>
+public class TariffToCreateDto : IBaseDto<TariffEntity>
 {
     [Required] public string schoolYear { get; set; } = null!;
     [Required] public string concept { get; set; } = null!;
@@ -12,6 +12,24 @@ public class TariffDto : IBaseDto<TariffEntity>
     public DateOnlyDto? dueDate { get; set; }
     [JsonRequired] public int type { get; set; }
     [JsonRequired] public int modality { get; set; }
+
+    public TariffToCreateDto()
+    {
+    }
+
+    public TariffToCreateDto(TariffEntity tariff)
+    {
+        schoolYear = tariff.schoolYear;
+        concept = tariff.concept;
+        amount = tariff.amount;
+        type = tariff.type;
+        modality = tariff.modality;
+
+        if (tariff.dueDate != null)
+        {
+            dueDate = new DateOnlyDto((DateOnly)tariff.dueDate);
+        }
+    }
 
     public TariffEntity toEntity()
     {
@@ -30,28 +48,5 @@ public class TariffDto : IBaseDto<TariffEntity>
         }
 
         return tariff;
-    }
-    
-    public class Builder
-    {
-        private readonly TariffDto? dto;
-        public Builder(TariffEntity tariff)
-        {
-            dto = new TariffDto
-            {
-                schoolYear = tariff.schoolYear,
-                concept = tariff.concept,
-                amount = tariff.amount,
-                type = tariff.type,
-                modality = tariff.modality,
-            };
-
-            if (tariff.dueDate != null)
-            {
-                dto.dueDate = new DateOnlyDto((DateOnly)tariff.dueDate);
-            }
-        }
-
-        public TariffDto build() => dto!;
     }
 }

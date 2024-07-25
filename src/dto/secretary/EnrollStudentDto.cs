@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class EnrollStudentDto
 {

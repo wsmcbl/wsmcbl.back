@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto;
 
 public class DateOnlyDto : IBaseDto<DateOnly>
 {

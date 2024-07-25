@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class StudentMeasurementsDto : IBaseDto<StudentMeasurementsEntity>
 {

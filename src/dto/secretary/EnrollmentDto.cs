@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class EnrollmentDto : IBaseDto<EnrollmentEntity>
 {
@@ -10,7 +10,7 @@ public class EnrollmentDto : IBaseDto<EnrollmentEntity>
     [Required] public string? section { get; set; }
     [JsonRequired] public int capacity { get; set; }
     [JsonRequired] public int quantity { get; set; }
-    public List<SubjectEnrollmentDto> subjects { get; set; }
+    public List<SubjectToAssignDto> subjects { get; set; }
     
     public EnrollmentEntity toEntity()
     {

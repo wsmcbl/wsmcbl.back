@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class StudentFullDto : IBaseDto<StudentEntity>
 {
@@ -12,7 +12,6 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string surname { get; set; } = null!;
     [Required] public string? secondSurname { get; set; }
     [JsonRequired] public bool isActive { get; set; }
-    [Required] public string schoolYear { get; set; } = null!;
     [Required] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
     [Required] public string religion { get; set; }
@@ -24,6 +23,24 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
 
+    public StudentFullDto()
+    {
+    }
+
+    public StudentFullDto(StudentEntity student)
+    {
+        studentId = student.studentId;
+        name = student.name;
+        secondName = student.secondName;
+        surname = student.surname;
+        secondSurname = student.secondSurname;
+        isActive = student.isActive;
+        sex = student.sex;
+        birthday = new DateOnlyDto(student.birthday);
+        religion = student.religion;
+        diseases = student.diseases;
+    }
+    
     public StudentEntity toEntity()
     {
         return new StudentEntity.Builder()
@@ -33,7 +50,6 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setSurname(surname)
             .setSecondSurname(secondSurname)
             .isActive(isActive)
-            .setSchoolYear(schoolYear)
             .setSex(sex)
             .setBirthday(birthday.toEntity())
             .setDiseases(diseases)

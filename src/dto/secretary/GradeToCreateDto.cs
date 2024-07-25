@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using wsmcbl.src.dto.output;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
-public class GradeDto : IBaseDto<GradeEntity>
+public class GradeToCreateDto : IBaseDto<GradeEntity>
 {
     [Required] public string label { get; set; } = null!;
     [Required] public string schoolYear { get; set; } = null!;
@@ -26,21 +25,15 @@ public class GradeDto : IBaseDto<GradeEntity>
         return grade;
     }
 
-    public class Builder
+    public GradeToCreateDto()
     {
-        private readonly GradeDto? dto;
+    }
 
-        public Builder(GradeEntity grade)
-        {
-            dto = new GradeDto
-            {
-                label = grade.label,
-                modality = grade.modality,
-                schoolYear = grade.schoolYear,
-                subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto()
-            };
-        }
-
-        public GradeDto build() => dto!;
+    public GradeToCreateDto(GradeEntity grade)
+    {
+        label = grade.label;
+        modality = grade.modality;
+        schoolYear = grade.schoolYear;
+        subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto();
     }
 }

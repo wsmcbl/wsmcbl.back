@@ -36,9 +36,9 @@ public static class DtoMapper
         return detail;
     }
 
-    public static TariffDto mapToDto(this DebtHistoryEntity entity)
+    public static PaymentItemDto mapToDto(this DebtHistoryEntity entity)
     {
-        var tariff = new TariffDto
+        var tariff = new PaymentItemDto
         {
             tariffId = entity.tariffId,
             concept  = entity.tariff.concept,
@@ -79,9 +79,9 @@ public static class DtoMapper
         return dto;
     }
 
-    private static StudentBasicDto mapToBasicDto(this StudentEntity student)
+    private static BasicStudentDto mapToBasicDto(this StudentEntity student)
     {
-        return new StudentBasicDto
+        return new BasicStudentDto
         {
             studentId = student.studentId!,
             fullName = student.fullName(),
@@ -91,7 +91,7 @@ public static class DtoMapper
         };
     }
     
-    public static List<StudentBasicDto> mapListTo(this IEnumerable<StudentEntity> students)
+    public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentEntity> students)
     {
         return students.Select(student => student.mapToBasicDto()).ToList();
     }

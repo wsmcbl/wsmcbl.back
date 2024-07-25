@@ -1,4 +1,4 @@
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto;
 
 public interface IBaseDto<out Entity>
 {

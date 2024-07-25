@@ -5,7 +5,6 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -59,4 +58,3 @@ public class GradeDataDaoPostgres(PostgresContext context)
         return await entities.Include(e => e.subjectList).ToListAsync();
     }
 }
-

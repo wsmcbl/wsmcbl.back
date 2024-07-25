@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using wsmcbl.src.model.secretary;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.secretary;
 
 public class SubjectDataDto : IBaseDto<SubjectDataEntity>
 {
