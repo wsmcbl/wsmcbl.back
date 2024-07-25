@@ -15,8 +15,8 @@ public class StudentEntity
     public string? diseases { get; set; } 
     
     
-    public ICollection<StudentParentEntity> parents { get; set; }
-    public StudentTutorEntity tutor { get; set; }
+    public ICollection<StudentParentEntity>? parents { get; set; }
+    public StudentTutorEntity? tutor { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
     public StudentFileEntity? file { get; set; }
 

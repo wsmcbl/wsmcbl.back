@@ -9,17 +9,18 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 {
     public new async Task<StudentEntity?> getById(string id)
     {
-        var result = await entities
-            .Include(e => e.measurements)
-            .Include(e => e.file)
-            .Include(e => e.tutor)
-            .Include(e => e.parents)
-            .FirstOrDefaultAsync(e => e.studentId == id);
+        var result = await entities.FirstOrDefaultAsync(e => e.studentId == id);
 
         if (result == null)
         {
             throw new EntityNotFoundException("Student", id);
         }
+
+        result.tutor = await context.Set<StudentTutorEntity>().FirstOrDefaultAsync(e => e.studentId == id);
+        result.measurements = await context.Set<StudentMeasurementsEntity>()
+            .FirstOrDefaultAsync(e => e.studentId == id);
+        result.file = await context.Set<StudentFileEntity>().FirstOrDefaultAsync(e => e.studentId == id);
+        result.parents = await context.Set<StudentParentEntity>().Where(e => e.studentId == id).ToListAsync();
 
         return result;
     }

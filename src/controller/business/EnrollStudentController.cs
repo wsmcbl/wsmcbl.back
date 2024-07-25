@@ -14,12 +14,6 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
     public async Task<StudentEntity> getStudentById(string studentId)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
-
-        if (student == null)
-        {
-            throw new EntityNotFoundException("Secretary Student", studentId);
-        }
-
         return student;
     }
 
