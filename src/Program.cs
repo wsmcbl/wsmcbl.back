@@ -29,7 +29,7 @@ builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>
 
 var app = builder.Build();
 
-//app.UseMiddleware<ApiExceptionHandler>();
+app.UseMiddleware<ApiExceptionHandler>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerUIConfig());
