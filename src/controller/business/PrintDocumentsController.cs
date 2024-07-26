@@ -1,11 +1,20 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class PrintDocumentsController(DaoFactory daoFactory) : BaseController(daoFactory), IPrintDocumentsController
+public class PrintDocumentsController : BaseController, IPrintDocumentsController
 {
-    public async Task<byte[]> getEnrollDocument(string studentId)
+    private readonly LatexCompiler _latexCompiler;
+    
+    public PrintDocumentsController(DaoFactory daoFactory) : base(daoFactory)
     {
-        throw new NotImplementedException();
+        _latexCompiler = new LatexCompiler(Path.Combine(AppContext.BaseDirectory, "Resources"));
+    }
+
+    public async Task getEnrollDocument(string studentId, Stream stream)
+    {
+        var result = await daoFactory.studentDao.getById(studentId);
+        _latexCompiler.CompileLatexToPdf($"{studentId}.tex", stream);
     }
 }

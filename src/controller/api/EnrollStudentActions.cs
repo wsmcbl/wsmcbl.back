@@ -45,7 +45,11 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     [Route("documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
-        var result = await controller.getEnrollDocument(studentId);
-        return Ok(File(result, "a.pdf"));
+        using (var memoryStream = new MemoryStream())
+        {
+            await controller.getEnrollDocument(studentId, memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);   
+            return new FileStreamResult(memoryStream, "application/pdf");
+        }
     }
 }
