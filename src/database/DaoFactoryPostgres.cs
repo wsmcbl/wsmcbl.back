@@ -19,7 +19,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
         }
         catch (Exception e)
         {
-            throw new ForbiddenException("Failed to perform transaction");
+            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
         }
     }
 

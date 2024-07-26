@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.input;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.dto.secretary;
 using StudentDto = wsmcbl.src.dto.input.StudentDto;
@@ -111,15 +110,15 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("configurations/schoolyears/subjects")]
     public async Task<IActionResult> createSubject(SubjectDataDto dto)
     {
-        await controller.createSubject(dto.toEntity());
-        return Ok();
+        var result = await controller.createSubject(dto.toEntity());
+        return CreatedAtAction(null, result);
     }
 
     [HttpPost]
     [Route("configurations/schoolyears/tariffs")]
     public async Task<IActionResult> createTariff(TariffDataDto dto)
     {
-        await controller.createTariff(dto.toEntity());
-        return Ok();
+        var result = await controller.createTariff(dto.toEntity());
+        return CreatedAtAction(null, result);
     }
 }
