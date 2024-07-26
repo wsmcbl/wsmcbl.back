@@ -14,4 +14,9 @@ public class StudentMeasurementsEntity
         this.weight = weight;
         this.height = height;
     }
+
+    public void update(StudentMeasurementsEntity entity)
+    {
+        throw new NotImplementedException();
+    }
 }

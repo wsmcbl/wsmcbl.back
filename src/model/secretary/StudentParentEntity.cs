@@ -10,4 +10,9 @@ public class StudentParentEntity
     public string? idCard { get; set; }
     public string? phone { get; set; }
     public string? occupation { get; set; }
+
+    public void update(StudentParentEntity entity)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -16,4 +16,9 @@ public class StudentTutorEntity
         this.name = name;
         this.phone = phone;
     }
+
+    public void update(StudentTutorEntity entity)
+    {
+        throw new NotImplementedException();
+    }
 }

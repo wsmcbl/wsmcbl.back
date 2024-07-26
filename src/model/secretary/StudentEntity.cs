@@ -43,6 +43,11 @@ public class StudentEntity
         religion = entity.religion;
         diseases = entity.diseases;
     }
+
+    public void update(StudentEntity entity)
+    {
+        throw new NotImplementedException();
+    }
     
     public class Builder
     {

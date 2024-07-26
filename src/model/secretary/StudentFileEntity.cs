@@ -10,4 +10,9 @@ public class StudentFileEntity
     public bool updatedGradeReport { get; set; }
     public bool conductDocument { get; set; }
     public bool financialSolvency { get; set; }
+
+    public void update(StudentFileEntity entity)
+    {
+        throw new NotImplementedException();
+    }
 }
