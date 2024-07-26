@@ -111,7 +111,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> createSubject(SubjectDataDto dto)
     {
         var result = await controller.createSubject(dto.toEntity());
-        return CreatedAtAction(new { result.subjectDataId }.ToString(), result);
+        return CreatedAtAction(null, result);
     }
 
     [HttpPost]
@@ -119,6 +119,6 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> createTariff(TariffDataDto dto)
     {
         var result = await controller.createTariff(dto.toEntity());
-        return CreatedAtAction(new { result.tariffDataId }.ToString(), result);
+        return CreatedAtAction(null, result);
     }
 }
