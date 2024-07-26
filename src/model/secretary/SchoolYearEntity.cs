@@ -10,15 +10,15 @@ public class SchoolYearEntity
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<GradeEntity> gradeList { get; private set; }
-    public List<TariffEntity> tariffList { get; private set; }
+    public List<GradeEntity>? gradeList { get; private set; }
+    public List<TariffEntity>? tariffList { get; private set; }
     
     public void setGradeDataList(List<GradeDataEntity> list)
     {
         gradeList = [];
         foreach (var item in list)
         {
-            gradeList.Add(new GradeEntity(item, id));
+            gradeList.Add(new GradeEntity(item, id!));
         }
     }
 
@@ -32,7 +32,7 @@ public class SchoolYearEntity
                 item.dueDate = new DateOnly(int.Parse(label), item.dueDate.Value.Month, item.dueDate.Value.Day);   
             }
             
-            tariffList.Add(new TariffEntity(item, id));
+            tariffList.Add(new TariffEntity(item, id!));
         }
     }
 }

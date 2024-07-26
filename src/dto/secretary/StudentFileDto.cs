@@ -18,8 +18,13 @@ public class StudentFileDto : IBaseDto<StudentFileEntity>
     {
     }
 
-    public StudentFileDto(StudentFileEntity entity)
+    public StudentFileDto(StudentFileEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         fileId = entity.fileId;
         transferSheet = entity.transferSheet;
         birthDocument = entity.birthDocument;
