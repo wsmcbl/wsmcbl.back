@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.controller.service;
 using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
@@ -45,9 +46,10 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     [Route("documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
+        var s = new LatexCompiler(Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource"));
         using (var memoryStream = new MemoryStream())
-        {
-            await controller.getEnrollDocument(studentId, memoryStream);
+        { 
+            s.CompileLatexToPdf(studentId+".tex", memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);   
             return new FileStreamResult(memoryStream, "application/pdf");
         }

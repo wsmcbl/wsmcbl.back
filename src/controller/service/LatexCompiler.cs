@@ -12,7 +12,7 @@ public class LatexCompiler
         _resourcesFolder = resourcesFolder;
     }
     
-    public void CompileLatexToPdf(string latexFileName, Stream outputStream)
+    public void CompileLatexToPdf(string latexFileName, MemoryStream outputStream)
     {
         var latexFilePath = Path.Combine(_resourcesFolder, latexFileName);
         var latexContent = File.ReadAllText(latexFilePath);
