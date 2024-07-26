@@ -5,6 +5,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -22,6 +23,78 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao;
 
+public class StudentFileDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentFileEntity, string>(context), IStudentFileDao
+{
+    public async Task updateAsync(StudentFileEntity entity)
+    {
+        var existingEntity = await getById(entity.fileId);
+        
+        if (existingEntity == null)
+        {
+            create(entity);
+        }
+        else
+        {
+            existingEntity.update(entity);
+        }
+    }
+
+}
+
+public class StudentTutorDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
+{
+    public async Task updateAsync(StudentTutorEntity entity)
+    {
+        var existingEntity = await getById(entity.tutorId);
+        
+        if (existingEntity == null)
+        {
+            create(entity);
+        }
+        else
+        {
+            existingEntity.update(entity);
+        }
+    }
+}
+
+public class StudentParentDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentParentEntity, string>(context), IStudentParentDao
+{
+    public async Task updateAsync(StudentParentEntity entity)
+    {
+        var existingEntity = await getById(entity.parentId);
+        
+        if (existingEntity == null)
+        {
+            create(entity);
+        }
+        else
+        {
+            existingEntity.update(entity);
+        }
+    }
+}
+
+public class StudentMeasurementsDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentMeasurementsEntity, string>(context), IStudentMeasurementsDao
+{
+    public async Task updateAsync(StudentMeasurementsEntity entity)
+    {
+        var existingEntity = await getById(entity.measurementId);
+        
+        if (existingEntity == null)
+        {
+            create(entity);
+        }
+        else
+        {
+            existingEntity.update(entity);
+        }
+    }
+}
 
 
 
@@ -32,7 +105,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         if (!entity.checkData())
         {
-            throw new IncorrectDataException("transaction");
+            throw new IncorrectDataBadRequestException("transaction");
         }
         
         entity.computeTotal();

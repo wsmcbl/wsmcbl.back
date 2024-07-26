@@ -13,8 +13,8 @@ public interface ICreateOfficialEnrollmentController
     public Task<List<SchoolYearEntity>> getSchoolYearList();
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
     public Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList);
-    public Task createTariff(TariffDataEntity tariff);
-    public Task createSubject(SubjectDataEntity subject);
+    public Task<TariffDataEntity> createTariff(TariffDataEntity tariff);
+    public Task<SubjectDataEntity> createSubject(SubjectDataEntity subject);
     public Task createEnrollments(string gradeId, int quantity);
     public Task updateEnrollment(EnrollmentEntity enrollment);
     

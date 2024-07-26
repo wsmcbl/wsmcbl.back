@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -12,26 +13,40 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        return await daoFactory.studentDao!.getById(studentId);
+        var result = await daoFactory.studentDao!.getByIdWithProperties(studentId);
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
+
+        return result;
     }
 
     public async Task<List<GradeEntity>> getGradeList()
     {
         return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
     }
-
+    
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        daoFactory.studentDao!.create(student);
+        await daoFactory.studentDao!.updateAsync(student);
+        await daoFactory.studentFileDao!.updateAsync(student.file!);
+        await daoFactory.studentTutorDao!.updateAsync(student.tutor!);
+        await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements!);
+        
+        foreach (var parent in student.parents!)
+        {
+            await daoFactory.studentParentDao!.updateAsync(parent);
+        }
         await daoFactory.execute();
 
         var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        var academyStudent = new model.academy.StudentEntity
-            .Builder(student.studentId!, enrollmentId)
+        var academyStudent = new model.academy.StudentEntity.Builder(student.studentId!, enrollmentId)
             .setSchoolyear(schoolYear.id!)
             .isNewEnroll()
             .build();
-        
+
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 

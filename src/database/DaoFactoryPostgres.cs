@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -12,7 +13,14 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
     public override async Task execute()
     {
-        await context.SaveChangesAsync();
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
+        }
     }
 
     public override void Detached<T>(T element)
@@ -80,4 +88,21 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     private model.accounting.IStudentDao? _accountingStudentDao;
     public override model.accounting.IStudentDao accountingStudentDao 
         => _accountingStudentDao ??= new AccountingStudentDaoPostgres(context);
+
+
+    private IStudentFileDao? _studentFileDao;
+    public override IStudentFileDao studentFileDao => _studentFileDao ??= new StudentFileDaoPostgres(context);
+    
+    
+    private IStudentTutorDao? _studentTutorDao;
+    public override IStudentTutorDao? studentTutorDao => _studentTutorDao ??= new StudentTutorDaoPostgres(context);
+    
+    
+    private IStudentParentDao? _studentParentDao;
+    public override IStudentParentDao studentParentDao => _studentParentDao ??= new StudentParentDaoPostgres(context);
+    
+    
+    private IStudentMeasurementsDao? _studentMeasurementsDao;
+    public override IStudentMeasurementsDao studentMeasurementsDao 
+        => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
 }
