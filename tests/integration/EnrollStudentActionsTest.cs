@@ -49,8 +49,7 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
     [Fact]
     public async Task getStudentList_ShouldReturnJsonWithList_WhenCalled()
     {
-        const string uri = "/v1/secretary/enrollments/students";
-        await assertListWithOut<BasicStudentToEnrollDto>($"{uri}/grades");
+        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/grades");
     }
     
     
