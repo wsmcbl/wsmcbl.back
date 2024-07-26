@@ -8,14 +8,7 @@ namespace wsmcbl.src.database;
 public class StudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
-    public async Task updateAsync(StudentEntity entity)
-    {
-        var existingStudent = await getById(entity.studentId!);
-        existingStudent!.update(entity);
-        update(existingStudent);
-    }
-
-    public new async Task<StudentEntity?> getById(string id)
+    public async Task<StudentEntity> getByIdWithProperties(string id)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.studentId == id);
 
@@ -24,14 +17,22 @@ public class StudentDaoPostgres(PostgresContext context)
             throw new EntityNotFoundException("Student", id);
         }
 
-        result.tutor = await context.Set<StudentTutorEntity>().FirstOrDefaultAsync(e => e.studentId == id);
-
-        result.measurements = await context.Set<StudentMeasurementsEntity>()
+        result.tutor = await context.Set<StudentTutorEntity>()
+            .AsNoTracking()
             .FirstOrDefaultAsync(e => e.studentId == id);
 
-        result.file = await context.Set<StudentFileEntity>().FirstOrDefaultAsync(e => e.studentId == id);
+        result.measurements = await context.Set<StudentMeasurementsEntity>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.studentId == id);
 
-        result.parents = await context.Set<StudentParentEntity>().Where(e => e.studentId == id).ToListAsync();
+        result.file = await context.Set<StudentFileEntity>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.studentId == id);
+
+        result.parents = await context.Set<StudentParentEntity>()
+            .Where(e => e.studentId == id)
+            .AsNoTracking()
+            .ToListAsync();
 
         return result;
     }
@@ -59,5 +60,13 @@ public class StudentDaoPostgres(PostgresContext context)
         var list = await entities.FromSqlInterpolated(query).AsNoTracking().ToListAsync();
 
         return list;
+    }
+
+    public async Task updateAsync(StudentEntity entity)
+    {
+        var existingStudent = await getById(entity.studentId!);
+        existingStudent!.update(entity);
+        
+        update(existingStudent);
     }
 }
