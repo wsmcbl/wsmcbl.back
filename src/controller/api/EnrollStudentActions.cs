@@ -22,7 +22,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
-        return Ok(result);
+        return Ok(result.mapToDto());
     }
 
     [HttpGet]
