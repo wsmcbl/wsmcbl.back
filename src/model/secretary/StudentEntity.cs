@@ -30,8 +30,8 @@ public class StudentEntity
         isActive = true;
         schoolYear = "";
     }
-    
-    public void updateData(StudentEntity entity)
+
+    public void update(StudentEntity entity)
     {
         name = entity.name;
         secondName = entity.secondName;
@@ -40,13 +40,8 @@ public class StudentEntity
         isActive = entity.isActive;
         sex = entity.sex;
         birthday = entity.birthday;
-        religion = entity.religion;
         diseases = entity.diseases;
-    }
-
-    public void update(StudentEntity entity)
-    {
-        throw new NotImplementedException();
+        religion = entity.religion;
     }
     
     public class Builder
@@ -135,22 +130,22 @@ public class StudentEntity
 
         public Builder setFile(StudentFileEntity file)
         {
+            file.studentId = entity.studentId!;
             entity.file = file;
-            entity.file.fileId = "1223";
             return this;
         }
 
         public Builder setTutor(StudentTutorEntity tutor)
         {
+            tutor.studentId = entity.studentId!;
             entity.tutor = tutor;
-            entity.tutor.tutorId = "asdf";
             return this;
         }
 
         public Builder setMeasurements(StudentMeasurementsEntity studentMeasurements)
         {
+            studentMeasurements.studentId = entity.studentId!;
             entity.measurements = studentMeasurements;
-            entity.measurements.measurementId = "asasfa";
             return this;
         }
 
@@ -158,7 +153,7 @@ public class StudentEntity
         {
             foreach (var item in parents)
             {
-                item.parentId = item.idCard;
+                item.studentId = entity.studentId!;
             }
             
             entity.parents = parents;

@@ -13,6 +13,11 @@ public class StudentFileEntity
 
     public void update(StudentFileEntity entity)
     {
-        throw new NotImplementedException();
+        transferSheet = entity.transferSheet;
+        birthDocument = entity.birthDocument;
+        parentIdentifier = entity.parentIdentifier;
+        updatedGradeReport = entity.updatedGradeReport;
+        conductDocument = entity.conductDocument;
+        financialSolvency = entity.financialSolvency;
     }
 }

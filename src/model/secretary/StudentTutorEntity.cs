@@ -11,14 +11,16 @@ public class StudentTutorEntity
     {
     }
 
-    public StudentTutorEntity(string name, string phone)
+    public StudentTutorEntity(string tutorId, string name, string phone)
     {
+        this.tutorId = tutorId;
         this.name = name;
         this.phone = phone;
     }
 
     public void update(StudentTutorEntity entity)
     {
-        throw new NotImplementedException();
+        name = entity.name;
+        phone = entity.phone;
     }
 }

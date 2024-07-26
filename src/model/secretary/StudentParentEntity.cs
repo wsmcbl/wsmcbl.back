@@ -13,6 +13,11 @@ public class StudentParentEntity
 
     public void update(StudentParentEntity entity)
     {
-        throw new NotImplementedException();
+        sex = entity.sex;
+        name = entity.name;
+        address = entity.address;
+        idCard = entity.idCard;
+        phone = entity.phone;
+        occupation = entity.occupation;
     }
 }

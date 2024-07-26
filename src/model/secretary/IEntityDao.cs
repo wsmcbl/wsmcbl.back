@@ -11,13 +11,11 @@ public interface IGradeDao : IGenericDao<GradeEntity, string>
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
     public Task<SchoolYearEntity> getNewSchoolYear();
-    public Task<SchoolYearEntity> getSchoolYearByLabel(int year);
 }
 
-public interface IStudentDao : IGenericDao<StudentEntity, string>
+public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
     public Task<List<StudentEntity>> getAllWithSolvency();
-    public Task updateAsync(StudentEntity entity);
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, string>,
