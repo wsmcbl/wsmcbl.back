@@ -13,7 +13,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var result = await daoFactory.studentDao!.getById(studentId);
+        var result = await daoFactory.studentDao!.getByIdWithProperties(studentId);
 
         if (result == null)
         {

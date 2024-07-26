@@ -16,6 +16,7 @@ public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
     public Task<List<StudentEntity>> getAllWithSolvency();
+    public Task<StudentEntity> getByIdWithProperties(string id);
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, string>,
@@ -34,7 +35,7 @@ public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
 
 
 
-public interface IStudentElement<T> 
+public interface IStudentElement<in T>
 {
     public Task updateAsync(T entity);
 }
