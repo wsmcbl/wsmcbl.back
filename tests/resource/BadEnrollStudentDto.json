@@ -1,0 +1,49 @@
+{
+  "enrollmentId": null,
+  "student": {
+    "studentId": "string",
+    "name": "string",
+    "secondName": "string",
+    "surname": "string",
+    "secondSurname": "string",
+    "isActive": true,
+    "sex": true,
+    "birthday": {
+      "year": 0,
+      "month": 0,
+      "day": 0
+    },
+    "religion": "string",
+    "diseases": "string",
+    "parents": [
+      {
+        "parentId": "string",
+        "sex": true,
+        "name": "string",
+        "address": "string",
+        "idCard": "string",
+        "phone": "string",
+        "occupation": "string"
+      }
+    ],
+    "tutor": {
+      "tutorId": "string",
+      "name": "string",
+      "phone": "string"
+    },
+    "measurements": {
+      "measurementId": "string",
+      "height": 0,
+      "weight": 0
+    },
+    "file": {
+      "fileId": "string",
+      "transferSheet": true,
+      "birthDocument": true,
+      "parentIdentifier": true,
+      "updatedGradeReport": true,
+      "conductDocument": true,
+      "financialSolvency": true
+    }
+  }
+}
