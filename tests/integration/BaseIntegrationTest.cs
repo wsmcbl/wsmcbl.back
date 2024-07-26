@@ -17,4 +17,6 @@ public abstract class BaseIntegrationTest : IClassFixture<WebApplicationFactory<
     {
         return new StringContent(JsonConvert.SerializeObject(entity), System.Text.Encoding.UTF8, "application/json");
     }
+
+    protected static T? deserialize<T>(string content) => JsonConvert.DeserializeObject<T>(content);
 }

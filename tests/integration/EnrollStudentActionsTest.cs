@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.tests.integration;
@@ -17,5 +19,12 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
         
         response.EnsureSuccessStatusCode();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+        
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(content);
+
+        var students = JsonConvert.DeserializeObject<List<BasicStudentToEnrollDto>>(content);
+        Assert.NotNull(students);
+        Assert.True(students.Count > 0);
     }
 }
