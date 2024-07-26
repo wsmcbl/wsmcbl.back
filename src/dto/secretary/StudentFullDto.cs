@@ -39,6 +39,15 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         birthday = new DateOnlyDto(student.birthday);
         religion = student.religion;
         diseases = student.diseases;
+        tutor = student.tutor.mapToDto();
+        file = student.file.mapToDto();
+        measurements = student.measurements.mapToDto();
+
+        parents = new List<StudentParentDto>();
+        foreach (var item in student.parents)
+        {
+            parents.Add(item.mapToDto());
+        }
     }
     
     public StudentEntity toEntity()

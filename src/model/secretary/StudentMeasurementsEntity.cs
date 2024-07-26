@@ -9,9 +9,16 @@ public class StudentMeasurementsEntity
 
     public StudentMeasurementsEntity(){}
 
-    public StudentMeasurementsEntity(double weight, int height)
+    public StudentMeasurementsEntity(string measurementId, double weight, int height)
     {
+        this.measurementId = measurementId;
         this.weight = weight;
         this.height = height;
+    }
+
+    public void update(StudentMeasurementsEntity entity)
+    {
+        weight = entity.weight;
+        height = entity.height;
     }
 }

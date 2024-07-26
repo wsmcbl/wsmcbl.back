@@ -10,4 +10,14 @@ public class StudentParentEntity
     public string? idCard { get; set; }
     public string? phone { get; set; }
     public string? occupation { get; set; }
+
+    public void update(StudentParentEntity entity)
+    {
+        sex = entity.sex;
+        name = entity.name;
+        address = entity.address;
+        idCard = entity.idCard;
+        phone = entity.phone;
+        occupation = entity.occupation;
+    }
 }
