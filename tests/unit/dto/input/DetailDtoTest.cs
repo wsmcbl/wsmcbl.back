@@ -12,7 +12,7 @@ public class DetailDtoTest
         var result = sut.toEntity();
         
         Assert.NotNull(result);
-        Assert.True(result.tariffId != 0);
+        Assert.NotEqual(0, result.tariffId);
         Assert.True(result.amount > 0);
     }
 }
