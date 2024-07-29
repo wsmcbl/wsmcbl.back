@@ -49,7 +49,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
         var s = new LatexCompiler(Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource"));
         using (var memoryStream = new MemoryStream())
         { 
-            s.CompileLatexToPdf(studentId+".tex", memoryStream);
+            s.CompileLatexToPdf(studentId+".texe", memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);   
             return new FileStreamResult(memoryStream, "application/pdf");
         }

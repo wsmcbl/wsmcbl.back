@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.controller.service;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.middleware;
@@ -26,6 +27,15 @@ builder.Services.AddTransient<IPrintDocumentsController, PrintDocumentsControlle
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
+
+
+builder.Services.AddSingleton(new TemplateProcessor(Path
+    .Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource")));
+builder.Services.AddSingleton(new PdfGenerator("/usr/bin/pdflatex"));
+builder.Services.AddSingleton(new TemplateManager(
+    Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource"),
+    Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource/out")
+    ));
 
 var app = builder.Build();
 
