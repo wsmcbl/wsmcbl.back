@@ -2,11 +2,11 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service;
 
-public class ReportCardLatexBuilder : LatexBuilder
+public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
     private readonly StudentEntity entity;
-    public ReportCardLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
+    public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
         this.entity = entity;
     }
@@ -15,7 +15,7 @@ public class ReportCardLatexBuilder : LatexBuilder
     {
         this.grade = grade;
     }
-    protected override string getTemplateName() => "report-card";
+    protected override string getTemplateName() => "enroll-sheet";
 
     protected override string updateContent(string content)
     {
@@ -32,7 +32,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.Replace($"\\diseases", entity.diseases);
         content = content.Replace($"\\phones", entity.tutor.phone);
         content = content.Replace($"\\religion", entity.religion);
-        content = content.Replace($"\\address", "Su dirección (no implementado en bd)");
+        content = content.Replace($"\\address", entity.parents.First().address);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file);
