@@ -11,17 +11,19 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     [Required] public string? secondSurname { get; set; }
-    [JsonRequired] public bool isActive { get; set; }
     [JsonRequired] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
     [Required] public string religion { get; set; } = null!;
     [Required] public string? diseases { get; set; }
+    
+    [Required] public string address { get; set; } = null!;
+    [JsonRequired] public bool isActive { get; set; }
 
 
-    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
-    [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
-    [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
+    [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
+    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
+    [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
 
     public StudentFullDto()
     {
@@ -42,6 +44,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         tutor = student.tutor.mapToDto();
         file = student.file.mapToDto();
         measurements = student.measurements.mapToDto();
+        address = student.address;
 
         if (student.parents != null)
         {
@@ -66,6 +69,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())
+            .setAddres(address)
             .build();
     }
 }
