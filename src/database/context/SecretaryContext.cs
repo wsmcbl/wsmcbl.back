@@ -79,6 +79,7 @@ internal class SecretaryContext
             entity.Property(e => e.isActive).HasColumnName("studentstate");
             entity.Property(e => e.diseases).HasColumnName("diseases");
             entity.Property(e => e.religion).HasColumnName("religion");
+            entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
             
             entity.HasOne(d => d.file).WithOne()
                 .HasForeignKey<StudentEntity>(d => d.studentId)
@@ -135,11 +136,9 @@ internal class SecretaryContext
             entity.ToTable("studentparent", "secretary");
 
             entity.Property(e => e.parentId).HasMaxLength(15).HasColumnName("parentid");
-            entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
-            entity.Property(e => e.idCard).HasMaxLength(15).HasColumnName("idcard");
+            entity.Property(e => e.idCard).HasMaxLength(25).HasColumnName("idcard");
             entity.Property(e => e.name).HasMaxLength(70).HasColumnName("name");
             entity.Property(e => e.occupation).HasMaxLength(30).HasColumnName("occupation");
-            entity.Property(e => e.phone).HasMaxLength(12).HasColumnName("phone");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.sex).HasColumnName("sex");
         });

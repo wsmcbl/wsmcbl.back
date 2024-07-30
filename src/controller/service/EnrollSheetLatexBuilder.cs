@@ -36,7 +36,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"\\diseases", entity.diseases);
         content = content.Replace($"\\phones", entity.tutor.phone);
         content = content.Replace($"\\religion", entity.religion);
-        content = content.Replace($"\\address", entity.parents.First().address);
+        content = content.Replace($"\\address", entity.address);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file);
