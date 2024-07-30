@@ -31,9 +31,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
         await daoFactory.studentDao!.updateAsync(student);
-        await daoFactory.studentFileDao!.updateAsync(student.file!);
-        await daoFactory.studentTutorDao!.updateAsync(student.tutor!);
-        await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements!);
+        await daoFactory.studentFileDao!.updateAsync(student.file);
+        await daoFactory.studentTutorDao!.updateAsync(student.tutor);
+        await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);
         
         foreach (var parent in student.parents!)
         {
