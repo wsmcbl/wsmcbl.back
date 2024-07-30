@@ -12,6 +12,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         this.templatesPath = templatesPath;
         this.entity = entity;
+        isRepetitive = false;
     }
 
     public void setGrade(string grade)
@@ -26,7 +27,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
         content = content.Replace($"\\name", entity.fullName());
         content = content.Replace($"\\grade", grade);
-        content = content.Replace($"\\is.repetitive", getTextByBool(entity.isActive));
+        content = content.Replace($"\\is.repetitive", getTextByBool(isRepetitive));
         content = content.Replace($"\\age", getAge(entity.birthday));
         content = content.Replace($"\\sex", getTextBySex(entity.sex));
         content = content.Replace($"\\birthday.day", entity.birthday.Day.ToString());
@@ -46,7 +47,9 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         
         return content;
     }
-    
+
+    public bool isRepetitive { get; set; }
+
     private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
     {
         if (entityParents == null)
