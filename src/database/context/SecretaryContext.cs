@@ -80,22 +80,11 @@ internal class SecretaryContext
             entity.Property(e => e.diseases).HasColumnName("diseases");
             entity.Property(e => e.religion).HasColumnName("religion");
             entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
-            
-            entity.HasOne(d => d.file).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            
-            entity.HasOne(d => d.tutor).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            
-            entity.HasOne(d => d.measurements).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            
-            entity.HasMany(d => d.parents).WithOne()
-                .HasForeignKey(d => d.studentId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.Ignore(e => e.file);
+            entity.Ignore(e => e.tutor);
+            entity.Ignore(e => e.parents);
+            entity.Ignore(e => e.measurements);
         });
 
         modelBuilder.Entity<StudentFileEntity>(entity =>
