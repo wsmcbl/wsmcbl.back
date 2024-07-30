@@ -22,7 +22,7 @@ public static class DtoMapper
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     public static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
-    public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity measurements) => new(measurements);
+    public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
     
     public static GradeToCreateDto mapToDto(this GradeEntity grade) => new(grade);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
