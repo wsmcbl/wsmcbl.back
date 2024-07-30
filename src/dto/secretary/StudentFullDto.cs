@@ -69,7 +69,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())
-            .setAddres(address)
+            .setAddress(address)
             .build();
     }
 }
