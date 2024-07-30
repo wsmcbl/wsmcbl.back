@@ -14,7 +14,7 @@ public class BasicStudentToEnrollDto
     
     public BasicStudentToEnrollDto(StudentEntity student)
     {
-        studentId = student.studentId;
+        studentId = student.studentId!;
         fullName = student.fullName();
         schoolyear = student.schoolYear;
     }

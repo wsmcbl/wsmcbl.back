@@ -11,14 +11,14 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!;
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
-    public string? religion { get; set; }
+    public string religion { get; set; } = null!;
     public string? diseases { get; set; } 
     
     
     public ICollection<StudentParentEntity>? parents { get; set; }
-    public StudentTutorEntity? tutor { get; set; }
-    public StudentMeasurementsEntity? measurements { get; set; }
-    public StudentFileEntity? file { get; set; }
+    public StudentTutorEntity tutor { get; set; } = null!;
+    public StudentMeasurementsEntity measurements { get; set; } = null!;
+    public StudentFileEntity file { get; set; } = null!;
 
     public string fullName()
     {
@@ -50,14 +50,14 @@ public class StudentEntity
 
         public Builder()
         {
-            entity = new StudentEntity();
-            
-            entity.parents = [];
-            entity.file = new StudentFileEntity();
-            entity.tutor = new StudentTutorEntity();
-            entity.measurements = new StudentMeasurementsEntity();
-
-            entity.schoolYear = "";
+            entity = new StudentEntity
+            {
+                parents = [],
+                file = new StudentFileEntity(),
+                tutor = new StudentTutorEntity(),
+                measurements = new StudentMeasurementsEntity(),
+                schoolYear = ""
+            };
         }
 
         public StudentEntity build() => entity;
@@ -122,7 +122,7 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setDiseases(string diseases)
+        public Builder setDiseases(string? diseases)
         {
             entity.diseases = diseases;
             return this;

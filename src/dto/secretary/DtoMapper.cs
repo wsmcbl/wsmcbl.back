@@ -8,13 +8,18 @@ namespace wsmcbl.src.dto.secretary;
 
 public static class DtoMapper
 {
-    public static List<StudentParentEntity> toEntity(this IEnumerable<StudentParentDto> list)
+    public static List<StudentParentEntity> toEntity(this IEnumerable<StudentParentDto>? list)
     {
+        if (list == null)
+        {
+            return [];
+        }
+        
         return list.Select(item => item.toEntity()).ToList();
     }
     
     public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
-    public static StudentFileDto mapToDto(this StudentFileEntity file) => new(file);
+    public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     public static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity measurements) => new(measurements);
