@@ -6,8 +6,11 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
     private readonly StudentEntity entity;
+    private readonly string templatesPath;
+    
     public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
+        this.templatesPath = templatesPath;
         this.entity = entity;
     }
 
@@ -19,6 +22,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
     protected override string updateContent(string content)
     {
+        content = content.Replace($"\\cbl-logo-wb", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
         content = content.Replace($"\\name", entity.fullName());
         content = content.Replace($"\\grade", grade);
