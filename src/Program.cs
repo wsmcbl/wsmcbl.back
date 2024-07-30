@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
-using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
@@ -22,7 +21,6 @@ builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(buil
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<ValidateModelFilterAttribute>();
 
-builder.Services.AddTransient<IPrintDocumentsController, PrintDocumentsController>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
@@ -38,4 +36,4 @@ app.MapControllers();
 app.UseHttpsRedirection();
 await app.RunAsync();
 
-public partial class Program { }
+public abstract partial class Program;

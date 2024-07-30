@@ -49,7 +49,7 @@ public class StudentDaoPostgres(PostgresContext context)
 
         if (tariff == null)
         {
-            throw new EntityNotFoundException("tariff", "(type) 10");
+            throw new EntityNotFoundException("tariff", "(type) 4");
         }
 
         FormattableString query =

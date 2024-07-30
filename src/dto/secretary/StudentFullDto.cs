@@ -12,13 +12,13 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string surname { get; set; } = null!;
     [Required] public string? secondSurname { get; set; }
     [JsonRequired] public bool isActive { get; set; }
-    [Required] public bool sex { get; set; }
+    [JsonRequired] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
-    [Required] public string religion { get; set; }
-    [Required] public string diseases { get; set; } 
+    [Required] public string religion { get; set; } = null!;
+    [Required] public string? diseases { get; set; }
 
 
-    [JsonRequired] public List<StudentParentDto> parents { get; set; }
+    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
     [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
     [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
@@ -29,7 +29,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
 
     public StudentFullDto(StudentEntity student)
     {
-        studentId = student.studentId;
+        studentId = student.studentId!;
         name = student.name;
         secondName = student.secondName;
         surname = student.surname;
@@ -43,10 +43,9 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         file = student.file.mapToDto();
         measurements = student.measurements.mapToDto();
 
-        parents = new List<StudentParentDto>();
-        foreach (var item in student.parents)
+        if (student.parents != null)
         {
-            parents.Add(item.mapToDto());
+            parents = student.parents.Select(e => e.mapToDto()).ToList();
         }
     }
     

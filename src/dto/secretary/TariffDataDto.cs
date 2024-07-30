@@ -10,7 +10,7 @@ public class TariffDataDto : IBaseDto<TariffDataEntity>
     [JsonRequired] public float amount { get; set; }
     public DateOnlyDto? dueDate { get; set; }
     [JsonRequired] public int typeId { get; set; }
-    [Required] public int modality { get; set; }
+    [JsonRequired] public int modality { get; set; }
     
     public TariffDataEntity toEntity()
     {

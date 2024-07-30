@@ -5,8 +5,8 @@ namespace wsmcbl.src.dto.secretary;
 
 public class BasicSchoolYearDto
 {
-    [Required] public string schoolYearId { get; set; }
-    [Required] public string label { get; set; }
+    [Required] public string schoolYearId { get; set; } = null!;
+    [Required] public string label { get; set; } = null!;
     [Required] public DateOnly startDate { get; set; }
     [Required] public DateOnly deadLine { get; set; }
     [Required] public bool isActive { get; set; }
@@ -17,7 +17,7 @@ public class BasicSchoolYearDto
 
     public BasicSchoolYearDto(SchoolYearEntity schoolYear)
     {
-        schoolYearId = schoolYear.id;
+        schoolYearId = schoolYear.id!;
         label = schoolYear.label;
         isActive = schoolYear.isActive;
         startDate = schoolYear.startDate;
