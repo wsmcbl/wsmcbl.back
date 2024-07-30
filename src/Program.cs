@@ -28,14 +28,9 @@ builder.Services.AddTransient<ICollectTariffController, CollectTariffController>
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
 
-
-builder.Services.AddSingleton(new TemplateProcessor(Path
-    .Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource")));
-builder.Services.AddSingleton(new PdfGenerator("/usr/bin/pdflatex"));
-builder.Services.AddSingleton(new TemplateManager(
-    Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource"),
-    Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource/out")
-    ));
+var resource = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "resource"); 
+builder.Services.AddSingleton(new TemplateManager(resource, $"{resource}/out"));
+//builder.Services.AddSingleton<ILatexBuilder>(new ReportCardLatexBuilder(resource, $"{resource}/out"));
 
 var app = builder.Build();
 

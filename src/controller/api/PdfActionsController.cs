@@ -4,14 +4,16 @@ using wsmcbl.src.controller.service;
 namespace wsmcbl.src.controller.api;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class PdfActionsController : ControllerBase
 {
     private readonly TemplateManager _templateManager;
+    private readonly ILatexBuilder<object> _latexBuilder;
 
-    public PdfActionsController(TemplateManager templateManager)
+    public PdfActionsController(TemplateManager templateManager, ILatexBuilder<object> latexBuilder)
     {
         _templateManager = templateManager;
+        _latexBuilder = latexBuilder;
     }
 
     [HttpGet("{templateName}")]

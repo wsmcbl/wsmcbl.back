@@ -53,9 +53,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return student;
     }
 
-    public async Task getEnrollDocument(string studentId, MemoryStream stream)
+    public async Task<byte[]> getEnrollDocument(string studentId)
     {
         var printController = new PrintDocumentsController(daoFactory);
-        await printController.getEnrollDocument(studentId, stream);
+        return await printController.getEnrollDocument(studentId);
     }
 }

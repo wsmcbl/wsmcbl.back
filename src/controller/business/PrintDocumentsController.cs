@@ -1,21 +1,24 @@
 using wsmcbl.src.controller.service;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
 public class PrintDocumentsController : BaseController, IPrintDocumentsController
 {
-    private readonly LatexCompiler _latexCompiler;
-    
     public PrintDocumentsController(DaoFactory daoFactory) : base(daoFactory)
     {
-        _latexCompiler = new LatexCompiler(
-            Path.Combine(AppContext.BaseDirectory,AppContext.BaseDirectory, "..","..", "..", "resource"));
     }
 
-    public async Task getEnrollDocument(string studentId, MemoryStream stream)
+    public async Task<byte[]> getEnrollDocument(string studentId)
     {
-        var result = await daoFactory.studentDao.getById("2024-0001-kjtc");
-        _latexCompiler.CompileLatexToPdf($"{studentId}.tex", stream);
+        var student = await daoFactory.studentDao!.getByIdWithProperties(studentId);
+        
+        var _latexBuilder = new ReportCardLatexBuilder("", "");
+        _latexBuilder.build(student);
+        
+        var pdfBuilder = new PdfBuilder<StudentEntity>(_latexBuilder);
+        
+        return pdfBuilder.build().getPdf();
     }
 }
