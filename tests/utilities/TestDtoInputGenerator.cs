@@ -124,18 +124,4 @@ public static class TestDtoInputGenerator
             semester = 3
         };
     }
-    
-    public static StudentDto aStudentDto()
-    {
-        return new StudentDto
-        {
-            name = "Juan",
-            secondName = "Pedro",
-            surname = "Peréz",
-            secondSurname = "Lopez",
-            sex = true,
-            birthday = new DateOnlyDto(2024,1,1),
-            tutor = "Pedro López"
-        };
-    }
 }

@@ -16,10 +16,10 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!; 
     
     
-    public StudentFileEntity file { get; set; } = null!;
+    public StudentFileEntity? file { get; set; }
     public StudentTutorEntity tutor { get; set; } = null!;
-    public ICollection<StudentParentEntity>? parents { get; set; }
-    public StudentMeasurementsEntity measurements { get; set; } = null!;
+    public List<StudentParentEntity>? parents { get; set; }
+    public StudentMeasurementsEntity? measurements { get; set; }
 
     public string fullName()
     {
@@ -155,7 +155,7 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setAddres(string address)
+        public Builder setAddress(string address)
         {
             entity.address = address;
             return this;

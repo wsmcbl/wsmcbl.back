@@ -47,7 +47,7 @@ public class StudentTutorDaoPostgres(PostgresContext context)
 {
     public async Task updateAsync(StudentTutorEntity entity)
     {
-        var existingEntity = await getById(entity.tutorId);
+        var existingEntity = await getById(entity.tutorId!);
         
         if (existingEntity == null)
         {
