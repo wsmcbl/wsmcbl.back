@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using wsmcbl.src.model.secretary;
 
@@ -6,7 +5,7 @@ namespace wsmcbl.src.dto.secretary;
 
 public class StudentMeasurementsDto : IBaseDto<StudentMeasurementsEntity>
 {
-    [Required] public string measurementId { get; set; } = null!;
+    [JsonRequired] public int measurementId { get; set; }
     [JsonRequired] public int height { get; set; }
     [JsonRequired] public double weight { get; set; }
 

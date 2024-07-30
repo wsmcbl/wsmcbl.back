@@ -46,6 +46,6 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId);
-        return Ok(File(result, "a.pdf"));
+        return File(result, "application/pdf", $"{studentId}.enroll-sheet.pdf");
     }
 }

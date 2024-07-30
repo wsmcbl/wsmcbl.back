@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage[spanish]{babel}
+\usepackage[charter]{mathdesign}
+\usepackage[margin=2cm]{geometry}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\headsep}{3mm}
+
+\pagestyle{plain}
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+\newcommand{\aField}[1]{\uline{\hspace{2mm} #1 \hfill}}
+
+\newcommand{\lineSlimStretch}{\singlespacing}
+\newcommand{\lineStretch}{\setstretch{1.5}}
+
+\begin{document}
+
+    \begin{minipage}[c][2.5cm]{0.2\textwidth}
+        \includegraphics[width=2.5cm]{\cbl-logo-wb}
+    \end{minipage}
+    \begin{minipage}[c][2.5cm]{0.6\textwidth}
+        \begin{center}
+            \lineSlimStretch
+            \textbf{COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
+        \end{center}
+    \end{minipage}
+    
+    \lineStretch
+    \hfill Fecha: \date
+    
+    \aLine{NOMBRE DE ALUMNO: \aField{\name}}
+    \aLine{GRADO: \aField{\grade} REPITENTE: \aField{\is.repetitive}  EDAD: \aField{\age años}  SEXO: \aField{\sex}}
+    \aLine{FECHA DE NACIMIENTO: DIA: \aField{\birthday.day} MES: \aField{\birthday.month} AÑO: \aField{\birthday.year}}
+    
+    \aLine{NOMBRE DEL PADRE: \aField{\father.name}}
+    \aLine{NÚMERO DE CEDULA: \aField{\father.idcard}}
+    \aLine{OCUPACIÓN: \aField{\father.occupation}}
+
+    \aLine{NOMBRE DE LA MADRE: \aField{\mother.name}}
+    \aLine{NÚMERO DE CEDULA: \aField{\mother.idcard}}
+    \aLine{OCUPACIÓN: \aField{\mother.occupation}}
+    
+    \aLine{RESPONSABLE O TUTOR: \aField{\tutor}}
+    \aLine{PADECIMIENTOS: \aField{\diseases}}
+    \aLine{TELEFONOS: \aField{\phones}}
+    
+    \lineSlimStretch
+    \aLine{RELIGIÓN O CONGREGACIÓN: \aField{\religion} SE DEBERÁ CUMPLIR}
+    CON LOS PRINCIPIOS BIBLICOS DE ESTA INSTITUCIÓN.
+    \lineStretch
+    
+    \aLine{DIRECCION DOMICILIAR: \aField{\address}}
+
+    \lineSlimStretch
+    \textbf{NOTA:} ME COMPROMETO A PAGAR A LOS 5 DÍAS DE CADA MES, DE LO CONTRARIO PAGARÉ EL \uline{\textbf{10\%}} DE MORA.
+    SE DEBERÁ PAGAR LOS DOCES MESES DEL AÑO MAS 13vo MES.
+    SUS HIJOS ASISTIRAN UNA VEZ AL MES A LA ESCUELA BIBLICA DOMINICAL.
+    INFORMAR CUANDO EL ESTUDIANTE SEA RETIRADO DEL COLEGIO.
+
+    \lineStretch
+    DOCUMENTOS RECIBIDOS
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|p{2cm}|p{2.3cm}|p{2.5cm}|p{2.8cm}|p{2.5cm}|p{2.5cm}|}
+            \hline
+            Hoja de Traslado &
+            Partida de Nacimiento &
+            Cedula de los Tutores &
+            Boletín \current.year actualizado &
+            Constancia de Conducta &
+            Solvencia financiera\\
+            \hline
+            \transfer.sheet &
+            \birth.document &
+            \parent.idcard &
+            \updated.grade.report &
+            \conduct.document &
+            \financial.solvency\\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \aLine{FIRMA DE PADRE O RESPONSABLE: \aField{}}
+\end{document}

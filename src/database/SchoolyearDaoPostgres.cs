@@ -45,5 +45,5 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
 
-    private static int getNewSchoolyear() => DateTime.Today.Month > 4 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+    private static int getNewSchoolyear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
 }

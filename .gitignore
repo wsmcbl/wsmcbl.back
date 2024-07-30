@@ -9,5 +9,6 @@ src/Properties/
 
 Migrations/
 
+*.pdf
 *.user
 coverage.xml
