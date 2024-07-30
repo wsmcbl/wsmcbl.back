@@ -2,49 +2,20 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service;
 
-public class ReportCardLatexBuilder : ILatexBuilder<StudentEntity>
+public class ReportCardLatexBuilder : LatexBuilder
 {
-    private readonly string outputPath;
-    private readonly string templatesPath;
-    private string? filePath;
-    private string? fileName;
-
-    public ReportCardLatexBuilder(string templatesPath, string outputPath)
+    private readonly StudentEntity entity;
+    public ReportCardLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
-        this.outputPath = outputPath;
-        this.templatesPath = templatesPath;
+        this.entity = entity;
     }
 
-    public string getOutPath() => outputPath;
-    public string getFilePath() => filePath!;
-    public string getFileName() => fileName!;
-    
-    public void build(string templateName, Dictionary<string, string> data)
+    protected override string getTemplateName() => "report-card";
+
+    protected override string updateContent(string content)
     {
-        var content = File.ReadAllText(Path.Combine(templatesPath, $"{templateName}.tex"));
-
-        foreach (var (key, value) in data)
-        {
-            content = content.Replace($"\\{key}", value);
-        }
-
-        fileName = $"{templateName}_output";
-        filePath = Path.Combine(outputPath, $"{fileName}.tex");
-        
-        File.WriteAllText(filePath, content);
-    }
-
-    public void build(StudentEntity entity)
-    {
-        var templateName = "report-card";
-        
-        var content = File.ReadAllText(Path.Combine(templatesPath, $"{templateName}.tex"));
-        
         content = content.Replace($"\\name", entity.fullName());
 
-        fileName = $"{templateName}_output";
-        filePath = Path.Combine(outputPath, $"{fileName}.tex");
-        
-        File.WriteAllText(filePath, content);
+        return content;
     }
 }

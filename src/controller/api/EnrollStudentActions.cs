@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.controller.service;
 using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
@@ -47,6 +46,6 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId);
-        return File(result, "application/pdf", "out.pdf");
+        return File(result, "application/pdf", $"{studentId}.report-card.pdf");
     }
 }

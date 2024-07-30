@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.controller.service;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
-using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
@@ -27,10 +25,6 @@ builder.Services.AddTransient<IPrintDocumentsController, PrintDocumentsControlle
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
-
-var resource = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "resource"); 
-builder.Services.AddSingleton(new TemplateManager(resource, $"{resource}/out"));
-//builder.Services.AddSingleton<ILatexBuilder>(new ReportCardLatexBuilder(resource, $"{resource}/out"));
 
 var app = builder.Build();
 

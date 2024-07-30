@@ -2,16 +2,16 @@ using System.Diagnostics;
 
 namespace wsmcbl.src.controller.service;
 
-public class PdfBuilder<T> where T : class
+public class PDFBuilder
 {
-    private readonly ILatexBuilder<T> latexBuilder;
+    private readonly LatexBuilder latexBuilder;
 
-    public PdfBuilder(ILatexBuilder<T> latexBuilder)
+    public PDFBuilder(LatexBuilder latexBuilder)
     {
         this.latexBuilder = latexBuilder;
     }
     
-    public PdfBuilder<T> build()
+    public PDFBuilder build()
     {
         var command = $"-interaction=nonstopmode -pdf" +
                       $" -output-directory=\"{latexBuilder.getOutPath()}\"" +
