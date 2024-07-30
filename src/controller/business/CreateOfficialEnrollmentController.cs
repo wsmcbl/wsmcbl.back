@@ -3,7 +3,6 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -116,23 +115,6 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     public async Task updateEnrollment(EnrollmentEntity enrollment)
     {
         daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
-    }
-
-    
-    
-    
-    
-    
-    public async Task<List<StudentEntity>> getStudentList()
-    {
-        return await daoFactory.studentDao!.getAll();
-    }
-
-    public async Task saveStudent(StudentEntity student)
-    {
-        student.init();
-        daoFactory.studentDao!.create(student);
         await daoFactory.execute();
     }
 }
