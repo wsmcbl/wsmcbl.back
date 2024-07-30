@@ -10,7 +10,7 @@ public class GradeEntity
     public int quantity { get; set; }
     public string modality { get; set; } = null!;
     
-    public ICollection<EnrollmentEntity> enrollments { get; set; }
+    public ICollection<EnrollmentEntity>? enrollments { get; set; }
     public ICollection<SubjectEntity> subjectList { get; set; }
     
     public GradeEntity()

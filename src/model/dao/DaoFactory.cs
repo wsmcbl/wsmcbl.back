@@ -31,4 +31,10 @@ public abstract class DaoFactory
     public virtual secretary.IStudentDao? studentDao => null;
     public virtual academy.IStudentDao? academyStudentDao => null;
     public virtual accounting.IStudentDao? accountingStudentDao => null;
+
+
+    public virtual IStudentFileDao? studentFileDao => null;
+    public virtual IStudentTutorDao? studentTutorDao => null;
+    public virtual IStudentParentDao? studentParentDao => null;
+    public virtual IStudentMeasurementsDao? studentMeasurementsDao => null;
 }

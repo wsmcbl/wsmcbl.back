@@ -8,12 +8,22 @@ namespace wsmcbl.src.dto.secretary;
 
 public static class DtoMapper
 {
-    public static List<StudentParentEntity> toEntity(this IEnumerable<StudentParentDto> list)
+    public static List<StudentParentEntity> toEntity(this IEnumerable<StudentParentDto>? list)
     {
+        if (list == null)
+        {
+            return [];
+        }
+        
         return list.Select(item => item.toEntity()).ToList();
     }
     
     public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
+    public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
+    public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
+    public static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
+    public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity measurements) => new(measurements);
+    
     public static GradeToCreateDto mapToDto(this GradeEntity grade) => new(grade);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
 
@@ -47,8 +57,7 @@ public static class DtoMapper
     public static List<GradeToCreateDto> mapListToDto(this IEnumerable<GradeEntity> grades)
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
     
-    private static GradeToCreateDto mapToNewSchoolyearDto(this GradeEntity grade)
-        => new GradeToCreateDto(grade);
+    private static GradeToCreateDto mapToNewSchoolyearDto(this GradeEntity grade) => new(grade);
     
     public static List<BasicGradeDto> mapListToBasicDto(this IEnumerable<GradeEntity> grades) 
         => grades.Select(e => e.mapToBasicDto()).ToList();

@@ -71,16 +71,18 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    public async Task createTariff(TariffDataEntity tariff)
+    public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
     {
         daoFactory.tariffDataDao!.create(tariff);
         await daoFactory.execute();
+        return tariff;
     }
 
-    public async Task createSubject(SubjectDataEntity subject)
+    public async Task<SubjectDataEntity> createSubject(SubjectDataEntity subject)
     {
         daoFactory.subjectDataDao!.create(subject);
         await daoFactory.execute();
+        return subject;
     }
 
     public async Task createEnrollments(string gradeId, int quantity)

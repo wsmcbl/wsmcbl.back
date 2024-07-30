@@ -79,17 +79,18 @@ internal class SecretaryContext
             entity.Property(e => e.isActive).HasColumnName("studentstate");
             entity.Property(e => e.diseases).HasColumnName("diseases");
             entity.Property(e => e.religion).HasColumnName("religion");
+            entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
             
-            entity.HasOne(d => d.file).WithMany()
-                .HasForeignKey(d => d.studentId)
+            entity.HasOne(d => d.file).WithOne()
+                .HasForeignKey<StudentEntity>(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             
-            entity.HasOne(d => d.tutor).WithMany()
-                .HasForeignKey(d => d.studentId)
+            entity.HasOne(d => d.tutor).WithOne()
+                .HasForeignKey<StudentEntity>(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             
-            entity.HasOne(d => d.measurements).WithMany()
-                .HasForeignKey(d => d.studentId)
+            entity.HasOne(d => d.measurements).WithOne()
+                .HasForeignKey<StudentEntity>(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             
             entity.HasMany(d => d.parents).WithOne()
@@ -103,7 +104,10 @@ internal class SecretaryContext
 
             entity.ToTable("studentfile", "secretary");
 
-            entity.Property(e => e.fileId).HasMaxLength(10).HasColumnName("fileid");
+            entity.Property(e => e.fileId).HasMaxLength(10)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("fileid");
+            
             entity.Property(e => e.birthDocument).HasColumnName("birthdocument");
             entity.Property(e => e.conductDocument).HasColumnName("conductdocument");
             entity.Property(e => e.financialSolvency).HasColumnName("financialsolvency");
@@ -132,11 +136,9 @@ internal class SecretaryContext
             entity.ToTable("studentparent", "secretary");
 
             entity.Property(e => e.parentId).HasMaxLength(15).HasColumnName("parentid");
-            entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
-            entity.Property(e => e.idCard).HasMaxLength(15).HasColumnName("idcard");
+            entity.Property(e => e.idCard).HasMaxLength(25).HasColumnName("idcard");
             entity.Property(e => e.name).HasMaxLength(70).HasColumnName("name");
             entity.Property(e => e.occupation).HasMaxLength(30).HasColumnName("occupation");
-            entity.Property(e => e.phone).HasMaxLength(12).HasColumnName("phone");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.sex).HasColumnName("sex");
         });

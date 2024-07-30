@@ -1,6 +1,3 @@
 namespace wsmcbl.src.utilities;
 
-public class PublicProgram : Program
-{
-    
-}
+public abstract class PublicProgram : Program;

@@ -57,7 +57,7 @@ public class CreateOfficialEnrollmentActionsTest
 
         var actionResult = await actions.createTariff(tariffDataDto);
 
-        Assert.IsType<OkResult>(actionResult);
+        Assert.IsType<CreatedAtActionResult>(actionResult);
     }
     
 
@@ -68,7 +68,7 @@ public class CreateOfficialEnrollmentActionsTest
 
         var actionResult = await actions.createSubject(subjectdDataDto);
 
-        Assert.IsType<OkResult>(actionResult);
+        Assert.IsType<CreatedAtActionResult>(actionResult);
     }
 
     [Fact]

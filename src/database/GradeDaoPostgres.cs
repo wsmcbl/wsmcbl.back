@@ -36,8 +36,8 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
         var currentSchoolyear = await dao.getSchoolYearByLabel(DateTime.Today.Year);
 
         var list = entities
-            .Where(e => e.schoolYear == currentSchoolyear.id)
-            .Include(e => e.enrollments);
+            .Include(e => e.enrollments)
+            .Where(e => e.schoolYear == currentSchoolyear.id);
 
         return await list.ToListAsync();
     }
