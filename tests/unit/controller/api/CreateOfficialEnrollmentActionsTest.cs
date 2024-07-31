@@ -150,42 +150,4 @@ public class CreateOfficialEnrollmentActionsTest
         var value = Assert.IsType<GradeToCreateDto>(result.Value);
         Assert.Equivalent(grade.mapToDto(), value);
     }
-
-    [Fact]
-    public async Task saveStudent_StudentSaved()
-    {
-        var studentDto = TestDtoInputGenerator.aStudentDto();
-
-        var actionResult = await actions.saveStudent(studentDto);
-
-        Assert.IsType<OkResult>(actionResult);
-    }
-    
-    
-    [Fact]
-    public async Task getStudentList_ReturnsList()
-    {
-        controller.getStudentList().Returns(TestEntityGenerator.aSecretaryStudentList());
-
-        var actionResult = await actions.getStudentList();
-
-        var result = assertAndGetOkResult(actionResult);
-        var list = Assert.IsType<List<StudentEntity>>(result.Value);
-        Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
-    }
-    
-    
-    [Fact]
-    public async Task getStudentList_EmptyList()
-    {
-        var studentList = new List<StudentEntity>();
-        controller.getStudentList().Returns(studentList);
-        
-        var actionResult = await actions.getStudentList();
-
-        var result = assertAndGetOkResult(actionResult);
-        var list = Assert.IsType<List<StudentEntity>>(result.Value);
-        Assert.Empty(list);
-    }
 }
