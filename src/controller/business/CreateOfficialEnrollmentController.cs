@@ -127,9 +127,19 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
         existingEntity.update(enrollment);
         daoFactory.enrollmentDao!.update(existingEntity);
-        
         await daoFactory.execute();
 
+        var list = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
+
+        foreach (var item in enrollment.subjectList!)
+        {
+            var subject = list.Find(e => e.subjectId == item.subjectId);
+
+            if (subject == null) continue;
+            subject.teacherId = item.teacherId;
+            daoFactory.subjectDao.update(subject);
+            await daoFactory.execute();
+        }
         return existingEntity;
     }
 

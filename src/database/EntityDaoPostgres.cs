@@ -6,6 +6,7 @@ using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
@@ -22,6 +23,16 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao;
+
+public class SubjectDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
+{
+    public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
+    {
+        return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .ToListAsync();
+    }
+}
 
 public class StudentFileDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentFileEntity, int>(context), IStudentFileDao

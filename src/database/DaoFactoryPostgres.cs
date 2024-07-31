@@ -105,4 +105,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     private IStudentMeasurementsDao? _studentMeasurementsDao;
     public override IStudentMeasurementsDao studentMeasurementsDao 
         => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
+
+    
+    private SubjectDaoPostgres? _subjectDao;
+    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
 }

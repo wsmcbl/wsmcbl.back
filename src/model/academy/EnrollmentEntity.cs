@@ -46,13 +46,5 @@ public class EnrollmentEntity
         section = enrollment.section;
         capacity = enrollment.capacity;
         quantity = enrollment.quantity;
-
-        foreach (var item in enrollment.subjectList)
-        {
-            foreach (var subject in subjectList)
-            {
-                subject.update(item);
-            }
-        }
     }
 }
