@@ -51,6 +51,7 @@ public class StudentTutorDaoPostgres(PostgresContext context)
         
         if (existingEntity == null)
         {
+            entity.studentId = "";
             create(entity);
         }
         else
@@ -69,6 +70,7 @@ public class StudentParentDaoPostgres(PostgresContext context)
         
         if (existingEntity == null)
         {
+            entity.parentId = "";
             create(entity);
         }
         else
