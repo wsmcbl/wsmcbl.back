@@ -21,6 +21,7 @@ public static class DtoMapper
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     public static GradeDto mapToDto(this GradeEntity grade) => new(grade);
     public static GradeToCreateDto mapToCreateDto(this GradeEntity grade) => new(grade);
+    public static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
 
 
 
@@ -39,17 +40,16 @@ public static class DtoMapper
     
     public static List<BasicStudentToEnrollDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
-    
-    
+
+
+    public static List<SubjectToAssignDto> mapListToAssignDto(this IEnumerable<model.academy.SubjectEntity>? list)
+        => list == null || !list.Any() ? [new SubjectToAssignDto()] : list.Select(e => e.MapToAssignDto()).ToList();
     public static List<EnrollmentDto> mapListToDto(this IEnumerable<EnrollmentEntity>? list)
         => list == null || !list.Any()? [new EnrollmentDto()] : list.Select(item => item.mapToDto()).ToList();
     public static List<StudentParentDto> mapListToDto(this IEnumerable<StudentParentEntity>? list)
         => list == null || !list.Any()? [new StudentParentDto()] : list.Select(item => item.mapToDto()).ToList();
     public static List<BasicSchoolYearDto> mapListToDto(this IEnumerable<SchoolYearEntity> list) 
         => list.Select(e => e.mapToBasicDto()).ToList();
-    
-    public static List<SubjectInputDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
-        => subjects.Select(e => new SubjectInputDto(e)).ToList();
     public static List<SubjectDto> mapListToDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectDto(e)).ToList();
 
@@ -59,6 +59,11 @@ public static class DtoMapper
     public static List<GradeToCreateDto> mapListToDto(this IEnumerable<GradeEntity> grades)
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
     
+    
+    
+    
+    public static List<SubjectInputDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
+        => subjects.Select(e => new SubjectInputDto(e)).ToList();
     private static GradeToCreateDto mapToNewSchoolyearDto(this GradeEntity grade) => new(grade);
     
     public static List<BasicGradeDto> mapListToBasicDto(this IEnumerable<GradeEntity> grades) 

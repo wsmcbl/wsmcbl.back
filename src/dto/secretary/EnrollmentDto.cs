@@ -9,6 +9,8 @@ public class EnrollmentDto
     public string? section { get; set; }
     public int capacity { get; set; }
     public int quantity { get; set; }
+    
+    public List<SubjectToAssignDto> subjects { get; set; }
 
     public EnrollmentDto()
     {
@@ -21,5 +23,6 @@ public class EnrollmentDto
         capacity = entity.capacity;
         quantity = entity.quantity;
         label = entity.label;
+        subjects = entity.subjectList.mapListToAssignDto();
     }
 }

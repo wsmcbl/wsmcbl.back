@@ -138,8 +138,9 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             if (subject == null) continue;
             subject.teacherId = item.teacherId;
             daoFactory.subjectDao.update(subject);
-            await daoFactory.execute();
         }
+        await daoFactory.execute();
+        
         return existingEntity;
     }
 
