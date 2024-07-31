@@ -43,6 +43,7 @@ public class StudentEntity
         birthday = entity.birthday;
         diseases = entity.diseases;
         religion = entity.religion;
+        address = entity.address;
     }
     
     public class Builder
