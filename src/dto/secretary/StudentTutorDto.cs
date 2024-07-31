@@ -5,10 +5,7 @@ namespace wsmcbl.src.dto.secretary;
 
 public class StudentTutorDto : IBaseDto<StudentTutorEntity>
 {
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)] 
     public string? tutorId { get; set; }
-    
     [Required] public string name { get; set; } = null!;
     [Required] public string phone { get; set; } = null!;
     
