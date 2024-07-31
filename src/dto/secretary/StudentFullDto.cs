@@ -47,8 +47,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
 
-        parents = student.parents == null ? [new StudentParentDto()]
-            : student.parents.Select(e => e.mapToDto()).ToList();
+        parents = student.parents.mapListToDto();
     }
     
     public StudentEntity toEntity()
