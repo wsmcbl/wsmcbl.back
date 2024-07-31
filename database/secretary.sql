@@ -39,7 +39,7 @@ create table if not exists Secretary.StudentTutor
 
 create table if not exists Secretary.StudentFile
 (
-    fileId student primary key,
+    fileId serial primary key,
     studentId varchar(15) not null,
     transferSheet boolean not null,
     birthDocument boolean not null,
