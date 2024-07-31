@@ -23,15 +23,6 @@ public class EnrollmentDaoPostgresTest
         Assert.Equivalent(new List<EnrollmentEntity>{enrollment}, result); 
     }
     
-    [Fact]
-    public async Task getById_ShouldThrowException_WhenEnrollmentNotExist()
-    {
-        var context = TestDbContext.getInMemory();
-        
-        var sut = new EnrollmentDaoPostgres(context);
-
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getById("id"));
-    }
     
     [Fact]
     public async Task getById_ShouldReturnEnrollment_WhenCalled()

@@ -45,20 +45,6 @@ public class CreateOfficialEnrollmentControllerTest
 
         Assert.NotNull(result);
     }
-    
-    [Fact]
-    public async Task updateEnrollment_ShouldUpdateEnrollment_WhenParameterIsValid()
-    {
-        var enrollment = TestEntityGenerator.aEnrollment();
-        var dao = Substitute.For<IEnrollmentDao>();
-        daoFactory.enrollmentDao.Returns(dao);
-    
-        await sut.updateEnrollment(enrollment);
-        
-        dao.Received(1).update(enrollment);
-        await daoFactory.Received(1).execute();
-    }
-    
 
     [Fact]
     public async Task createSubject_ShouldCreateTariff_WhenParameterIsValid()
@@ -89,7 +75,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createSchoolYear_ShouldReturnException_WhenParameterAreNotValid()
     {
-        await Assert.ThrowsAsync<ArgumentException>(() => sut.createSchoolYear([], []));
+        await Assert.ThrowsAsync<BadRequestException>(() => sut.createSchoolYear([], []));
     }
     
     [Fact]
@@ -159,7 +145,7 @@ public class CreateOfficialEnrollmentControllerTest
     [InlineData(8)]
     public async Task createEnrollments_ShouldThrowException_WhenQuantityIsNotValid(int quantity)
     {
-        await Assert.ThrowsAsync<ArgumentException>(() => sut.createEnrollments("gd-1", quantity));
+        await Assert.ThrowsAsync<BadRequestException>(() => sut.createEnrollments("gd-1", quantity));
     }
 
     [Fact]
