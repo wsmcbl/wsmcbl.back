@@ -200,19 +200,4 @@ public class CreateOfficialEnrollmentControllerTest
         Assert.NotNull(result);
         Assert.Equivalent(grade, result);
     }
-    
-
-    [Fact]
-    public async Task getStudentList()
-    {
-        var studentDao = Substitute.For<src.model.secretary.IStudentDao>();
-        studentDao.getAll().Returns(TestEntityGenerator.aSecretaryStudentList());
-        daoFactory.studentDao.Returns(studentDao);
-
-        var result = await sut.getStudentList();
-
-        var list = Assert.IsType<List<StudentEntity>>(result);
-        Assert.NotEmpty(list);
-        Assert.Equal(2, list.Count);
-    }
 }

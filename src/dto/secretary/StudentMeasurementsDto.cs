@@ -13,8 +13,13 @@ public class StudentMeasurementsDto : IBaseDto<StudentMeasurementsEntity>
     {
     }
 
-    public StudentMeasurementsDto(StudentMeasurementsEntity entity)
+    public StudentMeasurementsDto(StudentMeasurementsEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         measurementId = entity.measurementId;
         height = entity.height;
         weight = entity.weight;

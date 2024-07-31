@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.dto.secretary;
-using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;
 
@@ -11,23 +10,6 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController controller) : ControllerBase
 {
-    [HttpGet]
-    [Route("students")]
-    public async Task<IActionResult> getStudentList()
-    {
-        var students = await controller.getStudentList();
-        return Ok(students);
-    }
-
-    /// <param name="student"> Value Sex: true-female, false-man</param>
-    [HttpPost]
-    [Route("students")]
-    public async Task<IActionResult> saveStudent([FromBody] StudentDto student)
-    {
-        await controller.saveStudent(student.toEntity());
-        return Ok();
-    }
-    
     [HttpGet]
     [Route("teachers")]
     public async Task<IActionResult> getTeacherList()

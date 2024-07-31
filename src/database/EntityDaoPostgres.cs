@@ -47,10 +47,11 @@ public class StudentTutorDaoPostgres(PostgresContext context)
 {
     public async Task updateAsync(StudentTutorEntity entity)
     {
-        var existingEntity = await getById(entity.tutorId);
+        var existingEntity = await getById(entity.tutorId!);
         
         if (existingEntity == null)
         {
+            entity.studentId = "";
             create(entity);
         }
         else
@@ -69,6 +70,7 @@ public class StudentParentDaoPostgres(PostgresContext context)
         
         if (existingEntity == null)
         {
+            entity.parentId = "";
             create(entity);
         }
         else

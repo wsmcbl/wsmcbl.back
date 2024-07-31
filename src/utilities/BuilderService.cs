@@ -17,5 +17,6 @@ public static class BuilderService
         
         Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<StudentParentDtoValidator>();
     }
 }
