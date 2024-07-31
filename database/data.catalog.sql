@@ -1,7 +1,7 @@
 set datestyle to 'European';
 
 insert into secretary.tariffcatalog(concept, amount, duedate, typeid, modality)
-values ('Pago de matricula', 0, null, 4, 3),
+values ('Pago de matrícula', 0, null, 4, 3),
        ('Pago mes febrero', 0, '28/02/2024', 1, 3),
        ('Pago mes marzo', 0, '28/03/2024', 1, 3),
        ('Pago mes abril', 0, '28/04/2024', 1, 3),
@@ -18,20 +18,20 @@ values ('Pago de matricula', 0, null, 4, 3),
        ('Pago excursión', 0, null, 3, 3);
 
 insert into secretary.gradecatalog(gradelabel, modality)
-values ('n1', 1),
-       ('n2', 1),
-       ('n3', 1),
-       ('1ro', 2),
-       ('2do', 2),
-       ('3ro', 2),
-       ('4to', 2),
-       ('5to', 2),
-       ('6to', 2),
-       ('7mo', 3),
-       ('8vo', 3),
-       ('9no', 3),
-       ('10mo', 3),
-       ('11vo', 3);
+values ('Primer Nivel', 1),
+       ('Segundo Nivel', 1),
+       ('Tercer Nivel', 1),
+       ('Primer Grado', 2),
+       ('Segundo Grado', 2),
+       ('Tercer Grado', 2),
+       ('Cuarto Grado', 2),
+       ('Quinto Grado', 2),
+       ('Sexto Grado', 2),
+       ('Septimo Grado', 3),
+       ('Octavo Grado', 3),
+       ('Noveno Grado', 3),
+       ('Décimo Grado', 3),
+       ('Undécimo Grado', 3);
 
 
 -- #####################################################################################

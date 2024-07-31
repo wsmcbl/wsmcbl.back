@@ -10,31 +10,38 @@ public class StudentDaoPostgres(PostgresContext context)
 {
     public async Task<StudentEntity> getByIdWithProperties(string id)
     {
-        var result = await entities.FirstOrDefaultAsync(e => e.studentId == id);
+        var entity = await entities.FirstOrDefaultAsync(e => e.studentId == id);
 
-        if (result == null)
+        if (entity == null)
         {
             throw new EntityNotFoundException("Student", id);
         }
 
-        result.tutor = await context.Set<StudentTutorEntity>()
+        var tutor = await context.Set<StudentTutorEntity>()
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.studentId == id);
 
-        result.measurements = await context.Set<StudentMeasurementsEntity>()
+        if (tutor == null)
+        {
+            throw new EntityNotFoundException($"Entity tutor of Student with ID = {id} not found.");
+        }
+
+        entity.tutor = tutor;
+
+        entity.measurements = await context.Set<StudentMeasurementsEntity>()
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.studentId == id);
 
-        result.file = await context.Set<StudentFileEntity>()
+        entity.file = await context.Set<StudentFileEntity>()
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.studentId == id);
 
-        result.parents = await context.Set<StudentParentEntity>()
+        entity.parents = await context.Set<StudentParentEntity>()
             .Where(e => e.studentId == id)
             .AsNoTracking()
             .ToListAsync();
 
-        return result;
+        return entity;
     }
 
     public async Task<List<StudentEntity>> getAllWithSolvency()

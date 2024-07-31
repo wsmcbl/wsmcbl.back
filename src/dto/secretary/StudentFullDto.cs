@@ -11,17 +11,18 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     [Required] public string? secondSurname { get; set; }
-    [JsonRequired] public bool isActive { get; set; }
     [JsonRequired] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
     [Required] public string religion { get; set; } = null!;
     [Required] public string? diseases { get; set; }
+    [Required] public string address { get; set; } = null!;
+    [JsonRequired] public bool isActive { get; set; }
 
 
-    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
+    [JsonRequired] public StudentFileDto? file { get; set; }
     [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
-    [JsonRequired] public StudentMeasurementsDto measurements { get; set; } = null!;
-    [JsonRequired] public StudentFileDto file { get; set; } = null!;
+    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
+    [JsonRequired] public StudentMeasurementsDto? measurements { get; set; }
 
     public StudentFullDto()
     {
@@ -34,19 +35,18 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         secondName = student.secondName;
         surname = student.surname;
         secondSurname = student.secondSurname;
-        isActive = student.isActive;
         sex = student.sex;
         birthday = new DateOnlyDto(student.birthday);
-        religion = student.religion;
+        address = student.address;
         diseases = student.diseases;
-        tutor = student.tutor.mapToDto();
+        religion = student.religion;
+        isActive = student.isActive;
+        
         file = student.file.mapToDto();
+        tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
 
-        if (student.parents != null)
-        {
-            parents = student.parents.Select(e => e.mapToDto()).ToList();
-        }
+        parents = student.parents.mapListToDto();
     }
     
     public StudentEntity toEntity()
@@ -62,6 +62,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setBirthday(birthday.toEntity())
             .setDiseases(diseases)
             .setReligion(religion)
+            .setAddress(address)
             .setMeasurements(measurements.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())

@@ -49,9 +49,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectDto aSubjectDto()
+    public static SubjectInputDto aSubjectDto()
     {
-        return new SubjectDto
+        return new SubjectInputDto
         {
             name = "Lengua y Literatura",
             isMandatory = true,
@@ -90,9 +90,9 @@ public static class TestDtoInputGenerator
         };
     }
 
-    public static EnrollmentDto aEnrollmentDto()
+    public static EnrollmentToUpdateDto aEnrollmentDto()
     {
-        return new EnrollmentDto
+        return new EnrollmentToUpdateDto
         {
             enrollmentId = "er001",
             capacity = 60,
@@ -122,20 +122,6 @@ public static class TestDtoInputGenerator
             name = "Lengua y Literatura",
             isMandatory = true,
             semester = 3
-        };
-    }
-    
-    public static StudentDto aStudentDto()
-    {
-        return new StudentDto
-        {
-            name = "Juan",
-            secondName = "Pedro",
-            surname = "Peréz",
-            secondSurname = "Lopez",
-            sex = true,
-            birthday = new DateOnlyDto(2024,1,1),
-            tutor = "Pedro López"
         };
     }
 }

@@ -2,27 +2,32 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service;
 
-public class ReportCardLatexBuilder : LatexBuilder
+public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
     private readonly StudentEntity entity;
-    public ReportCardLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
+    private readonly string templatesPath;
+    
+    public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
+        this.templatesPath = templatesPath;
         this.entity = entity;
+        isRepetitive = false;
     }
 
     public void setGrade(string grade)
     {
         this.grade = grade;
     }
-    protected override string getTemplateName() => "report-card";
+    protected override string getTemplateName() => "enroll-sheet";
 
     protected override string updateContent(string content)
     {
+        content = content.Replace($"\\cbl-logo-wb", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
         content = content.Replace($"\\name", entity.fullName());
         content = content.Replace($"\\grade", grade);
-        content = content.Replace($"\\is.repetitive", getTextByBool(entity.isActive));
+        content = content.Replace($"\\is.repetitive", getTextByBool(isRepetitive));
         content = content.Replace($"\\age", getAge(entity.birthday));
         content = content.Replace($"\\sex", getTextBySex(entity.sex));
         content = content.Replace($"\\birthday.day", entity.birthday.Day.ToString());
@@ -32,7 +37,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.Replace($"\\diseases", entity.diseases);
         content = content.Replace($"\\phones", entity.tutor.phone);
         content = content.Replace($"\\religion", entity.religion);
-        content = content.Replace($"\\address", "Su dirección (no implementado en bd)");
+        content = content.Replace($"\\address", entity.address);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file);
@@ -42,7 +47,9 @@ public class ReportCardLatexBuilder : LatexBuilder
         
         return content;
     }
-    
+
+    public bool isRepetitive { get; set; }
+
     private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
     {
         if (entityParents == null)

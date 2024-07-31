@@ -7,10 +7,11 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
 {
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
+        var grade = "Primer año";
         var student = await daoFactory.studentDao!.getByIdWithProperties(studentId);
         
-        var latexBuilder = new ReportCardLatexBuilder(resource, $"{resource}/out", student);
-        latexBuilder.setGrade("Decimo grado");
+        var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
+        latexBuilder.setGrade(grade);
         setLatexBuilder(latexBuilder);
 
         return getPDF();

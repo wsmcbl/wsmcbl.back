@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
@@ -8,13 +9,26 @@ namespace wsmcbl.src.database;
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
 {
+    public async Task<SchoolYearEntity> getCurrentSchoolYear()
+    {
+        var result = await getSchoolYearByLabel(DateTime.Today.Year);
+        
+        var gradeList = await context.Set<GradeEntity>().Where(e => e.schoolYear == result.id).ToListAsync();
+        result.setGradeList(gradeList);
+
+        var tariffList = await context.Set<TariffEntity>().Where(e => e.schoolYear == result.id).ToListAsync();
+        result.setTariffList(tariffList);
+        
+        return result;
+    }
+
     public async Task<SchoolYearEntity> getNewSchoolYear()
     {
         try
         {
             return await getSchoolYearByLabel(getNewSchoolyear());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             var year = getNewSchoolyear();
             
@@ -45,5 +59,5 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
 
-    private static int getNewSchoolyear() => DateTime.Today.Month > 4 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+    private static int getNewSchoolyear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
 }

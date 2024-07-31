@@ -6,6 +6,7 @@ using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
 
@@ -23,8 +24,18 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao;
 
+public class SubjectDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
+{
+    public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
+    {
+        return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .ToListAsync();
+    }
+}
+
 public class StudentFileDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentFileEntity, string>(context), IStudentFileDao
+    : GenericDaoPostgres<StudentFileEntity, int>(context), IStudentFileDao
 {
     public async Task updateAsync(StudentFileEntity entity)
     {
@@ -47,10 +58,11 @@ public class StudentTutorDaoPostgres(PostgresContext context)
 {
     public async Task updateAsync(StudentTutorEntity entity)
     {
-        var existingEntity = await getById(entity.tutorId);
+        var existingEntity = await getById(entity.tutorId!);
         
         if (existingEntity == null)
         {
+            entity.studentId = "";
             create(entity);
         }
         else
@@ -69,6 +81,7 @@ public class StudentParentDaoPostgres(PostgresContext context)
         
         if (existingEntity == null)
         {
+            entity.parentId = "";
             create(entity);
         }
         else
@@ -79,7 +92,7 @@ public class StudentParentDaoPostgres(PostgresContext context)
 }
 
 public class StudentMeasurementsDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentMeasurementsEntity, string>(context), IStudentMeasurementsDao
+    : GenericDaoPostgres<StudentMeasurementsEntity, int>(context), IStudentMeasurementsDao
 {
     public async Task updateAsync(StudentMeasurementsEntity entity)
     {

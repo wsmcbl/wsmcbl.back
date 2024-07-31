@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.output;
 using wsmcbl.src.dto.secretary;
-using StudentDto = wsmcbl.src.dto.input.StudentDto;
 
 namespace wsmcbl.src.controller.api;
 
@@ -12,30 +11,13 @@ namespace wsmcbl.src.controller.api;
 public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController controller) : ControllerBase
 {
     [HttpGet]
-    [Route("students")]
-    public async Task<IActionResult> getStudentList()
-    {
-        var students = await controller.getStudentList();
-        return Ok(students);
-    }
-
-    /// <param name="student"> Value Sex: true-female, false-man</param>
-    [HttpPost]
-    [Route("students")]
-    public async Task<IActionResult> saveStudent([FromBody] StudentDto student)
-    {
-        await controller.saveStudent(student.toEntity());
-        return Ok();
-    }
-    
-    [HttpGet]
     [Route("teachers")]
     public async Task<IActionResult> getTeacherList()
     {
         var list = await controller.getTeacherList();
         return Ok(list.mapListToBasicDto());
     }
-    
+
     [HttpGet]
     [Route("grades")]
     public async Task<IActionResult> getGradeList()
@@ -43,7 +25,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var grades = await controller.getGradeList();
         return Ok(grades.mapListToBasicDto());
     }
-    
+
     [HttpGet]
     [Route("grades/{gradeId}")]
     public async Task<IActionResult> getGradeById([Required] string gradeId)
@@ -51,23 +33,30 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var grade = await controller.getGradeById(gradeId);
         return Ok(grade!.mapToDto());
     }
-    
+
     [HttpPost]
     [Route("grades/enrollments")]
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
-        await controller.createEnrollments(dto.gradeId, dto.quantity);
-        return Ok();
+        var result = await controller.createEnrollments(dto.gradeId, dto.quantity);
+        return CreatedAtAction(nameof(getGradeById), new { result.gradeId }, result.mapToDto());
     }
-    
+
     [HttpPut]
     [Route("grades/enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentDto dto)
+    public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
     {
-        await controller.updateEnrollment(dto.toEntity());
-        return Ok();
+        var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());
+
+        var teacherId = toUpdateDto.teacherId;
+        if (teacherId != null)
+        {
+            await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
+        }
+
+        return Ok(enrollment.mapToDto());
     }
-    
+
     /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
     /// <returns>Returns the search results based on the provided query.</returns>
     /// <response code="200">Returns the search results.</response>
@@ -78,7 +67,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         if (string.IsNullOrWhiteSpace(q))
         {
-            return BadRequest("Query parameter 'q' is required.");
+            return NotFound("Query parameter 'q' is required.");
         }
 
         var value = q.ToLower();
@@ -88,22 +77,22 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
             var list = await controller.getSchoolYearList();
             return Ok(list.mapListToDto());
         }
-        
+
         if (value.Equals("new"))
         {
             var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
             return Ok(schoolyearBaseInformation.mapToDto());
         }
-        
-        return BadRequest("Unknown type value.");
+
+        return NotFound("Unknown type value.");
     }
-    
+
     [HttpPost]
     [Route("configurations/schoolyears")]
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
     {
-        await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
-        return Ok();
+        var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
+        return CreatedAtAction(null, result);
     }
 
     [HttpPost]

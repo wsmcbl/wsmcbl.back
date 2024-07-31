@@ -9,8 +9,9 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 {
     public new async Task<GradeEntity?> getById(string id)
     {
-        var grade = await entities.Include(e => e.enrollments)
-            .Include(e => e.subjectList)
+        var grade = await entities.Include(e => e.subjectList)
+            .Include(e => e.enrollments)!
+            .ThenInclude(e => e.subjectList)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.gradeId == id);
 

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using wsmcbl.src.model.secretary;
 
@@ -6,7 +5,7 @@ namespace wsmcbl.src.dto.secretary;
 
 public class StudentFileDto : IBaseDto<StudentFileEntity>
 {
-    [Required] public string fileId { get; set; } = null!;
+    [JsonRequired] public int fileId { get; set; }
     [JsonRequired] public bool transferSheet { get; set; }
     [JsonRequired] public bool birthDocument { get; set; }
     [JsonRequired] public bool parentIdentifier { get; set; }

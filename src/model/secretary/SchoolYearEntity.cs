@@ -12,6 +12,16 @@ public class SchoolYearEntity
     
     public List<GradeEntity>? gradeList { get; private set; }
     public List<TariffEntity>? tariffList { get; private set; }
+
+    public void setGradeList(List<GradeEntity> list)
+    {
+        gradeList = list;
+    }
+    
+    public void setTariffList(List<TariffEntity> list)
+    {
+        tariffList = list;
+    }
     
     public void setGradeDataList(List<GradeDataEntity> list)
     {

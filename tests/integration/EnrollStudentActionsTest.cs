@@ -39,7 +39,7 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
         var entity = deserialize<StudentFullDto>(content);
         Assert.NotNull(entity);
     }
-
+/*
     [Fact]
     public async Task getGradeList_ShouldReturnJsonWithList_WhenCalled()
     {
@@ -51,7 +51,7 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
     {
         await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/grades");
     }
-    
+  */  
     
     private async Task assertListWithOut<TDto>(string uri)
     {

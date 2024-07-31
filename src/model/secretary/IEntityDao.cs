@@ -10,6 +10,7 @@ public interface IGradeDao : IGenericDao<GradeEntity, string>
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
+    public Task<SchoolYearEntity> getCurrentSchoolYear();
     public Task<SchoolYearEntity> getNewSchoolYear();
 }
 
@@ -19,14 +20,14 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
     public Task<StudentEntity> getByIdWithProperties(string id);
 }
 
-public interface IStudentFileDao : IGenericDao<StudentFileEntity, string>,
+public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>,
     IStudentElement<StudentFileEntity>;
 public interface IStudentTutorDao : IGenericDao<StudentTutorEntity, string>, 
     IStudentElement<StudentTutorEntity>;
 public interface IStudentParentDao : IGenericDao<StudentParentEntity, string>,
     IStudentElement<StudentParentEntity>;
 public interface IStudentMeasurementsDao 
-    : IGenericDao<StudentMeasurementsEntity, string>, IStudentElement<StudentMeasurementsEntity>;
+    : IGenericDao<StudentMeasurementsEntity, int>, IStudentElement<StudentMeasurementsEntity>;
 
 
 public interface IGradeDataDao : IGenericDao<GradeDataEntity, string>;

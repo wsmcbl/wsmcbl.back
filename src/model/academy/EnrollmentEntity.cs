@@ -39,4 +39,12 @@ public class EnrollmentEntity
             subjectList.Add(subject);
         }
     }
+
+    public void update(EnrollmentEntity enrollment)
+    {
+        label = enrollment.label;
+        section = enrollment.section;
+        capacity = enrollment.capacity;
+        quantity = enrollment.quantity;
+    }
 }

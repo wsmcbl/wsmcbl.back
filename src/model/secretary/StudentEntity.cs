@@ -7,18 +7,19 @@ public class StudentEntity
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
-    public bool isActive { get; set; }
-    public string schoolYear { get; set; } = null!;
     public bool sex { get; set; }
     public DateOnly birthday { get; set; }
+    public string? diseases { get; set; }
+    public string address { get; set; } = null!;
     public string religion { get; set; } = null!;
-    public string? diseases { get; set; } 
+    public bool isActive { get; set; }
+    public string schoolYear { get; set; } = null!; 
     
     
-    public ICollection<StudentParentEntity>? parents { get; set; }
+    public StudentFileEntity? file { get; set; }
     public StudentTutorEntity tutor { get; set; } = null!;
-    public StudentMeasurementsEntity measurements { get; set; } = null!;
-    public StudentFileEntity file { get; set; } = null!;
+    public List<StudentParentEntity>? parents { get; set; }
+    public StudentMeasurementsEntity? measurements { get; set; }
 
     public string fullName()
     {
@@ -42,6 +43,7 @@ public class StudentEntity
         birthday = entity.birthday;
         diseases = entity.diseases;
         religion = entity.religion;
+        address = entity.address;
     }
     
     public class Builder
@@ -95,12 +97,6 @@ public class StudentEntity
         public Builder isActive(bool isActive)
         {
             entity.isActive = isActive;
-            return this;
-        }
-
-        public Builder setSchoolYear(string schoolYear)
-        {
-            entity.schoolYear = schoolYear;
             return this;
         }
         
@@ -157,6 +153,12 @@ public class StudentEntity
             }
             
             entity.parents = parents;
+            return this;
+        }
+
+        public Builder setAddress(string address)
+        {
+            entity.address = address;
             return this;
         }
     }

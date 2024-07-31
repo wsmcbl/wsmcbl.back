@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentFileEntity
 {
-    public string fileId { get; set; } = null!;
+    public int fileId { get; set; }
     public string studentId { get; set; } = null!;
     public bool transferSheet { get; set; }
     public bool birthDocument { get; set; }
