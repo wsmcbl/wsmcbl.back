@@ -34,6 +34,6 @@ public class GradeToCreateDto : IBaseDto<GradeEntity>
         label = grade.label;
         modality = grade.modality;
         schoolYear = grade.schoolYear;
-        subjects = grade.subjectList.Count == 0 ? [] : grade.subjectList.mapListToDto();
+        subjects = !grade.subjectList.Any() ? [] : grade.subjectList.mapListToDto();
     }
 }

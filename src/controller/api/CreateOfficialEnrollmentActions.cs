@@ -38,15 +38,15 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("grades/enrollments")]
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
-        await controller.createEnrollments(dto.gradeId, dto.quantity);
-        return Ok();
+        var result = await controller.createEnrollments(dto.gradeId, dto.quantity);
+        return CreatedAtAction(nameof(getGradeById), new { gradeId = result.gradeId }, result);
     }
     
     [HttpPut]
     [Route("grades/enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentDto dto)
+    public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
     {
-        await controller.updateEnrollment(dto.toEntity());
+        await controller.updateEnrollment(toUpdateDto.toEntity());
         return Ok();
     }
     
@@ -60,7 +60,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         if (string.IsNullOrWhiteSpace(q))
         {
-            return BadRequest("Query parameter 'q' is required.");
+            return NotFound("Query parameter 'q' is required.");
         }
 
         var value = q.ToLower();
@@ -77,15 +77,15 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
             return Ok(schoolyearBaseInformation.mapToDto());
         }
         
-        return BadRequest("Unknown type value.");
+        return NotFound("Unknown type value.");
     }
     
     [HttpPost]
     [Route("configurations/schoolyears")]
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
     {
-        await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
-        return Ok();
+        var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
+        return CreatedAtAction(null, result);
     }
 
     [HttpPost]

@@ -1,31 +1,23 @@
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class EnrollmentDto : IBaseDto<EnrollmentEntity>
+public class EnrollmentDto
 {
-    [Required] public string enrollmentId { get; set; } = null!;
-    [Required] public string? section { get; set; }
-    [JsonRequired] public int capacity { get; set; }
-    [JsonRequired] public int quantity { get; set; }
-    public List<SubjectToAssignDto> subjects { get; set; } = null!;
-    
-    public EnrollmentEntity toEntity()
+    public string enrollmentId { get; set; }
+    public string? section { get; set; }
+    public int capacity { get; set; }
+    public int quantity { get; set; }
+
+    public EnrollmentDto()
     {
-        var enrollment = new EnrollmentEntity
-        {
-            enrollmentId = enrollmentId!,
-            section = section!,
-            capacity = capacity,
-            quantity = quantity
-        };
-
-        var subjectList = subjects.Select(item => item.toEntity(enrollmentId)).ToList();
-
-        enrollment.setSubjectList(subjectList);
-        
-        return enrollment;
+    }
+    
+    public EnrollmentDto(EnrollmentEntity entity)
+    {
+        enrollmentId = entity.enrollmentId;
+        section = entity.section;
+        capacity = entity.capacity;
+        quantity = entity.quantity;
     }
 }

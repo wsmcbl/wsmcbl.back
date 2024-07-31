@@ -10,6 +10,7 @@ public interface IGradeDao : IGenericDao<GradeEntity, string>
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
+    public Task<SchoolYearEntity> getCurrentSchoolYear();
     public Task<SchoolYearEntity> getNewSchoolYear();
 }
 

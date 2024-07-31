@@ -90,9 +90,9 @@ public static class TestDtoInputGenerator
         };
     }
 
-    public static EnrollmentDto aEnrollmentDto()
+    public static EnrollmentToUpdateDto aEnrollmentDto()
     {
-        return new EnrollmentDto
+        return new EnrollmentToUpdateDto
         {
             enrollmentId = "er001",
             capacity = 60,

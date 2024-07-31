@@ -148,6 +148,6 @@ public class CreateOfficialEnrollmentActionsTest
 
         var result = assertAndGetOkResult(actionResult);
         var value = Assert.IsType<GradeToCreateDto>(result.Value);
-        Assert.Equivalent(grade.mapToDto(), value);
+        Assert.Equivalent(grade.mapToCreateDto(), value);
     }
 }

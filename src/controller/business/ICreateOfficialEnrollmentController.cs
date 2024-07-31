@@ -11,9 +11,9 @@ public interface ICreateOfficialEnrollmentController
     public Task<GradeEntity?> getGradeById(string gradeId);
     public Task<List<SchoolYearEntity>> getSchoolYearList();
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
-    public Task createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList);
+    public Task<SchoolYearEntity> createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList);
     public Task<TariffDataEntity> createTariff(TariffDataEntity tariff);
     public Task<SubjectDataEntity> createSubject(SubjectDataEntity subject);
-    public Task createEnrollments(string gradeId, int quantity);
+    public Task<GradeEntity> createEnrollments(string gradeId, int quantity);
     public Task updateEnrollment(EnrollmentEntity enrollment);
 }
