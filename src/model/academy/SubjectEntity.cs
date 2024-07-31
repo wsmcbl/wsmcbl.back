@@ -8,4 +8,12 @@ public class SubjectEntity
 
     public secretary.SubjectEntity? secretarySubject { get; set; }
     public ICollection<ScoreEntity>? scores { get; set; }
+
+    public void update(SubjectEntity item)
+    {
+        if (item.subjectId == subjectId)
+        {
+            teacherId = item.teacherId;
+        }
+    }
 }

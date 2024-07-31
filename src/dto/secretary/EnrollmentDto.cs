@@ -5,6 +5,7 @@ namespace wsmcbl.src.dto.secretary;
 public class EnrollmentDto
 {
     public string enrollmentId { get; set; }
+    public string label { get; set; }
     public string? section { get; set; }
     public int capacity { get; set; }
     public int quantity { get; set; }
@@ -19,5 +20,6 @@ public class EnrollmentDto
         section = entity.section;
         capacity = entity.capacity;
         quantity = entity.quantity;
+        label = entity.label;
     }
 }

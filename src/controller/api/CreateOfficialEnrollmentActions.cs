@@ -17,7 +17,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var list = await controller.getTeacherList();
         return Ok(list.mapListToBasicDto());
     }
-    
+
     [HttpGet]
     [Route("grades")]
     public async Task<IActionResult> getGradeList()
@@ -25,7 +25,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var grades = await controller.getGradeList();
         return Ok(grades.mapListToBasicDto());
     }
-    
+
     [HttpGet]
     [Route("grades/{gradeId}")]
     public async Task<IActionResult> getGradeById([Required] string gradeId)
@@ -33,23 +33,30 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var grade = await controller.getGradeById(gradeId);
         return Ok(grade!.mapToDto());
     }
-    
+
     [HttpPost]
     [Route("grades/enrollments")]
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
         var result = await controller.createEnrollments(dto.gradeId, dto.quantity);
-        return CreatedAtAction(nameof(getGradeById), new { gradeId = result.gradeId }, result);
+        return CreatedAtAction(nameof(getGradeById), new { gradeId = result.gradeId }, result.mapToDto());
     }
-    
+
     [HttpPut]
     [Route("grades/enrollments")]
     public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
     {
-        await controller.updateEnrollment(toUpdateDto.toEntity());
-        return Ok();
+        var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());
+
+        var teacherId = toUpdateDto.teacherId;
+        if (teacherId != null)
+        {
+            await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
+        }
+
+        return Ok(enrollment.mapToDto());
     }
-    
+
     /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
     /// <returns>Returns the search results based on the provided query.</returns>
     /// <response code="200">Returns the search results.</response>
@@ -70,16 +77,16 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
             var list = await controller.getSchoolYearList();
             return Ok(list.mapListToDto());
         }
-        
+
         if (value.Equals("new"))
         {
             var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
             return Ok(schoolyearBaseInformation.mapToDto());
         }
-        
+
         return NotFound("Unknown type value.");
     }
-    
+
     [HttpPost]
     [Route("configurations/schoolyears")]
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)

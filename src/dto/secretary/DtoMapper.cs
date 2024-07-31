@@ -48,6 +48,8 @@ public static class DtoMapper
     public static List<BasicSchoolYearDto> mapListToDto(this IEnumerable<SchoolYearEntity> list) 
         => list.Select(e => e.mapToBasicDto()).ToList();
     
+    public static List<SubjectInputDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
+        => subjects.Select(e => new SubjectInputDto(e)).ToList();
     public static List<SubjectDto> mapListToDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectDto(e)).ToList();
 
