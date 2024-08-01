@@ -10,4 +10,5 @@ public class ScoreEntity
     public double? score { get; set; }
     
     public ICollection<ScoreItemEntity> scoreItems { get; set; }
+    public secretary.SubjectEntity? secretarySubject { get; set; }
 }

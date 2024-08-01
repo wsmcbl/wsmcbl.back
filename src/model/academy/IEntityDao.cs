@@ -8,7 +8,10 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, int>
     Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId);
 }
 
-public interface ITeacherDao : IGenericDao<TeacherEntity, string>;
+public interface ITeacherDao : IGenericDao<TeacherEntity, string>
+{
+    public Task<TeacherEntity> getByEnrollmentId(string enrollmentId);
+}
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
