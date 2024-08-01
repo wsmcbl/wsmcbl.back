@@ -9,4 +9,8 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, int>
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>;
-public interface IStudentDao : IGenericDao<StudentEntity, string>;
+
+public interface IStudentDao : IGenericDao<StudentEntity, string>
+{
+    public Task<StudentEntity?> getByIdAndSchoolyear(string studentId, string schoolyearId);
+}

@@ -95,6 +95,7 @@ create table if not exists Secretary.Subject
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
+    initials varchar(10) not null,
     foreign key (gradeId) references Secretary.Grade
 );
 
@@ -112,6 +113,7 @@ create table if not exists Secretary.SubjectCatalog
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
+    initials varchar(10) not null,
     foreign key (gradeCatalogId) references Secretary.GradeCatalog
 );
 
