@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.output;
+using wsmcbl.src.dto.academy;
 using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
@@ -15,7 +15,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> getTeacherList()
     {
         var list = await controller.getTeacherList();
-        return Ok(list.mapListToBasicDto());
+        return Ok(list.mapListToDto());
     }
 
     [HttpGet]
