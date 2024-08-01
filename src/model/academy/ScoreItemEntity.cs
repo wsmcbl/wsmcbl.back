@@ -7,4 +7,9 @@ public class ScoreItemEntity
     public int partial { get; set; }
     public double? score { get; set; }
     public string? label { get; set; }
+
+    public void updateLabel()
+    {
+        label = Utilities.getLabel((double)score!);
+    }
 }

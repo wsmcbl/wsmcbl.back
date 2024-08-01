@@ -36,6 +36,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
 
         result.scores = await context.Set<ScoreEntity>()
             .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
+            .Include(e => e.items)
             .Include(e => e.secretarySubject)
             .ToListAsync();
 
@@ -155,7 +156,10 @@ public class TeacherDaoPostgres(PostgresContext context)
 
     public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
     {
-        var result = await entities.Where(e => e.enrollmentId == enrollmentId).FirstOrDefaultAsync();
+        var result = await entities
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.enrollment)
+            .FirstOrDefaultAsync();
 
         if (result == null)
         {

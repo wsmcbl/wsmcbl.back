@@ -9,32 +9,29 @@ public class StudentEntity
     
     public secretary.StudentEntity student { get; set; } = null!;
     public ICollection<ScoreEntity>? scores { get; set; }
-
-    public class Builder
+    
+    public StudentEntity()
     {
-        private readonly StudentEntity entity;
+    }
 
-        public Builder(string studentId, string enrollmentId)
-        {
-            entity = new StudentEntity
-            {
-                studentId = studentId,
-                enrollmentId = enrollmentId
-            };
-        }
+    public StudentEntity(string studentId, string enrollmentId)
+    {
+        this.studentId = studentId;
+        this.enrollmentId = enrollmentId;
+    }
+    
+    public void isNewEnroll()
+    {
+        isApproved = false;
+    }
 
-        public StudentEntity build() => entity;
+    public void setSchoolyear(string schoolYearId)
+    {
+        schoolYear = schoolYearId;
+    }
 
-        public Builder isNewEnroll()
-        {
-            entity.isApproved = false;
-            return this;
-        }
-
-        public Builder setSchoolyear(string schoolYearId)
-        {
-            entity.schoolYear = schoolYearId;
-            return this;
-        }
+    public string fullName()
+    {
+        return student.fullName();
     }
 }
