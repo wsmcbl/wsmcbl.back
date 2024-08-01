@@ -26,7 +26,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         }
         
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
-        content = content.Replace($"\\student.name", student.fullname());
+        content = content.Replace($"\\student.name", student.fullName());
         content = content.Replace($"\\teacher.name", teacher.fullName());
         
         return content;

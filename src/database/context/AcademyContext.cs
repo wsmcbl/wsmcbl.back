@@ -47,15 +47,15 @@ internal class AcademyContext
             entity.Property(e => e.scoreId).HasColumnName("scoreid");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
-            entity.Property(e => e.score).HasColumnName("score");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
-            
+            entity.Property(e => e.score).HasColumnName("score");
+            entity.Property(e => e.label).HasColumnName("label");
 
             entity.HasOne(e => e.secretarySubject)
                 .WithMany()
                 .HasForeignKey(e => e.subjectId);
             
-            entity.HasMany(d => d.scoreItems)
+            entity.HasMany(d => d.items)
                 .WithOne()
                 .HasForeignKey(e => e.scoreId);
         });
@@ -127,6 +127,10 @@ internal class AcademyContext
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
+
+            entity.HasOne(e => e.enrollment)
+                .WithMany()
+                .HasForeignKey(e => e.enrollmentId);
         });
 
     }
