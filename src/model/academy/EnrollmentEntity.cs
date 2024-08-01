@@ -26,16 +26,15 @@ public class EnrollmentEntity
             return;
         }
 
-        if (subjectList == null)
-        {
-            subjectList = new List<SubjectEntity>();
-        }
+        subjectList ??= new List<SubjectEntity>();
 
         foreach (var item in subjects)
         {
-            var subject = new SubjectEntity();
-            subject.subjectId = item.subjectId;
-            
+            var subject = new SubjectEntity
+            {
+                subjectId = item.subjectId
+            };
+
             subjectList.Add(subject);
         }
     }

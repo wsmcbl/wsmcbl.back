@@ -16,9 +16,11 @@ public class StudentEntity
 
         public Builder(string studentId, string enrollmentId)
         {
-            entity = new StudentEntity();
-            entity.studentId = studentId;
-            entity.enrollmentId = enrollmentId;
+            entity = new StudentEntity
+            {
+                studentId = studentId,
+                enrollmentId = enrollmentId
+            };
         }
 
         public StudentEntity build() => entity;
