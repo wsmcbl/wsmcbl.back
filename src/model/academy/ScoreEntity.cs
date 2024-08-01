@@ -12,5 +12,7 @@ public class ScoreEntity
 
     public double? exam { get; set; }
 
+    public int partial { get; set; }
+
     public double? finalScore { get; set; }
 }

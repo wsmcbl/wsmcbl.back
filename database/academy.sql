@@ -60,13 +60,12 @@ create table if not exists Academy.Student
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
-create table if not exists Academy.Note
+create table if not exists Academy.Score
 (
     studentId varchar(15) not null,
     subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    cumulative float,
-    exam float,
+    partial int not null,
     finalScore float,
     primary key (studentId, subjectId),
     foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
