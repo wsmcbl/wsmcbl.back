@@ -7,9 +7,9 @@ namespace wsmcbl.src.controller.business;
 public class PrintReportCardByStudentController(DaoFactory daoFactory)
     : BaseController(daoFactory), IPrintReportCardByStudentController
 {
-    public async Task<StudentEntity> getStudentInformation(string studentId)
+    public async Task<StudentEntity> getStudentScoreInformation(string studentId)
     {
-        var schoolyear = await daoFactory.schoolyearDao.getCurrentSchoolYear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentSchoolYear();
         var result = await daoFactory.academyStudentDao!.getByIdAndSchoolyear(studentId, schoolyear.id);
 
         if (result == null)
@@ -24,5 +24,10 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
     {
         var printController = new PrintDocumentController(daoFactory);
         return await printController.getReportCardByStudent(studentId);
+    }
+
+    public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)
+    {
+        return await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
     }
 }

@@ -19,6 +19,11 @@ public class PDFController
 
     protected byte[] getPDF()
     {
+        if (latexBuilder == null)
+        {
+            throw new ArgumentException("LatexBuilder object must not be null.");
+        }
+        
         latexBuilder!.build();
         
         var pdfBuilder = new PDFBuilder(latexBuilder);
