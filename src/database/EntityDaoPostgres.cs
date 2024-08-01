@@ -23,14 +23,19 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
 {
-    public override async Task<model.academy.StudentEntity?> getById(string id)
-    {
-        var result = await entities.FirstOrDefaultAsync(e => e.studentId == id);
+    public async Task<model.academy.StudentEntity?> getByIdAndSchoolyear(string studentId, string schoolyearId)
+    { 
+        var result = await entities
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
 
         if (result == null)
         {
-            throw new EntityNotFoundException("Academy Student", id);
+            throw new EntityNotFoundException("Academy Student", studentId);
         }
+
+        result.scores = await context.Set<ScoreEntity>()
+            .Where(e => e.studentId == result.studentId && e.schoolyear == schoolyearId)
+            .ToListAsync();
 
         return result;
     }
