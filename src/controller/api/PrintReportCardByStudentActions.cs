@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -15,7 +16,7 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
         var student = await controller.getStudentScoreInformation(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
-        var result = (student, teacher);
+        var result = new StudentScoreInformationDto(student, teacher);
         return Ok(result);
     }
 
