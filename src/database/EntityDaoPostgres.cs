@@ -34,7 +34,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
         }
 
         result.scores = await context.Set<ScoreEntity>()
-            .Where(e => e.studentId == result.studentId && e.schoolyear == schoolyearId)
+            .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
             .ToListAsync();
 
         return result;
