@@ -1,5 +1,3 @@
-using wsmcbl.src.model.secretary;
-
 namespace wsmcbl.src.model.academy;
 
 public class StudentEntity
@@ -10,21 +8,19 @@ public class StudentEntity
     public bool isApproved { get; set; }
     
     public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<ScoreEntity> scores { get; set; } = new List<ScoreEntity>();
+    public ICollection<ScoreEntity>? scores { get; set; }
 
     public class Builder
     {
         private readonly StudentEntity entity;
 
-        public Builder()
+        public Builder(string studentId, string enrollmentId)
         {
-            entity = new StudentEntity();
-        }
-
-        public Builder(string studentId, string enrollmentId) : this()
-        {
-            entity.studentId = studentId;
-            entity.enrollmentId = enrollmentId;
+            entity = new StudentEntity
+            {
+                studentId = studentId,
+                enrollmentId = enrollmentId
+            };
         }
 
         public StudentEntity build() => entity;

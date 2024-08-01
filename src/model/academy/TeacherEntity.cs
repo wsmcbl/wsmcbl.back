@@ -10,8 +10,6 @@ public class TeacherEntity
     public bool isGuide { get; set; }
     
     public UserEntity user { get; set; } = null!;
-    public EnrollmentEntity? enrollment { get; }
-    public ICollection<SubjectEntity> subjects { get; } = null!;
 
     public string fullName()
     {

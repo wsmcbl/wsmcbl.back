@@ -5,7 +5,6 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
@@ -22,7 +21,25 @@ public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
 public class AcademyStudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao;
+    : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
+{
+    public async Task<model.academy.StudentEntity?> getByIdAndSchoolyear(string studentId, string schoolyearId)
+    { 
+        var result = await entities
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Academy Student", studentId);
+        }
+
+        result.scores = await context.Set<ScoreEntity>()
+            .Where(e => e.studentId == result.studentId && e.schoolyear == schoolyearId)
+            .ToListAsync();
+
+        return result;
+    }
+}
 
 public class SubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao

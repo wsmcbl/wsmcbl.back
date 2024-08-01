@@ -8,4 +8,7 @@ public class SubjectEntity
 
     public secretary.SubjectEntity? secretarySubject { get; set; }
     public ICollection<ScoreEntity>? scores { get; set; }
+
+    public string getInitials => secretarySubject.initials;
+    
 }
