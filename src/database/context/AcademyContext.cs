@@ -47,8 +47,13 @@ internal class AcademyContext
             entity.Property(e => e.scoreId).HasColumnName("scoreid");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
-            entity.Property(e => e.score).HasColumnName("finalscore");
+            entity.Property(e => e.score).HasColumnName("score");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
+            
+
+            entity.HasOne(e => e.secretarySubject)
+                .WithMany()
+                .HasForeignKey(e => e.subjectId);
             
             entity.HasMany(d => d.scoreItems)
                 .WithOne()

@@ -20,6 +20,7 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
+
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
 {
@@ -35,6 +36,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
 
         result.scores = await context.Set<ScoreEntity>()
             .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
+            .Include(e => e.secretarySubject)
             .ToListAsync();
 
         return result;
@@ -149,6 +151,18 @@ public class TeacherDaoPostgres(PostgresContext context)
     public new async Task<List<TeacherEntity>> getAll()
     {
         return await entities.Include(e => e.user).ToListAsync();
+    }
+
+    public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
+    {
+        var result = await entities.Where(e => e.enrollmentId == enrollmentId).FirstOrDefaultAsync();
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Teacher with EnrollmentId = {enrollmentId}, not found.");
+        }
+
+        return result;
     }
 }
 
