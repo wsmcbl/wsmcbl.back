@@ -7,7 +7,7 @@ public class StudentScoreInformationDto
     public string studentName { get; set; }
     public string teacherName { get; set; }
     public string enrollment { get; set; }
-    public List<ScoreDto> scores { get; set; }
+    public List<string> partials { get; set; }
 
     public StudentScoreInformationDto(StudentEntity student, TeacherEntity teacher)
     {
@@ -15,10 +15,6 @@ public class StudentScoreInformationDto
         teacherName = teacher.fullName();
         enrollment = teacher.getEnrollmentLabel();
 
-        scores = [];
-        foreach (var item in student.scores)
-        {
-            scores.Add(new ScoreDto(item));
-        }
+        partials = ["Parcial I", "Parcial II"];
     }
 }
