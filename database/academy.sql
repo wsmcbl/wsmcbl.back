@@ -62,12 +62,22 @@ create table if not exists Academy.Student
 
 create table if not exists Academy.Score
 (
+    scoreId serial not null primary key,
     studentId varchar(15) not null,
     subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    partial int not null,
-    finalScore float,
-    primary key (studentId, subjectId),
+    label varchar(10),
+    score float,
     foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
     foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId)
+);
+
+create table if not exists Academy.ScoreItem
+(
+    scoreItemId serial not null primary key,
+    scoreId int not null,
+    partial int not null,
+    label varchar(10),
+    score float,
+    foreign key (scoreId) references Academy.Score (scoreId)
 );
