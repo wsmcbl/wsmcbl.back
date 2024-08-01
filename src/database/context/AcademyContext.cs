@@ -40,16 +40,15 @@ internal class AcademyContext
         
         modelBuilder.Entity<ScoreEntity>(entity =>
         {
-            entity.HasKey(e => new { Studentid = e.studentId, Subjectid = e.subjectId }).HasName("note_pkey");
+            entity.HasKey(e => new { Studentid = e.studentId, Subjectid = e.subjectId }).HasName("score_pkey");
 
-            entity.ToTable("note", "academy");
+            entity.ToTable("score", "academy");
 
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
-            entity.Property(e => e.cumulative).HasColumnName("cumulative");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
-            entity.Property(e => e.exam).HasColumnName("exam");
             entity.Property(e => e.finalScore).HasColumnName("finalscore");
+            entity.Property(e => e.partial).HasColumnName("partial");
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>

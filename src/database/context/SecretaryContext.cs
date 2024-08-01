@@ -166,6 +166,7 @@ internal class SecretaryContext
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
             entity.Property(e => e.semester).HasColumnName("semester");
+            entity.Property(e => e.initials).HasMaxLength(10).HasColumnName("initials");
         });
 
         modelBuilder.Entity<GradeDataEntity>(entity =>
@@ -193,6 +194,7 @@ internal class SecretaryContext
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
             entity.Property(e => e.semester).HasColumnName("semester");
+            entity.Property(e => e.initials).HasMaxLength(10).HasColumnName("initials");
         });
 
         modelBuilder.Entity<TariffDataEntity>(entity =>
