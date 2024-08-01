@@ -9,6 +9,6 @@ public class StudentParentDtoValidator : AbstractValidator<StudentParentDto>
     {
         RuleFor(d => d.parentId)
             .NotNull()
-            .WithMessage("ParentId must not be not null");
+            .WithMessage("ParentId must not be null");
     }
 }

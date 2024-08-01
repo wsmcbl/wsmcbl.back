@@ -12,7 +12,10 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
-        var result = await controller.getStudentInformation(studentId);
+        var student = await controller.getStudentScoreInformation(studentId);
+        var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
+
+        var result = (student, teacher);
         return Ok(result);
     }
 
