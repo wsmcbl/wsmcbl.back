@@ -60,19 +60,6 @@ create table if not exists Academy.Student
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
-create table if not exists Academy.Grade
-(
-    scoreId serial not null primary key,
-    studentId varchar(15) not null,
-    subjectId varchar(15) not null,
-    enrollmentId varchar(15) not null,
-    partialId int not null,
-    grade float,
-    foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
-    foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId),
-    foreign key (partialId) references Academy.Partial (partialId)
-);
-
 create table if not exists Academy.Semester
 (
     semesterId serial not null primary key,
@@ -91,4 +78,17 @@ create table if not exists Academy.Partial
     partial int not null,
     deadLine date,
     foreign key (semesterId) references Academy.Semester
+);
+
+create table if not exists Academy.Grade
+(
+    scoreId serial not null primary key,
+    studentId varchar(15) not null,
+    subjectId varchar(15) not null,
+    enrollmentId varchar(15) not null,
+    partialId int not null,
+    grade float,
+    foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
+    foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId),
+    foreign key (partialId) references Academy.Partial (partialId)
 );

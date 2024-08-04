@@ -37,209 +37,209 @@ values ('Primer Nivel', 1),
 -- #####################################################################################
     
 -- I nivel -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (1, false, 3, 'Lengua y Literatura'),
-       (1, false, 3, 'Lengua Extranjera (Inglés)'),
-       (1, false, 3, 'Matemáticas');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (1, false, 3, 'Lengua y Literatura', 'L y L'),
+       (1, false, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (1, false, 3, 'Matemáticas', 'Mat');
 
 -- II nivel -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (2, false, 3, 'Lengua y Literatura'),
-       (2, false, 3, 'Lengua Extranjera (Inglés)'),
-       (2, false, 3, 'Matemáticas');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (2, false, 3, 'Lengua y Literatura', 'L y L'),
+       (2, false, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (2, false, 3, 'Matemáticas', 'Mat');
 
 -- III nivel -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (3, false, 3, 'Lengua y Literatura'),
-       (3, false, 3, 'Lengua Extranjera (Inglés)'),
-       (3, false, 3, 'Matemáticas');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (3, false, 3, 'Lengua y Literatura', 'L y L'),
+       (3, false, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (3, false, 3, 'Matemáticas', 'Mat');
 
 -- #####################################################################################
     
 -- 1er grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (4, false, 3, 'Creciendo en Valores'),
-       (4, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (4, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (4, false, 3, 'Educación Física'),
-       (4, false, 3, 'Lengua y Literatura'),
-       (4, false, 3, 'Lengua Extranjera (Inglés)'),
-       (4, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (4, false, 3, 'Matemáticas'),
-       (4, false, 3, 'Conociendo mi Mundo'),
-       (4, false, 3, 'Conducta'),
-       (4, false, 3, 'Educación Cristiana'),
-       (4, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (4, false, 3, 'Creciendo en Valores', 'C en V'),
+       (4, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (4, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (4, false, 3, 'Educación Física', 'EF'),
+       (4, false, 3, 'Lengua y Literatura', 'L y L'),
+       (4, false, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (4, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (4, false, 3, 'Matemáticas', 'Mat'),
+       (4, false, 3, 'Conociendo mi Mundo', 'CM'),
+       (4, false, 3, 'Conducta', 'COND'),
+       (4, false, 3, 'Educación Cristiana', 'EC'),
+       (4, false, 3, 'Computación', 'COMP');
 
 
 -- 2do grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (5, false, 3, 'Creciendo en Valores'),
-       (5, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (5, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (5, false, 3, 'Educación Física'),
-       (5, false, 3, 'Lengua y Literatura'),
-       (5, false, 3, 'Lengua Extranjera (Inglés)'),
-       (5, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (5, false, 3, 'Matemáticas'),
-       (5, false, 3, 'Conociendo mi Mundo'),
-       (5, false, 3, 'Conducta'),
-       (5, false, 3, 'Educación Cristiana'),
-       (5, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (5, false, 3, 'Creciendo en Valores', 'C en V'),
+       (5, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (5, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (5, false, 3, 'Educación Física', 'EF'),
+       (5, false, 3, 'Lengua y Literatura', 'L y L'),
+       (5, false, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (5, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (5, false, 3, 'Matemáticas', 'Mat'),
+       (5, false, 3, 'Conociendo mi Mundo', 'CM'),
+       (5, false, 3, 'Conducta', 'COND'),
+       (5, false, 3, 'Educación Cristiana', 'EC'),
+       (5, false, 3, 'Computación', 'COMP');
 
 
 -- 3er grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (6, false, 3, 'Creciendo en Valores'),
-       (6, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (6, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (6, true, 3, 'Estudios Sociales'),
-       (6, false, 3, 'Educación Física'),
-       (6, true, 3, 'Lengua y Literatura'),
-       (6, true, 3, 'Lengua Extranjera (Inglés)'),
-       (6, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (6, true, 3, 'Matemáticas'),
-       (6, true, 3, 'Ciencias Naturales'),
-       (6, false, 3, 'Conducta'),
-       (6, false, 3, 'Educación Cristiana'),
-       (6, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (6, false, 3, 'Creciendo en Valores', 'C en V'),
+       (6, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (6, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (6, true, 3, 'Estudios Sociales', 'ES'),
+       (6, false, 3, 'Educación Física', 'EF'),
+       (6, true, 3, 'Lengua y Literatura', 'L y L'),
+       (6, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (6, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (6, true, 3, 'Matemáticas', 'Mat'),
+       (6, true, 3, 'Ciencias Naturales', 'CN'),
+       (6, false, 3, 'Conducta', 'COND'),
+       (6, false, 3, 'Educación Cristiana', 'EC'),
+       (6, false, 3, 'Computación', 'COMP');
 
 
 -- 4to grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (7, false, 3, 'Creciendo en Valores'),
-       (7, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (7, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (7, true, 3, 'Estudios Sociales'),
-       (7, false, 3, 'Educación Física'),
-       (7, true, 3, 'Lengua y Literatura'),
-       (7, true, 3, 'Lengua Extranjera (Inglés)'),
-       (7, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (7, true, 3, 'Matemáticas'),
-       (7, true, 3, 'Ciencias Naturales'),
-       (7, false, 3, 'Conducta'),
-       (7, false, 3, 'Educación Cristiana'),
-       (7, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (7, false, 3, 'Creciendo en Valores', 'C en V'),
+       (7, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (7, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (7, true, 3, 'Estudios Sociales', 'ES'),
+       (7, false, 3, 'Educación Física', 'EF'),
+       (7, true, 3, 'Lengua y Literatura', 'L y L'),
+       (7, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (7, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (7, true, 3, 'Matemáticas', 'Mat'),
+       (7, true, 3, 'Ciencias Naturales', 'CN'),
+       (7, false, 3, 'Conducta', 'COND'),
+       (7, false, 3, 'Educación Cristiana', 'EC'),
+       (7, false, 3, 'Computación', 'COMP');
 
 
 -- 5to grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (8, false, 3, 'Creciendo en Valores'),
-       (8, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (8, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (8, true, 3, 'Estudios Sociales'),
-       (8, false, 3, 'Educación Física'),
-       (8, true, 3, 'Lengua y Literatura'),
-       (8, true, 3, 'Lengua Extranjera (Inglés)'),
-       (8, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (8, true, 3, 'Matemáticas'),
-       (8, true, 3, 'Ciencias Naturales'),
-       (8, false, 3, 'Conducta'),
-       (8, false, 3, 'Educación Cristiana'),
-       (8, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (8, false, 3, 'Creciendo en Valores', 'C en V'),
+       (8, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (8, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (8, true, 3, 'Estudios Sociales', 'ES'),
+       (8, false, 3, 'Educación Física', 'EF'),
+       (8, true, 3, 'Lengua y Literatura', 'L y L'),
+       (8, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (8, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (8, true, 3, 'Matemáticas', 'Mat'),
+       (8, true, 3, 'Ciencias Naturales', 'CN'),
+       (8, false, 3, 'Conducta', 'COND'),
+       (8, false, 3, 'Educación Cristiana', 'EC'),
+       (8, false, 3, 'Computación', 'COMP');
 
 
 -- 6to grado -- 
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (9, false, 3, 'Creciendo en Valores'),
-       (9, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (9, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (9, true, 3, 'Estudios Sociales'),
-       (9, false, 3, 'Educación Física'),
-       (9, true, 3, 'Lengua y Literatura'),
-       (9, true, 3, 'Lengua Extranjera (Inglés)'),
-       (9, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (9, true, 3, 'Matemáticas'),
-       (9, true, 3, 'Ciencias Naturales'),
-       (9, false, 3, 'Conducta'),
-       (9, false, 3, 'Educación Cristiana'),
-       (9, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (9, false, 3, 'Creciendo en Valores', 'C en V'),
+       (9, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (9, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (9, true, 3, 'Estudios Sociales', 'ES'),
+       (9, false, 3, 'Educación Física', 'EF'),
+       (9, true, 3, 'Lengua y Literatura', 'L y L'),
+       (9, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (9, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (9, true, 3, 'Matemáticas', 'Mat'),
+       (9, true, 3, 'Ciencias Naturales', 'CN'),
+       (9, false, 3, 'Conducta', 'COND'),
+       (9, false, 3, 'Educación Cristiana', 'EC'),
+       (9, false, 3, 'Computación', 'COMP');
 
 -- #####################################################################################
 
 -- 7mo grado --
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (10, false, 3, 'Creciendo en Valores'),
-       (10, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (10, false, 3, 'Educación Física'),
-       (10, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (10, true, 1, '(CS) Geografía'),
-       (10, true, 2, '(CS) Historia'),
-       (10, true, 3, 'Lengua y Literatura'),
-       (10, true, 3, 'Lengua Extranjera (Inglés)'),
-       (10, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (10, true, 3, 'Ciencias Naturales'),
-       (10, true, 3, 'Matemáticas'),
-       (10, false, 3, 'Conducta'),
-       (10, false, 3, 'Educación Cristiana'),
-       (10, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (10, false, 3, 'Creciendo en Valores', 'C en V'),
+       (10, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (10, false, 3, 'Educación Física', 'EF'),
+       (10, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (10, true, 1, '(CS) Geografía', 'GEOG'),
+       (10, true, 2, '(CS) Historia', 'HIST'),
+       (10, true, 3, 'Lengua y Literatura', 'L y L'),
+       (10, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (10, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (10, true, 3, 'Ciencias Naturales', 'CN'),
+       (10, true, 3, 'Matemáticas', 'Mat'),
+       (10, false, 3, 'Conducta', 'COND'),
+       (10, false, 3, 'Educación Cristiana', 'EC'),
+       (10, false, 3, 'Computación', 'COMP');
 
 
 -- 8vo grado --
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (11, false, 3, 'Creciendo en Valores'),
-       (11, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (11, false, 3, 'Educación Física'),
-       (11, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (11, true, 1, '(CS) Geografía'),
-       (11, true, 2, '(CS) Historia'),
-       (11, true, 3, 'Lengua y Literatura'),
-       (11, true, 3, 'Lengua Extranjera (Inglés)'),
-       (11, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (11, true, 3, 'Ciencias Naturales'),
-       (11, true, 3, 'Matemáticas'),
-       (11, false, 3, 'Conducta'),
-       (11, false, 3, 'Educación Cristiana'),
-       (11, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (11, false, 3, 'Creciendo en Valores', 'C en V'),
+       (11, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (11, false, 3, 'Educación Física', 'EF'),
+       (11, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (11, true, 1, '(CS) Geografía', 'GEOG'),
+       (11, true, 2, '(CS) Historia', 'HIST'),
+       (11, true, 3, 'Lengua y Literatura', 'L y L'),
+       (11, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (11, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (11, true, 3, 'Ciencias Naturales', 'CN'),
+       (11, true, 3, 'Matemáticas', 'Mat'),
+       (11, false, 3, 'Conducta', 'COND'),
+       (11, false, 3, 'Educación Cristiana', 'EC'),
+       (11, false, 3, 'Computación', 'COMP');
 
 
 -- 9no grado --
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (12, false, 3, 'Creciendo en Valores'),
-       (12, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (12, false, 3, 'Educación Física'),
-       (12, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (12, true, 1, '(CS) Geografía'),
-       (12, true, 2, '(CS) Historia'),
-       (12, true, 3, 'Lengua y Literatura'),
-       (12, true, 3, 'Lengua Extranjera (Inglés)'),
-       (12, false, 3, 'Taller de Arte y Cultura (Música)'),
-       (12, true, 3, 'Ciencias Naturales'),
-       (12, true, 3, 'Matemáticas'),
-       (12, false, 3, 'Conducta'),
-       (12, false, 3, 'Educación Cristiana'),
-       (12, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (12, false, 3, 'Creciendo en Valores', 'C en V'),
+       (12, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (12, false, 3, 'Educación Física', 'EF'),
+       (12, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (12, true, 1, '(CS) Geografía', 'GEOG'),
+       (12, true, 2, '(CS) Historia', 'HIST'),
+       (12, true, 3, 'Lengua y Literatura', 'L y L'),
+       (12, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (12, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC'),
+       (12, true, 3, 'Ciencias Naturales', 'CN'),
+       (12, true, 3, 'Matemáticas', 'Mat'),
+       (12, false, 3, 'Conducta', 'COND'),
+       (12, false, 3, 'Educación Cristiana', 'EC'),
+       (12, false, 3, 'Computación', 'COMP');
 
 
 -- 10mo grado --
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (13, false, 3, 'Creciendo en Valores'),
-       (13, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (13, false, 3, 'Educación Física'),
-       (13, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (13, true, 1, '(CS) Geografía'),
-       (13, true, 3, 'Lengua y Literatura'),
-       (13, true, 3, 'Lengua Extranjera (Inglés)'),
-       (13, true, 3, 'Química'),
-       (13, true, 3, 'Física'),
-       (13, true, 3, 'Matemáticas'),
-       (13, false, 3, 'Conducta'),
-       (13, false, 3, 'Educación Cristiana'),
-       (13, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (13, false, 3, 'Creciendo en Valores', 'C en V'),
+       (13, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (13, false, 3, 'Educación Física', 'EF'),
+       (13, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (13, true, 1, '(CS) Geografía', 'GEOG'),
+       (13, true, 3, 'Lengua y Literatura', 'L y L'),
+       (13, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (13, true, 3, 'Química', 'QUIM'),
+       (13, true, 3, 'Física', 'FIS'),
+       (13, true, 3, 'Matemáticas', 'Mat'),
+       (13, false, 3, 'Conducta', 'COND'),
+       (13, false, 3, 'Educación Cristiana', 'EC'),
+       (13, false, 3, 'Computación', 'COMP');
 
 -- 11vo grado ---
-INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
-VALUES (14, false, 3, 'Creciendo en Valores'),
-       (14, false, 3, 'Derecho y Dignidad de las mujeres'),
-       (14, false, 3, 'Educación Física'),
-       (14, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
-       (14, true, 1, '(CS) Sociología'),
-       (14, true, 2, '(CS) Filosofía'),
-       (14, true, 3, 'Lengua y Literatura'),
-       (14, true, 3, 'Lengua Extranjera (Inglés)'),
-       (14, true, 3, 'Física'),
-       (14, true, 3, 'Biología'),
-       (14, true, 3, 'Matemáticas'),
-       (14, false, 3, 'Conducta'),
-       (14, false, 3, 'Educación Cristiana'),
-       (14, false, 3, 'Computación');
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials)
+VALUES (14, false, 3, 'Creciendo en Valores', 'C en V'),
+       (14, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM'),
+       (14, false, 3, 'Educación Física', 'EF'),
+       (14, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP'),
+       (14, true, 1, '(CS) Sociología', 'SOC'),
+       (14, true, 2, '(CS) Filosofía', 'FIL'),
+       (14, true, 3, 'Lengua y Literatura', 'L y L'),
+       (14, true, 3, 'Lengua Extranjera (Inglés)', 'Ing'),
+       (14, true, 3, 'Física', 'FIS'),
+       (14, true, 3, 'Biología', 'BIOL'),
+       (14, true, 3, 'Matemáticas', 'Mat'),
+       (14, false, 3, 'Conducta', 'COND'),
+       (14, false, 3, 'Educación Cristiana', 'EC'),
+       (14, false, 3, 'Computación', 'COMP');
