@@ -9,7 +9,7 @@ public class SchoolYearToCreateDto
     [JsonRequired] public List<GradeToCreateDto> grades { get; set; } = null!;
     [JsonRequired] public List<TariffToCreateDto> tariffs { get; set; } = null!;
 
-    public List<GradeEntity> getGradeList()
+    public List<DegreeEntity> getGradeList()
     {
         return grades.Select(e => e.toEntity()).ToList();
     }

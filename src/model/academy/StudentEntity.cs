@@ -8,7 +8,7 @@ public class StudentEntity
     public bool isApproved { get; set; }
     
     public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<ScoreEntity>? scores { get; set; }
+    public ICollection<GradeEntity>? scores { get; set; }
     
     public StudentEntity()
     {

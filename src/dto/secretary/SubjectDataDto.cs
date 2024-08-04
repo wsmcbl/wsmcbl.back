@@ -15,7 +15,7 @@ public class SubjectDataDto : IBaseDto<SubjectDataEntity>
     {
         return new SubjectDataEntity
         {
-            gradeDataId = gradeIntId,
+            degreeDataId = gradeIntId,
             name = name,
             isMandatory = isMandatory,
             semester = semester

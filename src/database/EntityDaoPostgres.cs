@@ -35,9 +35,8 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
             throw new EntityNotFoundException("Academy Student", studentId);
         }
 
-        result.scores = await context.Set<ScoreEntity>()
+        result.scores = await context.Set<GradeEntity>()
             .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
-            .Include(e => e.items)
             .Include(e => e.secretarySubject)
             .ToListAsync();
 
@@ -174,9 +173,9 @@ public class TeacherDaoPostgres(PostgresContext context)
 
 
 public class GradeDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao
+    : GenericDaoPostgres<DegreeDataEntity, string>(context), IGradeDataDao
 {
-    public new async Task<List<GradeDataEntity>> getAll()
+    public new async Task<List<DegreeDataEntity>> getAll()
     {
         return await entities.Include(e => e.subjectList).ToListAsync();
     }

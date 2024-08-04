@@ -29,7 +29,7 @@ public class CreateOfficialEnrollmentControllerTest
         dao.getNewSchoolYear().Returns(schoolyear);
 
         List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
-        List<GradeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
+        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
 
         var tariffDataDao = Substitute.For<ITariffDataDao>();
         tariffDataDao.getAll().Returns(tariffData);
