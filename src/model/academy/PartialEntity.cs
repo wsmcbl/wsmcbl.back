@@ -7,5 +7,5 @@ public class PartialEntity
     public int partial { get; set; }
     public DateOnly? deadLine { get; set; }
     
-    public virtual ICollection<GradeEntity> grades { get; set; } = new List<GradeEntity>();
+    public virtual ICollection<GradeEntity> grades { get; set; }
 }

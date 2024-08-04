@@ -9,5 +9,5 @@ public class SemesterEntity
     public bool isActive { get; set; }
     public string? label { get; set; }
 
-    public virtual ICollection<PartialEntity> partials { get; set; } = new List<PartialEntity>();
+    public virtual ICollection<PartialEntity> partials { get; set; }
 }

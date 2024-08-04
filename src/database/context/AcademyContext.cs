@@ -127,6 +127,10 @@ internal class AcademyContext
             entity.Property(e => e.semesterId).HasColumnName("semesterid");
             entity.Property(e => e.partial).HasColumnName("partial");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
+            
+            entity.HasMany(d => d.grades)
+                .WithOne()
+                .HasForeignKey(e => e.partialId);
         });
 
         modelBuilder.Entity<SemesterEntity>(entity =>
@@ -141,6 +145,10 @@ internal class AcademyContext
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.semester).HasColumnName("semester");
+            
+            entity.HasMany(d => d.partials)
+                .WithOne()
+                .HasForeignKey(e => e.semesterId);
         });
     }
 }
