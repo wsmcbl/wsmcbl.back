@@ -7,7 +7,7 @@ public class StudentScoreInformationDto
     public string studentName { get; set; }
     public string teacherName { get; set; }
     public string enrollment { get; set; }
-    public List<string> partials { get; set; }
+    public List<PartialInformationDto> partials { get; set; }
 
     public StudentScoreInformationDto(StudentEntity student, TeacherEntity teacher)
     {
@@ -15,6 +15,12 @@ public class StudentScoreInformationDto
         teacherName = teacher.fullName();
         enrollment = teacher.getEnrollmentLabel();
 
-        partials = ["Parcial I", "Parcial II"];
+        partials =
+        [
+            new PartialInformationDto("I parcial", true),
+            new PartialInformationDto("II parcial", true),
+            new PartialInformationDto("III parcial", false),
+            new PartialInformationDto("VI parcial", false)
+        ];
     }
 }
