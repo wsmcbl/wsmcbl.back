@@ -1,6 +1,6 @@
 create schema if not exists Secretary;
 
--- Generate secretary.grade id
+-- Generate secretary.schoolyear id
 CREATE SEQUENCE if not exists secretary.schoolyear_id_seq START 10;
 
 CREATE OR REPLACE FUNCTION secretary.generate_schoolyear_id()
@@ -15,15 +15,15 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- Generate secretary.grade id
-CREATE SEQUENCE if not exists secretary.grade_id_seq START 10;
+-- Generate secretary.degree id
+CREATE SEQUENCE if not exists secretary.degree_id_seq START 10;
 
-CREATE OR REPLACE FUNCTION secretary.generate_grade_id()
+CREATE OR REPLACE FUNCTION secretary.generate_degree_id()
     RETURNS varchar(20) AS $$
 DECLARE
     seq_part CHAR(5);
 BEGIN
-    seq_part := LPAD(NEXTVAL('secretary.grade_id_seq')::TEXT, 5, '0');
+    seq_part := LPAD(NEXTVAL('secretary.degree_id_seq')::TEXT, 5, '0');
 
     Return 'gd' || seq_part;
 END;

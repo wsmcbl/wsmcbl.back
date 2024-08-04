@@ -1,6 +1,5 @@
 create schema if not exists Academy;
 
-
 -- Generate secretary.subject id
 CREATE SEQUENCE if not exists academy.enrollment_id_seq START 10;
 
@@ -15,16 +14,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
 create table if not exists Academy.Enrollment
 (
     enrollmentId varchar(15) primary key default academy.generate_enrollment_id(),
-    enrollmentLabel varchar(20) not null,
+    degreeId varchar(25) not null,
+    label varchar(20) not null,
     schoolYear varchar(20) not null,
     section varchar(10) not null,
     capacity smallint,
     quantity smallint,
-    gradeId varchar(25) not null,
-    foreign key (gradeId) references secretary.Grade,
+    foreign key (degreeId) references secretary.Degree,
     foreign key (schoolYear) references Secretary.Schoolyear
 );
 
@@ -60,24 +60,35 @@ create table if not exists Academy.Student
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
-create table if not exists Academy.Score
+create table if not exists Academy.Semester
+(
+    semesterId serial not null primary key,
+    schoolyear varchar(20) not null,
+    semester int not null,
+    deadLine date,
+    isActive boolean,
+    label varchar(20),
+    foreign key (schoolyear) references Secretary.Schoolyear
+);
+
+create table if not exists Academy.Partial
+(
+    partialId serial not null primary key,
+    semesterId int not null,
+    partial int not null,
+    deadLine date,
+    foreign key (semesterId) references Academy.Semester
+);
+
+create table if not exists Academy.Grade
 (
     scoreId serial not null primary key,
     studentId varchar(15) not null,
     subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    label varchar(10),
-    score float,
+    partialId int not null,
+    grade float,
     foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
-    foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId)
-);
-
-create table if not exists Academy.ScoreItem
-(
-    scoreItemId serial not null primary key,
-    scoreId int not null,
-    partial int not null,
-    label varchar(10),
-    score float,
-    foreign key (scoreId) references Academy.Score (scoreId)
+    foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId),
+    foreign key (partialId) references Academy.Partial (partialId)
 );
