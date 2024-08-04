@@ -8,6 +8,7 @@ public class SubjectDto
     public string name { get; set; }
     public bool isMandatory { get; set; }
     public int semester { get; set; }
+    public string initials { get; set; }
     
     public SubjectDto()
     {
@@ -19,5 +20,6 @@ public class SubjectDto
         name = subject.name;
         isMandatory = subject.isMandatory;
         semester = subject.semester;
+        initials = subject.initials;
     }
 }

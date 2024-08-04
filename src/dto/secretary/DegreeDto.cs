@@ -22,7 +22,7 @@ public class DegreeDto
         quantity = degree.quantity;
         modality = degree.modality;
         
-        enrollments =  degree.enrollments.mapListToDto(teacherList);
+        enrollments = degree.enrollments.mapListToDto(teacherList);
         
         subjects = !degree.subjectList.Any() ? [] : degree.subjectList.mapListToDto();
     }

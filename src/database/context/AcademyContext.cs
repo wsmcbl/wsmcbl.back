@@ -25,8 +25,8 @@ internal class AcademyContext
                 .HasColumnName("enrollmentid");
 
             entity.Property(e => e.capacity).HasColumnName("capacity");
-            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("enrollmentlabel");
-            entity.Property(e => e.degreeId).HasColumnName("gradeid");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
+            entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.section).HasMaxLength(10).HasColumnName("section");

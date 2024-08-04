@@ -29,14 +29,14 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task<DegreeEntity?> getDegreeById(string degreeId)
     {
-        var grade = await daoFactory.degreeDao!.getById(degreeId);
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
 
-        if (grade == null)
+        if (degree == null)
         {
             throw new EntityNotFoundException("Degree", degreeId);
         }
 
-        return grade;
+        return degree;
     }
 
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
@@ -46,11 +46,11 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task<SchoolYearEntity> getNewSchoolYearInformation()
     {
-        var gradeList = await daoFactory.degreeDataDao!.getAll();
+        var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
         var newSchoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        newSchoolYear.setGradeDataList(gradeList);
+        newSchoolYear.setGradeDataList(degreeList);
         newSchoolYear.setTariffDataList(tariffList);
 
         return newSchoolYear;
@@ -60,7 +60,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     {
         if (degreeList.Count == 0 || tariffList.Count == 0)
         {
-            throw new BadRequestException("GradeLis or TariffList are not valid");
+            throw new BadRequestException("DegreeList or TariffList are not valid");
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
@@ -98,16 +98,16 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             throw new BadRequestException("Quantity in not valid");
         }
 
-        var grade = await daoFactory.degreeDao!.getById(degreeId);
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
 
-        if (grade == null)
+        if (degree == null)
         {
-            throw new EntityNotFoundException("Grade", degreeId);
+            throw new EntityNotFoundException("Degree", degreeId);
         }
 
-        grade.createEnrollments(quantity);
+        degree.createEnrollments(quantity);
 
-        foreach (var enrollment in grade.enrollments!)
+        foreach (var enrollment in degree.enrollments!)
         {
             daoFactory.enrollmentDao!.create(enrollment);
             await daoFactory.execute();
@@ -118,7 +118,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             }
         }
 
-        return grade;
+        return degree;
     }
 
     public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)

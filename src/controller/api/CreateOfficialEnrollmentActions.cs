@@ -42,7 +42,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         var result = await controller.createEnrollments(dto.degreeId, dto.quantity);
         var teacherList = await controller.getTeacherList();
-        return CreatedAtAction(nameof(getDegreeById), new { gradeId = result.degreeId }, result.mapToDto(teacherList));
+        return CreatedAtAction(nameof(getDegreeById), new { result.degreeId }, result.mapToDto(teacherList));
     }
 
     [HttpPut]

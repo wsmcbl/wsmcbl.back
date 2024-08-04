@@ -9,7 +9,7 @@ public class EnrollmentToCreateDtoValidator : AbstractValidator<EnrollmentToCrea
     {
         RuleFor(d => d.degreeId)
             .NotEmpty()
-            .WithMessage("GradeId must not be empty");
+            .WithMessage("degreeId must not be empty");
         RuleFor(d => d.quantity)
             .GreaterThan(0)
             .LessThan(8)

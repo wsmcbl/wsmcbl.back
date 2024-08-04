@@ -18,5 +18,6 @@ public class SubjectEntity
         name = subjectData.name;
         isMandatory = subjectData.isMandatory;
         semester = subjectData.semester;
+        initials = subjectData.initials;
     }
 }
