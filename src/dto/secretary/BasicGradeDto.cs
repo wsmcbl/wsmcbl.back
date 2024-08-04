@@ -10,12 +10,12 @@ public class BasicGradeDto
     public int quantity { get; set; }
     public string? modality { get; set; }
 
-    public BasicGradeDto(GradeEntity grade)
+    public BasicGradeDto(DegreeEntity degree)
     {
-        gradeId = grade.gradeId!;
-        label = grade.label;
-        modality = grade.modality;
-        quantity = grade.quantity;
-        schoolYear = grade.schoolYear;
+        gradeId = degree.degreeId!;
+        label = degree.label;
+        modality = degree.modality;
+        quantity = degree.quantity;
+        schoolYear = degree.schoolYear;
     }
 }

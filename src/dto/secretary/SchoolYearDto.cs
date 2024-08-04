@@ -22,11 +22,11 @@ public class SchoolYearDto
         startDate = schoolYear.startDate;
         deadLine = schoolYear.deadLine;
 
-        grades = getGrades(schoolYear.gradeList);
+        grades = getGrades(schoolYear.degreeList);
         tariffs = getTariffs(schoolYear.tariffList);
     }
 
-    private static List<GradeToCreateDto> getGrades(List<GradeEntity>? list)
+    private static List<GradeToCreateDto> getGrades(List<DegreeEntity>? list)
     {
         if (list == null || list.Count == 0)
         {

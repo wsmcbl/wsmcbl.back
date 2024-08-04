@@ -23,7 +23,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return result;
     }
 
-    public async Task<List<GradeEntity>> getGradeList()
+    public async Task<List<DegreeEntity>> getGradeList()
     {
         return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
     }

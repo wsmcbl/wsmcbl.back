@@ -14,11 +14,11 @@ public class BasicGradeToEnrollDto
     {
     }
 
-    public BasicGradeToEnrollDto(GradeEntity grade)
+    public BasicGradeToEnrollDto(DegreeEntity degree)
     {
-        gradeId = grade.gradeId!;
-        label = grade.label;
-        modality = grade.modality;
-        enrollments = grade.enrollments.mapToListBasicDto();
+        gradeId = degree.degreeId!;
+        label = degree.label;
+        modality = degree.modality;
+        enrollments = degree.enrollments.mapToListBasicDto();
     }
 }

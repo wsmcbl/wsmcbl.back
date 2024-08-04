@@ -39,7 +39,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
         var result = await controller.createEnrollments(dto.gradeId, dto.quantity);
-        return CreatedAtAction(nameof(getGradeById), new { result.gradeId }, result.mapToDto());
+        return CreatedAtAction(nameof(getGradeById), new { gradeId = result.degreeId }, result.mapToDto());
     }
 
     [HttpPut]

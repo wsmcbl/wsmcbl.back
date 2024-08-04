@@ -18,7 +18,7 @@ public class GradeDaoPostgresTest
         sut.createList([grade]);
         
         await context.SaveChangesAsync();
-        Assert.Equal(grade, context.Set<GradeEntity>().First(e => e.gradeId == "gd-001"));
+        Assert.Equal(grade, context.Set<DegreeEntity>().First(e => e.degreeId == "gd-001"));
     }
     
     [Fact]
@@ -35,7 +35,7 @@ public class GradeDaoPostgresTest
     {
         var grade = TestEntityGenerator.aGrade("gr-0001");
         var context = TestDbContext.getInMemory();
-        context.Set<GradeEntity>().Add(grade);
+        context.Set<DegreeEntity>().Add(grade);
         await context.SaveChangesAsync();
         
         var sut = new GradeDaoPostgres(context);

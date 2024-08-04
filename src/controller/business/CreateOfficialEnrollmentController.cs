@@ -17,12 +17,12 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.teacherDao!.getAll();
     }
 
-    public async Task<List<GradeEntity>> getGradeList()
+    public async Task<List<DegreeEntity>> getGradeList()
     {
         return await daoFactory.gradeDao!.getAll();
     }
 
-    public async Task<GradeEntity?> getGradeById(string gradeId)
+    public async Task<DegreeEntity?> getGradeById(string gradeId)
     {
         var grade = await daoFactory.gradeDao!.getById(gradeId);
 
@@ -51,7 +51,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return newSchoolYear;
     }
 
-    public async Task<SchoolYearEntity> createSchoolYear(List<GradeEntity> gradeList, List<TariffEntity> tariffList)
+    public async Task<SchoolYearEntity> createSchoolYear(List<DegreeEntity> gradeList, List<TariffEntity> tariffList)
     {
         if (gradeList.Count == 0 || tariffList.Count == 0)
         {
@@ -86,7 +86,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return subject;
     }
 
-    public async Task<GradeEntity> createEnrollments(string gradeId, int quantity)
+    public async Task<DegreeEntity> createEnrollments(string gradeId, int quantity)
     {
         if (quantity is > 7 or < 1)
         {

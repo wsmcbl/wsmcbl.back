@@ -2,9 +2,9 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.model.secretary;
 
-public class GradeEntity
+public class DegreeEntity
 {
-    public string? gradeId { get; set; }
+    public string? degreeId { get; set; }
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public int quantity { get; set; }
@@ -13,20 +13,20 @@ public class GradeEntity
     public ICollection<EnrollmentEntity>? enrollments { get; set; }
     public ICollection<SubjectEntity> subjectList { get; set; }
     
-    public GradeEntity()
+    public DegreeEntity()
     {
         enrollments = [];
         subjectList = [];
     }
 
-    public GradeEntity(GradeDataEntity gradeData, string schoolYear)
+    public DegreeEntity(DegreeDataEntity degreeData, string schoolYear)
     {
         this.schoolYear = schoolYear;
-        label = gradeData.label;
-        modality = gradeData.getModalityName();
+        label = degreeData.label;
+        modality = degreeData.getModalityName();
 
         subjectList ??= [];
-        foreach (var subject in gradeData.subjectList)
+        foreach (var subject in degreeData.subjectList)
         {
             subjectList.Add(new SubjectEntity(subject));
         }
@@ -41,7 +41,7 @@ public class GradeEntity
         {
             var enrollment = new EnrollmentEntity
             {
-                gradeId = gradeId!,
+                degreeId = degreeId!,
                 schoolYear = schoolYear,
                 label = label + " " + typeLabels[i],
                 section = ""

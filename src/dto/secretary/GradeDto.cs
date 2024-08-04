@@ -13,17 +13,17 @@ public class GradeDto
     public List<EnrollmentDto> enrollments { get; set; }
     public List<SubjectDto>? subjects { get; set; }
     
-    public GradeDto(GradeEntity grade)
+    public GradeDto(DegreeEntity degree)
     {
-        gradeId = grade.gradeId;
-        label = grade.label;
-        schoolYear = grade.schoolYear;
-        quantity = grade.quantity;
-        modality = grade.modality;
+        gradeId = degree.degreeId;
+        label = degree.label;
+        schoolYear = degree.schoolYear;
+        quantity = degree.quantity;
+        modality = degree.modality;
         
-        enrollments =  grade.enrollments == null || !grade.enrollments.Any() ?
-            [] : grade.enrollments.mapListToDto();
+        enrollments =  degree.enrollments == null || !degree.enrollments.Any() ?
+            [] : degree.enrollments.mapListToDto();
         
-        subjects = !grade.subjectList.Any() ? [] : grade.subjectList.mapListToDto();
+        subjects = !degree.subjectList.Any() ? [] : degree.subjectList.mapListToDto();
     }
 }
