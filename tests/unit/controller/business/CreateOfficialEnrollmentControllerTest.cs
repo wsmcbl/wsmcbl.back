@@ -112,7 +112,7 @@ public class CreateOfficialEnrollmentControllerTest
         dao.getAll().Returns(list);
         daoFactory.degreeDao.Returns(dao);
 
-        var result = await sut.getGradeList();
+        var result = await sut.getDegreeList();
 
         Assert.NotNull(result);
         Assert.Equivalent(list, result);
@@ -170,7 +170,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeById_GradeNotFound_ReturnException()
     {
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getGradeById("gd-1"));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getDegreeById("gd-1"));
     }
     
     [Fact]
@@ -181,7 +181,7 @@ public class CreateOfficialEnrollmentControllerTest
         gradeDao.getById("gd-1").Returns(grade);
         daoFactory.degreeDao.Returns(gradeDao);
 
-        var result = await sut.getGradeById("gd-1");
+        var result = await sut.getDegreeById("gd-1");
 
         Assert.NotNull(result);
         Assert.Equivalent(grade, result);

@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeToCreateDto : IBaseDto<DegreeEntity>
+public class DegreeToCreateDto : IBaseDto<DegreeEntity>
 {
     [Required] public string label { get; set; } = null!;
     [Required] public string schoolYear { get; set; } = null!;
@@ -25,11 +25,11 @@ public class GradeToCreateDto : IBaseDto<DegreeEntity>
         return grade;
     }
 
-    public GradeToCreateDto()
+    public DegreeToCreateDto()
     {
     }
 
-    public GradeToCreateDto(DegreeEntity degree)
+    public DegreeToCreateDto(DegreeEntity degree)
     {
         label = degree.label;
         modality = degree.modality;

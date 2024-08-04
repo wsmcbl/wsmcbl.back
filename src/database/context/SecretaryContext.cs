@@ -176,7 +176,7 @@ internal class SecretaryContext
             entity.ToTable("degreecatalog", "secretary");
 
             entity.Property(e => e.degreeDataId).HasColumnName("degreecatalogid");
-            entity.Property(e => e.label).HasMaxLength(50).HasColumnName("degreelabel");
+            entity.Property(e => e.label).HasMaxLength(50).HasColumnName("label");
             entity.Property(e => e.modality).HasColumnName("modality");
 
             entity.HasMany(e => e.subjectList).WithOne()
