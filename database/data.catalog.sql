@@ -17,7 +17,7 @@ values ('Pago de matrícula', 0, null, 4, 3),
        ('Pago uniforme escolar', 0, null, 2, 3),
        ('Pago excursión', 0, null, 3, 3);
 
-insert into secretary.gradecatalog(gradelabel, modality)
+insert into secretary.degreecatalog(label, modality)
 values ('Primer Nivel', 1),
        ('Segundo Nivel', 1),
        ('Tercer Nivel', 1),
@@ -37,19 +37,19 @@ values ('Primer Nivel', 1),
 -- #####################################################################################
     
 -- I nivel -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (1, false, 3, 'Lengua y Literatura'),
        (1, false, 3, 'Lengua Extranjera (Inglés)'),
        (1, false, 3, 'Matemáticas');
 
 -- II nivel -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (2, false, 3, 'Lengua y Literatura'),
        (2, false, 3, 'Lengua Extranjera (Inglés)'),
        (2, false, 3, 'Matemáticas');
 
 -- III nivel -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (3, false, 3, 'Lengua y Literatura'),
        (3, false, 3, 'Lengua Extranjera (Inglés)'),
        (3, false, 3, 'Matemáticas');
@@ -57,7 +57,7 @@ VALUES (3, false, 3, 'Lengua y Literatura'),
 -- #####################################################################################
     
 -- 1er grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (4, false, 3, 'Creciendo en Valores'),
        (4, false, 3, 'Derecho y Dignidad de las mujeres'),
        (4, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -73,7 +73,7 @@ VALUES (4, false, 3, 'Creciendo en Valores'),
 
 
 -- 2do grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (5, false, 3, 'Creciendo en Valores'),
        (5, false, 3, 'Derecho y Dignidad de las mujeres'),
        (5, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -89,7 +89,7 @@ VALUES (5, false, 3, 'Creciendo en Valores'),
 
 
 -- 3er grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (6, false, 3, 'Creciendo en Valores'),
        (6, false, 3, 'Derecho y Dignidad de las mujeres'),
        (6, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -106,7 +106,7 @@ VALUES (6, false, 3, 'Creciendo en Valores'),
 
 
 -- 4to grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (7, false, 3, 'Creciendo en Valores'),
        (7, false, 3, 'Derecho y Dignidad de las mujeres'),
        (7, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -123,7 +123,7 @@ VALUES (7, false, 3, 'Creciendo en Valores'),
 
 
 -- 5to grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (8, false, 3, 'Creciendo en Valores'),
        (8, false, 3, 'Derecho y Dignidad de las mujeres'),
        (8, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -140,7 +140,7 @@ VALUES (8, false, 3, 'Creciendo en Valores'),
 
 
 -- 6to grado -- 
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (9, false, 3, 'Creciendo en Valores'),
        (9, false, 3, 'Derecho y Dignidad de las mujeres'),
        (9, false, 3, 'Educación para Aprender, Emprender, Prosperar'),
@@ -158,7 +158,7 @@ VALUES (9, false, 3, 'Creciendo en Valores'),
 -- #####################################################################################
 
 -- 7mo grado --
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (10, false, 3, 'Creciendo en Valores'),
        (10, false, 3, 'Derecho y Dignidad de las mujeres'),
        (10, false, 3, 'Educación Física'),
@@ -176,7 +176,7 @@ VALUES (10, false, 3, 'Creciendo en Valores'),
 
 
 -- 8vo grado --
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (11, false, 3, 'Creciendo en Valores'),
        (11, false, 3, 'Derecho y Dignidad de las mujeres'),
        (11, false, 3, 'Educación Física'),
@@ -194,7 +194,7 @@ VALUES (11, false, 3, 'Creciendo en Valores'),
 
 
 -- 9no grado --
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (12, false, 3, 'Creciendo en Valores'),
        (12, false, 3, 'Derecho y Dignidad de las mujeres'),
        (12, false, 3, 'Educación Física'),
@@ -212,7 +212,7 @@ VALUES (12, false, 3, 'Creciendo en Valores'),
 
 
 -- 10mo grado --
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (13, false, 3, 'Creciendo en Valores'),
        (13, false, 3, 'Derecho y Dignidad de las mujeres'),
        (13, false, 3, 'Educación Física'),
@@ -228,7 +228,7 @@ VALUES (13, false, 3, 'Creciendo en Valores'),
        (13, false, 3, 'Computación');
 
 -- 11vo grado ---
-INSERT INTO secretary.subjectcatalog(gradecatalogid, ismandatory, semester, name)
+INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name)
 VALUES (14, false, 3, 'Creciendo en Valores'),
        (14, false, 3, 'Derecho y Dignidad de las mujeres'),
        (14, false, 3, 'Educación Física'),
