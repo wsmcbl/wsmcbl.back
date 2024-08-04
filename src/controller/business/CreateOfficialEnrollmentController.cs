@@ -17,12 +17,12 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return await daoFactory.teacherDao!.getAll();
     }
 
-    public async Task<List<DegreeEntity>> getGradeList()
+    public async Task<List<DegreeEntity>> getDegreeList()
     {
         return await daoFactory.degreeDao!.getAll();
     }
 
-    public async Task<DegreeEntity?> getGradeById(string gradeId)
+    public async Task<DegreeEntity?> getDegreeById(string gradeId)
     {
         var grade = await daoFactory.degreeDao!.getById(gradeId);
 

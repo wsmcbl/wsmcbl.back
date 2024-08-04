@@ -7,8 +7,8 @@ namespace wsmcbl.src.controller.business;
 public interface ICreateOfficialEnrollmentController
 {
     public Task<List<TeacherEntity>> getTeacherList();
-    public Task<List<DegreeEntity>> getGradeList();
-    public Task<DegreeEntity?> getGradeById(string gradeId);
+    public Task<List<DegreeEntity>> getDegreeList();
+    public Task<DegreeEntity?> getDegreeById(string gradeId);
     public Task<List<SchoolYearEntity>> getSchoolYearList();
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
     public Task<SchoolYearEntity> createSchoolYear(List<DegreeEntity> gradeList, List<TariffEntity> tariffList);

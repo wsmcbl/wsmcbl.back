@@ -19,31 +19,31 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
 
     [HttpGet]
-    [Route("grades")]
-    public async Task<IActionResult> getGradeList()
+    [Route("degrees")]
+    public async Task<IActionResult> getDegreeList()
     {
-        var grades = await controller.getGradeList();
+        var grades = await controller.getDegreeList();
         return Ok(grades.mapListToBasicDto());
     }
 
     [HttpGet]
-    [Route("grades/{gradeId}")]
-    public async Task<IActionResult> getGradeById([Required] string gradeId)
+    [Route("degrees/{degreeId}")]
+    public async Task<IActionResult> getDegreeById([Required] string degreeId)
     {
-        var grade = await controller.getGradeById(gradeId);
+        var grade = await controller.getDegreeById(degreeId);
         return Ok(grade!.mapToDto());
     }
 
     [HttpPost]
-    [Route("grades/enrollments")]
+    [Route("degrees/enrollments")]
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
-        var result = await controller.createEnrollments(dto.gradeId, dto.quantity);
-        return CreatedAtAction(nameof(getGradeById), new { gradeId = result.degreeId }, result.mapToDto());
+        var result = await controller.createEnrollments(dto.degreeId, dto.quantity);
+        return CreatedAtAction(nameof(getDegreeById), new { gradeId = result.degreeId }, result.mapToDto());
     }
 
     [HttpPut]
-    [Route("grades/enrollments")]
+    [Route("degrees/enrollments")]
     public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
     {
         var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());

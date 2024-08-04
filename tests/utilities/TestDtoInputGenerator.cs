@@ -76,7 +76,7 @@ public static class TestDtoInputGenerator
     {
         return new EnrollmentToCreateDto
         {
-            gradeId = "gd01",
+            degreeId = "gd01",
             quantity = 40
         };
     }
