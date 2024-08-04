@@ -21,10 +21,10 @@ public abstract class DaoFactory
     public virtual ITeacherDao? teacherDao => null;
     public virtual ISubjectDao? subjectDao => null;
     
-    public virtual IGradeDao? gradeDao => null;
+    public virtual IDegreeDao? degreeDao => null;
     public virtual ISchoolyearDao? schoolyearDao => null;
     
-    public virtual IGradeDataDao? gradeDataDao => null;
+    public virtual IDegreeDataDao? degreeDataDao => null;
     public virtual ISubjectDataDao? subjectDataDao => null;
     public virtual ITariffDataDao? tariffDataDao => null;
     

@@ -19,12 +19,12 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task<List<DegreeEntity>> getGradeList()
     {
-        return await daoFactory.gradeDao!.getAll();
+        return await daoFactory.degreeDao!.getAll();
     }
 
     public async Task<DegreeEntity?> getGradeById(string gradeId)
     {
-        var grade = await daoFactory.gradeDao!.getById(gradeId);
+        var grade = await daoFactory.degreeDao!.getById(gradeId);
 
         if (grade == null)
         {
@@ -41,7 +41,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     public async Task<SchoolYearEntity> getNewSchoolYearInformation()
     {
-        var gradeList = await daoFactory.gradeDataDao!.getAll();
+        var gradeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
         var newSchoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
@@ -65,7 +65,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
         }
 
-        daoFactory.gradeDao!.createList(gradeList);
+        daoFactory.degreeDao!.createList(gradeList);
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
 
@@ -93,7 +93,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             throw new BadRequestException("Quantity in not valid");
         }
 
-        var grade = await daoFactory.gradeDao!.getById(gradeId);
+        var grade = await daoFactory.degreeDao!.getById(gradeId);
 
         if (grade == null)
         {

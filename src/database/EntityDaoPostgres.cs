@@ -172,8 +172,8 @@ public class TeacherDaoPostgres(PostgresContext context)
 }
 
 
-public class GradeDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<DegreeDataEntity, string>(context), IGradeDataDao
+public class DegreeDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<DegreeDataEntity, string>(context), IDegreeDataDao
 {
     public new async Task<List<DegreeDataEntity>> getAll()
     {

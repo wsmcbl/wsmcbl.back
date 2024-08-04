@@ -34,12 +34,12 @@ public class CreateOfficialEnrollmentControllerTest
         var tariffDataDao = Substitute.For<ITariffDataDao>();
         tariffDataDao.getAll().Returns(tariffData);
 
-        var gradaDataDao = Substitute.For<IGradeDataDao>();
+        var gradaDataDao = Substitute.For<IDegreeDataDao>();
         gradaDataDao.getAll().Returns(gradeData);
 
         daoFactory.schoolyearDao.Returns(dao);
         daoFactory.tariffDataDao.Returns(tariffDataDao);
-        daoFactory.gradeDataDao.Returns(gradaDataDao);
+        daoFactory.degreeDataDao.Returns(gradaDataDao);
         
         var result = await sut.getNewSchoolYearInformation();
 
@@ -108,9 +108,9 @@ public class CreateOfficialEnrollmentControllerTest
     public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
     {
         var list = TestEntityGenerator.aGradeList();
-        var dao = Substitute.For<IGradeDao>();
+        var dao = Substitute.For<IDegreeDao>();
         dao.getAll().Returns(list);
-        daoFactory.gradeDao.Returns(dao);
+        daoFactory.degreeDao.Returns(dao);
 
         var result = await sut.getGradeList();
 
@@ -153,12 +153,12 @@ public class CreateOfficialEnrollmentControllerTest
     {
         var grade = TestEntityGenerator.aGrade("gd-1");
         
-        var gradeDao = Substitute.For<IGradeDao>();
+        var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
 
         var enrollmentDao = Substitute.For<IEnrollmentDao>();
         
-        daoFactory.gradeDao.Returns(gradeDao);
+        daoFactory.degreeDao.Returns(gradeDao);
         daoFactory.enrollmentDao.Returns(enrollmentDao);
         
         await sut.createEnrollments("gd-1", 1);
@@ -177,9 +177,9 @@ public class CreateOfficialEnrollmentControllerTest
     public async Task getGradeById_ReturnGrade()
     {
         var grade = TestEntityGenerator.aGrade("gd-1");
-        var gradeDao = Substitute.For<IGradeDao>();
+        var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
-        daoFactory.gradeDao.Returns(gradeDao);
+        daoFactory.degreeDao.Returns(gradeDao);
 
         var result = await sut.getGradeById("gd-1");
 
