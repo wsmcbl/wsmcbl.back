@@ -13,13 +13,13 @@ public class TestDtoOutputGenerator
     private PaymentItemDto? _paymentItemDto;
     private InvoiceDto? _invoiceDto;
 
-    public static List<GradeEntity> aGradeList()
+    public static List<DegreeEntity> aGradeList()
     {
         return
         [
-            new GradeEntity
+            new DegreeEntity
             {
-                gradeId = "gr01",
+                degreeId = "gr01",
                 label = "1ro",
                 modality = "primaria",
                 schoolYear = "sch001",

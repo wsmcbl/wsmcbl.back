@@ -5,15 +5,15 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, string>(context), IGradeDao
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<DegreeEntity, string>(context), IGradeDao
 {
-    public new async Task<GradeEntity?> getById(string id)
+    public new async Task<DegreeEntity?> getById(string id)
     {
         var grade = await entities.Include(e => e.subjectList)
             .Include(e => e.enrollments)!
             .ThenInclude(e => e.subjectList)
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.gradeId == id);
+            .FirstOrDefaultAsync(e => e.degreeId == id);
 
         if (grade == null)
         {
@@ -23,7 +23,7 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
         return grade;
     }
 
-    public void createList(List<GradeEntity> gradeList)
+    public void createList(List<DegreeEntity> gradeList)
     {
         foreach (var grade in gradeList)
         {
@@ -31,7 +31,7 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
         }
     }
 
-    public async Task<List<GradeEntity>> getAllForTheCurrentSchoolyear()
+    public async Task<List<DegreeEntity>> getAllForTheCurrentSchoolyear()
     {
         var dao = new SchoolyearDaoPostgres(context);
         var currentSchoolyear = await dao.getSchoolYearByLabel(DateTime.Today.Year);

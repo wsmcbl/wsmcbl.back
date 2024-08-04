@@ -3,7 +3,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.model.secretary;
 
-public class GradeEntityTest
+public class DegreeEntityTest
 {
 
     [Fact]
@@ -11,7 +11,7 @@ public class GradeEntityTest
     {
         var gradeData = TestEntityGenerator.aGradeData();
         
-        var sut = new GradeEntity(gradeData, "sch001");
+        var sut = new DegreeEntity(gradeData, "sch001");
         
         Assert.NotEmpty(sut.subjectList);
     }
@@ -19,7 +19,7 @@ public class GradeEntityTest
     [Fact]
     public void setSubjectList_ShouldSetSubjectList_WhenParameterIsProvide()
     {
-        var sut = new GradeEntity();
+        var sut = new DegreeEntity();
         List<SubjectEntity> subjectList = [TestEntityGenerator.aSubject()];
         
         sut.setSubjectList(subjectList);

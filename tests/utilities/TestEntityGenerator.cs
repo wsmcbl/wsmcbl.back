@@ -13,11 +13,11 @@ public class TestEntityGenerator
     private TransactionTariffEntity? _transactionTariffEntity;
 
 
-    public static GradeDataEntity aGradeData()
+    public static DegreeDataEntity aGradeData()
     {
-        return new GradeDataEntity()
+        return new DegreeDataEntity()
         {
-            gradeDataId = 1,
+            degreeDataId = 1,
             label = "4to",
             modality = 2,
             subjectList = [aSubjectData()]
@@ -29,7 +29,7 @@ public class TestEntityGenerator
         return new EnrollmentEntity
         {
             enrollmentId = "en-1",
-            gradeId = "gd1",
+            degreeId = "gd1",
             capacity = 20,
             label = "A",
             quantity = 20,
@@ -42,7 +42,7 @@ public class TestEntityGenerator
     {
         return new SubjectDataEntity()
         {
-            gradeDataId = 1,
+            degreeDataId = 1,
             subjectDataId = 1,
             isMandatory = true,
             name = "Español",
@@ -63,7 +63,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<GradeEntity> aGradeList()
+    public static List<DegreeEntity> aGradeList()
     {
         return [aGrade("gd-10")];
     }
@@ -106,7 +106,7 @@ public class TestEntityGenerator
         return new SubjectEntity
         {
             subjectId = "sub1",
-            gradeId = "gd-1",
+            degreeId = "gd-1",
             isMandatory = true,
             name = "Español",
             semester = 3,
@@ -115,11 +115,11 @@ public class TestEntityGenerator
     }
 
 
-    public static GradeEntity aGrade(string gradeId)
+    public static DegreeEntity aGrade(string gradeId)
     {
-        return new GradeEntity
+        return new DegreeEntity
         {
-            gradeId = gradeId,
+            degreeId = gradeId,
             label = "11vo",
             modality = "secundaria",
             schoolYear = "sch001",
