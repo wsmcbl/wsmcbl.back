@@ -78,10 +78,10 @@ create table if not exists Secretary.Schoolyear_Student
     foreign key (studentId) references Secretary.Student
 );
 
-create table if not exists Secretary.Grade
+create table if not exists Secretary.Degree
 (
-    gradeId varchar(25) primary key default secretary.generate_grade_id(),
-    gradeLabel varchar(25) not null,
+    degreeId varchar(25) primary key default secretary.generate_degree_id(),
+    label varchar(25) not null,
     schoolYear varchar(15) not null,
     modality varchar(50) not null,
     quantity int not null,
@@ -91,30 +91,30 @@ create table if not exists Secretary.Grade
 create table if not exists Secretary.Subject
 (
     subjectId varchar(15) primary key default secretary.generate_subject_id(),
-    gradeId varchar(25) not null,
+    degreeId varchar(25) not null,
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
     initials varchar(10) not null,
-    foreign key (gradeId) references Secretary.Grade
+    foreign key (degreeId) references Secretary.Degree
 );
 
-create table if not exists Secretary.GradeCatalog
+create table if not exists Secretary.DegreeCatalog
 (
-    gradeCatalogId serial primary key ,
-    gradeLabel varchar(50) not null,
+    degreeCatalogId serial primary key,
+    label varchar(50) not null,
     modality int not null
 );
 
 create table if not exists Secretary.SubjectCatalog
 (
     subjectCatalogId serial primary key,
-    gradeCatalogId int not null,
+    degreeCatalogId int not null,
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
     initials varchar(10) not null,
-    foreign key (gradeCatalogId) references Secretary.GradeCatalog
+    foreign key (degreeCatalogId) references Secretary.DegreeCatalog
 );
 
 create table if not exists Secretary.TariffCatalog

@@ -27,6 +27,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
     public async Task<model.academy.StudentEntity> getByIdAndSchoolyear(string studentId, string schoolyearId)
     { 
         var result = await entities
+            .Include(e => e.student)
             .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
 
         if (result == null)
@@ -158,6 +159,7 @@ public class TeacherDaoPostgres(PostgresContext context)
     {
         var result = await entities
             .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.user)
             .Include(e => e.enrollment)
             .FirstOrDefaultAsync();
 

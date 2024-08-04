@@ -1,4 +1,4 @@
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.academy;
 
 public class TeacherBasicDto
 {
