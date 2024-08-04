@@ -2,17 +2,17 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class BasicGradeDto
+public class BasicDegreeDto
 {
-    public string gradeId { get; set; }
+    public string degreeId { get; set; }
     public string? label { get; set; }
     public string? schoolYear { get; set; }
     public int quantity { get; set; }
     public string? modality { get; set; }
 
-    public BasicGradeDto(DegreeEntity degree)
+    public BasicDegreeDto(DegreeEntity degree)
     {
-        gradeId = degree.degreeId!;
+        degreeId = degree.degreeId!;
         label = degree.label;
         modality = degree.modality;
         quantity = degree.quantity;

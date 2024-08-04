@@ -3,14 +3,14 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
 
-public class GradeToCreateDtoTest
+public class DegreeToCreateDtoTest
 {
     [Fact]
     public void init_ShouldReturnDto_WhenCalled()
     {
         var entity = TestEntityGenerator.aGrade("gd1");
 
-        var result = new GradeToCreateDto(entity);
+        var result = new DegreeToCreateDto(entity);
         
         Assert.NotNull(result);
         Assert.NotNull(result.schoolYear);

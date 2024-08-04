@@ -2,9 +2,9 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeDto
+public class DegreeDto
 {
-    public string? gradeId { get; set; }
+    public string? degreeId { get; set; }
     public string label { get; set; }
     public string schoolYear { get; set; }
     public int quantity { get; set; }
@@ -13,9 +13,9 @@ public class GradeDto
     public List<EnrollmentDto> enrollments { get; set; }
     public List<SubjectDto>? subjects { get; set; }
     
-    public GradeDto(DegreeEntity degree)
+    public DegreeDto(DegreeEntity degree)
     {
-        gradeId = degree.degreeId;
+        degreeId = degree.degreeId;
         label = degree.label;
         schoolYear = degree.schoolYear;
         quantity = degree.quantity;

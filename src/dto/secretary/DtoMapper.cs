@@ -19,21 +19,21 @@ public static class DtoMapper
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
-    public static GradeDto mapToDto(this DegreeEntity degree) => new(degree);
-    public static GradeToCreateDto mapToCreateDto(this DegreeEntity degree) => new(degree);
+    public static DegreeDto mapToDto(this DegreeEntity degree) => new(degree);
+    public static DegreeToCreateDto mapToCreateDto(this DegreeEntity degree) => new(degree);
     public static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
 
 
 
-    private static BasicGradeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
+    private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
     private static BasicStudentToEnrollDto mapToBasicDto(this StudentEntity student) => new(student);
-    private static BasicGradeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
+    private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
 
 
 
-    public static List<BasicGradeToEnrollDto> mapToListBasicDto(this IEnumerable<DegreeEntity> list)
+    public static List<BasicDegreeToEnrollDto> mapToListBasicDto(this IEnumerable<DegreeEntity> list)
         => list.Select(e => e.mapToBasicEnrollDto()).ToList();
     public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
@@ -56,7 +56,7 @@ public static class DtoMapper
     public static List<TariffToCreateDto> mapListToDto(this IEnumerable<TariffEntity> tariffs)
         => tariffs.Select(e => new TariffToCreateDto(e)).ToList();
 
-    public static List<GradeToCreateDto> mapListToDto(this IEnumerable<DegreeEntity> grades)
+    public static List<DegreeToCreateDto> mapListToDto(this IEnumerable<DegreeEntity> grades)
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
     
     
@@ -64,8 +64,8 @@ public static class DtoMapper
     
     public static List<SubjectInputDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectInputDto(e)).ToList();
-    private static GradeToCreateDto mapToNewSchoolyearDto(this DegreeEntity degree) => new(degree);
+    private static DegreeToCreateDto mapToNewSchoolyearDto(this DegreeEntity degree) => new(degree);
     
-    public static List<BasicGradeDto> mapListToBasicDto(this IEnumerable<DegreeEntity> grades) 
+    public static List<BasicDegreeDto> mapListToBasicDto(this IEnumerable<DegreeEntity> grades) 
         => grades.Select(e => e.mapToBasicDto()).ToList();
 }

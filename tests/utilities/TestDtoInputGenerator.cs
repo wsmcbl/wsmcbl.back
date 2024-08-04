@@ -38,9 +38,9 @@ public static class TestDtoInputGenerator
     }
     
     
-    public static GradeToCreateDto aGradeDto()
+    public static DegreeToCreateDto aGradeDto()
     {
-        return new GradeToCreateDto()
+        return new DegreeToCreateDto()
         {
             label = "5to",
             schoolYear = "sch01",
@@ -85,7 +85,7 @@ public static class TestDtoInputGenerator
     {
         return new SchoolYearToCreateDto
         {
-            grades = [],
+            degrees = [],
             tariffs = []
         };
     }
