@@ -82,12 +82,13 @@ create table if not exists Academy.Partial
 
 create table if not exists Academy.Grade
 (
-    scoreId serial not null primary key,
+    gradeId serial not null primary key,
     studentId varchar(15) not null,
     subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
     partialId int not null,
     grade float,
+    label varchar(10),
     foreign key (studentId, enrollmentId) references Academy.Student (studentId, enrollmentId),
     foreign key (subjectId, enrollmentId) references Academy.Subject (subjectid, enrollmentId),
     foreign key (partialId) references Academy.Partial (partialId)
