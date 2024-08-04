@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
 using wsmcbl.src.dto.secretary;
+using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -22,16 +23,17 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     [Route("degrees")]
     public async Task<IActionResult> getDegreeList()
     {
-        var grades = await controller.getDegreeList();
-        return Ok(grades.mapListToBasicDto());
+        var result = await controller.getDegreeList();
+        return Ok(result.mapListToBasicDto());
     }
 
     [HttpGet]
     [Route("degrees/{degreeId}")]
     public async Task<IActionResult> getDegreeById([Required] string degreeId)
     {
-        var grade = await controller.getDegreeById(degreeId);
-        return Ok(grade!.mapToDto());
+        var result = await controller.getDegreeById(degreeId);
+        var teacherList = await controller.getTeacherList();
+        return Ok(result!.mapToDto(teacherList));
     }
 
     [HttpPost]
@@ -39,7 +41,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
     {
         var result = await controller.createEnrollments(dto.degreeId, dto.quantity);
-        return CreatedAtAction(nameof(getDegreeById), new { gradeId = result.degreeId }, result.mapToDto());
+        var teacherList = await controller.getTeacherList();
+        return CreatedAtAction(nameof(getDegreeById), new { gradeId = result.degreeId }, result.mapToDto(teacherList));
     }
 
     [HttpPut]
@@ -47,14 +50,17 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
     {
         var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());
-
+        
         var teacherId = toUpdateDto.teacherId;
+        TeacherEntity? teacher = null;
+        
         if (teacherId != null)
         {
             await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
+            teacher = await controller.getTeacherById(teacherId);
         }
-
-        return Ok(enrollment.mapToDto());
+        
+        return Ok(enrollment.mapToDto(teacher));
     }
 
     /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
