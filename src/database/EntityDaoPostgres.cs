@@ -20,12 +20,14 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
+
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
 {
-    public async Task<model.academy.StudentEntity?> getByIdAndSchoolyear(string studentId, string schoolyearId)
+    public async Task<model.academy.StudentEntity> getByIdAndSchoolyear(string studentId, string schoolyearId)
     { 
         var result = await entities
+            .Include(e => e.student)
             .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
 
         if (result == null)
@@ -34,7 +36,9 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
         }
 
         result.scores = await context.Set<ScoreEntity>()
-            .Where(e => e.studentId == result.studentId && e.schoolyear == schoolyearId)
+            .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
+            .Include(e => e.items)
+            .Include(e => e.secretarySubject)
             .ToListAsync();
 
         return result;
@@ -149,6 +153,22 @@ public class TeacherDaoPostgres(PostgresContext context)
     public new async Task<List<TeacherEntity>> getAll()
     {
         return await entities.Include(e => e.user).ToListAsync();
+    }
+
+    public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
+    {
+        var result = await entities
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.user)
+            .Include(e => e.enrollment)
+            .FirstOrDefaultAsync();
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Teacher with EnrollmentId = {enrollmentId}, not found.");
+        }
+
+        return result;
     }
 }
 

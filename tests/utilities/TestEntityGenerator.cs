@@ -109,7 +109,8 @@ public class TestEntityGenerator
             gradeId = "gd-1",
             isMandatory = true,
             name = "Español",
-            semester = 3
+            semester = 3,
+            initials = "L y L"
         };
     }
 

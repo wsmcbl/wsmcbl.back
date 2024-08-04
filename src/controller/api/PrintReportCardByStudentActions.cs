@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -12,7 +13,10 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
-        var result = await controller.getStudentInformation(studentId);
+        var student = await controller.getStudentScoreInformation(studentId);
+        var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
+
+        var result = new StudentScoreInformationDto(student, teacher);
         return Ok(result);
     }
 
@@ -20,7 +24,7 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
     [Route("documents/report-cards/{studentId}")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
-        var result = await controller.getReportCard(studentId, "");
+        var result = await controller.getReportCard(studentId);
         return File(result, "application/pdf", $"{studentId}.report-card.pdf");
     }
 }

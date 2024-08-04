@@ -4,6 +4,7 @@ namespace wsmcbl.src.controller.business;
 
 public interface IPrintReportCardByStudentController
 {
-    public Task<StudentEntity> getStudentInformation(string studentId);
-    public Task<byte[]> getReportCard(string studentId, string partials);
+    public Task<StudentEntity> getStudentScoreInformation(string studentId);
+    Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId);
+    public Task<byte[]> getReportCard(string studentId);
 }
