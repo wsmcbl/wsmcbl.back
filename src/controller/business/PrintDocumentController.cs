@@ -6,9 +6,9 @@ namespace wsmcbl.src.controller.business;
 
 public class PrintDocumentController(DaoFactory daoFactory) : PDFController
 {
-    public async Task<byte[]> getReportCardByStudent(string studenId)
+    public async Task<byte[]> getReportCardByStudent(string studentId)
     {
-        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studenId);
+        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
 
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
@@ -25,10 +25,10 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
         var student = await daoFactory.studentDao!.getByIdWithProperties(studentId);
-        var grade = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
+        var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
         
         var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
-        latexBuilder.setGrade(grade.label);
+        latexBuilder.setGrade(enrollment.label);
         setLatexBuilder(latexBuilder);
 
         return getPDF();
