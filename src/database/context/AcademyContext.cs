@@ -124,9 +124,7 @@ internal class AcademyContext
             entity.Property(e => e.partial).HasColumnName("partial");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             
-            entity.HasMany(d => d.grades)
-                .WithOne()
-                .HasForeignKey(e => e.partialId);
+            entity.HasMany(d => d.grades).WithOne().HasForeignKey(e => e.partialId);
         });
 
         modelBuilder.Entity<SemesterEntity>(entity =>

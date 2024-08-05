@@ -15,12 +15,10 @@ public class StudentScoreInformationDto
         teacherName = teacher.fullName();
         enrollment = teacher.getEnrollmentLabel();
 
-        partials =
-        [
-            new PartialInformationDto("I parcial", true),
-            new PartialInformationDto("II parcial", true),
-            new PartialInformationDto("III parcial", false),
-            new PartialInformationDto("VI parcial", false)
-        ];
+        partials = [];
+        foreach (var partial in student.partials)
+        {
+            partials.Add(new PartialInformationDto(partial.getLabel(), partial.isClosed()));
+        }
     }
 }
