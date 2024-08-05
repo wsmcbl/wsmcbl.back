@@ -10,12 +10,12 @@ public class SchoolYearEntity
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<GradeEntity>? gradeList { get; private set; }
+    public List<DegreeEntity>? degreeList { get; private set; }
     public List<TariffEntity>? tariffList { get; private set; }
 
-    public void setGradeList(List<GradeEntity> list)
+    public void setGradeList(List<DegreeEntity> list)
     {
-        gradeList = list;
+        degreeList = list;
     }
     
     public void setTariffList(List<TariffEntity> list)
@@ -23,12 +23,12 @@ public class SchoolYearEntity
         tariffList = list;
     }
     
-    public void setGradeDataList(List<GradeDataEntity> list)
+    public void setGradeDataList(List<DegreeDataEntity> list)
     {
-        gradeList = [];
+        degreeList = [];
         foreach (var item in list)
         {
-            gradeList.Add(new GradeEntity(item, id!));
+            degreeList.Add(new DegreeEntity(item, id!));
         }
     }
 

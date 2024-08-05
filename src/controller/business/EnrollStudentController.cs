@@ -23,9 +23,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return result;
     }
 
-    public async Task<List<GradeEntity>> getGradeList()
+    public async Task<List<DegreeEntity>> getDegreeList()
     {
-        return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
+        return await daoFactory.degreeDao!.getAllForTheCurrentSchoolyear();
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
