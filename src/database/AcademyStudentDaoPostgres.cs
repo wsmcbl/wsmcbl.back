@@ -26,7 +26,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
         var schoolyear = DateTime.Today.Year.ToString();
 
         FormattableString query =
-            $@"select p.* from academy.student s
+            $@"select s.* from academy.student s
                inner join secretary.schoolyear sy on sy.schoolyearid = s.schoolyear
                where sy.label = {schoolyear} and s.studentid = {studentId}";
 
