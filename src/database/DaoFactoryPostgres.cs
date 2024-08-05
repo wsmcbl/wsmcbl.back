@@ -27,7 +27,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         context.Entry(element).State = EntityState.Detached;
     }
-    
+
+    private IPartialDao? _partialDao;
+    public override IPartialDao partialDao => _partialDao ??= new PartialDaoPostgres(context);
     
     private ICashierDao? _cashierDao;
     public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
