@@ -25,13 +25,13 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
 {
     public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
     {
-        var daoAux = new SchoolyearDaoPostgres(context);
-        var schoolyear = await daoAux.getCurrentSchoolYear();
+        var schoolyear = DateTime.Today.Year.ToString();
        
         FormattableString query =
             $@"select p.* from academy.partial p
                inner join academy.semester s on p.semesterid = s.semesterid
-               where s.schoolyear = {schoolyear.id}";
+               inner join secretary.schoolyear sy on sy.schoolyearid = s.schoolyear
+               where sy.label = {schoolyear}";
 
         var partials = await context.Set<PartialEntity>()
             .FromSqlInterpolated(query)

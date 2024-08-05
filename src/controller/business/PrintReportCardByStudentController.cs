@@ -16,6 +16,9 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
         {
             throw new EntityNotFoundException("Academy Student", studentId);
         }
+
+        var partials = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        result.setPartials(partials);
         
         return result;
     }
