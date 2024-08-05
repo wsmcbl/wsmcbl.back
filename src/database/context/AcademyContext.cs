@@ -72,10 +72,6 @@ internal class AcademyContext
                 .HasForeignKey(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
-
-            entity.HasMany(d => d.scores)
-                .WithOne()
-                .HasForeignKey(e => new { e.studentId, e.enrollmentId });
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>
