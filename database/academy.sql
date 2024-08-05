@@ -65,9 +65,9 @@ create table if not exists Academy.Semester
     semesterId serial not null primary key,
     schoolyear varchar(20) not null,
     semester int not null,
-    deadLine date,
-    isActive boolean,
-    label varchar(20),
+    deadLine date not null,
+    isActive boolean not null ,
+    label varchar(20) not null ,
     foreign key (schoolyear) references Secretary.Schoolyear
 );
 
@@ -76,7 +76,8 @@ create table if not exists Academy.Partial
     partialId serial not null primary key,
     semesterId int not null,
     partial int not null,
-    deadLine date,
+    deadLine date not null,
+    label varchar(20) not null,
     foreign key (semesterId) references Academy.Semester
 );
 
