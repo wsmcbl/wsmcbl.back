@@ -21,6 +21,28 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
+public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<PartialEntity, int>(context), IPartialDao
+{
+    public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
+    {
+        var daoAux = new SchoolyearDaoPostgres(context);
+        var schoolyear = await daoAux.getCurrentSchoolYear();
+       
+        FormattableString query =
+            $@"select p.* from academy.partial p
+               inner join academy.semester s on p.semesterid = s.semesterid
+               where s.schoolyear = {schoolyear.id}";
+
+        var partials = await context.Set<PartialEntity>()
+            .FromSqlInterpolated(query)
+            .Include(e => e.grades)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return partials;
+    }
+}
+
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
 {
@@ -34,17 +56,6 @@ public class AcademyStudentDaoPostgres(PostgresContext context)
         {
             throw new EntityNotFoundException("Academy Student", studentId);
         }
-
-        var daoAux = new SchoolyearDaoPostgres(context);
-        var schoolyear = await daoAux.getCurrentSchoolYear();
-        FormattableString query =
-            $@"select p.* from academy.partial p
-               inner join academy.semester s on p.semesterid = s.semesterid
-               where s.schoolyear == {schoolyear.id}";
-
-        var partials = await context.Set<PartialEntity>().FromSqlInterpolated(query).AsNoTracking().ToListAsync();
-        
-        result.setPartials(partials);
 
         return result;
     }
