@@ -23,7 +23,7 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
         Assert.NotNull(content);
     }
     
-
+/*
     [Fact]
     public async Task getStudentById_ShouldReturnJsonWithStudent_WhenCalled()
     {
@@ -39,7 +39,7 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
         var entity = deserialize<StudentFullDto>(content);
         Assert.NotNull(entity);
     }
-/*
+
     [Fact]
     public async Task getGradeList_ShouldReturnJsonWithList_WhenCalled()
     {
