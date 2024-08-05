@@ -1,5 +1,3 @@
-using wsmcbl.src.model.dao;
-
 namespace wsmcbl.src.model.academy;
 
 public class SemesterEntity
