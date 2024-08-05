@@ -3,16 +3,16 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeToCreateDto : IBaseDto<GradeEntity>
+public class DegreeToCreateDto : IBaseDto<DegreeEntity>
 {
     [Required] public string label { get; set; } = null!;
     [Required] public string schoolYear { get; set; } = null!;
     [Required] public string modality { get; set; } = null!;
     [Required] public List<SubjectInputDto>? subjects { get; set; }
 
-    public GradeEntity toEntity()
+    public DegreeEntity toEntity()
     {
-        var grade = new GradeEntity
+        var grade = new DegreeEntity
         {
             label = label,
             schoolYear = schoolYear,
@@ -25,15 +25,15 @@ public class GradeToCreateDto : IBaseDto<GradeEntity>
         return grade;
     }
 
-    public GradeToCreateDto()
+    public DegreeToCreateDto()
     {
     }
 
-    public GradeToCreateDto(GradeEntity grade)
+    public DegreeToCreateDto(DegreeEntity degree)
     {
-        label = grade.label;
-        modality = grade.modality;
-        schoolYear = grade.schoolYear;
-        subjects = !grade.subjectList.Any() ? [] : grade.subjectList.mapListToInputDto();
+        label = degree.label;
+        modality = degree.modality;
+        schoolYear = degree.schoolYear;
+        subjects = !degree.subjectList.Any() ? [] : degree.subjectList.mapListToInputDto();
     }
 }

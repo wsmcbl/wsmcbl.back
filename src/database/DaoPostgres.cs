@@ -17,27 +17,45 @@ public class SubjectDataDaoPostgres(PostgresContext context)
 
 public class UserDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
+
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
+public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<PartialEntity, int>(context), IPartialDao
+{
+    public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
+    {
+        var daoAux = new SchoolyearDaoPostgres(context);
+        var schoolyear = await daoAux.getCurrentSchoolYear();
+       
+        FormattableString query =
+            $@"select p.* from academy.partial p
+               inner join academy.semester s on p.semesterid = s.semesterid
+               where s.schoolyear = {schoolyear.id}";
+
+        var partials = await context.Set<PartialEntity>()
+            .FromSqlInterpolated(query)
+            .Include(e => e.grades)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return partials;
+    }
+}
 
 public class AcademyStudentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
 {
     public async Task<model.academy.StudentEntity> getByIdAndSchoolyear(string studentId, string schoolyearId)
-    { 
+    {
         var result = await entities
+            .Include(e => e.student)
             .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
 
         if (result == null)
         {
             throw new EntityNotFoundException("Academy Student", studentId);
         }
-
-        result.scores = await context.Set<ScoreEntity>()
-            .Where(e => e.studentId == result.studentId && e.enrollmentId == result.enrollmentId)
-            .Include(e => e.secretarySubject)
-            .ToListAsync();
 
         return result;
     }
@@ -59,7 +77,7 @@ public class StudentFileDaoPostgres(PostgresContext context)
     public async Task updateAsync(StudentFileEntity entity)
     {
         var existingEntity = await getById(entity.fileId);
-        
+
         if (existingEntity == null)
         {
             create(entity);
@@ -69,7 +87,6 @@ public class StudentFileDaoPostgres(PostgresContext context)
             existingEntity.update(entity);
         }
     }
-
 }
 
 public class StudentTutorDaoPostgres(PostgresContext context)
@@ -78,7 +95,7 @@ public class StudentTutorDaoPostgres(PostgresContext context)
     public async Task updateAsync(StudentTutorEntity entity)
     {
         var existingEntity = await getById(entity.tutorId!);
-        
+
         if (existingEntity == null)
         {
             entity.studentId = "";
@@ -97,7 +114,7 @@ public class StudentParentDaoPostgres(PostgresContext context)
     public async Task updateAsync(StudentParentEntity entity)
     {
         var existingEntity = await getById(entity.parentId);
-        
+
         if (existingEntity == null)
         {
             entity.parentId = "";
@@ -116,7 +133,7 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
     public async Task updateAsync(StudentMeasurementsEntity entity)
     {
         var existingEntity = await getById(entity.measurementId);
-        
+
         if (existingEntity == null)
         {
             create(entity);
@@ -128,9 +145,7 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
     }
 }
 
-
-
-public class TransactionDaoPostgres(PostgresContext context) 
+public class TransactionDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TransactionEntity, string>(context), ITransactionDao
 {
     public override void create(TransactionEntity entity)
@@ -139,14 +154,14 @@ public class TransactionDaoPostgres(PostgresContext context)
         {
             throw new IncorrectDataBadRequestException("transaction");
         }
-        
+
         entity.computeTotal();
         base.create(entity);
     }
 }
 
-public class TeacherDaoPostgres(PostgresContext context) 
-    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao 
+public class TeacherDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao
 {
     public new async Task<List<TeacherEntity>> getAll()
     {
@@ -155,7 +170,11 @@ public class TeacherDaoPostgres(PostgresContext context)
 
     public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
     {
-        var result = await entities.Where(e => e.enrollmentId == enrollmentId).FirstOrDefaultAsync();
+        var result = await entities
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.user)
+            .Include(e => e.enrollment)
+            .FirstOrDefaultAsync();
 
         if (result == null)
         {
@@ -166,11 +185,10 @@ public class TeacherDaoPostgres(PostgresContext context)
     }
 }
 
-
-public class GradeDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<GradeDataEntity, string>(context), IGradeDataDao
+public class DegreeDataDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<DegreeDataEntity, string>(context), IDegreeDataDao
 {
-    public new async Task<List<GradeDataEntity>> getAll()
+    public new async Task<List<DegreeDataEntity>> getAll()
     {
         return await entities.Include(e => e.subjectList).ToListAsync();
     }

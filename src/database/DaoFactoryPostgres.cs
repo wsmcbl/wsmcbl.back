@@ -27,7 +27,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     {
         context.Entry(element).State = EntityState.Detached;
     }
-    
+
+    private IPartialDao? _partialDao;
+    public override IPartialDao partialDao => _partialDao ??= new PartialDaoPostgres(context);
     
     private ICashierDao? _cashierDao;
     public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
@@ -49,8 +51,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
 
 
-    private IGradeDao? _gradeDao;
-    public override IGradeDao gradeDao => _gradeDao ??= new GradeDaoPostgres(context);
+    private IDegreeDao? _gradeDao;
+    public override IDegreeDao degreeDao => _gradeDao ??= new DegreeDaoPostgres(context);
 
     
     private IEnrollmentDao? _enrollmentDao;
@@ -65,8 +67,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override ISchoolyearDao schoolyearDao => _schoolyearDao ??= new SchoolyearDaoPostgres(context);
 
 
-    private IGradeDataDao? _gradeDataDao;
-    public override IGradeDataDao gradeDataDao => _gradeDataDao ??= new GradeDataDaoPostgres(context);
+    private IDegreeDataDao? _degreeDataDao;
+    public override IDegreeDataDao degreeDataDao => _degreeDataDao ??= new DegreeDataDaoPostgres(context);
 
 
     private ISubjectDataDao? _subjectDataDao;

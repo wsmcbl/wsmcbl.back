@@ -9,6 +9,7 @@ public class SubjectInputDto : IBaseDto<SubjectEntity>
     [Required] public string name { get; set; } = null!;
     [JsonRequired] public bool isMandatory { get; set; }
     [JsonRequired] public int semester { get; set; }
+    [Required] public string initials { get; set; }
 
     public SubjectEntity toEntity()
     {
@@ -16,7 +17,8 @@ public class SubjectInputDto : IBaseDto<SubjectEntity>
         {
             name = name,
             isMandatory = isMandatory,
-            semester = semester
+            semester = semester,
+            initials = initials
         };
     }
 
@@ -29,5 +31,6 @@ public class SubjectInputDto : IBaseDto<SubjectEntity>
         name = subject.name;
         isMandatory = subject.isMandatory;
         semester = subject.semester;
+        initials = subject.initials;
     }
 }

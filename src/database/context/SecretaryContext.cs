@@ -14,26 +14,26 @@ internal class SecretaryContext
 
     public void create()
     {
-        modelBuilder.Entity<GradeEntity>(entity =>
+        modelBuilder.Entity<DegreeEntity>(entity =>
         {
-            entity.HasKey(e => e.gradeId).HasName("grade_pkey");
+            entity.HasKey(e => e.degreeId).HasName("degree_pkey");
 
-            entity.ToTable("grade", "secretary");
+            entity.ToTable("degree", "secretary");
 
-            entity.Property(e => e.gradeId)
+            entity.Property(e => e.degreeId)
                 .HasMaxLength(25)
-                .HasDefaultValueSql("secretary.generate_grade_id()")
-                .HasColumnName("gradeid");
-            entity.Property(e => e.label).HasMaxLength(25).HasColumnName("gradelabel");
+                .HasDefaultValueSql("secretary.generate_degree_id()")
+                .HasColumnName("degreeid");
+            entity.Property(e => e.label).HasMaxLength(25).HasColumnName("label");
             entity.Property(e => e.schoolYear).HasMaxLength(15).HasColumnName("schoolyear");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.modality).HasMaxLength(50).HasColumnName("modality");
 
             entity.HasMany(e => e.enrollments).WithOne()
-                .HasForeignKey(d => d.gradeId);
+                .HasForeignKey(d => d.degreeId);
 
             entity.HasMany(e => e.subjectList).WithOne()
-                .HasForeignKey(d => d.gradeId);
+                .HasForeignKey(d => d.degreeId);
         });
 
         modelBuilder.Entity<SchoolYearEntity>(entity =>
@@ -42,7 +42,7 @@ internal class SecretaryContext
 
             entity.ToTable("schoolyear", "secretary");
 
-            entity.Ignore(e => e.gradeList);
+            entity.Ignore(e => e.degreeList);
             entity.Ignore(e => e.tariffList);
 
             entity.Property(e => e.id)
@@ -101,7 +101,7 @@ internal class SecretaryContext
             entity.Property(e => e.parentIdentifier).HasColumnName("parentidentifier");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.transferSheet).HasColumnName("transfersheet");
-            entity.Property(e => e.updatedGradeReport).HasColumnName("updatedgradereport");
+            entity.Property(e => e.updatedDegreeReport).HasColumnName("updatedgradereport");
         });
 
         modelBuilder.Entity<StudentMeasurementsEntity>(entity =>
@@ -162,25 +162,25 @@ internal class SecretaryContext
                 .HasDefaultValueSql("secretary.generate_subject_id()")
                 .HasColumnName("subjectid");
 
-            entity.Property(e => e.gradeId).HasColumnName("gradeid");
+            entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
             entity.Property(e => e.semester).HasColumnName("semester");
             entity.Property(e => e.initials).HasMaxLength(10).HasColumnName("initials");
         });
 
-        modelBuilder.Entity<GradeDataEntity>(entity =>
+        modelBuilder.Entity<DegreeDataEntity>(entity =>
         {
-            entity.HasKey(e => e.gradeDataId).HasName("gradecatalog_pkey");
+            entity.HasKey(e => e.degreeDataId).HasName("degreecatalog_pkey");
 
-            entity.ToTable("gradecatalog", "secretary");
+            entity.ToTable("degreecatalog", "secretary");
 
-            entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
-            entity.Property(e => e.label).HasMaxLength(50).HasColumnName("gradelabel");
+            entity.Property(e => e.degreeDataId).HasColumnName("degreecatalogid");
+            entity.Property(e => e.label).HasMaxLength(50).HasColumnName("label");
             entity.Property(e => e.modality).HasColumnName("modality");
 
             entity.HasMany(e => e.subjectList).WithOne()
-                .HasForeignKey(d => d.gradeDataId);
+                .HasForeignKey(d => d.degreeDataId);
         });
 
         modelBuilder.Entity<SubjectDataEntity>(entity =>
@@ -190,7 +190,7 @@ internal class SecretaryContext
             entity.ToTable("subjectcatalog", "secretary");
 
             entity.Property(e => e.subjectDataId).HasColumnName("subjectcatalogid");
-            entity.Property(e => e.gradeDataId).HasColumnName("gradecatalogid");
+            entity.Property(e => e.degreeDataId).HasColumnName("degreecatalogid");
             entity.Property(e => e.name).HasMaxLength(100).HasColumnName("name");
             entity.Property(e => e.isMandatory).HasColumnName("ismandatory");
             entity.Property(e => e.semester).HasColumnName("semester");

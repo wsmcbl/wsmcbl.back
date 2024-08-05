@@ -7,34 +7,36 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!;
     public bool isApproved { get; set; }
     
-    public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<ScoreEntity>? scores { get; set; }
-
-    public class Builder
+    public secretary.StudentEntity student { get; init; } = null!;
+    public List<PartialEntity> partials { get; private set; }
+    
+    public StudentEntity()
     {
-        private readonly StudentEntity entity;
+    }
 
-        public Builder(string studentId, string enrollmentId)
-        {
-            entity = new StudentEntity
-            {
-                studentId = studentId,
-                enrollmentId = enrollmentId
-            };
-        }
+    public StudentEntity(string studentId, string enrollmentId)
+    {
+        this.studentId = studentId;
+        this.enrollmentId = enrollmentId;
+    }
+    
+    public void isNewEnroll()
+    {
+        isApproved = false;
+    }
 
-        public StudentEntity build() => entity;
+    public void setSchoolyear(string schoolYearId)
+    {
+        schoolYear = schoolYearId;
+    }
 
-        public Builder isNewEnroll()
-        {
-            entity.isApproved = false;
-            return this;
-        }
+    public string fullName()
+    {
+        return student.fullName();
+    }
 
-        public Builder setSchoolyear(string schoolYearId)
-        {
-            entity.schoolYear = schoolYearId;
-            return this;
-        }
+    public void setPartials(List<PartialEntity> list)
+    {
+        partials = list;
     }
 }

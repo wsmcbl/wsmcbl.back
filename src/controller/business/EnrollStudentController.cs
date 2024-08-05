@@ -23,29 +23,29 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return result;
     }
 
-    public async Task<List<GradeEntity>> getGradeList()
+    public async Task<List<DegreeEntity>> getDegreeList()
     {
-        return await daoFactory.gradeDao!.getAllForTheCurrentSchoolyear();
+        return await daoFactory.degreeDao!.getAllForTheCurrentSchoolyear();
     }
-    
+
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
         await daoFactory.studentDao!.updateAsync(student);
         await daoFactory.studentFileDao!.updateAsync(student.file);
         await daoFactory.studentTutorDao!.updateAsync(student.tutor);
         await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);
-        
+
         foreach (var parent in student.parents!)
         {
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
+
         await daoFactory.execute();
 
         var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        var academyStudent = new model.academy.StudentEntity.Builder(student.studentId!, enrollmentId)
-            .setSchoolyear(schoolYear.id!)
-            .isNewEnroll()
-            .build();
+        var academyStudent = new model.academy.StudentEntity(student.studentId!, enrollmentId);
+        academyStudent.setSchoolyear(schoolYear.id!);
+        academyStudent.isNewEnroll();
 
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
