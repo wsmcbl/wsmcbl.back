@@ -5,6 +5,6 @@ namespace wsmcbl.src.dto.secretary;
 
 public class EnrollmentToCreateDto
 {
-    [Required] public string gradeId { get; set; } = null!;
+    [Required] public string degreeId { get; set; } = null!;
     [JsonRequired] public int quantity { get; set; }
 }

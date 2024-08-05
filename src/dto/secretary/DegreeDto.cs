@@ -1,10 +1,11 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class GradeDto
+public class DegreeDto
 {
-    public string? gradeId { get; set; }
+    public string? degreeId { get; set; }
     public string label { get; set; }
     public string schoolYear { get; set; }
     public int quantity { get; set; }
@@ -13,16 +14,15 @@ public class GradeDto
     public List<EnrollmentDto> enrollments { get; set; }
     public List<SubjectDto>? subjects { get; set; }
     
-    public GradeDto(DegreeEntity degree)
+    public DegreeDto(DegreeEntity degree, List<TeacherEntity> teacherList)
     {
-        gradeId = degree.degreeId;
+        degreeId = degree.degreeId;
         label = degree.label;
         schoolYear = degree.schoolYear;
         quantity = degree.quantity;
         modality = degree.modality;
         
-        enrollments =  degree.enrollments == null || !degree.enrollments.Any() ?
-            [] : degree.enrollments.mapListToDto();
+        enrollments = degree.enrollments.mapListToDto(teacherList);
         
         subjects = !degree.subjectList.Any() ? [] : degree.subjectList.mapListToDto();
     }

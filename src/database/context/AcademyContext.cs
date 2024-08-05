@@ -25,8 +25,8 @@ internal class AcademyContext
                 .HasColumnName("enrollmentid");
 
             entity.Property(e => e.capacity).HasColumnName("capacity");
-            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("enrollmentlabel");
-            entity.Property(e => e.degreeId).HasColumnName("gradeid");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
+            entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.section).HasMaxLength(10).HasColumnName("section");
@@ -73,9 +73,7 @@ internal class AcademyContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
 
-            entity.HasMany(d => d.scores)
-                .WithOne()
-                .HasForeignKey(e => new { e.studentId, e.enrollmentId });
+            entity.Ignore(e => e.partials);
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>
@@ -126,8 +124,9 @@ internal class AcademyContext
             entity.Property(e => e.partialId).HasColumnName("partialid");
             entity.Property(e => e.semesterId).HasColumnName("semesterid");
             entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
-            
+
             entity.HasMany(d => d.grades)
                 .WithOne()
                 .HasForeignKey(e => e.partialId);
@@ -145,7 +144,7 @@ internal class AcademyContext
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.semester).HasColumnName("semester");
-            
+
             entity.HasMany(d => d.partials)
                 .WithOne()
                 .HasForeignKey(e => e.semesterId);

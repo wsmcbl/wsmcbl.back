@@ -2,21 +2,21 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class BasicGradeToEnrollDto
+public class BasicDegreeToEnrollDto
 {
-    public string gradeId { get; set; } = null!;
+    public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string modality { get; set; } = null!;
 
     public ICollection<BasicEnrollmentDto>? enrollments { get; set; }
 
-    public BasicGradeToEnrollDto()
+    public BasicDegreeToEnrollDto()
     {
     }
 
-    public BasicGradeToEnrollDto(DegreeEntity degree)
+    public BasicDegreeToEnrollDto(DegreeEntity degree)
     {
-        gradeId = degree.degreeId!;
+        degreeId = degree.degreeId!;
         label = degree.label;
         modality = degree.modality;
         enrollments = degree.enrollments.mapToListBasicDto();

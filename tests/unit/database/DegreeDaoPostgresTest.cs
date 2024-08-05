@@ -5,7 +5,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.database;
 
-public class GradeDaoPostgresTest
+public class DegreeDaoPostgresTest
 {
     [Fact]
     public async Task crateList_ShouldCreateList_WhenCalled()
@@ -13,7 +13,7 @@ public class GradeDaoPostgresTest
         var grade = TestEntityGenerator.aGrade("gd-001");
         var context = TestDbContext.getInMemory();
         
-        var sut = new GradeDaoPostgres(context);
+        var sut = new DegreeDaoPostgres(context);
         
         sut.createList([grade]);
         
@@ -25,7 +25,7 @@ public class GradeDaoPostgresTest
     public async Task getById_ShouldThrowException_WhenGradeNotExist()
     {
         var context = TestDbContext.getInMemory();
-        var sut = new GradeDaoPostgres(context);
+        var sut = new DegreeDaoPostgres(context);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getById("gr-0001"));
     }
@@ -38,7 +38,7 @@ public class GradeDaoPostgresTest
         context.Set<DegreeEntity>().Add(grade);
         await context.SaveChangesAsync();
         
-        var sut = new GradeDaoPostgres(context);
+        var sut = new DegreeDaoPostgres(context);
 
         var result = await sut.getById("gr-0001");
 

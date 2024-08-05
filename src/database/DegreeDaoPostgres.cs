@@ -5,7 +5,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<DegreeEntity, string>(context), IGradeDao
+public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<DegreeEntity, string>(context), IDegreeDao
 {
     public new async Task<DegreeEntity?> getById(string id)
     {
