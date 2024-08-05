@@ -1,3 +1,5 @@
+using wsmcbl.src.model.dao;
+
 namespace wsmcbl.src.model.academy;
 
 public class SemesterEntity
@@ -9,5 +11,5 @@ public class SemesterEntity
     public bool isActive { get; set; }
     public string? label { get; set; }
 
-    public virtual ICollection<PartialEntity> partials { get; set; }
+    public ICollection<PartialEntity> partials { get; set; }
 }

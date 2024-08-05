@@ -7,8 +7,8 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!;
     public bool isApproved { get; set; }
     
-    public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<GradeEntity>? scores { get; set; }
+    public secretary.StudentEntity student { get; init; } = null!;
+    public List<PartialEntity> partials { get; private set; }
     
     public StudentEntity()
     {
@@ -33,5 +33,10 @@ public class StudentEntity
     public string fullName()
     {
         return student.fullName();
+    }
+
+    public void setPartials(List<PartialEntity> list)
+    {
+        partials = list;
     }
 }
