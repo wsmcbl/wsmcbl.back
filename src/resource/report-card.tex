@@ -23,21 +23,15 @@
 \newcommand{\lineStretch}{\setstretch{1.5}}
 
 \begin{document}
-
-    \begin{minipage}[c][2.5cm]{0.2\textwidth}
-        \includegraphics[width=1.5cm]{\cbl-logo-wb}
-    \end{minipage}
-    \begin{minipage}[c][2.5cm]{0.6\textwidth}
-        \begin{center}
-            \lineSlimStretch
-            \textbf{COLEGIO BAUTISTA LIBERTAD}\\
-            \textbf{\large Boleta de Calificaciones}
-        \end{center}
-    \end{minipage}
-
-    \lineStretch
-
-    \aLine{NOMBRE DE ALUMNO: \aField{\student.name} GRADO: \aField{\grade}}
+    
+    \begin{center}
+        \lineSlimStretch
+        \textbf{\large Colegio Bautista Libertad}\\
+        \textbf{Boleta de Calificaciones \year}
+    \end{center}
+    
+    \aLine{NOMBRE DE ALUMNO: \aField{\student.name} GRADO: \aField{\degree}}
+    
     \begin{table}[H]
         \centering
         \begin{tabular}{\column.quantity}
@@ -45,11 +39,8 @@
             \titleLine
             \hline
             \firstSemester
-            \hline
             \secondSemester
-            \hline
             \finalGrade
-            \hline
         \end{tabular}
     \end{table}
 
