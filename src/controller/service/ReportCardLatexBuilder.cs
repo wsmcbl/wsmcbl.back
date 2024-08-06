@@ -85,7 +85,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         return getGradeByPartial(partial.grades!, "II Parcial");
     }
     
-    private string getGradeByPartial(List<GradeEntity> grades, string partialLabel)
+    private string getGradeByPartial(IEnumerable<GradeEntity> grades, string partialLabel)
     {
         var result = partialLabel;
 
