@@ -28,6 +28,7 @@ public class SubjectDaoPostgres(PostgresContext context)
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
     {
         return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.secretarySubject)
             .ToListAsync();
     }
 }

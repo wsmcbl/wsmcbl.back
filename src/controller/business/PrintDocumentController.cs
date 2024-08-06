@@ -9,7 +9,7 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-        var subjectList = await daoFactory.subjectDataDao.getByEnrollmentId(student.enrollmentId);
+        var subjectList = await daoFactory.subjectDao.getByEnrollmentId(student.enrollmentId);
 
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);
