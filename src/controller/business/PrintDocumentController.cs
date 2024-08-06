@@ -1,5 +1,4 @@
 using wsmcbl.src.controller.service;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
@@ -10,12 +9,14 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
+        var subjectList = await daoFactory.subjectDataDao.getByEnrollmentId(student.enrollmentId);
 
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);
         
         var latexBuilder = new ReportCardLatexBuilder(resource, $"{resource}/out");
         latexBuilder.setProperties(student, teacher);
+        latexBuilder.setSubjectList(subjectList);
         
         setLatexBuilder(latexBuilder);
         
