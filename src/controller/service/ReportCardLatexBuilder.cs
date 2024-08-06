@@ -4,6 +4,10 @@ namespace wsmcbl.src.controller.service;
 
 public class ReportCardLatexBuilder : LatexBuilder
 {
+    private StudentEntity student = null!;
+    private TeacherEntity teacher = null!;
+    private List<(string initials, string subjectId)> subjects = null!;
+    private string degree = null!;
     private readonly string templatesPath;
 
     public ReportCardLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
@@ -11,36 +15,35 @@ public class ReportCardLatexBuilder : LatexBuilder
         this.templatesPath = templatesPath;
     }
 
-    protected override string getTemplateName() => "report-card";
+    public void setStudent(StudentEntity student)
+    {
+        this.student = student;
+    }
 
-    private StudentEntity? student;
-    private TeacherEntity? teacher;
-    private List<(string, string)>? subjects;
-    private readonly string grade = "Primero A";
+    public void setTeacher(TeacherEntity teacher)
+    {
+        this.teacher = teacher;
+    }
 
-    public void setSubjectList(List<(string, string)> list)
+    public void setSubjectsSort(List<(string, string)> list)
     {
         subjects = list;
     }
 
-    public void setProperties(StudentEntity studentParameter, TeacherEntity teacherParameter)
+    public void setDegree(string degree)
     {
-        student = studentParameter;
-        teacher = teacherParameter;
+        this.degree = degree;
     }
+
+    protected override string getTemplateName() => "report-card";
 
     protected override string updateContent(string content)
     {
-        if (student == null || teacher == null)
-        {
-            return content;
-        }
-
         content = content.Replace($"\\cbl-logo-wb", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
         content = content.Replace($"\\student.name", student.fullName());
         content = content.Replace($"\\teacher.name", teacher.fullName());
-        content = content.Replace($"\\grade", grade);
+        content = content.Replace($"\\grade", degree);
         content = content.Replace($"\\column.quantity", getColumnQuantity());
         content = content.Replace($"\\titleLine", getTitleLine());
         content = content.Replace($"\\firstSemester", getFirstSemester());
@@ -85,28 +88,23 @@ public class ReportCardLatexBuilder : LatexBuilder
         return getGradeByPartial(partial.grades!, "II Parcial");
     }
     
-    private string getGradeByPartial(IEnumerable<GradeEntity> grades, string partialLabel)
+    private string getGradeByPartial(ICollection<GradeEntity> gradeList, string partialLabel)
     {
-        var result = partialLabel;
+        var labelLine = partialLabel;
+        var gradeLine = " ";
 
-        foreach (var item in grades)
+        foreach (var subject in subjects)
         {
-            // Falta asegurar la correspondencia de cada nota con su asignatura
-            result = $"{result} && {item.label}";
+            var grade = gradeList.First(e => e.subjectId == subject.subjectId);
+            labelLine = $"{labelLine} & {grade.label}";
+            gradeLine = $"{gradeLine} & {grade.grade}";
         }
 
         var quantity = (subjects.Count + 1).ToString();
-        result = $"{result}\\\\ \\cline{{2 - {quantity}}}";
-        result = $"{result} ";
+        labelLine = $"{labelLine}\\\\ \\cline{{2 - {quantity}}}";
         
-        foreach (var item in grades)
-        {
-            result = $"{result} && {item.grade}";
-        }
-
-        return result;
+        return $"{labelLine} {gradeLine}";
     }
-    
 
     private string getColumnQuantity()
     {
@@ -120,7 +118,7 @@ public class ReportCardLatexBuilder : LatexBuilder
 
         foreach (var item in subjects)
         {
-            result = $"{result} & {item.Item1}";
+            result = $"{result} & {item.initials}";
         }
         
         return $"{result}\\\\ \\hline";

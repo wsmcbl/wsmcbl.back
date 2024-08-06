@@ -9,19 +9,28 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-        var subjectList = await daoFactory.subjectDao.getByEnrollmentId(student.enrollmentId);
 
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);
         
         var latexBuilder = new ReportCardLatexBuilder(resource, $"{resource}/out");
-        latexBuilder.setProperties(student, teacher);
-        latexBuilder.setSubjectList(subjectList);
+        latexBuilder.setStudent(student);
+        latexBuilder.setTeacher(teacher);
+        latexBuilder.setDegree("Primero A");
+        latexBuilder.setSubjectsSort(await getSubjectSort(student.enrollmentId!));
         
         setLatexBuilder(latexBuilder);
         
         return getPDF();
     }
+
+    private async Task<List<(string initials, string subjectId)>> getSubjectSort(string enrollmentId)
+    {
+        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(enrollmentId);
+
+        return subjectList.Select(item => (item.getInitials, item.subjectId)).ToList();
+    }
+    
     
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
