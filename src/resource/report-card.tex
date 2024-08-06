@@ -25,18 +25,36 @@
 \begin{document}
 
     \begin{minipage}[c][2.5cm]{0.2\textwidth}
-        \includegraphics[width=2.5cm]{\cbl-logo-wb}
+        \includegraphics[width=1.5cm]{\cbl-logo-wb}
     \end{minipage}
     \begin{minipage}[c][2.5cm]{0.6\textwidth}
         \begin{center}
             \lineSlimStretch
-            \textbf{COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
+            \textbf{COLEGIO BAUTISTA LIBERTAD}\\
+            \textbf{\large Boleta de Calificaciones}
         \end{center}
     \end{minipage}
 
     \lineStretch
-    \hfill Fecha: \date
 
-    \aLine{NOMBRE DE ALUMNO: \aField{\name}}
+    \aLine{NOMBRE DE ALUMNO: \aField{\student.name} GRADO: \aField{\grade}}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            \titleLine
+            \hline
+            \firstSemester
+            \hline
+            \secondSemester
+            \hline
+            \finalGrade
+            \hline
+            \footLine
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \aLine{MAESTRO: \aField{\teacher.name}}
 
 \end{document}
