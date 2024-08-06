@@ -4,114 +4,143 @@ namespace wsmcbl.src.controller.service;
 
 public class ReportCardLatexBuilder : LatexBuilder
 {
+    private StudentEntity student = null!;
+    private TeacherEntity teacher = null!;
+    private List<SemesterEntity> semesterList = null!;
+    private List<(string initials, string subjectId)> subjects = null!;
+    private string degree = null!;
     private readonly string templatesPath;
+    
+    public string? unjustifications { get; set; }
+    public string? justifications { get; set;}
+    public string? lateArrivals { get; set;}
 
     public ReportCardLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
         this.templatesPath = templatesPath;
     }
 
-    protected override string getTemplateName() => "report-card";
+    public void setStudent(StudentEntity student)
+    {
+        this.student = student;
+    }
 
-    private StudentEntity? student;
-    private TeacherEntity? teacher;
-    private List<(string, string)>? subjects;
-    private readonly string grade = "Primero A";
+    public void setTeacher(TeacherEntity teacher)
+    {
+        this.teacher = teacher;
+    }
 
-    public void setSubjectList(List<(string, string)> list)
+    public void setSubjectsSort(List<(string, string)> list)
     {
         subjects = list;
     }
 
-    public void setProperties(StudentEntity studentParameter, TeacherEntity teacherParameter)
+    public void setDegree(string degree)
     {
-        student = studentParameter;
-        teacher = teacherParameter;
+        this.degree = degree;
     }
+
+    public void setSemesterList(List<SemesterEntity> list)
+    {
+        semesterList = list;
+    }
+
+    protected override string getTemplateName() => "report-card";
 
     protected override string updateContent(string content)
     {
-        if (student == null || teacher == null)
-        {
-            return content;
-        }
-
         content = content.Replace($"\\cbl-logo-wb", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
         content = content.Replace($"\\student.name", student.fullName());
         content = content.Replace($"\\teacher.name", teacher.fullName());
-        content = content.Replace($"\\grade", grade);
+        content = content.Replace($"\\grade", degree);
         content = content.Replace($"\\column.quantity", getColumnQuantity());
         content = content.Replace($"\\titleLine", getTitleLine());
         content = content.Replace($"\\firstSemester", getFirstSemester());
         content = content.Replace($"\\secondSemester", getSecondSemester());
         content = content.Replace($"\\finalGrade", getFinalGrade());
-        content = content.Replace($"\\footLine", getFootLine());
+        content = content.Replace($"\\late.arrivals", lateArrivals);
+        content = content.Replace($"\\justifications", justifications);
+        content = content.Replace($"\\unjustifications", unjustifications);
 
         return content;
     }
+    
+    private string getFinalGrade()
+    {        
+        var finalGrade = "NF";
 
-    private string? getFootLine()
-    {
-        return getTitleLine();
-    }
+        var quantity = subjects.Count;
+        
+        while (quantity < 0)
+        {
+            finalGrade = $"{finalGrade} & ";
+            quantity--;
+        }
 
-    private string? getFinalGrade()
-    {
-        return getFirstSemester();
+        return $"{finalGrade}\\\\ \\hline \n";
     }
 
     private string? getSecondSemester()
     {
-        return getFirstSemester();
+        return getSemester(semesterList.First(e => e.semester == 2));
     }
 
     private string getFirstSemester()
     {
-        return $"{getFirstPartial()}\\hline {getSecondPartial()} \\hline";
+        return getSemester(semesterList.First(e => e.semester == 1));
     }
-    
-    private string getFirstPartial()
-    {
-        var partial = student.partials.First(e => e.partial == 1);
 
-        return getGradeByPartial(partial.grades!, "I Parcial");
-    }
-    
-    private string getSecondPartial()
+    private string getSemester(SemesterEntity semester)
     {
-        var partial = student.partials.First(e => e.partial == 2);
+        var firstPartial = student.partials.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
+        var secondPartial = student.partials.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
         
-        return getGradeByPartial(partial.grades!, "II Parcial");
-    }
-    
-    private string getGradeByPartial(IEnumerable<GradeEntity> grades, string partialLabel)
-    {
-        var result = partialLabel;
+        var semesterLine = semester.label;
 
-        foreach (var item in grades)
+        foreach (var subject in subjects)
         {
-            // Falta asegurar la correspondencia de cada nota con su asignatura
-            result = $"{result} && {item.label}";
+            var firstGrade = firstPartial.grades.First(e => e.subjectId == subject.subjectId).grade;
+            var secondGrade = secondPartial.grades.First(e => e.subjectId == subject.subjectId).grade;
+
+            var grade = (firstGrade + secondGrade) / 2;
+            semesterLine = $"{semesterLine} & {grade.ToString()}";
+        }
+
+        semesterLine = $"{semesterLine}\\\\ \\hline \n";
+        
+        return $"{getPartial(firstPartial)} {getPartial(secondPartial)} {semesterLine}";
+    }
+
+    private string getPartial(PartialEntity partial) => getGradeByPartial(partial.grades!, partial.label);
+
+    private string getGradeByPartial(ICollection<GradeEntity> gradeList, string partialLabel)
+    {
+        var labelLine = partialLabel;
+        var gradeLine = " ";
+
+        foreach (var subject in subjects)
+        {
+            var result = gradeList.FirstOrDefault(e => e.subjectId == subject.subjectId);
+
+            var label = result == null ? "" : result.label;
+            var grade = result == null ? "" : result.grade.ToString();
+
+            labelLine = $"{labelLine} & {label}";
+            gradeLine = $"{gradeLine} & {grade}";
         }
 
         var quantity = (subjects.Count + 1).ToString();
-        result = $"{result}\\\\ \\cline{{2 - {quantity}}}";
-        result = $"{result} ";
-        
-        foreach (var item in grades)
-        {
-            result = $"{result} && {item.grade}";
-        }
+        labelLine = $"{labelLine}\\\\ \\cline{{2-{quantity}}}\n";
+        gradeLine = $"{gradeLine}\\\\ \\hline \n";
 
-        return result;
+        return $"{labelLine} {gradeLine}";
     }
-    
 
     private string getColumnQuantity()
     {
         var quantity = (subjects.Count + 1).ToString();
-        return $"*{{{quantity}}}{{c}}";
+        return $"|*{{{quantity}}}{{c|}}";
     }
 
     private string getTitleLine()
@@ -120,9 +149,9 @@ public class ReportCardLatexBuilder : LatexBuilder
 
         foreach (var item in subjects)
         {
-            result = $"{result} & {item.Item1}";
+            result = $"{result} & {item.initials}";
         }
-        
-        return $"{result}\\\\ \\hline";
+
+        return $"{result}\\\\";
     }
 }
