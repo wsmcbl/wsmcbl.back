@@ -1,0 +1,60 @@
+\documentclass[12pt]{article}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage[spanish]{babel}
+\usepackage[charter]{mathdesign}
+\usepackage[margin=2cm]{geometry}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\headsep}{3mm}
+
+\pagestyle{plain}
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+\newcommand{\aField}[1]{\uline{\hspace{2mm} #1 \hfill}}
+
+\newcommand{\lineSlimStretch}{\singlespacing}
+\newcommand{\lineStretch}{\setstretch{1.5}}
+
+\begin{document}
+
+    \begin{minipage}[c][2.5cm]{0.2\textwidth}
+        \includegraphics[width=1.5cm]{\cbl-logo-wb}
+    \end{minipage}
+    \begin{minipage}[c][2.5cm]{0.6\textwidth}
+        \begin{center}
+            \lineSlimStretch
+            \textbf{COLEGIO BAUTISTA LIBERTAD}\\
+            \textbf{\large Boleta de Calificaciones}
+        \end{center}
+    \end{minipage}
+
+    \lineStretch
+
+    \aLine{NOMBRE DE ALUMNO: \aField{\student.name} GRADO: \aField{\grade}}
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|}
+            \hline
+            \titleLine
+            \hline
+            \firstSemester
+            \hline
+            \secondSemester
+            \hline
+            \finalGrade
+            \hline
+            \footLine
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \aLine{MAESTRO: \aField{\teacher.name}}
+
+\end{document}
