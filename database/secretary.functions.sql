@@ -34,3 +34,20 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_insert_debt_history_by_new_tariff AFTER INSERT ON secretary.student
     FOR EACH ROW EXECUTE FUNCTION secretary.insert_schoolyear_student_by_new_student();
+
+
+-- Update degree by new enrollments --
+CREATE OR REPLACE FUNCTION Secretary.update_degree()
+    RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Secretary.Degree d
+    SET quantity = d.quantity + 1
+    FROM Secretary.Degree
+    WHERE d.degreeid = NEW.degreeid;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_degree AFTER INSERT ON Academy.Enrollment
+    FOR EACH ROW EXECUTE FUNCTION secretary.update_degree();
