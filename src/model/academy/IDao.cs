@@ -28,3 +28,8 @@ public interface IPartialDao : IGenericDao<PartialEntity, int>
     public Task<List<PartialEntity>> getListByCurrentSchoolyear();
     public Task<List<PartialEntity>> getListByStudentId(string studentId);
 }
+
+public interface ISemesterDao : IGenericDao<SemesterEntity, int>
+{
+    public Task<List<SemesterEntity>> getAllOfCurrentSchoolyear();
+}

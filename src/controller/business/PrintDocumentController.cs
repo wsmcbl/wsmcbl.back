@@ -9,21 +9,22 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-        
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId);
+            
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);
         
-        var latexBuilder = new ReportCardLatexBuilder(resource, $"{resource}/out");
-        latexBuilder.setStudent(student);
-        latexBuilder.setTeacher(teacher);
-        latexBuilder.setDegree("Primero A");
-        latexBuilder.setSubjectsSort(await getSubjectSort(student.enrollmentId!));
-        latexBuilder.unjustifications = "3";
-        latexBuilder.lateArrivals = "0";
-        latexBuilder.justifications = "1";
-
-        var semesterList = await daoFactory.semesterDao!.getAllOfCurrentSchoolyear();
-        latexBuilder.setSemesterList(semesterList);
+        var latexBuilder = new ReportCardLatexBuilder
+            .Builder(resource, $"{resource}/out")
+            .withStudent(student)
+            .withTeacher(teacher)
+            .withDegree(enrollment!.label)
+            .withSubjects(await getSubjectSort(student.enrollmentId!))
+            .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
+            .withLateArrivals(10)
+            .withJustifications(3)
+            .withUnjustifications(1)
+            .build();
         
         setLatexBuilder(latexBuilder);
         
