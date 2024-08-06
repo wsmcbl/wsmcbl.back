@@ -20,6 +20,8 @@ public abstract class LatexBuilder
     
     private string? fileName;
     public string? getFileName() => fileName;
+
+    public string getImagesPath() => $"{templatesPath}/image";
     
 
     public void build()
