@@ -9,7 +9,7 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-
+        
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);
         
@@ -18,6 +18,12 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
         latexBuilder.setTeacher(teacher);
         latexBuilder.setDegree("Primero A");
         latexBuilder.setSubjectsSort(await getSubjectSort(student.enrollmentId!));
+        latexBuilder.unjustifications = "3";
+        latexBuilder.lateArrivals = "0";
+        latexBuilder.justifications = "1";
+
+        var semesterList = await daoFactory.semesterDao!.getAllOfCurrentSchoolyear();
+        latexBuilder.setSemesterList(semesterList);
         
         setLatexBuilder(latexBuilder);
         
