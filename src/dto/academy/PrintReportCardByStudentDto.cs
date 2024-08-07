@@ -2,9 +2,9 @@ namespace wsmcbl.src.dto.academy;
 
 public class PrintReportCardByStudentDto
 {
-    private int lateArrivals { get; set; } 
-    private int justifications { get; set; }
-    private int unjustifications { get; set; }
+    public int lateArrivals { get; set; } 
+    public int justifications { get; set; }
+    public int unjustifications { get; set; }
 
     public (int lateArrivals, int justifications, int unjustifications) getTuple()
     {
