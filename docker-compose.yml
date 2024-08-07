@@ -2,14 +2,43 @@ version: '3.8'
 
 services:
 
+  database:
+    image: postgres:14
+    container_name: database
+    environment:
+      - POSTGRES_DB=wsmcbl_database
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass12345
+    volumes:
+      - ./config/database:/docker-entrypoint-initdb.d
+      - database-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  migrate:
+    build:
+      context: .
+      dockerfile: ./config/dotnet/Dockerfile_Migrations
+    container_name: migrate
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
+    depends_on:
+      - database
+    networks:
+      - app-network
+    command: ["dotnet", "ef", "database", "update"]
+  
   api:
     build:
       context: .
       dockerfile: ./config/dotnet/Dockerfile
     container_name: api
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
     ports:
       - "8080:8080"
-      - "443:443"
     depends_on:
       - database
     networks:
@@ -26,20 +55,9 @@ services:
     networks:
       - app-network
 
-  database:
-    image: postgres:14
-    container_name: database
-    environment:
-      - POSTGRES_DB=your_database_name
-      - POSTGRES_USER=your_username
-      - POSTGRES_PASSWORD=your_password
-    volumes:
-      - ./config/database:/docker-entrypoint-initdb.d
-    ports:
-      - "5432:5432"
-    networks:
-      - app-network
-
+volumes:
+  database-volume:
+    
 networks:
   app-network:
     driver: bridge

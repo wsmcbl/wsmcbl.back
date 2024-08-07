@@ -35,6 +35,10 @@ dn-ss: ## dotnet sonarscanner
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true
 
+dn-mig: ## dotnet migrations
+	cd src && rm -rf Migrations
+	cd src && dotnet ef migrations add InitialCreate
+
 
 run: ## Start the containers
 	docker network create app-network || true

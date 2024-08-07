@@ -29,17 +29,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="publish\web.config" />
-    <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
-    <_ContentIncludedByDefault Remove="publish\appsettings.json" />
-    <_ContentIncludedByDefault Remove="publish\wsmcbl.back.deps.json" />
-    <_ContentIncludedByDefault Remove="publish\wsmcbl.back.runtimeconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="resource\out\" />
-  </ItemGroup>
-
 </Project>
