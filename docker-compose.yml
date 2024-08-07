@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: ./config/dotnet/Dockerfile
+    container_name: api
+    ports:
+      - "8080:8080"
+      - "443:443"
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./config/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "4000:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+  database:
+    image: postgres:14
+    container_name: database
+    environment:
+      - POSTGRES_DB=your_database_name
+      - POSTGRES_USER=your_username
+      - POSTGRES_PASSWORD=your_password
+    volumes:
+      - ./config/database:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
