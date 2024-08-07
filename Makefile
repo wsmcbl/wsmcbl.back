@@ -37,7 +37,7 @@ dn-ss: ## dotnet sonarscanner
 
 
 run: ## Start the containers
-	docker network create network-test || true
+	docker network create app-network || true
 	docker-compose up -d
 
 stop: ## Stop the containers
@@ -47,4 +47,7 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run
 
 build: ## Rebuilds all the containers
-	docker-compose build
+	docker-compose build    
+
+logs: ## Show logs
+	docker-compose logs
