@@ -18,7 +18,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     protected override string updateContent(string content)
     {
-        content = content.Replace($"\\cbl-logo-wb", $"{getImagesPath()}/cbl-logo-wb.png");
         content = content.Replace($"\\year", DateTime.Today.Year.ToString());
         content = content.Replace($"\\student.name", student.fullName());
         content = content.Replace($"\\teacher.name", teacher.fullName());
@@ -74,7 +73,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             quantity--;
         }
 
-        return $"{finalGrade}\\\\ \\hline \n";
+        return $"{finalGrade}\\\\ \\hline";
     }
     
 
@@ -95,7 +94,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             semesterLine = $"{semesterLine} & {grade.ToString()}";
         }
 
-        semesterLine = $"{semesterLine}\\\\ \\hline \n";
+        semesterLine = $"{semesterLine}\\\\ \\hline";
         
         return $"{getGradeByPartial(firstPartial)} {getGradeByPartial(secondPartial)} {semesterLine}";
     }

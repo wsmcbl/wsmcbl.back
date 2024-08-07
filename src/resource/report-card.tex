@@ -17,23 +17,21 @@
 \pagenumbering{gobble}
 
 \newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
-\newcommand{\aField}[1]{\uline{\hspace{2mm} #1 \hfill}}
 
-\newcommand{\lineSlimStretch}{\singlespacing}
-\newcommand{\lineStretch}{\setstretch{1.5}}
+\newcommand{\aDupleLeft}[2]{\textbf{#1}\hspace{2mm} #2 \hfill}
+\newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
+\newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
 \begin{document}
-    
-    \begin{center}
-        \lineSlimStretch
-        \textbf{\large Colegio Bautista Libertad}\\
-        \textbf{Boleta de Calificaciones \year}
-    \end{center}
-    
-    \aLine{NOMBRE DE ALUMNO: \aField{\student.name} GRADO: \aField{\degree}}
-    
+    \hrule
     \begin{table}[H]
         \centering
+        \begin{center}
+            \textbf{\Large Colegio Bautista Libertad}\\
+            \textbf{Boleta de Calificaciones \year}
+        \end{center}
+        \aLine{\aDupleLeft{Alumno:}{\student.name} \aDupleRight{Grado:}{\degree}}
+        \par\medskip
         \begin{tabular}{\column.quantity}
             \hline
             \titleLine
@@ -42,9 +40,11 @@
             \secondSemester
             \finalGrade
         \end{tabular}
+        \par\medskip
+        \aLine{ \aDupleLeft{Llegadas Tardes:}{\late.arrivals}
+                \aDupleCenter{Inasistencias Justificadas:}{\justifications}
+                \aDupleRight{Inasistencias Injustificadas:}{\unjustifications}}
+        \aLine{\aDupleCenter{Maestro Guía:}{\teacher.name}}
     \end{table}
-
-    \aLine{Llegadas Tardes: \aField{\late.arrivals} Asistencias Justificadas: \aField{\justifications} Injustificadas: \aField{\unjustifications}}
-    \aLine{MAESTRO: \aField{\teacher.name}}
-
+    \hrule
 \end{document}
