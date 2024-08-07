@@ -14,4 +14,9 @@ public class PartialEntity
     }
     
     public ICollection<GradeEntity> grades { get; set; }
+
+    public string getLabel()
+    {
+        return $"Parcial #{partial}";
+    }
 }
