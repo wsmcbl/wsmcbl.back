@@ -16,10 +16,10 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
         return result;
     }
 
-    public async Task<byte[]> getReportCard(string studentId)
+    public async Task<byte[]> getReportCard(string studentId, (int, int, int) data)
     {
         var printController = new PrintDocumentController(daoFactory);
-        return await printController.getReportCardByStudent(studentId);
+        return await printController.getReportCardByStudent(studentId, data);
     }
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)
