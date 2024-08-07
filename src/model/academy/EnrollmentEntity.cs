@@ -6,7 +6,7 @@ public class EnrollmentEntity
     public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
-    public string section { get; set; }
+    public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
 

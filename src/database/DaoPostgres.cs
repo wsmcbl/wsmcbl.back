@@ -21,34 +21,6 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
-public class AcademyStudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<model.academy.StudentEntity, string>(context), model.academy.IStudentDao
-{
-    public async Task<model.academy.StudentEntity> getByIdAndSchoolyear(string studentId, string schoolyearId)
-    {
-        var result = await entities
-            .Include(e => e.student)
-            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException("Academy Student", studentId);
-        }
-
-        var daoAux = new SchoolyearDaoPostgres(context);
-        var schoolyear = await daoAux.getCurrentSchoolYear();
-        FormattableString query =
-            $@"select p.* from academy.partial p
-               inner join academy.semester s on p.semesterid = s.semesterid
-               where s.schoolyear == {schoolyear.id}";
-
-        var partials = await context.Set<PartialEntity>().FromSqlInterpolated(query).AsNoTracking().ToListAsync();
-        
-        result.setPartials(partials);
-
-        return result;
-    }
-}
 
 public class SubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
@@ -56,6 +28,7 @@ public class SubjectDaoPostgres(PostgresContext context)
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
     {
         return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.secretarySubject)
             .ToListAsync();
     }
 }
@@ -149,36 +122,29 @@ public class TransactionDaoPostgres(PostgresContext context)
     }
 }
 
-public class TeacherDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TeacherEntity, string>(context), ITeacherDao
-{
-    public new async Task<List<TeacherEntity>> getAll()
-    {
-        return await entities.Include(e => e.user).ToListAsync();
-    }
-
-    public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
-    {
-        var result = await entities
-            .Where(e => e.enrollmentId == enrollmentId)
-            .Include(e => e.user)
-            .Include(e => e.enrollment)
-            .FirstOrDefaultAsync();
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException($"Teacher with EnrollmentId = {enrollmentId}, not found.");
-        }
-
-        return result;
-    }
-}
-
 public class DegreeDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<DegreeDataEntity, string>(context), IDegreeDataDao
 {
     public new async Task<List<DegreeDataEntity>> getAll()
     {
         return await entities.Include(e => e.subjectList).ToListAsync();
+    }
+}
+
+public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<SemesterEntity, int>(context), ISemesterDao
+{
+    public async Task<List<SemesterEntity>> getAllOfCurrentSchoolyear()
+    {
+        var schoolyear = DateTime.Today.Year.ToString();
+
+        FormattableString query = $@"select s.* from academy.semester s
+               inner join secretary.schoolyear sy on sy.schoolyearid = s.schoolyear
+               where sy.label = {schoolyear}";
+
+        var result = await entities.FromSqlInterpolated(query)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return result;
     }
 }

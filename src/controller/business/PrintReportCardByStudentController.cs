@@ -9,13 +9,9 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
 {
     public async Task<StudentEntity> getStudentScoreInformation(string studentId)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentSchoolYear();
-        var result = await daoFactory.academyStudentDao!.getByIdAndSchoolyear(studentId, schoolyear.id);
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException("Academy Student", studentId);
-        }
+        var result = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        var partials = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        result.setPartials(partials);
         
         return result;
     }
