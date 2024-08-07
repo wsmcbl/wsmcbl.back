@@ -48,3 +48,6 @@ restart: ## Restart the containers
 
 build: ## Rebuilds all the containers
 	docker-compose build    
+
+logs: ## Show logs
+	docker-compose logs
