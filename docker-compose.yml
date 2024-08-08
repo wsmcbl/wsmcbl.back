@@ -28,6 +28,7 @@ services:
       context: .
       dockerfile: ./config/dotnet/Dockerfile
     image: dotnet-base
+    restart: unless-stopped
     container_name: api
     environment:
       - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
