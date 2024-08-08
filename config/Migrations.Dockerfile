@@ -11,5 +11,5 @@ COPY src/ ./
 
 RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
 
-COPY /config/dotnet/init.sh /app/init.sh
+COPY /config/make-migrations.sh /app/init.sh
 RUN chmod +x /app/init.sh
