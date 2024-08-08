@@ -9,7 +9,7 @@ public class PDFController
 
     protected PDFController()
     {
-        resource = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "resource");
+        resource = Path.Combine(AppContext.BaseDirectory, "resource");
     }
 
     protected void setLatexBuilder(LatexBuilder? _latexBuilder)

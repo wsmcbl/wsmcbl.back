@@ -20,15 +20,24 @@ services:
     build:
       context: .
       dockerfile: ./config/dotnet/Dockerfile
+    image: dotnet-base
     container_name: api
     environment:
       - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
     ports:
       - "8080:8080"
     depends_on:
+      - base
       - database
     networks:
       - app-network
+
+  base:
+    build:
+      context: .
+      dockerfile: ./config/dotnet/Dockerfile.Base
+    container_name: dotnet-base
+    image: dotnet-base
 
   nginx:
     build:

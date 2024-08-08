@@ -7,9 +7,11 @@ RUN dotnet restore
 COPY src/ ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM dotnet-base AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
+
+COPY src/resource/ ./resource/
 
 EXPOSE 80
 ENTRYPOINT ["dotnet", "wsmcbl.src.dll"]

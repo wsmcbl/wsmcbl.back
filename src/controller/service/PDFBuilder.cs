@@ -13,7 +13,7 @@ public class PDFBuilder
     
     public PDFBuilder build()
     {
-        var command = $"-interaction=nonstopmode -pdf" +
+        var command = $"-interaction=nonstopmode" +
                       $" -output-directory=\"{latexBuilder.getOutPath()}\"" +
                       $" \"{latexBuilder.getFilePath()}\"";
 
@@ -22,7 +22,7 @@ public class PDFBuilder
         return this;
     }
     
-    private const string texCompile = "/usr/bin/latexmk";
+    private const string texCompile = "/usr/bin/pdflatex";
     private static void createPdf(string command)
     {
         using var process = new Process();
@@ -42,8 +42,9 @@ public class PDFBuilder
         }
             
         var errorOutput = process.StandardError.ReadToEnd();
-        throw new ArgumentException($"latexmk failed with exit code {process.ExitCode}." +
-                                    $" Error output:\n{errorOutput}");
+        throw new ArgumentException($"The latex compiler failed with exit code {process.ExitCode}." +
+                                    $"\nWith argument: {command}" +
+                                    $"\nError output: {errorOutput}");
     }
 
     private void cleanFiles()
