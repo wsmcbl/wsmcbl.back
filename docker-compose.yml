@@ -1,7 +1,14 @@
 version: '3.8'
 
 services:
-
+  
+  dotnet-base:
+    build:
+      context: .
+      dockerfile: ./config/dotnet/Base.Dockerfile
+    container_name: dotnet-base
+    image: dotnet-base
+    
   database:
     image: postgres:14
     container_name: database
@@ -20,12 +27,14 @@ services:
     build:
       context: .
       dockerfile: ./config/dotnet/Dockerfile
+    image: dotnet-base
     container_name: api
     environment:
       - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
     ports:
       - "8080:8080"
     depends_on:
+      - dotnet-base
       - database
     networks:
       - app-network
