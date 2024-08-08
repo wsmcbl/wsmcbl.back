@@ -35,7 +35,6 @@ dn-ss: ## dotnet sonarscanner
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true
 
-
 run: ## Start the containers
 	docker network create app-network || true
 	docker-compose up -d

@@ -4,7 +4,6 @@ WORKDIR /app
 COPY src/*.csproj ./
 RUN dotnet restore
 
-RUN ls
 COPY src/ ./
 RUN dotnet publish -c Release -o out
 
