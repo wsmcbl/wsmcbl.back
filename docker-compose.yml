@@ -15,21 +15,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - app-network
-
-  migrate:
-    build:
-      context: .
-      dockerfile: ./config/Migrations.Dockerfile
-    container_name: migrate
-    environment:
-      - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
-    depends_on:
-      - database
-    networks:
-      - app-network
-    command: ["dotnet", "ef", "database", "update"]
-  
+      - app-network  
   api:
     build:
       context: .
