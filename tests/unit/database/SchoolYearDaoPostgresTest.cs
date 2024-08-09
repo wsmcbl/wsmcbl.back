@@ -10,7 +10,7 @@ public class SchoolYearDaoPostgresTest
     public async Task getNewSchoolYear_ShouldReturnNextSchoolyear_WhenItsMiddleYear()
     {
         var schoolyear = TestEntityGenerator.aSchoolYear();
-        schoolyear.label = (DateTime.Now.Year + 1).ToString();
+        schoolyear.label = DateTime.Now.Year.ToString();
         var context = TestDbContext.getInMemory();
         
         context.Set<SchoolYearEntity>().AddRange(schoolyear);

@@ -94,7 +94,7 @@ public class DaoFactoryPostgresTest
     [Fact]
     public void gradeDao_ShouldReturnGradeDao_WhenCalled()
     {
-        getDao_ReturnsDao(() => sut.gradeDao);
+        getDao_ReturnsDao(() => sut.degreeDao);
     }
     
     [Fact]
@@ -118,7 +118,7 @@ public class DaoFactoryPostgresTest
     [Fact]
     public void gradeDataDao_ShouldReturnIGradeDataDao_WhenCalled()
     {
-        getDao_ReturnsDao(() => sut.gradeDataDao);
+        getDao_ReturnsDao(() => sut.degreeDataDao);
     }
 
     [Fact]

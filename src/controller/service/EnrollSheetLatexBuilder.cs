@@ -93,7 +93,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"\\financial.solvency", getTextByBool(file.financialSolvency));
         content = content.Replace($"\\parent.idcard", getTextByBool(file.parentIdentifier));
         content = content.Replace($"\\transfer.sheet", getTextByBool(file.transferSheet));
-        content = content.Replace($"\\updated.grade.report", getTextByBool(file.updatedGradeReport));
+        content = content.Replace($"\\updated.grade.report", getTextByBool(file.updatedDegreeReport));
 
         return content;
     }

@@ -1,5 +1,3 @@
-using wsmcbl.src.model.secretary;
-
 namespace wsmcbl.src.model.academy;
 
 public class StudentEntity
@@ -9,36 +7,36 @@ public class StudentEntity
     public string schoolYear { get; set; } = null!;
     public bool isApproved { get; set; }
     
-    public secretary.StudentEntity student { get; set; } = null!;
-    public ICollection<ScoreEntity> scores { get; set; } = new List<ScoreEntity>();
-
-    public class Builder
+    public secretary.StudentEntity student { get; init; } = null!;
+    public List<PartialEntity> partials { get; private set; }
+    
+    public StudentEntity()
     {
-        private readonly StudentEntity entity;
+    }
 
-        public Builder()
-        {
-            entity = new StudentEntity();
-        }
+    public StudentEntity(string studentId, string enrollmentId)
+    {
+        this.studentId = studentId;
+        this.enrollmentId = enrollmentId;
+    }
+    
+    public void isNewEnroll()
+    {
+        isApproved = false;
+    }
 
-        public Builder(string studentId, string enrollmentId) : this()
-        {
-            entity.studentId = studentId;
-            entity.enrollmentId = enrollmentId;
-        }
+    public void setSchoolyear(string schoolYearId)
+    {
+        schoolYear = schoolYearId;
+    }
 
-        public StudentEntity build() => entity;
+    public string fullName()
+    {
+        return student.fullName();
+    }
 
-        public Builder isNewEnroll()
-        {
-            entity.isApproved = false;
-            return this;
-        }
-
-        public Builder setSchoolyear(string schoolYearId)
-        {
-            entity.schoolYear = schoolYearId;
-            return this;
-        }
+    public void setPartials(List<PartialEntity> list)
+    {
+        partials = list;
     }
 }

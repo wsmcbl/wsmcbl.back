@@ -9,7 +9,7 @@ public class PDFController
 
     protected PDFController()
     {
-        resource = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "resource");
+        resource = Path.Combine(AppContext.BaseDirectory,"..","..","..", "resource");
     }
 
     protected void setLatexBuilder(LatexBuilder? _latexBuilder)
@@ -19,6 +19,11 @@ public class PDFController
 
     protected byte[] getPDF()
     {
+        if (latexBuilder == null)
+        {
+            throw new ArgumentException("LatexBuilder object must not be null.");
+        }
+        
         latexBuilder!.build();
         
         var pdfBuilder = new PDFBuilder(latexBuilder);

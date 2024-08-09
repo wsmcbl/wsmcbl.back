@@ -28,7 +28,7 @@ public class StudentFileDto : IBaseDto<StudentFileEntity>
         transferSheet = entity.transferSheet;
         birthDocument = entity.birthDocument;
         parentIdentifier = entity.parentIdentifier;
-        updatedGradeReport = entity.updatedGradeReport;
+        updatedGradeReport = entity.updatedDegreeReport;
         conductDocument = entity.conductDocument;
         financialSolvency = entity.financialSolvency;
     }
@@ -41,7 +41,7 @@ public class StudentFileDto : IBaseDto<StudentFileEntity>
             transferSheet = transferSheet,
             birthDocument = birthDocument,
             parentIdentifier = parentIdentifier,
-            updatedGradeReport = updatedGradeReport,
+            updatedDegreeReport = updatedGradeReport,
             conductDocument = conductDocument,
             financialSolvency = financialSolvency
         };

@@ -1,14 +1,10 @@
-## See Swagger documentation
-
-* http://wsmcbl-api.somee.com/index.html
-
 ## See documentation
 
 * https://github.com/wsmcbl/wsmcbl.doc/blob/master/README.md
 
 ## Actions state
 
-![Deploy](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/deploy.somee.yml/badge.svg?branch=master)
+![Deploy](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/deploy.yml/badge.svg?branch=master)
 ![Sonarcloud build](https://github.com/wsmcbl/wsmcbl.back/actions/workflows/sonarcloud.build.yml/badge.svg?branch=develop)
 
 ## SonarCloud analysis
