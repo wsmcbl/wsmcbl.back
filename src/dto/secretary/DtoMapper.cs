@@ -12,8 +12,7 @@ public static class DtoMapper
         => list == null ? [new StudentParentEntity()] : list.Select(item => item.toEntity()).ToList();
 
 
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher) =>
-        new(enrollment, teacher);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher) => new(enrollment, teacher);
 
     public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
