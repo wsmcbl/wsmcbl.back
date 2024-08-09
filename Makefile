@@ -50,3 +50,12 @@ build: ## Rebuilds all the containers
 
 logs: ## Show logs
 	docker-compose logs
+	
+api-l: ## show logs by container
+	 docker-compose logs api
+	 
+api-b: ## entry api bash
+	 docker-compose exec api bash
+ 
+mount-all: ## stop, build, and run container
+	$(MAKE) stop && $(MAKE) build && $(MAKE) run 

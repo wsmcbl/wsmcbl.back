@@ -14,9 +14,9 @@ public class PDFBuilder
     public PDFBuilder build()
     {
         var argument = $"-interaction=nonstopmode" +
-                      $" -output-directory=\"{latexBuilder.getOutPath()}\"" +
-                      $" \"{latexBuilder.getFilePath()}\"";
-
+                       $" -output-directory=\"{latexBuilder.getOutPath()}\"" +
+                       $" \"{latexBuilder.getFilePath()}\"";
+        
         createPdf(argument);
         cleanFiles();
         return this;
