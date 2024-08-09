@@ -13,8 +13,6 @@ values ('Pago de matrícula', 0, null, 4, 3),
        ('Pago mes octubre', 0, '28/10/2024', 1, 3),
        ('Pago mes noviembre', 0, '28/11/2024', 1, 3),
        ('Pago treceavo mes', 0, '28/12/2024', 1, 3),
-       ('Pago buzo escolar', 0, null, 2, 3),
-       ('Pago uniforme escolar', 0, null, 2, 3),
        ('Pago excursión', 0, null, 3, 3);
 
 insert into secretary.degreecatalog(label, modality)

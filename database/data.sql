@@ -51,9 +51,11 @@ values ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', false, '01/05/2001
 
 -- ############################## ---
 insert into academy.teacher(teacherid, userid, isguide)
-values ('tch-001', '1001', true),
-       ('tch-002', '1002', true),
-       ('tch-003', '1001', true);
+values ('tch-001', '1001', false),
+       ('tch-002', '1002', false),
+       ('tch-003', '1001', false),
+       ('tch-004', '1003', false),
+       ('tch-005', '1002', true);
 
 
 INSERT INTO secretary.studenttutor(studentid, name, phone)

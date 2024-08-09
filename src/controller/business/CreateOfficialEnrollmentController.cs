@@ -74,8 +74,55 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
 
-        return await daoFactory.schoolyearDao!.getCurrentSchoolYear();
+        var result = await daoFactory.schoolyearDao!.getCurrentSchoolYear();
+
+        await createSemester(result);
+
+        return result;
     }
+
+    private async Task createSemester(SchoolYearEntity result)
+    {
+        List<SemesterEntity> semesters =
+        [
+            getSemester(result.id, 1, "I Semestre"),
+            getSemester(result.id, 2, "II Semestre")
+        ];
+
+        foreach (var item in semesters)
+        {
+            daoFactory.semesterDao!.create(item);
+        }
+
+        await daoFactory.execute();
+    }
+
+    private SemesterEntity getSemester(string id, int semester, string label)
+    {
+        var date = new DateOnly(DateTime.Today.Year, 1, 1);
+
+        return new SemesterEntity
+        {
+            isActive = true,
+            deadLine = date,
+            label = label,
+            semester = semester,
+            schoolyear = id,
+            partials = [getPartial(1, date, semester == 1 ? "I Parcial" : "III Parcial"), 
+                getPartial(2, date, semester == 1 ? "II Parcial" : "IV Parcial")]
+        };
+    }
+
+    private PartialEntity getPartial(int i, DateOnly date, string label)
+    {
+        return new PartialEntity
+        {
+            partial = i,
+            deadLine = date,
+            label = label
+        };
+    }
+
 
     public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
     {
@@ -144,8 +191,9 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             subject.teacherId = item.teacherId;
             daoFactory.subjectDao.update(subject);
         }
+
         await daoFactory.execute();
-        
+
         return existingEntity;
     }
 
