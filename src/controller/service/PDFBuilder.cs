@@ -13,22 +13,22 @@ public class PDFBuilder
     
     public PDFBuilder build()
     {
-        var command = $"-interaction=nonstopmode" +
+        var argument = $"-interaction=nonstopmode" +
                       $" -output-directory=\"{latexBuilder.getOutPath()}\"" +
                       $" \"{latexBuilder.getFilePath()}\"";
 
-        createPdf(command);
+        createPdf(argument);
         cleanFiles();
         return this;
     }
     
     private const string texCompile = "/usr/bin/pdflatex";
-    private static void createPdf(string command)
+    private static void createPdf(string argument)
     {
         using var process = new Process();
         
         process.StartInfo.FileName = texCompile;
-        process.StartInfo.Arguments = command;
+        process.StartInfo.Arguments = argument;
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
@@ -43,7 +43,7 @@ public class PDFBuilder
             
         var errorOutput = process.StandardError.ReadToEnd();
         throw new ArgumentException($"The latex compiler failed with exit code {process.ExitCode}." +
-                                    $"\nWith argument: {command}" +
+                                    $"\nWith argument: {argument}" +
                                     $"\nError output: {errorOutput}");
     }
 
