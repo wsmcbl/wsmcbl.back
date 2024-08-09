@@ -30,7 +30,7 @@ public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
             quantity = quantity,
             label = label
         };
-
+        
         var subjectList = subjects.Select(item => item.toEntity(enrollmentId)).ToList();
         enrollment.setSubjectList(subjectList);
         

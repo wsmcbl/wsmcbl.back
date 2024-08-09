@@ -30,7 +30,11 @@ public class EnrollmentDto
 
     public EnrollmentDto(EnrollmentEntity enrollment, TeacherEntity? teacher) : this(enrollment)
     {
-        if (teacher == null) return;
+        if (teacher == null)
+        {
+            return;
+        }
+        
         teacherId = teacher.teacherId;
         teacherName = teacher.fullName();
     }
