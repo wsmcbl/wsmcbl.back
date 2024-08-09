@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
+using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
@@ -28,7 +29,7 @@ builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCa
 
 var app = builder.Build();
 
-//app.UseMiddleware<ApiExceptionHandler>();
+app.UseMiddleware<ApiExceptionHandler>();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerUIConfig());
