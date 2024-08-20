@@ -8,28 +8,13 @@ public class StudentFullDto : IBaseDto<StudentEntity>
 {
     [Required] public string studentId { get; set; } = null!;
     [Required] public string name { get; set; } = null!;
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)] 
-    public string? secondName { get; set; }
-    
+    [Required] public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
-    public string? secondSurname { get; set; }
-    
+    [Required] public string? secondSurname { get; set; }
     [JsonRequired] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
-    public string religion { get; set; } = null!;
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
-    public string? diseases { get; set; }
-    
+    [Required] public string religion { get; set; } = null!;
+    [Required] public string? diseases { get; set; }
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
 
@@ -78,7 +63,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setDiseases(diseases)
             .setReligion(religion)
             .setAddress(address)
-            .setMeasurements(measurements.toEntity())
+            .setMeasurements(measurements?.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())

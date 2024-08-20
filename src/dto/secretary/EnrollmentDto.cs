@@ -1,31 +1,41 @@
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class EnrollmentDto : IBaseDto<EnrollmentEntity>
+public class EnrollmentDto
 {
-    [Required] public string enrollmentId { get; set; } = null!;
-    [Required] public string? section { get; set; }
-    [JsonRequired] public int capacity { get; set; }
-    [JsonRequired] public int quantity { get; set; }
-    public List<SubjectToAssignDto> subjects { get; set; } = null!;
+    public string enrollmentId { get; set; }
+    public string? teacherId {get; set; }
+    public string? teacherName { get; set; }
+    public string label { get; set; }
+    public string? section { get; set; }
+    public int capacity { get; set; }
+    public int quantity { get; set; }
     
-    public EnrollmentEntity toEntity()
+    public List<SubjectToAssignDto> subjects { get; set; }
+
+    public EnrollmentDto()
     {
-        var enrollment = new EnrollmentEntity
+    }
+    
+    public EnrollmentDto(EnrollmentEntity entity)
+    {
+        enrollmentId = entity.enrollmentId;
+        section = entity.section;
+        capacity = entity.capacity;
+        quantity = entity.quantity;
+        label = entity.label;
+        subjects = entity.subjectList.mapListToAssignDto();
+    }
+
+    public EnrollmentDto(EnrollmentEntity enrollment, TeacherEntity? teacher) : this(enrollment)
+    {
+        if (teacher == null)
         {
-            enrollmentId = enrollmentId!,
-            section = section!,
-            capacity = capacity,
-            quantity = quantity
-        };
-
-        var subjectList = subjects.Select(item => item.toEntity(enrollmentId)).ToList();
-
-        enrollment.setSubjectList(subjectList);
+            return;
+        }
         
-        return enrollment;
+        teacherId = teacher.teacherId;
+        teacherName = teacher.fullName();
     }
 }

@@ -6,20 +6,11 @@ namespace wsmcbl.src.dto.secretary;
 
 public class StudentParentDto : IBaseDto<StudentParentEntity>
 {
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
     public string? parentId { get; set; }
-    
     [JsonRequired] public bool sex { get; set; }
     [Required] public string name { get; set; } = null!;
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
-    public string? idCard { get; set; }
-    
-    [Required]
-    [StringLength(int.MaxValue, MinimumLength = 0)]
-    public string? occupation { get; set; }
+    [Required] public string? idCard { get; set; }
+    [Required] public string? occupation { get; set; }
 
     public StudentParentDto()
     {

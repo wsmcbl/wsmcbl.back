@@ -26,10 +26,10 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     }
 
     [HttpGet]
-    [Route("grades")]
-    public async Task<IActionResult> getGradeList()
+    [Route("degrees")]
+    public async Task<IActionResult> getDegreeList()
     {
-        var result = await controller.getGradeList();
+        var result = await controller.getDegreeList();
         return Ok(result.mapToListBasicDto());
     }
 

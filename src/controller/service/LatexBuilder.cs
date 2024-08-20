@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace wsmcbl.src.controller.service;
 
 public abstract class LatexBuilder
@@ -8,6 +10,25 @@ public abstract class LatexBuilder
     {
         this.outPath = outPath;
         this.templatesPath = templatesPath;
+        
+        createOutPath(outPath);
+    }
+    
+    private static void createOutPath(string path)
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = "/bin/bash";
+        process.StartInfo.Arguments = $"-c \"mkdir {path} | true\"";
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
+
+        process.Start();
+        process.WaitForExit();
+
+        Console.WriteLine(process.ExitCode == 0
+            ? $"Directory {path} created successfully."
+            : $"Error creating directory {path}.\nExit code: {process.ExitCode}");
     }
     
     private readonly string outPath;
@@ -20,6 +41,8 @@ public abstract class LatexBuilder
     
     private string? fileName;
     public string? getFileName() => fileName;
+
+    public string getImagesPath() => $"{templatesPath}/image";
     
 
     public void build()
@@ -33,7 +56,7 @@ public abstract class LatexBuilder
         
         File.WriteAllText(filePath, content);
     }
-
+    
     protected abstract string getTemplateName();
     protected abstract string updateContent(string content);
 }

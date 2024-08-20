@@ -29,36 +29,22 @@ public class CreateOfficialEnrollmentControllerTest
         dao.getNewSchoolYear().Returns(schoolyear);
 
         List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
-        List<GradeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
+        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
 
         var tariffDataDao = Substitute.For<ITariffDataDao>();
         tariffDataDao.getAll().Returns(tariffData);
 
-        var gradaDataDao = Substitute.For<IGradeDataDao>();
+        var gradaDataDao = Substitute.For<IDegreeDataDao>();
         gradaDataDao.getAll().Returns(gradeData);
 
         daoFactory.schoolyearDao.Returns(dao);
         daoFactory.tariffDataDao.Returns(tariffDataDao);
-        daoFactory.gradeDataDao.Returns(gradaDataDao);
+        daoFactory.degreeDataDao.Returns(gradaDataDao);
         
         var result = await sut.getNewSchoolYearInformation();
 
         Assert.NotNull(result);
     }
-    
-    [Fact]
-    public async Task updateEnrollment_ShouldUpdateEnrollment_WhenParameterIsValid()
-    {
-        var enrollment = TestEntityGenerator.aEnrollment();
-        var dao = Substitute.For<IEnrollmentDao>();
-        daoFactory.enrollmentDao.Returns(dao);
-    
-        await sut.updateEnrollment(enrollment);
-        
-        dao.Received(1).update(enrollment);
-        await daoFactory.Received(1).execute();
-    }
-    
 
     [Fact]
     public async Task createSubject_ShouldCreateTariff_WhenParameterIsValid()
@@ -89,7 +75,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createSchoolYear_ShouldReturnException_WhenParameterAreNotValid()
     {
-        await Assert.ThrowsAsync<ArgumentException>(() => sut.createSchoolYear([], []));
+        await Assert.ThrowsAsync<BadRequestException>(() => sut.createSchoolYear([], []));
     }
     
     [Fact]
@@ -122,11 +108,11 @@ public class CreateOfficialEnrollmentControllerTest
     public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
     {
         var list = TestEntityGenerator.aGradeList();
-        var dao = Substitute.For<IGradeDao>();
+        var dao = Substitute.For<IDegreeDao>();
         dao.getAll().Returns(list);
-        daoFactory.gradeDao.Returns(dao);
+        daoFactory.degreeDao.Returns(dao);
 
-        var result = await sut.getGradeList();
+        var result = await sut.getDegreeList();
 
         Assert.NotNull(result);
         Assert.Equivalent(list, result);
@@ -159,7 +145,7 @@ public class CreateOfficialEnrollmentControllerTest
     [InlineData(8)]
     public async Task createEnrollments_ShouldThrowException_WhenQuantityIsNotValid(int quantity)
     {
-        await Assert.ThrowsAsync<ArgumentException>(() => sut.createEnrollments("gd-1", quantity));
+        await Assert.ThrowsAsync<BadRequestException>(() => sut.createEnrollments("gd-1", quantity));
     }
 
     [Fact]
@@ -167,12 +153,12 @@ public class CreateOfficialEnrollmentControllerTest
     {
         var grade = TestEntityGenerator.aGrade("gd-1");
         
-        var gradeDao = Substitute.For<IGradeDao>();
+        var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
 
         var enrollmentDao = Substitute.For<IEnrollmentDao>();
         
-        daoFactory.gradeDao.Returns(gradeDao);
+        daoFactory.degreeDao.Returns(gradeDao);
         daoFactory.enrollmentDao.Returns(enrollmentDao);
         
         await sut.createEnrollments("gd-1", 1);
@@ -184,18 +170,18 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeById_GradeNotFound_ReturnException()
     {
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getGradeById("gd-1"));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getDegreeById("gd-1"));
     }
     
     [Fact]
     public async Task getGradeById_ReturnGrade()
     {
         var grade = TestEntityGenerator.aGrade("gd-1");
-        var gradeDao = Substitute.For<IGradeDao>();
+        var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
-        daoFactory.gradeDao.Returns(gradeDao);
+        daoFactory.degreeDao.Returns(gradeDao);
 
-        var result = await sut.getGradeById("gd-1");
+        var result = await sut.getDegreeById("gd-1");
 
         Assert.NotNull(result);
         Assert.Equivalent(grade, result);

@@ -43,15 +43,15 @@ public class EnrollStudentActionsTest : BaseIntegrationTest
     [Fact]
     public async Task getGradeList_ShouldReturnJsonWithList_WhenCalled()
     {
-        await assertListWithOut<BasicGradeToEnrollDto>($"{baseUri}/grades");
+        await assertListWithOut<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
     }
     
     [Fact]
     public async Task getStudentList_ShouldReturnJsonWithList_WhenCalled()
     {
-        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/grades");
+        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/degrees");
     }
-    
+  
     
     private async Task assertListWithOut<TDto>(string uri)
     {
