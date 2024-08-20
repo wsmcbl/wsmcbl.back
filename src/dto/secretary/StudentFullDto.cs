@@ -63,7 +63,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setDiseases(diseases)
             .setReligion(religion)
             .setAddress(address)
-            .setMeasurements(measurements.toEntity())
+            .setMeasurements(measurements?.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())
