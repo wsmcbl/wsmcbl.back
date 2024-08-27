@@ -9,9 +9,21 @@ public class EnrollmentEntity
     public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
-
     public ICollection<StudentEntity>? studentList { get; }
     public ICollection<SubjectEntity>? subjectList { get; private set;}
+
+    public EnrollmentEntity()
+    {
+        studentList = [];
+    }
+    
+    public EnrollmentEntity(string degreeId, string schoolYear, string label)
+    {
+        this.degreeId = degreeId;
+        this.schoolYear = schoolYear;
+        this.label = label;
+        section = "";
+    }
 
     public void setSubjectList(List<SubjectEntity> subjects)
     {

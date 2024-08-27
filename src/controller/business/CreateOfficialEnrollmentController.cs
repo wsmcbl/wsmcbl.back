@@ -154,7 +154,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
         degree.createEnrollments(quantity);
 
-        foreach (var enrollment in degree.enrollments!)
+        foreach (var enrollment in degree.enrollmentList!)
         {
             daoFactory.enrollmentDao!.create(enrollment);
             await daoFactory.execute();

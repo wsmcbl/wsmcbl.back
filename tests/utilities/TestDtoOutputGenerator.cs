@@ -24,7 +24,7 @@ public class TestDtoOutputGenerator
                 modality = "primaria",
                 schoolYear = "sch001",
                 subjectList = [],
-                enrollments = []
+                enrollmentList = []
             }
         ];
     }

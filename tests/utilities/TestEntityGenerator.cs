@@ -123,7 +123,7 @@ public class TestEntityGenerator
             label = "11vo",
             modality = "secundaria",
             schoolYear = "sch001",
-            enrollments = [],
+            enrollmentList = [],
             subjectList = [aSubject()]
         };
     }

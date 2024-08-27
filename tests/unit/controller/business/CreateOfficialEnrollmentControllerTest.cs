@@ -163,8 +163,8 @@ public class CreateOfficialEnrollmentControllerTest
         
         await sut.createEnrollments("gd-1", 1);
         
-        daoFactory.enrollmentDao!.Received().create(grade.enrollments.First());
-        daoFactory.Received().Detached(grade.enrollments.First().subjectList!.First());
+        daoFactory.enrollmentDao!.Received().create(grade.enrollmentList.First());
+        daoFactory.Received().Detached(grade.enrollmentList.First().subjectList!.First());
     }
 
     [Fact]

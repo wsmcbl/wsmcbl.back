@@ -9,13 +9,13 @@ public class DegreeEntity
     public string schoolYear { get; set; } = null!;
     public int quantity { get; set; }
     public string modality { get; set; } = null!;
-    
-    public ICollection<EnrollmentEntity>? enrollments { get; set; }
+
+    public ICollection<EnrollmentEntity>? enrollmentList { get; set; }
     public ICollection<SubjectEntity> subjectList { get; set; }
-    
+
     public DegreeEntity()
     {
-        enrollments = [];
+        enrollmentList = [];
         subjectList = [];
     }
 
@@ -33,22 +33,15 @@ public class DegreeEntity
     }
 
     private readonly string[] typeLabels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-    
+
     public void createEnrollments(int enrollmentQuantity)
     {
-        enrollments = [];
+        enrollmentList = [];
         for (var i = 0; i < enrollmentQuantity; i++)
         {
-            var enrollment = new EnrollmentEntity
-            {
-                degreeId = degreeId!,
-                schoolYear = schoolYear,
-                label = label + " " + typeLabels[i],
-                section = ""
-            };
-            
+            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, label + " " + typeLabels[i]);
             enrollment.setSubjectList(subjectList);
-            enrollments.Add(enrollment);
+            enrollmentList.Add(enrollment);
         }
     }
 
