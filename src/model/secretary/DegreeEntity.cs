@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.model.secretary;
@@ -34,12 +35,22 @@ public class DegreeEntity
 
     private readonly string[] typeLabels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 
-    public void createEnrollments(int enrollmentQuantity)
+    public void createEnrollments(int quantityToCreate)
     {
-        enrollmentList = [];
-        for (var i = 0; i < enrollmentQuantity; i++)
+        if(enrollmentList != null && enrollmentList.Count != 0)
         {
-            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, label + " " + typeLabels[i]);
+            throw new IncorrectDataBadRequestException("DegreeEntity");
+        }
+
+        if (quantityToCreate < 1 || quantityToCreate > 7)
+        {
+            throw new BadRequestException("Quantity invalid. The quantity must be 1 to 7.");
+        }
+
+        enrollmentList = [];
+        for (var i = 0; i < quantityToCreate; i++)
+        {
+            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, $"{label} {typeLabels[i]}");
             enrollment.setSubjectList(subjectList);
             enrollmentList.Add(enrollment);
         }

@@ -29,7 +29,7 @@ public class CreateOfficialEnrollmentControllerTest
         dao.getNewSchoolYear().Returns(schoolyear);
 
         List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
-        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
+        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aDegreeData()];
 
         var tariffDataDao = Substitute.For<ITariffDataDao>();
         tariffDataDao.getAll().Returns(tariffData);
@@ -81,7 +81,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createSchoolYear_ShouldCreateSchoolYear_WhenParametersAreValid()
     {
-         var gradeList = TestEntityGenerator.aGradeList();
+         var gradeList = TestEntityGenerator.aDegreeList();
          var tariffList = TestEntityGenerator.aTariffList();
 
          await sut.createSchoolYear(gradeList, tariffList);
@@ -107,7 +107,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
     {
-        var list = TestEntityGenerator.aGradeList();
+        var list = TestEntityGenerator.aDegreeList();
         var dao = Substitute.For<IDegreeDao>();
         dao.getAll().Returns(list);
         daoFactory.degreeDao.Returns(dao);
@@ -151,7 +151,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createEnrollments_ShouldCreateEnrollments_WhenParametersIsProvide()
     {
-        var grade = TestEntityGenerator.aGrade("gd-1");
+        var grade = TestEntityGenerator.aDegree("gd-1");
         
         var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
@@ -176,7 +176,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeById_ReturnGrade()
     {
-        var grade = TestEntityGenerator.aGrade("gd-1");
+        var grade = TestEntityGenerator.aDegree("gd-1");
         var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
         daoFactory.degreeDao.Returns(gradeDao);

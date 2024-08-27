@@ -10,7 +10,7 @@ public class DegreeDaoPostgresTest
     [Fact]
     public async Task crateList_ShouldCreateList_WhenCalled()
     {
-        var grade = TestEntityGenerator.aGrade("gd-001");
+        var grade = TestEntityGenerator.aDegree("gd-001");
         var context = TestDbContext.getInMemory();
         
         var sut = new DegreeDaoPostgres(context);
@@ -33,7 +33,7 @@ public class DegreeDaoPostgresTest
     [Fact]
     public async Task getById_ShouldReturnGrade_WhenIdIsProvide()
     {
-        var grade = TestEntityGenerator.aGrade("gr-0001");
+        var grade = TestEntityGenerator.aDegree("gr-0001");
         var context = TestDbContext.getInMemory();
         context.Set<DegreeEntity>().Add(grade);
         await context.SaveChangesAsync();

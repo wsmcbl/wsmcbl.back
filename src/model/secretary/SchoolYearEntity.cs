@@ -23,7 +23,7 @@ public class SchoolYearEntity
         tariffList = list;
     }
     
-    public void setGradeDataList(List<DegreeDataEntity> list)
+    public void setDegreeDataList(List<DegreeDataEntity> list)
     {
         degreeList = [];
         foreach (var item in list)

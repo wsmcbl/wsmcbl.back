@@ -13,7 +13,7 @@ public class TestEntityGenerator
     private TransactionTariffEntity? _transactionTariffEntity;
 
 
-    public static DegreeDataEntity aGradeData()
+    public static DegreeDataEntity aDegreeData()
     {
         return new DegreeDataEntity()
         {
@@ -63,9 +63,9 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<DegreeEntity> aGradeList()
+    public static List<DegreeEntity> aDegreeList()
     {
-        return [aGrade("gd-10")];
+        return [aDegree("gd-10")];
     }
 
 
@@ -115,11 +115,11 @@ public class TestEntityGenerator
     }
 
 
-    public static DegreeEntity aGrade(string gradeId)
+    public static DegreeEntity aDegree(string degreeId)
     {
         return new DegreeEntity
         {
-            degreeId = gradeId,
+            degreeId = degreeId,
             label = "11vo",
             modality = "secundaria",
             schoolYear = "sch001",
@@ -328,7 +328,7 @@ public class TestEntityGenerator
             new TariffTypeEntity
             {
                 typeId = 2,
-                description = "description aslk"
+                description = "description 2"
             }
         ];
     }
