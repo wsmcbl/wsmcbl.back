@@ -71,7 +71,13 @@ public class StudentDaoPostgres(PostgresContext context)
     public async Task updateAsync(StudentEntity entity)
     {
         var existingStudent = await getById(entity.studentId!);
-        existingStudent!.update(entity);
+        
+        if (existingStudent == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", entity.studentId);
+        }
+        
+        existingStudent.update(entity);
         
         update(existingStudent);
     }

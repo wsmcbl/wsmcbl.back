@@ -2,8 +2,8 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
-using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
-using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using AccountingStudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
@@ -128,7 +128,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static StudentEntity aStudent(string studentId)
+    public static AccountingStudentEntity aAccountingStudent(string studentId)
     {
         var discountEntity = new DiscountEntity
         {
@@ -138,10 +138,10 @@ public class TestEntityGenerator
             tag = "A"
         };
 
-        return new StudentEntity
+        return new AccountingStudentEntity
         {
             studentId = studentId,
-            student = aSecretaryStudent(studentId),
+            student = aStudent(studentId),
             discount = discountEntity,
             discountId = 1,
             enrollmentLabel = "",
@@ -159,19 +159,20 @@ public class TestEntityGenerator
         };
     }
 
-    private static SecretaryStudentEntity aSecretaryStudent(string studentId)
+    public static StudentEntity aStudent(string studentId)
     {
-        return new SecretaryStudentEntity
-        {
-            studentId = studentId,
-            name = "name-v",
-            secondName = "sn",
-            surname = "surname-v",
-            secondSurname = "ssn",
-            schoolYear = "2024",
-            religion = "Evangelico",
-            address = "la direccion (desconcida)"
-        };
+        var result = new StudentEntity.Builder()
+            .setId(studentId)
+            .setName("Jonas")
+            .setSecondName("Alexander")
+            .setSurname("Lopez")
+            .setSecondSurname("Alvarez")
+            .setReligion("Ninguna")
+            .setAddress("Desconocida")
+            .build();
+        result.parents = [new StudentParentEntity()];
+
+        return result;
     }
 
     public static TariffEntity aTariff()
@@ -274,13 +275,12 @@ public class TestEntityGenerator
     }
 
 
-    public static List<StudentEntity> aStudentList() =>
+    public static List<AccountingStudentEntity> aStudentList() =>
     [
-        //aStudent("id1")
-        new StudentEntity
+        new AccountingStudentEntity()
         {
             studentId = "std-10",
-            student = aSecretaryStudent("std-10"),
+            student = aStudent("std-10"),
             discount = new DiscountEntity
             {
                 discountId = 1,
@@ -308,7 +308,7 @@ public class TestEntityGenerator
         }
     ];
 
-    public static List<SecretaryStudentEntity> aSecretaryStudentList() => [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
+    public static List<StudentEntity> aSecretaryStudentList() => [aStudent("id1"), aStudent("id2")];
 
     public static List<TariffEntity> aTariffList()
     {
@@ -333,9 +333,9 @@ public class TestEntityGenerator
         ];
     }
 
-    public static (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
+    public static (TransactionEntity, AccountingStudentEntity, CashierEntity, float[]) aTupleInvoice()
     {
-        return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
+        return (aTransaction("std-1", []), aAccountingStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }
 
     public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)

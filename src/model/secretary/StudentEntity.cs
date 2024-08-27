@@ -51,9 +51,17 @@ public class StudentEntity
     public async Task saveChanges(DaoFactory daoFactory)
     {
         await daoFactory.studentDao!.updateAsync(this);
-        await daoFactory.studentFileDao!.updateAsync(file);
         await daoFactory.studentTutorDao!.updateAsync(tutor);
-        await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
+
+        if (file != null)
+        {
+            await daoFactory.studentFileDao!.updateAsync(file);
+        }
+
+        if (measurements != null)
+        {
+            await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
+        }
         
         foreach (var parent in parents!)
         {
