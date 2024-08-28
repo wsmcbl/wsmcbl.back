@@ -61,12 +61,13 @@ services:
     image: postgres:14
     container_name: database-test
     environment:
-      - POSTGRES_DB=database_test
+      - POSTGRES_DB=wsmcbl_database
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=pass12345
     volumes:
       - ./database:/docker-entrypoint-initdb.d
-      - /dev/shm
+    tmpfs:
+      - /var/lib/postgresql/data
     ports:
       - "5400:5400"
     networks:
@@ -80,7 +81,7 @@ services:
     container_name: api-test
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__DefaultConnection=Host=database-test;Database=database_test;Username=user;Password=pass12345
+      - ConnectionStrings__DefaultConnection=Host=database-test;Database=wsmcbl_database;Username=user;Password=pass12345
     depends_on:
       - dotnet-base
       - database-test

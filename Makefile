@@ -58,4 +58,7 @@ api-b: ## entry api bash
 	 docker-compose exec api bash
  
 mount-all: ## stop, build, and run container
-	$(MAKE) stop && $(MAKE) build && $(MAKE) run 
+	$(MAKE) stop && $(MAKE) build && $(MAKE) run
+	
+tests-cont: ## run test
+	$(MAKE) build && docker rm -f database-test api-test && docker-compose up api-test
