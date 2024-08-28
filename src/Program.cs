@@ -24,6 +24,7 @@ builder.Services.AddScoped<ValidateModelFilterAttribute>();
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
+builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCardByStudentController>();
 
 var app = builder.Build();
 

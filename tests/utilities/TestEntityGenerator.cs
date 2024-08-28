@@ -2,8 +2,8 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
-using SecretaryStudentEntity = wsmcbl.src.model.secretary.StudentEntity;
-using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using AccountingStudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.tests.utilities;
@@ -13,11 +13,11 @@ public class TestEntityGenerator
     private TransactionTariffEntity? _transactionTariffEntity;
 
 
-    public static GradeDataEntity aGradeData()
+    public static DegreeDataEntity aDegreeData()
     {
-        return new GradeDataEntity()
+        return new DegreeDataEntity()
         {
-            gradeDataId = 1,
+            degreeDataId = 1,
             label = "4to",
             modality = 2,
             subjectList = [aSubjectData()]
@@ -29,7 +29,7 @@ public class TestEntityGenerator
         return new EnrollmentEntity
         {
             enrollmentId = "en-1",
-            gradeId = "gd1",
+            degreeId = "gd1",
             capacity = 20,
             label = "A",
             quantity = 20,
@@ -42,7 +42,7 @@ public class TestEntityGenerator
     {
         return new SubjectDataEntity()
         {
-            gradeDataId = 1,
+            degreeDataId = 1,
             subjectDataId = 1,
             isMandatory = true,
             name = "Español",
@@ -63,9 +63,9 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<GradeEntity> aGradeList()
+    public static List<DegreeEntity> aDegreeList()
     {
-        return [aGrade("gd-10")];
+        return [aDegree("gd-10")];
     }
 
 
@@ -106,28 +106,29 @@ public class TestEntityGenerator
         return new SubjectEntity
         {
             subjectId = "sub1",
-            gradeId = "gd-1",
+            degreeId = "gd-1",
             isMandatory = true,
             name = "Español",
-            semester = 3
+            semester = 3,
+            initials = "L y L"
         };
     }
 
 
-    public static GradeEntity aGrade(string gradeId)
+    public static DegreeEntity aDegree(string degreeId)
     {
-        return new GradeEntity
+        return new DegreeEntity
         {
-            gradeId = gradeId,
+            degreeId = degreeId,
             label = "11vo",
             modality = "secundaria",
             schoolYear = "sch001",
-            enrollments = [],
+            enrollmentList = [],
             subjectList = [aSubject()]
         };
     }
 
-    public static StudentEntity aStudent(string studentId)
+    public static AccountingStudentEntity aAccountingStudent(string studentId)
     {
         var discountEntity = new DiscountEntity
         {
@@ -137,10 +138,10 @@ public class TestEntityGenerator
             tag = "A"
         };
 
-        return new StudentEntity
+        return new AccountingStudentEntity
         {
             studentId = studentId,
-            student = aSecretaryStudent(studentId),
+            student = aStudent(studentId),
             discount = discountEntity,
             discountId = 1,
             enrollmentLabel = "",
@@ -158,18 +159,20 @@ public class TestEntityGenerator
         };
     }
 
-    private static SecretaryStudentEntity aSecretaryStudent(string studentId)
+    public static StudentEntity aStudent(string studentId)
     {
-        return new SecretaryStudentEntity
-        {
-            studentId = studentId,
-            name = "name-v",
-            secondName = "sn",
-            surname = "surname-v",
-            secondSurname = "ssn",
-            schoolYear = "2024",
-            religion = "Evangelico"
-        };
+        var result = new StudentEntity.Builder()
+            .setId(studentId)
+            .setName("Jonas")
+            .setSecondName("Alexander")
+            .setSurname("Lopez")
+            .setSecondSurname("Alvarez")
+            .setReligion("Ninguna")
+            .setAddress("Desconocida")
+            .build();
+        result.parents = [new StudentParentEntity()];
+
+        return result;
     }
 
     public static TariffEntity aTariff()
@@ -187,7 +190,7 @@ public class TestEntityGenerator
         };
     }
     
-    private static TariffEntity aTariffNotMensual()
+    private static TariffEntity aTariffNotMonthly()
     {
         return new TariffEntity
         {
@@ -272,13 +275,12 @@ public class TestEntityGenerator
     }
 
 
-    public static List<StudentEntity> aStudentList() =>
+    public static List<AccountingStudentEntity> aStudentList() =>
     [
-        //aStudent("id1")
-        new StudentEntity
+        new AccountingStudentEntity()
         {
             studentId = "std-10",
-            student = aSecretaryStudent("std-10"),
+            student = aStudent("std-10"),
             discount = new DiscountEntity
             {
                 discountId = 1,
@@ -306,7 +308,7 @@ public class TestEntityGenerator
         }
     ];
 
-    public static List<SecretaryStudentEntity> aSecretaryStudentList() => [aSecretaryStudent("id1"), aSecretaryStudent("id2")];
+    public static List<StudentEntity> aSecretaryStudentList() => [aStudent("id1"), aStudent("id2")];
 
     public static List<TariffEntity> aTariffList()
     {
@@ -326,28 +328,28 @@ public class TestEntityGenerator
             new TariffTypeEntity
             {
                 typeId = 2,
-                description = "description aslk"
+                description = "description 2"
             }
         ];
     }
 
-    public static (TransactionEntity, StudentEntity, CashierEntity, float[]) aTupleInvoice()
+    public static (TransactionEntity, AccountingStudentEntity, CashierEntity, float[]) aTupleInvoice()
     {
-        return (aTransaction("std-1", []), aStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
+        return (aTransaction("std-1", []), aAccountingStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }
 
     public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)
     {
-        return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMensual(studentId)];
+        return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMonthly(studentId)];
     }
 
-    private static DebtHistoryEntity aDebtHistoryNotMensual(string studentId)
+    private static DebtHistoryEntity aDebtHistoryNotMonthly(string studentId)
     {
         return new DebtHistoryEntity
         {
             studentId = studentId,
-            tariffId = aTariffNotMensual().tariffId,
-            tariff = aTariffNotMensual(),
+            tariffId = aTariffNotMonthly().tariffId,
+            tariff = aTariffNotMonthly(),
             schoolyear = "sch001",
             isPaid = true,
             debtBalance = 10,

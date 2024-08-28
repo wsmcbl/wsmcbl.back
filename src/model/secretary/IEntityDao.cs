@@ -2,14 +2,15 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.secretary;
 
-public interface IGradeDao : IGenericDao<GradeEntity, string>
+public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
-    public void createList(List<GradeEntity> gradeList);
-    public Task<List<GradeEntity>> getAllForTheCurrentSchoolyear();
+    public void createList(List<DegreeEntity> gradeList);
+    public Task<List<DegreeEntity>> getAllForTheCurrentSchoolyear();
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
+    public Task<SchoolYearEntity> getCurrentSchoolYear();
     public Task<SchoolYearEntity> getNewSchoolYear();
 }
 
@@ -29,8 +30,10 @@ public interface IStudentMeasurementsDao
     : IGenericDao<StudentMeasurementsEntity, int>, IStudentElement<StudentMeasurementsEntity>;
 
 
-public interface IGradeDataDao : IGenericDao<GradeDataEntity, string>;
+public interface IDegreeDataDao : IGenericDao<DegreeDataEntity, string>;
+
 public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, string>;
+
 public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
 
 

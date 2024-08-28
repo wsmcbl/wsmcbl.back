@@ -1,3 +1,5 @@
+using wsmcbl.src.model.dao;
+
 namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
@@ -13,9 +15,9 @@ public class StudentEntity
     public string address { get; set; } = null!;
     public string religion { get; set; } = null!;
     public bool isActive { get; set; }
-    public string schoolYear { get; set; } = null!; 
-    
-    
+    public string schoolYear { get; set; } = null!;
+
+
     public StudentFileEntity? file { get; set; }
     public StudentTutorEntity tutor { get; set; } = null!;
     public List<StudentParentEntity>? parents { get; set; }
@@ -43,8 +45,32 @@ public class StudentEntity
         birthday = entity.birthday;
         diseases = entity.diseases;
         religion = entity.religion;
+        address = entity.address;
     }
-    
+
+    public async Task saveChanges(DaoFactory daoFactory)
+    {
+        await daoFactory.studentDao!.updateAsync(this);
+        await daoFactory.studentTutorDao!.updateAsync(tutor);
+
+        if (file != null)
+        {
+            await daoFactory.studentFileDao!.updateAsync(file);
+        }
+
+        if (measurements != null)
+        {
+            await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
+        }
+        
+        foreach (var parent in parents!)
+        {
+            await daoFactory.studentParentDao!.updateAsync(parent);
+        }
+
+        await daoFactory.execute();
+    }
+
     public class Builder
     {
         private readonly StudentEntity entity;
@@ -98,7 +124,7 @@ public class StudentEntity
             entity.isActive = isActive;
             return this;
         }
-        
+
         public Builder setSex(bool sex)
         {
             entity.sex = sex;
@@ -123,9 +149,13 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setFile(StudentFileEntity file)
+        public Builder setFile(StudentFileEntity? file)
         {
-            file.studentId = entity.studentId!;
+            if(file != null)
+            {
+                file.studentId = entity.studentId!;
+            }
+            
             entity.file = file;
             return this;
         }
@@ -137,20 +167,27 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setMeasurements(StudentMeasurementsEntity studentMeasurements)
+        public Builder setMeasurements(StudentMeasurementsEntity? studentMeasurements)
         {
-            studentMeasurements.studentId = entity.studentId!;
+            if (studentMeasurements != null)
+            {
+                studentMeasurements.studentId = entity.studentId!;
+            }
+
             entity.measurements = studentMeasurements;
             return this;
         }
 
-        public Builder setParents(List<StudentParentEntity> parents)
+        public Builder setParents(List<StudentParentEntity>? parents)
         {
-            foreach (var item in parents)
+            if (parents != null)
             {
-                item.studentId = entity.studentId!;
+                foreach (var item in parents)
+                {
+                    item.studentId = entity.studentId!;
+                }
             }
-            
+
             entity.parents = parents;
             return this;
         }

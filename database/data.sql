@@ -25,31 +25,55 @@ values ('caj-eurbina', '1001'),
 
 
 -- ############################## ---
-insert into secretary.student(name, secondname, surname, secondsurname, studentstate, schoolyear, sex, birthday, diseases, religion)
-values ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', false, '01/05/2001', '', ''),
-       ('Leonarno', 'Alberto', 'Muñoz', 'Morales', false, 'sch012', false, '05/08/2002', '', ''),
-       ('Emilio', 'Fabian', 'Brenes', 'Rodriguez', true, 'sch011',  false, '15/03/2002', '', ''),
-       ('Noelia', 'Abigail', 'Guzmán', 'Martínez', true, 'sch010',  true, '11/10/2002', '', ''),
-       ('Jeniffer', 'Alexandra', 'Rojas', 'Ríos', true, 'sch015',  true, '01/01/2000', '', ''),
-       ('Escarleth', 'Guadalupe', 'Chávez', 'Cajina', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Edrei', 'Jerameel', 'Hernández', 'Zapata', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Miguel', 'Angel', 'Perez', 'Amador', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Zoe', 'Denisse', 'Manzano', 'Bonilla', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Joseph', 'Guillermo', 'Valdivia', 'Montano', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Hamiltthon', 'José', 'Osorio', 'Castillo', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Jeanelly', 'Anasereth', 'Tercero', 'Martinez', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Rossmery', 'Leonor', 'Moreno', 'Reyes', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Josué', 'David', 'Pérez', 'Urbina', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Brittany', 'Fabiola', 'Reyes', 'Pantoja', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Luciana', 'Isabel', 'Romero', 'Zepeda', true, 'sch010', true, '10/05/2009', '', ''),
-       ('Jordan', 'Jesús', 'Urtecho', 'Caballero', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Jorgleny', 'Dayanna', 'Guerrero', 'García', true, 'sch010', true, '10/05/2009', '', ''),
-       ('Snayder', 'Noe', 'Leiva', 'Rivera', true, 'sch010',  true, '10/05/2009', '', ''),
-       ('Yasmin', 'Guisell', 'Salazar', 'Silva', true, 'sch010', true, '10/05/2009', '', '');
+insert into secretary.student(name, secondname, surname, secondsurname, studentstate, schoolyear, sex, birthday,
+                              diseases, religion, address)
+values ('Kenny', 'Jordan', 'Tinoco', 'Cerda', true, 'sch010', false, '01/05/2001', '', '', ''),
+       ('Leonarno', 'Alberto', 'Muñoz', 'Morales', false, 'sch012', false, '05/08/2002', '', '', ''),
+       ('Emilio', 'Fabian', 'Brenes', 'Rodriguez', true, 'sch011', false, '15/03/2002', '', '', ''),
+       ('Noelia', 'Abigail', 'Guzmán', 'Martínez', true, 'sch010', true, '11/10/2002', '', '', ''),
+       ('Jeniffer', 'Alexandra', 'Rojas', 'Ríos', true, 'sch015', true, '01/01/2000', '', '', ''),
+       ('Escarleth', 'Guadalupe', 'Chávez', 'Cajina', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Edrei', 'Jerameel', 'Hernández', 'Zapata', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Miguel', 'Angel', 'Perez', 'Amador', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Zoe', 'Denisse', 'Manzano', 'Bonilla', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Joseph', 'Guillermo', 'Valdivia', 'Montano', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Hamiltthon', 'José', 'Osorio', 'Castillo', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Jeanelly', 'Anasereth', 'Tercero', 'Martinez', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Rossmery', 'Leonor', 'Moreno', 'Reyes', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Josué', 'David', 'Pérez', 'Urbina', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Brittany', 'Fabiola', 'Reyes', 'Pantoja', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Luciana', 'Isabel', 'Romero', 'Zepeda', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Jordan', 'Jesús', 'Urtecho', 'Caballero', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Jorgleny', 'Dayanna', 'Guerrero', 'García', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Snayder', 'Noe', 'Leiva', 'Rivera', true, 'sch010', true, '10/05/2009', '', '', ''),
+       ('Yasmin', 'Guisell', 'Salazar', 'Silva', true, 'sch010', true, '10/05/2009', '', '', '');
 
 
 -- ############################## ---
 insert into academy.teacher(teacherid, userid, isguide)
-values ('tch-001', '1001', true),
-       ('tch-002', '1002', true),
-       ('tch-003', '1001', true);
+values ('tch-001', '1001', false),
+       ('tch-002', '1002', false),
+       ('tch-003', '1001', false),
+       ('tch-004', '1003', false),
+       ('tch-005', '1002', true);
+
+
+INSERT INTO secretary.studenttutor(studentid, name, phone)
+SELECT studentid, 'Tutor de Tinoco', '89764521, 75741263'
+FROM secretary.student
+WHERE name = 'Kenny' AND surname = 'Tinoco';
+
+INSERT INTO secretary.studenttutor(studentid, name, phone)
+SELECT studentid, 'primer tutor', '75741263'
+FROM secretary.student
+WHERE name = 'Jeniffer' AND surname = 'Rojas';
+
+INSERT INTO secretary.studenttutor(studentid, name, phone)
+SELECT studentid, 'tutor de mapa', '45784612, 45789632'
+FROM secretary.student
+WHERE name = 'Miguel' AND surname = 'Perez';
+
+INSERT INTO secretary.studenttutor(studentid, name, phone)
+SELECT studentid, 'tutor de urtecho', '35441263'
+FROM secretary.student
+WHERE name = 'Jordan' AND surname = 'Urtecho';

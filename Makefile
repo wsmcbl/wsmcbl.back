@@ -35,9 +35,8 @@ dn-ss: ## dotnet sonarscanner
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true
 
-
 run: ## Start the containers
-	docker network create network-test || true
+	docker network create app-network || true
 	docker-compose up -d
 
 stop: ## Stop the containers
@@ -47,4 +46,16 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run
 
 build: ## Rebuilds all the containers
-	docker-compose build
+	docker-compose build    
+
+logs: ## Show logs
+	docker-compose logs
+	
+api-l: ## show logs by container
+	 docker-compose logs api
+	 
+api-b: ## entry api bash
+	 docker-compose exec api bash
+ 
+mount-all: ## stop, build, and run container
+	$(MAKE) stop && $(MAKE) build && $(MAKE) run 

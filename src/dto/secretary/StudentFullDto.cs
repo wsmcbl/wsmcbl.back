@@ -15,7 +15,6 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public DateOnlyDto birthday { get; set; } = null!;
     [Required] public string religion { get; set; } = null!;
     [Required] public string? diseases { get; set; }
-    
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
 
@@ -47,8 +46,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
 
-        parents = student.parents == null ? [new StudentParentDto()]
-            : student.parents.Select(e => e.mapToDto()).ToList();
+        parents = student.parents.mapListToDto();
     }
     
     public StudentEntity toEntity()
@@ -65,7 +63,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setDiseases(diseases)
             .setReligion(religion)
             .setAddress(address)
-            .setMeasurements(measurements.toEntity())
+            .setMeasurements(measurements?.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())

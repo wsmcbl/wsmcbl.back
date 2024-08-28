@@ -1,0 +1,50 @@
+\documentclass[12pt]{article}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage[spanish]{babel}
+\usepackage{charter}
+\usepackage[landscape, margin=2cm]{geometry}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\headsep}{3mm}
+
+\pagestyle{plain}
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+
+\newcommand{\aDupleLeft}[2]{\textbf{#1}\hspace{2mm} #2 \hfill}
+\newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
+\newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
+
+\begin{document}
+    \hrule
+    \begin{table}[H]
+        \centering
+        \begin{center}
+            \textbf{\Large Colegio Bautista Libertad}\\
+            \textbf{Boleta de Calificaciones \year}
+        \end{center}
+        \aLine{\aDupleLeft{Alumno:}{\student.name} \aDupleRight{Grado:}{\degree}}
+        \par\medskip
+        \begin{tabular}{\column.quantity}
+            \hline
+            \titleLine
+            \hline
+            \firstSemester
+            \secondSemester
+            \finalGrade
+        \end{tabular}
+        \par\medskip
+        \aLine{ \aDupleLeft{Llegadas Tardes:}{\late.arrivals}
+                \aDupleCenter{Inasistencias Justificadas:}{\justifications}
+                \aDupleRight{Inasistencias Injustificadas:}{\unjustifications}}
+        \aLine{\aDupleCenter{Maestro Guía:}{\teacher.name}}
+    \end{table}
+    \hrule
+\end{document}

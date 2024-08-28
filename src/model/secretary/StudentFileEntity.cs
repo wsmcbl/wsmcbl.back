@@ -7,7 +7,7 @@ public class StudentFileEntity
     public bool transferSheet { get; set; }
     public bool birthDocument { get; set; }
     public bool parentIdentifier { get; set; }
-    public bool updatedGradeReport { get; set; }
+    public bool updatedDegreeReport { get; set; }
     public bool conductDocument { get; set; }
     public bool financialSolvency { get; set; }
 
@@ -16,7 +16,7 @@ public class StudentFileEntity
         transferSheet = entity.transferSheet;
         birthDocument = entity.birthDocument;
         parentIdentifier = entity.parentIdentifier;
-        updatedGradeReport = entity.updatedGradeReport;
+        updatedDegreeReport = entity.updatedDegreeReport;
         conductDocument = entity.conductDocument;
         financialSolvency = entity.financialSolvency;
     }

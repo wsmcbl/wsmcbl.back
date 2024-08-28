@@ -55,7 +55,7 @@ public class CollectTariffControllerTest
     public async Task getStudent_ReturnsStudent()
     {
         const string studentId = "std";
-        studentDao.getById(studentId).Returns(TestEntityGenerator.aStudent(studentId));
+        studentDao.getById(studentId).Returns(TestEntityGenerator.aAccountingStudent(studentId));
         daoFactory.accountingStudentDao.Returns(studentDao);
 
         var result = await controller.getStudent(studentId);
@@ -161,7 +161,7 @@ public class CollectTariffControllerTest
     [Fact]
     public async Task getFullTransaction_ReturnsInvoice()
     {
-        var initStudent = TestEntityGenerator.aStudent("std");
+        var initStudent = TestEntityGenerator.aAccountingStudent("std");
         var initCashier = new CashierEntity{cashierId = "csh", user = new UserEntity()};
         var initTransaction = new TransactionEntity { transactionId = "std", studentId = "std", cashierId = "csh" };
         

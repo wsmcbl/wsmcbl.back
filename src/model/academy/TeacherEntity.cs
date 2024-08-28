@@ -10,11 +10,15 @@ public class TeacherEntity
     public bool isGuide { get; set; }
     
     public UserEntity user { get; set; } = null!;
-    public EnrollmentEntity? enrollment { get; }
-    public ICollection<SubjectEntity> subjects { get; } = null!;
+    public EnrollmentEntity? enrollment { get; set; }
 
     public string fullName()
     {
         return user.fullName();
+    }
+
+    public string getEnrollmentLabel()
+    {
+        return enrollment.label;
     }
 }

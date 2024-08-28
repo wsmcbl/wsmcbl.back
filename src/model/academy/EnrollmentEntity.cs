@@ -3,15 +3,27 @@ namespace wsmcbl.src.model.academy;
 public class EnrollmentEntity
 {
     public string? enrollmentId { get; set; }
-    public string gradeId { get; set; } = null!;
+    public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
-    public string section { get; set; }
+    public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
-
     public ICollection<StudentEntity>? studentList { get; }
     public ICollection<SubjectEntity>? subjectList { get; private set;}
+
+    public EnrollmentEntity()
+    {
+        studentList = [];
+    }
+    
+    public EnrollmentEntity(string degreeId, string schoolYear, string label)
+    {
+        this.degreeId = degreeId;
+        this.schoolYear = schoolYear;
+        this.label = label;
+        section = "";
+    }
 
     public void setSubjectList(List<SubjectEntity> subjects)
     {
@@ -26,17 +38,24 @@ public class EnrollmentEntity
             return;
         }
 
-        if (subjectList == null)
-        {
-            subjectList = new List<SubjectEntity>();
-        }
+        subjectList ??= new List<SubjectEntity>();
 
         foreach (var item in subjects)
         {
-            var subject = new SubjectEntity();
-            subject.subjectId = item.subjectId;
-            
+            var subject = new SubjectEntity
+            {
+                subjectId = item.subjectId
+            };
+
             subjectList.Add(subject);
         }
+    }
+
+    public void update(EnrollmentEntity enrollment)
+    {
+        label = enrollment.label;
+        section = enrollment.section;
+        capacity = enrollment.capacity;
+        quantity = enrollment.quantity;
     }
 }

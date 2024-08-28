@@ -13,18 +13,18 @@ public class TestDtoOutputGenerator
     private PaymentItemDto? _paymentItemDto;
     private InvoiceDto? _invoiceDto;
 
-    public static List<GradeEntity> aGradeList()
+    public static List<DegreeEntity> aGradeList()
     {
         return
         [
-            new GradeEntity
+            new DegreeEntity
             {
-                gradeId = "gr01",
+                degreeId = "gr01",
                 label = "1ro",
                 modality = "primaria",
                 schoolYear = "sch001",
                 subjectList = [],
-                enrollments = []
+                enrollmentList = []
             }
         ];
     }
@@ -122,7 +122,7 @@ public class TestDtoOutputGenerator
 
     private static BasicStudentDto aStudentBasicDto()
     {
-        var entity = TestEntityGenerator.aStudent("std-1");
+        var entity = TestEntityGenerator.aAccountingStudent("std-1");
         
         return new BasicStudentDto
         {

@@ -38,9 +38,9 @@ public static class TestDtoInputGenerator
     }
     
     
-    public static GradeToCreateDto aGradeDto()
+    public static DegreeToCreateDto aGradeDto()
     {
-        return new GradeToCreateDto()
+        return new DegreeToCreateDto()
         {
             label = "5to",
             schoolYear = "sch01",
@@ -49,9 +49,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectDto aSubjectDto()
+    public static SubjectInputDto aSubjectDto()
     {
-        return new SubjectDto
+        return new SubjectInputDto
         {
             name = "Lengua y Literatura",
             isMandatory = true,
@@ -76,7 +76,7 @@ public static class TestDtoInputGenerator
     {
         return new EnrollmentToCreateDto
         {
-            gradeId = "gd01",
+            degreeId = "gd01",
             quantity = 40
         };
     }
@@ -85,14 +85,14 @@ public static class TestDtoInputGenerator
     {
         return new SchoolYearToCreateDto
         {
-            grades = [],
+            degrees = [],
             tariffs = []
         };
     }
 
-    public static EnrollmentDto aEnrollmentDto()
+    public static EnrollmentToUpdateDto aEnrollmentDto()
     {
-        return new EnrollmentDto
+        return new EnrollmentToUpdateDto
         {
             enrollmentId = "er001",
             capacity = 60,

@@ -6,7 +6,7 @@ public interface IEnrollStudentController
 {
     public Task<List<StudentEntity>> getStudentList();
     public Task<StudentEntity> getStudentById(string studentId);
-    public Task<List<GradeEntity>> getGradeList();
+    public Task<List<DegreeEntity>> getDegreeList();
     public Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId);
     public Task<byte[]> getEnrollDocument(string studentId);
 }
