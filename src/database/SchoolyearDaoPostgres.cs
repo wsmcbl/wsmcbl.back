@@ -53,7 +53,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 
         if (result == null)
         {
-            throw new EntityNotFoundException("Schoolyear", "");
+            throw new EntityNotFoundException($"Entity Schoolyear with label = {year} not found.");
         }
 
         return result;
