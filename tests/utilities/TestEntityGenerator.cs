@@ -190,7 +190,7 @@ public class TestEntityGenerator
         };
     }
     
-    private static TariffEntity aTariffNotMensual()
+    private static TariffEntity aTariffNotMonthly()
     {
         return new TariffEntity
         {
@@ -340,16 +340,16 @@ public class TestEntityGenerator
 
     public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)
     {
-        return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMensual(studentId)];
+        return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMonthly(studentId)];
     }
 
-    private static DebtHistoryEntity aDebtHistoryNotMensual(string studentId)
+    private static DebtHistoryEntity aDebtHistoryNotMonthly(string studentId)
     {
         return new DebtHistoryEntity
         {
             studentId = studentId,
-            tariffId = aTariffNotMensual().tariffId,
-            tariff = aTariffNotMensual(),
+            tariffId = aTariffNotMonthly().tariffId,
+            tariff = aTariffNotMonthly(),
             schoolyear = "sch001",
             isPaid = true,
             debtBalance = 10,
