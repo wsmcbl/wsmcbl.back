@@ -71,7 +71,7 @@ public class TestDtoOutputGenerator
             transactionId = "tst-1",
             cashierName = "name-v sn surname-v ssn",
             studentId = "std-1",
-            studentName = "name-v sn surname-v ssn",
+            studentName = TestEntityGenerator.aStudent("std00").fullName(),
             total = 700,
             dateTime = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
             detail = []
