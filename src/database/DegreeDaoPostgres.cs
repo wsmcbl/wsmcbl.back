@@ -10,7 +10,7 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
     public new async Task<DegreeEntity?> getById(string id)
     {
         var grade = await entities.Include(e => e.subjectList)
-            .Include(e => e.enrollments)!
+            .Include(e => e.enrollmentList)!
             .ThenInclude(e => e.subjectList)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.degreeId == id);
@@ -37,7 +37,7 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
         var currentSchoolyear = await dao.getSchoolYearByLabel(DateTime.Today.Year);
 
         var list = entities
-            .Include(e => e.enrollments)
+            .Include(e => e.enrollmentList)
             .Where(e => e.schoolYear == currentSchoolyear.id);
 
         return await list.ToListAsync();

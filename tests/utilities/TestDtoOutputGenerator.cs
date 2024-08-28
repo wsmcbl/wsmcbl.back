@@ -24,7 +24,7 @@ public class TestDtoOutputGenerator
                 modality = "primaria",
                 schoolYear = "sch001",
                 subjectList = [],
-                enrollments = []
+                enrollmentList = []
             }
         ];
     }
@@ -122,7 +122,7 @@ public class TestDtoOutputGenerator
 
     private static BasicStudentDto aStudentBasicDto()
     {
-        var entity = TestEntityGenerator.aStudent("std-1");
+        var entity = TestEntityGenerator.aAccountingStudent("std-1");
         
         return new BasicStudentDto
         {

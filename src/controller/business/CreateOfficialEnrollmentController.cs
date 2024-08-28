@@ -50,7 +50,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
         var newSchoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        newSchoolYear.setGradeDataList(degreeList);
+        newSchoolYear.setDegreeDataList(degreeList);
         newSchoolYear.setTariffDataList(tariffList);
 
         return newSchoolYear;
@@ -154,7 +154,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
         degree.createEnrollments(quantity);
 
-        foreach (var enrollment in degree.enrollments!)
+        foreach (var enrollment in degree.enrollmentList!)
         {
             daoFactory.enrollmentDao!.create(enrollment);
             await daoFactory.execute();

@@ -1,3 +1,5 @@
+using wsmcbl.src.model.dao;
+
 namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
@@ -44,6 +46,29 @@ public class StudentEntity
         diseases = entity.diseases;
         religion = entity.religion;
         address = entity.address;
+    }
+
+    public async Task saveChanges(DaoFactory daoFactory)
+    {
+        await daoFactory.studentDao!.updateAsync(this);
+        await daoFactory.studentTutorDao!.updateAsync(tutor);
+
+        if (file != null)
+        {
+            await daoFactory.studentFileDao!.updateAsync(file);
+        }
+
+        if (measurements != null)
+        {
+            await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
+        }
+        
+        foreach (var parent in parents!)
+        {
+            await daoFactory.studentParentDao!.updateAsync(parent);
+        }
+
+        await daoFactory.execute();
     }
 
     public class Builder
