@@ -21,7 +21,6 @@ services:
     build:
       context: .
       dockerfile: ./config/dotnet/Dockerfile
-    image: dotnet-base
     restart: unless-stopped
     container_name: api
     environment:
