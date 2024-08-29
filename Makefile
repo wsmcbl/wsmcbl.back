@@ -46,16 +46,30 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run
 
 build: ## Rebuilds all the containers
+	docker build -t custom-base-image config/base
 	docker-compose build    
 
 logs: ## Show logs
 	docker-compose logs
 	
-api-l: ## show logs by container
+api-logs: ## show logs by container
 	 docker-compose logs api
 	 
-api-b: ## entry api bash
+api-bash: ## entry api bash
 	 docker-compose exec api bash
  
-mount-all: ## stop, build, and run container
-	$(MAKE) stop && $(MAKE) build && $(MAKE) run 
+dc-all: ## stop, build, and run container
+	$(MAKE) stop && $(MAKE) build && $(MAKE) run
+	
+test: ## run test
+	#docker build -t custom-base-image config/base
+	docker network create test-network || true
+	docker-compose -f docker-compose.test.yml build
+	docker-compose -f docker-compose.test.yml run --rm api-test
+
+delete-all: ## Remove all containers
+	docker-compose down
+
+delete-all-services: ## Remove all containers and volumes (***CAUTION***)
+	docker-compose down -v
+	docker system prune 

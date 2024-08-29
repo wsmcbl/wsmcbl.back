@@ -7,7 +7,7 @@ RUN dotnet restore
 COPY src/ ./
 RUN dotnet publish -c Release -o out
 
-FROM dotnet-base AS runtime
+FROM custom-base-image AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 

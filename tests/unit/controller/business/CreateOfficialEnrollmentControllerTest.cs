@@ -11,7 +11,7 @@ namespace wsmcbl.tests.unit.controller.business;
 
 public class CreateOfficialEnrollmentControllerTest
 {
-    private readonly CreateOfficialEnrollmentController sut;
+    private CreateOfficialEnrollmentController sut;
     private readonly DaoFactory daoFactory;
 
     public CreateOfficialEnrollmentControllerTest()
@@ -84,9 +84,16 @@ public class CreateOfficialEnrollmentControllerTest
          var gradeList = TestEntityGenerator.aDegreeList();
          var tariffList = TestEntityGenerator.aTariffList();
 
+         var currentSchoolyear = TestEntityGenerator.aSchoolYear();
+         var schoolyearDao = Substitute.For<ISchoolyearDao>();
+         schoolyearDao.getCurrentSchoolYear().Returns(currentSchoolyear);
+         daoFactory.schoolyearDao.Returns(schoolyearDao);
+
+         sut = new CreateOfficialEnrollmentController(daoFactory);
+
          await sut.createSchoolYear(gradeList, tariffList);
 
-         await daoFactory.Received(1).execute();
+         await daoFactory.Received().execute();
     }
     
     [Fact]
