@@ -1,13 +1,6 @@
 version: '3.8'
 
 services:
-  
-  dotnet-base:
-    build:
-      context: .
-      dockerfile: ./config/dotnet/Base.Dockerfile
-    container_name: dotnet-base
-    image: dotnet-base
 
   database:
     image: postgres:14
@@ -34,12 +27,10 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
     depends_on:
-      - dotnet-base
       - database
     networks:
       - app-network
       
-  
   nginx:
     build:
       context: ./config/nginx
@@ -50,46 +41,6 @@ services:
       - api
     networks:
       - app-network
-        
-        
-        
-  
-
-
-  
-  database-test:
-    image: postgres:14
-    container_name: database-test
-    environment:
-      - POSTGRES_DB=wsmcbl_database
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass12345
-    volumes:
-      - ./database:/docker-entrypoint-initdb.d
-    tmpfs:
-      - /var/lib/postgresql/data
-    ports:
-      - "5400:5400"
-    networks:
-      - app-network
-
-  api-test:
-    build:
-      context: .
-      dockerfile: ./config/dotnet/Test.Dockerfile
-    image: dotnet-base
-    container_name: api-test
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__DefaultConnection=Host=database-test;Database=wsmcbl_database;Username=user;Password=pass12345
-    depends_on:
-      - dotnet-base
-      - database-test
-    networks:
-      - app-network
-    ports:
-      - "5001:80"
-    command: bash -c "dotnet test"
 
 volumes:
   database-volume:
