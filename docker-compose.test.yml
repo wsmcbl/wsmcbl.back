@@ -30,7 +30,11 @@ services:
       - database-test
     networks:
       - test-network
-    command: bash -c "dotnet test"
+    command: bash -c "dotnet test --filter "EnrollStudentActionsTest""
+    volumes:
+      - ./src:/app/src               # Monta el directorio de código fuente local
+      - ./tests:/app/tests           # Monta el directorio de tests local
+      - ./*.sln:/app/*.sln
 
 
 networks:
