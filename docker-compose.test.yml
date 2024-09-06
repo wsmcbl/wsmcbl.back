@@ -24,18 +24,24 @@ services:
       dockerfile: ./config/dotnet/Test.Dockerfile
     container_name: api-test
     environment:
+      - SONAR_TOKEN=${SONAR_TOKEN}
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__DefaultConnection=Host=database-test;Database=wsmcbl_database;Username=user;Password=pass12345
     depends_on:
       - database-test
     networks:
       - test-network
-    command: bash -c "dotnet test --filter "EnrollStudentActionsTest""
+    command: bash -c "make dn-ss"
     volumes:
-      - ./src:/app/src               # Monta el directorio de código fuente local
-      - ./tests:/app/tests           # Monta el directorio de tests local
-      - ./*.sln:/app/*.sln
-
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./Makefile:/app/Makefile
+      - ./wsmcbl.back.sln:/app/wsmcbl.back.sln
+      - nuget-packages:/root/.nuget/packages
+        
+        
+volumes:
+  nuget-packages:
 
 networks:
   test-network:

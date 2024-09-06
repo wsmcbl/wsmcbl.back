@@ -32,6 +32,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     }
 
 
+    [Fact]
     public async Task saveEnroll_ShouldThrowException_WhenBadRequest()
     {
         var stringContent = getContentByJson("BadEnrollStudentDto.json");
