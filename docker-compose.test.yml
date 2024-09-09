@@ -31,13 +31,17 @@ services:
       - database-test
     networks:
       - test-network
-    command: bash -c "make dn-ss"
     volumes:
       - ./src:/app/src
       - ./tests:/app/tests
-      - ./Makefile:/app/Makefile
       - ./wsmcbl.back.sln:/app/wsmcbl.back.sln
+      - .:/app/coverage
       - nuget-packages:/root/.nuget/packages
+    command: >
+       sh -c "dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml' &&
+          cp coverage.xml /app/coverage/ && cd coverage &&
+          chown 1000:1000 coverage.xml && \
+          chmod 644 coverage.xml"
         
         
 volumes:

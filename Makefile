@@ -74,8 +74,8 @@ SONAR_TOKEN=$(shell echo $$SONAR_TOKEN)
 .PHONY: dn-ss
 
 dn-ss: ##Este es el nuevo
-	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.sources='src/' /d:sonar.inclusions='src/**/*.cs'  /d:sonar.exclusions='**/*.sql, **/*Context.cs, **/PublicProgram.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+	sed -i 's|/app/|/home/kenny-tinoco/Projects/wsmcbl/wsmcbl.back/|g' coverage.xml
+	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, **/Test*.cs, **/PublicProgram.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 	dotnet build --no-incremental
-	dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
-	dotnet sonarscanner end /d:sonar.login="$(SONAR_TOKEN)"
+	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
 	rm -rf .sonarqube || true

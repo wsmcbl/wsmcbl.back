@@ -8,14 +8,13 @@ COPY Makefile ./
 
 VOLUME /root/.nuget/packages
 
-RUN apt-get update && apt-get install -y make \
-    && dotnet tool install --global dotnet-sonarscanner \
-    && dotnet tool install --global dotnet-coverage
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libxml2 \
+    glibc-source \
+    && rm -rf /var/lib/apt/lists/*
 
+RUN dotnet tool install --global dotnet-coverage
 ENV PATH="/root/.dotnet/tools:${PATH}"
 
-RUN cd src && dotnet restore
-RUN cd tests && dotnet restore
-
-#CMD ["dotnet", "test"]
-CMD SONAR_TOKEN=$SONAR_TOKEN make dn-ss
+CMD dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
