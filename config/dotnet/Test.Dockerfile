@@ -4,12 +4,17 @@ WORKDIR /app
 COPY *.sln ./
 COPY src/*.csproj ./src/
 COPY tests/*.csproj ./tests/
+COPY Makefile ./
 
-RUN cd src && dotnet restore
-RUN cd tests && dotnet restore
+VOLUME /root/.nuget/packages
 
-COPY src/ ./src
-COPY tests/ ./tests
+RUN apt-get update && apt-get install -y \
+    libgdiplus \
+    libxml2 \
+    glibc-source \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN cd src && dotnet build
-RUN cd tests && dotnet build
+RUN dotnet tool install --global dotnet-coverage
+ENV PATH="/root/.dotnet/tools:${PATH}"
+
+CMD dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
