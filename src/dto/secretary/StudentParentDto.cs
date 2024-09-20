@@ -18,7 +18,7 @@ public class StudentParentDto : IBaseDto<StudentParentEntity>
 
     public StudentParentDto(StudentParentEntity entity)
     {
-        parentId = entity.parentId;
+        
         sex = entity.sex;
         name = entity.name;
         idCard = entity.idCard;
@@ -27,13 +27,19 @@ public class StudentParentDto : IBaseDto<StudentParentEntity>
     
     public StudentParentEntity toEntity()
     {
-        return new StudentParentEntity
+        var result = new StudentParentEntity
         {
-            parentId = parentId,
             sex = sex,
             name = name,
             idCard = idCard,
             occupation = occupation
         };
+
+        if (!string.IsNullOrEmpty(parentId))
+        {
+            result.parentId = parentId; 
+        }
+
+        return result;
     }
 }
