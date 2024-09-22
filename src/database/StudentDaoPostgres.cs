@@ -67,8 +67,13 @@ public class StudentDaoPostgres(PostgresContext context)
          return await entities.FromSqlInterpolated(query).AsNoTracking().ToListAsync();
     }
 
-    public async Task updateAsync(StudentEntity entity)
+    public async Task updateAsync(StudentEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         var existingStudent = await getById(entity.studentId!);
         
         if (existingStudent == null)
@@ -77,7 +82,6 @@ public class StudentDaoPostgres(PostgresContext context)
         }
         
         existingStudent.update(entity);
-        
         update(existingStudent);
     }
 }

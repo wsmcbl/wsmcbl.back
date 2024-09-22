@@ -40,5 +40,5 @@ public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
 
 public interface IStudentElement<in T>
 {
-    public Task updateAsync(T entity);
+    public Task updateAsync(T? entity);
 }
