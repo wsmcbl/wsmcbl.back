@@ -59,8 +59,8 @@ public class StudentDaoPostgres(PostgresContext context)
             throw new EntityNotFoundException("tariff", $"(type) {ENROLLMENT_TARIFF}");
         }
 
-        FormattableString query =
-            $@"select s.* from secretary.student s
+        FormattableString query = $@"
+            select s.* from secretary.student s
             inner join accounting.debthistory d on d.studentid = s.studentid
             where d.tariffid = {tariff.tariffId} and (d.debtbalance / d.amount) > 0.45;";
 

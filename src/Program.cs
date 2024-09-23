@@ -38,4 +38,4 @@ app.MapControllers();
 app.UseHttpsRedirection();
 await app.RunAsync();
 
-public abstract partial class Program;
+public partial class Program { }
