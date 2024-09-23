@@ -123,7 +123,6 @@ internal class SecretaryContext
             entity.ToTable("studentparent", "secretary");
 
             entity.Property(e => e.parentId)
-                .HasMaxLength(15)
                 .HasDefaultValueSql("secretary.generate_parent_id()")
                 .HasColumnName("parentid");
             

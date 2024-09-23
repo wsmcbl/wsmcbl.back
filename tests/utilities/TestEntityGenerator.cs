@@ -169,6 +169,7 @@ public class TestEntityGenerator
             .setSecondSurname("Alvarez")
             .setReligion("Ninguna")
             .setAddress("Desconocida")
+            .setDiseases("Ninguna")
             .build();
         result.parents = [new StudentParentEntity()];
 

@@ -59,16 +59,21 @@ public class StudentDaoPostgres(PostgresContext context)
             throw new EntityNotFoundException("tariff", $"(type) {ENROLLMENT_TARIFF}");
         }
 
-        FormattableString query =
-            $@"select s.* from secretary.student s
+        FormattableString query = $@"
+            select s.* from secretary.student s
             inner join accounting.debthistory d on d.studentid = s.studentid
             where d.tariffid = {tariff.tariffId} and (d.debtbalance / d.amount) > 0.45;";
 
          return await entities.FromSqlInterpolated(query).AsNoTracking().ToListAsync();
     }
 
-    public async Task updateAsync(StudentEntity entity)
+    public async Task updateAsync(StudentEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         var existingStudent = await getById(entity.studentId!);
         
         if (existingStudent == null)
@@ -77,7 +82,6 @@ public class StudentDaoPostgres(PostgresContext context)
         }
         
         existingStudent.update(entity);
-        
         update(existingStudent);
     }
 }

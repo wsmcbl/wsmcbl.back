@@ -69,23 +69,4 @@ public class StudentEntityTest
         await daoFactory.studentParentDao!.Received().updateAsync(Arg.Any<StudentParentEntity>());
         await daoFactory.Received().execute();
     }
-
-    [Fact]
-    public async Task SaveChanges_ShouldNotAddElementsFileAndMeasurementsDaos_WhenObjectsAreNull()
-    {
-        var daoFactory = Substitute.For<DaoFactory>();
-
-        var sut = TestEntityGenerator.aStudent("std-00");
-        sut.file = null;
-        sut.measurements = null;
-
-        await sut.saveChanges(daoFactory);
-        
-        await daoFactory.studentDao!.Received().updateAsync(sut);
-        await daoFactory.studentTutorDao!.Received().updateAsync(sut.tutor);
-        await daoFactory.studentFileDao!.DidNotReceive().updateAsync(Arg.Any<StudentFileEntity>());
-        await daoFactory.studentMeasurementsDao!.DidNotReceive().updateAsync(Arg.Any<StudentMeasurementsEntity>());
-        await daoFactory.studentParentDao!.Received().updateAsync(Arg.Any<StudentParentEntity>());
-        await daoFactory.Received().execute();
-    }
 }

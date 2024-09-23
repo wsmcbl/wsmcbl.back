@@ -20,7 +20,7 @@ public class StudentEntity
 
     public StudentFileEntity? file { get; set; }
     public StudentTutorEntity tutor { get; set; } = null!;
-    public List<StudentParentEntity>? parents { get; set; }
+    public List<StudentParentEntity> parents { get; set; } = null!;
     public StudentMeasurementsEntity? measurements { get; set; }
 
     public string fullName()
@@ -52,18 +52,10 @@ public class StudentEntity
     {
         await daoFactory.studentDao!.updateAsync(this);
         await daoFactory.studentTutorDao!.updateAsync(tutor);
+        await daoFactory.studentFileDao!.updateAsync(file);
+        await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
 
-        if (file != null)
-        {
-            await daoFactory.studentFileDao!.updateAsync(file);
-        }
-
-        if (measurements != null)
-        {
-            await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
-        }
-        
-        foreach (var parent in parents!)
+        foreach (var parent in parents)
         {
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
@@ -151,11 +143,11 @@ public class StudentEntity
 
         public Builder setFile(StudentFileEntity? file)
         {
-            if(file != null)
+            if (file != null)
             {
                 file.studentId = entity.studentId!;
             }
-            
+
             entity.file = file;
             return this;
         }

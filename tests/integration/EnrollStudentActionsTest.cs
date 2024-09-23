@@ -12,7 +12,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     [Fact]
     public async Task getStudentList_ShouldReturnJsonWithList_WhenCalled()
     {
-        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/degrees");
+        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/students");
     }
     
     [Fact]
@@ -30,8 +30,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         var entity = deserialize<StudentFullDto>(content);
         Assert.NotNull(entity);
     }
-
-
+    
     [Fact]
     public async Task saveEnroll_ShouldThrowException_WhenBadRequest()
     {
@@ -45,7 +44,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     }
 
     [Fact]
-    public async Task getGradeList_ShouldReturnJsonWithList_WhenCalled()
+    public async Task getDegreeList_ShouldReturnJsonWithList_WhenCalled()
     {
         await assertListWithOut<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
     }
@@ -62,6 +61,6 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 
         var list = deserialize<List<TDto>>(content);
         Assert.NotNull(list);
-        //Assert.True(list.Count > 0);
+        Assert.True(list.Any());
     }
 }

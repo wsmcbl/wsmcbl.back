@@ -36,8 +36,13 @@ public class SubjectDaoPostgres(PostgresContext context)
 public class StudentFileDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentFileEntity, int>(context), IStudentFileDao
 {
-    public async Task updateAsync(StudentFileEntity entity)
+    public async Task updateAsync(StudentFileEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         var existingEntity = await getById(entity.fileId);
 
         if (existingEntity == null)
@@ -54,8 +59,13 @@ public class StudentFileDaoPostgres(PostgresContext context)
 public class StudentTutorDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
 {
-    public async Task updateAsync(StudentTutorEntity entity)
+    public async Task updateAsync(StudentTutorEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         var existingEntity = await getById(entity.tutorId!);
 
         if (existingEntity == null)
@@ -73,27 +83,40 @@ public class StudentTutorDaoPostgres(PostgresContext context)
 public class StudentParentDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentParentEntity, string>(context), IStudentParentDao
 {
-    public async Task updateAsync(StudentParentEntity entity)
+    public async Task updateAsync(StudentParentEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
+        if (entity.parentId == null)
+        {
+            create(entity);
+            return;
+        }
+        
         var existingEntity = await getById(entity.parentId);
 
         if (existingEntity == null)
         {
-            entity.parentId = "";
-            create(entity);
+            throw new EntityNotFoundException("Tutor", entity.parentId);
         }
-        else
-        {
-            existingEntity.update(entity);
-        }
+        
+        existingEntity.update(entity);
     }
 }
 
 public class StudentMeasurementsDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentMeasurementsEntity, int>(context), IStudentMeasurementsDao
 {
-    public async Task updateAsync(StudentMeasurementsEntity entity)
+    public async Task updateAsync(StudentMeasurementsEntity? entity)
     {
+        if (entity == null)
+        {
+            return;
+        }
+        
         var existingEntity = await getById(entity.measurementId);
 
         if (existingEntity == null)
