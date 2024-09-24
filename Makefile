@@ -52,6 +52,7 @@ run-test: ## Run test
 	docker-compose -f docker-compose.test.yml down --volumes --remove-orphans
 	docker-compose -f docker-compose.test.yml build
 	docker-compose -f docker-compose.test.yml run --rm api-test
+	dotnet build
 
 
 

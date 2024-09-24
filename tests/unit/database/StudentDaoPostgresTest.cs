@@ -16,9 +16,8 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         context = TestDbContext.getInMemory();
         
         var student = TestEntityGenerator.aStudent("std-00");
-        var tutor = new StudentTutorEntity("tutor1", "Tutor en cuestion", "78451236");
-        tutor.studentId = student.studentId;
-        
+        var tutor = new StudentTutorEntity("Tutor", "78451236",student.studentId!, "tutor1");
+
         context.Set<StudentEntity>().Add(student);
         context.Set<StudentTutorEntity>().Add(tutor);
         await context.SaveChangesAsync();
@@ -51,36 +50,6 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         var sut = new StudentDaoPostgres(context);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getByIdWithProperties("std-00"));
-    }
-
-    // NECESARIO HACER UNA MANERA ALTERNATIVA AL DOBLE DE CONTEXT Y PERMITIR LOS TEST 
-    [Fact]
-    public async Task getAllWithSolvency_ShouldReturnStudentList_WhenStudentsWithSolvencyExist()
-    {
-        context = TestDbContext.getInMemory();
-        var student = TestEntityGenerator.aStudent("std-00");
-        context.Set<StudentEntity>().Add(student);
-
-        var schoolyear = TestEntityGenerator.aSchoolYear();
-        context.Set<SchoolYearEntity>().Add(schoolyear);
-
-        var tariff = TestEntityGenerator.aTariff();
-        tariff.type = 4;
-        context.Set<TariffEntity>().Add(tariff);
-
-        var debthistory = TestEntityGenerator.aDebtHistory("std-00", true);
-        debthistory.tariffId = tariff.tariffId;
-        debthistory.tariff = null;
-        
-        context.Set<DebtHistoryEntity>().Add(debthistory);
-        
-        await context.SaveChangesAsync();
-        
-        var sut = new StudentDaoPostgres(context);
-
-        //var result = await sut.getAllWithSolvency();
-        
-        Assert.Empty(new List<StudentEntity>());
     }
 
     [Fact]

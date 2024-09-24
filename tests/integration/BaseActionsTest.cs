@@ -5,9 +5,10 @@ namespace wsmcbl.tests.integration;
 public abstract class BaseActionsTest<TClassFixture> : IClassFixture<TClassFixture> where TClassFixture : BaseFixture
 {
     protected string baseUri = "";
+    protected readonly HttpClient client;
+    
     private readonly string resourcePath;
-    protected HttpClient client { get; }
-
+    
     protected BaseActionsTest(TClassFixture factory)
     {
         client = factory.HttpClient;
