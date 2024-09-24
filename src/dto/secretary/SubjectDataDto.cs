@@ -10,7 +10,7 @@ public class SubjectDataDto : IBaseDto<SubjectDataEntity>
     [Required] public string name { get; set; } = null!;
     [JsonRequired] public bool isMandatory { get; set; }
     [JsonRequired] public int semester { get; set; }
-    [Required] public string initials { get; set; }
+    [Required] public string initials { get; set; } = null!;
 
     public SubjectDataEntity toEntity()
     {

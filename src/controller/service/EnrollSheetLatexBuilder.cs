@@ -40,7 +40,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"\\address", entity.address);
 
         content = setParents(content, entity.parents);
-        content = setFile(content, entity.file);
+        content = setFile(content, entity.file!);
         
         var today = DateOnly.FromDateTime(DateTime.Today);
         content = content.Replace($"\\current.year", today.Year.ToString());

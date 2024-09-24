@@ -85,8 +85,8 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
     {
         List<SemesterEntity> semesters =
         [
-            getSemester(result.id, 1, "I Semestre"),
-            getSemester(result.id, 2, "II Semestre")
+            getSemester(result.id!, 1, "I Semestre"),
+            getSemester(result.id!, 2, "II Semestre")
         ];
 
         foreach (var item in semesters)

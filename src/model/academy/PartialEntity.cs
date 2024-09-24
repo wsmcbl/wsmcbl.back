@@ -6,14 +6,14 @@ public class PartialEntity
     public int semesterId { get; set; }
     public int partial { get; set; }
     public DateOnly deadLine { get; set; }
-    public string label { get; set; }
+    public string label { get; set; } = null!;
 
     public bool isClosed()
     {
         return deadLine < DateOnly.FromDateTime(DateTime.Today);
     }
     
-    public ICollection<GradeEntity> grades { get; set; }
+    public ICollection<GradeEntity>? grades { get; set; }
 
     public string getLabel()
     {

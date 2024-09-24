@@ -19,9 +19,9 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [JsonRequired] public bool isActive { get; set; }
 
 
-    [JsonRequired] public StudentFileDto? file { get; set; }
+    [JsonRequired] public StudentFileDto file { get; set; } = null!;
     [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
-    [JsonRequired] public List<StudentParentDto>? parents { get; set; }
+    [JsonRequired] public List<StudentParentDto> parents { get; set; } = null!;
     [JsonRequired] public StudentMeasurementsDto? measurements { get; set; }
 
     public StudentFullDto()

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database;
 using wsmcbl.src.exception;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
@@ -60,14 +59,14 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         var student = TestEntityGenerator.aStudent("std-00");
         context.Set<StudentEntity>().Add(student);
         await context.SaveChangesAsync();
-        student.name = "Nuevo nombre";
+        student.name = "New name";
 
         var sut = new StudentDaoPostgres(context);
         
         await sut.updateAsync(student);
 
         var existingStudent = await context.Set<StudentEntity>().FirstOrDefaultAsync(e => e.studentId == "std-00");
-        Assert.Equal("Nuevo nombre", existingStudent.name);
+        Assert.Equal("New name", existingStudent!.name);
     }
 
     [Fact]

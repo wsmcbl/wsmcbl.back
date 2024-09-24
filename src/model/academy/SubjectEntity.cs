@@ -9,6 +9,6 @@ public class SubjectEntity
     public secretary.SubjectEntity? secretarySubject { get; set; }
     public ICollection<GradeEntity>? scores { get; set; }
 
-    public string getInitials => secretarySubject.initials;
+    public string getInitials => secretarySubject!.initials;
     
 }

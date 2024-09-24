@@ -5,8 +5,8 @@ namespace wsmcbl.src.model.accounting;
 public class TariffEntity
 {
     public int tariffId { get; set; }
-    public string schoolYear { get; set; }
-    public string concept { get; set; }
+    public string? schoolYear { get; set; }
+    public string concept { get; set; }  = null!;
     public float amount { get; set; }
     public DateOnly? dueDate { get; set; }
     public bool isLate { get; set; }

@@ -27,7 +27,7 @@ public class DegreeEntity
         modality = degreeData.getModalityName();
 
         subjectList ??= [];
-        foreach (var subject in degreeData.subjectList)
+        foreach (var subject in degreeData.subjectList!)
         {
             subjectList.Add(new SubjectEntity(subject));
         }
