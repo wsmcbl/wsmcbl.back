@@ -32,7 +32,7 @@ public class TariffToCreateDtoTest
         Assert.NotNull(result);
         Assert.NotNull(result.dueDate);
         Assert.NotEmpty(result.concept);
-        Assert.NotEmpty(result.schoolYear);
+        Assert.NotEmpty(result.schoolYear!);
         Assert.True(result.type > 0);
         Assert.True(result.amount > 0);
         Assert.True(result.modality > 0);

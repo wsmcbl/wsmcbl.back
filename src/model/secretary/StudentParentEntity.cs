@@ -3,7 +3,7 @@ namespace wsmcbl.src.model.secretary;
 public class StudentParentEntity
 {
     public string? parentId { get; set; }
-    public string studentId { get; set; } = null!;
+    public string? studentId { get; set; }
     public string name { get; set; } = null!;
     public bool sex { get; set; }
     public string? idCard { get; set; }

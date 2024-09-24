@@ -4,22 +4,23 @@ namespace wsmcbl.tests.integration;
 
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {
+    private readonly StudentFullDto student;
     public EnrollStudentActionsTest(EnrollStudentFixture factory) : base(factory)
     {
         baseUri = "/v1/secretary/enrollments";
+        student = factory.getStudent().mapToDto();
     }
 
     [Fact]
     public async Task getStudentList_ShouldReturnJsonWithList_WhenCalled()
     {
-        await assertListWithOut<BasicStudentToEnrollDto>($"{baseUri}/students");
+        await assertNotEmptyList<BasicStudentToEnrollDto>($"{baseUri}/students");
     }
     
     [Fact]
     public async Task getStudentById_ShouldReturnJsonWithStudent_WhenCalled()
     {
-        var studentId = "2024-0001-kjtc";
-        var response = await client.GetAsync($"{baseUri}/students/{studentId}");
+        var response = await client.GetAsync($"{baseUri}/students/{student.studentId}");
 
         response.EnsureSuccessStatusCode();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -42,14 +43,30 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
     }
+    
+    [Fact]
+    public async Task saveEnroll_ShouldEnrollStudent_WhenCalled()
+    {
+        var enrollStudentDto = new EnrollStudentDto
+        {
+            enrollmentId = "en-1",
+            student = student
+        };
+        var stringContent = getContentByDto(enrollStudentDto);
 
+        var response = await client.PutAsync(baseUri, stringContent);
+        
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+    }
+    
     [Fact]
     public async Task getDegreeList_ShouldReturnJsonWithList_WhenCalled()
     {
-        await assertListWithOut<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
+        await assertNotEmptyList<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
     }
 
-    private async Task assertListWithOut<TDto>(string uri)
+    private async Task assertNotEmptyList<TDto>(string uri)
     {
         var response = await client.GetAsync(uri);
 
@@ -61,6 +78,6 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 
         var list = deserialize<List<TDto>>(content);
         Assert.NotNull(list);
-        Assert.True(list.Any());
+        Assert.NotEmpty(list);
     }
 }

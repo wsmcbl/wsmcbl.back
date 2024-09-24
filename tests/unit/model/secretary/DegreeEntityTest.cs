@@ -13,8 +13,9 @@ public class DegreeEntityTest
 
         var sut = new DegreeEntity(degreeData, "sch001");
 
+        Assert.NotNull(sut.subjectList);
         Assert.NotEmpty(sut.subjectList);
-        Assert.Equal(degreeData.subjectList.Count, sut.subjectList.Count);
+        Assert.Equal(degreeData.subjectList!.Count, sut.subjectList.Count);
         Assert.Equal(degreeData.getModalityName(), sut.modality);
         Assert.Equal(degreeData.label, sut.label);
     }

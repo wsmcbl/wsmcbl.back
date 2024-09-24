@@ -37,14 +37,10 @@ internal class AccountingContext
             entity.Property(e => e.discountId).HasColumnName("discountid");
 
             entity.HasOne(d => d.discount).WithMany()
-                .HasForeignKey(d => d.discountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("student_discountid_fkey");
+                .HasForeignKey(d => d.discountId);
 
             entity.HasOne(d => d.student).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("student_studentid_fkey");
+                .HasForeignKey<StudentEntity>(d => d.studentId);
             
             entity.HasMany(s => s.transactions)
                 .WithOne()

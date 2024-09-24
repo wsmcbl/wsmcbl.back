@@ -86,7 +86,7 @@ public class TestDtoOutputGenerator
         _detailDto = new DetailDto
         {
             tariffId = tariff.tariffId,
-            schoolYear = tariff.schoolYear,
+            schoolYear = tariff.schoolYear!,
             concept = tariff.concept,
             amount = tariff.amount,
             discount = student.calculateDiscount(tariff.amount),
@@ -109,7 +109,7 @@ public class TestDtoOutputGenerator
             concept  = entity.tariff.concept,
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
-            schoolYear = entity.tariff.schoolYear,
+            schoolYear = entity.tariff.schoolYear!,
             arrear = entity.arrear,
             subTotal = entity.amount,
             debtBalance = entity.amount - entity.debtBalance

@@ -170,9 +170,9 @@ public class StudentEntity
             return this;
         }
 
-        public Builder setParents(List<StudentParentEntity>? parents)
+        public Builder setParents(List<StudentParentEntity> parents)
         {
-            if (parents != null)
+            if (parents.Count != 0)
             {
                 foreach (var item in parents)
                 {
@@ -180,7 +180,7 @@ public class StudentEntity
                 }
             }
 
-            entity.parents = parents;
+            entity.parents = parents!;
             return this;
         }
 

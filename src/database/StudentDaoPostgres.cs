@@ -24,7 +24,7 @@ public class StudentDaoPostgres(PostgresContext context)
 
         if (tutor == null)
         {
-            throw new EntityNotFoundException($"Entity tutor of Student with ID = {id} not found.");
+            throw new EntityNotFoundException($"Entity of type (Tutor) with StudentId ({id}) not found.");
         }
 
         entity.tutor = tutor;

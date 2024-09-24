@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using wsmcbl.src.database.context;
 
@@ -6,20 +7,19 @@ namespace wsmcbl.tests.integration;
 
 public class BaseFixture : WebApplicationFactory<Program>
 {
-    private PostgresContext dbContext { get; }
     public HttpClient HttpClient { get; }
 
-    public BaseFixture()
+    protected BaseFixture()
     {
         HttpClient = CreateClient();
         
         var scopeFactory = Services.GetRequiredService<IServiceScopeFactory>();
         using var scope = scopeFactory.CreateScope();
         
-        dbContext = scope.ServiceProvider.GetRequiredService<PostgresContext>();
-        seedData(dbContext).GetAwaiter().GetResult();
-        dbContext.SaveChangesAsync();
+        var context = scope.ServiceProvider.GetRequiredService<PostgresContext>();
+        seedData(context).GetAwaiter().GetResult();
+        context.SaveChangesAsync();
     }
 
-    protected virtual Task seedData(PostgresContext context) => Task.CompletedTask;
+    protected virtual Task seedData(DbContext context) => Task.CompletedTask;
 }

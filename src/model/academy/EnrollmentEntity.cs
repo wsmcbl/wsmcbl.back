@@ -44,7 +44,7 @@ public class EnrollmentEntity
         {
             var subject = new SubjectEntity
             {
-                subjectId = item.subjectId
+                subjectId = item.subjectId!
             };
 
             subjectList.Add(subject);

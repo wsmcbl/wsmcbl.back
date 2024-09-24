@@ -171,7 +171,16 @@ public class TestEntityGenerator
             .setAddress("Desconocida")
             .setDiseases("Ninguna")
             .build();
-        result.parents = [new StudentParentEntity()];
+
+        var parent = new StudentParentEntity
+        {
+            name = "Mi tutor",
+            sex = true,
+            occupation = "Desempleado",
+            idCard = "001-xxxxx"
+        };
+        
+        result.parents = [parent];
 
         return result;
     }
@@ -244,7 +253,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static DebtHistoryEntity aDebtHistory(string studentId, bool isPaid)
+    public static DebtHistoryEntity aDebtHistory(string studentId, bool isPaid = true)
     {
         return new DebtHistoryEntity
         {
@@ -358,5 +367,10 @@ public class TestEntityGenerator
             subAmount = 110,
             amount = 100
         };
+    }
+
+    public static StudentTutorEntity aTutor(string studentId)
+    {
+        return new StudentTutorEntity("El tutor", "78451236", studentId:studentId);
     }
 }
