@@ -19,11 +19,11 @@ mer-dev2b: ## Merge develop into branch (b)
 	git merge --no-ff -m "Merge develop into $(b)" develop
 
 mer-cur2dev: ## Merge current-branch into develop
-	$(MAKE) git-mbd b=$(shell git rev-parse --abbrev-ref HEAD)
+	$(MAKE) mer-b2dev b=$(shell git rev-parse --abbrev-ref HEAD)
 
 mer-cur2b: ## Merge current-branch into branch (b)
-	$(MAKE) git-mcd
-	$(MAKE) git-mdb
+	$(MAKE) mer-cur2dev
+	$(MAKE) mer-dev2b
 
 git-create-master: ## Create master branch
 	git branch -d master
