@@ -27,7 +27,10 @@ jobs:
 
       - name: Build the project
         run: dotnet build --no-restore
-
+        
+      - name: Set up Docker Compose
+        uses: docker-practice/actions-setup-docker@master
+        
       - name: Run tests and generate coverage report
         run: |
           docker network create test-network || true
