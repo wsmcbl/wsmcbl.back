@@ -47,11 +47,11 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run	
 
 run-test: ## Run test
-	#docker build -t custom-base-image config/base
+	docker build -t custom-base-image config/base
 	docker network create test-network || true
 	docker-compose -f docker-compose.test.yml down --volumes --remove-orphans
 	docker-compose -f docker-compose.test.yml build
-	docker-compose -f docker-compose.test.yml run --rm api-test
+	docker-compose -f docker-compose.test.yml run api-test
 	dotnet build
 
 

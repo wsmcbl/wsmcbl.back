@@ -42,9 +42,9 @@ public class PDFBuilder
         }
             
         var errorOutput = process.StandardError.ReadToEnd();
-        throw new ArgumentException($"The latex compiler failed with exit code {process.ExitCode}." +
-                                    $"\nWith argument: {argument}" +
-                                    $"\nError output: {errorOutput}");
+        throw new ArgumentException($"The latex compiler failed with exit code: ({process.ExitCode}). " +
+                                    $"With argument: ({argument}). " +
+                                    $"Error output: ({errorOutput}).");
     }
 
     private void cleanFiles()

@@ -11,6 +11,6 @@ FROM custom-base-image AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-COPY src/resource/ ./resource/
+COPY resource/ resource/
 
 ENTRYPOINT ["dotnet", "wsmcbl.src.dll"]

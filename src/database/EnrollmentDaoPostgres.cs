@@ -22,14 +22,14 @@ public class EnrollmentDaoPostgres(PostgresContext context)
 
         if (student == null)
         {
-            throw new EntityNotFoundException($"There is no Enrollment that contains the StudentId = {studentId}");
+            throw new EntityNotFoundException($"There is not Enrollment that contains the student with id ({studentId}).");
         }
 
         var result = await entities
             .FirstOrDefaultAsync(e => e.enrollmentId == student.enrollmentId);
 
         if (result == null)
-        {
+        {   
             throw new EntityNotFoundException("Enrollment", student.enrollmentId);
         }
 

@@ -85,7 +85,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         
         var semesterLine = semester.label;
 
-        foreach (var subject in subjects)
+        foreach (var unused in subjects)
         {
             var firstGrade = 80;
             var secondGrade = 70;

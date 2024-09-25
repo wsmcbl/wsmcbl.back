@@ -1,7 +1,10 @@
 using wsmcbl.src.dto.secretary;
+using wsmcbl.tests.integration.util;
+using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.integration;
 
+[TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {
     private readonly StudentFullDto student;
@@ -22,7 +25,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     {
         var response = await client.GetAsync($"{baseUri}/students/{student.studentId}");
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
@@ -33,7 +36,15 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     }
     
     [Fact]
-    public async Task saveEnroll_ShouldThrowException_WhenBadRequest()
+    public async Task getStudentById_ShouldReturnNotFound_WhenStudentNotExist()
+    {
+        var response = await client.GetAsync($"{baseUri}/students/nobody");
+        
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+    
+    [Fact]
+    public async Task saveEnroll_ShouldReturnsNotFound_WhenBadRequest()
     {
         var stringContent = getContentByJson("BadEnrollStudentDto.json");
         var response = await client.PutAsync(baseUri, stringContent);
@@ -44,7 +55,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.NotNull(content);
     }
     
-    [Fact]
+    [Fact, TestPriority(1)]
     public async Task saveEnroll_ShouldEnrollStudent_WhenCalled()
     {
         var enrollStudentDto = new EnrollStudentDto
@@ -56,7 +67,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 
         var response = await client.PutAsync(baseUri, stringContent);
         
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
     }
     
@@ -66,11 +77,31 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         await assertNotEmptyList<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
     }
 
+    [Fact, TestPriority(2)]
+    public async Task getEnrollDocument_ShouldReturnByteArray_WhenCalled()
+    {
+        var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");
+
+        await response.EnsureSuccess();
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.NotNull(content);
+        Assert.IsType<string>(content);
+    }
+    
+    [Fact]
+    public async Task getEnrollDocument_ShouldReturnNotFound_WhenStudentNotExist()
+    {
+        var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");
+        Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+    
     private async Task assertNotEmptyList<TDto>(string uri)
     {
         var response = await client.GetAsync(uri);
 
-        response.EnsureSuccessStatusCode();
+        await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
