@@ -27,6 +27,7 @@ services:
       - SONAR_TOKEN=${SONAR_TOKEN}
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__DefaultConnection=Host=database-test;Database=wsmcbl_database;Username=user;Password=pass12345
+      - Resource_Directory=../../../../resource
     depends_on:
       - database-test
     networks:

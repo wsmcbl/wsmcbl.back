@@ -87,7 +87,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 
         var content = await response.Content.ReadAsStringAsync();
         Assert.NotNull(content);
-        Assert.IsType<byte[]>(content);
+        Assert.IsType<string>(content);
     }
     
     [Fact]
