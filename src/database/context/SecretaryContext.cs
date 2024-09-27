@@ -29,7 +29,7 @@ internal class SecretaryContext
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.modality).HasMaxLength(50).HasColumnName("modality");
 
-            entity.HasMany(e => e.enrollments).WithOne()
+            entity.HasMany(e => e.enrollmentList).WithOne()
                 .HasForeignKey(d => d.degreeId);
 
             entity.HasMany(e => e.subjectList).WithOne()
@@ -123,7 +123,6 @@ internal class SecretaryContext
             entity.ToTable("studentparent", "secretary");
 
             entity.Property(e => e.parentId)
-                .HasMaxLength(15)
                 .HasDefaultValueSql("secretary.generate_parent_id()")
                 .HasColumnName("parentid");
             

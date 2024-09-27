@@ -8,7 +8,7 @@ public class StudentEntity
     public bool isApproved { get; set; }
     
     public secretary.StudentEntity student { get; init; } = null!;
-    public List<PartialEntity> partials { get; private set; }
+    public List<PartialEntity>? partials { get; private set; }
     
     public StudentEntity()
     {

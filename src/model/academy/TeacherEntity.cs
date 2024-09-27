@@ -19,6 +19,6 @@ public class TeacherEntity
 
     public string getEnrollmentLabel()
     {
-        return enrollment.label;
+        return enrollment!.label;
     }
 }

@@ -20,6 +20,6 @@ public class SchoolYearEntityTest
         
         sut.setTariffDataList(tariffDataList);
         
-        Assert.Equivalent(newDate, sut.tariffList[0].dueDate);
+        Assert.Equivalent(newDate, sut.tariffList![0].dueDate);
     }
 }

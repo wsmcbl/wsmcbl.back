@@ -29,11 +29,11 @@ public class StudentParentDto : IBaseDto<StudentParentEntity>
     {
         return new StudentParentEntity
         {
-            parentId = parentId,
+            parentId =  !string.IsNullOrWhiteSpace(parentId) ? parentId : null,
             sex = sex,
             name = name,
             idCard = idCard,
-            occupation = occupation
+            occupation = occupation,
         };
     }
 }

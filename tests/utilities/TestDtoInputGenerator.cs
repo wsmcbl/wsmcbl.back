@@ -124,4 +124,9 @@ public static class TestDtoInputGenerator
             semester = 3
         };
     }
+
+    public static StudentFullDto aStudentFull()
+    {
+        throw new NotImplementedException();
+    }
 }

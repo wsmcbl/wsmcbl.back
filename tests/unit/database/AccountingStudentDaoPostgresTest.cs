@@ -43,7 +43,7 @@ public class AccountingStudentDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getById_ReturnsStudent()
     {
-        var student = TestEntityGenerator.aStudent("std-1");
+        var student = TestEntityGenerator.aAccountingStudent("std-1");
         var tariff = TestEntityGenerator.aTariff();
         
         context = TestDbContext.getInMemory();

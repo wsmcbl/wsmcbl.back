@@ -19,7 +19,7 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
 
     public TariffToCreateDto(TariffEntity tariff)
     {
-        schoolYear = tariff.schoolYear;
+        schoolYear = tariff.schoolYear!;
         concept = tariff.concept;
         amount = tariff.amount;
         type = tariff.type;

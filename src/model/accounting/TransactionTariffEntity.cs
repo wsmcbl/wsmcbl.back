@@ -38,6 +38,6 @@ public class TransactionTariffEntity
 
     public string schoolYear()
     {
-        return tariff.schoolYear;
+        return tariff.schoolYear!;
     }
 }

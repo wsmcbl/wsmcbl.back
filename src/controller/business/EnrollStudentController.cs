@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -13,14 +12,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var result = await daoFactory.studentDao!.getByIdWithProperties(studentId);
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-
-        return result;
+        return await daoFactory.studentDao!.getByIdWithProperties(studentId);
     }
 
     public async Task<List<DegreeEntity>> getDegreeList()
@@ -30,27 +22,25 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
-        await daoFactory.studentDao!.updateAsync(student);
-        await daoFactory.studentFileDao!.updateAsync(student.file);
-        await daoFactory.studentTutorDao!.updateAsync(student.tutor);
-        await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);
+        await student.saveChanges(daoFactory);
 
-        foreach (var parent in student.parents!)
-        {
-            await daoFactory.studentParentDao!.updateAsync(parent);
-        }
-
-        await daoFactory.execute();
-
-        var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
-        var academyStudent = new model.academy.StudentEntity(student.studentId!, enrollmentId);
-        academyStudent.setSchoolyear(schoolYear.id!);
-        academyStudent.isNewEnroll();
-
+        var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 
         return student;
+    }
+
+    private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)
+    {
+        var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+        
+        var academyStudent = new model.academy.StudentEntity(studentId, enrollmentId);
+        
+        academyStudent.setSchoolyear(schoolYear.id!);
+        academyStudent.isNewEnroll();
+
+        return academyStudent;
     }
 
     public async Task<byte[]> getEnrollDocument(string studentId)

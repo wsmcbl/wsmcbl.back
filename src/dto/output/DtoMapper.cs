@@ -44,7 +44,7 @@ public static class DtoMapper
             concept  = entity.tariff.concept,
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
-            schoolYear = entity.tariff.schoolYear,
+            schoolYear = entity.tariff.schoolYear!,
             arrear = entity.arrear,
             subTotal = entity.amount,
             debtBalance = entity.getDebtBalance()

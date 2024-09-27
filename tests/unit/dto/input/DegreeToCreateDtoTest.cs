@@ -8,7 +8,7 @@ public class DegreeToCreateDtoTest
     [Fact]
     public void init_ShouldReturnDto_WhenCalled()
     {
-        var entity = TestEntityGenerator.aGrade("gd1");
+        var entity = TestEntityGenerator.aDegree("gd1");
 
         var result = new DegreeToCreateDto(entity);
         

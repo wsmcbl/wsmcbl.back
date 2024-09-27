@@ -5,13 +5,13 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.database;
 
-public class DegreeDaoPostgresTest
+public class DegreeDaoPostgresTest : BaseDaoPostgresTest
 {
     [Fact]
     public async Task crateList_ShouldCreateList_WhenCalled()
     {
-        var grade = TestEntityGenerator.aGrade("gd-001");
-        var context = TestDbContext.getInMemory();
+        var grade = TestEntityGenerator.aDegree("gd-001");
+        context = TestDbContext.getInMemory();
         
         var sut = new DegreeDaoPostgres(context);
         
@@ -24,7 +24,7 @@ public class DegreeDaoPostgresTest
     [Fact]
     public async Task getById_ShouldThrowException_WhenGradeNotExist()
     {
-        var context = TestDbContext.getInMemory();
+        context = TestDbContext.getInMemory();
         var sut = new DegreeDaoPostgres(context);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getById("gr-0001"));
@@ -33,8 +33,8 @@ public class DegreeDaoPostgresTest
     [Fact]
     public async Task getById_ShouldReturnGrade_WhenIdIsProvide()
     {
-        var grade = TestEntityGenerator.aGrade("gr-0001");
-        var context = TestDbContext.getInMemory();
+        var grade = TestEntityGenerator.aDegree("gr-0001");
+        context = TestDbContext.getInMemory();
         context.Set<DegreeEntity>().Add(grade);
         await context.SaveChangesAsync();
         
@@ -44,5 +44,34 @@ public class DegreeDaoPostgresTest
 
         Assert.NotNull(result);
         Assert.Equivalent(grade, result);
+    }
+
+    [Fact]
+    public async Task getAllForTheCurrentSchoolyear_ShouldReturnList_WhenSchoolyearExist()
+    {
+        context = TestDbContext.getInMemory();
+        
+        var schoolyear = TestEntityGenerator.aSchoolYear();
+        context.Set<SchoolYearEntity>().Add(schoolyear);
+
+        var degree = TestEntityGenerator.aDegree("dgr001");
+        degree.schoolYear = schoolyear.id!;
+        context.Set<DegreeEntity>().Add(degree);
+        
+        await context.SaveChangesAsync();
+        
+        var sut = new DegreeDaoPostgres(context);
+
+        var result = await sut.getAllForTheCurrentSchoolyear();
+        
+        Assert.NotEmpty(result);
+    }
+
+    [Fact]
+    public async Task getAllForTheCurrentSchoolyear_ShouldThrowException_WhenSchoolyearNotExist()
+    {
+        var sut = new DegreeDaoPostgres(TestDbContext.getInMemory());
+
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getAllForTheCurrentSchoolyear());
     }
 }
