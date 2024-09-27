@@ -1,19 +1,20 @@
 \documentclass[12pt]{article}
 
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
+
 \usepackage{ulem}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{setspace}
 \usepackage[spanish]{babel}
-\usepackage{charter}
 \usepackage[landscape, margin=2cm]{geometry}
 
 \setlength{\parskip}{1.5mm}
 \setlength{\parindent}{0pt}
 \setlength{\headsep}{3mm}
 
-\pagestyle{plain}
 \pagenumbering{gobble}
 
 \newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
@@ -22,29 +23,38 @@
 \newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
+\newcommand{\degree}{degree.value}
+\newcommand{\yearValue}{year.value}
+\newcommand{\studentName}{student.name.value}
+\newcommand{\teacherName}{teacher.name.value}
+\newcommand{\columnFormat}{column.format.value}
+
 \begin{document}
     \hrule
     \begin{table}[H]
         \centering
         \begin{center}
             \textbf{\Large Colegio Bautista Libertad}\\
-            \textbf{Boleta de Calificaciones \year}
+            \par\vspace{2mm}
+            \textbf{Boleta de Calificaciones \yearValue}
         \end{center}
-        \aLine{\aDupleLeft{Alumno:}{\student.name} \aDupleRight{Grado:}{\degree}}
+        \aLine{\aDupleLeft{Alumno:}{\studentName} \aDupleRight{Grado:}{\degree}}
         \par\medskip
-        \begin{tabular}{\column.quantity}
+        \begin{tabular}{\columnFormat}
             \hline
-            \titleLine
+            titleLine.value
             \hline
-            \firstSemester
-            \secondSemester
-            \finalGrade
+            firstSemester.value
+            secondSemester.value
+            finalGrade.value
         \end{tabular}
         \par\medskip
-        \aLine{ \aDupleLeft{Llegadas Tardes:}{ }
-                \aDupleCenter{Inasistencias Justificadas:}{ }
-                \aDupleRight{Inasistencias Injustificadas:}{ }}
-        \aLine{\aDupleCenter{Maestro Guía:}{\teacher.name}}
+        \aLine{ \aDupleLeft{Llegadas Tardes:}{\uline{\hspace{15mm}}}
+                \aDupleCenter{Inasistencias Justificadas:}{\uline{\hspace{15mm}}}
+                \aDupleRight{Inasistencias Injustificadas:}{\uline{\hspace{15mm}}}}
+        
+        \par\vspace{3mm}
+        \aLine{\aDupleCenter{Maestro Guía:}{\teacherName}}
     \end{table}
     \hrule
 \end{document}

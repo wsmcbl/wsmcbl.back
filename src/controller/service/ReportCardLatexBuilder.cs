@@ -15,15 +15,15 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     protected override string updateContent(string content)
     {
-        content = content.Replace($"\\year", DateTime.Today.Year.ToString());
-        content = content.Replace($"\\student.name", student.fullName());
-        content = content.Replace($"\\teacher.name", teacher.fullName());
-        content = content.Replace($"\\degree", degree);
-        content = content.Replace($"\\column.quantity", getColumnQuantity());
-        content = content.Replace($"\\titleLine", getTitleLine());
-        content = content.Replace($"\\firstSemester", getFirstSemester());
-        content = content.Replace($"\\secondSemester", getSecondSemester());
-        content = content.Replace($"\\finalGrade", getFinalGrade());
+        content = content.Replace($"year.value", DateTime.Today.Year.ToString());
+        content = content.Replace($"student.name.value", student.fullName());
+        content = content.Replace($"teacher.name.value", teacher.fullName());
+        content = content.Replace($"degree.value", degree);
+        content = content.Replace($"column.format.value", getColumnQuantity());
+        content = content.Replace($"titleLine.value", getTitleLine());
+        content = content.Replace($"firstSemester.value", getFirstSemester());
+        content = content.Replace($"secondSemester.value", getSecondSemester());
+        content = content.Replace($"finalGrade.value", getFinalGrade());
 
         return content;
     }
