@@ -12,17 +12,16 @@ public class DegreeToCreateDto : IBaseDto<DegreeEntity>
 
     public DegreeEntity toEntity()
     {
-        var grade = new DegreeEntity
-        {
-            label = label,
-            schoolYear = schoolYear,
-            modality = modality
-        };
+        var degree = new DegreeEntity();
 
+        degree.label = label;
+        degree.schoolYear = schoolYear;
+        degree.modality = modality;
+        
         var list = subjects!.Select(e => e.toEntity()).ToList();
-        grade.setSubjectList(list);
+        degree.setSubjectList(list);
 
-        return grade;
+        return degree;
     }
 
     public DegreeToCreateDto()

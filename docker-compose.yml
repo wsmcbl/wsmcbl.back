@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+
+  database:
+    image: postgres:14
+    container_name: database
+    environment:
+      - POSTGRES_DB=wsmcbl_database
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass12345
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - database-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+  
+  api:
+    build:
+      context: .
+      dockerfile: ./config/dotnet/Dockerfile
+    restart: unless-stopped
+    container_name: api
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
+      - Resource_Directory=resource
+    depends_on:
+      - database
+    networks:
+      - app-network
+      
+  nginx:
+    build:
+      context: ./config/nginx
+    container_name: nginx
+    ports:
+      - "4000:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+volumes:
+  database-volume:
+    
+networks:
+  app-network:
+    driver: bridge

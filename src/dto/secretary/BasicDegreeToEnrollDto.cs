@@ -19,6 +19,6 @@ public class BasicDegreeToEnrollDto
         degreeId = degree.degreeId!;
         label = degree.label;
         modality = degree.modality;
-        enrollments = degree.enrollments.mapToListBasicDto();
+        enrollments = degree.enrollmentList!.mapToListBasicDto();
     }
 }

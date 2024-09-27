@@ -16,7 +16,7 @@ public class StudentScoreInformationDto
         enrollment = teacher.getEnrollmentLabel();
 
         partials = [];
-        foreach (var item in student.partials)
+        foreach (var item in student.partials!)
         {
             partials.Add(new PartialInformationDto(item.label, item.isClosed()));
         }

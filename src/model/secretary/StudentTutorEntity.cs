@@ -11,7 +11,12 @@ public class StudentTutorEntity
     {
     }
 
-    public StudentTutorEntity(string? tutorId, string name, string phone)
+    public StudentTutorEntity(string name, string phone, string studentId, string? tutorId = null) : this(name, phone, tutorId)
+    {
+        this.studentId = studentId;
+    }
+
+    public StudentTutorEntity(string name, string phone, string? tutorId = null)
     {
         this.tutorId = tutorId;
         this.name = name;

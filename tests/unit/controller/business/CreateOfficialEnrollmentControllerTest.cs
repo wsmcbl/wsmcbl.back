@@ -11,7 +11,7 @@ namespace wsmcbl.tests.unit.controller.business;
 
 public class CreateOfficialEnrollmentControllerTest
 {
-    private readonly CreateOfficialEnrollmentController sut;
+    private CreateOfficialEnrollmentController sut;
     private readonly DaoFactory daoFactory;
 
     public CreateOfficialEnrollmentControllerTest()
@@ -29,7 +29,7 @@ public class CreateOfficialEnrollmentControllerTest
         dao.getNewSchoolYear().Returns(schoolyear);
 
         List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
-        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aGradeData()];
+        List<DegreeDataEntity> gradeData = [TestEntityGenerator.aDegreeData()];
 
         var tariffDataDao = Substitute.For<ITariffDataDao>();
         tariffDataDao.getAll().Returns(tariffData);
@@ -81,12 +81,19 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createSchoolYear_ShouldCreateSchoolYear_WhenParametersAreValid()
     {
-         var gradeList = TestEntityGenerator.aGradeList();
+         var gradeList = TestEntityGenerator.aDegreeList();
          var tariffList = TestEntityGenerator.aTariffList();
+
+         var currentSchoolyear = TestEntityGenerator.aSchoolYear();
+         var schoolyearDao = Substitute.For<ISchoolyearDao>();
+         schoolyearDao.getCurrentSchoolYear().Returns(currentSchoolyear);
+         daoFactory.schoolyearDao.Returns(schoolyearDao);
+
+         sut = new CreateOfficialEnrollmentController(daoFactory);
 
          await sut.createSchoolYear(gradeList, tariffList);
 
-         await daoFactory.Received(1).execute();
+         await daoFactory.Received().execute();
     }
     
     [Fact]
@@ -107,7 +114,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
     {
-        var list = TestEntityGenerator.aGradeList();
+        var list = TestEntityGenerator.aDegreeList();
         var dao = Substitute.For<IDegreeDao>();
         dao.getAll().Returns(list);
         daoFactory.degreeDao.Returns(dao);
@@ -151,7 +158,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task createEnrollments_ShouldCreateEnrollments_WhenParametersIsProvide()
     {
-        var grade = TestEntityGenerator.aGrade("gd-1");
+        var grade = TestEntityGenerator.aDegree("gd-1");
         
         var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
@@ -163,8 +170,8 @@ public class CreateOfficialEnrollmentControllerTest
         
         await sut.createEnrollments("gd-1", 1);
         
-        daoFactory.enrollmentDao!.Received().create(grade.enrollments.First());
-        daoFactory.Received().Detached(grade.enrollments.First().subjectList!.First());
+        daoFactory.enrollmentDao!.Received().create(grade.enrollmentList!.First());
+        daoFactory.Received().Detached(grade.enrollmentList!.First().subjectList!.First());
     }
 
     [Fact]
@@ -176,7 +183,7 @@ public class CreateOfficialEnrollmentControllerTest
     [Fact]
     public async Task getGradeById_ReturnGrade()
     {
-        var grade = TestEntityGenerator.aGrade("gd-1");
+        var grade = TestEntityGenerator.aDegree("gd-1");
         var gradeDao = Substitute.For<IDegreeDao>();
         gradeDao.getById("gd-1").Returns(grade);
         daoFactory.degreeDao.Returns(gradeDao);

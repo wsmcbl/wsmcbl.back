@@ -24,7 +24,7 @@ public class TestDtoOutputGenerator
                 modality = "primaria",
                 schoolYear = "sch001",
                 subjectList = [],
-                enrollments = []
+                enrollmentList = []
             }
         ];
     }
@@ -71,7 +71,7 @@ public class TestDtoOutputGenerator
             transactionId = "tst-1",
             cashierName = "name-v sn surname-v ssn",
             studentId = "std-1",
-            studentName = "name-v sn surname-v ssn",
+            studentName = TestEntityGenerator.aStudent("std00").fullName(),
             total = 700,
             dateTime = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
             detail = []
@@ -86,7 +86,7 @@ public class TestDtoOutputGenerator
         _detailDto = new DetailDto
         {
             tariffId = tariff.tariffId,
-            schoolYear = tariff.schoolYear,
+            schoolYear = tariff.schoolYear!,
             concept = tariff.concept,
             amount = tariff.amount,
             discount = student.calculateDiscount(tariff.amount),
@@ -109,7 +109,7 @@ public class TestDtoOutputGenerator
             concept  = entity.tariff.concept,
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
-            schoolYear = entity.tariff.schoolYear,
+            schoolYear = entity.tariff.schoolYear!,
             arrear = entity.arrear,
             subTotal = entity.amount,
             debtBalance = entity.amount - entity.debtBalance
@@ -122,7 +122,7 @@ public class TestDtoOutputGenerator
 
     private static BasicStudentDto aStudentBasicDto()
     {
-        var entity = TestEntityGenerator.aStudent("std-1");
+        var entity = TestEntityGenerator.aAccountingStudent("std-1");
         
         return new BasicStudentDto
         {

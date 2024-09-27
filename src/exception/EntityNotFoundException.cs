@@ -7,7 +7,7 @@ public class EntityNotFoundException : NotFoundException
         
     }
     
-    public EntityNotFoundException(string type, string? id) : this($"Entity {type} with ID = {id} not found.")
+    public EntityNotFoundException(string type, string? id) : this($"Entity of type ({type}) with id ({id}) not found.")
     {
     }
 }

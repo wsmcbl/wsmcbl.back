@@ -80,15 +80,15 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     
     private string getSemester(SemesterEntity semester)
     {
-        var firstPartial = student.partials.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
-        var secondPartial = student.partials.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
+        var firstPartial = student.partials!.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
+        var secondPartial = student.partials!.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
         
         var semesterLine = semester.label;
 
-        foreach (var subject in subjects)
+        foreach (var unused in subjects)
         {
-            var firstGrade = 80;//firstPartial.grades.First(e => e.subjectId == subject.subjectId).grade;
-            var secondGrade = 70;//secondPartial.grades.First(e => e.subjectId == subject.subjectId).grade;
+            var firstGrade = 80;
+            var secondGrade = 70;
 
             var grade = (firstGrade + secondGrade) / 2;
             semesterLine = $"{semesterLine} & {grade.ToString()}";
@@ -106,7 +106,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         foreach (var subject in subjects)
         {
-            var result = partial.grades.FirstOrDefault(e => e.subjectId == subject.subjectId);
+            var result = partial.grades!.FirstOrDefault(e => e.subjectId == subject.subjectId);
 
             var label = result == null ? "" : result.label;
             var grade = result == null ? "" : result.grade.ToString();
