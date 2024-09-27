@@ -19,7 +19,7 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
         var result = new StudentScoreInformationDto(student, teacher);
-        result.setSolvencyState(isSolvency);
+        result.setSolvencyStateMessage(isSolvency);
         return Ok(result);
     }
 
