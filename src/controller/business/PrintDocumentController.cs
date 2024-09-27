@@ -5,7 +5,7 @@ namespace wsmcbl.src.controller.business;
 
 public class PrintDocumentController(DaoFactory daoFactory) : PDFController
 {
-    public async Task<byte[]> getReportCardByStudent(string studentId, (int lateArrivals, int justifications, int unjustifications) data)
+    public async Task<byte[]> getReportCardByStudent(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
@@ -21,9 +21,6 @@ public class PrintDocumentController(DaoFactory daoFactory) : PDFController
             .withDegree(enrollment!.label)
             .withSubjects(await getSubjectSort(student.enrollmentId!))
             .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
-            .withLateArrivals(data.lateArrivals)
-            .withJustifications(data.justifications)
-            .withUnjustifications(data.unjustifications)
             .build();
         
         setLatexBuilder(latexBuilder);

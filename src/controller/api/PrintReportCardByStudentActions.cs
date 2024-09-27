@@ -24,7 +24,7 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
     [Route("documents/report-cards/{studentId}")]
     public async Task<IActionResult> getReportCard([Required] string studentId, [FromQuery] PrintReportCardByStudentDto dto)
     {
-        var result = await controller.getReportCard(studentId, dto.getTuple());
+        var result = await controller.getReportCard(studentId);
         return File(result, "application/pdf", $"{studentId}.report-card.pdf");
     }
 }

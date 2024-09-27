@@ -10,9 +10,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     private List<(string initials, string subjectId)> subjects = null!;
     
     private string degree = null!; 
-    private string lateArrivals = null!; 
-    private string justifications = null!;
-    private string unjustifications = null!;
     
     protected override string getTemplateName() => "report-card";
 
@@ -27,9 +24,9 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content = content.Replace($"\\firstSemester", getFirstSemester());
         content = content.Replace($"\\secondSemester", getSecondSemester());
         content = content.Replace($"\\finalGrade", getFinalGrade());
-        content = content.Replace($"\\late.arrivals", lateArrivals);
-        content = content.Replace($"\\justifications", justifications);
-        content = content.Replace($"\\unjustifications", unjustifications);
+        content = content.Replace($"\\late.arrivals", ""); //Aquí hay que corregir el .tex
+        content = content.Replace($"\\justifications", "");
+        content = content.Replace($"\\unjustifications", "");
 
         return content;
     }
@@ -162,24 +159,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         public Builder withSubjects(List<(string, string)> parameter)
         {
             latexBuilder.subjects = parameter;
-            return this;
-        }
-
-        public Builder withLateArrivals(int parameter)
-        {
-            latexBuilder.lateArrivals = parameter.ToString();
-            return this;
-        }
-
-        public Builder withUnjustifications(int parameter)
-        {
-            latexBuilder.unjustifications = parameter.ToString();
-            return this;
-        }
-
-        public Builder withJustifications(int parameter)
-        {
-            latexBuilder.justifications = parameter.ToString();
             return this;
         }
     }
