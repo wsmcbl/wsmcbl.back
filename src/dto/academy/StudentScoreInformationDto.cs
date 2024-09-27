@@ -8,6 +8,7 @@ public class StudentScoreInformationDto
     public string teacherName { get; set; }
     public string enrollment { get; set; }
     public List<PartialInformationDto> partials { get; set; }
+    public string solvencyStateMessage { get; set; } = null!;
 
     public StudentScoreInformationDto(StudentEntity student, TeacherEntity teacher)
     {
@@ -20,5 +21,11 @@ public class StudentScoreInformationDto
         {
             partials.Add(new PartialInformationDto(item.label, item.isClosed()));
         }
+    }
+
+    public void setSolvencyStateMessage(bool isSolvency)
+    {
+        solvencyStateMessage = isSolvency ? "Estudiante solvente, seleccionar imprimir." :
+            "Estudiante no solvente, impresión la boleta inhabilitada.";
     }
 }
