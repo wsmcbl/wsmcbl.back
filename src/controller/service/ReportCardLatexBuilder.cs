@@ -24,9 +24,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content = content.Replace($"\\firstSemester", getFirstSemester());
         content = content.Replace($"\\secondSemester", getSecondSemester());
         content = content.Replace($"\\finalGrade", getFinalGrade());
-        content = content.Replace($"\\late.arrivals", ""); //Aquí hay que corregir el .tex
-        content = content.Replace($"\\justifications", "");
-        content = content.Replace($"\\unjustifications", "");
 
         return content;
     }

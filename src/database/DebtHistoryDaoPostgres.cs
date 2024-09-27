@@ -34,7 +34,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
                 continue;
             }
 
-            debt.arrear = 0;
+            debt.arrears = 0;
             update(debt);
         }
     }
