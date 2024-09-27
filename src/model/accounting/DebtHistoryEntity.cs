@@ -5,7 +5,7 @@ public class DebtHistoryEntity
     public string studentId { get; set; } = null!;
     public int tariffId { get; set; }
     public string schoolyear { get; set; } = null!;
-    public float arrear { get; set; }
+    public float arrears { get; set; }
     public float subAmount { get; set; }
     public float amount { get; set; }
     public float debtBalance { get; set; }
@@ -21,12 +21,6 @@ public class DebtHistoryEntity
     public float getDebtBalance()
     {
         var debt = amount - debtBalance;
-
-        if (debt < 0)
-        {
-            return 0;
-        }
-
-        return debt;
+        return debt > 0 ? debt : 0;
     }
 }

@@ -263,7 +263,7 @@ public class TestEntityGenerator
             schoolyear = "sch001",
             isPaid = isPaid,
             debtBalance = 10,
-            arrear = 10,
+            arrears = 10,
             subAmount = 110,
             amount = 100
         };
@@ -363,7 +363,7 @@ public class TestEntityGenerator
             schoolyear = "sch001",
             isPaid = true,
             debtBalance = 10,
-            arrear = 10,
+            arrears = 10,
             subAmount = 110,
             amount = 100
         };

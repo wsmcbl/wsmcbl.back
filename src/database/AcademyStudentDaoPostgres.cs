@@ -15,7 +15,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
 
         if (result == null)
         {
-            throw new EntityNotFoundException("Academy Student", studentId);
+            throw new EntityNotFoundException("AcademyStudent", studentId);
         }
 
         return result;
@@ -37,7 +37,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
         
         if (result == null)
         {
-            throw new EntityNotFoundException("Academy Student", studentId);
+            throw new EntityNotFoundException("AcademyStudent", studentId);
         }
 
         return result;
