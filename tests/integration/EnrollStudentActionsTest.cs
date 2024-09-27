@@ -85,9 +85,9 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
 
-        var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsByteArrayAsync();
         Assert.NotNull(content);
-        Assert.IsType<string>(content);
+        Assert.NotEmpty(content);
     }
     
     [Fact]
