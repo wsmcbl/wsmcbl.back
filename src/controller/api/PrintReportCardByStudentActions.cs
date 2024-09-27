@@ -22,7 +22,7 @@ public class PrintReportCardByStudentActions(IPrintReportCardByStudentController
 
     [HttpGet]
     [Route("documents/report-cards/{studentId}")]
-    public async Task<IActionResult> getReportCard([Required] string studentId, [FromQuery] PrintReportCardByStudentDto dto)
+    public async Task<IActionResult> getReportCard([Required] string studentId)
     {
         var result = await controller.getReportCard(studentId);
         return File(result, "application/pdf", $"{studentId}.report-card.pdf");
