@@ -7,6 +7,7 @@ help: ## Show this help message
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
 
+
 b = unknown
 
 mer-b2dev: ## Merge branch (b) into develop
@@ -47,7 +48,6 @@ restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run	
 
 run-test: ## Run test
-	docker build -t custom-base-image config/base
 	docker network create test-network || true
 	docker-compose -f docker-compose.test.yml down --volumes --remove-orphans
 	docker-compose -f docker-compose.test.yml build
@@ -63,11 +63,11 @@ logs: ## Show all logs
 api-bash: ## Entry api bash
 	 docker-compose exec api bash
 
-delete-containers: ## Remove all containers
+delete-containers: ## Remove all containers 
 	docker-compose down
 
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
-	docker-compose down -v
+	docker-compose down --volumes --remove-orphans
 	docker system prune
 
 

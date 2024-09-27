@@ -124,7 +124,7 @@ internal class AccountingContext
                 .HasMaxLength(20)
                 .HasColumnName("studentid");
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.arrear).HasColumnName("arrear");
+            entity.Property(e => e.arrears).HasColumnName("arrear");
             entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
             entity.Property(e => e.subAmount).HasColumnName("subamount");
             entity.Property(e => e.isPaid).HasColumnName("ispaid");

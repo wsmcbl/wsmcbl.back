@@ -85,6 +85,6 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
 
         Assert.NotNull(debt);
         Assert.Equal(list[0], debt);
-        Assert.Equal(0, debt.arrear);
+        Assert.Equal(0, debt.arrears);
     }
 }

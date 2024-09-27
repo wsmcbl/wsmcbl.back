@@ -110,7 +110,7 @@ public class TestDtoOutputGenerator
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
             schoolYear = entity.tariff.schoolYear!,
-            arrear = entity.arrear,
+            arrear = entity.arrears,
             subTotal = entity.amount,
             debtBalance = entity.amount - entity.debtBalance
         };
