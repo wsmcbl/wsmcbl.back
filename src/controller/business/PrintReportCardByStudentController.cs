@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
@@ -16,10 +15,10 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
         return result;
     }
 
-    public async Task<byte[]> getReportCard(string studentId, (int, int, int) data)
+    public async Task<byte[]> getReportCard(string studentId)
     {
         var printController = new PrintDocumentController(daoFactory);
-        return await printController.getReportCardByStudent(studentId, data);
+        return await printController.getReportCardByStudent(studentId);
     }
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)
