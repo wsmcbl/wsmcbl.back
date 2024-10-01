@@ -36,7 +36,7 @@ public class SchoolYearDto
         return list.mapListToDto();
     }
 
-    private List<TariffToCreateDto> getTariffs(List<TariffEntity>? list)
+    private static List<TariffToCreateDto> getTariffs(List<TariffEntity>? list)
     {
         if (list == null || list.Count == 0)
         {

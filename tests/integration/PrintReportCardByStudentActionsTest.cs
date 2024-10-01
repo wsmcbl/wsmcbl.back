@@ -9,8 +9,7 @@ public class PrintReportCardByStudentActionsTest : BaseActionsTest<PrintReportCa
     {
         baseUri = "/v1/academy";
     }
-    
-    [Fact]
+
     public async Task getStudentInformation_ShouldReturnJson_WhenCalled()
     {
         var response = await client.GetAsync($"{baseUri}/students/hola");

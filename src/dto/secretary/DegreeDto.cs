@@ -24,6 +24,6 @@ public class DegreeDto
         
         enrollments = degree.enrollmentList.mapListToDto(teacherList);
         
-        subjects = !degree.subjectList.Any() ? [] : degree.subjectList.mapListToDto();
+        subjects = degree.subjectList.Count == 0 ? [] : degree.subjectList.mapListToDto();
     }
 }
