@@ -17,6 +17,7 @@ public class BaseFixture : WebApplicationFactory<Program>
         using var scope = scopeFactory.CreateScope();
         
         var context = scope.ServiceProvider.GetRequiredService<PostgresContext>();
+        
         seedData(context).GetAwaiter().GetResult();
         context.SaveChangesAsync();
     }
