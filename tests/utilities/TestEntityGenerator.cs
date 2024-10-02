@@ -86,18 +86,21 @@ public class TestEntityGenerator
         return [aSchoolYear()];
     }
 
+
+    public static TeacherEntity aTeacher()
+    {
+        return new TeacherEntity()
+        {
+            teacherId = "tc-1",
+            enrollmentId = "en001",
+            userId = "u001",
+            isGuide = true
+        };
+    }
+    
     public static List<TeacherEntity> aTeacherList()
     {
-        return
-        [
-            new TeacherEntity()
-            {
-                teacherId = "tc-1",
-                enrollmentId = "en001",
-                userId = "u001",
-                isGuide = true
-            }
-        ];
+        return [aTeacher()];
     }
 
 

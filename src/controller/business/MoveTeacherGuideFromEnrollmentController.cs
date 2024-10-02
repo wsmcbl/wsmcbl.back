@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.business;
 
 public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTeacherGuideFromEnrollmentController
 {
-    private CreateOfficialEnrollmentController controller;
+    private readonly CreateOfficialEnrollmentController controller;
 
     public MoveTeacherGuideFromEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
     {
@@ -19,7 +19,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTea
         return list.Where(e => !e.isGuide).ToList();
     }
 
-    public async Task<EnrollmentEntity> getEnrollment(string enrollmentId)
+    public async Task<EnrollmentEntity> getEnrollmentById(string enrollmentId)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
 

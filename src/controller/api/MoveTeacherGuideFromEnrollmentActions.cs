@@ -31,7 +31,7 @@ public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollme
     [Route("enrollments")]
     public async Task<IActionResult> setTeacherGuide(MoveTeacherGuideDto dto)
     {
-        var enrollment = await controller.getEnrollment(dto.enrollmentId);
+        var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
         var teacher = await controller.getTeacherById(dto.newTeacherId);
         await controller.assignTeacherGuide(dto.newTeacherId, enrollment.enrollmentId!);
         
