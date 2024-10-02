@@ -29,7 +29,7 @@ public class TariffEntity
 
     public bool checkDueMonth(int month)
     {
-        return dueDate != null && dueDate.Value.Month != month;
+        return dueDate != null && dueDate.Value.Month == month;
     }
     
     public void checkDueDate()
