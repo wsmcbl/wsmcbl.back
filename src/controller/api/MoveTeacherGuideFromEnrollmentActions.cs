@@ -25,6 +25,7 @@ public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollme
     /// Update the teacher guide of the enrollment.
     /// </summary>
     /// <response code="200">Returns the edited resource.</response>
+    /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
     [Route("enrollments")]
