@@ -348,7 +348,7 @@ public class TestEntityGenerator
         return (aTransaction("std-1", []), aAccountingStudent("std-1"), aCashier("csh-1"), [1.1f, 1]);
     }
 
-    public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid)
+    public static List<DebtHistoryEntity> aDebtHistoryList(string studentId, bool isPaid = true)
     {
         return [aDebtHistory(studentId, isPaid), aDebtHistoryNotMonthly(studentId)];
     }
@@ -372,5 +372,16 @@ public class TestEntityGenerator
     public static StudentTutorEntity aTutor(string studentId)
     {
         return new StudentTutorEntity("El tutor", "78451236", studentId:studentId);
+    }
+
+    public static src.model.academy.StudentEntity aAcademyStudent(string studentId)
+    {
+        return new src.model.academy.StudentEntity
+        {
+            studentId = studentId,
+            enrollmentId = aEnrollment().enrollmentId,
+            schoolYear = aSchoolYear().id!,
+            
+        };
     }
 }

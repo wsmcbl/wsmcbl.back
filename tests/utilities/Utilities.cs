@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace wsmcbl.tests.utilities;
@@ -23,4 +24,15 @@ public static class Utilities
     }
     
     public static T? deserialize<T>(string content) => JsonConvert.DeserializeObject<T>(content);
+    
+    public static async Task add<T, ID>(this DbContext context, T entity, ID id) where T : class
+    {
+        var element = await context.Set<T>().FindAsync(id);
+        
+        if(element != null)
+            return;
+            
+        context.Add(entity);
+        await context.SaveChangesAsync();
+    }
 }

@@ -3,7 +3,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class PrintDocumentController(DaoFactory daoFactory) : PDFController
+public class PrintDocumentController(DaoFactory daoFactory) : PdfController
 {
     public async Task<byte[]> getReportCardByStudent(string studentId)
     {

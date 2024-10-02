@@ -2,12 +2,12 @@ using wsmcbl.src.controller.service;
 
 namespace wsmcbl.src.controller.business;
 
-public class PDFController
+public class PdfController
 {
     protected readonly string resource;
     private LatexBuilder? latexBuilder;
 
-    protected PDFController()
+    protected PdfController()
     {
         resource = Environment.GetEnvironmentVariable("Resource_Directory")!;
     }
@@ -26,7 +26,7 @@ public class PDFController
         
         latexBuilder!.build();
         
-        var pdfBuilder = new PDFBuilder(latexBuilder);
+        var pdfBuilder = new PdfBuilder(latexBuilder);
         
         return pdfBuilder.build().getPdf();
     }

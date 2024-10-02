@@ -113,7 +113,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         };
     }
 
-    private PartialEntity getPartial(int i, DateOnly date, string label)
+    private static PartialEntity getPartial(int i, DateOnly date, string label)
     {
         return new PartialEntity
         {

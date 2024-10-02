@@ -27,7 +27,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
         if (result == null)
         {
-            throw new EntityNotFoundException($"Teacher with EnrollmentId = {enrollmentId}, not found.");
+            throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");
         }
 
         return result;

@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -26,14 +27,21 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
     public async Task<bool> getStudentSolvency(string studentId)
     {
         var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
-        var debt = debtHistoryList.First(isSolvencyInterval);
+        var debt = debtHistoryList.Find(isSolvencyInterval);
+
+        if (debt == null)
+        {
+            throw new EntityNotFoundException("No solvency.");
+        }
+        
         return debt.isPaid;
     }
 
+    private const int MONTHLY_PAYMENT = 1;
     private static bool isSolvencyInterval(DebtHistoryEntity debt)
     {
         var currentMonth = DateTime.Today.Month;
-        return debt.tariff.type != 1 && debt.tariff.dueDate!.Value.Month != currentMonth;
+        return debt.tariff.type == MONTHLY_PAYMENT && debt.tariff.checkDueMonth(currentMonth);
     }
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)

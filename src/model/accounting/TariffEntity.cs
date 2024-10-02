@@ -26,6 +26,11 @@ public class TariffEntity
         type = tariffData.typeId;
         modality = tariffData.modality;
     }
+
+    public bool checkDueMonth(int month)
+    {
+        return dueDate != null && dueDate.Value.Month == month;
+    }
     
     public void checkDueDate()
     {
