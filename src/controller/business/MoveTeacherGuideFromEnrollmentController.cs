@@ -43,7 +43,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTea
         return result;
     }
     
-    public async Task assignTeacherGuide(string teacherId, string enrollmentId)
+    public async Task assignTeacherGuide(string newTeacherId, string enrollmentId)
     {
         var oldTeacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
         if (oldTeacher != null)
@@ -52,13 +52,8 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTea
             daoFactory.teacherDao.update(oldTeacher);
             await daoFactory.execute();
         }
-        
-        var newTeacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (newTeacher == null)
-        {
-            throw new EntityNotFoundException("Teacher", teacherId);
-        }
-        
+
+        var newTeacher = await getTeacherById(newTeacherId);
         newTeacher.enrollmentId = enrollmentId;
         newTeacher.isGuide = true;
         daoFactory.teacherDao.update(newTeacher);
