@@ -17,17 +17,13 @@ public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollme
         return Ok(list.mapListToDto());
     }
     
-    
     [HttpPut]
     [Route("enrollments")]
-    public async Task<IActionResult> setTeacherGuide()
+    public async Task<IActionResult> setTeacherGuide(MoveTeacherGuideDto dto)
     {
-        string enrollmentId = "a";
-        var newTeacherId = "1";
-        
-        var enrollment = await controller.getEnrollment(enrollmentId);
-        var teacher = await controller.getTeacherById(newTeacherId);
-        await controller.assignTeacherGuide(newTeacherId, enrollment.enrollmentId!);
+        var enrollment = await controller.getEnrollment(dto.enrollmentId);
+        var teacher = await controller.getTeacherById(dto.newTeacherId);
+        await controller.assignTeacherGuide(dto.newTeacherId, enrollment.enrollmentId!);
         
         return Ok(enrollment.mapToDto(teacher));
     }
