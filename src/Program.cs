@@ -26,6 +26,7 @@ builder.Services.AddTransient<ICollectTariffController, CollectTariffController>
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
 builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
 builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCardByStudentController>();
+builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTeacherGuideFromEnrollmentController>();
 
 var app = builder.Build();
 
