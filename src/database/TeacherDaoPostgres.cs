@@ -17,19 +17,12 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         return await entities.Include(e => e.user).ToListAsync();
     }
 
-    public async Task<TeacherEntity> getByEnrollmentId(string enrollmentId)
+    public async Task<TeacherEntity?> getByEnrollmentId(string enrollmentId)
     {
-        var result = await entities
+        return await entities
             .Where(e => e.enrollmentId == enrollmentId)
             .Include(e => e.user)
             .Include(e => e.enrollment)
             .FirstOrDefaultAsync();
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");
-        }
-
-        return result;
     }
 }

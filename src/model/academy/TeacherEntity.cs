@@ -21,4 +21,10 @@ public class TeacherEntity
     {
         return enrollment!.label;
     }
+
+    public void deleteEnrollment()
+    {
+        enrollmentId = null;
+        enrollment = null;
+    }
 }
