@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace wsmcbl.src.dto.academy;
 
 public class MoveTeacherGuideDto
 {
-    public string enrollmentId { get; set; }
-    public string newTeacherId { get; set; }
+    [Required] public string enrollmentId { get; set; }
+    [Required] public string newTeacherId { get; set; }
 }
