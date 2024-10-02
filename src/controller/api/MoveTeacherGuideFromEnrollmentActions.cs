@@ -9,6 +9,10 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollmentController controller) : ControllerBase
 {
+    /// <summary>
+    /// Return the list of teacher non-guided.
+    /// </summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     [HttpGet]
     [Route("enrollments/teachers")]
     public async Task<IActionResult> getTeacherList()
@@ -17,6 +21,11 @@ public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollme
         return Ok(list.mapListToDto());
     }
     
+    /// <summary>
+    /// Update the teacher guide of the enrollment.
+    /// </summary>
+    /// <response code="200">Returns the edited resource.</response>
+    /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
     [Route("enrollments")]
     public async Task<IActionResult> setTeacherGuide(MoveTeacherGuideDto dto)
