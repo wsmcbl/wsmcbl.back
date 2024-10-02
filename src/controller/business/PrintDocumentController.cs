@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
@@ -8,8 +9,13 @@ public class PrintDocumentController(DaoFactory daoFactory) : PdfController
     public async Task<byte[]> getReportCardByStudent(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
-        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
+
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
+        }
             
         var partials = await daoFactory.partialDao!.getListByStudentId(studentId);
         student.setPartials(partials);

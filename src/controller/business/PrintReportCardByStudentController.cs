@@ -46,6 +46,13 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)
     {
-        return await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        var result = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");
+        }
+
+        return result;
     }
 }
