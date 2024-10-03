@@ -9,7 +9,7 @@ using wsmcbl.src.utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v1")));
+builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
 
 builder.Services.AddFluentValidationConfig();
 
@@ -28,6 +28,8 @@ builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>
 builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCardByStudentController>();
 builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTeacherGuideFromEnrollmentController>();
 
+builder.Services.AddTransient<ICreateStudentProfileController, ICreateStudentProfileController>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
@@ -39,4 +41,4 @@ app.MapControllers();
 app.UseHttpsRedirection();
 await app.RunAsync();
 
-public partial class Program { }
+public abstract partial class Program { }
