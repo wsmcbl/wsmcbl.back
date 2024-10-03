@@ -7,38 +7,31 @@ namespace wsmcbl.src.controller.business;
 public class CreateStudentProfileController(DaoFactory daoFactory)
     : BaseController(daoFactory), ICreateStudentProfileController
 {
-    public async Task<StudentEntity> createStudent(StudentEntity student, StudentTutorEntity tutor)
+    public async Task<StudentEntity> createStudent(StudentEntity student, StudentTutorEntity tutor, int modality)
     {
-        if (await isStudentExists(student, tutor))
+        var existingTutor = await daoFactory.studentTutorDao!.getByInformation(tutor);
+        var existingStudent = await daoFactory.studentDao!.getByInformation(student);
+        
+        if (existingStudent != null)
         {
-            throw new ConflictException("The student profile already exist.");
+            throw new ConflictException($"The student profile already exist with id ({existingStudent.studentId}).");
+        }
+
+        if (existingTutor == null)
+        {
+            daoFactory.studentTutorDao!.create(tutor);
         }
 
         daoFactory.studentDao!.create(student);
         await daoFactory.execute();
+
+        // assign discount
+        var accountingStudent = new model.accounting.StudentEntity();
+        daoFactory.accountingStudentDao!.create(accountingStudent);
+        await daoFactory.execute();
+        
+        // Assign registration debt refer to modality
         
         return student;
-    }
-
-    private async Task<bool> isStudentExists(StudentEntity student, StudentTutorEntity tutor)
-    {
-        var studentList = await daoFactory.studentDao!.getAll();
-
-        foreach (var item in studentList)
-        {
-            if (student.fullName() == item.fullName())
-                return true;
-        }
-
-        var tutorList = await daoFactory.studentTutorDao!.getAll();
-
-        // Revisar
-        foreach (var item in tutorList)
-        {
-            if (item.name == tutor.name)
-                return false;
-        }
-        
-        return false;
     }
 }
