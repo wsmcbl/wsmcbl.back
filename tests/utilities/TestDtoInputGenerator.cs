@@ -1,5 +1,5 @@
 using wsmcbl.src.dto;
-using wsmcbl.src.dto.input;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.tests.utilities;
