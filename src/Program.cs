@@ -9,7 +9,7 @@ using wsmcbl.src.utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v1")));
+builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
 
 builder.Services.AddFluentValidationConfig();
 
