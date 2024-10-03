@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.accounting;
 
 public class TransactionDto
 {

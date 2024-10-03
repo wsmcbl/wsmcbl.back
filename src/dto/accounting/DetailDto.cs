@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.input;
+namespace wsmcbl.src.dto.accounting;
 
 public class DetailDto : IBaseDto<TransactionTariffEntity>
 {
