@@ -28,6 +28,8 @@ builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>
 builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCardByStudentController>();
 builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTeacherGuideFromEnrollmentController>();
 
+builder.Services.AddTransient<ICreateStudentProfileController, ICreateStudentProfileController>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
@@ -39,4 +41,4 @@ app.MapControllers();
 app.UseHttpsRedirection();
 await app.RunAsync();
 
-public partial class Program { }
+public abstract partial class Program { }
