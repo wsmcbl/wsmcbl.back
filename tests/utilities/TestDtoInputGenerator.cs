@@ -33,7 +33,7 @@ public static class TestDtoInputGenerator
         {
             tariffId = 10,
             amount = 700,
-            applyArrear = true
+            applyArrears = true
         };
     }
     

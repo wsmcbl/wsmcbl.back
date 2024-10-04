@@ -45,7 +45,7 @@ public static class DtoMapper
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
             schoolYear = entity.tariff.schoolYear!,
-            arrear = entity.arrears,
+            arrears = entity.arrears,
             subTotal = entity.amount,
             debtBalance = entity.getDebtBalance()
         };
@@ -62,7 +62,6 @@ public static class DtoMapper
             studentId = student.studentId!,
             fullName = student.fullName(),
             enrollmentLabel = student.enrollmentLabel,
-            schoolYear = student.schoolYear,
             tutor = student.tutor,
             discount = student.getDiscount(),
             isActive = student.isActive,
@@ -86,7 +85,6 @@ public static class DtoMapper
             studentId = student.studentId!,
             fullName = student.fullName(),
             enrollmentLabel = student.enrollmentLabel!,
-            schoolyear = student.schoolYear,
             tutor = student.tutor!
         };
     }
