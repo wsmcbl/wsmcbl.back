@@ -80,6 +80,7 @@ internal class SecretaryContext
             entity.Property(e => e.diseases).HasColumnName("diseases");
             entity.Property(e => e.religion).HasColumnName("religion");
             entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
+            entity.Property(e => e.tutorId).HasMaxLength(15).HasColumnName("tutorid");
 
             entity.Ignore(e => e.file);
             entity.Ignore(e => e.tutor);
@@ -207,6 +208,7 @@ internal class SecretaryContext
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.modality).HasColumnName("modality");
             entity.Property(e => e.typeId).HasColumnName("typeid");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
     }
 }
