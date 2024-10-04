@@ -83,4 +83,3 @@ dn-ss: ## Run SonarCloud Scanner
 	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, tests/**/*.*' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 	dotnet build --no-incremental
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
-	#rm -rf .sonarqube || true
