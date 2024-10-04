@@ -93,6 +93,12 @@ public class StudentEntity
             return this;
         }
 
+        public Builder setTutorId(string tutorId)
+        {
+            entity.tutorId = tutorId;
+            return this;
+        }
+
         public Builder setName(string name)
         {
             entity.name = name;

@@ -166,6 +166,7 @@ public class TestEntityGenerator
     {
         var result = new StudentEntity.Builder()
             .setId(studentId)
+            .setTutorId("my-tutor")
             .setName("Jonas")
             .setSecondName("Alexander")
             .setSurname("Lopez")
