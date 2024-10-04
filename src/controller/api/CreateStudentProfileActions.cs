@@ -13,6 +13,7 @@ public class CreateStudentProfileActions(ICreateStudentProfileController control
     /// </summary>
     /// <remarks>
     /// The educationalLevel property can only take the values 1 (Preescolar), 2 (Primaria) and 3 (Secundaria).
+    /// The studentId must be null or empty.
     /// </remarks>
     /// <response code="201">Returns the new resource.</response>
     /// <response code="400">If the dto is not valid.</response>

@@ -12,12 +12,12 @@ public static class Utilities
         {
             response.EnsureSuccessStatusCode();
         }
-        catch (Exception)
+        catch (Exception e)
         {
             var responseContent = await response.Content.ReadAsStringAsync();
             var problemDetails = JsonConvert.DeserializeObject<ProblemDetails>(responseContent);
 
-            var message = problemDetails == null ? $"Without error message." :
+            var message = problemDetails == null ? $"\n\tError message: {e.Message}" :
                 $"\n\n\tTitle: {problemDetails.Title}\n\tDetail: {problemDetails.Detail}\n\tStatus: {problemDetails.Status}.\n";
             throw new ArgumentException(message);
         }

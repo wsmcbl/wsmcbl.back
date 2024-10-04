@@ -19,7 +19,7 @@ public class StudentEntity
 
 
     public StudentFileEntity? file { get; set; }
-    public StudentTutorEntity? tutor { get; set; }
+    public StudentTutorEntity tutor { get; set; } = null!;
     public List<StudentParentEntity>? parents { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
 

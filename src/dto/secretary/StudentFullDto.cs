@@ -45,7 +45,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         file = student.file.mapToDto();
         tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
-        parents = student.parents.mapListToDto();
+        parents = student.parents!.mapListToDto();
     }
     
     public StudentEntity toEntity()
