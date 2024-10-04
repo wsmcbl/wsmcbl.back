@@ -1,5 +1,4 @@
 using wsmcbl.src.exception;
-using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
@@ -25,17 +24,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
             tutor.studentId = student.studentId!;
             daoFactory.studentTutorDao!.create(tutor);
         }
-
-        await createAccountingStudent(student.studentId!);
-        // Assign registration debt refer to modality
         
         return student;
-    }
-
-    private async Task createAccountingStudent(string studentId)
-    {
-        var accountingStudent = new model.accounting.StudentEntity(studentId, Const.NON_DISCOUNT_ID);
-        daoFactory.accountingStudentDao!.create(accountingStudent);
-        await daoFactory.execute();
     }
 }
