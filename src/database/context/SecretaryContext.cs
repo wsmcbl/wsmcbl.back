@@ -146,7 +146,6 @@ internal class SecretaryContext
             
             entity.Property(e => e.name).HasMaxLength(70).HasColumnName("name");
             entity.Property(e => e.phone).HasMaxLength(12).HasColumnName("phone");
-            entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
         });
         
 

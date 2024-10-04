@@ -6,6 +6,7 @@ public class TariffEntity
 {
     public int tariffId { get; set; }
     public string? schoolYear { get; set; }
+    public int educationalLevel { get; set; }
     public string concept { get; set; }  = null!;
     public float amount { get; set; }
     public DateOnly? dueDate { get; set; }
@@ -20,11 +21,12 @@ public class TariffEntity
     public TariffEntity(TariffDataEntity tariffData, string schoolYear)
     {
         this.schoolYear = schoolYear;
+        type = tariffData.typeId;
         concept = tariffData.concept;
         amount = tariffData.amount;
         dueDate = tariffData.dueDate;
-        type = tariffData.typeId;
         modality = tariffData.modality;
+        educationalLevel = tariffData.educationalLevel;
     }
 
     public bool checkDueMonth(int month)
