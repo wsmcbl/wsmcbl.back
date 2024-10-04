@@ -5,6 +5,7 @@ namespace wsmcbl.src.model.secretary;
 public class StudentEntity
 {
     public string? studentId { get; set; }
+    public string tutorId { get; set; }
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
@@ -159,7 +160,6 @@ public class StudentEntity
 
         public Builder setTutor(StudentTutorEntity tutor)
         {
-            tutor.studentId = entity.studentId!;
             entity.tutor = tutor;
             return this;
         }

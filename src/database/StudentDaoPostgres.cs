@@ -18,7 +18,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 
         var tutor = await context.Set<StudentTutorEntity>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
+            .FirstOrDefaultAsync(e => e.tutorId == entity.tutorId);
 
         if (tutor == null)
         {

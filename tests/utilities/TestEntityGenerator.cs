@@ -374,7 +374,7 @@ public class TestEntityGenerator
 
     public static StudentTutorEntity aTutor(string studentId)
     {
-        return new StudentTutorEntity("El tutor", "78451236", studentId:studentId);
+        return new StudentTutorEntity("El tutor", "78451236");
     }
 
     public static src.model.academy.StudentEntity aAcademyStudent(string studentId)
