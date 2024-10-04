@@ -1,5 +1,5 @@
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.dto.accounting;
 
@@ -11,4 +11,7 @@ public static class DtoMapper
             .Select(item => new DebtHistoryEntity{tariffId = item.tariffId})
             .ToList();
     }
+
+    public static CreateStudentProfileDto mapToDto(this StudentEntity student, int modality) => new(student, modality);
+    
 }
