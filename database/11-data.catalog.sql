@@ -1,6 +1,6 @@
 set datestyle to 'European';
 
-insert into secretary.tariffcatalog(concept, amount, duedate, typeid, modality)
+insert into secretary.tariffcatalog(concept, amount, duedate, typeid, educationallevel)
 values ('Pago de matrícula', 0, null, 4, 3),
        ('Pago mes febrero', 0, '28/02/2024', 1, 3),
        ('Pago mes marzo', 0, '28/03/2024', 1, 3),
@@ -15,7 +15,7 @@ values ('Pago de matrícula', 0, null, 4, 3),
        ('Pago treceavo mes', 0, '28/12/2024', 1, 3),
        ('Pago excursión', 0, null, 3, 3);
 
-insert into secretary.degreecatalog(label, modality)
+insert into secretary.degreecatalog(label, educationalLevel)
 values ('Primer Nivel', 1),
        ('Segundo Nivel', 1),
        ('Tercer Nivel', 1),

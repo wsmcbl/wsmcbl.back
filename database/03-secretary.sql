@@ -1,5 +1,11 @@
 create schema if not exists Secretary;
 
+create table if not exists Secretary.StudentTutor
+(
+    tutorId varchar(15) primary key default secretary.generate_tutor_id(),
+    name varchar(70) not null,
+    phone varchar(50) not null
+);
 
 create table if not exists Secretary.Student
 (
@@ -28,13 +34,6 @@ create table if not exists Secretary.StudentParent
     idCard varchar(25),
     occupation varchar(30),
     foreign key (studentId) references Secretary.Student
-);
-
-create table if not exists Secretary.StudentTutor
-(
-    tutorId varchar(15) primary key default secretary.generate_tutor_id(),
-    name varchar(70) not null,
-    phone varchar(50) not null
 );
 
 create table if not exists Secretary.StudentFile
@@ -83,7 +82,7 @@ create table if not exists Secretary.Degree
     degreeId varchar(25) primary key default secretary.generate_degree_id(),
     label varchar(25) not null,
     schoolYear varchar(15) not null,
-    modality varchar(50) not null,
+    educationalLevel varchar(50) not null,
     quantity int not null,
     foreign key (schoolYear) references Secretary.Schoolyear
 );
@@ -103,7 +102,7 @@ create table if not exists Secretary.DegreeCatalog
 (
     degreeCatalogId serial primary key,
     label varchar(50) not null,
-    modality int not null
+    educationalLevel int not null
 );
 
 create table if not exists Secretary.SubjectCatalog
@@ -124,6 +123,5 @@ create table if not exists Secretary.TariffCatalog
     concept varchar(100) not null,
     amount float not null,
     dueDate date,
-    typeId int not null,
-    modality int not null
+    typeId int not null
 );
