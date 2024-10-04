@@ -16,7 +16,6 @@ create table if not exists Secretary.Student
     surname varchar(50) not null,
     secondSurname varchar(50),
     studentState boolean not null,
-    schoolyear varchar(15) not null,
     sex boolean not null,
     birthday date not null,
     diseases varchar(100) not null,
