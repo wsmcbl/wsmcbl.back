@@ -16,7 +16,6 @@ public class StudentEntity
     public string address { get; set; } = null!;
     public string religion { get; set; } = null!;
     public bool isActive { get; set; }
-    public string schoolYear { get; set; } = null!;
 
 
     public StudentFileEntity? file { get; set; }
@@ -28,13 +27,7 @@ public class StudentEntity
     {
         return $"{name} {secondName} {surname} {secondSurname}";
     }
-
-    public void init()
-    {
-        isActive = true;
-        schoolYear = "";
-    }
-
+    
     public void update(StudentEntity entity)
     {
         name = entity.name;
@@ -80,8 +73,7 @@ public class StudentEntity
                 parents = [],
                 file = new StudentFileEntity(),
                 tutor = new StudentTutorEntity(),
-                measurements = new StudentMeasurementsEntity(),
-                schoolYear = ""
+                measurements = new StudentMeasurementsEntity()
             };
         }
 
