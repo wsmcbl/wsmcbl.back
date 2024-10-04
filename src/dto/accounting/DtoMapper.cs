@@ -7,7 +7,7 @@ public static class DtoMapper
 {
     public static List<DebtHistoryEntity> toEntity(this IEnumerable<DetailDto> listDto)
     {
-        return listDto.Where(i => !i.applyArrear)
+        return listDto.Where(i => !i.applyArrears)
             .Select(item => new DebtHistoryEntity{tariffId = item.tariffId})
             .ToList();
     }

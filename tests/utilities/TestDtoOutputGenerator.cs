@@ -110,7 +110,7 @@ public class TestDtoOutputGenerator
             amount = entity.tariff.amount,
             itPaidLate = entity.tariff.isLate,
             schoolYear = entity.tariff.schoolYear!,
-            arrear = entity.arrears,
+            arrears = entity.arrears,
             subTotal = entity.amount,
             debtBalance = entity.amount - entity.debtBalance
         };
@@ -129,7 +129,6 @@ public class TestDtoOutputGenerator
             studentId = entity.studentId!,
             fullName = entity.fullName(),
             enrollmentLabel = entity.enrollmentLabel!,
-            schoolyear = entity.schoolYear,
             tutor = entity.tutor!,
         };
     }
