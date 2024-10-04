@@ -23,4 +23,26 @@ public class DebtHistoryEntity
         var debt = amount - debtBalance;
         return debt > 0 ? debt : 0;
     }
+
+    public class Builder
+    {
+        private readonly DebtHistoryEntity entity;
+
+        public Builder(string studentId, string schoolyear)
+        {
+            entity = new DebtHistoryEntity()
+            {
+                studentId = studentId,
+                schoolyear = schoolyear
+            };
+        }
+
+        public DebtHistoryEntity build() => entity;
+
+        public Builder setTariffId(int tariffId)
+        {
+            entity.tariffId = tariffId;
+            return this;
+        }
+    }
 }

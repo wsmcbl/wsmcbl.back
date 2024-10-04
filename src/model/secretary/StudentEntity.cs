@@ -63,6 +63,11 @@ public class StudentEntity
         await daoFactory.execute();
     }
 
+    public string toString()
+    {
+        return $"{fullName()} - {sex} - {birthday.ToString()}";
+    }
+
     public class Builder
     {
         private readonly StudentEntity entity;
@@ -111,13 +116,13 @@ public class StudentEntity
             return this;
         }
 
-        public Builder isActive(bool isActive)
+        public Builder isActive(bool isActive = true)
         {
             entity.isActive = isActive;
             return this;
         }
 
-        public Builder setSex(bool sex)
+        public Builder setSex(bool sex = true)
         {
             entity.sex = sex;
             return this;
