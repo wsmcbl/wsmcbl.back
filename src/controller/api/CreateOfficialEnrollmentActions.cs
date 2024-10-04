@@ -64,7 +64,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     }
 
     /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
-    /// <returns>Returns the search results based on the provided query.</returns>
+    /// <summary>Returns the search results based on the provided query.</summary>
     /// <response code="200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
