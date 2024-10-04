@@ -16,7 +16,7 @@ public class DegreeEntityTest
         Assert.NotNull(sut.subjectList);
         Assert.NotEmpty(sut.subjectList);
         Assert.Equal(degreeData.subjectList!.Count, sut.subjectList.Count);
-        Assert.Equal(degreeData.getModalityName(), sut.modality);
+        Assert.Equal(degreeData.getModalityName(), sut.educationalLevel);
         Assert.Equal(degreeData.label, sut.label);
     }
 

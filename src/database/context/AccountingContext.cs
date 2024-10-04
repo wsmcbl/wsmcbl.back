@@ -73,7 +73,6 @@ internal class AccountingContext
             entity.Property(e => e.isLate).HasColumnName("late");
             entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
-            entity.Property(e => e.educationalLevel).HasColumnName("modality");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
         

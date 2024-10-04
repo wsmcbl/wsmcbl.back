@@ -16,7 +16,7 @@ public class DegreeToCreateDto : IBaseDto<DegreeEntity>
         {
             label = label,
             schoolYear = schoolYear,
-            modality = modality
+            educationalLevel = modality
         };
 
         var list = subjects!.Select(e => e.toEntity()).ToList();
@@ -32,7 +32,7 @@ public class DegreeToCreateDto : IBaseDto<DegreeEntity>
     public DegreeToCreateDto(DegreeEntity degree)
     {
         label = degree.label;
-        modality = degree.modality;
+        modality = degree.educationalLevel;
         schoolYear = degree.schoolYear;
         subjects = degree.subjectList.Count == 0 ? [] : degree.subjectList.mapListToInputDto();
     }

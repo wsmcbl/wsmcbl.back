@@ -124,7 +124,7 @@ public class TestEntityGenerator
         {
             degreeId = degreeId,
             label = "11vo",
-            modality = "secundaria",
+            educationalLevel = "secundaria",
             schoolYear = "sch001",
             enrollmentList = [],
             subjectList = [aSubject()]
