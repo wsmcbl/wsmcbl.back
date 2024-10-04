@@ -19,6 +19,6 @@ public class CreateStudentProfileActions(ICreateStudentProfileController control
     public async Task<IActionResult> createStudent(CreateStudentProfileDto dto)
     {
         var result = await controller.createStudent(dto.student.toEntity(), dto.tutor.toEntity(), dto.modality);
-        return Ok(result);
+        return Ok(result.mapToDto(dto.modality));
     }
 }
