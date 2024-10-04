@@ -47,6 +47,9 @@ stop: ## Stop the containers
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run	
 
+remake: ## Stop, build and run the containers
+	$(MAKE) stop && $(MAKE) build && $(MAKE) run
+
 run-test: ## Run test
 	docker network create test-network || true
 	docker-compose -f docker-compose.test.yml down --volumes --remove-orphans
