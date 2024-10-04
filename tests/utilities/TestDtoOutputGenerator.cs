@@ -21,7 +21,7 @@ public class TestDtoOutputGenerator
             {
                 degreeId = "gr01",
                 label = "1ro",
-                modality = "primaria",
+                educationalLevel = "primaria",
                 schoolYear = "sch001",
                 subjectList = [],
                 enrollmentList = []

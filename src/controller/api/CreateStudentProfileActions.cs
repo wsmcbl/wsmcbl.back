@@ -14,7 +14,7 @@ public class CreateStudentProfileActions(ICreateStudentProfileController control
     /// <remarks>
     /// The educationalLevel property can only take the values 1 (Preescolar), 2 (Primaria) and 3 (Secundaria).
     /// </remarks>
-    /// <response code="200">Returns the new resource.</response>
+    /// <response code="201">Returns the new resource.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="409">If the student profile already exists.</response>
     [HttpPost]
@@ -24,6 +24,6 @@ public class CreateStudentProfileActions(ICreateStudentProfileController control
         var result = await controller.createStudent(dto.student.toEntity(), dto.tutor.toEntity());
         await controller.createAccountingStudent(result, dto.educationalLevel);
         
-        return Ok(result.mapToDto(dto.educationalLevel));
+        return CreatedAtAction(null, result.mapToDto(dto.educationalLevel));
     }
 }

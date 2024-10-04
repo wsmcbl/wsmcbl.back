@@ -5,7 +5,7 @@ namespace wsmcbl.src.model.secretary;
 public class StudentEntity
 {
     public string? studentId { get; set; }
-    public string tutorId { get; set; }
+    public string tutorId { get; set; } = null!;
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
@@ -16,25 +16,18 @@ public class StudentEntity
     public string address { get; set; } = null!;
     public string religion { get; set; } = null!;
     public bool isActive { get; set; }
-    public string schoolYear { get; set; } = null!;
 
 
     public StudentFileEntity? file { get; set; }
-    public StudentTutorEntity tutor { get; set; } = null!;
-    public List<StudentParentEntity> parents { get; set; } = null!;
+    public StudentTutorEntity? tutor { get; set; }
+    public List<StudentParentEntity>? parents { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
 
     public string fullName()
     {
-        return name + " " + secondName + " " + surname + " " + secondSurname;
+        return $"{name} {secondName} {surname} {secondSurname}";
     }
-
-    public void init()
-    {
-        isActive = true;
-        schoolYear = "";
-    }
-
+    
     public void update(StudentEntity entity)
     {
         name = entity.name;
@@ -56,7 +49,7 @@ public class StudentEntity
         await daoFactory.studentFileDao!.updateAsync(file);
         await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
 
-        foreach (var parent in parents)
+        foreach (var parent in parents!)
         {
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
@@ -64,7 +57,7 @@ public class StudentEntity
         await daoFactory.execute();
     }
 
-    public string toString()
+    public string getStringData()
     {
         return $"{fullName()} - {sex} - {birthday.ToString()}";
     }
@@ -80,8 +73,7 @@ public class StudentEntity
                 parents = [],
                 file = new StudentFileEntity(),
                 tutor = new StudentTutorEntity(),
-                measurements = new StudentMeasurementsEntity(),
-                schoolYear = ""
+                measurements = new StudentMeasurementsEntity()
             };
         }
 
@@ -191,7 +183,7 @@ public class StudentEntity
                 }
             }
 
-            entity.parents = parents!;
+            entity.parents = parents;
             return this;
         }
 
