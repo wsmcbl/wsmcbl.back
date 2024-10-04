@@ -6,7 +6,7 @@ BEGIN
     SELECT NEW.studentId, t.tariffId, t.schoolyear, t.amount, 0.0, 0, false
     FROM Accounting.tariff t
              INNER JOIN Secretary.Student sec ON sec.studentId = new.studentId
-    WHERE t.schoolyear = sec.schoolyear and t.typeid = 1;
+    WHERE t.schoolyear = sec.schoolyear and t.typeid = 2 and NEW.educationallevel = t.educationallevel;
 
     RETURN NEW;
 END;
