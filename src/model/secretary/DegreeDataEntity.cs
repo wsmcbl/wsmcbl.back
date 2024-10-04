@@ -4,14 +4,14 @@ public class DegreeDataEntity
 {
     public int degreeDataId { get; set; }
     public string label { get; set; } = null!;
-    public int modality { get; set; }
+    public int educationalLevel { get; set; }
 
     public ICollection<SubjectDataEntity>? subjectList { get; set; }
 
     
-    private readonly List<string> modalities = ["Preescolar", "Primaria", "Secundaria"];
+    private readonly List<string> educationalLevels = ["Preescolar", "Primaria", "Secundaria"];
     public string getModalityName()
     {
-        return modalities[modality-1];
+        return educationalLevels[educationalLevel-1];
     }
 }
