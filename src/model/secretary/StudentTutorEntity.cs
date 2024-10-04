@@ -28,4 +28,9 @@ public class StudentTutorEntity
         name = entity.name;
         phone = entity.phone;
     }
+
+    public string toString()
+    {
+        return $"{name} - {phone}";
+    }
 }

@@ -22,8 +22,7 @@ public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
 
-public class SubjectDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
+public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
     {
@@ -56,8 +55,7 @@ public class StudentFileDaoPostgres(PostgresContext context)
     }
 }
 
-public class StudentTutorDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
+public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
 {
     public async Task updateAsync(StudentTutorEntity? entity)
     {
@@ -77,6 +75,12 @@ public class StudentTutorDaoPostgres(PostgresContext context)
         {
             existingEntity.update(entity);
         }
+    }
+
+    public async Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor)
+    {
+        return await context.Set<StudentTutorEntity>()
+            .FirstOrDefaultAsync(e => e.toString().Equals(tutor.toString()));
     }
 }
 
