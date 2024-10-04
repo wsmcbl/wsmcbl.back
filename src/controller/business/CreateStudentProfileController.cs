@@ -20,8 +20,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
         
         var existingTutor = await daoFactory.studentTutorDao!.getByInformation(tutor);
         if (existingTutor == null)
-        {// Un tutor puede tener uno o más hijos
-            tutor.studentId = student.studentId!;
+        {
             daoFactory.studentTutorDao!.create(tutor);
         }
         
