@@ -35,6 +35,7 @@ internal class AccountingContext
 
             entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
             entity.Property(e => e.discountId).HasColumnName("discountid");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
 
             entity.HasOne(d => d.discount).WithMany()
                 .HasForeignKey(d => d.discountId);
@@ -73,6 +74,7 @@ internal class AccountingContext
             entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
             entity.Property(e => e.modality).HasColumnName("modality");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
         
         modelBuilder.Entity<TariffTypeEntity>(entity =>
