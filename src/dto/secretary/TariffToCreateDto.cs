@@ -23,7 +23,7 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
         concept = tariff.concept;
         amount = tariff.amount;
         type = tariff.type;
-        modality = tariff.modality;
+        modality = tariff.educationalLevel;
 
         if (tariff.dueDate != null)
         {
@@ -39,7 +39,7 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
             concept = concept,
             amount = amount,
             type = type,
-            modality = modality
+            educationalLevel = modality
         };
 
         if (dueDate != null)
