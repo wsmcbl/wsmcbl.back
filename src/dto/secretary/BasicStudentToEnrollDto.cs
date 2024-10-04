@@ -12,10 +12,10 @@ public class BasicStudentToEnrollDto
     {
     }
     
-    public BasicStudentToEnrollDto(StudentEntity student)
+    public BasicStudentToEnrollDto(StudentEntity student, string schoolyear)
     {
         studentId = student.studentId!;
         fullName = student.fullName();
-        schoolyear = student.schoolYear;
+        this.schoolyear = schoolyear;
     }
 }

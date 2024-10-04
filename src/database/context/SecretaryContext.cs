@@ -73,7 +73,6 @@ internal class SecretaryContext
             entity.Property(e => e.secondName).HasMaxLength(50).HasColumnName("secondname");
             entity.Property(e => e.secondSurname).HasMaxLength(50).HasColumnName("secondsurname");
             entity.Property(e => e.surname).HasMaxLength(50).HasColumnName("surname");
-            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
             entity.Property(e => e.birthday).HasColumnName("birthday");
             entity.Property(e => e.sex).HasColumnName("sex");
             entity.Property(e => e.isActive).HasColumnName("studentstate");
