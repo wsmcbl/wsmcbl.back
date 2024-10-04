@@ -373,9 +373,9 @@ public class TestEntityGenerator
         };
     }
 
-    public static StudentTutorEntity aTutor(string studentId)
+    public static StudentTutorEntity aTutor()
     {
-        return new StudentTutorEntity("El tutor", "78451236");
+        return new StudentTutorEntity("Juan Morales", "78451236");
     }
 
     public static src.model.academy.StudentEntity aAcademyStudent(string studentId)

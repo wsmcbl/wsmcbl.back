@@ -28,7 +28,9 @@ public class EnrollStudentFixture : BaseFixture
         await context.SaveChangesAsync();
 
         await seedTariff(context, schoolyear.id!);
-        await seedStudent(context, schoolyear.id);
+        await seedStudent(context);
+
+        await createAccountingStudent(student!, context);
 
         var debt = await context
             .Set<DebtHistoryEntity>()
@@ -40,9 +42,23 @@ public class EnrollStudentFixture : BaseFixture
         await context.SaveChangesAsync();
     }
 
+    private async Task createAccountingStudent(StudentEntity studentEntity, DbContext context)
+    {
+        var accountingStudent = new src.model.accounting.StudentEntity
+        {
+            studentId = studentEntity.studentId,
+            discountId = 1,
+            educationalLevel = 1,
+            enrollmentLabel = null
+        };
+
+        context.Add(accountingStudent);
+        await context.SaveChangesAsync();
+    }
+
     public StudentEntity getStudent() => student!;
 
-    private async Task seedStudent(DbContext context, string schoolyearId)
+    private async Task seedStudent(DbContext context)
     {
         var discount = new DiscountEntity()
         {
@@ -54,16 +70,17 @@ public class EnrollStudentFixture : BaseFixture
         context.Add(discount);
         await context.SaveChangesAsync();
         
+        var tutor = TestEntityGenerator.aTutor();
+        context.Add(tutor);
+        await context.SaveChangesAsync();
+        
         student = TestEntityGenerator.aStudent("");
         student.studentId = null;
+        student.tutorId = tutor.tutorId!;
         
         context.Add(student);
         await context.SaveChangesAsync();
 
-        var tutor = TestEntityGenerator.aTutor(student.studentId!);
-        context.Add(tutor);
-        await context.SaveChangesAsync();
-        
         student.tutor = tutor;
     }
 
@@ -71,15 +88,15 @@ public class EnrollStudentFixture : BaseFixture
     {
         var tariffType = new TariffTypeEntity
         {
-            typeId = 4,
-            description = "Matricula"
+            typeId = 2,
+            description = "Matrícula",
         };
 
         context.Add(tariffType);
         await context.SaveChangesAsync();
         
         var tariff = TestEntityGenerator.aTariff();
-        tariff.type = 4;
+        tariff.type = 2;
         tariff.schoolYear = schoolyearId;
 
         context.Add(tariff);
