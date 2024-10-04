@@ -37,7 +37,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     }
     
     /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
-    /// <returns>Returns the search results based on the provided query.</returns>
+    /// <summary>Returns the search results based on the provided query.</summary>
     /// <response code="200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
@@ -75,7 +75,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
         return Ok(result);
     }
 
-    /// <returns>Additional late fee applies.</returns>
+    /// <summary>Additional late fee applies.</summary>
     /// <response code=
     /// "200">Returns the search results.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
