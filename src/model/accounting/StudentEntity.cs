@@ -20,12 +20,6 @@ public class StudentEntity
     public StudentEntity()
     {
     }
-    
-    public StudentEntity(string studentId, int discountId)
-    {
-        this.studentId = studentId;
-        this.discountId = discountId;
-    }
 
     public float getDiscount()
     {
