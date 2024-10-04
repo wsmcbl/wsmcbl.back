@@ -13,7 +13,7 @@ public class StudentEntity
     public ICollection<DebtHistoryEntity>? debtHistory { get; set; }
     
     public string fullName() => student.fullName();
-    public string schoolYear => student.schoolYear;
+    public string schoolYear => "Por implementar";
     public string tutor => student.tutor.name;
     public bool isActive => student.isActive;
 

@@ -28,7 +28,7 @@ public class DegreeToCreateDtoTest
         
         Assert.NotNull(result);
         Assert.NotNull(result.schoolYear);
-        Assert.NotNull(result.modality);
+        Assert.NotNull(result.educationalLevel);
         Assert.NotNull(result.label);
     }
 }

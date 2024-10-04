@@ -8,17 +8,6 @@ namespace wsmcbl.tests.unit.model.secretary;
 public class StudentEntityTest
 {
     [Fact]
-    public void init_ShouldInitAttribute_WhenCalled()
-    {
-        var sut = new StudentEntity();
-        
-        sut.init();
-        
-        Assert.Empty(sut.schoolYear);
-        Assert.True(sut.isActive);
-    }
-    
-    [Fact]
     public void fullName_ReturnsFullName()
     {
         var sut = new StudentEntity

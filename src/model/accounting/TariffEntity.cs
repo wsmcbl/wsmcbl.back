@@ -6,13 +6,12 @@ public class TariffEntity
 {
     public int tariffId { get; set; }
     public string? schoolYear { get; set; }
-    public int educationalLevel { get; set; }
     public string concept { get; set; }  = null!;
     public float amount { get; set; }
     public DateOnly? dueDate { get; set; }
     public bool isLate { get; set; }
     public int type { get; set; }
-    public int modality { get; set; }
+    public int educationalLevel { get; set; }
 
     public TariffEntity()
     {
@@ -25,7 +24,6 @@ public class TariffEntity
         concept = tariffData.concept;
         amount = tariffData.amount;
         dueDate = tariffData.dueDate;
-        modality = tariffData.modality;
         educationalLevel = tariffData.educationalLevel;
     }
 

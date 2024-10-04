@@ -41,7 +41,6 @@ public class PrintReportCardByStudentFixture : BaseFixture
         
         var student = TestEntityGenerator.aStudent("");
         student.studentId = null;
-        student.schoolYear = schoolyear.id!;
         
         context.Add(student);
         await context.SaveChangesAsync();

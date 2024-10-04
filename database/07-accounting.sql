@@ -34,13 +34,12 @@ create table if not exists Accounting.Tariff
 (
     tariffId serial unique primary key,
     schoolYear varchar(20) not null,
-    educationalLeve smallint not null,
+    educationalLevel smallint not null,
     concept varchar(200) not null,
     amount float not null,
     dueDate date,
     late boolean,
     typeId int not null,
-    modality int not null,
     foreign key (typeId) references Accounting.TariffType
 );
 

@@ -19,7 +19,7 @@ public class TestEntityGenerator
         {
             degreeDataId = 1,
             label = "4to",
-            modality = 2,
+            educationalLevel = 2,
             subjectList = [aSubjectData()]
         };
     }
@@ -58,7 +58,7 @@ public class TestEntityGenerator
             typeId = 1,
             concept = "Pago mes de enero",
             amount = 1000,
-            modality = 1,
+            educationalLevel = 1,
             dueDate = new DateOnly(2020, 1, 1)
         };
     }
@@ -124,7 +124,7 @@ public class TestEntityGenerator
         {
             degreeId = degreeId,
             label = "11vo",
-            modality = "secundaria",
+            educationalLevel = "secundaria",
             schoolYear = "sch001",
             enrollmentList = [],
             subjectList = [aSubject()]
@@ -197,7 +197,7 @@ public class TestEntityGenerator
             amount = 1000,
             concept = "pago mes de abril",
             isLate = true,
-            modality = 1,
+            educationalLevel = 1,
             schoolYear = "sch001",
             type = 1,
             dueDate = new DateOnly(2024,1,1)
@@ -212,7 +212,7 @@ public class TestEntityGenerator
             amount = 900,
             concept = "Pago excursion",
             isLate = true,
-            modality = 1,
+            educationalLevel = 1,
             schoolYear = "sch001",
             type = 2
         };

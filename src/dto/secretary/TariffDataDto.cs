@@ -19,7 +19,7 @@ public class TariffDataDto : IBaseDto<TariffDataEntity>
             concept = concept,
             amount = amount,
             typeId = typeId,
-            modality = modality
+            educationalLevel = modality
         };
 
         if (dueDate != null)

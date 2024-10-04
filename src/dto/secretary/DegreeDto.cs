@@ -20,7 +20,7 @@ public class DegreeDto
         label = degree.label;
         schoolYear = degree.schoolYear;
         quantity = degree.quantity;
-        modality = degree.modality;
+        modality = degree.educationalLevel;
         
         enrollments = degree.enrollmentList.mapListToDto(teacherList);
         

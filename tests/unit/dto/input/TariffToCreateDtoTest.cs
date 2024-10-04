@@ -35,6 +35,6 @@ public class TariffToCreateDtoTest
         Assert.NotEmpty(result.schoolYear!);
         Assert.True(result.type > 0);
         Assert.True(result.amount > 0);
-        Assert.True(result.modality > 0);
+        Assert.True(result.educationalLevel > 0);
     }
 }

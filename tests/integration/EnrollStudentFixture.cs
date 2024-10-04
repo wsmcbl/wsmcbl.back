@@ -56,7 +56,6 @@ public class EnrollStudentFixture : BaseFixture
         
         student = TestEntityGenerator.aStudent("");
         student.studentId = null;
-        student.schoolYear = schoolyearId;
         
         context.Add(student);
         await context.SaveChangesAsync();
