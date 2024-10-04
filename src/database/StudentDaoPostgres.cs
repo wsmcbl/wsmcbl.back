@@ -59,7 +59,8 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 
         if (tariff == null)
         {
-            throw new EntityNotFoundException("Tariff", $"(type) {Const.TARIFF_REGISTRATION}");
+            throw new EntityNotFoundException(
+                $"Entity of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
         }
 
         FormattableString query = $@"
