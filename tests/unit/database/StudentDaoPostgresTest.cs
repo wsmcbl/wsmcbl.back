@@ -15,7 +15,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         context = TestDbContext.getInMemory();
         
         var student = TestEntityGenerator.aStudent("std-00");
-        var tutor = new StudentTutorEntity("Tutor", "78451236",student.studentId!, "tutor1");
+        var tutor = new StudentTutorEntity("Tutor", "78451236", "my-tutor");
 
         context.Set<StudentEntity>().Add(student);
         context.Set<StudentTutorEntity>().Add(tutor);

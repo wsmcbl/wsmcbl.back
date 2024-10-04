@@ -5,6 +5,7 @@ namespace wsmcbl.src.model.secretary;
 public class StudentEntity
 {
     public string? studentId { get; set; }
+    public string tutorId { get; set; } = null!;
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
@@ -19,13 +20,13 @@ public class StudentEntity
 
 
     public StudentFileEntity? file { get; set; }
-    public StudentTutorEntity tutor { get; set; } = null!;
-    public List<StudentParentEntity> parents { get; set; } = null!;
+    public StudentTutorEntity? tutor { get; set; }
+    public List<StudentParentEntity>? parents { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
 
     public string fullName()
     {
-        return name + " " + secondName + " " + surname + " " + secondSurname;
+        return $"{name} {secondName} {surname} {secondSurname}";
     }
 
     public void init()
@@ -55,7 +56,7 @@ public class StudentEntity
         await daoFactory.studentFileDao!.updateAsync(file);
         await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
 
-        foreach (var parent in parents)
+        foreach (var parent in parents!)
         {
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
@@ -63,7 +64,7 @@ public class StudentEntity
         await daoFactory.execute();
     }
 
-    public string toString()
+    public string getStringData()
     {
         return $"{fullName()} - {sex} - {birthday.ToString()}";
     }
@@ -89,6 +90,12 @@ public class StudentEntity
         public Builder setId(string studentId)
         {
             entity.studentId = studentId;
+            return this;
+        }
+
+        public Builder setTutorId(string tutorId)
+        {
+            entity.tutorId = tutorId;
             return this;
         }
 
@@ -159,7 +166,6 @@ public class StudentEntity
 
         public Builder setTutor(StudentTutorEntity tutor)
         {
-            tutor.studentId = entity.studentId!;
             entity.tutor = tutor;
             return this;
         }
@@ -185,7 +191,7 @@ public class StudentEntity
                 }
             }
 
-            entity.parents = parents!;
+            entity.parents = parents;
             return this;
         }
 

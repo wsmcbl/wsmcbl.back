@@ -4,6 +4,7 @@ public class StudentEntity
 {
     public string? studentId { get; set; }
     public int discountId { get; set; }
+    public int educationalLevel { get; set; }
     public string? enrollmentLabel { get; set; }
     
     public DiscountEntity? discount { get; set; }
@@ -13,17 +14,11 @@ public class StudentEntity
     
     public string fullName() => student.fullName();
     public string schoolYear => student.schoolYear;
-    public string? tutor => "";
+    public string tutor => student.tutor.name;
     public bool isActive => student.isActive;
 
     public StudentEntity()
     {
-    }
-    
-    public StudentEntity(string studentId, int discountId)
-    {
-        this.studentId = studentId;
-        this.discountId = discountId;
     }
 
     public float getDiscount()

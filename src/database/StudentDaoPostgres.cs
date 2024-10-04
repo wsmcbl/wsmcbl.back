@@ -18,7 +18,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 
         var tutor = await context.Set<StudentTutorEntity>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
+            .FirstOrDefaultAsync(e => e.tutorId == entity.tutorId);
 
         if (tutor == null)
         {
@@ -44,7 +44,7 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
     public async Task<StudentEntity?> getByInformation(StudentEntity student)
     {
         return await context.Set<StudentEntity>()
-            .FirstOrDefaultAsync(e => e.toString().Equals(student.toString()));
+            .FirstOrDefaultAsync(e => student.name.Equals(e.name));
     }
 
     private const int ENROLLMENT_TARIFF = 4;
