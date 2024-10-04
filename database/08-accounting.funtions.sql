@@ -1,52 +1,19 @@
--- Insert in debt history by tariff
-CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_tariff()
+-- Insert registration debt in debt history by student
+CREATE OR REPLACE FUNCTION Accounting.insert_registration_debt_history_by_new_student()
     RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
-    SELECT s.studentId,
-           NEW.tariffId,
-           NEW.schoolyear,
-           case when new.typeid = 1 then NEW.amount*(1 - d.amount) else new.amount end,
-           case when new.late then (new.amount*(1 - d.amount)*0.1) else 0 end,
-           0,
-           false
-    FROM Accounting.Student s
-             JOIN Accounting.discount d ON d.discountid = s.discountid
-             INNER JOIN Secretary.Student sec ON s.studentId = sec.studentId
-    WHERE sec.studentState = true;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_insert_debt_history_by_new_tariff AFTER INSERT ON Accounting.Tariff
-    FOR EACH ROW EXECUTE FUNCTION Accounting.insert_debt_history_by_new_tariff();
-
-
--- Insert in debt history by student
-CREATE OR REPLACE FUNCTION Accounting.insert_debt_history_by_new_student()
-    RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
-    SELECT NEW.studentId,
-           t.tariffId,
-           t.schoolyear,
-           case when t.typeid = 1 then t.amount*(1 - d.amount) else t.amount end,
-           case when t.late then t.amount*(1 - d.amount)*0.1 else 0.0 end,
-           0,
-           false
+    SELECT NEW.studentId, t.tariffId, t.schoolyear, t.amount, 0.0, 0, false
     FROM Accounting.tariff t
              INNER JOIN Secretary.Student sec ON sec.studentId = new.studentId
-             INNER JOIN Accounting.student s on s.studentid = sec.studentid
-             JOIN accounting.discount d on d.discountid = s.discountid
-    WHERE t.schoolyear = sec.schoolyear;
+    WHERE t.schoolyear = sec.schoolyear and t.typeid = 1;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_insert_debt_history_by_new_student AFTER INSERT ON Accounting.student
-    FOR EACH ROW EXECUTE FUNCTION Accounting.insert_debt_history_by_new_student();
+    FOR EACH ROW EXECUTE FUNCTION Accounting.insert_registration_debt_history_by_new_student();
 
 
 -- Update debt history by transactions --

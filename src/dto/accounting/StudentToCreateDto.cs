@@ -38,7 +38,7 @@ public class StudentToCreateDto
             .setSecondSurname(secondSurname)
             .setBirthday(birthday.toEntity())
             .setSex(sex)
-            .isActive(true)
+            .isActive()
             .build();
     }
 }

@@ -68,7 +68,6 @@ public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgr
 
         if (existingEntity == null)
         {
-            entity.studentId = "";
             create(entity);
         }
         else

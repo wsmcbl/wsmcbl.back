@@ -1,22 +1,3 @@
-
--- ##################### TEMPORAL ###################### --
-CREATE OR REPLACE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING()
-    RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO Accounting.student(studentid, discountid)
-    SELECT NEW.studentId, '1';
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER TRG_INSERT_STUDENT_ACCOUNTING
-    AFTER INSERT ON secretary.student
-    FOR EACH ROW EXECUTE FUNCTION Accounting.INSERT_STUDENT_ACCOUNTING();
--- ##################### TEMPORAL ###################### --
-
-
-
 -- ##################### TEMPORAL ###################### --
 CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT()
     RETURNS TRIGGER AS $$
