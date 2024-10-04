@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
@@ -47,20 +48,18 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
             .FirstOrDefaultAsync(e => student.name.Equals(e.name));
     }
 
-    private const int ENROLLMENT_TARIFF = 4;
-
     public async Task<List<StudentEntity>> getAllWithSolvency()
     {
         var schoolyear = await new SchoolyearDaoPostgres(context).getSchoolYearByLabel(DateTime.Today.Year);
 
         var tariff = await context.Set<model.accounting.TariffEntity>()
             .Where(e => e.schoolYear == schoolyear.id)
-            .Where(e => e.type == ENROLLMENT_TARIFF)
+            .Where(e => e.type == Const.TARIFF_REGISTRATION)
             .FirstOrDefaultAsync();
 
         if (tariff == null)
         {
-            throw new EntityNotFoundException("Tariff", $"(type) {ENROLLMENT_TARIFF}");
+            throw new EntityNotFoundException("Tariff", $"(type) {Const.TARIFF_REGISTRATION}");
         }
 
         FormattableString query = $@"
