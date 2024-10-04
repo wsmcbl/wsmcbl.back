@@ -79,7 +79,7 @@ public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgr
     public async Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor)
     {
         return await context.Set<StudentTutorEntity>()
-            .FirstOrDefaultAsync(e => e.toString().Equals(tutor.toString()));
+            .FirstOrDefaultAsync(e => tutor.name.Equals(e.name));
     }
 }
 
