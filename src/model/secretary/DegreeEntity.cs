@@ -9,7 +9,7 @@ public class DegreeEntity
     public string label { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public int quantity { get; set; }
-    public string modality { get; set; } = null!;
+    public string educationalLevel { get; set; } = null!;
 
     public ICollection<EnrollmentEntity>? enrollmentList { get; set; }
     public ICollection<SubjectEntity> subjectList { get; set; }
@@ -24,7 +24,7 @@ public class DegreeEntity
     {
         this.schoolYear = schoolYear;
         label = degreeData.label;
-        modality = degreeData.getModalityName();
+        educationalLevel = degreeData.getModalityName();
 
         subjectList ??= [];
         foreach (var subject in degreeData.subjectList!)
