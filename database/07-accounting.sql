@@ -40,7 +40,6 @@ create table if not exists Accounting.Tariff
     dueDate date,
     late boolean,
     typeId int not null,
-    modality int not null,
     foreign key (typeId) references Accounting.TariffType
 );
 
