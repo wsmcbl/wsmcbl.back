@@ -12,7 +12,7 @@ public class TransactionDto
     [JsonRequired] public DateTime dateTime { get; set; }
     [Required] public List<DetailDto> details { get; set; } = [];
     
-    public virtual List<DebtHistoryEntity> getDetailToApplyArrear() => details.toEntity();
+    public virtual List<DebtHistoryEntity> getDetailToApplyArrears() => details.toEntity();
 
     public virtual TransactionEntity toEntity()
     {

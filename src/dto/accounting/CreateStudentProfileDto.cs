@@ -17,7 +17,7 @@ public class CreateStudentProfileDto
     public CreateStudentProfileDto(StudentEntity studentEntity, int educationalLevel)
     {
         student = new StudentToCreateDto(studentEntity);
-        tutor = new TutorToCreateDto(studentEntity.tutor);
+        tutor = new TutorToCreateDto(studentEntity.tutor!);
         this.educationalLevel = educationalLevel;
     }
 }

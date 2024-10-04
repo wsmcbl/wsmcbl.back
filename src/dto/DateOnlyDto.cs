@@ -17,14 +17,14 @@ public class DateOnlyDto : IBaseDto<DateOnly>
     {
     }
 
+    public DateOnlyDto(DateOnly date) : this(date.Year, date.Month, date.Day)
+    {
+    }
+
     public DateOnlyDto(int year, int month, int day)
     {
         this.year = year;
         this.month = month;
         this.day = day;
-    }
-
-    public DateOnlyDto(DateOnly date) : this(date.Year, date.Month, date.Day)
-    {
     }
 }
