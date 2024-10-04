@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
@@ -18,11 +19,12 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         }
         
         var year = DateTime.Today.Year.ToString();
-        var element = await context.Set<SchoolYearEntity>().FirstOrDefaultAsync(e => e.label == year);
+        var element = await context.Set<SchoolYearEntity>()
+            .FirstOrDefaultAsync(e => e.label == year);
 
         if (element == null)
         {
-            throw new ArgumentException("Schoolyear no exist");
+            throw new ConflictException("Schoolyear no exist");
         }
         
         schoolyear = element.id;

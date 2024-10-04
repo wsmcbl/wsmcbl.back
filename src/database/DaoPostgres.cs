@@ -79,7 +79,8 @@ public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgr
     public async Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor)
     {
         return await context.Set<StudentTutorEntity>()
-            .FirstOrDefaultAsync(e => tutor.name.Equals(e.name));
+            .FirstOrDefaultAsync(e => 
+                tutor.name.Equals(e.name) && tutor.phone.Contains(e.phone));
     }
 }
 
@@ -140,7 +141,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         if (!entity.checkData())
         {
-            throw new IncorrectDataBadRequestException("transaction");
+            throw new IncorrectDataBadRequestException("Transaction");
         }
 
         entity.computeTotal();
