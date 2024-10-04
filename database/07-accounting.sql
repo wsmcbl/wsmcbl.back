@@ -12,6 +12,7 @@ create table if not exists Accounting.Student
 (
     studentId varchar(20) primary key,
     discountId smallint not null,
+    educationalLevel smallint not null,
     foreign key (studentId) references Secretary.Student,
     foreign key (discountId) references Accounting.Discount
 );
@@ -33,6 +34,7 @@ create table if not exists Accounting.Tariff
 (
     tariffId serial unique primary key,
     schoolYear varchar(20) not null,
+    educationalLeve smallint not null,
     concept varchar(200) not null,
     amount float not null,
     dueDate date,
