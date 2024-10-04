@@ -5,10 +5,8 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
-    
     public async Task<StudentEntity> getByIdWithProperties(string id)
     {
         var entity = await entities.FirstOrDefaultAsync(e => e.studentId == id);
@@ -43,6 +41,12 @@ public class StudentDaoPostgres(PostgresContext context)
         return entity;
     }
 
+    public async Task<StudentEntity?> getByInformation(StudentEntity student)
+    {
+        return await context.Set<StudentEntity>()
+            .FirstOrDefaultAsync(e => e.toString().Equals(student.toString()));
+    }
+
     private const int ENROLLMENT_TARIFF = 4;
 
     public async Task<List<StudentEntity>> getAllWithSolvency()
@@ -56,7 +60,7 @@ public class StudentDaoPostgres(PostgresContext context)
 
         if (tariff == null)
         {
-            throw new EntityNotFoundException("tariff", $"(type) {ENROLLMENT_TARIFF}");
+            throw new EntityNotFoundException("Tariff", $"(type) {ENROLLMENT_TARIFF}");
         }
 
         FormattableString query = $@"
@@ -75,7 +79,6 @@ public class StudentDaoPostgres(PostgresContext context)
         }
         
         var existingStudent = await getById(entity.studentId!);
-        
         if (existingStudent == null)
         {
             throw new EntityNotFoundException("StudentEntity", entity.studentId);
