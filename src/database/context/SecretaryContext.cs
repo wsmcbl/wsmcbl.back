@@ -27,7 +27,7 @@ internal class SecretaryContext
             entity.Property(e => e.label).HasMaxLength(25).HasColumnName("label");
             entity.Property(e => e.schoolYear).HasMaxLength(15).HasColumnName("schoolyear");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.modality).HasMaxLength(50).HasColumnName("modality");
+            entity.Property(e => e.educationalLevel).HasMaxLength(50).HasColumnName("educationallevel");
 
             entity.HasMany(e => e.enrollmentList).WithOne()
                 .HasForeignKey(d => d.degreeId);
@@ -176,7 +176,7 @@ internal class SecretaryContext
 
             entity.Property(e => e.degreeDataId).HasColumnName("degreecatalogid");
             entity.Property(e => e.label).HasMaxLength(50).HasColumnName("label");
-            entity.Property(e => e.modality).HasColumnName("modality");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
 
             entity.HasMany(e => e.subjectList).WithOne()
                 .HasForeignKey(d => d.degreeDataId);
@@ -206,7 +206,6 @@ internal class SecretaryContext
             entity.Property(e => e.amount).HasColumnName("amount");
             entity.Property(e => e.concept).HasMaxLength(100).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
-            entity.Property(e => e.modality).HasColumnName("modality");
             entity.Property(e => e.typeId).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });

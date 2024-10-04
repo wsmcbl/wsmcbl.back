@@ -14,7 +14,7 @@ public class BasicDegreeDto
     {
         degreeId = degree.degreeId!;
         label = degree.label;
-        modality = degree.modality;
+        modality = degree.educationalLevel;
         quantity = degree.quantity;
         schoolYear = degree.schoolYear;
     }
