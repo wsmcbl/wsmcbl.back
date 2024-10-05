@@ -58,7 +58,7 @@ public class CollectTariffControllerTest
         studentDao.getById(studentId).Returns(TestEntityGenerator.aAccountingStudent(studentId));
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await controller.getStudent(studentId);
+        var result = await controller.getStudentById(studentId);
 
         Assert.IsType<StudentEntity>(result);
         Assert.NotNull(result);
@@ -72,7 +72,7 @@ public class CollectTariffControllerTest
         studentDao.getById(studentId).Returns(Task.FromResult<StudentEntity?>(null));
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getStudent(studentId));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getStudentById(studentId));
     }
 
     
@@ -176,7 +176,7 @@ public class CollectTariffControllerTest
         daoFactory.cashierDao.Returns(cashierDao);
         daoFactory.transactionDao.Returns(transactionDao);
         
-        controller.getStudent("std").Returns(initStudent);
+        controller.getStudentById("std").Returns(initStudent);
 
         var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(initTransaction.transactionId);
         

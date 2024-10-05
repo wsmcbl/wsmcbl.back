@@ -9,7 +9,9 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 {
     public new async Task<List<StudentEntity>> getAll()
     {
-        var list = await entities.Include(d => d.student).ToListAsync();
+        var list = await entities
+            .Where(e => e.isActive)
+            .Include(d => d.student).ToListAsync();
         
         foreach (var item in list)
         {
@@ -60,6 +62,6 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         var enrollment = await context.Set<model.academy.EnrollmentEntity>()
             .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
 
-        return enrollment != null ? enrollment.label : "";
+        return enrollment != null ? enrollment.label : "Sin matrícula.";
     }
 }
