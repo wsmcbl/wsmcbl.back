@@ -36,7 +36,11 @@ public class ApiExceptionHandler
         {
             Status = statusCode,
             Title = "An error occurred while processing your request.",
-            Detail = exception.Message
+            Detail = exception.Message,
+            Extensions = new Dictionary<string, object?>
+            {
+                { "trace", exception.StackTrace }
+            } 
         };
 
         return context.Response.WriteAsJsonAsync(problemDetails);

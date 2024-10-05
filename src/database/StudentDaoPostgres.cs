@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class StudentDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
     public async Task<StudentEntity> getByIdWithProperties(string id)
     {
@@ -43,32 +45,30 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
 
     public async Task<StudentEntity?> getByInformation(StudentEntity student)
     {
-        return await context.Set<StudentEntity>()
-            .FirstOrDefaultAsync(e => student.name.Equals(e.name));
+        return (await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync())
+            .FirstOrDefault(e => student.getStringData().Equals(e.getStringData()));
     }
-
-    private const int ENROLLMENT_TARIFF = 4;
 
     public async Task<List<StudentEntity>> getAllWithSolvency()
     {
         var schoolyear = await new SchoolyearDaoPostgres(context).getSchoolYearByLabel(DateTime.Today.Year);
 
-        var tariff = await context.Set<model.accounting.TariffEntity>()
+        var tariffList = await context.Set<model.accounting.TariffEntity>()
             .Where(e => e.schoolYear == schoolyear.id)
-            .Where(e => e.type == ENROLLMENT_TARIFF)
-            .FirstOrDefaultAsync();
+            .Where(e => e.type == Const.TARIFF_REGISTRATION).ToListAsync();
 
-        if (tariff == null)
+        if (tariffList.Count == 0)
         {
-            throw new EntityNotFoundException("Tariff", $"(type) {ENROLLMENT_TARIFF}");
+            throw new EntityNotFoundException(
+                $"Entities of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
         }
 
-        FormattableString query = $@"
-            select s.* from secretary.student s
-            inner join accounting.debthistory d on d.studentid = s.studentid
-            where d.tariffid = {tariff.tariffId} and (d.debtbalance / d.amount) > 0.45;";
-
-         return await entities.FromSqlInterpolated(query).AsNoTracking().ToListAsync();
+        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
+        var query = $@"SELECT s.* FROM secretary.student s
+                    INNER JOIN accounting.debthistory d ON d.studentid = s.studentid
+                    WHERE ({tariffsId}) AND (d.debtbalance / d.amount) > 0.45;";
+        
+        return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
     }
 
     public async Task updateAsync(StudentEntity? entity)
@@ -77,13 +77,13 @@ public class StudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<St
         {
             return;
         }
-        
+
         var existingStudent = await getById(entity.studentId!);
         if (existingStudent == null)
         {
             throw new EntityNotFoundException("StudentEntity", entity.studentId);
         }
-        
+
         existingStudent.update(entity);
         update(existingStudent);
     }

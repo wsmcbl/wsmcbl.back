@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
@@ -17,11 +19,12 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         }
         
         var year = DateTime.Today.Year.ToString();
-        var element = await context.Set<SchoolYearEntity>().FirstOrDefaultAsync(e => e.label == year);
+        var element = await context.Set<SchoolYearEntity>()
+            .FirstOrDefaultAsync(e => e.label == year);
 
         if (element == null)
         {
-            throw new ArgumentException("Schoolyear no exist");
+            throw new ConflictException("Schoolyear no exist");
         }
         
         schoolyear = element.id;
@@ -31,7 +34,8 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
     {
         await initSchoolyear();
         
-        var tariffs = await entities.Where(t => t.schoolYear == schoolyear && t.isLate && t.type == 1)
+        var tariffs = await entities
+            .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -60,7 +64,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
             .Include(d => d.tariff)
-            .Where(d => d.tariff.type == 1)
+            .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
         
         float[] balance = [0, 0];
