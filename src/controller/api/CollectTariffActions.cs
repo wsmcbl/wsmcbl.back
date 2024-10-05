@@ -12,47 +12,50 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CollectTariffActions(ICollectTariffController controller) : ControllerBase
 {
+    /// <summary>
+    ///  Returns the list of active students.
+    /// </summary>
+    /// <response code="200">Return existing resources (can be empty list).</response>
     [HttpGet]
     [Route("students")]
     public async Task<IActionResult> getStudentList()
     {
         var students = await controller.getStudentsList();
         return Ok(students.mapListTo());
-    } 
+    }
     
+    /// <summary>
+    ///  Returns the student (active or not) by id.
+    /// </summary>
+    /// <response code="200">Return existing resource.</response>
+    /// <response code="404">Resource not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
-        try
-        {
-            var student = await controller.getStudent(studentId);
-        
-            return Ok(student.mapToDto());
-        }
-        catch
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
+        var student = await controller.getStudentById(studentId);
+        return Ok(student.mapToDto());
     }
-    
+
+    /// <summary>
+    /// Returns the search results based on the provided query.
+    /// </summary>
     /// <param name="q">The query string in the format "key:value". Supported keys are "student:{id}" and "state:overdue".</param>
-    /// <summary>Returns the search results based on the provided query.</summary>
     /// <response code="200">Returns the search results.</response>
-    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
+    /// <response code="400">Query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("tariffs/search")]
     public async Task<IActionResult> getTariffList([FromQuery] string q)
-    { 
+    {
         if (string.IsNullOrWhiteSpace(q))
         {
-            return BadRequest("Query parameter 'q' is required.");
+            throw new BadRequestException("Query parameter 'q' is required.");
         }
 
         var parts = q.Split(':');
         if (parts.Length != 2)
         {
-            return BadRequest("Query parameter 'q' is not in the correct format.");
+            throw new BadRequestException("Query parameter 'q' is not in the correct format.");
         }
 
         var key = parts[0].ToLower();
@@ -65,52 +68,50 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
             _ => BadRequest("Unknown search key.")
         };
     }
-    
+
+    /// <summary>
+    ///  Returns the list of tariff type.
+    /// </summary>
+    /// <response code="200">Return existing resources (can be empty list).</response>
     [HttpGet]
     [Route("tariffs/types")]
     public async Task<ActionResult> getTariffTypeList()
     {
-        var result = await controller.getTariffTypeList();
-
-        return Ok(result);
+        return Ok(await controller.getTariffTypeList());
     }
 
-    /// <summary>Additional late fee applies.</summary>
-    /// <response code=
-    /// "200">Returns the search results.</response>
-    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
-    /// <response code="461">If the resource is already update.</response>
+    /// <summary>Applies arrears to overdue tariff.</summary>
+    /// <response code="200">Returns the modified resource.</response>
+    /// <response code="400">Parameter is not valid.</response>
+    /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("arrears/{tariffId:int}")]
     public async Task<IActionResult> applyArrears(int tariffId)
     {
-        if (tariffId < 0)
-        {
-            return BadRequest("Invalid ID.");   
-        }
-
-        try
-        {
-            await controller.applyArrears(tariffId);
-            return Ok("Arrears applied");
-        }
-        catch(Exception e)
-        {
-            return BadRequest($"Server Error: {e.Message}");
-        }
+        var result = await controller.applyArrears(tariffId);
+        return Ok(result);
     }
 
+    /// <summary>Create new transaction resource.</summary>
+    /// <response code="201">If the new resource is created.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("transactions")]
     [ServiceFilter(typeof(ValidateModelFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
-    { 
+    {
         var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
-        return Ok(new { transactionId });
+        return CreatedAtAction(nameof(getInvoice), new { transactionId });
     }
+
     
+    /// <summary>
+    ///  Returns the invoice document of transactionId.
+    /// </summary>
+    /// <response code="200">Return existing resources.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
-    [Route("transactions/invoices/{transactionId}")]
+    [Route("documents/invoices/{transactionId}")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
         var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(transactionId);

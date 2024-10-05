@@ -15,7 +15,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return await daoFactory.accountingStudentDao!.getAll();
     }
     
-    public async Task<StudentEntity> getStudent(string studentId)
+    public async Task<StudentEntity> getStudentById(string studentId)
     {
         var student = await daoFactory.accountingStudentDao!.getById(studentId);
 
@@ -39,24 +39,26 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return daoFactory.tariffDao!.getOverdueList();
     }
 
-    public async Task applyArrears(int tariffId)
+    public async Task<TariffEntity> applyArrears(int tariffId)
     {
+        if (tariffId <= 0)
+        {
+            throw new BadRequestException("Invalid ID.");
+        }
+        
         var tariff = await daoFactory.tariffDao!.getById(tariffId);
 
         if (tariff is null)
         {
             throw new EntityNotFoundException("Tariff", tariffId.ToString());
         }
-
-        if (tariff.isLate)
-        {
-            throw new EntityUpdateConflictException("The property isLate is already true.");
-        }
         
         tariff.isLate = true;
         
         daoFactory.tariffDao!.update(tariff);
         await daoFactory.execute();
+        
+        return tariff;
     }
     
     public async Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
@@ -83,7 +85,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         }
         
         var cashier = await daoFactory.cashierDao!.getById(transaction.cashierId);
-        var student = await getStudent(transaction.studentId);
+        var student = await getStudentById(transaction.studentId);
         
         var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
 
