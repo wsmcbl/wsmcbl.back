@@ -14,7 +14,7 @@ public class StudentEntity
     
     public string fullName() => student.fullName();
     public string schoolYear => "Por implementar";
-    public string tutor => student.tutor.name;
+    public string tutor => "Por implementar";
     public bool isActive => student.isActive;
 
     public StudentEntity()

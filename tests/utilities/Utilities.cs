@@ -17,7 +17,7 @@ public static class Utilities
             var responseContent = await response.Content.ReadAsStringAsync();
             var problemDetails = JsonConvert.DeserializeObject<ProblemDetails>(responseContent);
 
-            var message = problemDetails == null ? $"\n\tError message: {e.Message}" :
+            var message = problemDetails == null ? $"\n\tError message: {e.Message} \n\tTrace: {e.StackTrace}" :
                 $"\n\n\tTitle: {problemDetails.Title}\n\tDetail: {problemDetails.Detail}\n\tStatus: {problemDetails.Status}.\n";
             throw new ArgumentException(message);
         }
