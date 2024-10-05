@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using wsmcbl.src.middleware.filter;
 
 namespace wsmcbl.src.utilities;
 
@@ -31,6 +32,8 @@ public static class SwaggerServiceExtensions
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(path1: AppContext.BaseDirectory, path2: xmlFile);
             options.IncludeXmlComments(filePath: xmlPath);
+            
+            options.OperationFilter<RemoveDefaultSuccessResponseFilter>();
         });
     }
 }
