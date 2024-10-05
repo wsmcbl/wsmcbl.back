@@ -88,8 +88,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("arrears/{tariffId:int}")]
     public async Task<IActionResult> applyArrears(int tariffId)
     {
-        var result = await controller.applyArrears(tariffId);
-        return Ok(result);
+        return Ok(await controller.applyArrears(tariffId));
     }
 
     /// <summary>Create new transaction resource.</summary>

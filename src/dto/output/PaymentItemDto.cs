@@ -1,3 +1,5 @@
+using wsmcbl.src.model.accounting;
+
 namespace wsmcbl.src.dto.output;
 
 public class PaymentItemDto
@@ -15,5 +17,23 @@ public class PaymentItemDto
     public void setDiscount(float value)
     {
         discount = amount - value;
+    }
+
+    public PaymentItemDto()
+    {
+    }
+
+    public PaymentItemDto(DebtHistoryEntity entity)
+    {
+        tariffId = entity.tariffId;
+        concept = entity.tariff.concept;
+        amount = entity.tariff.amount;
+        itPaidLate = entity.tariff.isLate;
+        schoolYear = entity.tariff.schoolYear!;
+        arrears = entity.arrears;
+        subTotal = entity.amount;
+        debtBalance = entity.getDebtBalance();
+        
+        setDiscount(entity.subAmount);
     }
 }

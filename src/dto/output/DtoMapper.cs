@@ -36,47 +36,8 @@ public static class DtoMapper
         return detail;
     }
 
-    public static PaymentItemDto mapToDto(this DebtHistoryEntity entity)
-    {
-        var tariff = new PaymentItemDto
-        {
-            tariffId = entity.tariffId,
-            concept  = entity.tariff.concept,
-            amount = entity.tariff.amount,
-            itPaidLate = entity.tariff.isLate,
-            schoolYear = entity.tariff.schoolYear!,
-            arrears = entity.arrears,
-            subTotal = entity.amount,
-            debtBalance = entity.getDebtBalance()
-        };
-
-        tariff.setDiscount(entity.subAmount);
-        
-        return tariff;
-    }
-    
-    public static StudentDto mapToDto(this StudentEntity student)
-    {
-        var dto = new StudentDto
-        {
-            studentId = student.studentId!,
-            fullName = student.fullName(),
-            enrollmentLabel = student.enrollmentLabel,
-            tutor = student.tutor,
-            discount = student.getDiscount(),
-            isActive = student.isActive,
-            paymentHistory = []
-        };
-
-        student.debtHistory ??= [];
-        
-        foreach (var item in student.debtHistory)
-        {
-            dto.paymentHistory.Add(item.mapToDto());
-        }
-
-        return dto;
-    }
+    public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
+    public static StudentDto mapToDto(this StudentEntity student) => new(student);
 
     private static BasicStudentDto mapToBasicDto(this StudentEntity student)
     {
