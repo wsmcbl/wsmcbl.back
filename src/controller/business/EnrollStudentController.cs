@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -45,7 +46,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
-        var printController = new PrintDocumentController(daoFactory);
-        return await printController.getEnrollDocument(studentId);
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getEnrollDocument(studentId);
     }
 }

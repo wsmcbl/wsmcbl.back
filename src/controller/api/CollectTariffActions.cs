@@ -112,10 +112,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("documents/invoices/{transactionId}")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
-        var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(transactionId);
-        var dto = transaction.mapToDto(student, cashier);
-        dto.generalBalance = generalBalance;
-
-        return Ok(dto);
+        var result = await controller.getInvoiceDocument(transactionId);
+        return File(result, "application/pdf", $"{transactionId}.invoice.pdf");
     }
 }

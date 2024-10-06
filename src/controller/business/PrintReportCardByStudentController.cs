@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
@@ -20,8 +21,8 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
 
     public async Task<byte[]> getReportCard(string studentId)
     {
-        var printController = new PrintDocumentController(daoFactory);
-        return await printController.getReportCardByStudent(studentId);
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getReportCardByStudent(studentId);
     }
 
     public async Task<bool> getStudentSolvency(string studentId)
