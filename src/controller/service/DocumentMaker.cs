@@ -1,10 +1,9 @@
-using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
-namespace wsmcbl.src.controller.business;
+namespace wsmcbl.src.controller.service;
 
-public class PrintDocumentController(DaoFactory daoFactory) : PdfController
+public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
     public async Task<byte[]> getReportCardByStudent(string studentId)
     {
@@ -30,17 +29,15 @@ public class PrintDocumentController(DaoFactory daoFactory) : PdfController
             .build();
         
         setLatexBuilder(latexBuilder);
-        
         return getPDF();
     }
 
     private async Task<List<(string initials, string subjectId)>> getSubjectSort(string enrollmentId)
     {
         var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(enrollmentId);
-
+        
         return subjectList.Select(item => (item.getInitials, item.subjectId)).ToList();
     }
-    
     
     public async Task<byte[]> getEnrollDocument(string studentId)
     {
@@ -49,8 +46,18 @@ public class PrintDocumentController(DaoFactory daoFactory) : PdfController
         
         var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
         latexBuilder.setGrade(enrollment.label);
+        
         setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
 
+    public async Task<byte[]> getInvoiceDocument(string transaction)
+    {
+        var result = await daoFactory.transactionDao!.getById(transaction);
+        var latexBuilder = new InvoiceLatexBuilder(resource, $"{resource}/out");
+        latexBuilder.setTransaction(result!);
+        
+        setLatexBuilder(latexBuilder);
         return getPDF();
     }
 }

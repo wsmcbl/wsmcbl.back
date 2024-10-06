@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -99,6 +100,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
 
     public async Task<byte[]> getInvoiceDocument(string transactionId)
     {
-        throw new NotImplementedException();
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getInvoiceDocument(transactionId);
     }
 }
