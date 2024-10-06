@@ -26,10 +26,6 @@ public class AccountingStudentDto
         isActive = student.isActive;
         
         student.debtHistory ??= [];
-        paymentHistory = [];
-        foreach (var item in student!.debtHistory)
-        {
-            paymentHistory!.Add(item.mapToDto());
-        }
+        paymentHistory = student.debtHistory.Select(e => e.mapToDto()).ToList();
     }
 }

@@ -23,22 +23,12 @@ public class StudentEntity
 
     public float getDiscount()
     {
-        if (discount == null)
-        {
-            return 0;
-        }
-        
-        return discount!.amount;
+        return discount != null ? discount!.amount : 0;
     }
     
     public float calculateDiscount(float amount)
     {
-        if (discount == null)
-        {
-            return amount;
-        }
-        
-        return amount*getDiscount();
+        return discount != null ? amount*getDiscount() : amount;
     }
 
     public async Task loadDebtHistory(IDebtHistoryDao? dao)

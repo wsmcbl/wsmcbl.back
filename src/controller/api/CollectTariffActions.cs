@@ -14,7 +14,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     /// <summary>
     ///  Returns the list of active students.
     /// </summary>
-    /// <response code="200">Return existing resources (can be empty list).</response>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     [HttpGet]
     [Route("students")]
     public async Task<IActionResult> getStudentList()
