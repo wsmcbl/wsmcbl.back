@@ -2,7 +2,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
 
-public class DetailDtoTest
+public class InvoiceDetailDtoTest
 {
     [Fact]
     public void toEntity_ShouldReturnTransactionTariffEntity_WhenCalled()
