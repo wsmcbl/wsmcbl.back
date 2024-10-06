@@ -3,7 +3,7 @@ using wsmcbl.src.dto.accounting;
 
 namespace wsmcbl.src.middleware.filter;
 
-internal class DetailDtoValidator : AbstractValidator<DetailDto>
+internal class DetailDtoValidator : AbstractValidator<TransactionDetailDto>
 {
     public DetailDtoValidator()
     {

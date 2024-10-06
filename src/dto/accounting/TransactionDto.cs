@@ -10,7 +10,7 @@ public class TransactionDto
     [Required] public string? cashierId { get; set; }
     [Required] public string? studentId { get; set; }
     [JsonRequired] public DateTime dateTime { get; set; }
-    [Required] public List<DetailDto> details { get; set; } = [];
+    [Required] public List<TransactionDetailDto> details { get; set; } = [];
     
     public virtual List<DebtHistoryEntity> getDetailToApplyArrears() => details.toEntity();
 
