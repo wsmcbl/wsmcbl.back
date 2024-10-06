@@ -4,7 +4,7 @@ using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
 
-public class DetailDto : IBaseDto<TransactionTariffEntity>
+public class TransactionDetailDto : IBaseDto<TransactionTariffEntity>
 {
     [Required] public int tariffId { get; set; }
     [JsonRequired] public float amount { get; set; }
@@ -19,4 +19,8 @@ public class DetailDto : IBaseDto<TransactionTariffEntity>
         };
     }
 
+    public DebtHistoryEntity toDebtEntity()
+    {
+        return new DebtHistoryEntity { tariffId = tariffId };
+    }
 }

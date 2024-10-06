@@ -1,4 +1,4 @@
-using wsmcbl.src.dto.output;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 

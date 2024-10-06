@@ -1,4 +1,4 @@
-using wsmcbl.src.dto.output;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
@@ -9,7 +9,7 @@ namespace wsmcbl.tests.utilities;
 
 public class TestDtoOutputGenerator
 {
-    private DetailDto? _detailDto;
+    private InvoiceDetailDto? _detailDto;
     private PaymentItemDto? _paymentItemDto;
     private InvoiceDto? _invoiceDto;
 
@@ -78,12 +78,12 @@ public class TestDtoOutputGenerator
         };
     }
 
-    public DetailDto aDetailDto(TariffEntity tariff, StudentEntity student)
+    public InvoiceDetailDto aDetailDto(TariffEntity tariff, StudentEntity student)
     {
         if (_detailDto != null)
             return _detailDto;
         
-        _detailDto = new DetailDto
+        _detailDto = new InvoiceDetailDto
         {
             tariffId = tariff.tariffId,
             schoolYear = tariff.schoolYear!,

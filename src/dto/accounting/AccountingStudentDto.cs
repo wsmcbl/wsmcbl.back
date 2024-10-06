@@ -1,8 +1,8 @@
 using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.accounting;
 
-public class StudentDto
+public class AccountingStudentDto
 {
     public string studentId { get; set; } = null!; 
     public string fullName { get; set; } = null!;
@@ -12,11 +12,11 @@ public class StudentDto
     public bool isActive { get; set; }
     public ICollection<PaymentItemDto>? paymentHistory { get; set; }
 
-    public StudentDto()
+    public AccountingStudentDto()
     {
     }
 
-    public StudentDto(StudentEntity student)
+    public AccountingStudentDto(StudentEntity student)
     {
         studentId = student.studentId!;
         fullName = student.fullName();

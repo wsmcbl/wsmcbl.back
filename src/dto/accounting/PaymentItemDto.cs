@@ -1,6 +1,6 @@
 using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.output;
+namespace wsmcbl.src.dto.accounting;
 
 public class PaymentItemDto
 {

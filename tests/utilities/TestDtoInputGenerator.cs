@@ -27,9 +27,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static DetailDto aDetailDto()
+    public static TransactionDetailDto aDetailDto()
     {
-        return new DetailDto
+        return new TransactionDetailDto
         {
             tariffId = 10,
             amount = 700,
