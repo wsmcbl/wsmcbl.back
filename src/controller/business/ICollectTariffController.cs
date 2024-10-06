@@ -13,6 +13,7 @@ public interface ICollectTariffController
     public Task<TariffEntity> applyArrears(int tariffId);
     
     public Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList);
-    public Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId);
     public Task<List<TariffTypeEntity>> getTariffTypeList();
+
+    public Task<byte[]> getInvoiceDocument(string transactionId);
 }

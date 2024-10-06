@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.exception;
 
 namespace wsmcbl.src.controller.business;
 
@@ -21,7 +22,7 @@ public class PdfController
     {
         if (latexBuilder == null)
         {
-            throw new ArgumentException("LatexBuilder object must not be null.");
+            throw new InternalException("LatexBuilder object must not be null.");
         }
         
         latexBuilder!.build();

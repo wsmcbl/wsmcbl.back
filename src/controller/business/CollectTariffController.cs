@@ -76,7 +76,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
     }
 
     public async Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId)
-    {
+    {///dfasdfalskdjflaksjdflkajsdlfk
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
         
         if (transaction is null)
@@ -95,5 +95,10 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public Task<List<TariffTypeEntity>> getTariffTypeList()
     {
         return daoFactory.tariffTypeDao!.getAll();
+    }
+
+    public async Task<byte[]> getInvoiceDocument(string transactionId)
+    {
+        throw new NotImplementedException();
     }
 }
