@@ -44,7 +44,7 @@ CREATE TRIGGER trg_update_debt_history AFTER INSERT ON Accounting.Transaction_Ta
 
 
 -- Update debt history by pay registration debt --
-CREATE OR REPLACE FUNCTION Accounting.update_debt_by_pay_registration_history()
+CREATE OR REPLACE FUNCTION Accounting.update_debt_history_by_enroll_student()
     RETURNS TRIGGER AS $$
 DECLARE 
     t_type INTEGER;
@@ -58,7 +58,7 @@ BEGIN
         JOIN Accounting.tariff AS t ON t.tariffid = debt.tariffid
         JOIN accounting.student as s on s.studentid = debt.studentid
         JOIN accounting.discount as d on d.discountid = s.discountid
-    where debt.studentid = new.studentid;
+    where debt.studentid = NEW.studentid;
 
     SELECT schoolyearid INTO current_school_year
     FROM secretary.schoolyear
@@ -84,8 +84,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_update_debt_by_pay_registration_history AFTER update ON Accounting.debthistory
-    FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_by_pay_registration_history();
+CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER update ON academy.student
+    FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history_by_enroll_student();
     
 
 -- Update debt history by tariff overdue--
