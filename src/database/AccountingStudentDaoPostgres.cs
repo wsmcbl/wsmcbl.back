@@ -9,13 +9,20 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 {
     public new async Task<List<StudentEntity>> getAll()
     {
-        var list = await entities
-            .Where(e => e.isActive)
-            .Include(d => d.student).ToListAsync();
+        FormattableString query = $@"select std.* from accounting.student std 
+        join secretary.student as sec_std on sec_std.studentid = std.studentid
+        where sec_std.studentstate = 'true'";
+
+        var list = await context.Set<StudentEntity>()
+            .FromSqlInterpolated(query)
+            .AsNoTracking()
+            .Include(e => e.student)
+            .ThenInclude(e => e.tutor)
+            .ToListAsync();
         
         foreach (var item in list)
         {
-            item.enrollmentLabel = await getEnrollmentLabel(item.studentId!);
+            await setEnrollmentLabel(item);
         }
 
         return list;
@@ -35,7 +42,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
             throw new EntityNotFoundException("Student", id);
         }
 
-        student.enrollmentLabel = await getEnrollmentLabel(student.studentId!);
+        await setEnrollmentLabel(student);
         
         foreach (var transaction in student.transactions!)
         {
@@ -49,19 +56,15 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         return student;
     }
 
-    private async Task<string> getEnrollmentLabel(string studentId)
+    private async Task setEnrollmentLabel(StudentEntity student)
     {
-        var academyStudent = await context.Set<model.academy.StudentEntity>()
-            .FirstOrDefaultAsync(e => e.studentId == studentId);
+        var sql = @"SELECT enroll.label as EnrollmentLabel
+                       FROM academy.student as std
+                       JOIN academy.enrollment as enroll ON enroll.enrollmentid = std.enrollmentid
+                       WHERE std.studentid = @p0";
 
-        if (academyStudent == null)
-        {
-            return "";
-        }
-        
-        var enrollment = await context.Set<model.academy.EnrollmentEntity>()
-            .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
-
-        return enrollment != null ? enrollment.label : "Sin matrícula.";
+        student.enrollmentLabel = await context.Database
+            .SqlQueryRaw<string>(sql, student.studentId!)
+            .FirstOrDefaultAsync();
     }
 }

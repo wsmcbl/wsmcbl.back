@@ -80,9 +80,11 @@ internal class SecretaryContext
             entity.Property(e => e.religion).HasColumnName("religion");
             entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
             entity.Property(e => e.tutorId).HasMaxLength(15).HasColumnName("tutorid");
+            
+            entity.HasOne(e => e.tutor).WithMany()
+                .HasForeignKey(e => e.tutorId);
 
             entity.Ignore(e => e.file);
-            entity.Ignore(e => e.tutor);
             entity.Ignore(e => e.parents);
             entity.Ignore(e => e.measurements);
         });
