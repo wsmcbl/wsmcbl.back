@@ -3,11 +3,8 @@ namespace wsmcbl.src.model.accounting;
 public class TransactionTariffEntity
 {
     public string transactionId { get; set; } = null!;
-
     public int tariffId { get; set; }
-    
     public float amount { get; set; }
-    
     
     private TariffEntity tariff = null!;
     

@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{setspace}
 \usepackage[spanish]{babel}
+\usepackage{longtable}
 \usepackage[paperwidth=7.5cm,paperheight=\paperheight,left=5mm,right=5mm,top=1cm,bottom=1cm]{geometry}
 
 \setlength{\parskip}{1.5mm}
@@ -29,8 +30,7 @@
 \newcommand{\cashier}{cashier.value}
 \newcommand{\datetime}{datetime.value}
 \newcommand{\clientName}{client.name.value}
-\newcommand{\thenumber}{number.value}
-\newcommand{\theserie}{serie.value}
+\newcommand{\thenumber}{numeration.value}
 \newcommand{\total}{total.value}
 \newcommand{\generalBalance}{general.balance.value}
 \newcommand{\detail}{detail.value}
@@ -46,31 +46,25 @@
             Dir: Estrada norte Centro Comercial Managua, 1 c. al Este, 1/2 c. al Sur. Managua, Nicaragua.\par
         }
         \textbf{RECIBO OFICIAL DE CAJA}\par
-        No. \thenumber - \theserie
+        No. \thenumber
     \end{center}
-    Hemos recibido de: \clientName\par
+    \textbf{Hemos recibido de:} \clientName\par
+
+    \begin{longtable}{p{3.8cm} p{1.8cm}}
+        \hline
+        \multicolumn{2}{c}{\textbf{Concepto de pago}} \\\\
+        \textbf{Arancel} & \textbf{Monto} \\\\
+        \detail\\
+        \textbf{Total} & \total\\
+        \hline
+        \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
+        Efectivo & \total\\
+        \\\textbf{Total} & \total\\
+        \hline
+        \multicolumn{2}{c}{\textbf{Tipo de cambio}} \\\\
+        \multicolumn{2}{c}{\$ 1 $\implies$ C\$ 36.7}\\
+    \end{longtable}
     
-    \begin{table}[H]
-        \centering
-        \hrule
-        \begin{tabular}{p{4cm} p{2cm}}
-            \multicolumn{2}{c}{\textbf{Concepto de pago}} \\\\
-            \textbf{Arancel} & \textbf{Monto} \\\\
-            \detail
-            \\\textbf{Total} & \total
-        \end{tabular}
-        \hrule
-        \begin{tabular}{p{4cm} p{2cm}}
-            \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
-            Efectivo & \$ \total\\
-            \\\textbf{Total} & \total
-        \end{tabular}
-        \hrule
-        \begin{tabular}{c}
-            \textbf{Tipo de cambio}\\
-            \$ 1 $\implies$ C\$ 36.7
-        \end{tabular}
-    \end{table}
     \textbf{Cajero:} \cashier\par
     \textbf{Fecha:} \datetime
 

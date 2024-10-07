@@ -99,7 +99,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
-        return CreatedAtAction(nameof(getInvoice), new { transactionId });
+        return CreatedAtAction(nameof(getInvoice), new { transactionId }, null);
     }
 
     
