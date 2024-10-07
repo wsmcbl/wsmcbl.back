@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
@@ -20,10 +21,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
             .ThenInclude(e => e.tutor)
             .ToListAsync();
         
-        foreach (var item in list)
-        {
-            await setEnrollmentLabel(item);
-        }
+        await setEnrollmentLabelsForStudents(list);
 
         return list;
     }
@@ -33,6 +31,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         var student = await entities
             .Include(e => e.discount)
             .Include(e => e.student)
+            .ThenInclude(d => d.tutor)
             .Include(e => e.transactions)!
             .ThenInclude(t => t.details)
             .FirstOrDefaultAsync(e => e.studentId == id);
@@ -55,16 +54,62 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         
         return student;
     }
-
+    
     private async Task setEnrollmentLabel(StudentEntity student)
     {
-        var sql = @"SELECT enroll.label as EnrollmentLabel
-                       FROM academy.student as std
-                       JOIN academy.enrollment as enroll ON enroll.enrollmentid = std.enrollmentid
-                       WHERE std.studentid = @p0";
+        const string sql = @"SELECT enroll.label
+                       FROM academy.student AS std
+                       JOIN academy.enrollment AS enroll ON enroll.enrollmentid = std.enrollmentid
+                       WHERE std.studentid = @p0
+                       LIMIT 1";
 
-        student.enrollmentLabel = await context.Database
-            .SqlQueryRaw<string>(sql, student.studentId!)
-            .FirstOrDefaultAsync();
+        await using var command = context.Database.GetDbConnection().CreateCommand();
+        command.CommandText = sql;
+        command.Parameters.Add(new NpgsqlParameter("@p0", student.studentId));
+        await context.Database.OpenConnectionAsync();
+
+        await using (var reader = await command.ExecuteReaderAsync())
+        {
+            student.enrollmentLabel = await reader.ReadAsync() ? reader.GetString(0) : "Sin matrícula";
+        }
+        
+        await context.Database.CloseConnectionAsync();
+    }
+    
+    private async Task setEnrollmentLabelsForStudents(List<StudentEntity> students)
+    {
+        var studentIds = students.Select(s => s.studentId).ToList();
+        var studentIdsInSql = string.Join(",", studentIds.Select(id => $"'{id}'"));
+
+        var sql = $@"
+        SELECT std.studentid, enroll.label
+        FROM academy.student AS std
+        JOIN academy.enrollment AS enroll ON enroll.enrollmentid = std.enrollmentid
+        WHERE std.studentid IN ({studentIdsInSql})";
+
+        await context.Database.OpenConnectionAsync();
+        await using (var command = context.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = sql;
+            await using (var reader = await command.ExecuteReaderAsync())
+            {
+                var enrollmentLabels = new Dictionary<string, string>();
+                while (await reader.ReadAsync())
+                {
+                    var studentId = reader.GetString(0);
+                    var enrollmentLabel = reader.GetString(1);
+
+                    enrollmentLabels[studentId] = enrollmentLabel;
+                }
+
+                foreach (var student in students)
+                {
+                    student.enrollmentLabel = enrollmentLabels
+                        .GetValueOrDefault(student.studentId!, "Sin matrícula.");
+                }
+            }
+        }
+
+        await context.Database.CloseConnectionAsync();
     }
 }
