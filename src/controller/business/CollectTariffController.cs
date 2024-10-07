@@ -77,7 +77,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
     }
 
     public async Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId)
-    {///dfasdfalskdjflaksjdflkajsdlfk
+    {//dfasdfalskdjflaksjdflkajsdlfk
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
         
         if (transaction is null)

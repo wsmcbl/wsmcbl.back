@@ -51,11 +51,37 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return getPDF();
     }
 
-    public async Task<byte[]> getInvoiceDocument(string transaction)
+    public async Task<byte[]> getInvoiceDocument(string transactionId)
     {
-        var result = await daoFactory.transactionDao!.getById(transaction);
-        var latexBuilder = new InvoiceLatexBuilder(resource, $"{resource}/out");
-        latexBuilder.setTransaction(result!);
+        var transaction = await daoFactory.transactionDao!.getById(transactionId);
+        if (transaction is null)
+        {
+            throw new EntityNotFoundException("Transaction", transactionId);
+        }
+        
+        var cashier = await daoFactory.cashierDao!.getById(transaction.cashierId);
+        if (cashier is null)
+        {
+            throw new EntityNotFoundException("Cashier", transaction.cashierId);
+        }
+        
+        var student = await daoFactory.accountingStudentDao!.getById(transaction.studentId);
+        if (student is null)
+        {
+            throw new EntityNotFoundException("Student", transaction.studentId);
+        }
+        
+        var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
+        
+        var latexBuilder = new InvoiceLatexBuilder
+            .Builder(resource, $"{resource}/out")
+            .withStudent(student)
+            .withTransaction(transaction)
+            .withCashier(cashier)
+            .withGeneralBalance(generalBalance)
+            .withNumber(1000)
+            .withSerie("A")
+            .build();
         
         setLatexBuilder(latexBuilder);
         return getPDF();

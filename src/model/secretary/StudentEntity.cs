@@ -27,6 +27,11 @@ public class StudentEntity
     {
         return $"{name} {secondName} {surname} {secondSurname}";
     }
+
+    public string getTutorName()
+    {
+        return tutor.name;
+    }
     
     public void update(StudentEntity entity)
     {
