@@ -48,7 +48,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
         }
         
         var tariff = await daoFactory.tariffDao!.getById(tariffId);
-
         if (tariff is null)
         {
             throw new EntityNotFoundException("Tariff", tariffId.ToString());
@@ -74,23 +73,6 @@ public class CollectTariffController : BaseController, ICollectTariffController
         await daoFactory.execute();
 
         return transaction.transactionId!;
-    }
-
-    public async Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId)
-    {//dfasdfalskdjflaksjdflkajsdlfk
-        var transaction = await daoFactory.transactionDao!.getById(transactionId);
-        
-        if (transaction is null)
-        {
-            throw new EntityNotFoundException("Transaction", transactionId);
-        }
-        
-        var cashier = await daoFactory.cashierDao!.getById(transaction.cashierId);
-        var student = await getStudentById(transaction.studentId);
-        
-        var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
-
-        return (transaction, student, cashier!, generalBalance);
     }
 
     public Task<List<TariffTypeEntity>> getTariffTypeList()
