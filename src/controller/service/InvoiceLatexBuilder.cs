@@ -19,7 +19,8 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.Replace("numeration.value", $"{number.ToString()}-{series}");
         content = content.Replace("client.name.value", student.fullName());
         content = content.Replace("detail.value", getDetail());
-        content = content.Replace("total.value", $"C\\$ {transaction.total:F2}");
+        content = content.Replace("total.value", $"C\\$ {total:F2}");
+        content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
         content = content.Replace("cashier.value", cashier.fullName());
         content = content.Replace("datetime.value", transaction.date.ToString(CultureInfo.InvariantCulture));
         content = content.Replace("general.balance.value", getGeneralBalance());
@@ -27,6 +28,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         return content;
     }
 
+    private float total;
     private string getDetail()
     {
         var detail = transaction.details.Select(e => new
@@ -40,8 +42,8 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         var content = "";
         foreach (var item in detail)
         {
-            var _amount = item.amount - item.discount + item.arrears;
-            content = $"{content} {item.concept} & C\\$ {_amount:F2}\\\\";
+            total += item.amount;
+            content = $"{content} {item.concept} & C\\$ {item.amount:F2}\\\\";
         }
 
         return content;
