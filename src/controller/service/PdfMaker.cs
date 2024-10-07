@@ -1,13 +1,13 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.exception;
 
-namespace wsmcbl.src.controller.business;
+namespace wsmcbl.src.controller.service;
 
-public class PdfController
+public class PdfMaker
 {
     protected readonly string resource;
     private LatexBuilder? latexBuilder;
 
-    protected PdfController()
+    protected PdfMaker()
     {
         resource = Environment.GetEnvironmentVariable("Resource_Directory")!;
     }
@@ -21,7 +21,7 @@ public class PdfController
     {
         if (latexBuilder == null)
         {
-            throw new ArgumentException("LatexBuilder object must not be null.");
+            throw new InternalException("LatexBuilder object must not be null.");
         }
         
         latexBuilder!.build();

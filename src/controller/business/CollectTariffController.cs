@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -76,7 +77,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
     }
 
     public async Task<(TransactionEntity, StudentEntity, CashierEntity, float[])> getFullTransaction(string transactionId)
-    {
+    {//dfasdfalskdjflaksjdflkajsdlfk
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
         
         if (transaction is null)
@@ -95,5 +96,11 @@ public class CollectTariffController : BaseController, ICollectTariffController
     public Task<List<TariffTypeEntity>> getTariffTypeList()
     {
         return daoFactory.tariffTypeDao!.getAll();
+    }
+
+    public async Task<byte[]> getInvoiceDocument(string transactionId)
+    {
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getInvoiceDocument(transactionId);
     }
 }

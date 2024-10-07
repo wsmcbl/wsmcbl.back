@@ -99,7 +99,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
-        return CreatedAtAction(nameof(getInvoice), new { transactionId });
+        return CreatedAtAction(nameof(getInvoice), new { transactionId }, null);
     }
 
     
@@ -112,10 +112,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [Route("documents/invoices/{transactionId}")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
-        var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(transactionId);
-        var dto = transaction.mapToDto(student, cashier);
-        dto.generalBalance = generalBalance;
-
-        return Ok(dto);
+        var result = await controller.getInvoiceDocument(transactionId);
+        return File(result, "application/pdf", $"{transactionId}.invoice.pdf");
     }
 }
