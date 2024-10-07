@@ -27,6 +27,6 @@ public class PriorityOrderer : ITestCaseOrderer
         }
     }
 
-    private static TValue GetOrCreate<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TKey : struct where TValue : new()
-        => dictionary.TryGetValue(key, out TValue? result) ? result : (dictionary[key] = new TValue());
+    private static TValue GetOrCreate<TValue>(IDictionary<int, TValue> dictionary, int key) where TValue : new()
+        => dictionary.TryGetValue(key, out var result) ? result : dictionary[key] = new TValue();
 }

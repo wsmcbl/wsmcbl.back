@@ -95,7 +95,7 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("transactions")]
-    [ServiceFilter(typeof(ValidateModelFilterAttribute))]
+    [ServiceFilter(typeof(ValidateModelActionFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());

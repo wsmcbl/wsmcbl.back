@@ -24,6 +24,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
         }
 
         student.tutorId = existingTutor.tutorId!;
+        student.tutor = existingTutor;
         daoFactory.studentDao!.create(student);
         await daoFactory.execute();
 

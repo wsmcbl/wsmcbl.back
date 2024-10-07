@@ -46,7 +46,7 @@ public class StudentDaoPostgres(PostgresContext context)
     public async Task<StudentEntity?> getByInformation(StudentEntity student)
     {
         return (await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync())
-            .FirstOrDefault(e => student.getStringData().Equals(e.getStringData()));
+            .Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
     public async Task<List<StudentEntity>> getAllWithSolvency()
