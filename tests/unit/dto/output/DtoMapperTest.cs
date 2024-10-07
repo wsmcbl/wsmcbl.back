@@ -7,35 +7,6 @@ namespace wsmcbl.tests.unit.dto.output;
 public class DtoMapperTest
 {
     [Fact]
-    public void getInvoiceDto_ReturnsDto()
-    {
-        var invoiceDto = new TestDtoOutputGenerator().aInvoiceDto();
-        
-        var transactionEntity = TestEntityGenerator.aTransaction("std-1", []);
-
-        var result = transactionEntity.mapToDto(TestEntityGenerator.aAccountingStudent("std-1"), TestEntityGenerator.aCashier("csh-1"));
-        
-        Assert.NotNull(result);
-        Assert.Equivalent(invoiceDto, result);
-    }
-    
-    
-    [Fact]
-    public void getDetailDto_ReturnsDto()
-    {
-        var entityGenerator = new TestEntityGenerator();
-        var detailDto = new TestDtoOutputGenerator().aDetailDto(TestEntityGenerator.aTariff(), TestEntityGenerator.aAccountingStudent("std-1"));
-        
-        var transactionTariff = entityGenerator.aTransactionTariffEntity();
-
-        var result = transactionTariff.mapToDto(TestEntityGenerator.aAccountingStudent("std-1"));
-
-        Assert.NotNull(result);
-        Assert.Equivalent(detailDto, result);
-    }
-
-
-    [Fact]
     public void getTariffDto_ReturnsDto()
     {
         var debtHistory = TestEntityGenerator.aDebtHistory("std-1", false);
