@@ -9,9 +9,7 @@ namespace wsmcbl.tests.utilities;
 
 public class TestDtoOutputGenerator
 {
-    private InvoiceDetailDto? _detailDto;
     private PaymentItemDto? _paymentItemDto;
-    private InvoiceDto? _invoiceDto;
 
     public static List<DegreeEntity> aGradeList()
     {
@@ -62,42 +60,7 @@ public class TestDtoOutputGenerator
             }
         ];
     }
-
-
-    public InvoiceDto aInvoiceDto()
-    {
-        return _invoiceDto ??= new InvoiceDto
-        {
-            transactionId = "tst-1",
-            cashierName = "name-v sn surname-v ssn",
-            studentId = "std-1",
-            studentName = TestEntityGenerator.aStudent("std00").fullName(),
-            total = 700,
-            dateTime = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
-            detail = []
-        };
-    }
-
-    public InvoiceDetailDto aDetailDto(TariffEntity tariff, StudentEntity student)
-    {
-        if (_detailDto != null)
-            return _detailDto;
-        
-        _detailDto = new InvoiceDetailDto
-        {
-            tariffId = tariff.tariffId,
-            schoolYear = tariff.schoolYear!,
-            concept = tariff.concept,
-            amount = tariff.amount,
-            discount = student.calculateDiscount(tariff.amount),
-            itPaidLate = tariff.isLate
-        };
-        
-        _detailDto.arrears = (float)(_detailDto.itPaidLate ? _detailDto.amount * 0.1 : 0);
-
-        return _detailDto;
-    }
-
+    
     public PaymentItemDto aPaymentDto(DebtHistoryEntity entity)
     {
         if (_paymentItemDto != null)

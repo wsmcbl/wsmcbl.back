@@ -156,47 +156,6 @@ public class CollectTariffControllerTest
         transactionDao.Received().create(entity);
         Assert.Equal(entity.transactionId, result);
     }
-
-
-    [Fact]
-    public async Task getFullTransaction_ReturnsInvoice()
-    {
-        var initStudent = TestEntityGenerator.aAccountingStudent("std");
-        var initCashier = new CashierEntity{cashierId = "csh", user = new UserEntity()};
-        var initTransaction = new TransactionEntity { transactionId = "std", studentId = "std", cashierId = "csh" };
-        
-        var cashierDao = Substitute.For<ICashierDao>();
-        var transactionDao = Substitute.For<ITransactionDao>();
-
-        cashierDao.getById("csh").Returns(initCashier);
-        tariffDao.getGeneralBalance("std").Returns([1, 2]);
-        transactionDao.getById(initTransaction.transactionId).Returns(initTransaction);
-        
-        daoFactory.tariffDao.Returns(tariffDao);
-        daoFactory.cashierDao.Returns(cashierDao);
-        daoFactory.transactionDao.Returns(transactionDao);
-        
-        controller.getStudentById("std").Returns(initStudent);
-
-        var (transaction, student, cashier, generalBalance) = await controller.getFullTransaction(initTransaction.transactionId);
-        
-        Assert.Equal(initTransaction, transaction);
-        Assert.Equal(initStudent, student);
-        Assert.Equal(initCashier, cashier);
-        Assert.Equal([1, 2], generalBalance);
-    }
-    
-    [Fact]
-    public async Task getFullTransaction_TransactionNull_ReturnsException()
-    {
-        const string transactionId = "std";
-        var transactionDao = Substitute.For<ITransactionDao>();
-        transactionDao.getById(transactionId).Returns(Task.FromResult<TransactionEntity?>(null));
-        daoFactory.transactionDao.Returns(transactionDao);
-
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getFullTransaction(transactionId));
-    }
-    
     
     [Fact]
     public async Task getTariffTypeList_ReturnsList()
