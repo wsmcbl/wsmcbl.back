@@ -14,21 +14,13 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     protected override string getTemplateName() => "invoice";
     
-    /*
-       \newcommand{\thenumber}{numeration.value}
-       \newcommand{\clientName}{client.name.value}
-       \newcommand{\detail}{detail.value}
-       \newcommand{\total}{total.value}
-       \newcommand{\cashier}{cashier.value}
-       \newcommand{\datetime}{datetime.value}
-       \newcommand{\generalBalance}{general.balance.value}
-     */
     protected override string updateContent(string content)
     {
         content = content.Replace("numeration.value", $"{number.ToString()}-{series}");
         content = content.Replace("client.name.value", student.fullName());
         content = content.Replace("detail.value", getDetail());
-        content = content.Replace("total.value", $"C\\$ {transaction.total:F2}");
+        content = content.Replace("total.value", $"C\\$ {total:F2}");
+        content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
         content = content.Replace("cashier.value", cashier.fullName());
         content = content.Replace("datetime.value", transaction.date.ToString(CultureInfo.InvariantCulture));
         content = content.Replace("general.balance.value", getGeneralBalance());
@@ -36,25 +28,22 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         return content;
     }
 
+    private float total;
     private string getDetail()
     {
-        var detail = transaction
-            .details
-            .Select(e 
-                => new {
-                    Concept = e.concept(),
-                    OfficialAmount = e.officialAmount(),
-                    CalculateArrear = e.calculateArrear(),
-                    Amout = student.calculateDiscount(e.officialAmount())});
+        var detail = transaction.details.Select(e => new
+        {
+            concept = e.concept(),
+            amount = e.officialAmount(),
+            arrears = e.calculateArrears(),
+            discount = student.calculateDiscount(e.officialAmount())
+        });
 
         var content = "";
-        var item = detail.First();
-
-        for (int i = 0; i < 40; i++)
+        foreach (var item in detail)
         {
-            
-            var amount = item.OfficialAmount - item.Amout + item.CalculateArrear;
-            content = $"{content} {item.Concept} & C\\$ {amount}\\\\";
+            total += item.amount;
+            content = $"{content} {item.concept} & C\\$ {item.amount:F2}\\\\";
         }
 
         return content;
@@ -65,7 +54,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         var value = generalBalance[0] - generalBalance[1];
         return $"C\\$ {value:F2}";
     }
-    
+
     public class Builder
     {
         private readonly InvoiceLatexBuilder latexBuilder;
@@ -107,7 +96,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             return this;
         }
 
-        public Builder withSerie(string parameter)
+        public Builder withSeries(string parameter)
         {
             latexBuilder.series = parameter;
             return this;

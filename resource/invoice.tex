@@ -27,13 +27,14 @@
 \newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
+\newcommand{\thenumber}{numeration.value}
+\newcommand{\clientName}{client.name.value}
+\newcommand{\detail}{detail.value}
+\newcommand{\total}{total.value}
+\newcommand{\finalTotal}{total.final.value}
 \newcommand{\cashier}{cashier.value}
 \newcommand{\datetime}{datetime.value}
-\newcommand{\clientName}{client.name.value}
-\newcommand{\thenumber}{numeration.value}
-\newcommand{\total}{total.value}
 \newcommand{\generalBalance}{general.balance.value}
-\newcommand{\detail}{detail.value}
 
 \begin{document}
     \begin{center}
@@ -48,7 +49,7 @@
         \textbf{RECIBO OFICIAL DE CAJA}\par
         No. \thenumber
     \end{center}
-    \textbf{Hemos recibido de:} \clientName\par
+    \textbf{Recibimos de:} \clientName\par
 
     \begin{longtable}{p{3.8cm} p{1.8cm}}
         \hline
@@ -58,8 +59,8 @@
         \textbf{Total} & \total\\
         \hline
         \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
-        Efectivo & \total\\
-        \\\textbf{Total} & \total\\
+        Efectivo & \finalTotal\\
+        \\\textbf{Total} & \finalTotal\\
         \hline
         \multicolumn{2}{c}{\textbf{Tipo de cambio}} \\\\
         \multicolumn{2}{c}{\$ 1 $\implies$ C\$ 36.7}\\
@@ -71,7 +72,7 @@
     \begin{table}[H]
         \centering
         \hrule
-        \begin{tabular}{p{3.5cm} p{2.5cm}}
+        \begin{tabular}{p{3.8cm} p{1.8cm}}
             \textbf{Balance general} & \generalBalance
         \end{tabular}
     \end{table}
