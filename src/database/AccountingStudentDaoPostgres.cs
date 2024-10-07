@@ -21,7 +21,10 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
             .ThenInclude(e => e.tutor)
             .ToListAsync();
         
-        await setEnrollmentLabelsForStudents(list);
+        if(list.Count != 0)
+        {
+            await setEnrollmentLabelsForStudents(list);
+        }
 
         return list;
     }

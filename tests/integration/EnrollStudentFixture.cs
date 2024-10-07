@@ -42,7 +42,7 @@ public class EnrollStudentFixture : BaseFixture
         await context.SaveChangesAsync();
     }
 
-    private async Task createAccountingStudent(StudentEntity studentEntity, DbContext context)
+    private static async Task createAccountingStudent(StudentEntity studentEntity, DbContext context)
     {
         var accountingStudent = new src.model.accounting.StudentEntity
         {
@@ -84,7 +84,7 @@ public class EnrollStudentFixture : BaseFixture
         student.tutor = tutor;
     }
 
-    private async Task seedTariff(DbContext context, string schoolyearId)
+    private static async Task seedTariff(DbContext context, string schoolyearId)
     {
         var tariffType = new TariffTypeEntity
         {

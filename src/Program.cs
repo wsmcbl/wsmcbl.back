@@ -20,7 +20,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(builder.getConnectionString()));
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
-builder.Services.AddScoped<ValidateModelFilterAttribute>();
+builder.Services.AddScoped<ValidateModelActionFilterAttribute>();
 
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();

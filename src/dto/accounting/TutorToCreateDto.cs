@@ -20,11 +20,6 @@ public class TutorToCreateDto
 
     public StudentTutorEntity toEntity()
     {
-        return new StudentTutorEntity
-        {
-            tutorId = null,
-            name = name,
-            phone = phone
-        };
+        return new StudentTutorEntity(name, phone);
     }
 }

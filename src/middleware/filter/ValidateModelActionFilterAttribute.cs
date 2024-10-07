@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace wsmcbl.src.middleware.filter;
 
-public class ValidateModelFilterAttribute : ActionFilterAttribute
+public class ValidateModelActionFilterAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
