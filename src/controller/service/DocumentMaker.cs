@@ -80,7 +80,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
             .withNumber(1000)
-            .withSerie("A")
+            .withSeries("A")
             .build();
         
         setLatexBuilder(latexBuilder);

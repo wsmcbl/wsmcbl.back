@@ -14,15 +14,6 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     protected override string getTemplateName() => "invoice";
     
-    /*
-       \newcommand{\thenumber}{numeration.value}
-       \newcommand{\clientName}{client.name.value}
-       \newcommand{\detail}{detail.value}
-       \newcommand{\total}{total.value}
-       \newcommand{\cashier}{cashier.value}
-       \newcommand{\datetime}{datetime.value}
-       \newcommand{\generalBalance}{general.balance.value}
-     */
     protected override string updateContent(string content)
     {
         content = content.Replace("numeration.value", $"{number.ToString()}-{series}");
@@ -38,23 +29,19 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getDetail()
     {
-        var detail = transaction
-            .details
-            .Select(e 
-                => new {
-                    Concept = e.concept(),
-                    OfficialAmount = e.officialAmount(),
-                    CalculateArrear = e.calculateArrear(),
-                    Amout = student.calculateDiscount(e.officialAmount())});
+        var detail = transaction.details.Select(e => new
+        {
+            concept = e.concept(),
+            amount = e.officialAmount(),
+            arrears = e.calculateArrears(),
+            discount = student.calculateDiscount(e.officialAmount())
+        });
 
         var content = "";
-        var item = detail.First();
-
-        for (int i = 0; i < 40; i++)
+        foreach (var item in detail)
         {
-            
-            var amount = item.OfficialAmount - item.Amout + item.CalculateArrear;
-            content = $"{content} {item.Concept} & C\\$ {amount}\\\\";
+            var _amount = item.amount - item.discount + item.arrears;
+            content = $"{content} {item.concept} & C\\$ {_amount:F2}\\\\";
         }
 
         return content;
@@ -65,7 +52,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         var value = generalBalance[0] - generalBalance[1];
         return $"C\\$ {value:F2}";
     }
-    
+
     public class Builder
     {
         private readonly InvoiceLatexBuilder latexBuilder;
@@ -107,7 +94,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             return this;
         }
 
-        public Builder withSerie(string parameter)
+        public Builder withSeries(string parameter)
         {
             latexBuilder.series = parameter;
             return this;
