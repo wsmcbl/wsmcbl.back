@@ -79,8 +79,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withTransaction(transaction)
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
-            .withNumber(1000)
+            .withNumber(4517)
             .withSeries("A")
+            .withExchangeRate(36.68f)
             .build();
         
         setLatexBuilder(latexBuilder);
