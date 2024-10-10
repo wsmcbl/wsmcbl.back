@@ -29,6 +29,7 @@
 
 \newcommand{\thenumber}{numeration.value}
 \newcommand{\clientName}{client.name.value}
+\newcommand{\clientId}{client.id.value}
 \newcommand{\detail}{detail.value}
 \newcommand{\total}{total.value}
 \newcommand{\finalTotal}{total.final.value}
@@ -39,17 +40,17 @@
 \begin{document}
     \begin{center}
         \textbf{ASOCIACIÓN DE IGLESIAS BAUTISTA INDEPENDIENTES DE NICARAGUA}\par
-        \textbf{(AIBIN)}\par
         {
             \small
-            RUC: J0810000088325\par
-            Teléfono: 2270-5587\par
-            Dir: Estrada norte Centro Comercial Managua, 1 c. al Este, 1/2 c. al Sur. Managua, Nicaragua.\par
+            RUC: J0810000088325\\
+            Teléfono: 2270-5587\\
+            Dirección: Estrada norte Centro Comercial Managua, 1 c. al Este, 1/2 c. al Sur. Managua, Nicaragua.\par
         }
         \textbf{RECIBO OFICIAL DE CAJA}\par
-        No. \thenumber
+        N° \thenumber
     \end{center}
     \textbf{Recibimos de:} \clientName\par
+    \textbf{Código:} \clientId
 
     \begin{longtable}{p{3.8cm} p{1.8cm}}
         \hline
@@ -59,21 +60,21 @@
         \textbf{Total} & \total\\
         \hline
         \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
+        Descuento & \finalTotal\\
+        Mora & \finalTotal\\
         Efectivo & \finalTotal\\
         \\\textbf{Total} & \finalTotal\\
         \hline
-        \multicolumn{2}{c}{\textbf{Tipo de cambio}} \\\\
-        \multicolumn{2}{c}{\$ 1 $\implies$ C\$ 36.7}\\
+        \multicolumn{2}{c}{\textbf{Tipo de cambio}} \\
+        \multicolumn{2}{c}{\$ 1 $\implies$ C\$ 36.65}\\\\
+        \hline
+        \textbf{Balance general} & \generalBalance
     \end{longtable}
     
     \textbf{Cajero:} \cashier\par
     \textbf{Fecha:} \datetime
-
-    \begin{table}[H]
-        \centering
-        \hrule
-        \begin{tabular}{p{3.8cm} p{1.8cm}}
-            \textbf{Balance general} & \generalBalance
-        \end{tabular}
-    \end{table}
+    \begin{center}
+        www.cbl-edu.com\par
+        ESTE RECIBO NO ES VÁLIDO SIN SELLO.
+    \end{center}
 \end{document}

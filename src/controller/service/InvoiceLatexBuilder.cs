@@ -16,7 +16,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     
     protected override string updateContent(string content)
     {
-        content = content.Replace("numeration.value", $"{number.ToString()}-{series}");
+        content = content.Replace("numeration.value", $"{series}{number.ToString()}");
         content = content.Replace("client.name.value", student.fullName());
         content = content.Replace("detail.value", getDetail());
         content = content.Replace("total.value", $"C\\$ {total:F2}");
