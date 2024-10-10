@@ -23,13 +23,13 @@ public class TransactionTariffEntity
         return tariff.amount;
     }
 
-    private bool itPaidLate()
+    public bool itPaidLate()
     {
         return tariff.isLate;
     }
 
     public float calculateArrears()
     {
-        return (float)(itPaidLate() ? officialAmount()*0.1 : 0);
+        return (float)(tariff.type == 1 && itPaidLate() ? officialAmount()*0.1 : 0);
     }
 }

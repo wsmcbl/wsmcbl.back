@@ -28,28 +28,32 @@
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
 \newcommand{\thenumber}{numeration.value}
-\newcommand{\clientName}{client.name.value}
+\newcommand{\customerName}{customer.name.value}
+\newcommand{\customerId}{customer.id.value}
 \newcommand{\detail}{detail.value}
 \newcommand{\total}{total.value}
+\newcommand{\discountTotal}{discount.value}
+\newcommand{\arrearsTotal}{arrears.value}
 \newcommand{\finalTotal}{total.final.value}
 \newcommand{\cashier}{cashier.value}
 \newcommand{\datetime}{datetime.value}
+\newcommand{\exchangeRate}{exchange.rate.value}
 \newcommand{\generalBalance}{general.balance.value}
 
 \begin{document}
     \begin{center}
         \textbf{ASOCIACIÓN DE IGLESIAS BAUTISTA INDEPENDIENTES DE NICARAGUA}\par
-        \textbf{(AIBIN)}\par
         {
             \small
-            RUC: J0810000088325\par
-            Teléfono: 2270-5587\par
-            Dir: Estrada norte Centro Comercial Managua, 1 c. al Este, 1/2 c. al Sur. Managua, Nicaragua.\par
+            RUC: J0810000088325\\
+            Teléfono: 2270-5587\\
+            Dirección: Estrada norte Centro Comercial Managua, 1 c. al Este, 1/2 c. al Sur. Managua, Nicaragua.\par
         }
         \textbf{RECIBO OFICIAL DE CAJA}\par
         No. \thenumber
     \end{center}
-    \textbf{Recibimos de:} \clientName\par
+    \textbf{Recibimos de:} \customerName\\
+    \textbf{Código:} \customerId
 
     \begin{longtable}{p{3.8cm} p{1.8cm}}
         \hline
@@ -59,21 +63,20 @@
         \textbf{Total} & \total\\
         \hline
         \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
-        Efectivo & \finalTotal\\
-        \\\textbf{Total} & \finalTotal\\
+        Descuento & \discountTotal\\
+        Mora & \arrearsTotal\\
+        Total & \finalTotal\\\\
+        \textbf{Efectivo} & \finalTotal\\
         \hline
-        \multicolumn{2}{c}{\textbf{Tipo de cambio}} \\\\
-        \multicolumn{2}{c}{\$ 1 $\implies$ C\$ 36.7}\\
+        \multicolumn{2}{c}{\textbf{Otros datos}}\\\\
+        \multicolumn{2}{c}{\textbf{Taza de cambio:} \$ 1 $\implies$ C\$ \exchangeRate}\\
+        \multicolumn{2}{c}{\textbf{Balance general:} \generalBalance}
     \end{longtable}
     
     \textbf{Cajero:} \cashier\par
     \textbf{Fecha:} \datetime
-
-    \begin{table}[H]
-        \centering
-        \hrule
-        \begin{tabular}{p{3.8cm} p{1.8cm}}
-            \textbf{Balance general} & \generalBalance
-        \end{tabular}
-    \end{table}
+    \begin{center}
+        www.cbl-edu.com\par
+        ESTE RECIBO NO ES VÁLIDO SIN SELLO.
+    \end{center}
 \end{document}
