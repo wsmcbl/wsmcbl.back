@@ -61,7 +61,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         return tariff;
     }
     
-    public async Task<string> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
+    public async Task<TransactionEntity> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
         if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
         {
@@ -72,7 +72,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
         daoFactory.transactionDao!.create(transaction);
         await daoFactory.execute();
 
-        return transaction.transactionId!;
+        return transaction;
     }
 
     public Task<List<TariffTypeEntity>> getTariffTypeList()

@@ -7,6 +7,7 @@ namespace wsmcbl.src.dto.accounting;
 
 public class TransactionDto
 {
+    public string transactionId { get; set; }
     [Required] public string? cashierId { get; set; }
     [Required] public string? studentId { get; set; }
     [JsonRequired] public DateTime dateTime { get; set; }
@@ -14,6 +15,19 @@ public class TransactionDto
     
     public virtual List<DebtHistoryEntity> getDetailToApplyArrears() => details.toEntity();
 
+
+    public TransactionDto()
+    {
+    }
+
+    public TransactionDto(TransactionEntity entity)
+    {
+        transactionId = entity.transactionId!;
+        cashierId = entity.transactionId;
+        studentId = entity.studentId;
+        dateTime = entity.date;
+    }
+    
     public virtual TransactionEntity toEntity()
     {
         var transaction = new TransactionEntity
