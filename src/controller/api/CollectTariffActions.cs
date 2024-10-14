@@ -98,8 +98,8 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     [ServiceFilter(typeof(ValidateModelActionFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
-        var transactionId = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
-        return CreatedAtAction(nameof(getInvoice), new { transactionId }, null);
+        var transaction = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
+        return CreatedAtAction(nameof(controller.saveTransaction), transaction.mapToDto());
     }
 
     

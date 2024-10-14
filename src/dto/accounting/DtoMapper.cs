@@ -13,8 +13,10 @@ public static class DtoMapper
     public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
     
     public static AccountingStudentDto mapToDto(this StudentEntity student) => new(student);
+
+    public static TransactionDto mapToDto(this TransactionEntity transaction) => new(transaction);
     
-    private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student);
+    private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student); 
     
     public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentEntity> students)
         => students.Select(student => student.mapToBasicDto()).ToList();
