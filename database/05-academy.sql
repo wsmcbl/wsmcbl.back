@@ -1,5 +1,13 @@
 create schema if not exists Academy;
 
+create table if not exists Academy.Teacher
+(
+    teacherId varchar(15) primary key default academy.generate_teacher_id(),
+    userId varchar(15) not null,
+    isGuide boolean not null,
+    foreign key (userId) references Config.User
+);
+
 create table if not exists Academy.Enrollment
 (
     enrollmentId varchar(15) primary key default academy.generate_enrollment_id(),
@@ -15,19 +23,11 @@ create table if not exists Academy.Enrollment
     foreign key (teacherId) references Academy.Teacher
 );
 
-create table if not exists Academy.Teacher
-(
-    teacherId varchar(15) primary key default academy.generate_teacher_id(),
-    userId varchar(15) not null,
-    isGuide boolean not null,
-    foreign key (userId) references Config.User
-);
-
 create table if not exists Academy.Subject
 (
     subjectId varchar(15) not null,
     enrollmentId varchar(15) not null,
-    teacherId varchar(15) not null,
+    teacherId varchar(15) null,
     primary key (subjectId, enrollmentId),
     foreign key (subjectId) references Secretary.Subject,
     foreign key (teacherId) references Academy.Teacher on delete set null,
@@ -70,9 +70,10 @@ create table if not exists Academy.Subject_Partial
 (
     subjectPartialId serial not null primary key,
     subjectId varchar(15) not null,
-    partialId int not null,
+    enrollmentId varchar(15) not null,
+    partialId smallint not null,
     teacherId varchar(15) not null,
-    foreign key (subjectId) references Academy.Subject,
+    foreign key (subjectId, enrollmentId) references Academy.Subject,
     foreign key (partialId) references Academy.Partial,
     foreign key (teacherId) references Academy.Teacher
 );

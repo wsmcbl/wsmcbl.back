@@ -46,7 +46,7 @@ create table if not exists Accounting.Tariff
 create table  if not exists Accounting.Transaction
 (
     transactionId varchar(20) primary key default accounting.generate_transaction_id(),
-    number int default accounting.transaction_id_seq,
+    number int default NEXTVAL('accounting.transaction_number_seq'),
     total float not null,
     date timestamp with time zone not null,
     studentId varchar(15) not null,
