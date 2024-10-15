@@ -154,7 +154,7 @@ public class CollectTariffControllerTest
         var result = await controller.saveTransaction(entity, []);
 
         transactionDao.Received().create(entity);
-        Assert.Equal(entity.transactionId, result);
+        Assert.Equal(entity, result);
     }
     
     [Fact]
