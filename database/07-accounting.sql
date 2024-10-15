@@ -46,6 +46,7 @@ create table if not exists Accounting.Tariff
 create table  if not exists Accounting.Transaction
 (
     transactionId varchar(20) primary key default accounting.generate_transaction_id(),
+    number int default NEXTVAL('accounting.transaction_number_seq'),
     total float not null,
     date timestamp with time zone not null,
     studentId varchar(15) not null,
@@ -78,4 +79,12 @@ create table if not exists Accounting.DebtHistory
     foreign key (studentId) references Accounting.Student,
     foreign key (tariffId) references Accounting.Tariff,
     foreign key (schoolyear) references Secretary.Schoolyear
+);
+
+create table if not exists Accounting.ExchangeRate
+(
+    rateId serial not null primary key,
+    schoolyear varchar(20) not null,
+    value float not null,
+    foreign key (schoolyear) references secretary.schoolyear
 );

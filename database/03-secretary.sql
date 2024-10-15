@@ -19,8 +19,9 @@ create table if not exists Secretary.Student
     sex boolean not null,
     birthday date not null,
     diseases varchar(100) not null,
-    religion varchar(20) not null,
+    religion varchar(40) not null,
     address varchar(100) not null,
+    minedId varchar(30) null,
     foreign key (tutorId) references Secretary.StudentTutor
 );
 
@@ -61,7 +62,7 @@ create table if not exists Secretary.StudentMeasurements
 create table if not exists Secretary.Schoolyear
 (
     schoolyearId varchar(15) primary key default secretary.generate_schoolyear_id(),
-    label varchar(100) not null,
+    label varchar(15) not null,
     startDate date not null,
     deadline date not null,
     isActive bool not null

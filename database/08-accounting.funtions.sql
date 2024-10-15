@@ -84,7 +84,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER update ON academy.student
+CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER insert ON academy.student
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history_by_enroll_student();
     
 
