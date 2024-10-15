@@ -34,7 +34,6 @@ public class TestDtoOutputGenerator
             new TeacherEntity
             {
                 teacherId = "tc1",
-                enrollmentId = "enr1",
                 userId = "us001",
                 isGuide = false,
                 user = new UserEntity
