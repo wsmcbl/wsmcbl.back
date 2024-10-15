@@ -81,27 +81,38 @@ create table if not exists Secretary.Degree
 (
     degreeId varchar(25) primary key default secretary.generate_degree_id(),
     label varchar(25) not null,
+    tag varchar(10) not null,
     schoolYear varchar(15) not null,
     educationalLevel varchar(50) not null,
     quantity int not null,
     foreign key (schoolYear) references Secretary.Schoolyear
 );
 
+create table if not exists Secretary.SubjectArea
+(
+    areaId serial not null primary key,
+    name varchar(150) not null
+);
+
 create table if not exists Secretary.Subject
 (
     subjectId varchar(15) primary key default secretary.generate_subject_id(),
     degreeId varchar(25) not null,
+    areaId int not null,
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
     initials varchar(10) not null,
-    foreign key (degreeId) references Secretary.Degree
+    number int not null,
+    foreign key (degreeId) references Secretary.Degree,
+    foreign key (areaId) references Secretary.SubjectArea
 );
 
 create table if not exists Secretary.DegreeCatalog
 (
     degreeCatalogId serial primary key,
     label varchar(50) not null,
+    tag varchar(10) not null,
     educationalLevel int not null
 );
 
@@ -109,11 +120,14 @@ create table if not exists Secretary.SubjectCatalog
 (
     subjectCatalogId serial primary key,
     degreeCatalogId int not null,
+    areaId int not null,
     name varchar(100) not null,
     isMandatory boolean not null,
     semester int not null,
     initials varchar(10) not null,
-    foreign key (degreeCatalogId) references Secretary.DegreeCatalog
+    number int not null,
+    foreign key (degreeCatalogId) references Secretary.DegreeCatalog,
+    foreign key (areaId) references Secretary.SubjectArea
 );
 
 create table if not exists Secretary.TariffCatalog
