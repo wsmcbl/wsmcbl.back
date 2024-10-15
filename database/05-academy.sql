@@ -14,6 +14,7 @@ create table if not exists Academy.Enrollment
     degreeId varchar(25) not null,
     teacherId varchar(15) null,
     label varchar(20) not null,
+    tag varchar(10) not null,
     schoolYear varchar(20) not null,
     section varchar(10) not null,
     capacity smallint,
@@ -84,6 +85,7 @@ create table if not exists Academy.Grade
     studentId varchar(15) not null,
     subjectPartialId int not null,
     grade float,
+    conductGrade float,
     label varchar(10),
     foreign key (subjectPartialId) references Academy.Subject_Partial
 );
