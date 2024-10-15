@@ -1,7 +1,7 @@
 create schema if not exists Accounting;
 
 -- Generate accounting.transaction id
-CREATE SEQUENCE if not exists accounting.transaction_id_seq START 10;
+CREATE SEQUENCE if not exists accounting.transaction_id_seq START 1000;
 
 CREATE OR REPLACE FUNCTION Accounting.generate_transaction_id()
     RETURNS varchar(20) AS $$
