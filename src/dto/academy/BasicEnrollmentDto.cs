@@ -1,6 +1,6 @@
 namespace wsmcbl.src.dto.academy;
 
-public class SubjectsByTeacherDto
+public class BasicEnrollmentDto
 {
     
 }
