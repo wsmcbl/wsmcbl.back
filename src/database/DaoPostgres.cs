@@ -30,6 +30,11 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
             .Include(e => e.secretarySubject)
             .ToListAsync();
     }
+
+    public async Task<List<SubjectEntity>> getListByTeacherId(string teacherId, string enrollmentId)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class StudentFileDaoPostgres(PostgresContext context)
@@ -173,5 +178,13 @@ public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<S
             .ToListAsync();
 
         return result;
+    }
+}
+
+public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
+{
+    public async Task addingStudentGrades(string teacherId, List<GradeEntity> grades)
+    {
+        throw new NotImplementedException();
     }
 }
