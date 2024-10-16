@@ -100,7 +100,8 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         foreach (var subject in subjects)
         {
-            var result = partial.grades!.FirstOrDefault(e => e.subjectId == subject.subjectId);
+            //////////////////////######################################################
+            var result = partial.grades!.FirstOrDefault(e => subject.subjectId == "Hola");
 
             var label = result == null ? "" : result.label;
             var grade = result == null ? "" : result.grade.ToString();

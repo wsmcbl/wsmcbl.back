@@ -3,8 +3,10 @@ namespace wsmcbl.src.model.academy;
 public class EnrollmentEntity
 {
     public string? enrollmentId { get; set; }
+    public string? teacherId { get; set; }
     public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
+    public string tag { get; set; } = null!;
     public string schoolYear { get; set; } = null!;
     public string section { get; set; } = null!;
     public int capacity { get; set; }
