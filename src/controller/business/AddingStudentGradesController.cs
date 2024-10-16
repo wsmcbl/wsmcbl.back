@@ -24,4 +24,9 @@ public class AddingStudentGradesController : BaseController, IAddingStudentGrade
     {
         await daoFactory.gradeDao!.addingStudentGrades(teacherId, grades);
     }
+
+    public async Task<List<PartialEntity>> getPartialList()
+    {
+        return await daoFactory.partialDao!.getListByCurrentSchoolyear();
+    }
 }
