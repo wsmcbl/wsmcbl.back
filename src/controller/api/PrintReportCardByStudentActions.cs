@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy/")]
 [ApiController]
-public class PrintReportCardByStudentActions(IPrintReportCardByStudentController controller) : BaseController
+public class PrintReportCardByStudentActions(IPrintReportCardByStudentController controller) : ControllerBase
 {
     [HttpGet]
     [Route("students/{studentId}")]
