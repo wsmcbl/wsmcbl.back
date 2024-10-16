@@ -1,19 +1,27 @@
+using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
+
 namespace wsmcbl.src.controller.business;
 
-public class AddingStudentGradesController : IAddingStudentGradesController
+public class AddingStudentGradesController : BaseController, IAddingStudentGradesController
 {
-    public async Task<object?> getEnrollmentListByTeacherId(string teacherId)
+    public AddingStudentGradesController(DaoFactory daoFactory) : base(daoFactory)
     {
-        throw new NotImplementedException();
+        
+    }
+    
+    public async Task<List<EnrollmentEntity>> getEnrollmentListByTeacherId(string teacherId)
+    {
+        return await daoFactory.enrollmentDao.getListByTeacherId();
     }
 
-    public async Task<object?> getSubjectList(string teacherId, string enrollmentId)
+    public async Task<List<SubjectEntity>> getEnrollmentByTeacher(string teacherId, string enrollmentId)
     {
-        throw new NotImplementedException();
+        return await daoFactory.subjectDao.getListByTeacherId(teacherId, enrollmentId);
     }
 
-    public async Task addGrades(string teacherId, List<string> grades)
+    public async Task addGrades(string teacherId, List<GradeEntity> grades)
     {
-        throw new NotImplementedException();
+        await daoFactory.gradeDao.addingStudentGrades(teacherId, grades);
     }
 }
