@@ -3,6 +3,7 @@ namespace wsmcbl.src.model.accounting;
 public class TransactionEntity
 {
     public string? transactionId { get; set; }
+    public int number { get; set; }
     public string cashierId { get; set; } = null!;
     public string studentId { get; set; } = null!;
     public float total { get; set; }
