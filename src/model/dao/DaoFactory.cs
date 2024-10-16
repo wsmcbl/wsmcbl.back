@@ -23,6 +23,8 @@ public abstract class DaoFactory
     public virtual ISubjectDao? subjectDao => null;
     public virtual ISemesterDao? semesterDao => null;
     public virtual IPartialDao? partialDao => null;
+    public virtual IGradeDao? gradeDao => null;
+    
     
     public virtual IDegreeDao? degreeDao => null;
     public virtual ISchoolyearDao? schoolyearDao => null;
