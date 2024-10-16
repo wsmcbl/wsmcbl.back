@@ -35,4 +35,9 @@ public class EnrollmentDaoPostgres(PostgresContext context)
 
         return result;
     }
+
+    public async Task<List<EnrollmentEntity>> getListByTeacherId()
+    {
+        throw new NotImplementedException();
+    }
 }
