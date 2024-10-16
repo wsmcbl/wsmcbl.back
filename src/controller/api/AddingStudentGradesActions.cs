@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.secretary;
+using wsmcbl.src.dto.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -41,10 +41,10 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("enrollments/subjects")]
-    public async Task<IActionResult> getEnrollmentSubjects(TeacherEnrollmentDto dto) // teacherid, enrollmentid
+    public async Task<IActionResult> getEnrollmentSubjects(TeacherEnrollmentDto dto)
     {
         var result = await controller.getEnrollmentByTeacher(dto.teacherId, dto.enrollmentId);
-        return Ok(result.mapListToDto());
+        return Ok(result);
     }
     
     /// <summary>
@@ -55,9 +55,9 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or .. not found.</response>
     [HttpPut]
     [Route("enrollments/subjects")]
-    public async Task<IActionResult> addGrades(SubjectParialDto dto) // teacherid, enrollmentid, grades
+    public async Task<IActionResult> addGrades(PartialGradesDto dto)
     {
-        await controller.addGrades(dto.teacherId, dto.grades);
+        await controller.addGrades(dto.teacherId, dto.subjectsGrades.toEntity());
         return Ok();
     }
 }
