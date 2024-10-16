@@ -6,6 +6,7 @@ public class StudentEntity
 {
     public string? studentId { get; set; }
     public string tutorId { get; set; } = null!;
+    public string? minedId { get; set; }
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;

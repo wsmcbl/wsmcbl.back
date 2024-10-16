@@ -54,7 +54,7 @@ public static class DtoMapper
         List<EnrollmentDto> result = [];
         foreach (var item in list)
         {
-            var teacher = teacherList.Find(e => e.enrollmentId == item.enrollmentId);
+            var teacher = teacherList.First(e => e.teacherId == item.teacherId);
             result.Add(item.mapToDto(teacher));
         }
 

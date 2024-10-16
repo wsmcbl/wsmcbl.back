@@ -54,7 +54,6 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTea
         }
 
         var newTeacher = await getTeacherById(newTeacherId);
-        newTeacher.enrollmentId = enrollmentId;
         newTeacher.isGuide = true;
         daoFactory.teacherDao.update(newTeacher);
         await daoFactory.execute();

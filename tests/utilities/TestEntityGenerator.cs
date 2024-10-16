@@ -92,7 +92,6 @@ public class TestEntityGenerator
         return new TeacherEntity()
         {
             teacherId = "tc-1",
-            enrollmentId = "en001",
             userId = "u001",
             isGuide = true
         };

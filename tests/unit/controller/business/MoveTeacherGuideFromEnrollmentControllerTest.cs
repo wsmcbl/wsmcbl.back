@@ -96,7 +96,6 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         
         var oldTeacher = TestEntityGenerator.aTeacher();
         oldTeacher.teacherId = "oldTeacher";
-        oldTeacher.enrollmentId = enrollment.enrollmentId;
         
         var teacherDao = Substitute.For<ITeacherDao>();
         teacherDao.getById(newTeacher.teacherId).Returns(newTeacher);
