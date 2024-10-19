@@ -27,7 +27,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     [HttpGet]
-    [Route("partials}")]
+    [Route("partials")]
     public async Task<IActionResult> getPartialList()
     {
         var result = await controller.getPartialList();
@@ -54,7 +54,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="404">Teacher or .. not found.</response>
     [HttpPut]
-    [Route("enrollments/subjects")]
+    [Route("enrollments/subjects/grades")]
     public async Task<IActionResult> addGrades(PartialGradesDto dto)
     {
         await controller.addGrades(dto.teacherId, dto.subjectsGrades.toEntity());
