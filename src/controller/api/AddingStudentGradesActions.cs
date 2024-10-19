@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.secretary;
-using wsmcbl.src.model.academy;
+using wsmcbl.src.dto.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -19,7 +18,20 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     [Route("enrollments/{teacherId}")]
     public async Task<IActionResult> getEnrollmentListByTeacherId([Required] string teacherId)
     {
-        return Ok(await controller.getEnrollmentListByTeacherId(teacherId));
+        var result = await controller.getEnrollmentListByTeacherId(teacherId);
+        return Ok(result.mapListToDto());
+    }
+    
+    /// <summary>
+    ///  Returns the list of partials.
+    /// </summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    [HttpGet]
+    [Route("partials")]
+    public async Task<IActionResult> getPartialList()
+    {
+        var result = await controller.getPartialList();
+        return Ok(result.mapListToDto());
     }
     
     /// <summary>
@@ -29,11 +41,10 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("enrollments/subjects")]
-    public async Task<IActionResult> getEnrollmentSubjects(SubjectDto dto) // teacherid, enrollmentid
+    public async Task<IActionResult> getEnrollmentSubjects(TeacherEnrollmentDto dto)
     {
-        var teacherId = ";";
-        var enrollmentId = ";";
-        return Ok(await controller.getEnrollmentByTeacher(teacherId, enrollmentId));
+        var result = await controller.getEnrollmentByTeacher(dto.teacherId, dto.enrollmentId);
+        return Ok(result);
     }
     
     /// <summary>
@@ -43,12 +54,10 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="404">Teacher or .. not found.</response>
     [HttpPut]
-    [Route("enrollments/subjects")]
-    public async Task<IActionResult> addGrades(SubjectDto dto) // teacherid, enrollmentid, grades
+    [Route("enrollments/subjects/grades")]
+    public async Task<IActionResult> addGrades(PartialGradesDto dto)
     {
-        var teacherId = ";";
-        var grades = new List<GradeEntity>();
-        await controller.addGrades(teacherId, grades);
+        await controller.addGrades(dto.teacherId, dto.subjectsGrades.toEntity());
         return Ok();
     }
 }
