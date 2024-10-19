@@ -36,8 +36,17 @@ public class EnrollmentDaoPostgres(PostgresContext context)
         return result;
     }
 
-    public async Task<List<EnrollmentEntity>> getListByTeacherId()
+    public async Task<List<EnrollmentEntity>> getListByTeacherId(string teacherId)
     {
-        throw new NotImplementedException();
+        var subjectList = await context.Set<SubjectEntity>().Where(e => e.teacherId == teacherId).ToListAsync();
+
+        List<EnrollmentEntity> result = [];
+        foreach (var item in subjectList)
+        {
+            var enrollmentItem = await entities.FindAsync(item.enrollmentId);
+            result.Add(enrollmentItem!);
+        }
+
+        return result;
     }
 }

@@ -31,9 +31,11 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
             .ToListAsync();
     }
 
-    public async Task<List<SubjectEntity>> getListByTeacherId(string teacherId, string enrollmentId)
+    public async Task<List<SubjectEntity>> getSubjectEnrollmentListByTeacherId(string teacherId, string enrollmentId)
     {
-        throw new NotImplementedException();
+        var enrollment = await context.Set<EnrollmentEntity>().Include(e => e.subjectList)
+            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+        return enrollment!.subjectList!.Where(e => e.teacherId == teacherId).ToList();
     }
 }
 
@@ -185,6 +187,6 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 {
     public async Task addingStudentGrades(string teacherId, List<GradeEntity> grades)
     {
-        throw new NotImplementedException();
+        entities.AddRange(grades);
     }
 }
