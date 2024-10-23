@@ -11,7 +11,7 @@ public interface IEnrollmentDao : IGenericDao<EnrollmentEntity, string>
 public interface ISubjectDao : IGenericDao<SubjectEntity, int>
 {
     public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId);
-    public Task<List<SubjectEntity>> getSubjectEnrollmentListByTeacherId(string teacherId, string enrollmentId);
+    public Task<List<SubjectEntity>> getSubjectByTeacherAndEnrollment(string teacherId, string enrollmentId);
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>

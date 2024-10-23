@@ -31,10 +31,11 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
             .ToListAsync();
     }
 
-    public async Task<List<SubjectEntity>> getSubjectEnrollmentListByTeacherId(string teacherId, string enrollmentId)
+    public async Task<List<SubjectEntity>> getSubjectByTeacherAndEnrollment(string teacherId, string enrollmentId)
     {
         var enrollment = await context.Set<EnrollmentEntity>().Include(e => e.subjectList)
             .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+        
         return enrollment!.subjectList!.Where(e => e.teacherId == teacherId).ToList();
     }
 }
