@@ -10,6 +10,7 @@ public class DegreeEntity
     public string schoolYear { get; set; } = null!;
     public int quantity { get; set; }
     public string educationalLevel { get; set; } = null!;
+    public string tag { get; set; } = null!;
 
     public ICollection<EnrollmentEntity>? enrollmentList { get; set; }
     public ICollection<SubjectEntity> subjectList { get; set; }

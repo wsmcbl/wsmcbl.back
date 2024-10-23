@@ -108,7 +108,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
                 foreach (var student in students)
                 {
                     student.enrollmentLabel = enrollmentLabels
-                        .GetValueOrDefault(student.studentId!, "Sin matrícula.");
+                        .GetValueOrDefault(student.studentId!, "Sin matrícula");
                 }
             }
         }

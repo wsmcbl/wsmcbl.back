@@ -18,9 +18,9 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
     }
 
     public async Task<TeacherEntity?> getByEnrollmentId(string enrollmentId)
-    {
+    {////##############################################
         return await entities
-            .Where(e => e.enrollmentId == enrollmentId)
+            .Where(e => e.teacherId == enrollmentId)
             .Include(e => e.user)
             .Include(e => e.enrollment)
             .FirstOrDefaultAsync();

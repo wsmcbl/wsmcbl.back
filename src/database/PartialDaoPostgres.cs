@@ -16,12 +16,10 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
                inner join secretary.schoolyear sy on sy.schoolyearid = s.schoolyear
                where sy.label = {schoolyear}";
 
-        var partials = await context.Set<PartialEntity>()
+        return await context.Set<PartialEntity>()
             .FromSqlInterpolated(query)
             .AsNoTracking()
             .ToListAsync();
-
-        return partials;
     }
 
     public async Task<List<PartialEntity>> getListByStudentId(string studentId)
@@ -29,9 +27,9 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
         var partials = await getListByCurrentSchoolyear();
 
         foreach (var partial in partials)
-        {
+        {//////////////////////////////////////////////////
             partial.grades = await context.Set<GradeEntity>()
-                .Where(e => e.studentId == studentId && e.partialId == partial.partialId)
+                .Where(e => e.studentId == studentId && partial.partialId == 100000000000)
                 .AsNoTracking()
                 .ToListAsync();
         }

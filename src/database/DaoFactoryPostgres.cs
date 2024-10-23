@@ -30,39 +30,39 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IPartialDao? _partialDao;
     public override IPartialDao partialDao => _partialDao ??= new PartialDaoPostgres(context);
-    
+
     private ICashierDao? _cashierDao;
     public override ICashierDao cashierDao => _cashierDao ??= new CashierDaoPostgres(context);
 
-    
+
     private ITariffDao? _tariffDao;
     public override ITariffDao tariffDao => _tariffDao ??= new TariffDaoPostgres(context);
 
-    
+
     private ITransactionDao? _transactionDao;
     public override ITransactionDao transactionDao => _transactionDao ??= new TransactionDaoPostgres(context);
-    
-    
+
+
     private ITariffTypeDao? _tariffTypeDao;
     public override ITariffTypeDao tariffTypeDao => _tariffTypeDao ??= new TariffTypeDaoPostgres(context);
-    
-    
+
+
     private IDebtHistoryDao? _debtHistoryDao;
     public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
 
 
-    private IDegreeDao? _gradeDao;
-    public override IDegreeDao degreeDao => _gradeDao ??= new DegreeDaoPostgres(context);
+    private IDegreeDao? _degreeDao;
+    public override IDegreeDao degreeDao => _degreeDao ??= new DegreeDaoPostgres(context);
 
-    
+
     private IEnrollmentDao? _enrollmentDao;
     public override IEnrollmentDao enrollmentDao => _enrollmentDao ??= new EnrollmentDaoPostgres(context);
 
 
     private ITeacherDao? _teacherDao;
     public override ITeacherDao teacherDao => _teacherDao ??= new TeacherDaoPostgres(context);
-    
-    
+
+
     private ISchoolyearDao? _schoolyearDao;
     public override ISchoolyearDao schoolyearDao => _schoolyearDao ??= new SchoolyearDaoPostgres(context);
 
@@ -77,8 +77,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private ITariffDataDao? _tariffDataDao;
     public override ITariffDataDao tariffDataDao => _tariffDataDao ??= new TariffDataDaoPostgres(context);
-    
-    
+
+
     private IStudentDao? _studentDao;
     public override IStudentDao studentDao => _studentDao ??= new StudentDaoPostgres(context);
 
@@ -86,28 +86,30 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     public override model.academy.IStudentDao academyStudentDao =>
         _academyStudentDao ??= new AcademyStudentDaoPostgres(context);
-    
+
     private model.accounting.IStudentDao? _accountingStudentDao;
-    public override model.accounting.IStudentDao accountingStudentDao 
+
+    public override model.accounting.IStudentDao accountingStudentDao
         => _accountingStudentDao ??= new AccountingStudentDaoPostgres(context);
 
 
     private IStudentFileDao? _studentFileDao;
     public override IStudentFileDao studentFileDao => _studentFileDao ??= new StudentFileDaoPostgres(context);
-    
-    
+
+
     private IStudentTutorDao? _studentTutorDao;
     public override IStudentTutorDao? studentTutorDao => _studentTutorDao ??= new StudentTutorDaoPostgres(context);
-    
-    
+
+
     private IStudentParentDao? _studentParentDao;
     public override IStudentParentDao studentParentDao => _studentParentDao ??= new StudentParentDaoPostgres(context);
-    
-    
-    private IStudentMeasurementsDao? _studentMeasurementsDao;
-    public override IStudentMeasurementsDao studentMeasurementsDao 
-        => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
 
+
+    private IStudentMeasurementsDao? _studentMeasurementsDao;
+
+    public override IStudentMeasurementsDao studentMeasurementsDao
+        => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
+    
     
     private SubjectDaoPostgres? _subjectDao;
     public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
@@ -115,4 +117,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private SemesterDaoPostgres? _semesterDao;
     public override ISemesterDao semesterDao => _semesterDao ??= new SemesterDaoPostgres(context);
+
+
+    private GradeDaoPostgres? _gradeDao;
+    public override IGradeDao gradeDao => _gradeDao ??= new GradeDaoPostgres(context);
 }

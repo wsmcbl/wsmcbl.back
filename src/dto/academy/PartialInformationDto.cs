@@ -1,3 +1,5 @@
+using wsmcbl.src.model.academy;
+
 namespace wsmcbl.src.dto.academy;
 
 public class PartialInformationDto
@@ -9,5 +11,9 @@ public class PartialInformationDto
     {
         this.partial = partial;
         this.close = close;
+    }
+
+    public PartialInformationDto(PartialEntity partial) : this(partial.label, partial.isClosed())
+    {
     }
 }

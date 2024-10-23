@@ -197,13 +197,13 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return existingEntity;
     }
 
+    //#######################################################################ads##
     public async Task assignTeacherGuide(string teacherId, string enrollmentId)
     {
         var teacher = await daoFactory.teacherDao!.getById(teacherId);
 
         if (teacher != null)
         {
-            teacher.enrollmentId = enrollmentId;
             teacher.isGuide = true;
             daoFactory.teacherDao.update(teacher);
             await daoFactory.execute();

@@ -24,8 +24,10 @@ internal class AcademyContext
                 .HasDefaultValueSql("academy.generate_enrollment_id()")
                 .HasColumnName("enrollmentid");
 
+            entity.Property(e => e.teacherId).HasMaxLength(20).HasColumnName("teacherid");
             entity.Property(e => e.capacity).HasColumnName("capacity");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
+            entity.Property(e => e.tag).HasColumnName("tag");
             entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
@@ -45,16 +47,42 @@ internal class AcademyContext
             entity.ToTable("grade", "academy");
 
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
-            entity.Property(e => e.partialId).HasColumnName("partialid");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
-            entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
-            entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
+            entity.Property(e => e.subjectPartialId).HasColumnName("subjectpartialid");
             entity.Property(e => e.grade).HasColumnName("grade");
+            entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
+        });
+        
+        modelBuilder.Entity<PartialEntity>(entity =>
+        {
+            entity.HasKey(e => e.partialId).HasName("partial_pkey");
 
-            entity.HasOne(e => e.secretarySubject)
-                .WithMany()
-                .HasForeignKey(e => e.subjectId);
+            entity.ToTable("partial", "academy");
+
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.semesterId).HasColumnName("semesterid");
+            entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
+            entity.Property(e => e.deadLine).HasColumnName("deadline");
+        });
+
+        modelBuilder.Entity<SemesterEntity>(entity =>
+        {
+            entity.HasKey(e => e.semesterId).HasName("semester_pkey");
+
+            entity.ToTable("semester", "academy");
+
+            entity.Property(e => e.semesterId).HasColumnName("semesterid");
+            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.deadLine).HasColumnName("deadline");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
+            entity.Property(e => e.semester).HasColumnName("semester");
+
+            entity.HasMany(d => d.partials)
+                .WithOne()
+                .HasForeignKey(e => e.semesterId);
         });
 
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -89,10 +117,19 @@ internal class AcademyContext
             entity.HasOne(e => e.secretarySubject)
                 .WithMany()
                 .HasForeignKey(e => e.subjectId);
+        });
 
-            entity.HasMany(d => d.scores)
-                .WithOne()
-                .HasForeignKey(e => new { e.subjectId, e.enrollmentId });
+        modelBuilder.Entity<SubjectPartialEntity>(entity =>
+        {
+            entity.HasKey(e => e.subjectPartialId).HasName("subjectpartial_key");
+
+            entity.ToTable("subject_partial", "secretary");
+            
+            entity.Property(e => e.subjectPartialId).HasColumnName("subjectpartialid");
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
+            entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
+            entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
         });
 
         modelBuilder.Entity<TeacherEntity>(entity =>
@@ -102,52 +139,12 @@ internal class AcademyContext
             entity.ToTable("teacher", "academy");
 
             entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
-            entity.Property(e => e.enrollmentId).HasMaxLength(20).HasColumnName("enrollmentid");
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             entity.Property(e => e.isGuide).HasColumnName("isguide");
 
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
-
-            entity.HasOne(e => e.enrollment)
-                .WithMany()
-                .HasForeignKey(e => e.enrollmentId);
-        });
-
-        modelBuilder.Entity<PartialEntity>(entity =>
-        {
-            entity.HasKey(e => e.partialId).HasName("partial_pkey");
-
-            entity.ToTable("partial", "academy");
-
-            entity.Property(e => e.partialId).HasColumnName("partialid");
-            entity.Property(e => e.semesterId).HasColumnName("semesterid");
-            entity.Property(e => e.partial).HasColumnName("partial");
-            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
-            entity.Property(e => e.deadLine).HasColumnName("deadline");
-
-            entity.HasMany(d => d.grades)
-                .WithOne()
-                .HasForeignKey(e => e.partialId);
-        });
-
-        modelBuilder.Entity<SemesterEntity>(entity =>
-        {
-            entity.HasKey(e => e.semesterId).HasName("semester_pkey");
-
-            entity.ToTable("semester", "academy");
-
-            entity.Property(e => e.semesterId).HasColumnName("semesterid");
-            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
-            entity.Property(e => e.deadLine).HasColumnName("deadline");
-            entity.Property(e => e.isActive).HasColumnName("isactive");
-            entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
-            entity.Property(e => e.semester).HasColumnName("semester");
-
-            entity.HasMany(d => d.partials)
-                .WithOne()
-                .HasForeignKey(e => e.semesterId);
         });
     }
 }

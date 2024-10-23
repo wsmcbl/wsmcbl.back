@@ -25,6 +25,52 @@ internal class AccountingContext
             entity.HasOne(c => c.user).WithMany().HasForeignKey(c => c.userId);
         });
         
+        modelBuilder.Entity<DebtHistoryEntity>(entity =>
+        {
+            entity.HasKey(e => new { e.studentId, e.tariffId }).HasName("debthistory_pkey");
+
+            entity.ToTable("debthistory", "accounting");
+
+            entity.Property(e => e.studentId)
+                .HasMaxLength(20)
+                .HasColumnName("studentid");
+            entity.Property(e => e.tariffId).HasColumnName("tariffid");
+            entity.Property(e => e.arrears).HasColumnName("arrear");
+            entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
+            entity.Property(e => e.subAmount).HasColumnName("subamount");
+            entity.Property(e => e.isPaid).HasColumnName("ispaid");
+            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.amount).ValueGeneratedOnAddOrUpdate().HasColumnName("amount");
+            
+            entity.HasOne(d => d.tariff).WithMany()
+                .HasForeignKey(d => d.tariffId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("debthistory_tariffid_fkey");
+        });
+
+        modelBuilder.Entity<DiscountEntity>(entity =>
+        {
+            entity.HasKey(e => e.discountId).HasName("discount_pkey");
+
+            entity.ToTable("discount", "accounting");
+
+            entity.Property(e => e.discountId).ValueGeneratedNever().HasColumnName("discountid");
+            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
+            entity.Property(e => e.tag).HasMaxLength(50).HasColumnName("tag");
+        });
+
+        modelBuilder.Entity<ExchangeRateEntity>(entity =>
+        {
+            entity.HasKey(e => e.rateId).HasName("exchangerate_pkey");
+
+            entity.ToTable("exchangerate", "accounting");
+
+            entity.Property(e => e.rateId).HasColumnName("rateid");
+            entity.Property(e => e.schoolyear).HasColumnName("value");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+        });
+        
         modelBuilder.Entity<StudentEntity>(entity =>
         {
             entity.HasKey(e => e.studentId).HasName("student_pkey");
@@ -46,18 +92,6 @@ internal class AccountingContext
             entity.HasMany(s => s.transactions)
                 .WithOne()
                 .HasForeignKey(s => s.studentId);
-        });
-
-        modelBuilder.Entity<DiscountEntity>(entity =>
-        {
-            entity.HasKey(e => e.discountId).HasName("discount_pkey");
-
-            entity.ToTable("discount", "accounting");
-
-            entity.Property(e => e.discountId).ValueGeneratedNever().HasColumnName("discountid");
-            entity.Property(e => e.amount).HasColumnName("amount");
-            entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
-            entity.Property(e => e.tag).HasMaxLength(50).HasColumnName("tag");
         });
 
         modelBuilder.Entity<TariffEntity>(entity =>
@@ -95,6 +129,10 @@ internal class AccountingContext
                 .HasDefaultValueSql("accounting.generate_transaction_id()")
                 .HasColumnName("transactionid");
             
+            entity.Property(e => e.number)
+                .HasColumnName("number")
+                .HasDefaultValueSql("NEXTVAL('accounting.transaction_number_seq')");
+            
             entity.Property(e => e.studentId).HasMaxLength(100).HasColumnName("studentid");
             entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
             entity.Property(e => e.date).HasColumnName("date");
@@ -113,29 +151,6 @@ internal class AccountingContext
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
-        });
-        
-        modelBuilder.Entity<DebtHistoryEntity>(entity =>
-        {
-            entity.HasKey(e => new { e.studentId, e.tariffId }).HasName("debthistory_pkey");
-
-            entity.ToTable("debthistory", "accounting");
-
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasColumnName("studentid");
-            entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.arrears).HasColumnName("arrear");
-            entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
-            entity.Property(e => e.subAmount).HasColumnName("subamount");
-            entity.Property(e => e.isPaid).HasColumnName("ispaid");
-            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
-            entity.Property(e => e.amount).ValueGeneratedOnAddOrUpdate().HasColumnName("amount");
-            
-            entity.HasOne(d => d.tariff).WithMany()
-                .HasForeignKey(d => d.tariffId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("debthistory_tariffid_fkey");
         });
     }
 }
