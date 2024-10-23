@@ -14,11 +14,13 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     {
         context = TestDbContext.getInMemory();
         
-        var student = TestEntityGenerator.aStudent("std-00");
-        var tutor = new StudentTutorEntity("Tutor", "78451236", "my-tutor");
-
-        context.Set<StudentEntity>().Add(student);
+        var tutor = new StudentTutorEntity("Tutor", "78451236", "tutorId00");
         context.Set<StudentTutorEntity>().Add(tutor);
+        await context.SaveChangesAsync();
+        
+        var student = TestEntityGenerator.aStudent("std-00");
+        student.tutorId = tutor.tutorId!;
+        context.Set<StudentEntity>().Add(student);
         await context.SaveChangesAsync();
         
         var sut = new StudentDaoPostgres(context);
@@ -40,9 +42,11 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     [Fact]
     public async Task getByIdWithProperties_ShouldThrowException_WhenTutorNotExist()
     {
-        context = TestDbContext.getInMemory();
         var student = TestEntityGenerator.aStudent("std-00");
-        
+        student.tutorId = "tutor-00";
+        student.tutor = null;
+     
+        context = TestDbContext.getInMemory();
         context.Set<StudentEntity>().Add(student);
         await context.SaveChangesAsync();
                 

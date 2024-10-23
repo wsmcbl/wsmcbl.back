@@ -2,7 +2,9 @@ using NSubstitute;
 using wsmcbl.src.database;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.tests.unit.database;
 
