@@ -4,23 +4,24 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.integration;
 
-//[TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
+[TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {
-    private readonly StudentFullDto student;
+    private StudentFullDto student { get; set; }
+
     public EnrollStudentActionsTest(EnrollStudentFixture factory) : base(factory)
     {
-        baseUri = "/v1/secretary/enrollments";
+        baseUri = "/v2/secretary/enrollments";
         student = factory.getStudent().mapToDto();
     }
 
-    //[Fact]
+    [Fact]
     public async Task getStudentList_ShouldReturnJsonWithList_WhenCalled()
     {
         await assertNotEmptyList<BasicStudentToEnrollDto>($"{baseUri}/students");
     }
     
-    //[Fact]
+    [Fact]
     public async Task getStudentById_ShouldReturnJsonWithStudent_WhenCalled()
     {
         var response = await client.GetAsync($"{baseUri}/students/{student.studentId}");
@@ -35,7 +36,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.NotNull(entity);
     }
     
-    //[Fact]
+    [Fact]
     public async Task getStudentById_ShouldReturnNotFound_WhenStudentNotExist()
     {
         var response = await client.GetAsync($"{baseUri}/students/nobody");
@@ -43,7 +44,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
     
-    //[Fact]
+    [Fact]
     public async Task saveEnroll_ShouldReturnsNotFound_WhenBadRequest()
     {
         var stringContent = getContentByJson("BadEnrollStudentDto.json");
@@ -55,7 +56,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.NotNull(content);
     }
     
-    //[Fact, TestPriority(1)]
+    [Fact, TestPriority(1)]
     public async Task saveEnroll_ShouldEnrollStudent_WhenCalled()
     {
         var enrollStudentDto = new EnrollStudentDto
@@ -71,13 +72,13 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
     }
     
-    //[Fact]
+    [Fact]
     public async Task getDegreeList_ShouldReturnJsonWithList_WhenCalled()
     {
         await assertNotEmptyList<BasicDegreeToEnrollDto>($"{baseUri}/degrees");
     }
 
-    //[Fact, TestPriority(2)]
+    [Fact, TestPriority(2)]
     public async Task getEnrollDocument_ShouldReturnByteArray_WhenCalled()
     {
         var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");
@@ -90,7 +91,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
         Assert.NotEmpty(content);
     }
     
-    //[Fact]
+    [Fact]
     public async Task getEnrollDocument_ShouldReturnNotFound_WhenStudentNotExist()
     {
         var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");

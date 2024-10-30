@@ -113,7 +113,8 @@ public class TestEntityGenerator
             isMandatory = true,
             name = "Español",
             semester = 3,
-            initials = "L y L"
+            initials = "L y L",
+            areaId = 1
         };
     }
 
