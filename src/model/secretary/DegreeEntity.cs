@@ -51,7 +51,7 @@ public class DegreeEntity
         enrollmentList = [];
         for (var i = 0; i < quantityToCreate; i++)
         {
-            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, $"{label} {typeLabels[i]}");
+            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, $"{label} {typeLabels[i]}", $"0{i}");
             enrollment.setSubjectList(subjectList);
             enrollmentList.Add(enrollment);
         }

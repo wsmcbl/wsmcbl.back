@@ -7,10 +7,11 @@ namespace wsmcbl.tests.integration;
 [TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {
-    private readonly StudentFullDto student;
+    private StudentFullDto student { get; set; }
+
     public EnrollStudentActionsTest(EnrollStudentFixture factory) : base(factory)
     {
-        baseUri = "/v1/secretary/enrollments";
+        baseUri = "/v2/secretary/enrollments";
         student = factory.getStudent().mapToDto();
     }
 
