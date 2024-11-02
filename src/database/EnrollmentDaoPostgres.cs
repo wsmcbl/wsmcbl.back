@@ -5,8 +5,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.database;
 
-public class EnrollmentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
+public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
 {
     public new async Task<List<EnrollmentEntity>> getAll()
     {
@@ -36,8 +35,22 @@ public class EnrollmentDaoPostgres(PostgresContext context)
         return result;
     }
 
-    public async Task<List<EnrollmentEntity>> getListByTeacherId()
+    public async Task<List<EnrollmentEntity>> getListByTeacherId(string teacherId)
     {
-        throw new NotImplementedException();
+        var subjectList = await context.Set<SubjectEntity>()
+            .Where(e => e.teacherId == teacherId).ToListAsync();
+
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var currentSchoolyear = await schoolyearDao.getCurrentSchoolYear();
+
+        var enrollmentList = await entities.Where(e => e.schoolYear == currentSchoolyear.id).ToListAsync();
+
+        List<EnrollmentEntity> result = [];
+        foreach (var item in subjectList)
+        {
+            result.Add(enrollmentList.Find(e => e.enrollmentId == item.enrollmentId)!);
+        }
+        
+        return result;
     }
 }

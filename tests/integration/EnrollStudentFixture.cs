@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
@@ -7,9 +8,12 @@ namespace wsmcbl.tests.integration;
 
 public class EnrollStudentFixture : BaseFixture
 {
-    private StudentEntity? student;
+    private StudentEntity? student { get; set; }
+
     protected override async Task seedData(DbContext context)
     {
+        await context.Database.ExecuteSqlRawAsync("select cleanDatabase();");
+        
         var schoolyear = TestEntityGenerator.aSchoolYear();
         schoolyear.id = "sch11";
         
@@ -18,6 +22,7 @@ public class EnrollStudentFixture : BaseFixture
         
         var degree = TestEntityGenerator.aDegree("degree");
         degree.schoolYear = schoolyear.id!;
+        degree.subjectList = [];
         
         var enrollment = TestEntityGenerator.aEnrollment();
         enrollment.schoolYear = schoolyear.id!;
@@ -26,6 +31,18 @@ public class EnrollStudentFixture : BaseFixture
         context.Add(degree);
         context.Add(enrollment);
         await context.SaveChangesAsync();
+
+        var area = new SubjectAreaEntity
+        {
+            name = "d"
+        };
+        context.Add(area);
+        await context.SaveChangesAsync();
+        
+        var subject = TestEntityGenerator.aSubject();
+        subject.degreeId = degree.degreeId;
+        subject.areaId = area.areaId;
+        context.Add(subject);
 
         await seedTariff(context, schoolyear.id!);
         await seedStudent(context);

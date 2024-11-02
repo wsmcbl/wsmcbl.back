@@ -34,7 +34,8 @@ public class TestEntityGenerator
             label = "A",
             quantity = 20,
             schoolYear = "sch22",
-            section = "A"
+            section = "A",
+            tag = "02"
         };
     }
 
@@ -112,7 +113,8 @@ public class TestEntityGenerator
             isMandatory = true,
             name = "Español",
             semester = 3,
-            initials = "L y L"
+            initials = "L y L",
+            areaId = 1
         };
     }
 
@@ -126,7 +128,8 @@ public class TestEntityGenerator
             educationalLevel = "secundaria",
             schoolYear = "sch001",
             enrollmentList = [],
-            subjectList = [aSubject()]
+            subjectList = [aSubject()],
+            tag = "01"
         };
     }
 
@@ -165,7 +168,7 @@ public class TestEntityGenerator
     {
         var result = new StudentEntity.Builder()
             .setId(studentId)
-            .setTutorId("my-tutor")
+            .setTutorId("tur-00")
             .setName("Jonas")
             .setSecondName("Alexander")
             .setSurname("Lopez")
@@ -177,13 +180,14 @@ public class TestEntityGenerator
 
         var parent = new StudentParentEntity
         {
-            name = "Mi tutor",
+            name = "Madre del estudiante",
             sex = true,
             occupation = "Desempleado",
             idCard = "001-xxxxx"
         };
         
         result.parents = [parent];
+        result.tutor = aTutor("tur-00");
 
         return result;
     }
@@ -372,9 +376,9 @@ public class TestEntityGenerator
         };
     }
 
-    public static StudentTutorEntity aTutor()
+    public static StudentTutorEntity aTutor(string? tutorId = null)
     {
-        return new StudentTutorEntity("Juan Morales", "78451236");
+        return new StudentTutorEntity("Juan Morales", "78451236", tutorId);
     }
 
     public static src.model.academy.StudentEntity aAcademyStudent(string studentId)

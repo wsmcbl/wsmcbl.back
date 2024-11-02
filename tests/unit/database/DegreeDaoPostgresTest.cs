@@ -8,7 +8,7 @@ namespace wsmcbl.tests.unit.database;
 public class DegreeDaoPostgresTest : BaseDaoPostgresTest
 {
     [Fact]
-    public async Task crateList_ShouldCreateList_WhenCalled()
+    public async Task createList_ShouldCreateList_WhenCalled()
     {
         var grade = TestEntityGenerator.aDegree("gd-001");
         context = TestDbContext.getInMemory();
