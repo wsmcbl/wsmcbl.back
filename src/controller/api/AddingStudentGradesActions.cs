@@ -44,9 +44,9 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
     {
         var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
-        var subjectList = await controller.getSubjectList(dto.enrollmentId, dto.teacherId);
+        var subjectPartialList = await controller.getSubjectPartialList(dto.enrollmentId, dto.teacherId);
 
-        return Ok(new EnrollmentToAddGradesDto(enrollment, subjectList));
+        return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
     
     /// <summary>
