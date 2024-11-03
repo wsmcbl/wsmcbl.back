@@ -11,13 +11,8 @@ namespace wsmcbl.src.dto.academy;
 
 public static class DtoMapper
 {
-    private static GradeEntity toEntity(this SubjectPartialDto dto)
-    {
-        return new GradeEntity();
-    }
-    
-    public static List<GradeEntity> toEntity(this IEnumerable<SubjectPartialDto> list)
-        => list.Select(e => e.toEntity()).ToList();
+    public static List<GradeEntity> toEntity(this IEnumerable<GradeDto> gradeList)
+        => gradeList.Select(e => e.toEntity()).ToList();
     
     
     
@@ -27,7 +22,7 @@ public static class DtoMapper
     
     private static SubjectPartialDto mapToDto(this SubjectPartialEntity subjectPartial) => new(subjectPartial);
 
-    private static GradesToAddDto mapToDto(this GradeEntity grade) => new(grade);
+    private static GradeDto mapToDto(this GradeEntity grade) => new(grade);
     
     
     
@@ -54,7 +49,7 @@ public static class DtoMapper
     public static List<SubjectPartialDto> mapListToDto(this IEnumerable<SubjectPartialEntity> subjectPartialList) => 
         subjectPartialList.Select(e => e.mapToDto()).ToList();
 
-    public static List<GradesToAddDto> mapListToDto(this IEnumerable<GradeEntity> gradeList) =>
+    public static List<GradeDto> mapListToDto(this IEnumerable<GradeEntity> gradeList) =>
         gradeList.Select(e => e.mapToDto()).ToList();
     
     
