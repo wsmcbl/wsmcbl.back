@@ -11,7 +11,7 @@ public class AddingStudentGradesController : BaseController, IAddingStudentGrade
 
     public async Task<EnrollmentEntity> getEnrollmentById(string enrollmentId)
     {
-        return (await daoFactory.enrollmentDao!.getById(enrollmentId))!;
+        return await daoFactory.enrollmentDao!.getFullById(enrollmentId);
     }
 
     public async Task<List<EnrollmentEntity>> getEnrollmentListByTeacherId(string teacherId)
@@ -19,9 +19,9 @@ public class AddingStudentGradesController : BaseController, IAddingStudentGrade
         return await daoFactory.enrollmentDao!.getListByTeacherId(teacherId);
     }
 
-    public async Task<List<SubjectEntity>> getSubjectList(string enrollmentId, string teacherId)
+    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(string enrollmentId, string teacherId)
     {
-        return await daoFactory.subjectDao!.getSubjectByTeacherAndEnrollment(teacherId, enrollmentId);
+        return await daoFactory.subjectPartialDao!.getByTeacherAndEnrollment(teacherId, enrollmentId);
     }
 
     public async Task addGrades(string teacherId, List<GradeEntity> grades)
