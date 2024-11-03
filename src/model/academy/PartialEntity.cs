@@ -5,6 +5,7 @@ public class PartialEntity
     public int partialId { get; set; }
     public int semesterId { get; set; }
     public int partial { get; set; }
+    public int semester { get; set; }
     public DateOnly deadLine { get; set; }
     public string label { get; set; } = null!;
 
@@ -15,8 +16,15 @@ public class PartialEntity
     
     public ICollection<GradeEntity>? grades { get; set; }
 
-    public string getLabel()
+    public void updateLabel()
     {
-        return $"Parcial #{partial}";
+        if (semester == 1)
+        {
+            label = partial == 1 ? "I Parcial" : "II Parcial";
+        }
+        else
+        {
+            label = partial == 2 ? "II Parcial" : "IV Parcial";
+        }
     }
 }

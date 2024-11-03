@@ -98,6 +98,7 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
     {
         var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
+        await controller.createSemester(result, dto.getPartialList());
         return CreatedAtAction(null, result);
     }
 

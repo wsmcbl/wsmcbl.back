@@ -74,52 +74,28 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
 
-        var result = await daoFactory.schoolyearDao!.getCurrentSchoolYear();
-
-        await createSemester(result);
-
-        return result;
+        return await daoFactory.schoolyearDao!.getCurrentSchoolYear();
     }
 
-    private async Task createSemester(SchoolYearEntity result)
+    public async Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList)
     {
-        List<SemesterEntity> semesters =
-        [
-            getSemester(result.id!, 1, "I Semestre"),
-            getSemester(result.id!, 2, "II Semestre")
-        ];
-
-        foreach (var item in semesters)
-        {
-            daoFactory.semesterDao!.create(item);
-        }
-
+        var firstSemester = createSemester(schoolyear.id!, 1, partialList);
+        var secondSemester = createSemester(schoolyear.id!, 2, partialList);
+        
+        daoFactory.semesterDao!.create(firstSemester);
+        daoFactory.semesterDao!.create(secondSemester);
         await daoFactory.execute();
     }
 
-    private SemesterEntity getSemester(string id, int semester, string label)
+    private SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
     {
-        var date = new DateOnly(DateTime.Today.Year, 1, 1);
-
         return new SemesterEntity
         {
-            isActive = true,
-            deadLine = date,
-            label = label,
+            isActive = false,
+            label = semester == 1 ? "I Semester" : "II Semester",
             semester = semester,
-            schoolyear = id,
-            partials = [getPartial(1, date, semester == 1 ? "I Parcial" : "III Parcial"), 
-                getPartial(2, date, semester == 1 ? "II Parcial" : "IV Parcial")]
-        };
-    }
-
-    private static PartialEntity getPartial(int i, DateOnly date, string label)
-    {
-        return new PartialEntity
-        {
-            partial = i,
-            deadLine = date,
-            label = label
+            schoolyear = schoolyearId,
+            partials = partialList.Where(e => e.semesterId == semester).ToList()
         };
     }
 
