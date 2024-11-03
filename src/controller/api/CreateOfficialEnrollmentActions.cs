@@ -99,6 +99,8 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     {
         var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
         await controller.createSemester(result, dto.getPartialList());
+        await controller.createExchangeRate(result, dto.exchangeRate);
+            
         return CreatedAtAction(null, result);
     }
 

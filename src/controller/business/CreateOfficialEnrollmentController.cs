@@ -99,6 +99,17 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         };
     }
 
+    public async Task createExchangeRate(SchoolYearEntity schoolyear, double exchangeRate)
+    {
+        var entity = new ExchangeRateEntity
+        {
+            schoolyear = schoolyear.id!,
+            value = exchangeRate
+        };
+        
+        daoFactory.exchangeRateDao.create(entity);
+        await daoFactory.execute();
+    }
 
     public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
     {

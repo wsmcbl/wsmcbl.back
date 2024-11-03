@@ -14,6 +14,7 @@ public interface ICreateOfficialEnrollmentController
     public Task<SchoolYearEntity> getNewSchoolYearInformation();
     public Task<SchoolYearEntity> createSchoolYear(List<DegreeEntity> degreeList, List<TariffEntity> tariffList);
     public Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList);
+    public Task createExchangeRate(SchoolYearEntity schoolyear, double exchangeRate);
     public Task<TariffDataEntity> createTariff(TariffDataEntity tariff);
     public Task<SubjectDataEntity> createSubject(SubjectDataEntity subject);
     public Task<DegreeEntity> createEnrollments(string degreeId, int quantity);

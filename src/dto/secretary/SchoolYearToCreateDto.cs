@@ -7,6 +7,7 @@ namespace wsmcbl.src.dto.secretary;
 
 public class SchoolYearToCreateDto
 {
+    [JsonRequired] public double exchangeRate { get; set; }
     [JsonRequired] public List<DegreeToCreateDto> degreeList { get; set; } = null!;
     [JsonRequired] public List<TariffToCreateDto> tariffList { get; set; } = null!;
     [JsonRequired] public List<PartialToCreateDto> partialList { get; set; } = null!;
