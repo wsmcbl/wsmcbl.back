@@ -41,10 +41,10 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("enrollments")]
-    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
+    public async Task<IActionResult> getEnrollmentToAddGrades(BasicSubjectPartialDto dto)
     {
         var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
-        var subjectPartialList = await controller.getSubjectPartialList(dto.enrollmentId, dto.teacherId);
+        var subjectPartialList = await controller.getSubjectPartialList(dto.toEntity());
 
         return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
@@ -57,9 +57,9 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or ... not found.</response>
     [HttpPut]
     [Route("enrollments/subjects/grades")]
-    public async Task<IActionResult> addGrades(PartialGradesDto dto)
+    public async Task<IActionResult> addGrades(GradeListDto dto)
     {
-        await controller.addGrades(dto.teacherId, dto.subjectsGrades.toEntity());
+        await controller.addGrades(dto.getList());
         return Ok();
     }
 }
