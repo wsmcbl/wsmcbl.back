@@ -41,7 +41,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher, enrollment or partial not found.</response>
     [HttpGet]
     [Route("enrollments")]
-    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherGradesIdDto dto)
+    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
     {
         var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
         var subjectPartialList = await controller.getSubjectPartialList(dto.toEntity());
@@ -59,7 +59,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     [Route("enrollments/subjects/grades")]
     public async Task<IActionResult> addGrades(GradesToAddDto dto)
     {
-        await controller.addGrades(dto.getBaseSubjectPartialEntity(), dto.getList());
+        await controller.addGrades(dto.getSubjectPartial(), dto.getGradeList());
         return Ok();
     }
 }

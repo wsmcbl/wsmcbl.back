@@ -2,7 +2,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.academy;
 
-public class BasicSubjectPartialDto
+public class TeacherEnrollmentDto
 {
     public int partialId { get; set; }
     public string enrollmentId { get; set; } = null!;
