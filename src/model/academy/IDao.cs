@@ -1,4 +1,3 @@
-using wsmcbl.src.dto.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.academy;
@@ -18,7 +17,7 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, int>
 
 public interface ISubjectPartialDao : IGenericDao<SubjectPartialEntity, int>
 {
-    public Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(string teacherId, string enrollmentId);
+    public Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(SubjectPartialEntity subjectPartial);
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>
@@ -45,5 +44,5 @@ public interface ISemesterDao : IGenericDao<SemesterEntity, int>
 
 public interface IGradeDao : IGenericDao<GradeEntity, int>
 {
-    public Task addingStudentGrades(string teacherId, List<GradeEntity> grades);
+    public Task addRange(int subjectPartialId, List<GradeEntity> gradeList);
 }

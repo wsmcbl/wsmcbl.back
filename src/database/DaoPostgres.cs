@@ -43,17 +43,18 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
 
 public class SubjectPartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectPartialEntity, int>(context), ISubjectPartialDao
 {
-    public async Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(string teacherId, string enrollmentId)
+    public async Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(SubjectPartialEntity subjectPartial)
     {
         var result = await entities
-            .Where(e => e.teacherId == teacherId && e.enrollmentId == enrollmentId)
+            .Where(e => e.teacherId == subjectPartial.teacherId && e.enrollmentId == subjectPartial.enrollmentId)
             .Include(e => e.gradeList)
             .ToListAsync();
 
         if (result.Count == 0)
         {
             throw new NotFoundException(
-                $"There are no records of (SubjectPartialEntity) for the teacherId ({teacherId}) and enrollmentId ({enrollmentId}).");
+                $"There are no records of (SubjectPartialEntity) for the teacherId ({subjectPartial.teacherId})" +
+                $" and enrollmentId ({subjectPartial.enrollmentId}).");
         }
 
         return result;
@@ -207,8 +208,16 @@ public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<S
 
 public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
 {
-    public async Task addingStudentGrades(string teacherId, List<GradeEntity> grades)
+    public async Task addRange(int subjectPartialId, List<GradeEntity> gradeList)
     {
-        entities.AddRange(grades);
+        var currentGradeList = await entities.Where(e => e.subjectPartialId == subjectPartialId).ToListAsync();
+
+        foreach (var currentGrade in currentGradeList)
+        {
+            var newGrade = gradeList.First(e => e.gradeId == currentGrade.gradeId);
+            currentGrade.updateGrades(newGrade.grade, newGrade.conductGrade);
+        }
+
+        await context.SaveChangesAsync();
     }
 }
