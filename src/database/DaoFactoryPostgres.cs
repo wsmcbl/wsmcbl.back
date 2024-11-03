@@ -115,6 +115,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
 
 
+    private SubjectPartialDaoPostgres? _subjectPartialDao;
+    public override ISubjectPartialDao subjectPartialDao => _subjectPartialDao ??= new SubjectPartialDaoPostgres(context); 
+
+
     private SemesterDaoPostgres? _semesterDao;
     public override ISemesterDao semesterDao => _semesterDao ??= new SemesterDaoPostgres(context);
 
