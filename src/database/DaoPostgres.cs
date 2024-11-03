@@ -21,7 +21,6 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
-
 public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
@@ -35,19 +34,18 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
     {
         var enrollment = await context.Set<EnrollmentEntity>().Include(e => e.subjectList)
             .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
-        
+
         return enrollment!.subjectList!.Where(e => e.teacherId == teacherId).ToList();
     }
 }
 
-
-public class SubjectPartialDaoPostgres(PostgresContext context) : 
+public class SubjectPartialDaoPostgres(PostgresContext context) :
     GenericDaoPostgres<SubjectPartialEntity, int>(context), ISubjectPartialDao
 {
     public async Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(SubjectPartialEntity subjectPartial)
     {
         var result = await entities
-            .Where(e => e.teacherId == subjectPartial.teacherId 
+            .Where(e => e.teacherId == subjectPartial.teacherId
                         && e.enrollmentId == subjectPartial.enrollmentId
                         && e.partialId == subjectPartial.partialId)
             .Include(e => e.gradeList)
@@ -65,7 +63,6 @@ public class SubjectPartialDaoPostgres(PostgresContext context) :
     }
 }
 
-
 public class StudentFileDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentFileEntity, int>(context), IStudentFileDao
 {
@@ -75,7 +72,7 @@ public class StudentFileDaoPostgres(PostgresContext context)
         {
             return;
         }
-        
+
         var existingEntity = await getById(entity.fileId);
 
         if (existingEntity == null)
@@ -89,7 +86,8 @@ public class StudentFileDaoPostgres(PostgresContext context)
     }
 }
 
-public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
+public class StudentTutorDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentTutorEntity, string>(context), IStudentTutorDao
 {
     public async Task updateAsync(StudentTutorEntity? entity)
     {
@@ -97,7 +95,7 @@ public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgr
         {
             return;
         }
-        
+
         var existingEntity = await getById(entity.tutorId!);
 
         if (existingEntity == null)
@@ -113,7 +111,7 @@ public class StudentTutorDaoPostgres(PostgresContext context) : GenericDaoPostgr
     public async Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor)
     {
         return await context.Set<StudentTutorEntity>()
-            .FirstOrDefaultAsync(e => 
+            .FirstOrDefaultAsync(e =>
                 tutor.name.Equals(e.name) && tutor.phone.Contains(e.phone));
     }
 }
@@ -127,20 +125,20 @@ public class StudentParentDaoPostgres(PostgresContext context)
         {
             return;
         }
-        
+
         if (entity.parentId == null)
         {
             create(entity);
             return;
         }
-        
+
         var existingEntity = await getById(entity.parentId);
 
         if (existingEntity == null)
         {
             throw new EntityNotFoundException("Tutor", entity.parentId);
         }
-        
+
         existingEntity.update(entity);
     }
 }
@@ -154,7 +152,7 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
         {
             return;
         }
-        
+
         var existingEntity = await getById(entity.measurementId);
 
         if (existingEntity == null)
@@ -192,7 +190,8 @@ public class DegreeDataDaoPostgres(PostgresContext context)
     }
 }
 
-public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<SemesterEntity, int>(context), ISemesterDao
+public class SemesterDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SemesterEntity, int>(context), ISemesterDao
 {
     public async Task<List<SemesterEntity>> getAllOfCurrentSchoolyear()
     {
@@ -212,16 +211,23 @@ public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<S
 
 public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
 {
-    public async Task addRange(int subjectPartialId, List<GradeEntity> gradeList)
+    public async Task addRange(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList)
     {
-        var currentGradeList = await entities.Where(e => e.subjectPartialId == subjectPartialId).ToListAsync();
+        var subjectPartialIdsList = await context.Set<SubjectPartialEntity>()
+            .Where(e => e.enrollmentId == subjectPartial.enrollmentId
+                        && e.teacherId == subjectPartial.teacherId
+                        && e.partialId == subjectPartial.partialId)
+            .Select(e => e.subjectPartialId)
+            .ToListAsync();
+
+        var currentGradeList = await entities
+            .Where(e => subjectPartialIdsList.Contains(e.subjectPartialId))
+            .ToListAsync();
 
         foreach (var currentGrade in currentGradeList)
         {
             var newGrade = gradeList.First(e => e.gradeId == currentGrade.gradeId);
             currentGrade.updateGrades(newGrade.grade, newGrade.conductGrade);
         }
-
-        await context.SaveChangesAsync();
     }
 }
