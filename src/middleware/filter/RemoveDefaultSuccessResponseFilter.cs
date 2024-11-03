@@ -10,7 +10,7 @@ public class RemoveDefaultSuccessResponseFilter : IOperationFilter
     {
         var hasCustomResponses = operation.Responses.Any(r => r.Key != "200");
 
-        if (hasCustomResponses && operation.Responses.ContainsKey("200"))
+        if (hasCustomResponses && operation.Responses.ContainsKey("201"))
         {
             operation.Responses.Remove("200");
         }

@@ -21,6 +21,9 @@ public class UserDaoPostgres(PostgresContext context)
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
+public class ExchangeRateDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<ExchangeRateEntity, int>(context), IExchangeRateDao;
+
 public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)

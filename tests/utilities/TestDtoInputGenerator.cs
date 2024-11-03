@@ -85,8 +85,9 @@ public static class TestDtoInputGenerator
     {
         return new SchoolYearToCreateDto
         {
-            degrees = [],
-            tariffs = []
+            degreeList = [],
+            tariffList = [],
+            partialList = []
         };
     }
 

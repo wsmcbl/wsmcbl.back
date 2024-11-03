@@ -49,6 +49,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IDebtHistoryDao? _debtHistoryDao;
     public override IDebtHistoryDao debtHistoryDao => _debtHistoryDao ??= new DebtHistoryDaoPostgres(context);
+    
+    
+    private IExchangeRateDao? _exchangeRateDao;
+    public override IExchangeRateDao exchangeRateDao => _exchangeRateDao ??= new ExchangeRateDaoPostgres(context);
 
 
     private IDegreeDao? _degreeDao;
@@ -98,7 +102,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
 
     private IStudentTutorDao? _studentTutorDao;
-    public override IStudentTutorDao? studentTutorDao => _studentTutorDao ??= new StudentTutorDaoPostgres(context);
+    public override IStudentTutorDao studentTutorDao => _studentTutorDao ??= new StudentTutorDaoPostgres(context);
 
 
     private IStudentParentDao? _studentParentDao;
