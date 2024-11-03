@@ -62,8 +62,11 @@ create table if not exists Academy.Partial
     partialId serial not null primary key,
     semesterId int not null,
     partial int not null,
+    startDate date not null,
     deadLine date not null,
+    isActive boolean not null,
     label varchar(20) not null,
+    gradeRecordIsActive boolean not null,
     foreign key (semesterId) references Academy.Semester
 );
 
