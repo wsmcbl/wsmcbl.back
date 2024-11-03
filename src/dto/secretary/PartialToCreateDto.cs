@@ -6,6 +6,7 @@ public class PartialToCreateDto
 {
     public int partial { get; set; }
     public int semester { get; set; }
+    public DateOnlyDto startDate { get; set; } = null!;
     public DateOnlyDto deadLine { get; set; } = null!;
     
     public PartialEntity toEntity()
@@ -14,7 +15,10 @@ public class PartialToCreateDto
         {
             partial = partial,
             semester = semester,
-            deadLine = deadLine.toEntity()
+            startDate = startDate.toEntity(),
+            deadLine = deadLine.toEntity(),
+            isActive = false,
+            gradeRecordIsActive = false
         };
         
         result.updateLabel();

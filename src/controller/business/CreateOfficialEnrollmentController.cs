@@ -107,7 +107,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
             value = exchangeRate
         };
         
-        daoFactory.exchangeRateDao.create(entity);
+        daoFactory.exchangeRateDao!.create(entity);
         await daoFactory.execute();
     }
 

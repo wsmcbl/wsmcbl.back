@@ -65,6 +65,11 @@ internal class AcademyContext
             entity.Property(e => e.partial).HasColumnName("partial");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
+            entity.Property(e => e.startDate).HasColumnName("startdate");
+            entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+
+            entity.Ignore(e => e.semester);
         });
 
         modelBuilder.Entity<SemesterEntity>(entity =>

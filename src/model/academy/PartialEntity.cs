@@ -6,8 +6,12 @@ public class PartialEntity
     public int semesterId { get; set; }
     public int partial { get; set; }
     public int semester { get; set; }
+    public DateOnly startDate { get; set; }
     public DateOnly deadLine { get; set; }
     public string label { get; set; } = null!;
+    
+    public bool isActive { get; set; }
+    public bool gradeRecordIsActive { get; set; }
 
     public bool isClosed()
     {
