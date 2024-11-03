@@ -1,12 +1,11 @@
 -- Insert subject_partial by property gradeRecordIsActive true of partial updated --
 CREATE OR REPLACE FUNCTION academy.insert_subject_partial_records_by_partial_updated()
-    RETURNS TRIGGER AS
+    RETURNS TRIGGER LANGUAGE plpgsql AS
 $$
 DECLARE
     current_school_year VARCHAR;
 BEGIN
-    IF (new.isactive = TRUE and new.graderecordisactive = TRUE) THEN
-
+    IF (new.isactive = 'true' and new.graderecordisactive = 'true') THEN
         SELECT schoolyearid
         INTO current_school_year
         FROM secretary.schoolyear
@@ -26,7 +25,7 @@ BEGIN
 
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE TRIGGER trg_insert_subject_partial_records_by_partial_updated
     AFTER update
@@ -35,9 +34,10 @@ CREATE TRIGGER trg_insert_subject_partial_records_by_partial_updated
 EXECUTE FUNCTION academy.insert_subject_partial_records_by_partial_updated();
 
 
+
 -- Insert Grades by new subject_partial --
 CREATE OR REPLACE FUNCTION academy.insert_grades_by_new_subject_partial()
-    RETURNS TRIGGER AS
+    RETURNS TRIGGER LANGUAGE plpgsql AS
 $$
 DECLARE
 BEGIN
@@ -49,7 +49,7 @@ BEGIN
 
     RETURN NEW;
 END ;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE TRIGGER trg_insert_grades_by_new_subject_partial
     AFTER insert
