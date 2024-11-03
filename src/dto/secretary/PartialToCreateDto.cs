@@ -1,11 +1,12 @@
+using System.Text.Json.Serialization;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
 
 public class PartialToCreateDto
 {
-    public int partial { get; set; }
-    public int semester { get; set; }
+    [JsonRequired] public int partial { get; set; }
+    [JsonRequired] public int semester { get; set; }
     public DateOnlyDto startDate { get; set; } = null!;
     public DateOnlyDto deadLine { get; set; } = null!;
     
