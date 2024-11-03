@@ -1,4 +1,4 @@
--- Insert registration debt in debt history by student
+-- Insert registration-debt in debt history by student --
 CREATE OR REPLACE FUNCTION Accounting.insert_registration_debt_history_by_new_student()
     RETURNS TRIGGER AS $$
 DECLARE
@@ -43,7 +43,7 @@ CREATE TRIGGER trg_update_debt_history AFTER INSERT ON Accounting.Transaction_Ta
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history();
 
 
--- Update debt history by pay registration debt --
+-- Update debt history by pay registration-debt --
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history_by_enroll_student()
     RETURNS TRIGGER AS $$
 DECLARE 
@@ -88,7 +88,7 @@ CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER insert ON academy
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history_by_enroll_student();
     
 
--- Update debt history by tariff overdue--
+-- Update debt history by tariff overdue --
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history_by_tariff_overdue()
     RETURNS TRIGGER AS $$
 BEGIN
@@ -115,7 +115,7 @@ CREATE TRIGGER trg_update_debt_history_by_tariff_overdue AFTER update ON Account
 
 
 
--- Update ispaid in debt history--
+-- Update ispaid in debt history --
 CREATE OR REPLACE FUNCTION Accounting.update_ispaid_debt_history()
     RETURNS TRIGGER AS $$
 BEGIN

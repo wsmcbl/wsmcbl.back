@@ -19,12 +19,13 @@ public class EnrollmentEntity
         studentList = [];
     }
     
-    public EnrollmentEntity(string degreeId, string schoolYear, string label)
+    public EnrollmentEntity(string degreeId, string schoolYear, string label, string tag)
     {
         this.degreeId = degreeId;
         this.schoolYear = schoolYear;
         this.label = label;
         section = "";
+        this.tag = tag;
     }
 
     public void setSubjectList(List<SubjectEntity> subjects)

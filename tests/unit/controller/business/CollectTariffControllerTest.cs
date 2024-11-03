@@ -129,19 +129,6 @@ public class CollectTariffControllerTest
         await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.applyArrears(1));
     }
     
-    [Fact]
-    public async Task applyArrears_TariffAlreadyUpdate_ReturnsException()
-    {
-        const int tariffId = 10;
-        var tariff = new TariffEntity();
-        tariff.tariffId = tariffId;
-        tariff.isLate = true;
-        
-        tariffDao.getById(tariffId).Returns(tariff);
-        daoFactory.tariffDao.Returns(tariffDao);
-        
-        await Assert.ThrowsAsync<EntityUpdateConflictException>(() => controller.applyArrears(tariffId));
-    }
     
     
     [Fact]

@@ -35,16 +35,18 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     }
     
     /// <summary>
-    ///  Returns the list of subject corresponding to a teacher and enrollment
+    ///  Returns the list of subject, list of students corresponding to a teacher and enrollment
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
-    [Route("enrollments/subjects")]
-    public async Task<IActionResult> getEnrollmentSubjects(TeacherEnrollmentDto dto)
+    [Route("enrollments")]
+    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
     {
-        var result = await controller.getEnrollmentByTeacher(dto.teacherId, dto.enrollmentId);
-        return Ok(result);
+        var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
+        var subjectPartialList = await controller.getSubjectPartialList(dto.enrollmentId, dto.teacherId);
+
+        return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
     
     /// <summary>
@@ -52,7 +54,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
-    /// <response code="404">Teacher or .. not found.</response>
+    /// <response code="404">Teacher or ... not found.</response>
     [HttpPut]
     [Route("enrollments/subjects/grades")]
     public async Task<IActionResult> addGrades(PartialGradesDto dto)
