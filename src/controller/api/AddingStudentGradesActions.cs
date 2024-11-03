@@ -41,10 +41,12 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("enrollments")]
-    public async Task<IActionResult> getEnrollmentToAddGrades(EnrollmentByTeacherDto dto)
+    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
     {
-        var result = await controller.getEnrollmentByTeacher(dto.teacherId, dto.enrollmentId);
-        return Ok(result);
+        var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
+        var subjectList = await controller.getSubjectList(dto.enrollmentId, dto.teacherId);
+
+        return Ok(new EnrollmentToAddGradesDto(enrollment, subjectList));
     }
     
     /// <summary>
