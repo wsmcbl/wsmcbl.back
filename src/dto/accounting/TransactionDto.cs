@@ -18,6 +18,7 @@ public class TransactionDto
 
     public TransactionDto()
     {
+        transactionId = string.Empty;
     }
 
     public TransactionDto(TransactionEntity entity)

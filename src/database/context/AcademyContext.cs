@@ -130,6 +130,9 @@ internal class AcademyContext
             entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
             entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
+            
+            entity.HasMany(d => d.gradeList).WithOne()
+                .HasForeignKey(d => d.subjectPartialId);
         });
 
         modelBuilder.Entity<TeacherEntity>(entity =>

@@ -15,6 +15,23 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
             .ToListAsync();
     }
 
+    public async Task<EnrollmentEntity> getFullById(string enrollmentId)
+    {
+        var result = await entities
+            .Include(e => e.studentList)!
+            .ThenInclude(e => e.student)
+            .Include(e => e.subjectList)!
+            .ThenInclude(e => e.secretarySubject)
+            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Enrollment", enrollmentId);
+        }
+
+        return result;
+    }
+
     public async Task<EnrollmentEntity> getByStudentId(string? studentId)
     {
         var student = await context.Set<StudentEntity>().FirstOrDefaultAsync(e => e.studentId == studentId);
