@@ -7,14 +7,11 @@ public class EnrollmentToAddGradesDto
     public string label { get; set; }
     public List<SubjectPartialDto> subjectList { get; set; }
     public List<BasicStudentDto> studentList { get; set; }
-
-    public EnrollmentToAddGradesDto()
-    {
-    }
     
-    public EnrollmentToAddGradesDto(EnrollmentEntity enrollment)
+    public EnrollmentToAddGradesDto(EnrollmentEntity enrollment, IEnumerable<SubjectEntity> subjectList)
     {
         label = enrollment.label;
         studentList = enrollment.studentList!.mapListToDto();
+        this.subjectList = subjectList.mapListToDto();
     }
 }
