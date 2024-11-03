@@ -40,6 +40,24 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
     }
 }
 
+
+public class SubjectPartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectPartialEntity, int>(context), ISubjectPartialDao
+{
+    public async Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(string teacherId, string enrollmentId)
+    {
+        var result = await entities.Where(e => e.teacherId == teacherId && e.enrollmentId == enrollmentId).ToListAsync();
+
+        if (result.Count == 0)
+        {
+            throw new NotFoundException(
+                $"There are no records of (SubjectPartialEntity) for the teacherId ({teacherId}) and enrollmentId ({enrollmentId}).");
+        }
+
+        return result;
+    }
+}
+
+
 public class StudentFileDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<StudentFileEntity, int>(context), IStudentFileDao
 {
