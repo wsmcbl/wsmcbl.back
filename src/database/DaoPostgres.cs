@@ -45,7 +45,10 @@ public class SubjectPartialDaoPostgres(PostgresContext context) : GenericDaoPost
 {
     public async Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(string teacherId, string enrollmentId)
     {
-        var result = await entities.Where(e => e.teacherId == teacherId && e.enrollmentId == enrollmentId).ToListAsync();
+        var result = await entities
+            .Where(e => e.teacherId == teacherId && e.enrollmentId == enrollmentId)
+            .Include(e => e.gradeList)
+            .ToListAsync();
 
         if (result.Count == 0)
         {
