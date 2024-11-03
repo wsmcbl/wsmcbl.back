@@ -35,13 +35,13 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     }
     
     /// <summary>
-    ///  Returns the list of subject, list of students corresponding to a teacher and enrollment
+    ///  Returns the list of subject, students and grades corresponding to a teacher grade's information
     /// </summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    /// <response code="404">Teacher or enrollment not found.</response>
+    /// <response code="200">Returns the list, the list can be empty.</response>
+    /// <response code="404">Teacher, enrollment or partial not found.</response>
     [HttpGet]
     [Route("enrollments")]
-    public async Task<IActionResult> getEnrollmentToAddGrades(BasicSubjectPartialDto dto)
+    public async Task<IActionResult> getEnrollmentToAddGrades(TeacherEnrollmentDto dto)
     {
         var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
         var subjectPartialList = await controller.getSubjectPartialList(dto.toEntity());
@@ -50,16 +50,16 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     }
     
     /// <summary>
-    ///  Update the grades of subject corresponding to a teacher and enrollment
+    ///  Update the grades of subject corresponding to a teacher grades's information
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
-    /// <response code="404">Teacher or ... not found.</response>
+    /// <response code="404">Teacher or internal register not found.</response>
     [HttpPut]
     [Route("enrollments/subjects/grades")]
-    public async Task<IActionResult> addGrades(GradeListDto dto)
+    public async Task<IActionResult> addGrades(GradesToAddDto dto)
     {
-        await controller.addGrades(dto.getList());
+        await controller.addGrades(dto.getSubjectPartial(), dto.getGradeList());
         return Ok();
     }
 }
