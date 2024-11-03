@@ -54,7 +54,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
-    /// <response code="404">Teacher or internal register not found.</response>
+    /// <response code="404">Teacher or internal record not found.</response>
     [HttpPut]
     [Route("enrollments/subjects/grades")]
     public async Task<IActionResult> addGrades(GradesToAddDto dto)
