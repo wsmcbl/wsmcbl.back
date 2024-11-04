@@ -7,8 +7,8 @@ public class PartialToCreateDto
 {
     [JsonRequired] public int partial { get; set; }
     [JsonRequired] public int semester { get; set; }
-    public DateOnlyDto startDate { get; set; } = null!;
-    public DateOnlyDto deadLine { get; set; } = null!;
+    [JsonRequired] public DateOnlyDto startDate { get; set; } = null!;
+    [JsonRequired] public DateOnlyDto deadLine { get; set; } = null!;
     
     public PartialEntity toEntity()
     {
@@ -21,7 +21,6 @@ public class PartialToCreateDto
             isActive = false,
             gradeRecordIsActive = false
         };
-        
         result.updateLabel();
 
         return result;

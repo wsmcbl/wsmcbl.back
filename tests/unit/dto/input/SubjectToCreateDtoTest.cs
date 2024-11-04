@@ -3,14 +3,14 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.input;
 
-public class SubjectInputDtoTest
+public class SubjectToCreateDtoTest
 {
     [Fact]
     public void init_ShouldReturnDto_WhenCalled()
     {
         var entity = TestEntityGenerator.aSubject();
 
-        var result = new SubjectInputDto(entity);
+        var result = new SubjectToCreateDto(entity);
         
         Assert.NotNull(result);
         Assert.NotNull(result.name);

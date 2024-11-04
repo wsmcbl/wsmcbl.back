@@ -85,7 +85,7 @@ internal class AcademyContext
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.semester).HasColumnName("semester");
 
-            entity.HasMany(d => d.partials)
+            entity.HasMany(d => d.partialList)
                 .WithOne()
                 .HasForeignKey(e => e.semesterId);
         });

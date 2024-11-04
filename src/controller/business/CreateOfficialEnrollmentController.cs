@@ -89,14 +89,17 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
 
     private SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
     {
-        return new SemesterEntity
+        var result = new SemesterEntity
         {
             isActive = false,
             label = semester == 1 ? "I Semester" : "II Semester",
             semester = semester,
             schoolyear = schoolyearId,
-            partials = partialList.Where(e => e.semesterId == semester).ToList()
+            partialList = partialList.Where(e => e.semester == semester).ToList()
         };
+        result.updateDeadLine();
+
+        return result;
     }
 
     public async Task createExchangeRate(SchoolYearEntity schoolyear, double exchangeRate)

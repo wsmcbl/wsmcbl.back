@@ -11,8 +11,8 @@ public class SchoolYearDto
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<DegreeToCreateDto>? degrees { get; set; }
-    public List<TariffToCreateDto>? tariffs { get; set; }
+    public List<DegreeToCreateDto>? degreeList { get; set; }
+    public List<TariffToCreateDto>? tariffList { get; set; }
 
     public SchoolYearDto(SchoolYearEntity schoolYear)
     {
@@ -22,8 +22,8 @@ public class SchoolYearDto
         startDate = schoolYear.startDate;
         deadLine = schoolYear.deadLine;
 
-        degrees = getGrades(schoolYear.degreeList);
-        tariffs = getTariffs(schoolYear.tariffList);
+        degreeList = getGrades(schoolYear.degreeList);
+        tariffList = getTariffs(schoolYear.tariffList);
     }
 
     private static List<DegreeToCreateDto> getGrades(List<DegreeEntity>? list)
