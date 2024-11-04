@@ -19,7 +19,7 @@ public class StudentScoreInformationDto
         partials = [];
         foreach (var item in student.partials!)
         {
-            partials.Add(new PartialInformationDto(item.label, item.isClosed()));
+            partials.Add(new PartialInformationDto(item));
         }
     }
 
