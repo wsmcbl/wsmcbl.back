@@ -4,16 +4,14 @@ namespace wsmcbl.src.dto.academy;
 
 public class PartialInformationDto
 {
-    public string partial { get; set; }
-    public bool close { get; set; }
+    public int partialId { get; set; }
+    public string label { get; set; }
+    public bool isActive { get; set; }
 
-    public PartialInformationDto(string partial, bool close)
+    public PartialInformationDto(PartialEntity partial) 
     {
-        this.partial = partial;
-        this.close = close;
-    }
-
-    public PartialInformationDto(PartialEntity partial) : this(partial.label, partial.isClosed())
-    {
+        partialId = partial.partialId;
+        label = partial.label;
+        isActive = partial.isClosed();
     }
 }
