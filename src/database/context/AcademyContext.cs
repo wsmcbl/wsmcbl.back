@@ -153,6 +153,8 @@ internal class AcademyContext
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
+            
+            entity.Ignore(e => e.enrollment);
         });
     }
 }

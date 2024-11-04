@@ -12,9 +12,9 @@ jobs:
       - name: Deploy commands
         uses: appleboy/ssh-action@master
         with: 
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
+          host: ${{ secrets.VPS_BACK_HOST }}
+          username: ${{ secrets.VPS_BACK_USERNAME }}
+          key: ${{ secrets.VPS_BACK_KEY }}
+          port: ${{ secrets.VPS_FRONT_PORT }}
           script: |
             ./deploy.sh
