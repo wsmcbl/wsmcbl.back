@@ -74,55 +74,45 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
 
-        var result = await daoFactory.schoolyearDao!.getCurrentSchoolYear();
+        return await daoFactory.schoolyearDao!.getCurrentSchoolYear();
+    }
 
-        await createSemester(result);
+    public async Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList)
+    {
+        var firstSemester = createSemester(schoolyear.id!, 1, partialList);
+        var secondSemester = createSemester(schoolyear.id!, 2, partialList);
+        
+        daoFactory.semesterDao!.create(firstSemester);
+        daoFactory.semesterDao!.create(secondSemester);
+        await daoFactory.execute();
+    }
+
+    private SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
+    {
+        var result = new SemesterEntity
+        {
+            isActive = false,
+            label = semester == 1 ? "I Semester" : "II Semester",
+            semester = semester,
+            schoolyear = schoolyearId,
+            partialList = partialList.Where(e => e.semester == semester).ToList()
+        };
+        result.updateDeadLine();
 
         return result;
     }
 
-    private async Task createSemester(SchoolYearEntity result)
+    public async Task createExchangeRate(SchoolYearEntity schoolyear, double exchangeRate)
     {
-        List<SemesterEntity> semesters =
-        [
-            getSemester(result.id!, 1, "I Semestre"),
-            getSemester(result.id!, 2, "II Semestre")
-        ];
-
-        foreach (var item in semesters)
+        var entity = new ExchangeRateEntity
         {
-            daoFactory.semesterDao!.create(item);
-        }
-
+            schoolyear = schoolyear.id!,
+            value = exchangeRate
+        };
+        
+        daoFactory.exchangeRateDao!.create(entity);
         await daoFactory.execute();
     }
-
-    private SemesterEntity getSemester(string id, int semester, string label)
-    {
-        var date = new DateOnly(DateTime.Today.Year, 1, 1);
-
-        return new SemesterEntity
-        {
-            isActive = true,
-            deadLine = date,
-            label = label,
-            semester = semester,
-            schoolyear = id,
-            partials = [getPartial(1, date, semester == 1 ? "I Parcial" : "III Parcial"), 
-                getPartial(2, date, semester == 1 ? "II Parcial" : "IV Parcial")]
-        };
-    }
-
-    private static PartialEntity getPartial(int i, DateOnly date, string label)
-    {
-        return new PartialEntity
-        {
-            partial = i,
-            deadLine = date,
-            label = label
-        };
-    }
-
 
     public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
     {

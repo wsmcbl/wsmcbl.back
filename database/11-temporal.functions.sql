@@ -10,6 +10,7 @@ BEGIN
                        JOIN accounting.discount disc ON disc.discountid = new.discountid
               WHERE d.studentid = new.studentid
                 and t.typeid = 1)
+    
     UPDATE accounting.debthistory
     SET subamount = q.subtotal,
         arrear    = case when q.islate then round(q.subtotal * 0.1) else 0.0 end

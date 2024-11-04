@@ -77,8 +77,8 @@ public static class DtoMapper
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
 
 
-    public static List<SubjectInputDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
-        => subjects.Select(e => new SubjectInputDto(e)).ToList();
+    public static List<SubjectToCreateDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
+        => subjects.Select(e => new SubjectToCreateDto(e)).ToList();
 
     private static DegreeToCreateDto mapToNewSchoolyearDto(this DegreeEntity degree) => new(degree);
 

@@ -4,7 +4,7 @@ public class DegreeDataEntity
 {
     public int degreeDataId { get; set; }
     public string label { get; set; } = null!;
-    public string tag { get; set; }
+    public string tag { get; set; } = null!;
     public int educationalLevel { get; set; }
 
     public ICollection<SubjectDataEntity>? subjectList { get; set; }

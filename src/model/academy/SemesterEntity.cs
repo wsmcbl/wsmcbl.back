@@ -9,5 +9,11 @@ public class SemesterEntity
     public bool isActive { get; set; }
     public string? label { get; set; }
 
-    public ICollection<PartialEntity>? partials { get; set; }
+    public ICollection<PartialEntity>? partialList { get; set; }
+
+    public void updateDeadLine()
+    {
+        var secondPartial = partialList!.First(e => e.partial == 2);
+        deadLine = secondPartial.deadLine;
+    }
 }

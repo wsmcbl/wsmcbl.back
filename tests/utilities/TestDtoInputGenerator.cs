@@ -49,9 +49,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectInputDto aSubjectDto()
+    public static SubjectToCreateDto aSubjectDto()
     {
-        return new SubjectInputDto
+        return new SubjectToCreateDto
         {
             name = "Lengua y Literatura",
             isMandatory = true,
@@ -85,8 +85,9 @@ public static class TestDtoInputGenerator
     {
         return new SchoolYearToCreateDto
         {
-            degrees = [],
-            tariffs = []
+            degreeList = [],
+            tariffList = [],
+            partialList = []
         };
     }
 

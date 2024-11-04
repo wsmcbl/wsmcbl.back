@@ -26,6 +26,7 @@ public class DegreeEntity
         this.schoolYear = schoolYear;
         label = degreeData.label;
         educationalLevel = degreeData.getModalityName();
+        tag = degreeData.tag;
 
         subjectList ??= [];
         foreach (var subject in degreeData.subjectList!)
