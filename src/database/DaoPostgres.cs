@@ -26,7 +26,10 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
 {
     public async Task<ExchangeRateEntity> getCurrentRate()
     {
-        return await entities.Where(e => e.schoolyear == "2024").FirstAsync();
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var currentSchoolyear = await schoolyearDao.getCurrentSchoolYear();
+        
+        return await entities.Where(e => e.schoolyear == currentSchoolyear.id).FirstAsync();
     }
 }
 

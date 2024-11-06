@@ -26,11 +26,11 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     {
         try
         {
-            return await getSchoolYearByLabel(getNewSchoolyear());
+            return await getSchoolYearByLabel(getLabelOfTheNewSchoolYear());
         }
         catch (Exception)
         {
-            var year = getNewSchoolyear();
+            var year = getLabelOfTheNewSchoolYear();
             
             var schoolYearEntity = new SchoolYearEntity
             {
@@ -59,5 +59,5 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
 
-    private static int getNewSchoolyear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+    private static int getLabelOfTheNewSchoolYear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
 }
