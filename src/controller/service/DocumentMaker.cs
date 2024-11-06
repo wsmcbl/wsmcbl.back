@@ -70,6 +70,8 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         {
             throw new EntityNotFoundException("Student", transaction.studentId);
         }
+
+        var exchangeRate = await daoFactory.exchangeRateDao!.getCurrentRate();
         
         var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
         
@@ -81,7 +83,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withGeneralBalance(generalBalance)
             .withNumber(4517)
             .withSeries("A")
-            .withExchangeRate(36.68f)
+            .withExchangeRate(exchangeRate.value)
             .build();
         
         setLatexBuilder(latexBuilder);

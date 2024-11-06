@@ -117,7 +117,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             return this;
         }
 
-        public Builder withExchangeRate(float parameter)
+        public Builder withExchangeRate(double parameter)
         {
             latexBuilder.exchangeRate = $"{parameter:F2}";
             return this;

@@ -9,7 +9,10 @@ public interface IUserDao : IGenericDao<UserEntity, string>;
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
 
-public interface IExchangeRateDao : IGenericDao<ExchangeRateEntity, int>;
+public interface IExchangeRateDao : IGenericDao<ExchangeRateEntity, int>
+{
+    public Task<ExchangeRateEntity> getCurrentRate();
+}
 
 public interface ITariffDao : IGenericDao<TariffEntity, int>
 {

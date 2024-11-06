@@ -22,7 +22,13 @@ public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
 public class ExchangeRateDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<ExchangeRateEntity, int>(context), IExchangeRateDao;
+    : GenericDaoPostgres<ExchangeRateEntity, int>(context), IExchangeRateDao
+{
+    public async Task<ExchangeRateEntity> getCurrentRate()
+    {
+        return await entities.Where(e => e.schoolyear == "2024").FirstAsync();
+    }
+}
 
 public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
 {
