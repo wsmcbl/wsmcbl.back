@@ -74,13 +74,14 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
         var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());
 
         var teacherId = toUpdateDto.teacherId;
-        TeacherEntity? teacher = null;
 
-        if (teacherId != null)
+        if (teacherId == null)
         {
-            await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
-            teacher = await controller.getTeacherById(teacherId);
+            return Ok(enrollment.mapToDto());
         }
+        
+        await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
+        var teacher = await controller.getTeacherById(teacherId);
 
         return Ok(enrollment.mapToDto(teacher));
     }
