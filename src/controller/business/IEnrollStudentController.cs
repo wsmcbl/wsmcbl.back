@@ -4,7 +4,7 @@ namespace wsmcbl.src.controller.business;
 
 public interface IEnrollStudentController
 {
-    public Task<List<StudentEntity>> getStudentList();
+    public Task<List<StudentEntity>> getStudentListWithSolvency();
     public Task<StudentEntity> getStudentById(string studentId);
     public Task<List<DegreeEntity>> getValidDegreeList();
     public Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId);

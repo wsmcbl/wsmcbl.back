@@ -6,7 +6,7 @@ public class BasicDegreeToEnrollDto
 {
     public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
-    public string eduactionalLevel { get; set; } = null!;
+    public string educationalLevel { get; set; } = null!;
     public int position { get; set; }
 
     public ICollection<BasicEnrollmentDto>? enrollments { get; set; }
@@ -19,7 +19,7 @@ public class BasicDegreeToEnrollDto
     {
         degreeId = degree.degreeId!;
         label = degree.label;
-        eduactionalLevel = degree.educationalLevel;
+        educationalLevel = degree.educationalLevel;
         enrollments = degree.enrollmentList!.mapToListBasicDto();
 
         try

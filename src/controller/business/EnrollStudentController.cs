@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.business;
 
 public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory), IEnrollStudentController
 {
-    public async Task<List<StudentEntity>> getStudentList()
+    public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
         return await daoFactory.studentDao!.getAllWithSolvency();
     }
