@@ -9,12 +9,22 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 {
     public new async Task<TeacherEntity?> getById(string id)
     {
-        return await entities.Include(e => e.user).FirstOrDefaultAsync();
+        return await entities
+            .Where(e => e.teacherId == id)
+            .Include(e => e.user)
+            .FirstOrDefaultAsync();
     }
 
     public new async Task<List<TeacherEntity>> getAll()
     {
-        return await entities.Include(e => e.user).ToListAsync();
+        var result = await entities.Include(e => e.user).ToListAsync();
+
+        if (result.Count == 0)
+        {
+            throw new InternalException("There is not teacher in the records.");
+        }
+
+        return result;
     }
 
     public async Task<TeacherEntity?> getByEnrollmentId(string enrollmentId)

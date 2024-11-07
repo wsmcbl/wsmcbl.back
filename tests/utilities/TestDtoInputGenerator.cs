@@ -99,7 +99,7 @@ public static class TestDtoInputGenerator
             capacity = 60,
             quantity = 30,
             section = "A",
-            subjects = []
+            subjectList = []
         };
     }
 
