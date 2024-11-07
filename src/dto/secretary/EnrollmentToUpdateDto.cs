@@ -13,7 +13,7 @@ public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
     [JsonRequired] public int capacity { get; set; }
     [JsonRequired] public int quantity { get; set; }
 
-    public List<SubjectToAssignDto> subjects { get; set; } = null!;
+    public List<SubjectToAssignDto> subjectList { get; set; } = null!;
 
     public EnrollmentToUpdateDto()
     {
@@ -30,8 +30,8 @@ public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
             label = label
         };
         
-        var subjectList = subjects.Select(item => item.toEntity(enrollmentId)).ToList();
-        enrollment.setSubjectList(subjectList);
+        var subjects = subjectList.Select(item => item.toEntity(enrollmentId)).ToList();
+        enrollment.setSubjectList(subjects);
         
         return enrollment;
     }

@@ -18,7 +18,7 @@ public class EnrollmentDto
     {
     }
     
-    public EnrollmentDto(EnrollmentEntity entity)
+    private EnrollmentDto(EnrollmentEntity entity)
     {
         enrollmentId = entity.enrollmentId!;
         section = entity.section;

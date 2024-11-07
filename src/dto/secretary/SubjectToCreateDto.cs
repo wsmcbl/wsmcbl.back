@@ -11,6 +11,7 @@ public class SubjectToCreateDto : IBaseDto<SubjectEntity>
     [JsonRequired] public int semester { get; set; }
     [Required] public string initials { get; set; } = null!;
     [JsonRequired] public int area { get; set; }
+    [JsonRequired] public int number { get; set; }
 
     public SubjectEntity toEntity()
     {
@@ -20,7 +21,8 @@ public class SubjectToCreateDto : IBaseDto<SubjectEntity>
             isMandatory = isMandatory,
             semester = semester,
             initials = initials,
-            areaId = area
+            areaId = area,
+            number = number
         };
     }
 
@@ -35,5 +37,6 @@ public class SubjectToCreateDto : IBaseDto<SubjectEntity>
         isMandatory = subject.isMandatory;
         semester = subject.semester;
         initials = subject.initials;
+        number = subject.number;
     }
 }

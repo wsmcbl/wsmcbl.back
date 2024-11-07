@@ -21,7 +21,7 @@ public static class DtoMapper
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     public static DegreeDto mapToDto(this DegreeEntity degree, List<TeacherEntity> teacherList) => new(degree, teacherList);
-    public static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
+    private static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
 
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
@@ -51,7 +51,7 @@ public static class DtoMapper
             return [];
         }
 
-        var teacherDefault = teacherList.First(); 
+        var teacherDefault = teacherList[0]; 
         
         List<EnrollmentDto> result = [];
         foreach (var item in list)
