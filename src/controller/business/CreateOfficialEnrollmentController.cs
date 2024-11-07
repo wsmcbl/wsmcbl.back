@@ -74,7 +74,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.tariffDao!.createList(tariffList);
         await daoFactory.execute();
 
-        return await daoFactory.schoolyearDao!.getCurrentSchoolYear();
+        return await daoFactory.schoolyearDao!.getNewSchoolYear();
     }
 
     public async Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList)
