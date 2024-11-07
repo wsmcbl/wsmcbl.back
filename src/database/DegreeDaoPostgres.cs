@@ -9,18 +9,18 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 {
     public new async Task<DegreeEntity?> getById(string id)
     {
-        var grade = await entities.Include(e => e.subjectList)
+        var degree = await entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
             .ThenInclude(e => e.subjectList)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.degreeId == id);
 
-        if (grade == null)
+        if (degree == null)
         {
             throw new EntityNotFoundException("Grade", id);
         }
 
-        return grade;
+        return degree;
     }
 
     public void createList(List<DegreeEntity> gradeList)

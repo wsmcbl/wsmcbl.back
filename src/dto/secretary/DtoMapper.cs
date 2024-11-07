@@ -12,7 +12,7 @@ public static class DtoMapper
         => list == null || !list.Any() ? [] : list.Select(item => item.toEntity()).ToList();
 
 
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher) => new(enrollment, teacher);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null) => new(enrollment, teacher);
 
     public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
@@ -44,17 +44,21 @@ public static class DtoMapper
     public static List<SubjectToAssignDto> mapListToAssignDto(this IEnumerable<model.academy.SubjectEntity>? list)
         => list == null || !list.Any() ? [new SubjectToAssignDto()] : list.Select(e => e.MapToAssignDto()).ToList();
 
-    public static List<EnrollmentDto> mapListToDto(this IEnumerable<EnrollmentEntity>? list, List<TeacherEntity> teacherList)
+    public static List<EnrollmentDto> mapListToDto(this ICollection<EnrollmentEntity>? list, List<TeacherEntity> teacherList)
     {
-        if (list == null || !list.Any())
+        if (list == null || list.Count == 0 || teacherList.Count == 0)
         {
             return [];
         }
 
+        var teacherDefault = teacherList.First(); 
+        
         List<EnrollmentDto> result = [];
         foreach (var item in list)
         {
-            var teacher = teacherList.First(e => e.teacherId == item.teacherId);
+            var teacher = item.teacherId == null ? teacherDefault :
+                teacherList.First(e => e.teacherId == item.teacherId);
+            
             result.Add(item.mapToDto(teacher));
         }
 
