@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.business;
 
 public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory), IEnrollStudentController
 {
-    public async Task<List<StudentEntity>> getStudentList()
+    public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
         return await daoFactory.studentDao!.getAllWithSolvency();
     }
@@ -16,9 +16,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return await daoFactory.studentDao!.getByIdWithProperties(studentId);
     }
 
-    public async Task<List<DegreeEntity>> getDegreeList()
+    public async Task<List<DegreeEntity>> getValidDegreeList()
     {
-        return await daoFactory.degreeDao!.getAllForTheCurrentSchoolyear();
+        return await daoFactory.degreeDao!.getValidListForTheSchoolyear();
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
