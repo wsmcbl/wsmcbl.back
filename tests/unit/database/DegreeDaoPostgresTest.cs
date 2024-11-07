@@ -62,7 +62,7 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
         
         var sut = new DegreeDaoPostgres(context);
 
-        var result = await sut.getAllForTheCurrentSchoolyear();
+        var result = await sut.getValidListForTheSchoolyear();
         
         Assert.NotEmpty(result);
     }
@@ -72,6 +72,6 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
     {
         var sut = new DegreeDaoPostgres(TestDbContext.getInMemory());
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getAllForTheCurrentSchoolyear());
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getValidListForTheSchoolyear());
     }
 }

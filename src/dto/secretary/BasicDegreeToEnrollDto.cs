@@ -6,7 +6,8 @@ public class BasicDegreeToEnrollDto
 {
     public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
-    public string modality { get; set; } = null!;
+    public string eduactionalLevel { get; set; } = null!;
+    public int position { get; set; }
 
     public ICollection<BasicEnrollmentDto>? enrollments { get; set; }
 
@@ -18,7 +19,16 @@ public class BasicDegreeToEnrollDto
     {
         degreeId = degree.degreeId!;
         label = degree.label;
-        modality = degree.educationalLevel;
+        eduactionalLevel = degree.educationalLevel;
         enrollments = degree.enrollmentList!.mapToListBasicDto();
+
+        try
+        {
+            position = Convert.ToInt32(degree.tag);
+        }
+        catch (Exception)
+        {
+            position = 1;
+        }
     }
 }

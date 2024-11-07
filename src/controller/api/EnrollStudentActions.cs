@@ -24,12 +24,17 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
         var result = await controller.getStudentById(studentId);
         return Ok(result.mapToDto());
     }
-
+    
+    /// <summary>
+    ///  Returns the list of degree with enrolments.
+    /// </summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
     [Route("degrees")]
-    public async Task<IActionResult> getDegreeList()
+    public async Task<IActionResult> getValidDegreeList()
     {
-        var result = await controller.getDegreeList();
+        var result = await controller.getValidDegreeList();
         return Ok(result.mapToListBasicDto());
     }
 
