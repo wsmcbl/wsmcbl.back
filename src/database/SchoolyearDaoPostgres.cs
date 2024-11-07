@@ -22,7 +22,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
 
-    public async Task<SchoolYearEntity?> getNewSchoolyear()
+    private async Task<SchoolYearEntity?> getNewSchoolyear()
     {
         try
         {
@@ -42,7 +42,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 
             if (result == null)
             {
-                throw new ConflictException("new Schoolyear not found");
+                throw new ConflictException("New Schoolyear not found");
             }
 
             return result;

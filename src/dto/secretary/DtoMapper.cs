@@ -25,7 +25,7 @@ public static class DtoMapper
 
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
-    private static BasicStudentToEnrollDto mapToBasicDto(this StudentEntity student) => new(student, "Por implementar");
+    private static BasicStudentToEnrollDto mapToBasicDto(this StudentEntity student) => new(student);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
