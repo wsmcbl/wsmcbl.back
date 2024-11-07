@@ -9,7 +9,7 @@ namespace wsmcbl.src.database;
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
 {
-    public async Task<SchoolYearEntity> getCurrentSchoolYear()
+    public async Task<SchoolYearEntity> getCurrentSchoolyear()
     {
         var result = await getSchoolYearByLabel(DateTime.Today.Year);
         
@@ -22,11 +22,30 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
 
-    public async Task<SchoolYearEntity> getNewSchoolYear()
+    public async Task<SchoolYearEntity?> getNewSchoolyear()
     {
         try
         {
             return await getSchoolYearByLabel(getLabelOfTheNewSchoolYear());
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public async Task<SchoolYearEntity> getOrCreateNewSchoolyear()
+    {
+        try
+        {
+            var result = await getNewSchoolyear();
+
+            if (result == null)
+            {
+                throw new ConflictException("new Schoolyear not found");
+            }
+
+            return result;
         }
         catch (Exception)
         {

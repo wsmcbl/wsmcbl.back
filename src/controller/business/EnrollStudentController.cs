@@ -34,7 +34,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)
     {
-        var schoolYear = await daoFactory.schoolyearDao!.getNewSchoolYear();
+        var schoolYear = await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
         
         var academyStudent = new model.academy.StudentEntity(studentId, enrollmentId);
         
