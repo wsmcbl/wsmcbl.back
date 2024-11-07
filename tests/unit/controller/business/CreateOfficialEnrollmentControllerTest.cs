@@ -26,7 +26,7 @@ public class CreateOfficialEnrollmentControllerTest
     {
         var schoolyear = TestEntityGenerator.aSchoolYear();
         var dao = Substitute.For<ISchoolyearDao>();
-        dao.getNewSchoolYear().Returns(schoolyear);
+        dao.getOrCreateNewSchoolyear().Returns(schoolyear);
 
         List<TariffDataEntity> tariffData = [TestEntityGenerator.aTariffData()];
         List<DegreeDataEntity> gradeData = [TestEntityGenerator.aDegreeData()];
@@ -86,7 +86,7 @@ public class CreateOfficialEnrollmentControllerTest
 
          var currentSchoolyear = TestEntityGenerator.aSchoolYear();
          var schoolyearDao = Substitute.For<ISchoolyearDao>();
-         schoolyearDao.getCurrentSchoolYear().Returns(currentSchoolyear);
+         schoolyearDao.getCurrentSchoolyear().Returns(currentSchoolyear);
          daoFactory.schoolyearDao.Returns(schoolyearDao);
 
          sut = new CreateOfficialEnrollmentController(daoFactory);

@@ -3,15 +3,29 @@ CREATE OR REPLACE FUNCTION Accounting.insert_registration_debt_history_by_new_st
     RETURNS TRIGGER AS $$
 DECLARE
     current_school_year varchar(20);
+    new_school_year varchar(20):= '';
+    current_month INTEGER;
+    current_year INTEGER;
 BEGIN
+    current_month := EXTRACT(MONTH FROM CURRENT_DATE);
+    current_year := EXTRACT(YEAR FROM CURRENT_DATE);
+    
     SELECT schoolyearid INTO current_school_year
     FROM secretary.schoolyear
-    WHERE label = to_char(current_date, 'YYYY');
+    WHERE label = CAST(current_year AS VARCHAR);
+
+    IF current_month IN (11, 12) THEN
+        current_year := current_year + 1;
+
+        SELECT schoolyearid INTO new_school_year
+        FROM secretary.schoolyear
+        WHERE label = CAST(current_year AS VARCHAR);
+    END IF;
     
     INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
     SELECT NEW.studentId, t.tariffId, t.schoolyear, t.amount, 0.0, 0, false
     FROM Accounting.tariff t
-    WHERE t.schoolyear = current_school_year
+    WHERE t.schoolyear = current_school_year or t.schoolyear = new_school_year
       and t.typeid = 2
       and NEW.educationallevel = t.educationallevel;
 

@@ -18,7 +18,7 @@ public class SchoolYearDaoPostgresTest
         
         var sut = new SchoolyearDaoPostgres(context);
 
-        var result = await sut.getNewSchoolYear();
+        var result = await sut.getOrCreateNewSchoolyear();
 
         Assert.NotNull(result);
         Assert.Equal(schoolyear, result);
@@ -31,7 +31,7 @@ public class SchoolYearDaoPostgresTest
         
         var sut = new SchoolyearDaoPostgres(context);
 
-        var result = await sut.getNewSchoolYear();
+        var result = await sut.getOrCreateNewSchoolyear();
 
         Assert.NotNull(result);
         Assert.IsType<SchoolYearEntity>(result);

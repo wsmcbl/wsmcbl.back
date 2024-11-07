@@ -9,33 +9,28 @@ namespace wsmcbl.src.database;
 
 public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
-    private string? schoolyear;
-    
-    private async Task initSchoolyear()
-    {
-        if (schoolyear != null)
-        {
-            return;
-        }
-        
-        var year = DateTime.Today.Year.ToString();
-        var element = await context.Set<SchoolYearEntity>()
-            .FirstOrDefaultAsync(e => e.label == year);
+    private string? currentSchoolyearId { get; set; }
 
-        if (element == null)
+    private async Task setSchoolyearIds()
+    {
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        try
         {
-            throw new ConflictException("Schoolyear no exist");
+            var currentSchoolyear = await schoolyearDao.getCurrentSchoolyear();
+            currentSchoolyearId = currentSchoolyear.id!;
         }
-        
-        schoolyear = element.id;
+        catch (Exception)
+        {
+            currentSchoolyearId = "";
+        }
     }
     
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        await initSchoolyear();
+        await setSchoolyearIds();
         
         var tariffs = await entities
-            .Where(t => t.schoolYear == schoolyear && t.isLate && t.type == Const.TARIFF_MONTHLY)
+            .Where(t => t.schoolYear == currentSchoolyearId && t.isLate && t.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -45,11 +40,11 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        await initSchoolyear();
+        await setSchoolyearIds();
         
         var debts = context.Set<DebtHistoryEntity>().Where(d => d.studentId == studentId);
         
-        debts.Where(d => d.schoolyear == schoolyear || !d.isPaid)
+        debts.Where(d => d.schoolyear == currentSchoolyearId || !d.isPaid)
             .Include(d => d.tariff);
         
         var list = debts.Select(d => d.tariff);
@@ -59,10 +54,10 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
-        await initSchoolyear();
+        await setSchoolyearIds();
         
         var debts = await context.Set<DebtHistoryEntity>()
-            .Where(d => d.studentId == studentId && d.schoolyear == schoolyear)
+            .Where(d => d.studentId == studentId && d.schoolyear == currentSchoolyearId)
             .Include(d => d.tariff)
             .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
