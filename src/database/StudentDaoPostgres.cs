@@ -51,10 +51,11 @@ public class StudentDaoPostgres(PostgresContext context)
 
     public async Task<List<StudentEntity>> getAllWithSolvency()
     {
-        var schoolyear = await new SchoolyearDaoPostgres(context).getSchoolYearByLabel(DateTime.Today.Year);
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
 
         var tariffList = await context.Set<model.accounting.TariffEntity>()
-            .Where(e => e.schoolYear == schoolyear.id)
+            .Where(e => e.schoolYear == ID.currentSchoolyear || e.schoolYear == ID.newSchoolyear)
             .Where(e => e.type == Const.TARIFF_REGISTRATION).ToListAsync();
 
         if (tariffList.Count == 0)

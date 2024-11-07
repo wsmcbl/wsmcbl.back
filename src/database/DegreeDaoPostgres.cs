@@ -34,7 +34,7 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
     public async Task<List<DegreeEntity>> getAllForTheCurrentSchoolyear()
     {
         var dao = new SchoolyearDaoPostgres(context);
-        var currentSchoolyear = await dao.getSchoolYearByLabel(DateTime.Today.Year);
+        var currentSchoolyear = await dao.getCurrentSchoolyear();
 
         var list = entities
             .Include(e => e.enrollmentList)

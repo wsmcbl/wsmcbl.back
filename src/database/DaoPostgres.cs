@@ -24,12 +24,18 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 public class ExchangeRateDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<ExchangeRateEntity, int>(context), IExchangeRateDao
 {
-    public async Task<ExchangeRateEntity> getCurrentRate()
+    public async Task<ExchangeRateEntity> getLastRate()
+    {
+        var schoolyearId = await getLastSchoolyearId();
+        return await entities.Where(e => e.schoolyear == schoolyearId).FirstAsync();
+    }
+
+    private async Task<string> getLastSchoolyearId()
     {
         var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var currentSchoolyear = await schoolyearDao.getCurrentSchoolyear();
-        
-        return await entities.Where(e => e.schoolyear == currentSchoolyear.id).FirstAsync();
+        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+
+        return ID.newSchoolyear != "" ? ID.newSchoolyear : ID.currentSchoolyear;
     }
 }
 

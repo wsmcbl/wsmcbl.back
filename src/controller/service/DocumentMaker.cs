@@ -71,7 +71,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException("Student", transaction.studentId);
         }
 
-        var exchangeRate = await daoFactory.exchangeRateDao!.getCurrentRate();
+        var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         
         var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
         
