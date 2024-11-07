@@ -66,7 +66,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
     }
 
-    public async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
+    private async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
 
@@ -79,4 +79,23 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     }
 
     private static int getLabelOfTheNewSchoolYear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+    
+    public async Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds()
+    {
+        string currentSchoolyearId;
+        try
+        {
+            var currentSchoolyear = await getCurrentSchoolyear();
+            currentSchoolyearId = currentSchoolyear.id!;
+        }
+        catch (Exception)
+        {
+            currentSchoolyearId = "";
+        }
+
+        var newSchoolyear = await getNewSchoolyear();
+        var newSchoolyearId = newSchoolyear == null ? "" : newSchoolyear.id!;
+
+        return (currentSchoolyearId, newSchoolyearId);
+    }
 }

@@ -11,7 +11,7 @@ public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
 
 public interface IExchangeRateDao : IGenericDao<ExchangeRateEntity, int>
 {
-    public Task<ExchangeRateEntity> getCurrentRate();
+    public Task<ExchangeRateEntity> getLastRate();
 }
 
 public interface ITariffDao : IGenericDao<TariffEntity, int>

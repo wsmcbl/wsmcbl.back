@@ -10,18 +10,18 @@ namespace wsmcbl.src.database;
 public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
     private string? currentSchoolyearId { get; set; }
+    private string? schoolyearLabel { get; set; }
 
     private async Task setSchoolyearIds()
     {
         var schoolyearDao = new SchoolyearDaoPostgres(context);
-        try
+        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+        currentSchoolyearId = ID.currentSchoolyear;
+
+        if (currentSchoolyearId != "")
         {
             var currentSchoolyear = await schoolyearDao.getCurrentSchoolyear();
-            currentSchoolyearId = currentSchoolyear.id!;
-        }
-        catch (Exception)
-        {
-            currentSchoolyearId = "";
+            schoolyearLabel = currentSchoolyear.label;
         }
     }
     
@@ -47,9 +47,26 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         debts.Where(d => d.schoolyear == currentSchoolyearId || !d.isPaid)
             .Include(d => d.tariff);
         
-        var list = debts.Select(d => d.tariff);
+        var tariffList = await debts.Select(d => d.tariff).ToListAsync();
 
-        return await list.ToListAsync();
+        foreach (var item in tariffList)
+        {
+            if (item.schoolYear == currentSchoolyearId)
+            {
+                item.schoolYear = schoolyearLabel;
+            }
+            else
+            {
+                var dao = new SchoolyearDaoPostgres(context);
+                var schoolyear = await dao.getById(item.schoolYear!);
+                if (schoolyear != null)
+                {
+                    item.schoolYear = schoolyear.label;
+                }
+            }
+        }
+
+        return tariffList;
     }
 
     public async Task<float[]> getGeneralBalance(string studentId)

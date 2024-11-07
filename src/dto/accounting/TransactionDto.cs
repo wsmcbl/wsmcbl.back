@@ -24,7 +24,7 @@ public class TransactionDto
     public TransactionDto(TransactionEntity entity)
     {
         transactionId = entity.transactionId!;
-        cashierId = entity.transactionId;
+        cashierId = entity.cashierId;
         studentId = entity.studentId;
         dateTime = entity.date;
     }
