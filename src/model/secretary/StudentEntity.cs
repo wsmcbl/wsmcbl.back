@@ -17,6 +17,8 @@ public class StudentEntity
     public string address { get; set; } = null!;
     public string religion { get; set; } = null!;
     public bool isActive { get; set; }
+    public string? accessToken { get; set; }
+    public byte[]? profileImage { get; set; }
 
 
     public StudentFileEntity? file { get; set; }

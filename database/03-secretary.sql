@@ -22,6 +22,8 @@ create table if not exists Secretary.Student
     religion varchar(40) not null,
     address varchar(100) not null,
     minedId varchar(30) null,
+    profileImage bytea null CHECK (LENGTH(profileImage) <= 100000),
+    accessToken varchar(20) null,
     foreign key (tutorId) references Secretary.StudentTutor
 );
 

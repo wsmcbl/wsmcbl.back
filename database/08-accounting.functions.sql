@@ -58,7 +58,7 @@ CREATE TRIGGER trg_update_debt_history AFTER INSERT ON Accounting.Transaction_Ta
 
 
 -- Update debt history by pay registration-debt --
-create function update_debt_history_by_enroll_student() returns trigger
+create function Accounting.update_debt_history_by_enroll_student() returns trigger
     language plpgsql
 as $$
 DECLARE
