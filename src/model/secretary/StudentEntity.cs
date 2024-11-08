@@ -200,5 +200,17 @@ public class StudentEntity
             entity.address = address;
             return this;
         }
+
+        public Builder setProfileImage(byte[]? profileImage)
+        {
+            entity.profileImage = profileImage;
+            return this;
+        }
+
+        public Builder setMinedId(string? minedId)
+        {
+            entity.minedId = minedId;
+            return this;
+        }
     }
 }

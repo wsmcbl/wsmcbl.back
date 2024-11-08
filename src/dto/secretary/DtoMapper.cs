@@ -12,9 +12,10 @@ public static class DtoMapper
         => list == null || !list.Any() ? [] : list.Select(item => item.toEntity()).ToList();
 
 
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null) => new(enrollment, teacher);
-
-    public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null)
+        => new(enrollment, teacher);
+    public static EnrollStudentDto mapToDto(this StudentEntity student, (string? enrollmentId, int discountId) ids)
+        => new(student, ids);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);

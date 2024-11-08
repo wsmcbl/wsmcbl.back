@@ -32,7 +32,9 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
-        return Ok(result.mapToDto());
+        var ids = await controller.getEnrollmentAndDiscountByStudentId(studentId);
+        
+        return Ok(result.mapToDto(ids));
     }
     
     /// <summary>
@@ -56,8 +58,10 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     [Route("")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
-        var result = await controller.saveEnroll(dto.student.toEntity(), dto.enrollmentId);
-        return Ok(result.mapToDto());
+        var result = await controller.saveEnroll(dto.student.toEntity(), dto.enrollmentId!);
+        var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
+        
+        return Ok(result.mapToDto(ids));
     }
 
     /// <summary>

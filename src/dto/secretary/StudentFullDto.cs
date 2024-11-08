@@ -7,6 +7,7 @@ namespace wsmcbl.src.dto.secretary;
 public class StudentFullDto : IBaseDto<StudentEntity>
 {
     [Required] public string studentId { get; set; } = null!;
+    [Required] public string? minedId { get; set; }
     [Required] public string name { get; set; } = null!;
     [Required] public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
@@ -17,6 +18,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string? diseases { get; set; }
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
+    [Required] public byte[]? profileImage { get; set; }
 
 
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
@@ -41,6 +43,8 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         diseases = student.diseases;
         religion = student.religion;
         isActive = student.isActive;
+        minedId = student.minedId;
+        profileImage = student.profileImage;
         
         file = student.file.mapToDto();
         tutor = student.tutor.mapToDto();
@@ -62,6 +66,8 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setDiseases(diseases)
             .setReligion(religion)
             .setAddress(address)
+            .setMinedId(minedId)
+            .setProfileImage(profileImage)
             .setMeasurements(measurements?.toEntity())
             .setParents(parents.toEntity())
             .setTutor(tutor.toEntity())
