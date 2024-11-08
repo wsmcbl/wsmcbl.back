@@ -7,12 +7,12 @@ namespace wsmcbl.tests.integration;
 [TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {
-    private StudentFullDto student { get; set; }
+    private EnrollStudentDto student { get; set; }
 
     public EnrollStudentActionsTest(EnrollStudentFixture factory) : base(factory)
     {
         baseUri = "/v2/secretary/enrollments";
-        student = factory.getStudent().mapToDto();
+        student = factory.getStudent().mapToDto(("enroll0001", 1));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     [Fact]
     public async Task getStudentById_ShouldReturnJsonWithStudent_WhenCalled()
     {
-        var response = await client.GetAsync($"{baseUri}/students/{student.studentId}");
+        var response = await client.GetAsync($"{baseUri}/students/{student.getStudentId()}");
 
         await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -59,11 +59,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     [Fact, TestPriority(1)]
     public async Task saveEnroll_ShouldEnrollStudent_WhenCalled()
     {
-        var enrollStudentDto = new EnrollStudentDto
-        {
-            enrollmentId = "en-1",
-            student = student
-        };
+        var enrollStudentDto = student;
         var stringContent = getContentByDto(enrollStudentDto);
 
         var response = await client.PutAsync(baseUri, stringContent);
@@ -81,7 +77,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     [Fact, TestPriority(2)]
     public async Task getEnrollDocument_ShouldReturnByteArray_WhenCalled()
     {
-        var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");
+        var response = await client.GetAsync($"{baseUri}/documents/{student.getStudentId()}");
 
         await response.EnsureSuccess();
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -94,7 +90,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     [Fact]
     public async Task getEnrollDocument_ShouldReturnNotFound_WhenStudentNotExist()
     {
-        var response = await client.GetAsync($"{baseUri}/documents/{student.studentId}");
+        var response = await client.GetAsync($"{baseUri}/documents/{student.getStudentId()}");
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
     }
     

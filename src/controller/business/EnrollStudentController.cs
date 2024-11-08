@@ -49,4 +49,12 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         var documentMaker = new DocumentMaker(daoFactory);
         return await documentMaker.getEnrollDocument(studentId);
     }
+
+    public async Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId)
+    {
+        var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+
+        return (academyStudent?.enrollmentId, accountingStudent!.discountId);
+    }
 }
