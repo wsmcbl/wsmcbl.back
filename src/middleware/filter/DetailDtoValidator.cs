@@ -10,6 +10,7 @@ internal class DetailDtoValidator : AbstractValidator<TransactionDetailDto>
         RuleFor(d => d.tariffId)
             .GreaterThan(0)
             .WithMessage("TariffId invalid");
+        
         RuleFor(d => d.amount)
             .GreaterThan(0)
             .WithMessage("Amount invalid");

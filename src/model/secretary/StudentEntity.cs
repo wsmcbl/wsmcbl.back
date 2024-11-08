@@ -48,6 +48,8 @@ public class StudentEntity
         diseases = entity.diseases;
         religion = entity.religion;
         address = entity.address;
+        minedId = entity.minedId;
+        profileImage = entity.profileImage;
     }
 
     public async Task saveChanges(DaoFactory daoFactory)

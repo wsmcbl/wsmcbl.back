@@ -9,6 +9,7 @@ public class EnrollStudentDto
     [Required] public string? enrollmentId { get; set; }
     [JsonRequired] public int discountId { get; set; }
     [JsonRequired] public StudentFullDto student { get; set; } = null!;
+    public IFormFile? profilePictureWritingValue { get; set; }
 
     public EnrollStudentDto()
     {
@@ -24,5 +25,25 @@ public class EnrollStudentDto
     public string getStudentId()
     {
         return student.studentId;
+    }
+
+    public StudentEntity getStudent()
+    {
+        var result = student.toEntity();
+        result.profileImage = getProfileImage().GetAwaiter().GetResult();
+        
+        return result;
+    }
+    
+    private async Task<byte[]?> getProfileImage()
+    {
+        if (profilePictureWritingValue == null)
+        {
+            return null;
+        }
+
+        using var memoryStream = new MemoryStream();
+        await profilePictureWritingValue.CopyToAsync(memoryStream);
+        return memoryStream.ToArray();
     }
 }

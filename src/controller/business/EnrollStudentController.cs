@@ -52,8 +52,8 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId)
     {
-        var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
-        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
+        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
 
         return (academyStudent?.enrollmentId, accountingStudent!.discountId);
     }

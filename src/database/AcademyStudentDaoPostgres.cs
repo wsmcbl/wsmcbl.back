@@ -42,4 +42,14 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
 
         return result;
     }
+
+    public async Task<StudentEntity?> getLastById(string studentId)
+    {
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+
+        var schoolyearId = ids.newSchoolyear != string.Empty ? ids.newSchoolyear : ids.currentSchoolyear;
+
+        return await entities.FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
+    }
 }
