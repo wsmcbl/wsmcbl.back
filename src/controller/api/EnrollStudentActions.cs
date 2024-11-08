@@ -56,9 +56,10 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("")]
+    [Consumes("multipart/form-data")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
-        var result = await controller.saveEnroll(dto.student.toEntity(), dto.enrollmentId!);
+        var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
         
         return Ok(result.mapToDto(ids));

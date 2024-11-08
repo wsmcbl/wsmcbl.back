@@ -15,11 +15,13 @@ public static class BuilderService
     {
         Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
         
-        Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<CreateStudentProfileDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToUpdateDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<StudentParentDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<CreateStudentProfileDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<EnrollStudentDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<SchoolyearToCreateDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<StudentFullDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<StudentParentDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
     }
 }
