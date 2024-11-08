@@ -4,7 +4,11 @@ using wsmcbl.src.model.dao;
 namespace wsmcbl.src.model.accounting;
 
 public interface ICashierDao : IGenericDao<CashierEntity, string>;
-public interface IStudentDao : IGenericDao<StudentEntity, string>;
+public interface IStudentDao : IGenericDao<StudentEntity, string>
+{
+    public Task<StudentEntity> getWithoutPropertiesById(string studentId);
+}
+
 public interface IUserDao : IGenericDao<UserEntity, string>;
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
