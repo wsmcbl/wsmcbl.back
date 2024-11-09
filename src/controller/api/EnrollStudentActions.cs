@@ -19,7 +19,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> getStudentsList()
     {
         var result = await controller.getStudentListWithSolvency();
-        return Ok(result.mapToListBasicDto());
+        return Ok(result.mapToListBasicEnrollDto());
     }
     
     /// <summary>
@@ -56,7 +56,6 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("")]
-    [Consumes("multipart/form-data")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
