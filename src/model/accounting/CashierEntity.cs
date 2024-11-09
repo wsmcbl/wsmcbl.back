@@ -7,9 +7,9 @@ public class CashierEntity
     public string? cashierId { get; set; }
     public string userId { get; set; } = null!;
     public UserEntity user { get; set; } = null!;
-    
-    public string fullName()
+
+    public string getAlias()
     {
-        return user.fullName();
+        return $"{user.name[0]}-{user.surname}";
     }
 }

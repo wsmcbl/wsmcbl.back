@@ -25,7 +25,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.Replace("discount.value", getDiscountTotal());
         content = content.Replace("arrears.value", getArrearsTotal());
         content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
-        content = content.Replace("cashier.value", cashier.fullName());
+        content = content.Replace("cashier.value", cashier.getAlias());
         content = content.Replace("datetime.value", transaction.date.ToString("h:mm tt d/MMM/yyyy", new CultureInfo("es-ES")));
         content = content.Replace("exchange.rate.value", exchangeRate);
         content = content.Replace("general.balance.value", getGeneralBalance());
