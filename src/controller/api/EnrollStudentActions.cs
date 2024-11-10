@@ -59,6 +59,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
+        await controller.updateStudentDiscount(dto.getStudentId(), dto.discountId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
         
         return Ok(result.mapToDto(ids));
