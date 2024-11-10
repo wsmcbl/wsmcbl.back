@@ -56,3 +56,18 @@ CREATE TRIGGER trg_insert_grades_by_new_subject_partial
     ON academy.subject_partial
     FOR EACH ROW
 EXECUTE FUNCTION academy.insert_grades_by_new_subject_partial();
+
+
+
+-- Update enrollment quantity by new academy student --
+CREATE OR REPLACE FUNCTION academy.update_enrollment_by_enroll_student()
+    RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+    UPDATE academy.enrollment SET quantity = quantity + 1 WHERE enrollmentid = NEW.enrollmentid;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_enrollment_by_enroll_student AFTER insert ON academy.student
+    FOR EACH ROW EXECUTE FUNCTION academy.update_enrollment_by_enroll_student();

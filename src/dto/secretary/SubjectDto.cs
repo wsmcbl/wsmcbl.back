@@ -21,5 +21,6 @@ public class SubjectDto
         isMandatory = subject.isMandatory;
         semester = subject.semester;
         initials = subject.initials;
+        
     }
 }

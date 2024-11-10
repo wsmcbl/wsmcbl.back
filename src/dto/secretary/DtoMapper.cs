@@ -12,20 +12,22 @@ public static class DtoMapper
         => list == null || !list.Any() ? [] : list.Select(item => item.toEntity()).ToList();
 
 
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher) => new(enrollment, teacher);
-
-    public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null)
+        => new(enrollment, teacher);
+    public static EnrollStudentDto mapToDto(this StudentEntity student, (string? enrollmentId, int discountId) ids)
+        => new(student, ids);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     public static DegreeDto mapToDto(this DegreeEntity degree, List<TeacherEntity> teacherList) => new(degree, teacherList);
-    public static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
+    private static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
 
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
-    private static BasicStudentToEnrollDto mapToBasicDto(this StudentEntity student) => new(student, "Por implementar");
+    private static BasicStudentToEnrollDto mapToBasicEnrollDto(this StudentEntity student) => new(student);
+    private static BasicStudentDto mapToBasicDto(this StudentEntity entity) => new(entity);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
@@ -37,24 +39,31 @@ public static class DtoMapper
     public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
 
-    public static List<BasicStudentToEnrollDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
+    public static List<BasicStudentDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
+
+    public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
+        => list.Select(e => e.mapToBasicEnrollDto()).ToList();
 
 
     public static List<SubjectToAssignDto> mapListToAssignDto(this IEnumerable<model.academy.SubjectEntity>? list)
         => list == null || !list.Any() ? [new SubjectToAssignDto()] : list.Select(e => e.MapToAssignDto()).ToList();
 
-    public static List<EnrollmentDto> mapListToDto(this IEnumerable<EnrollmentEntity>? list, List<TeacherEntity> teacherList)
+    public static List<EnrollmentDto> mapListToDto(this ICollection<EnrollmentEntity>? list, List<TeacherEntity> teacherList)
     {
-        if (list == null || !list.Any())
+        if (list == null || list.Count == 0 || teacherList.Count == 0)
         {
             return [];
         }
 
+        var teacherDefault = teacherList[0]; 
+        
         List<EnrollmentDto> result = [];
         foreach (var item in list)
         {
-            var teacher = teacherList.First(e => e.teacherId == item.teacherId);
+            var teacher = item.teacherId == null ? teacherDefault :
+                teacherList.First(e => e.teacherId == item.teacherId);
+            
             result.Add(item.mapToDto(teacher));
         }
 

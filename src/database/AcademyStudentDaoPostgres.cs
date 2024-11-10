@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
+using IStudentDao = wsmcbl.src.model.academy.IStudentDao;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -41,5 +43,15 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
         }
 
         return result;
+    }
+
+    public async Task<StudentEntity?> getLastById(string studentId)
+    {
+        ISchoolyearDao schoolyearDao = new SchoolyearDaoPostgres(context);
+        var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+
+        var schoolyearId = ids.newSchoolyear != string.Empty ? ids.newSchoolyear : ids.currentSchoolyear;
+
+        return await entities.FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
     }
 }

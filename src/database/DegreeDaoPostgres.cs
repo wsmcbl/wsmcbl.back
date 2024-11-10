@@ -9,18 +9,18 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 {
     public new async Task<DegreeEntity?> getById(string id)
     {
-        var grade = await entities.Include(e => e.subjectList)
+        var degree = await entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
             .ThenInclude(e => e.subjectList)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.degreeId == id);
 
-        if (grade == null)
+        if (degree == null)
         {
             throw new EntityNotFoundException("Grade", id);
         }
 
-        return grade;
+        return degree;
     }
 
     public void createList(List<DegreeEntity> gradeList)
@@ -31,15 +31,16 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
         }
     }
 
-    public async Task<List<DegreeEntity>> getAllForTheCurrentSchoolyear()
+    public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
     {
         var dao = new SchoolyearDaoPostgres(context);
-        var currentSchoolyear = await dao.getCurrentSchoolyear();
+        var ID = await dao.getCurrentAndNewSchoolyearIds();
+        var schoolyearId = ID.newSchoolyear != "" ? ID.newSchoolyear : ID.currentSchoolyear;
 
-        var list = entities
+        var list = await entities
             .Include(e => e.enrollmentList)
-            .Where(e => e.schoolYear == currentSchoolyear.id);
+            .Where(e => e.schoolYear == schoolyearId).ToListAsync();
 
-        return await list.ToListAsync();
+        return list.Where(e => e.enrollmentList!.Count != 0).ToList();
     }
 }

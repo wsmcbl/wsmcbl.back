@@ -5,14 +5,14 @@ namespace wsmcbl.src.model.secretary;
 public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
     public void createList(List<DegreeEntity> gradeList);
-    public Task<List<DegreeEntity>> getAllForTheCurrentSchoolyear();
+    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
     public Task<SchoolYearEntity> getCurrentSchoolyear();
-    public Task<SchoolYearEntity?> getNewSchoolyear();
     public Task<SchoolYearEntity> getOrCreateNewSchoolyear();
+    public Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds();
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
