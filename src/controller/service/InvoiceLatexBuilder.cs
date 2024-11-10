@@ -1,5 +1,6 @@
 using System.Globalization;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -26,7 +27,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.Replace("arrears.value", getArrearsTotal());
         content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
         content = content.Replace("cashier.value", cashier.getAlias());
-        content = content.Replace("datetime.value", transaction.date.ToString("h:mm tt d/MMM/yyyy", new CultureInfo("es-ES")));
+        content = content.Replace("datetime.value", getDatetimeFormat(transaction.date));
         content = content.Replace("exchange.rate.value", exchangeRate);
         content = content.Replace("general.balance.value", getGeneralBalance());
 
@@ -68,6 +69,15 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     {
         var value = generalBalance[0] - generalBalance[1];
         return $"C\\$ {value:F2}";
+    }
+
+    private string getDatetimeFormat(DateTime datetime)
+    {
+        var culture = new CultureInfo("es-ES");
+        culture.DateTimeFormat.AMDesignator = "AM";
+        culture.DateTimeFormat.PMDesignator = "PM";
+
+        return datetime.toUTC6().ToString("d/MMM/yyyy, h:mm tt", culture);
     }
 
     public class Builder
