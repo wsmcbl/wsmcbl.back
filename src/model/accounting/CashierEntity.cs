@@ -10,6 +10,6 @@ public class CashierEntity
 
     public string getAlias()
     {
-        return $"{user.name[0]}-{user.surname}";
+        return $"{user.name[0]}. {user.surname}";
     }
 }
