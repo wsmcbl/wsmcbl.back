@@ -70,15 +70,16 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         {
             throw new EntityNotFoundException("Student", transaction.studentId);
         }
-
-        var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         
+        var debtList = await daoFactory.debtHistoryDao!.getListByTransaction(transaction);
+        var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.tariffDao!.getGeneralBalance(transaction.studentId);
         
         var latexBuilder = new InvoiceLatexBuilder
             .Builder(resource, $"{resource}/out")
             .withStudent(student)
             .withTransaction(transaction)
+            .withDebtList(debtList)
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
             .withNumber(transaction.number)

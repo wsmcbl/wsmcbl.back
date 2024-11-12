@@ -1,5 +1,6 @@
 using System.Globalization;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -7,6 +8,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 {
     private StudentEntity student = null!;
     private TransactionEntity transaction = null!;
+    private List<DebtHistoryEntity> debtList = null!;
     private CashierEntity cashier = null!;
     private float[] generalBalance = null!;
     private int number;
@@ -14,7 +16,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     private string exchangeRate = null!;
 
     protected override string getTemplateName() => "invoice";
- 
+
     protected override string updateContent(string content)
     {
         content = content.Replace("numeration.value", $"{series}{number:00000000}");
@@ -24,9 +26,10 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.Replace("total.value", $"C\\$ {total:F2}");
         content = content.Replace("discount.value", getDiscountTotal());
         content = content.Replace("arrears.value", getArrearsTotal());
+        content = content.Replace("total.aux.value", getAuxTotal());
         content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
         content = content.Replace("cashier.value", cashier.getAlias());
-        content = content.Replace("datetime.value", transaction.date.ToString("h:mm tt d/MMM/yyyy", new CultureInfo("es-ES")));
+        content = content.Replace("datetime.value", getDatetimeFormat(transaction.date));
         content = content.Replace("exchange.rate.value", exchangeRate);
         content = content.Replace("general.balance.value", getGeneralBalance());
 
@@ -35,19 +38,23 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getArrearsTotal() => $"C\\$ {arrearsTotal:F2}";
     private string getDiscountTotal() => $"C\\$ {discountTotal:F2}";
+    private string getAuxTotal() => $"C\\$ {(total + arrearsTotal - discountTotal):F2}";
 
     private float discountTotal;
     private float arrearsTotal;
     private float total;
+
     private string getDetail()
     {
         var detail = transaction.details.Select(e => new
         {
             concept = e.concept(),
             amount = e.officialAmount(),
+            amountTransaction = e.amount,
             arrears = e.calculateArrears(),
             discount = student.calculateDiscount(e.officialAmount()),
-            isPaidLate = e.itPaidLate()
+            isPaidLate = e.itPaidLate(),
+            debt = getDebtByTariff(e.tariffId)
         });
 
         var content = "";
@@ -56,18 +63,37 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             discountTotal += item.discount;
             arrearsTotal += item.arrears;
             total += item.amount;
-            
+
             var concept = item.isPaidLate ? $"*{item.concept}" : item.concept;
-            content = $"{content} {concept} & C\\$ {item.amount:F2}\\\\";
+            content = $@"{content} {concept} & C\$ {item.amount:F2}\\";
         }
 
         return content;
     }
 
+    private DebtHistoryEntity getDebtByTariff(int tariffId)
+    {
+        return debtList.First(e => e.tariffId == tariffId);
+    }
+
     private string getGeneralBalance()
     {
-        var value = generalBalance[0] - generalBalance[1];
+        var value = generalBalance[1] - generalBalance[0];
         return $"C\\$ {value:F2}";
+    }
+
+    private static string getDatetimeFormat(DateTime datetime)
+    {
+        var culture = new CultureInfo("es-ES")
+        {
+            DateTimeFormat =
+            {
+                AMDesignator = "AM",
+                PMDesignator = "PM"
+            }
+        };
+
+        return datetime.toUTC6().ToString("ddd. dd/MMM/yyyy, h:mm tt", culture);
     }
 
     public class Builder
@@ -120,6 +146,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         public Builder withExchangeRate(double parameter)
         {
             latexBuilder.exchangeRate = $"{parameter:F2}";
+            return this;
+        }
+
+        public Builder withDebtList(List<DebtHistoryEntity> debtList)
+        {
+            latexBuilder.debtList = debtList;
             return this;
         }
     }
