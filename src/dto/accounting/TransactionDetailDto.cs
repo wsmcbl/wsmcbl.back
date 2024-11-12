@@ -10,14 +10,7 @@ public class TransactionDetailDto : IBaseDto<TransactionTariffEntity>
     [JsonRequired] public float amount { get; set; }
     [JsonRequired] public bool applyArrears { get; set; }
     
-    public TransactionTariffEntity toEntity()
-    {
-        return new TransactionTariffEntity
-        {
-            tariffId = tariffId,
-            amount = amount
-        };
-    }
+    public TransactionTariffEntity toEntity() => new(tariffId, amount);
 
     public DebtHistoryEntity toDebtEntity()
     {
