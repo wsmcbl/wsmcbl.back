@@ -5,7 +5,7 @@ using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("secretary/enrollments/")]
+[Route("secretary/")]
 [ApiController]
 public class EnrollStudentActions(IEnrollStudentController controller) : ControllerBase
 {
@@ -15,7 +15,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="404">Registration tariff not found.</response>
     [HttpGet]
-    [Route("students")]
+    [Route("enrollments/students")]
     public async Task<IActionResult> getStudentsList()
     {
         var result = await controller.getStudentListWithSolvency();
@@ -28,7 +28,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="200">Returns a resource.</response>
     /// <response code="404">Student not found.</response>
     [HttpGet]
-    [Route("students/{studentId}")]
+    [Route("enrollments/students/{studentId}")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
@@ -43,7 +43,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
-    [Route("degrees")]
+    [Route("enrollments/degrees")]
     public async Task<IActionResult> getValidDegreeList()
     {
         var result = await controller.getValidDegreeList();
@@ -55,7 +55,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="400">Parameter is not valid.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("")]
+    [Route("enrollments/")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
@@ -66,7 +66,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     }
 
     /// <summary>Update student profile picture.</summary>
-    /// <response code="200">Returns the modified resource.</response>
+    /// <response code="200">Returns when the resource has been modified.</response>
     /// <response code="400">Parameter is not valid.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
@@ -86,7 +86,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <response code="200">Return existing resources.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
-    [Route("documents/{studentId}")]
+    [Route("enrollments/documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId);
