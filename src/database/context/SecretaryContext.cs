@@ -82,7 +82,7 @@ internal class SecretaryContext
             entity.Property(e => e.address).HasMaxLength(100).HasColumnName("address");
             entity.Property(e => e.tutorId).HasMaxLength(15).HasColumnName("tutorid");
             entity.Property(e => e.minedId).HasMaxLength(30).HasColumnName("minedid");
-            entity.Property(e => e.profileImage).HasColumnName("profileimage");
+            entity.Property(e => e.profilePicture).HasColumnName("profileimage");
             entity.Property(e => e.accessToken).HasMaxLength(20).HasColumnName("accesstoken");
             
             entity.HasOne(e => e.tutor).WithMany()

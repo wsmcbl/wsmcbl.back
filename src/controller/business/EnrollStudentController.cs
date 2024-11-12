@@ -79,4 +79,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         accountingStudent.discountId = discountId;
         await daoFactory.execute();
     }
+
+    public async Task<StudentEntity> updateProfilePicture(string studentId, byte[] picture)
+    {
+        throw new NotImplementedException();
+    }
 }

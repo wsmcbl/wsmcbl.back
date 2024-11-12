@@ -21,7 +21,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
         var result = await controller.getStudentListWithSolvency();
         return Ok(result.mapToListBasicEnrollDto());
     }
-    
+
     /// <summary>
     ///  Returns the student full by id.
     /// </summary>
@@ -33,10 +33,10 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     {
         var result = await controller.getStudentById(studentId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(studentId);
-        
+
         return Ok(result.mapToDto(ids));
     }
-    
+
     /// <summary>
     ///  Returns the list of degree with enrolments.
     /// </summary>
@@ -61,8 +61,23 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
         await controller.updateStudentDiscount(dto.getStudentId(), dto.discountId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
-        
+
         return Ok(result.mapToDto(ids));
+    }
+
+    /// <summary>Update student profile picture.</summary>
+    /// <response code="200">Returns the modified resource.</response>
+    /// <response code="400">Parameter is not valid.</response>
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("students/{studentId}")]
+    public async Task<IActionResult> updateProfilePicture([Required] string studentId, IFormFile profilePicture)
+    {
+        using var memoryStream = new MemoryStream();
+        await profilePicture.CopyToAsync(memoryStream);
+        await controller.updateProfilePicture(studentId, memoryStream.ToArray());
+        
+        return Ok();
     }
 
     /// <summary>

@@ -11,4 +11,5 @@ public interface IEnrollStudentController
     public Task<byte[]> getEnrollDocument(string studentId);
     public Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId);
     public Task updateStudentDiscount(string studentId, int discountId);
+    public Task<StudentEntity> updateProfilePicture(string studentId, byte[] picture);
 }
