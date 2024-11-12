@@ -20,10 +20,15 @@ public class TransactionEntity
         }
     }
 
-    public bool checkData()
+    public bool haveValidContent()
     {
         return !string.IsNullOrWhiteSpace(studentId) &&
                !string.IsNullOrWhiteSpace(cashierId) &&
                details.Count > 0;
+    }
+
+    public List<int> getTariffIdList()
+    {
+        return details.Select(item => item.tariffId).ToList();
     }
 }

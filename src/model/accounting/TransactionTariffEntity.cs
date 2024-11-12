@@ -7,10 +7,20 @@ public class TransactionTariffEntity
     public float amount { get; set; }
     
     private TariffEntity tariff = null!;
+
+    public TransactionTariffEntity()
+    {}
+    
+    public TransactionTariffEntity(int tariffId, float amount, string? transactionId = null)
+    {
+        this.transactionId = transactionId ?? "";
+        this.tariffId = tariffId;
+        this.amount = amount;
+    }
     
     public void setTariff(TariffEntity? _tariff)
     {
-        tariff = _tariff ?? throw new ArgumentException("Tariff object is null");
+        tariff = _tariff ?? throw new ArgumentException("Tariff object is null.");
     }
 
     public string concept()

@@ -189,7 +189,7 @@ public class TransactionDaoPostgres(PostgresContext context)
 {
     public override void create(TransactionEntity entity)
     {
-        if (!entity.checkData())
+        if (!entity.haveValidContent())
         {
             throw new IncorrectDataBadRequestException("Transaction");
         }
