@@ -1,5 +1,6 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.model.dao;
@@ -45,4 +46,7 @@ public abstract class DaoFactory
     public virtual IStudentTutorDao? studentTutorDao => null;
     public virtual IStudentParentDao? studentParentDao => null;
     public virtual IStudentMeasurementsDao? studentMeasurementsDao => null;
+    
+    
+    public virtual IUserDao? userDao => null;
 }
