@@ -9,7 +9,6 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<StudentEntity> getWithoutPropertiesById(string studentId);
 }
 
-public interface IUserDao : IGenericDao<UserEntity, string>;
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
 
