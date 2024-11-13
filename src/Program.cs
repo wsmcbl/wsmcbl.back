@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.controller.service;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.middleware;
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(builder.getConnectionString()));
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
+builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<ValidateModelActionFilterAttribute>();
 
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
@@ -38,6 +40,8 @@ builder.Services.AddTransient<ILoginController, LoginController>();
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerUIConfig());
