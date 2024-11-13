@@ -14,7 +14,7 @@ public class LoginController : BaseController, ILoginController
     
     public async Task<string> getTokenByCredentials(UserEntity user)
     {
-        var result = await daoFactory.userDao.authenticateUser(user.email);
+        var result = await daoFactory.userDao.getUserByEmail(user.email);
         return result == null ? string.Empty : jwtGenerator.generateToken(result);
     }
 }

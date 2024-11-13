@@ -3,6 +3,7 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
@@ -129,4 +130,9 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private GradeDaoPostgres? _gradeDao;
     public override IGradeDao gradeDao => _gradeDao ??= new GradeDaoPostgres(context);
+
+
+
+    private UserDaoPostgres? _userDao;
+    public override IUserDao userDao => _userDao ??= new UserDaoPostgres(context);
 }
