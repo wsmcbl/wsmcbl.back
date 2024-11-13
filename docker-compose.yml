@@ -26,6 +26,7 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
       - Resource_Directory=resource
+      - JWT_KEY=${JWT_KEY}
     depends_on:
       - database
     networks:

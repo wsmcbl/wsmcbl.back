@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.controller.service;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.middleware;
@@ -8,6 +9,8 @@ using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddJWTAuthentication();
 
 builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
 
@@ -20,6 +23,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(builder.getConnectionString()));
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
+builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<ValidateModelActionFilterAttribute>();
 
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
@@ -30,12 +34,14 @@ builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTea
 
 builder.Services.AddTransient<ICreateStudentProfileController, CreateStudentProfileController>();
 builder.Services.AddTransient<IAddingStudentGradesController, AddingStudentGradesController>();
-
 builder.Services.AddTransient<IListController, ListController>();
+builder.Services.AddTransient<ILoginController, LoginController>();
 
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerUIConfig());
