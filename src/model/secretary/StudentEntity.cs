@@ -18,7 +18,7 @@ public class StudentEntity
     public string religion { get; set; } = null!;
     public bool isActive { get; set; }
     public string? accessToken { get; set; }
-    public byte[]? profileImage { get; set; }
+    public byte[]? profilePicture { get; set; }
 
 
     public StudentFileEntity? file { get; set; }
@@ -49,7 +49,7 @@ public class StudentEntity
         religion = entity.religion;
         address = entity.address;
         minedId = entity.minedId;
-        profileImage = entity.profileImage;
+        profilePicture = entity.profilePicture;
     }
 
     public async Task saveChanges(DaoFactory daoFactory)
@@ -205,7 +205,7 @@ public class StudentEntity
 
         public Builder setProfileImage(byte[]? profileImage)
         {
-            entity.profileImage = profileImage;
+            entity.profilePicture = profileImage;
             return this;
         }
 

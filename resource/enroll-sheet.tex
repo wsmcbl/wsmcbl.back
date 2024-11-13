@@ -17,49 +17,91 @@
 \pagenumbering{gobble}
 
 \newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
-\newcommand{\aField}[1]{\uline{\hspace{2mm} #1 \hfill}}
+\newcommand{\aField}[1]{\uline{\hspace{2mm} \textbf{#1} \hfill}}
+\newcommand{\aFieldRight}[1]{\uline{\hspace{2mm} \textbf{#1} \hspace{2mm}}}
 
+
+\newcommand{\defaultSpace}{\hspace{4mm}}
 \newcommand{\lineSlimStretch}{\singlespacing}
 \newcommand{\lineStretch}{\setstretch{1.5}}
+
+\newcommand{\studentName}{student.name.value}
+\newcommand{\studentBirthday}{student.birthday.value}
+\newcommand{\studentAge}{student.age.value}
+\newcommand{\studentSex}{student.sex.value}
+\newcommand{\enrollRecord}{enroll.record.value}
+\newcommand{\degree}{degree.value}
+\newcommand{\address}{address.value}
+\newcommand{\religion}{religion.value}
+\newcommand{\diseases}{diseases.value}
+\newcommand{\tutor}{tutor.value}
+\newcommand{\phones}{phones.value}
+\newcommand{\email}{email.value}
+\newcommand{\fatherName}{father.name.value}
+\newcommand{\fatherIdcard}{father.idcard.value}
+\newcommand{\fatherOccupation}{father.occupation.value}
+\newcommand{\motherName}{mother.name.value}
+\newcommand{\motherIdcard}{mother.idcard.value}
+\newcommand{\motherOccupation}{mother.occupation.value}
+\newcommand{\currentYear}{current.year.value}
+\newcommand{\transferSheet}{transfer.sheet.value}
+\newcommand{\birthDocument}{birth.document.value}
+\newcommand{\parentIdcard}{parent.idcard.value}
+\newcommand{\updatedGradeReport}{updated.grade.report.value}
+\newcommand{\conductDocument}{conduct.document.value}
+\newcommand{\financialSolvency}{financial.solvency.value}
+\newcommand{\enrollDate}{today.value}
 
 \begin{document}
 
     \begin{minipage}[c][2.5cm]{0.2\textwidth}
-        \includegraphics[width=2.5cm]{\cbl-logo-wb}
+        \includegraphics[width=2.5cm]{logo.value}
     \end{minipage}
     \begin{minipage}[c][2.5cm]{0.6\textwidth}
         \begin{center}
             \lineSlimStretch
-            \textbf{COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
+            \textbf{\large COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
         \end{center}
     \end{minipage}
     
     \lineStretch
-    \hfill Fecha: \date
+    \hfill Fecha: \enrollDate
     
-    \aLine{NOMBRE DE ALUMNO: \aField{\name}}
-    \aLine{GRADO: \aField{\grade} REPITENTE: \aField{\is.repetitive}  EDAD: \aField{\age años}  SEXO: \aField{\sex}}
-    \aLine{FECHA DE NACIMIENTO: DIA: \aField{\birthday.day} MES: \aField{\birthday.month} AÑO: \aField{\birthday.year}}
+    Datos del Alumno\\
+    \aLine{Nombre: \aField{\studentName}}
+    \aLine{Sexo: \aField{\studentSex}\defaultSpace Fecha de Nacimiento: \aField{\studentBirthday}\defaultSpace Edad: \aFieldRight{\studentAge}}
+    Matriculado en: \aFieldRight{\degree}\defaultSpace Registro: \aFieldRight{\enrollRecord}
+    \par\vspace{3mm}
+    \aLine{Dirección domiciliar: \aField{\address}}
+    \par\vspace{5mm}
+    \begin{minipage}{0.48\textwidth}
+        Religión o congregación:\\
+        \aLine{\aField{\religion}}
+        Padecimientos:\\
+        \aLine{\aField{\diseases}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        Datos del Tutor\\
+        \aLine{Nombre: \aField{\tutor}}
+        \aLine{Telefono: \aField{\phones}}
+        \aLine{Correo: \aField{\email}}
+    \end{minipage}
+    \par\vspace{5mm}
+    \begin{minipage}{0.48\textwidth}
+        Datos del Padre\\
+        \aLine{Nombre: \aField{\fatherName}}
+        \aLine{Cédula: \aField{\fatherIdcard}}
+        \aLine{Ocupación: \aField{\fatherOccupation}}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        Datos de la Madre\\
+        \aLine{Nombre: \aField{\motherName}}
+        \aLine{Cédula: \aField{\motherIdcard}}
+        \aLine{Ocupación: \aField{\motherOccupation}}
+    \end{minipage}   
     
-    \aLine{NOMBRE DEL PADRE: \aField{\father.name}}
-    \aLine{NÚMERO DE CEDULA: \aField{\father.idcard}}
-    \aLine{OCUPACIÓN: \aField{\father.occupation}}
-
-    \aLine{NOMBRE DE LA MADRE: \aField{\mother.name}}
-    \aLine{NÚMERO DE CEDULA: \aField{\mother.idcard}}
-    \aLine{OCUPACIÓN: \aField{\mother.occupation}}
-    
-    \aLine{RESPONSABLE O TUTOR: \aField{\tutor}}
-    \aLine{PADECIMIENTOS: \aField{\diseases}}
-    \aLine{TELEFONOS: \aField{\phones}}
-    
-    \lineSlimStretch
-    \aLine{RELIGIÓN O CONGREGACIÓN: \aField{\religion} SE DEBERÁ CUMPLIR}
-    CON LOS PRINCIPIOS BIBLICOS DE ESTA INSTITUCIÓN.
-    \lineStretch
-    
-    \aLine{DIRECCION DOMICILIAR: \aField{\address}}
-
     \lineSlimStretch
     \textbf{NOTA:} ME COMPROMETO A PAGAR A LOS 5 DÍAS DE CADA MES, DE LO CONTRARIO PAGARÉ EL \uline{\textbf{10\%}} DE MORA.
     SE DEBERÁ PAGAR LOS DOCES MESES DEL AÑO MAS 13vo MES.
@@ -75,19 +117,22 @@
             Hoja de Traslado &
             Partida de Nacimiento &
             Cedula de los Tutores &
-            Boletín \current.year actualizado &
+            Boletín \currentYear\ actualizado &
             Constancia de Conducta &
             Solvencia financiera\\
             \hline
-            \transfer.sheet &
-            \birth.document &
-            \parent.idcard &
-            \updated.grade.report &
-            \conduct.document &
-            \financial.solvency\\
+            \transferSheet &
+            \birthDocument &
+            \parentIdcard &
+            \updatedGradeReport &
+            \conductDocument &
+            \financialSolvency\\
             \hline
         \end{tabular}
     \end{table}
     
-    \aLine{FIRMA DE PADRE O RESPONSABLE: \aField{}}
+    \begin{center}
+        \aField{\hspace{6cm}}\\
+        Firma del responsable
+    \end{center}
 \end{document}
