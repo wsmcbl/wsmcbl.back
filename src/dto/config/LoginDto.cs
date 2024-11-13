@@ -24,6 +24,8 @@ public class LoginDto
 
     public LoginDto(string token)
     {
+        email = string.Empty;
+        password = string.Empty;
         this.token = token;
     }
 }

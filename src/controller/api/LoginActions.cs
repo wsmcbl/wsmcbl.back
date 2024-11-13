@@ -31,7 +31,7 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> createUser(UserDto dto)
+    public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
         var result = await controller.createUser(dto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
