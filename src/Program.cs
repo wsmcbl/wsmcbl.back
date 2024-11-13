@@ -24,6 +24,7 @@ builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(buil
 
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
+builder.Services.AddScoped<UserAuthenticator>();
 builder.Services.AddScoped<ValidateModelActionFilterAttribute>();
 
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();

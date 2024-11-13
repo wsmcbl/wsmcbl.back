@@ -12,10 +12,28 @@ public class LoginActions(ILoginController controller) : ControllerBase
     ///  Returns token by credentials
     /// </summary>
     /// <response code="200">Returns a token.</response>
+    /// <response code="400">If the dto is not valid.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("tokens")]
     public async Task<IActionResult> login(LoginDto dto)
     {
-        return Ok(await controller.getTokenByCredentials(dto.toEntity()));
+        var result = await controller.getTokenByCredentials(dto.toEntity());
+        return Ok(result.mapToDto());
+    }
+    
+    
+    /// <summary>
+    ///  Create new user 
+    /// </summary>
+    /// <response code="201">Returns a new user created.</response>
+    /// <response code="400">If the dto is not valid.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
+    [HttpPost]
+    [Route("")]
+    public async Task<IActionResult> createUser(UserDto dto)
+    {
+        var result = await controller.createUser(dto.toEntity());
+        return CreatedAtAction(null, result.mapToDto());
     }
 }
