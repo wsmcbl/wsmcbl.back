@@ -30,11 +30,13 @@ public class UserToCreateDto
     {
         return new UserEntity
         {
+            userId = $"{name[0]}1000",
             name = name,
             secondName = secondName,
             surname = surname,
             secondsurName = secondSurname,
             password = password,
+            username = email,
             email = email
         };
     }

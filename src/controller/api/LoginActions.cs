@@ -14,7 +14,7 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="200">Returns a token.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
-    [HttpGet]
+    [HttpPost]
     [Route("tokens")]
     public async Task<IActionResult> login(LoginDto dto)
     {
