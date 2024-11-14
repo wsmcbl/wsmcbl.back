@@ -5,9 +5,9 @@ namespace wsmcbl.src.dto.config;
 
 public class LoginDto
 {
+    public string? token { get; set; }
     [Required] public string email { get; set; } = null!;
     [Required] public string password { get; set; } = null!;
-    public string? token { get; set; }
     
     public UserEntity toEntity()
     {
@@ -24,6 +24,8 @@ public class LoginDto
 
     public LoginDto(string token)
     {
+        email = string.Empty;
+        password = string.Empty;
         this.token = token;
     }
 }
