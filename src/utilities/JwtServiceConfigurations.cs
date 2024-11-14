@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using wsmcbl.src.exception;
 
 namespace wsmcbl.src.utilities;
 
@@ -9,7 +10,7 @@ public static class JwtServiceConfigurations
     public static void AddJWTAuthentication(this  WebApplicationBuilder builder)
     {
         var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!);
 
         builder.Services.AddAuthentication(options =>
             {
