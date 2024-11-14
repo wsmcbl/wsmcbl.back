@@ -22,23 +22,20 @@ public class UserToCreateDto
         name = user.name;
         secondName = user.secondName;
         surname = user.surname;
-        secondSurname = user.secondsurName;
+        secondSurname = user.secondSurname;
         email = user.email;
         password = "";
     }
     
     public UserEntity toEntity()
     {
-        return new UserEntity
-        {
-            userId = $"{name}000",
-            name = name,
-            secondName = secondName,
-            surname = surname,
-            secondsurName = secondSurname,
-            password = password,
-            username = email,
-            email = email
-        };
+        return new UserEntity.Builder()
+            .setName(name)
+            .setSecondName(secondName)
+            .setSurname(surname)
+            .setSecondSurname(secondSurname)
+            .setEmail(email)
+            .setPassword(password)
+            .build();
     }
 }
