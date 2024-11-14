@@ -1,15 +1,16 @@
+using System.ComponentModel.DataAnnotations;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.dto.config;
 
 public class UserToCreateDto
 {
-    public string name { get; set; } = null!;
+    [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
-    public string surname { get; set; } = null!;
+    [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
-    public string password { get; set; } = null!;
-    public string? email { get; set; }
+    [Required] public string email { get; set; } = null!;
+    [Required] public string password { get; set; } = null!;
     
     
     public UserToCreateDto()
@@ -30,7 +31,7 @@ public class UserToCreateDto
     {
         return new UserEntity
         {
-            userId = $"{name[0]}1000",
+            userId = $"{name}000",
             name = name,
             secondName = secondName,
             surname = surname,
