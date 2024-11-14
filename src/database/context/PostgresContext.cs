@@ -22,15 +22,16 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
 
             entity.ToTable("user", "config");
 
-            entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
+            entity.Property(e => e.userId).HasMaxLength(100).ValueGeneratedOnAdd().HasColumnName("userid");
             entity.Property(e => e.email).HasMaxLength(100).HasColumnName("email");
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.password).HasMaxLength(100).HasColumnName("password");
             entity.Property(e => e.secondName).HasMaxLength(50).HasColumnName("secondname");
-            entity.Property(e => e.secondsurName).HasMaxLength(50).HasColumnName("secondsurname");
+            entity.Property(e => e.secondSurname).HasMaxLength(50).HasColumnName("secondsurname");
             entity.Property(e => e.surname).HasMaxLength(50).HasColumnName("surname");
-            entity.Property(e => e.username).HasMaxLength(45).HasColumnName("username");
             entity.Property(e => e.isActive).HasColumnName("userstate");
+            entity.Property(e => e.createdAt).HasColumnName("createdat");
+            entity.Property(e => e.updatedAt).HasColumnName("updatedat");
         });
         
         modelBuilder.HasSequence("enrollment_id_seq", "academy").StartsAt(10L);
