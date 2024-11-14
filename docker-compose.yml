@@ -1,17 +1,15 @@
 services:
-
+  
   database:
     image: postgres:14
     container_name: database
     environment:
-      - POSTGRES_DB=wsmcbl_database
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass12345
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - database-volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - app-network
   
@@ -22,24 +20,11 @@ services:
     restart: unless-stopped
     container_name: api
     environment:
-      - ConnectionStrings__DefaultConnection=Host=database;Database=wsmcbl_database;Username=user;Password=pass12345
+      - ConnectionStrings__DefaultConnection=Host=database;Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}
       - Resource_Directory=resource
       - JWT_KEY=${JWT_KEY}
     depends_on:
       - database
-    networks:
-      - app-network
-      
-  nginx2:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
     networks:
       - app-network
 
