@@ -1,10 +1,9 @@
 set datestyle to 'European';
 
-insert into config.user(userid, name, secondname, surname, secondsurname, username, password, email, userstate)
-values ('1001', 'Usuario', 'por', 'Defecto', 'del sistema', 'user1001', '54321', 'defaultuser@gmail.com', true),
-       ('1002', 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt-user1002', '54321', 'kennytinoco@gmail.com', true),
-       ('1003', 'Mateo', 'José', 'Mercado', 'Parrila', 'mm-user1003', 'mjmp12345', 'ficticio@gmail.com', false),
-       ('1004', 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ez-user1001', '12345', 'ezeurxoxoxo@gmail.com', true);
+insert into config.user(name, secondname, surname, secondsurname, password, email, userstate, createdat, updatedat)
+values ('Usuario', 'por', 'Defecto', 'del sistema', 'default123', 'user.default@cbl-edu.com', true, now(),now()),
+       ('Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt12345', 'kenny.tinoco@cbl-edu.com', true, now(),now()),
+       ('Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'eu12345', 'ezequiel.urbina@cbl-edu.com', true, now(),now());
 
 
 -- ############################## ---
@@ -19,10 +18,16 @@ values ('Mensualidad'),
        ('Útiles'),
        ('Otros');
 
-insert into accounting.cashier(cashierid, userid)
-values ('caj-eurbina', '1004'),
-       ('caj-ktinoco', '1002'),
-       ('caj-mmercado', '1003');
 
-insert into academy.teacher(teacherid, userid, isguide)
-values ('tch-001', '1001', false);
+INSERT INTO Accounting.cashier(cashierid, userid)
+SELECT 'caj-eurbina', u.userid FROM config.user u
+WHERE u.name = 'Ezequiel';
+
+INSERT INTO Accounting.cashier(cashierid, userid)
+SELECT 'caj-ktinoco', u.userid FROM config.user u
+WHERE u.name = 'Kenny';
+
+
+INSERT INTO academy.teacher(teacherid, userid, isguide)
+SELECT 'tch-001', u.userid, false FROM config.user u
+WHERE u.name = 'Usuario';;

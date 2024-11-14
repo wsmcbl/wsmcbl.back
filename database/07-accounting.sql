@@ -20,7 +20,7 @@ create table if not exists Accounting.Student
 create table  if not exists Accounting.Cashier
 (
     cashierId varchar(15) primary key,
-    userId varchar(15) not null,
+    userId uuid not null,
     foreign key (userId) references Config.User
 );
 
