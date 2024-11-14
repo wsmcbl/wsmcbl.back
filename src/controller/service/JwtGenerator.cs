@@ -28,8 +28,8 @@ public class JwtGenerator
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.email!),
-                // Puedes agregar más Claims aquí si es necesario
+                new(ClaimTypes.Name, user.fullName()),
+                new(ClaimTypes.Email, user.email),
             }),
             Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
             Issuer = jwtSettings["Issuer"],
