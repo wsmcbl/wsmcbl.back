@@ -4,6 +4,8 @@
 .sonarqube/
 
 bin/
+data/
+letsencrypt/
 obj/
 src/Properties/
 
