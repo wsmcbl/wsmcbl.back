@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.service;
@@ -18,7 +19,8 @@ public class JwtGenerator
     public string generateToken(UserEntity user)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!);
+
         var securityKey = new SymmetricSecurityKey(key);
         
         var tokenHandler = new JwtSecurityTokenHandler();
