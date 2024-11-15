@@ -20,8 +20,13 @@ public class ApiExceptionHandler
 
             if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
             {
-                throw new UnauthorizedException("Access denied. User does not have permissions to access this resource.");
+                throw new UnauthorizedException(
+                    "Access denied. User does not have permissions to access this resource.");
             }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            await HandleExceptionAsync(context, ex, 401);
         }
         catch (BadHttpRequestException ex)
         {

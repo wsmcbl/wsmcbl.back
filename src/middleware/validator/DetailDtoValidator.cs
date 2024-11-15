@@ -1,7 +1,7 @@
 using FluentValidation;
 using wsmcbl.src.dto.accounting;
 
-namespace wsmcbl.src.middleware.filter;
+namespace wsmcbl.src.middleware.validator;
 
 internal class DetailDtoValidator : AbstractValidator<TransactionDetailDto>
 {

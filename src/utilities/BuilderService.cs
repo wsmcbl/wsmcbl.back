@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using wsmcbl.src.middleware.filter;
+using wsmcbl.src.middleware.validator;
 
 namespace wsmcbl.src.utilities;
 
@@ -11,6 +12,12 @@ public static class BuilderService
         return builder.Configuration.GetConnectionString("DefaultConnection");
     }
 
+    public static void AddControllersOptions(this IServiceCollection Services)
+    {
+        Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
+        Services.AddControllers(options => options.Filters.Add<CustomAuthorizationFilter>());
+    }
+    
     public static void AddFluentValidationConfig(this IServiceCollection Services)
     {
         Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();

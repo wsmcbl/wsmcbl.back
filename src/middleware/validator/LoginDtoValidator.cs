@@ -1,7 +1,7 @@
 using FluentValidation;
 using wsmcbl.src.dto.config;
 
-namespace wsmcbl.src.middleware.filter;
+namespace wsmcbl.src.middleware.validator;
 
 public class LoginDtoValidator : AbstractValidator<LoginDto>
 {

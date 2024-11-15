@@ -15,8 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddJWTAuthentication();
 builder.AddAuthorization();
 
-builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
-
+builder.Services.AddControllersOptions();
 builder.Services.AddFluentValidationConfig();
 
 builder.Services.AddEndpointsApiExplorer();
