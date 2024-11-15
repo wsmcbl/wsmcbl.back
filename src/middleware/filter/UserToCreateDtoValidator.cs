@@ -7,11 +7,15 @@ public class UserToCreateDtoValidator : AbstractValidator<UserToCreateDto>
 {
     public UserToCreateDtoValidator()
     {
-        RuleFor(d => d.name)
+        RuleFor(e => e.roleId)
+            .GreaterThan(0)
+            .WithMessage("RoleId must be a positive integer.");
+        
+        RuleFor(e => e.name)
             .NotEmpty()
             .WithMessage("Name must not be empty");
         
-        RuleFor(d => d.surname)
+        RuleFor(e => e.surname)
             .NotEmpty()
             .WithMessage("Surname must not be empty");
         
