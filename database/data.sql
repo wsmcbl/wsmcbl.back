@@ -30,4 +30,4 @@ WHERE u.name = 'Kenny';
 
 INSERT INTO academy.teacher(teacherid, userid, isguide)
 SELECT 'tch-001', u.userid, false FROM config.user u
-WHERE u.name = 'Usuario';;
+WHERE u.name = 'Usuario';
