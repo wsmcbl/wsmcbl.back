@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.service;
@@ -26,11 +25,7 @@ public class JwtGenerator
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new(ClaimTypes.NameIdentifier, user.userId.ToString()!),
-                new(ClaimTypes.Email, user.email)
-            }),
+            Subject = getSubject(user),
             Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["ExpiryMinutes"])),
             Issuer = jwtSettings["Issuer"],
             Audience = jwtSettings["Audience"],
@@ -39,5 +34,20 @@ public class JwtGenerator
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    private static ClaimsIdentity getSubject(UserEntity user)
+    {
+        var claimList = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.userId.ToString()!),
+            new(ClaimTypes.Email, user.email),
+            new(ClaimTypes.Role, user.getRole())
+        };
+        
+        claimList.AddRange(user.getPermissionList()
+            .Select(permission => new Claim("Permission", permission)));
+
+        return new ClaimsIdentity(claimList);
     }
 }
