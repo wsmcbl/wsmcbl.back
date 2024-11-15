@@ -36,6 +36,7 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="409">The email is duplicate.</response>
+    [Authorize(Roles = "admin")]
     [HttpPost]
     [Route("")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)

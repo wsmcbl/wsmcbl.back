@@ -33,4 +33,13 @@ public static class JwtServiceConfigurations
                 };
             });
     }
+
+    public static void AddAuthorization(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("CreateStudentPolicy", policy =>
+                policy.RequireRole("admin").RequireClaim("Permission", "CanStudentPolicy"));
+        });
+    }
 }

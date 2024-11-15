@@ -13,6 +13,7 @@ using wsmcbl.src.utilities;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddJWTAuthentication();
+builder.AddAuthorization();
 
 builder.Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
 
