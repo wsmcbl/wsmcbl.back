@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
@@ -7,6 +8,7 @@ using wsmcbl.src.middleware.filter;
 
 namespace wsmcbl.src.controller.api;
 
+[Authorize(Roles = "cashier")]
 [Route("accounting")]
 [ApiController]
 public class CollectTariffActions(ICollectTariffController controller) : ControllerBase

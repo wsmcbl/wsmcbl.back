@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
@@ -6,6 +7,7 @@ using wsmcbl.src.exception;
 
 namespace wsmcbl.src.controller.api;
 
+[Authorize(Roles = "admin, secretary")]
 [Route("academy/")]
 [ApiController]
 public class PrintReportCardByStudentActions(IPrintReportCardByStudentController controller) : ControllerBase
