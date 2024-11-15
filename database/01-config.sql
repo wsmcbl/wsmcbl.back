@@ -1,5 +1,13 @@
 create schema if not exists Config;
 
+create table if not exists Config.Role
+(
+    roleId serial primary key not null,
+    name varchar(50) not null,
+    description varchar(150) not null
+);
+
+
 create table if not exists Config.User
 (
     userId uuid primary key DEFAULT uuid_generate_v4(),
@@ -16,14 +24,7 @@ create table if not exists Config.User
     foreign key (roleId) references config.Role
 );
 
-CREATE UNIQUE INDEX IDX_email ON config.User (email);
-
-create table if not exists Config.Role
-(
-    roleId serial primary key not null,
-    name varchar(50) not null,
-    description varchar(150) not null
-);
+create unique index IDX_email ON config.User (email);
 
 create table if not exists Config.Permission
 (
@@ -42,8 +43,8 @@ create table if not exists Config.User_Permission
 
 create table if not exists Config.Role_Permission
 (
-    roleId varchar(15) not null,
-    permissionId varchar(15) not null,
+    roleId int not null,
+    permissionId int not null,
     foreign key (roleId) references Config.Role,
     foreign key (permissionId) references Config.Permission
 );
