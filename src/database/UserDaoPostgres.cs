@@ -18,4 +18,10 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
         return result;
     }
+
+    public async Task<bool> isEmailDuplicate(string email)
+    {
+        var result = await entities.FirstOrDefaultAsync(e => e.email == email);
+        return result != null;
+    }
 }

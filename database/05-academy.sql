@@ -3,7 +3,7 @@ create schema if not exists Academy;
 create table if not exists Academy.Teacher
 (
     teacherId varchar(15) primary key default academy.generate_teacher_id(),
-    userId varchar(15) not null,
+    userId uuid not null,
     isGuide boolean not null,
     foreign key (userId) references Config.User
 );

@@ -1,10 +1,18 @@
 set datestyle to 'European';
 
-insert into config.user(userid, name, secondname, surname, secondsurname, username, password, email, userstate)
-values ('1001', 'Usuario', 'por', 'Defecto', 'del sistema', 'user1001', '54321', 'defaultuser@gmail.com', true),
-       ('1002', 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt-user1002', '54321', 'kennytinoco@gmail.com', true),
-       ('1003', 'Mateo', 'José', 'Mercado', 'Parrila', 'mm-user1003', 'mjmp12345', 'ficticio@gmail.com', false),
-       ('1004', 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ez-user1001', '12345', 'ezeurxoxoxo@gmail.com', true);
+insert into config.role(name, description)
+values ('admin','Full system access'),
+       ('secretary','Access to the secretary and academy modules'),
+       ('cashier','Access to the accounting module'),
+       ('teacher','Access to the academic module');
+
+insert into config.permission(name, description)
+values ('CanCreateStudent','Permission for the creation of students in the secretary scheme');
+
+insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
+values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
+       (1, 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kenny.tinoco@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEOKy+ElmYTF+ClhQ68aqO1TCREwarjQMzylachhHEo0/duwGTqkAf5IWQRQeNdEH+g=='),
+       (3, 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(),now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA==');
 
 
 -- ############################## ---
@@ -19,10 +27,16 @@ values ('Mensualidad'),
        ('Útiles'),
        ('Otros');
 
-insert into accounting.cashier(cashierid, userid)
-values ('caj-eurbina', '1004'),
-       ('caj-ktinoco', '1002'),
-       ('caj-mmercado', '1003');
 
-insert into academy.teacher(teacherid, userid, isguide)
-values ('tch-001', '1001', false);
+INSERT INTO Accounting.cashier(cashierid, userid)
+SELECT 'caj-eurbina', u.userid FROM config.user u
+WHERE u.name = 'Ezequiel';
+
+INSERT INTO Accounting.cashier(cashierid, userid)
+SELECT 'caj-ktinoco', u.userid FROM config.user u
+WHERE u.name = 'Kenny';
+
+
+INSERT INTO academy.teacher(teacherid, userid, isguide)
+SELECT 'tch-001', u.userid, false FROM config.user u
+WHERE u.name = 'Usuario';

@@ -9,8 +9,11 @@ namespace wsmcbl.src.controller.api;
 public class LoginActions(ILoginController controller) : ControllerBase
 {
     /// <summary>
-    ///  Returns token by credentials
+    ///  Returns token by credentials (login)
     /// </summary>
+    /// <remarks>
+    /// The token property can be null or empty.
+    /// </remarks>
     /// <response code="200">Returns a token.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
@@ -26,9 +29,12 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <summary>
     ///  Create new user 
     /// </summary>
+    /// <remarks>
+    /// The secondName and secondSurname can be null or empty.
+    /// </remarks>
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
-    /// <response code="404">Resource depends on another resource not found.</response>
+    /// <response code="409">The email is duplicate.</response>
     [HttpPost]
     [Route("")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)
