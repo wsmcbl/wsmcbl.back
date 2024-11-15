@@ -20,9 +20,7 @@ public class ApiExceptionHandler
 
             if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
             {
-                var userName = context.User.Identity?.Name ?? "Not authenticated";
-                var message = $"Access denied. User ({userName}) does not have permissions to access this resource.";
-                throw new UnauthorizedException(message);
+                throw new UnauthorizedException("Access denied. User does not have permissions to access this resource.");
             }
         }
         catch (BadHttpRequestException ex)
