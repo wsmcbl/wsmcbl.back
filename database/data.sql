@@ -1,9 +1,9 @@
 set datestyle to 'European';
 
-insert into config.user(name, secondname, surname, secondsurname, password, email, userstate, createdat, updatedat)
-values ('Usuario', 'por', 'Defecto', 'del sistema', 'default123', 'user.default@cbl-edu.com', true, now(),now()),
-       ('Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kt12345', 'kenny.tinoco@cbl-edu.com', true, now(),now()),
-       ('Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'eu12345', 'ezequiel.urbina@cbl-edu.com', true, now(),now());
+insert into config.user(name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
+values ('Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
+       ('Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kenny.tinoco@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEOKy+ElmYTF+ClhQ68aqO1TCREwarjQMzylachhHEo0/duwGTqkAf5IWQRQeNdEH+g=='),
+       ('Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(),now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA==');
 
 
 -- ############################## ---
