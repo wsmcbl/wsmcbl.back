@@ -14,7 +14,7 @@ public class UserEntity
     public DateTime createdAt { get; set; }
     public DateTime updatedAt { get; set; }
     public RoleEntity role { get; set; }
-    public ICollection<PermissionEntity> permissionList { get; set; }
+    public List<PermissionEntity> permissionList { get; set; } = [];
     
     public string fullName()
     {
