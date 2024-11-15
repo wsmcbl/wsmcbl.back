@@ -3,6 +3,7 @@ namespace wsmcbl.src.model.config;
 public class UserEntity
 {
     public Guid? userId { get; set; }
+    public int roleId { get; set; }
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
@@ -12,6 +13,8 @@ public class UserEntity
     public bool isActive { get; set; }
     public DateTime createdAt { get; set; }
     public DateTime updatedAt { get; set; }
+    public RoleEntity role { get; set; }
+    public ICollection<PermissionEntity> permissionList { get; set; }
     
     public string fullName()
     {
@@ -22,6 +25,17 @@ public class UserEntity
     {
         updatedAt = DateTime.UtcNow;
     }
+
+    public string getRole()
+    {
+        return role.name;
+    }
+    
+    public List<string> getPermissionList()
+    {
+        return permissionList.Select(e => e.name).ToList();
+    }
+    
     
     public class Builder
     {
@@ -73,6 +87,12 @@ public class UserEntity
         public Builder setPassword(string password)
         {
             entity.password = password;
+            return this;
+        }
+
+        public Builder setRole(int roleId)
+        {
+            entity.roleId = roleId;
             return this;
         }
     }
