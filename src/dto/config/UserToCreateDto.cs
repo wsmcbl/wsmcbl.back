@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.dto.config;
 
 public class UserToCreateDto
 {
+    [JsonRequired] public int roleId { get; set; }
     [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
@@ -19,6 +21,7 @@ public class UserToCreateDto
 
     public UserToCreateDto(UserEntity user)
     {
+        roleId = user.roleId;
         name = user.name;
         secondName = user.secondName;
         surname = user.surname;
@@ -36,6 +39,7 @@ public class UserToCreateDto
             .setSecondSurname(secondSurname)
             .setEmail(email)
             .setPassword(password)
+            .setRole(roleId)
             .build();
     }
 }
