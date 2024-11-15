@@ -9,7 +9,9 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 {
     public async Task<UserEntity> getUserByEmail(string email)
     {
-        var result = await entities.FirstOrDefaultAsync(e => e.email == email);
+        var result = await entities.Include(e => e.role)
+            .Include(e => e.permissionList)
+            .FirstOrDefaultAsync(e => e.email == email);
 
         if (result == null)
         {
