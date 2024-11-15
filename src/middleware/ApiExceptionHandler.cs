@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using wsmcbl.src.exception;
 
 namespace wsmcbl.src.middleware;
 
@@ -16,10 +17,18 @@ public class ApiExceptionHandler
         try
         {
             await _next(context);
+
+            if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
+            {
+                var userName = context.User.Identity?.Name ?? "Not authenticated";
+                var message = $"Access denied. User ({userName}) does not have permissions to access this resource.";
+                throw new UnauthorizedException(message);
+            }
         }
         catch (BadHttpRequestException ex)
         {
             await HandleExceptionAsync(context, ex, ex.StatusCode);
+
         }
         catch (Exception ex)
         {
