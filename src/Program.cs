@@ -5,7 +5,6 @@ using wsmcbl.src.controller.service;
 using wsmcbl.src.database;
 using wsmcbl.src.database.context;
 using wsmcbl.src.middleware;
-using wsmcbl.src.middleware.filter;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
@@ -28,7 +27,6 @@ builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
-builder.Services.AddScoped<ValidateModelActionFilterAttribute>();
 
 builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
 builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
