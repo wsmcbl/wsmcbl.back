@@ -31,14 +31,18 @@ public class ConfigContext
             entity.Property(e => e.isActive).HasColumnName("userstate");
             entity.Property(e => e.createdAt).HasColumnName("createdat");
             entity.Property(e => e.updatedAt).HasColumnName("updatedat");
-            
+
             entity.HasOne(e => e.role).WithMany().HasForeignKey(e => e.roleId);
-            entity.HasMany(e => e.permissionList)
+
+            entity.HasMany(r => r.permissionList)
                 .WithMany()
-                .UsingEntity("user_permission");
+                .UsingEntity<UserPermission>("user_permission",
+                    l => l.HasOne<PermissionEntity>().WithMany()
+                        .HasForeignKey(e => e.permissionid),
+                    r => r.HasOne<UserEntity>().WithMany()
+                        .HasForeignKey(e => e.userid));
         });
-        
-        
+
         modelBuilder.Entity<RoleEntity>(entity =>
         {
             entity.HasKey(e => e.roleId).HasName("role_pkey");
@@ -48,22 +52,27 @@ public class ConfigContext
             entity.Property(e => e.roleId).HasColumnName("roleid");
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
-            
+
             entity.HasMany(e => e.permissionList)
-                .WithMany()
-                .UsingEntity("role_permission");
+                .WithMany();
         });
-        
-        
+
+
         modelBuilder.Entity<PermissionEntity>(entity =>
         {
             entity.HasKey(e => e.permissionId).HasName("permission_pkey");
 
             entity.ToTable("permission", "config");
 
-            entity.Property(e => e.permissionId).HasColumnName("roleid");
+            entity.Property(e => e.permissionId).HasColumnName("permissionid");
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
         });
+    }
+    
+    private class UserPermission
+    {
+        public Guid userid { get; set; }
+        public int permissionid { get; set; }
     }
 }
