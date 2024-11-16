@@ -1,7 +1,7 @@
 using FluentValidation;
 using wsmcbl.src.dto.secretary;
 
-namespace wsmcbl.src.middleware.filter;
+namespace wsmcbl.src.middleware.validator;
 
 public class EnrollmentToCreateDtoValidator : AbstractValidator<EnrollmentToCreateDto>
 {
@@ -10,6 +10,7 @@ public class EnrollmentToCreateDtoValidator : AbstractValidator<EnrollmentToCrea
         RuleFor(d => d.degreeId)
             .NotEmpty()
             .WithMessage("degreeId must not be empty");
+        
         RuleFor(d => d.quantity)
             .GreaterThan(0)
             .LessThan(8)

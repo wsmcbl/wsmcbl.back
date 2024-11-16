@@ -12,9 +12,10 @@ public static class DtoMapper
         => list == null || !list.Any() ? [] : list.Select(item => item.toEntity()).ToList();
 
 
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null) => new(enrollment, teacher);
-
-    public static StudentFullDto mapToDto(this StudentEntity student) => new(student);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null)
+        => new(enrollment, teacher);
+    public static EnrollStudentDto mapToDto(this StudentEntity student, (string? enrollmentId, int discountId) ids)
+        => new(student, ids);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
@@ -25,7 +26,8 @@ public static class DtoMapper
 
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
-    private static BasicStudentToEnrollDto mapToBasicDto(this StudentEntity student) => new(student);
+    private static BasicStudentToEnrollDto mapToBasicEnrollDto(this StudentEntity student) => new(student);
+    private static BasicStudentDto mapToBasicDto(this StudentEntity entity) => new(entity);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
@@ -37,8 +39,11 @@ public static class DtoMapper
     public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
 
-    public static List<BasicStudentToEnrollDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
+    public static List<BasicStudentDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
+
+    public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
+        => list.Select(e => e.mapToBasicEnrollDto()).ToList();
 
 
     public static List<SubjectToAssignDto> mapListToAssignDto(this IEnumerable<model.academy.SubjectEntity>? list)

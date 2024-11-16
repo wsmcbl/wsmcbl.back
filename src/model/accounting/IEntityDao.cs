@@ -4,8 +4,11 @@ using wsmcbl.src.model.dao;
 namespace wsmcbl.src.model.accounting;
 
 public interface ICashierDao : IGenericDao<CashierEntity, string>;
-public interface IStudentDao : IGenericDao<StudentEntity, string>;
-public interface IUserDao : IGenericDao<UserEntity, string>;
+public interface IStudentDao : IGenericDao<StudentEntity, string>
+{
+    public Task<StudentEntity> getWithoutPropertiesById(string studentId);
+}
+
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
 
@@ -27,4 +30,5 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task<List<DebtHistoryEntity>> getListByStudent(string studentId);
     public Task exonerateArrears(string studentId, List<DebtHistoryEntity> list);
     public Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction);
+    public Task<List<DebtHistoryEntity>> getListByTransaction(TransactionEntity transaction);
 }

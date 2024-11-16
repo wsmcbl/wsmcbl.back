@@ -90,11 +90,11 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
         catch (Exception)
         {
-            currentSchoolyearId = "";
+            currentSchoolyearId = string.Empty;
         }
 
         var newSchoolyear = await getNewSchoolyear();
-        var newSchoolyearId = newSchoolyear == null ? "" : newSchoolyear.id!;
+        var newSchoolyearId = newSchoolyear == null ? string.Empty : newSchoolyear.id!;
 
         return (currentSchoolyearId, newSchoolyearId);
     }

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
-using wsmcbl.src.middleware.filter;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
+[ResourceAuthorizer("cashier")]
 [Route("accounting")]
 [ApiController]
 public class CollectTariffActions(ICollectTariffController controller) : ControllerBase
@@ -95,7 +96,6 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("transactions")]
-    [ServiceFilter(typeof(ValidateModelActionFilterAttribute))]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transaction = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());

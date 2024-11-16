@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
+[ResourceAuthorizer("admin","secretary","cashier")]
 [Route("accounting")]
 [ApiController]
 public class CreateStudentProfileActions(ICreateStudentProfileController controller) : ControllerBase

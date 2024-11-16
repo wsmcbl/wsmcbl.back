@@ -29,6 +29,11 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         return list;
     }
 
+    public async Task<StudentEntity> getWithoutPropertiesById(string studentId)
+    {
+        return (await entities.FirstOrDefaultAsync(e => e.studentId == studentId))!;
+    }
+
     public new async Task<StudentEntity?> getById(string id)
     {
         var student = await entities

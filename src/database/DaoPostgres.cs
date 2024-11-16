@@ -3,7 +3,6 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
@@ -14,9 +13,6 @@ public class TariffDataDaoPostgres(PostgresContext context)
 
 public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
-
-public class UserDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<UserEntity, string>(context), IUserDao;
 
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
@@ -189,7 +185,7 @@ public class TransactionDaoPostgres(PostgresContext context)
 {
     public override void create(TransactionEntity entity)
     {
-        if (!entity.checkData())
+        if (!entity.haveValidContent())
         {
             throw new IncorrectDataBadRequestException("Transaction");
         }

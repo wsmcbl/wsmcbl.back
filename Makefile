@@ -38,7 +38,7 @@ build: ## Rebuilds all the containers
 	docker-compose build
 
 run: ## Start the containers
-	docker network create app-network || true
+	#docker network create app-network || true
 	docker-compose up -d
 
 stop: ## Stop the containers

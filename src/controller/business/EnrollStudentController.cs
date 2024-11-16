@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -23,6 +24,12 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
     {
+        var isStudentEnroll = await isAlreadyEnroll(student.studentId!);
+        if (isStudentEnroll)
+        {
+            throw new ConflictException($"The student with id ({student.studentId}) is al ready enroll.");
+        }
+        
         await student.saveChanges(daoFactory);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
@@ -30,6 +37,14 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         await daoFactory.execute();
 
         return student;
+    }
+
+    private async Task<bool> isAlreadyEnroll(string studentId)
+    {
+        var ids = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
+        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
+
+        return academyStudent != null && academyStudent.schoolYear == ids.newSchoolyear;
     }
 
     private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)
@@ -48,5 +63,32 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
     {
         var documentMaker = new DocumentMaker(daoFactory);
         return await documentMaker.getEnrollDocument(studentId);
+    }
+
+    public async Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId)
+    {
+        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
+        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+
+        return (academyStudent?.enrollmentId, accountingStudent!.discountId);
+    }
+
+    public async Task updateStudentDiscount(string studentId, int discountId)
+    {
+        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+        accountingStudent.discountId = discountId;
+        await daoFactory.execute();
+    }
+
+    public async Task updateProfilePicture(string studentId, byte[] picture)
+    {
+        var student = await daoFactory.studentDao!.getById(studentId);
+        if (student == null)
+        {
+            throw new EntityNotFoundException("Student", studentId);
+        }
+        
+        student.profilePicture = picture;
+        await daoFactory.execute();
     }
 }

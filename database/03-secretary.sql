@@ -22,8 +22,12 @@ create table if not exists Secretary.Student
     religion varchar(40) not null,
     address varchar(100) not null,
     minedId varchar(30) null,
+    profileImage bytea null CHECK (LENGTH(profileImage) <= 1000000),
+    accessToken varchar(20) null,
     foreign key (tutorId) references Secretary.StudentTutor
 );
+
+CREATE UNIQUE INDEX IDX_student_id ON secretary.Student (studentid);
 
 create table if not exists Secretary.StudentParent
 (

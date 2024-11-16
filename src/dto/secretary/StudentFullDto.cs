@@ -7,21 +7,23 @@ namespace wsmcbl.src.dto.secretary;
 public class StudentFullDto : IBaseDto<StudentEntity>
 {
     [Required] public string studentId { get; set; } = null!;
+    public string? minedId { get; set; }
     [Required] public string name { get; set; } = null!;
-    [Required] public string? secondName { get; set; }
+    public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
-    [Required] public string? secondSurname { get; set; }
+    public string? secondSurname { get; set; }
     [JsonRequired] public bool sex { get; set; }
     [Required] public DateOnlyDto birthday { get; set; } = null!;
     [Required] public string religion { get; set; } = null!;
     [Required] public string? diseases { get; set; }
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
+    public byte[]? profilePicture { get; set; }
 
 
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
     [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
-    [JsonRequired] public List<StudentParentDto> parents { get; set; } = null!;
+    [JsonRequired] public List<StudentParentDto>? parentList { get; set; }
     [JsonRequired] public StudentMeasurementsDto? measurements { get; set; }
 
     public StudentFullDto()
@@ -41,13 +43,15 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         diseases = student.diseases;
         religion = student.religion;
         isActive = student.isActive;
-        
+        minedId = student.minedId;
+        profilePicture = student.profilePicture;
+
         file = student.file.mapToDto();
         tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
-        parents = student.parents!.mapListToDto();
+        parentList = student.parents!.mapListToDto();
     }
-    
+
     public StudentEntity toEntity()
     {
         return new StudentEntity.Builder()
@@ -62,8 +66,9 @@ public class StudentFullDto : IBaseDto<StudentEntity>
             .setDiseases(diseases)
             .setReligion(religion)
             .setAddress(address)
+            .setMinedId(minedId)
             .setMeasurements(measurements?.toEntity())
-            .setParents(parents.toEntity())
+            .setParents(parentList.toEntity())
             .setTutor(tutor.toEntity())
             .setFile(file.toEntity())
             .build();

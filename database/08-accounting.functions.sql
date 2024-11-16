@@ -58,45 +58,43 @@ CREATE TRIGGER trg_update_debt_history AFTER INSERT ON Accounting.Transaction_Ta
 
 
 -- Update debt history by pay registration-debt --
-CREATE OR REPLACE FUNCTION Accounting.update_debt_history_by_enroll_student()
-    RETURNS TRIGGER AS $$
-DECLARE 
-    t_type INTEGER;
-    t_ispaid BOOLEAN;
+create function Accounting.update_debt_history_by_enroll_student() returns trigger
+    language plpgsql
+as $$
+DECLARE
+    t_type             INTEGER;
+    t_ispaid           BOOLEAN;
     s_educationallevel smallint;
-    current_school_year VARCHAR;
-    s_discount DOUBLE PRECISION;
+    school_year_id     VARCHAR;
+    s_discount         DOUBLE PRECISION;
 BEGIN
-    SELECT t.typeid, debt.ispaid, s.educationallevel, d.amount INTO t_type, t_ispaid, s_educationallevel, s_discount
+    SELECT t.typeid, debt.ispaid, s.educationallevel, d.amount, en.schoolyear
+    INTO t_type, t_ispaid, s_educationallevel, s_discount, school_year_id
     FROM accounting.debthistory as debt
-        JOIN Accounting.tariff AS t ON t.tariffid = debt.tariffid
-        JOIN accounting.student as s on s.studentid = debt.studentid
-        JOIN accounting.discount as d on d.discountid = s.discountid
+             JOIN Accounting.tariff AS t ON t.tariffid = debt.tariffid
+             JOIN accounting.student as s on s.studentid = debt.studentid
+             JOIN accounting.discount as d on d.discountid = s.discountid
+             JOIN academy.enrollment as en on en.enrollmentid = new.enrollmentid
     where debt.studentid = NEW.studentid;
 
-    SELECT schoolyearid INTO current_school_year
-    FROM secretary.schoolyear
-    WHERE label = to_char(current_date, 'YYYY');
-    
     IF (t_type = 2 AND t_ispaid) THEN
         INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
-        SELECT    
-            NEW.studentId,
-            t.tariffId,
-            t.schoolyear,
-            case when t.typeid = 1 then t.amount*(1 - s_discount) else t.amount end,
-            case when t.late then t.amount*(1 - s_discount)*0.1 else 0.0 end,
-            0,
-            false
+        SELECT NEW.studentId,
+               t.tariffId,
+               t.schoolyear,
+               case when t.typeid = 1 then t.amount * (1 - s_discount) else t.amount end,
+               case when t.late then t.amount * (1 - s_discount) * 0.1 else 0.0 end,
+               0,
+               false
         FROM Accounting.tariff t
-        WHERE t.schoolyear = current_school_year
+        WHERE t.schoolyear = school_year_id
           AND t.typeid != 2
           AND t.educationallevel = s_educationallevel;
     END IF;
 
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER insert ON academy.student
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_debt_history_by_enroll_student();

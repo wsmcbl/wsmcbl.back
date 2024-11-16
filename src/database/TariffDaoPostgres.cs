@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
-using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
 public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
 {
     private string? currentSchoolyearId { get; set; }
+    private string? newSchoolyearId { get; set; }
     private string? schoolyearLabel { get; set; }
 
     private async Task setSchoolyearIds()
@@ -17,6 +16,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         var schoolyearDao = new SchoolyearDaoPostgres(context);
         var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
         currentSchoolyearId = ID.currentSchoolyear;
+        newSchoolyearId = ID.newSchoolyear;
 
         if (currentSchoolyearId != "")
         {
@@ -24,13 +24,14 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
             schoolyearLabel = currentSchoolyear.label;
         }
     }
-    
+
     public async Task<List<TariffEntity>> getOverdueList()
     {
         await setSchoolyearIds();
-        
+
         var tariffs = await entities
-            .Where(t => t.schoolYear == currentSchoolyearId && t.isLate && t.type == Const.TARIFF_MONTHLY)
+            .Where(e => e.schoolYear == currentSchoolyearId)
+            .Where(e => e.isLate && e.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -41,54 +42,52 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
         await setSchoolyearIds();
-        
-        var debts = context.Set<DebtHistoryEntity>().Where(d => d.studentId == studentId);
-        
-        debts.Where(d => d.schoolyear == currentSchoolyearId || !d.isPaid)
-            .Include(d => d.tariff);
-        
-        var tariffList = await debts.Select(d => d.tariff).ToListAsync();
 
-        foreach (var item in tariffList)
+        var debts = await context.Set<DebtHistoryEntity>()
+            .Where(e => e.studentId == studentId)
+            .Where(e => e.schoolyear == currentSchoolyearId || !e.isPaid)
+            .Include(e => e.tariff)
+            .ToListAsync();
+
+        
+        return debts.Select(e => updateTariffSchoolyear(e.tariff)).ToList();
+    }
+
+    private TariffEntity updateTariffSchoolyear(TariffEntity entity)
+    {
+        if (entity.schoolYear == currentSchoolyearId)
         {
-            if (item.schoolYear == currentSchoolyearId)
-            {
-                item.schoolYear = schoolyearLabel;
-            }
-            else
-            {
-                var dao = new SchoolyearDaoPostgres(context);
-                var schoolyear = await dao.getById(item.schoolYear!);
-                if (schoolyear != null)
-                {
-                    item.schoolYear = schoolyear.label;
-                }
-            }
+            entity.schoolYear = schoolyearLabel;
+            return entity;
         }
 
-        return tariffList;
+        var dao = new SchoolyearDaoPostgres(context);
+        var schoolyear = dao.getById(entity.schoolYear!).GetAwaiter().GetResult();
+        if (schoolyear != null)
+        {
+            entity.schoolYear = schoolyear.label;
+        }
+
+        return entity;
     }
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
         await setSchoolyearIds();
-        
+
         var debts = await context.Set<DebtHistoryEntity>()
-            .Where(d => d.studentId == studentId && d.schoolyear == currentSchoolyearId)
+            .Where(d => d.studentId == studentId)
+            .Where(d => d.schoolyear == currentSchoolyearId || d.schoolyear == newSchoolyearId)
             .Include(d => d.tariff)
             .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
-        
+
         float[] balance = [0, 0];
-        
+
         foreach (var debt in debts)
         {
-            balance[1] += debt.tariff.amount;
-                
-            if (debt.isPaid)
-            {
-                balance[0] += debt.tariff.amount;
-            }
+            balance[0] += debt.debtBalance;
+            balance[1] += debt.amount;
         }
 
         return balance;

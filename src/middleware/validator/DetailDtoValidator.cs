@@ -1,7 +1,7 @@
 using FluentValidation;
 using wsmcbl.src.dto.accounting;
 
-namespace wsmcbl.src.middleware.filter;
+namespace wsmcbl.src.middleware.validator;
 
 internal class DetailDtoValidator : AbstractValidator<TransactionDetailDto>
 {
@@ -10,6 +10,7 @@ internal class DetailDtoValidator : AbstractValidator<TransactionDetailDto>
         RuleFor(d => d.tariffId)
             .GreaterThan(0)
             .WithMessage("TariffId invalid");
+        
         RuleFor(d => d.amount)
             .GreaterThan(0)
             .WithMessage("Amount invalid");
