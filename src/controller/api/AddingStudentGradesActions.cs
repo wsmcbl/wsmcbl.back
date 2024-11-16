@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Authorize(Roles = "admin, teacher")]
+[ResourceAuthorizer("admin","teacher")]
 [Route("academy")]
 [ApiController]
 public class AddingStudentGradesActions(IAddingStudentGradesController controller) : ControllerBase

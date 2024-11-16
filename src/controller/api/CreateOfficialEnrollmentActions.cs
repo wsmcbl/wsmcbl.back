@@ -1,14 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
 using wsmcbl.src.dto.secretary;
-using wsmcbl.src.model.academy;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Authorize(Roles = "admin, secretary")]
+[ResourceAuthorizer("admin","secretary")]
 [Route("secretary")]
 [ApiController]
 public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController controller) : ControllerBase
