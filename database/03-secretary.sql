@@ -27,8 +27,6 @@ create table if not exists Secretary.Student
     foreign key (tutorId) references Secretary.StudentTutor
 );
 
-CREATE UNIQUE INDEX IDX_student_id ON secretary.Student (studentid);
-
 create table if not exists Secretary.StudentParent
 (
     parentId varchar(15) primary key default secretary.generate_parent_id(),

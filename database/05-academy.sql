@@ -90,5 +90,6 @@ create table if not exists Academy.Grade
     grade float,
     conductGrade float,
     label varchar(10),
-    foreign key (subjectPartialId) references Academy.Subject_Partial
+    foreign key (subjectPartialId) references Academy.Subject_Partial,
+    foreign key (studentId) references secretary.student 
 );
