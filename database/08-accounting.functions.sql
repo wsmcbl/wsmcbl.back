@@ -73,7 +73,7 @@ BEGIN
     FROM accounting.debthistory as debt
              JOIN Accounting.tariff AS t ON t.tariffid = debt.tariffid
              JOIN accounting.student as s on s.studentid = debt.studentid
-             JOIN accounting.discount as d on d.discountid = s.discountid
+             JOIN accounting.discounteducationallevel as d on d.del = s.discountel
              JOIN academy.enrollment as en on en.enrollmentid = new.enrollmentid
     where debt.studentid = NEW.studentid;
 
@@ -108,7 +108,7 @@ BEGIN
              (SELECT s.studentid, d.tariffid, round(new.amount*(1 - disc.amount)) as subtotal, new.late as islate
               FROM accounting.debthistory d
                        JOIN accounting.student s on s.studentid = d.studentid
-                       JOIN accounting.discount disc ON disc.discountid = s.discountid
+                       JOIN accounting.DiscountEducationalLevel disc ON disc.del = s.discountel
               WHERE d.tariffid = new.tariffid and new.typeid = 1)
 
     UPDATE Accounting.DebtHistory dh

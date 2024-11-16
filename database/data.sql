@@ -16,11 +16,22 @@ values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com
 
 
 -- ############################## ---
-insert into accounting.discount(discountid, description, amount, tag)
-values (1, 'Sin descuento', 0, 'Sin descuento'),
-       (2, 'Descuento por hijos', 0.07, 'Descuento básico'),
-       (3, 'Descuento por hijos del personal', 0.5, 'Descuento trabajadores');
+insert into accounting.discount(discountid, description, tag)
+values (1, 'Sin descuento', 'Sin descuento'),
+       (2, 'Descuento por hijos','Descuento básico'),
+       (3, 'Descuento por hijos del personal', 'Descuento trabajadores');
 
+insert into accounting.discounteducationallevel(del, discountId, educationalLevel, amount)
+values (1, 1, 1, 0),
+       (2, 1, 2, 0),
+       (3, 1, 3, 0),
+       (4, 2, 1, 0.08),
+       (5, 2, 2, 0.08),
+       (6, 2, 3, 0.08),
+       (7, 3, 1, 0.5),
+       (8, 3, 2, 0.5),
+       (9, 3, 3, 0.5);
+    
 insert into accounting.tarifftype(description)
 values ('Mensualidad'),
        ('Matrícula'),
