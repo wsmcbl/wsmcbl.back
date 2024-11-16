@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.middleware.validator;
 
@@ -14,7 +15,10 @@ public static class BuilderService
 
     public static void AddControllersOptions(this IServiceCollection Services)
     {
-        Services.AddControllers(options => options.Conventions.Add(new RoutePrefixConvention("v2")));
+        Services.AddControllers(options =>
+        {
+            options.Conventions.Add(new RoutePrefixConvention("v2"));
+        });
     }
     
     public static void AddFluentValidationConfig(this IServiceCollection Services)

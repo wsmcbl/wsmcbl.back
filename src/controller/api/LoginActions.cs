@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("users")]
+[Route("config")]
 [ApiController]
 public class LoginActions(ILoginController controller) : ControllerBase
 {
@@ -20,7 +21,7 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="404">Resource depends on another resource not found.</response>
     [AllowAnonymous]
     [HttpPost]
-    [Route("tokens")]
+    [Route("users/tokens")]
     public async Task<IActionResult> login(LoginDto dto)
     {
         var result = await controller.getTokenByCredentials(dto.toEntity());
@@ -37,9 +38,9 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="409">The email is duplicate.</response>
-    [Authorize(Roles = "admin")]
+    [ResourceAuthorizer("admin")]
     [HttpPost]
-    [Route("")]
+    [Route("users")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
         var result = await controller.createUser(dto.toEntity());
