@@ -144,3 +144,26 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_update_debt_history
     BEFORE UPDATE ON Accounting.DebtHistory
     FOR EACH ROW EXECUTE FUNCTION Accounting.update_ispaid_debt_history();
+
+
+
+
+-- Update discount educational level by new --
+CREATE OR REPLACE FUNCTION Accounting.update_new_discounteducationallevel_by_tariff()
+    RETURNS TRIGGER AS $$
+BEGIN
+    if new.typeid = 1 then
+        UPDATE accounting.discounteducationallevel 
+        SET amount = 50 / (new.amount)
+        where discountid = 2
+          AND educationallevel = new.educationalLevel
+          AND new.amount > 0.00001
+          AND ABS(amount - (50 / new.amount)) > 0.0001;      
+    end if;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_new_discounteducationallevel_by_tariff before insert ON Accounting.tariff
+    FOR EACH ROW EXECUTE FUNCTION Accounting.update_new_discounteducationallevel_by_tariff();

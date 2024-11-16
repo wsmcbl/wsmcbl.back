@@ -62,7 +62,7 @@ internal class AccountingContext
         modelBuilder.Entity<DiscountEducationalLevelEntity>(entity =>
         {
             entity.HasKey(e => e.discountEducationalLeveLId).HasName("discounteducationallevel_pkey");
-            entity.ToTable("discount", "accounting");
+            entity.ToTable("discounteducationallevel", "accounting");
 
             
             entity.Property(e => e.discountEducationalLeveLId).HasColumnName("del");
