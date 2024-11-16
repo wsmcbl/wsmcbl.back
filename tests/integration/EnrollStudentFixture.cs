@@ -80,7 +80,6 @@ public class EnrollStudentFixture : BaseFixture
         var discount = new DiscountEntity()
         {
             discountId = 1,
-            amount = 0,
             description = "Nada"
         };
 

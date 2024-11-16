@@ -32,7 +32,6 @@ public class PrintReportCardByStudentFixture : BaseFixture
         var discount = new DiscountEntity()
         {
             discountId = 1,
-            amount = 0,
             description = "Nada"
         };
 

@@ -16,9 +16,9 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         isNewEnroll = true;
     }
 
-    public void setGrade(string grade)
+    public void setGrade(string value)
     {
-        this.grade = grade;
+        grade = value;
     }
     protected override string getTemplateName() => "enroll-sheet";
 
@@ -28,13 +28,13 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"today.value", getDate(today));
         content = content.Replace($"student.name.value", entity.fullName().ToUpper());
-        content = content.Replace($"degree.value", grade.ToUpper());
+        content = content.Replace($"degree.value", grade!.ToUpper());
         content = content.Replace($"enroll.record.value", getTextByEnrollRecord().ToUpper());
         content = content.Replace($"student.age.value", getAge(entity.birthday).ToUpper());
         content = content.Replace($"student.sex.value", getTextBySex(entity.sex).ToUpper());
         content = content.Replace($"student.birthday.value", getDate(entity.birthday, false).ToUpper());
         content = content.Replace($"tutor.value", entity.tutor.name.ToUpper());
-        content = content.Replace($"diseases.value", entity.diseases.ToUpper());
+        content = content.Replace($"diseases.value", entity.diseases!.ToUpper());
         content = content.Replace($"phones.value", entity.tutor.phone);
         content = content.Replace($"email.value", "");
         content = content.Replace($"religion.value", entity.religion.ToUpper());
@@ -88,8 +88,8 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     private static string setParent(string content, string typeParent, StudentParentEntity parent)
     {
         content = content.Replace($"{typeParent}.name.value", parent.name.ToUpper());
-        content = content.Replace($"{typeParent}.idcard.value", parent.idCard.ToUpper());
-        content = content.Replace($"{typeParent}.occupation.value", parent.occupation.ToUpper());
+        content = content.Replace($"{typeParent}.idcard.value", parent.idCard!.ToUpper());
+        content = content.Replace($"{typeParent}.occupation.value", parent.occupation!.ToUpper());
 
         return content;
     }

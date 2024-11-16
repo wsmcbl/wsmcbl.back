@@ -7,7 +7,7 @@ public class StudentEntity
     public int educationalLevel { get; set; }
     public string? enrollmentLabel { get; set; }
     
-    public DiscountEntity? discount { get; set; }
+    public DiscountEducationalLevelEntity? discount { get; set; }
     public secretary.StudentEntity student { get; set; } = null!;
     public ICollection<TransactionEntity>? transactions { get; set; }
     public ICollection<DebtHistoryEntity>? debtHistory { get; set; }

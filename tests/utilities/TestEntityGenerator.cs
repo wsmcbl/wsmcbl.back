@@ -134,12 +134,10 @@ public class TestEntityGenerator
 
     public static AccountingStudentEntity aAccountingStudent(string studentId)
     {
-        var discountEntity = new DiscountEntity
+        var discountEntity = new DiscountEducationalLevelEntity()
         {
             discountId = 1,
-            amount = 0.1f,
-            description = "Description",
-            tag = "A"
+            amount = 0.1f
         };
 
         return new AccountingStudentEntity
@@ -294,12 +292,10 @@ public class TestEntityGenerator
         {
             studentId = "std-10",
             student = aStudent("std-10"),
-            discount = new DiscountEntity
+            discount = new DiscountEducationalLevelEntity()
             {
                 discountId = 1,
-                amount = 0.1f,
-                description = "Description",
-                tag = "A"
+                amount = 0.1f
             },
             enrollmentLabel = "",
             transactions = new List<TransactionEntity>
