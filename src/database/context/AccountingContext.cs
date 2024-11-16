@@ -91,7 +91,7 @@ internal class AccountingContext
             entity.Ignore(d => d.enrollmentLabel);
 
             entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
-            entity.Property(e => e.discountId).HasColumnName("discountid");
+            entity.Property(e => e.discountId).HasColumnName("discountel");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
 
             entity.HasOne(d => d.discount).WithMany()

@@ -70,13 +70,25 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
 
-        return (academyStudent?.enrollmentId, accountingStudent!.discountId);
+        var discountId = accountingStudent!.discountId switch
+        {
+            < 3 => 1,
+            > 3 and <= 6 => 2,
+            > 6 and < 10 => 3,
+            _ => accountingStudent!.discountId
+        };
+
+        return (academyStudent?.enrollmentId, discountId);
     }
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
-        accountingStudent.discountId = discountId;
+        var result = discountId;
+        if (result == 2)
+            result = discountId + accountingStudent.educationalLevel + 1;
+        
+        accountingStudent.discountId = result;
         await daoFactory.execute();
     }
 

@@ -14,9 +14,9 @@ create table if not exists Academy.Enrollment
     degreeId varchar(25) not null,
     teacherId varchar(15) null,
     label varchar(20) not null,
-    tag varchar(10) not null,
+    tag varchar(20) not null,
     schoolYear varchar(20) not null,
-    section varchar(10) not null,
+    section varchar(50) not null,
     capacity smallint,
     quantity smallint,
     foreign key (degreeId) references secretary.Degree,
@@ -53,7 +53,7 @@ create table if not exists Academy.Semester
     semester int not null,
     deadLine date not null,
     isActive boolean not null ,
-    label varchar(20) not null ,
+    label varchar(30) not null ,
     foreign key (schoolyear) references Secretary.Schoolyear
 );
 

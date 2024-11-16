@@ -89,8 +89,6 @@ create table if not exists Accounting.DebtHistory
     foreign key (schoolyear) references Secretary.Schoolyear
 );
 
-create unique index IDX_is_paid ON accounting.debthistory (ispaid);
-
 create table if not exists Accounting.ExchangeRate
 (
     rateId serial not null primary key,
