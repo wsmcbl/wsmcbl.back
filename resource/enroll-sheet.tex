@@ -45,7 +45,12 @@
 \newcommand{\updatedGradeReport}{updated.grade.report.value}
 \newcommand{\conductDocument}{conduct.document.value}
 \newcommand{\financialSolvency}{financial.solvency.value}
-\newcommand{\enrollDate}{today.value}
+\newcommand{\enrollDate}{enroll.date.value}
+\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\currentDatetime}{current.datetime.value}
+\newcommand{\studentId}{student.id.value}
+\newcommand{\studentToken}{student.token.value}
+
 
 \begin{document}
 
@@ -54,7 +59,7 @@
     \end{minipage}
     \begin{minipage}[c][2.5cm]{0.6\textwidth}
         \begin{center}
-            \lineSlimStretch
+            \lineStretch
             \textbf{\large COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
         \end{center}
     \end{minipage}
@@ -104,12 +109,12 @@
         \textbf{Ocupación:} \aField{\motherOccupation}
     \end{minipage}   
 
-    \par\vspace{2cm}
+    \par\vspace{8mm}
     \lineStretch
-    DOCUMENTOS RECIBIDOS
+    \textbf{Documentos recibidos}
     \begin{table}[H]
         \centering
-        \begin{tabular}{|p{2cm}|p{2.3cm}|p{2.5cm}|p{2.8cm}|p{2.5cm}|p{2.5cm}|}
+        \begin{tabular}{|p{2cm}|p{2.3cm}|p{2.5cm}|p{2.8cm}|p{2.5cm}|p{2.1cm}|}
             \hline
             Hoja de Traslado &
             Partida de Nacimiento &
@@ -118,12 +123,12 @@
             Constancia de Conducta &
             Solvencia financiera\\
             \hline
-            \transferSheet &
-            \birthDocument &
-            \parentIdcard &
-            \updatedGradeReport &
-            \conductDocument &
-            \financialSolvency\\
+            \hspace{6mm}\transferSheet &
+            \hspace{6mm}\birthDocument &
+            \hspace{6mm}\parentIdcard &
+            \hspace{6mm}\updatedGradeReport &
+            \hspace{6mm}\conductDocument &
+            \hspace{6mm}\financialSolvency\\
             \hline
         \end{tabular}
     \end{table}
@@ -132,4 +137,18 @@
         \rule{7cm}{0.4pt}\\
         Firma del responsable
     \end{center}
+
+    \footnotetext{Creado por: \secretaryName, \currentDatetime.}
+    
+    \newpage
+    \begin{center}
+        \textbf{CREDENCIALES PARA LA CONSULTA DE NOTAS}\\
+    \end{center}
+    \textbf{Código del estudiante:} \studentId\\
+    \textbf{Contraseña:} \studentToken\\
+    
+    Visite nuestro sitio web www.cbl-edu.com/online-degree después de cada parcial para obtener las calificaciones.
+    Evite compartir esta información, en caso de dudas puede envianos un correo a soporte@cbl-edu.com o bien visitarnos en nuestras instalaciones.
+    
+    Para más información sobre el reglamento interno del Colegio Bautista Libertad puede consultar nuestro sitio web www.cbl-edu.com/regulation.
 \end{document}

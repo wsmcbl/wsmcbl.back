@@ -26,7 +26,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
         content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.Replace($"today.value", getDate(today));
+        content = content.Replace($"enroll.date.value", getDate(today));
         content = content.Replace($"student.name.value", entity.fullName());
         content = content.Replace($"degree.value", grade!);
         content = content.Replace($"enroll.record.value", getTextByBool(isNewEnroll));
@@ -39,6 +39,12 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.Replace($"email.value", "");
         content = content.Replace($"religion.value", entity.religion);
         content = content.Replace($"address.value", entity.address);
+        
+        
+        content = content.Replace($"secretary.name.value", "La tía Thelma");
+        content = content.Replace($"current.datetime.value", getDateTimeNow());
+        content = content.Replace($"student.id.value", entity.studentId);
+        content = content.Replace($"student.token.value", "457812");
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
@@ -54,6 +60,13 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
         var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
         return date.ToString(format, culture);
+    }
+    
+    
+    private  string getDateTimeNow()
+    {
+        var culture = new CultureInfo("es-ES");
+        return DateTime.Now.ToString("dddd dd/MMM/yyyy, hh:mm:ss", culture);
     }
 
     private bool isNewEnroll { get; set; }
