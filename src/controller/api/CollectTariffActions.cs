@@ -7,7 +7,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("cashier")]
+[ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
 public class CollectTariffActions(ICollectTariffController controller) : ControllerBase

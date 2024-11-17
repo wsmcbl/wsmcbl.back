@@ -84,11 +84,8 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
-        var result = discountId;
-        if (result == 2)
-            result = discountId + accountingStudent.educationalLevel + 1;
-        
-        accountingStudent.discountId = result;
+        accountingStudent.discountId = discountId != 2 ? discountId :
+            discountId + accountingStudent.educationalLevel + 1;
         await daoFactory.execute();
     }
 
