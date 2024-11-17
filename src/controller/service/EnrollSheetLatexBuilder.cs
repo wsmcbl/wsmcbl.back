@@ -27,18 +27,18 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         var today = DateOnly.FromDateTime(DateTime.Today);
         content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.Replace($"today.value", getDate(today));
-        content = content.Replace($"student.name.value", entity.fullName().ToUpper());
-        content = content.Replace($"degree.value", grade!.ToUpper());
-        content = content.Replace($"enroll.record.value", getTextByEnrollRecord().ToUpper());
-        content = content.Replace($"student.age.value", getAge(entity.birthday).ToUpper());
-        content = content.Replace($"student.sex.value", getTextBySex(entity.sex).ToUpper());
-        content = content.Replace($"student.birthday.value", getDate(entity.birthday, false).ToUpper());
-        content = content.Replace($"tutor.value", entity.tutor.name.ToUpper());
-        content = content.Replace($"diseases.value", entity.diseases!.ToUpper());
+        content = content.Replace($"student.name.value", entity.fullName());
+        content = content.Replace($"degree.value", grade!);
+        content = content.Replace($"enroll.record.value", getTextByBool(isNewEnroll));
+        content = content.Replace($"student.age.value", getAge(entity.birthday));
+        content = content.Replace($"student.sex.value", getTextBySex(entity.sex));
+        content = content.Replace($"student.birthday.value", getDate(entity.birthday, false));
+        content = content.Replace($"tutor.value", entity.tutor.name);
+        content = content.Replace($"diseases.value", entity.diseases!);
         content = content.Replace($"phones.value", entity.tutor.phone);
         content = content.Replace($"email.value", "");
-        content = content.Replace($"religion.value", entity.religion.ToUpper());
-        content = content.Replace($"address.value", entity.address.ToUpper());
+        content = content.Replace($"religion.value", entity.religion);
+        content = content.Replace($"address.value", entity.address);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
@@ -87,9 +87,9 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     
     private static string setParent(string content, string typeParent, StudentParentEntity parent)
     {
-        content = content.Replace($"{typeParent}.name.value", parent.name.ToUpper());
-        content = content.Replace($"{typeParent}.idcard.value", parent.idCard!.ToUpper());
-        content = content.Replace($"{typeParent}.occupation.value", parent.occupation!.ToUpper());
+        content = content.Replace($"{typeParent}.name.value", parent.name);
+        content = content.Replace($"{typeParent}.idcard.value", parent.idCard!);
+        content = content.Replace($"{typeParent}.occupation.value", parent.occupation!);
 
         return content;
     }
@@ -108,7 +108,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
     private static string getTextByBool(bool isSomething) => isSomething ? "Sí" : "No";
     private static string getTextBySex(bool sex) => sex ? "Hombre" : "Mujer";
-    private string getTextByEnrollRecord() => isNewEnroll ? "Primer ingreso" : "Reingreso";
     
     private static string getAge(DateOnly birthday)
     {

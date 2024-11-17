@@ -16,12 +16,7 @@
 \pagestyle{plain}
 \pagenumbering{gobble}
 
-\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
-\newcommand{\aField}[1]{\uline{\hspace{2mm} \textbf{#1} \hfill}}
-\newcommand{\aFieldRight}[1]{\uline{\hspace{2mm} \textbf{#1} \hspace{2mm}}}
-
-
-\newcommand{\defaultSpace}{\hspace{4mm}}
+\newcommand{\aField}[1]{#1}
 \newcommand{\lineSlimStretch}{\singlespacing}
 \newcommand{\lineStretch}{\setstretch{1.5}}
 
@@ -67,47 +62,49 @@
     \lineStretch
     \hfill Fecha: \enrollDate
     
-    Datos del Alumno\\
-    \aLine{Nombre: \aField{\studentName}}
-    \aLine{Sexo: \aField{\studentSex}\defaultSpace Fecha de Nacimiento: \aField{\studentBirthday}\defaultSpace Edad: \aFieldRight{\studentAge}}
-    Matriculado en: \aFieldRight{\degree}\defaultSpace Registro: \aFieldRight{\enrollRecord}
-    \par\vspace{3mm}
-    \aLine{Dirección domiciliar: \aField{\address}}
-    \par\vspace{5mm}
-    \begin{minipage}{0.48\textwidth}
-        Religión o congregación:\\
-        \aLine{\aField{\religion}}
-        Padecimientos:\\
-        \aLine{\aField{\diseases}}
+    \textbf{\uline{Datos del alumno}}\\
+    \textbf{Nombre}: \aField{\studentName}
+    \par\vspace{1mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{Sexo:} \aField{\studentSex}\hspace{7mm} \textbf{Edad:} \aField{\studentAge}\\
+        \textbf{Fecha de Nacimiento:} \aField{\studentBirthday}\\
+        \textbf{Matriculado en:} \aField{\degree}\\
+        \textbf{Repitente:} \aField{\enrollRecord}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.48\textwidth}
-        Datos del Tutor\\
-        \aLine{Nombre: \aField{\tutor}}
-        \aLine{Telefono: \aField{\phones}}
-        \aLine{Correo: \aField{\email}}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{Dirección domiciliar:} \aField{\address}
     \end{minipage}
-    \par\vspace{5mm}
-    \begin{minipage}{0.48\textwidth}
-        Datos del Padre\\
-        \aLine{Nombre: \aField{\fatherName}}
-        \aLine{Cédula: \aField{\fatherIdcard}}
-        \aLine{Ocupación: \aField{\fatherOccupation}}
+    \par\vspace{4mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Otros datos}}\\
+        \textbf{Religión o congregación:} \aField{\religion}\\
+        \textbf{Padecimientos:} \aField{\diseases}
+    \end{minipage}
+    \lineStretch
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos del Tutor}}\\
+        \textbf{Nombre:} \aField{\tutor}\\
+        \textbf{Teléfonos:} \aField{\phones}\\
+        \textbf{Correo:} \aField{\email}
+    \end{minipage}
+    \par\vspace{4mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos del Padre}}\\
+        \textbf{Nombre:} \aField{\fatherName}\\
+        \textbf{Cédula:} \aField{\fatherIdcard}\\
+        \textbf{Ocupación:} \aField{\fatherOccupation}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.48\textwidth}
-        Datos de la Madre\\
-        \aLine{Nombre: \aField{\motherName}}
-        \aLine{Cédula: \aField{\motherIdcard}}
-        \aLine{Ocupación: \aField{\motherOccupation}}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos de la Madre}}\\
+        \textbf{Nombre:} \aField{\motherName}\\
+        \textbf{Cédula:} \aField{\motherIdcard}\\
+        \textbf{Ocupación:} \aField{\motherOccupation}
     \end{minipage}   
-    
-    \lineSlimStretch
-    \textbf{NOTA:} ME COMPROMETO A PAGAR A LOS 5 DÍAS DE CADA MES, DE LO CONTRARIO PAGARÉ EL \uline{\textbf{10\%}} DE MORA.
-    SE DEBERÁ PAGAR LOS DOCES MESES DEL AÑO MAS 13vo MES.
-    SUS HIJOS ASISTIRAN UNA VEZ AL MES A LA ESCUELA BIBLICA DOMINICAL.
-    INFORMAR CUANDO EL ESTUDIANTE SEA RETIRADO DEL COLEGIO.
 
+    \par\vspace{2cm}
     \lineStretch
     DOCUMENTOS RECIBIDOS
     \begin{table}[H]
@@ -132,7 +129,7 @@
     \end{table}
     
     \begin{center}
-        \aField{\hspace{6cm}}\\
+        \rule{7cm}{0.4pt}\\
         Firma del responsable
     \end{center}
 \end{document}
