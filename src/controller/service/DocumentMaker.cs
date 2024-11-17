@@ -39,13 +39,24 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return subjectList.Select(item => (item.getInitials, item.subjectId)).ToList();
     }
     
-    public async Task<byte[]> getEnrollDocument(string studentId)
+    public async Task<byte[]> getEnrollDocument(string studentId, string userId)
     {
+        var user = await daoFactory.userDao!.getById(userId);
+
+        if (user == null)
+        {
+            throw new EntityNotFoundException("User", userId);
+        }
+        
         var student = await daoFactory.studentDao!.getByIdWithProperties(studentId);
+        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
+        
         
         var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
         latexBuilder.setGrade(enrollment.label);
+        latexBuilder.setAcademyStudent(academyStudent!);
+        latexBuilder.setUsername(user.name);
         
         setLatexBuilder(latexBuilder);
         return getPDF();

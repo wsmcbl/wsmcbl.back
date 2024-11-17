@@ -7,7 +7,9 @@ namespace wsmcbl.src.controller.service;
 public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
+    private string? userName;
     private readonly StudentEntity entity;
+    private model.academy.StudentEntity? academyStudent;
     private readonly string templatesPath;
     
     public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
@@ -21,41 +23,57 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         grade = value;
     }
+
+    public void setUsername(string value)
+    {
+        userName = value;
+    }
+    
+    public void setAcademyStudent(model.academy.StudentEntity student)
+    {
+        academyStudent = student;
+    }
+    
     protected override string getTemplateName() => "enroll-sheet";
 
     protected override string updateContent(string content)
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
         content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.Replace($"enroll.date.value", getDate(today));
+        content = content.Replace($"enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
         content = content.Replace($"student.name.value", entity.fullName());
         content = content.Replace($"degree.value", grade!);
-        content = content.Replace($"enroll.record.value", getTextByBool(isNewEnroll));
+        content = content.Replace($"repeating.value", getTextByBool(academyStudent!.isRepeating));
         content = content.Replace($"student.age.value", getAge(entity.birthday));
         content = content.Replace($"student.sex.value", getTextBySex(entity.sex));
-        content = content.Replace($"student.birthday.value", getDate(entity.birthday, false));
+        content = content.Replace($"student.birthday.value", getDateFormat(entity.birthday, false));
         content = content.Replace($"tutor.value", entity.tutor.name);
         content = content.Replace($"diseases.value", entity.diseases!);
         content = content.Replace($"phones.value", entity.tutor.phone);
-        content = content.Replace($"email.value", "");
+        content = content.Replace($"email.value", entity.tutor.email);
         content = content.Replace($"religion.value", entity.religion);
         content = content.Replace($"address.value", entity.address);
         
         
-        content = content.Replace($"secretary.name.value", "La tía Thelma");
+        content = content.Replace($"secretary.name.value", userName);
         content = content.Replace($"current.datetime.value", getDateTimeNow());
         content = content.Replace($"student.id.value", entity.studentId);
-        content = content.Replace($"student.token.value", "457812");
+        content = content.Replace($"student.token.value", entity.accessToken);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
         
-        content = content.Replace($"current.year.value", today.Year.ToString());
+        content = content.Replace($"current.year.value", getYearLabel());
         
         return content;
     }
-    
-    private  string getDate(DateOnly date, bool withDay = true)
+
+    private static string getYearLabel()
+    {
+        var year = DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+        return year.ToString();
+    }
+
+    private static string getDateFormat(DateOnly date, bool withDay = true)
     {
         var culture = new CultureInfo("es-ES");
 
@@ -64,7 +82,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     }
     
     
-    private  string getDateTimeNow()
+    private static string getDateTimeNow()
     {
         var culture = new CultureInfo("es-ES")
         {
@@ -74,6 +92,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
                 PMDesignator = "pm"
             }
         };
+        
         return DateTime.UtcNow.toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
     }
 

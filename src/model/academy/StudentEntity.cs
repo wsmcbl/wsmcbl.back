@@ -44,4 +44,9 @@ public class StudentEntity
     {
         isRepeating = repeating;
     }
+
+    public DateOnly getCreateAtByDateOnly()
+    {
+        return DateOnly.FromDateTime(createdAt);
+    }
 }

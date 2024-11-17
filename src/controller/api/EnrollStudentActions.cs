@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -91,7 +93,13 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     [Route("enrollments/documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
-        var result = await controller.getEnrollDocument(studentId);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            throw new EntityNotFoundException("user", userId);
+        }
+        
+        var result = await controller.getEnrollDocument(studentId, userId);
         return File(result, "application/pdf", $"{studentId}.enroll-sheet.pdf");
     }
 }

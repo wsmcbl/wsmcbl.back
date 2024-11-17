@@ -58,10 +58,10 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return academyStudent;
     }
 
-    public async Task<byte[]> getEnrollDocument(string studentId)
+    public async Task<byte[]> getEnrollDocument(string studentId, string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getEnrollDocument(studentId);
+        return await documentMaker.getEnrollDocument(studentId, userId);
     }
 
     public async Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId)
