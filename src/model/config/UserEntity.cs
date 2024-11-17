@@ -96,4 +96,9 @@ public class UserEntity
             return this;
         }
     }
+
+    public string getAlias()
+    {
+        return $"{name[0]}. {surname}";
+    }
 }

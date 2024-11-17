@@ -56,7 +56,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
         latexBuilder.setGrade(enrollment.label);
         latexBuilder.setAcademyStudent(academyStudent!);
-        latexBuilder.setUsername(user.name);
+        latexBuilder.setUsername(user.getAlias());
         
         setLatexBuilder(latexBuilder);
         return getPDF();
