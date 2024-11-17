@@ -5,16 +5,18 @@
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{setspace}
+\usepackage[hidelinks]{hyperref}
 \usepackage[spanish]{babel}
-\usepackage{charter}
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
 \usepackage[margin=2cm]{geometry}
+\renewcommand{\normalsize}{\fontsize{13}{18}\selectfont}
 
 \setlength{\parskip}{1.5mm}
 \setlength{\parindent}{0pt}
 \setlength{\headsep}{3mm}
 
 \pagestyle{plain}
-\pagenumbering{gobble}
 
 \newcommand{\aField}[1]{#1}
 \newcommand{\lineSlimStretch}{\singlespacing}
@@ -50,21 +52,21 @@
 \newcommand{\currentDatetime}{current.datetime.value}
 \newcommand{\studentId}{student.id.value}
 \newcommand{\studentToken}{student.token.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
 
 
 \begin{document}
-
     \begin{minipage}[c][2.5cm]{0.2\textwidth}
         \includegraphics[width=2.5cm]{logo.value}
     \end{minipage}
     \begin{minipage}[c][2.5cm]{0.6\textwidth}
         \begin{center}
-            \lineStretch
             \textbf{\large COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
         \end{center}
     \end{minipage}
     
-    \lineStretch
     \hfill Fecha: \enrollDate
     
     \textbf{\uline{Datos del alumno}}\\
@@ -86,7 +88,6 @@
         \textbf{Religión o congregación:} \aField{\religion}\\
         \textbf{Padecimientos:} \aField{\diseases}
     \end{minipage}
-    \lineStretch
     \hfill
     \begin{minipage}[t]{0.48\textwidth}
         \textbf{\uline{Datos del Tutor}}\\
@@ -110,11 +111,10 @@
     \end{minipage}   
 
     \par\vspace{8mm}
-    \lineStretch
     \textbf{Documentos recibidos}
     \begin{table}[H]
         \centering
-        \begin{tabular}{|p{2cm}|p{2.3cm}|p{2.5cm}|p{2.8cm}|p{2.5cm}|p{2.1cm}|}
+        \begin{tabular}{|p{1.8cm}|p{2.3cm}|p{2.4cm}|p{2.6cm}|p{2.5cm}|p{2cm}|}
             \hline
             Hoja de Traslado &
             Partida de Nacimiento &
@@ -133,22 +133,69 @@
         \end{tabular}
     \end{table}
     
+    \textbf{Compromiso de padres y estudiantes}\\
+    Me comprometo a seguir los principios bíblicos del Colegio Bautista Libertad, asi como cumplir con los siguientes aspectos:
+    \begin{itemize}
+        \item Cumplir con las obligaciones de colegiaturas a más tardar el 28 de cada mes. De lo contrario \textbf{pagaré} el 10\% de mora.
+        \item Pagar el treceavo mes durante el año escolar, pudiendo pagarlo por cuotas.
+        \item Me comprometo a asistir a las reuniones de entrega de boletines, reunión de padres o citas especiales.
+        \item Dejaré a mi hijo en el portón principal, su ingreso al centro será debidamente justificado por pagos o citas por los docentes.
+        \item Asistiré al centro escolar decorosamente vestido.
+        \item Mi hijo asistirá una vez al mes a la Escuela Bíblica Dominical, según calendarización sin excepciones.
+        \item Mi hijo portará su biblia todos los días que asista al colegio.
+        \item Mi hijo no asistirá a clases con adornos exagerados o prendas de valor como joyas o dispositivos electrónicos, así como arreglos estéticos exuberantes: cortes de cabello, cabello teñido, uñas pintadas, maquillaje, etc.
+        \item Estoy de acuerdo en que el colegio \textbf{no responde} por la pérdida de prendas que sé que están prohibidas.
+        \item Deberé conocer las faltas (leves, graves y muy graves) y deberes del estudiante.
+        \item Mi hijo cumplirá con las exigencias académicas de la institución.
+    \end{itemize}
+    Seré atendido en horario especial por los docentes.
+    El maestro guía será el responsable de dar respuesta a cualquier situación que se presente con mi hijo, como el rendimiento académico y disciplina estudiantil.
+    Mis reclamos, objeciones o sugerencias las haré por escrito a la dirección académica con el propósito de obtener una respuesta satisfactoria.
+    Mi hijo será respetado y tratado con igualdad, será estimulado al destacarse en sus actividades escolares.
+    Recibirá el apoyo de la dirección y maestros cuando sea solicitado asi como tendrá sus horas de clases estipuladas en el horario.
+    Mi hijo gozará de todos los derechos estipulados.
+    
+    El apoyo de los padres \textbf{es insustituible} para mejorar el rendimiento académico y la disciplina estudiantil.\\
+    \vspace{5mm}
     \begin{center}
         \rule{7cm}{0.4pt}\\
         Firma del responsable
     \end{center}
+    \vfill
+    \begin{center}
+        ``Acuérdate de tu creador en los días de tu Juventud antes que lleguen los días malos y lleguen los años de los cuales digas no tengo en ellos contentamiento.''\\
+        Eclesiastés 12:1
+    \end{center}
 
-    \footnotetext{Creado por: \secretaryName, \currentDatetime.}
+    \footnotetext{Impreso por wsmcbl el \currentDatetime, \secretaryName.}
+    
+    
+    
+    
     
     \newpage
     \begin{center}
-        \textbf{CREDENCIALES PARA LA CONSULTA DE NOTAS}\\
+        \textbf{CREDENCIALES PARA LA CONSULTA DE CALIFICACIONES}\\
     \end{center}
     \textbf{Código del estudiante:} \studentId\\
     \textbf{Contraseña:} \studentToken\\
     
-    Visite nuestro sitio web www.cbl-edu.com/online-degree después de cada parcial para obtener las calificaciones.
-    Evite compartir esta información, en caso de dudas puede envianos un correo a soporte@cbl-edu.com o bien visitarnos en nuestras instalaciones.
+    Para consultar las calificaciones del estudiante puede visitar nuestro sitio web
+    \begin{center}
+        \href{www.cbl-edu.com/online-grades}{www.cbl-edu.com/online-grades}
+    \end{center}
+    y utilizar estas credenciales,
+    tenga presente que las calificaciones estarán disponibles después de las entregas de notas, esto se notificará por los medios pertinentes.
     
-    Para más información sobre el reglamento interno del Colegio Bautista Libertad puede consultar nuestro sitio web www.cbl-edu.com/regulation.
+    Evite compartir esta información y en caso de perdidas o dudas puede enviarnos un correo a \href{soporte@cbl-edu.com}{soporte@cbl-edu.com} o bien visitarnos en nuestras instalaciones.
+    
+    Para más información sobres los derechos y deberes consulte el \textbf{reglamento interno del Colegio Bautista Libertad}
+    visitando nuestro sitio web
+    \begin{center}
+        \href{www.cbl-edu.com/regulation}{www.cbl-edu.com/regulation}
+    \end{center}
+    
+    \vspace{2cm}
+    \hrule
+    \scriptsize{Última línea}
 \end{document}

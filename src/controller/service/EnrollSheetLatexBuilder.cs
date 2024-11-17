@@ -1,5 +1,6 @@
 using System.Globalization;
 using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -65,8 +66,15 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     
     private  string getDateTimeNow()
     {
-        var culture = new CultureInfo("es-ES");
-        return DateTime.Now.ToString("dddd dd/MMM/yyyy, hh:mm:ss", culture);
+        var culture = new CultureInfo("es-ES")
+        {
+            DateTimeFormat =
+            {
+                AMDesignator = "am",
+                PMDesignator = "pm"
+            }
+        };
+        return DateTime.Now.ToUniversalTime().toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
     }
 
     private bool isNewEnroll { get; set; }
