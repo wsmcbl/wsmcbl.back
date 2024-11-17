@@ -60,7 +60,7 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     [Route("enrollments/")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
-        var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!);
+        var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!, dto.isRepeating);
         await controller.updateStudentDiscount(dto.getStudentId(), dto.discountId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
 

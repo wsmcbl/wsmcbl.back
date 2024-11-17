@@ -74,7 +74,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
                 PMDesignator = "pm"
             }
         };
-        return DateTime.Now.ToUniversalTime().toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
+        return DateTime.UtcNow.toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
     }
 
     private bool isNewEnroll { get; set; }

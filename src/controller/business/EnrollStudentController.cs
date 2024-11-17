@@ -64,7 +64,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return await documentMaker.getEnrollDocument(studentId);
     }
 
-    public async Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId)
+    public async Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId)
     {
         var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
@@ -77,7 +77,8 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
             _ => accountingStudent!.discountId
         };
 
-        return (academyStudent?.enrollmentId, discountId);
+        var isRepeating = academyStudent?.isRepeating ?? false;
+        return (academyStudent?.enrollmentId, discountId, isRepeating);
     }
 
     public async Task updateStudentDiscount(string studentId, int discountId)
