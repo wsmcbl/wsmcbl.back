@@ -41,6 +41,8 @@ create table if not exists Academy.Student
     enrollmentId varchar(15) not null,
     schoolYear varchar(20) not null,
     isApproved boolean,
+    isRepeating boolean not null,
+    createdAt timestamp with time zone not null, 
     primary key (studentId, enrollmentId),
     foreign key (studentId) references Secretary.Student,
     foreign key (enrollmentId) references Academy.Enrollment

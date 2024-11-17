@@ -4,7 +4,8 @@ create table if not exists Secretary.StudentTutor
 (
     tutorId varchar(15) primary key default secretary.generate_tutor_id(),
     name varchar(70) not null,
-    phone varchar(100) not null
+    phone varchar(100) not null,
+    email varchar(100)
 );
 
 create table if not exists Secretary.Student
