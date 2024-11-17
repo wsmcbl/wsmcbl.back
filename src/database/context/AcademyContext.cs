@@ -99,6 +99,8 @@ internal class AcademyContext
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
             entity.Property(e => e.isApproved).HasColumnName("isapproved");
+            entity.Property(e => e.isRepeating).HasColumnName("isrepeating");
+            entity.Property(e => e.createdAt).HasColumnName("createdat");
             entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
 
             entity.HasOne(d => d.student).WithMany()

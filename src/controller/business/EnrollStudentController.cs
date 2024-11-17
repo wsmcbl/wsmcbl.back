@@ -22,7 +22,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return await daoFactory.degreeDao!.getValidListForTheSchoolyear();
     }
 
-    public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
+    public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId, bool isRepeating)
     {
         var isStudentEnroll = await isAlreadyEnroll(student.studentId!);
         if (isStudentEnroll)
@@ -33,6 +33,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         await student.saveChanges(daoFactory);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
+        academyStudent.setIsRepeating(isRepeating);
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 
@@ -54,8 +55,6 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         var academyStudent = new model.academy.StudentEntity(studentId, enrollmentId);
         
         academyStudent.setSchoolyear(schoolYear.id!);
-        academyStudent.isNewEnroll();
-
         return academyStudent;
     }
 
