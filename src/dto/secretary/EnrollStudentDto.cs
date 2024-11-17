@@ -8,8 +8,8 @@ public class EnrollStudentDto
 {
     [Required] public string? enrollmentId { get; set; }
     [JsonRequired] public int discountId { get; set; }
-    [JsonRequired] public StudentFullDto student { get; set; } = null!;
     [JsonRequired] public bool isRepeating { get; set; }
+    [JsonRequired] public StudentFullDto student { get; set; } = null!;
 
     public EnrollStudentDto()
     {
