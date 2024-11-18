@@ -43,4 +43,13 @@ public class LoginController : BaseController, ILoginController
     {
         return await daoFactory.userDao!.getById(userId);
     }
+
+    public async Task<UserEntity> updateUser(string userId, UserEntity user)
+    {
+        var entity = await daoFactory.userDao!.getById(userId);
+        entity.update(user);
+        await daoFactory.execute();
+
+        return await getUserById(userId);
+    }
 }

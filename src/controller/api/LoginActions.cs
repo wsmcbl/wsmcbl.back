@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +49,7 @@ public class LoginActions(ILoginController controller) : ActionsBase
     public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
         var result = await controller.createUser(dto.toEntity());
-        return CreatedAtAction(null, result.mapToDto());
+        return CreatedAtAction(null, result.mapToCreateDto());
     }
     
     
@@ -65,6 +66,22 @@ public class LoginActions(ILoginController controller) : ActionsBase
     public async Task<IActionResult> getUser()
     {
         var result = await controller.getUserById(getAuthenticatedUserId());
+        return CreatedAtAction(null, result.mapToDto());
+    }
+    
+    /// <summary>
+    ///  Update user information
+    /// </summary>
+    /// <response code="200">Returns a user new information.</response>
+    /// <response code="404">If the user not exist.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpPut]
+    [Route("users")]
+    public async Task<IActionResult> updateUser([Required] UserDto userDto)
+    {
+        var result = await controller.updateUser(getAuthenticatedUserId(), userDto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
     }
 }
