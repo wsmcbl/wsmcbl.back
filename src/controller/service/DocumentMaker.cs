@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.service;
@@ -41,13 +42,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     
     public async Task<byte[]> getEnrollDocument(string studentId, string userId)
     {
-        var user = await daoFactory.userDao!.getById(userId);
-
-        if (user == null)
-        {
-            throw new EntityNotFoundException("User", userId);
-        }
-        
+        var user = await getUser(userId);
         var student = await daoFactory.studentDao!.getByIdWithProperties(studentId);
         var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
@@ -60,6 +55,22 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         
         setLatexBuilder(latexBuilder);
         return getPDF();
+    }
+
+    private async Task<UserEntity> getUser(string userId)
+    {
+        UserEntity? user = null;
+        if (Guid.TryParse(userId, out var userIdGuid))
+        {
+            user = await daoFactory.userDao!.getById(userIdGuid);
+        }
+        
+        if (user == null)
+        {
+            throw new EntityNotFoundException("User", userId);
+        }
+
+        return user;
     }
 
     public async Task<byte[]> getInvoiceDocument(string transactionId)

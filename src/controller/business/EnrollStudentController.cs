@@ -29,7 +29,8 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         {
             throw new ConflictException($"The student with id ({student.studentId}) is al ready enroll.");
         }
-        
+
+        student.accessToken = generateAccessToken();
         await student.saveChanges(daoFactory);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
@@ -38,6 +39,12 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         await daoFactory.execute();
 
         return student;
+    }
+
+    private static string generateAccessToken()
+    {
+        var random = new Random();
+        return random.Next(100000, 1000000).ToString();
     }
 
     private async Task<bool> isAlreadyEnroll(string studentId)

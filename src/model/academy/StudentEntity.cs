@@ -1,3 +1,5 @@
+using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.model.academy;
 
 public class StudentEntity
@@ -47,6 +49,6 @@ public class StudentEntity
 
     public DateOnly getCreateAtByDateOnly()
     {
-        return DateOnly.FromDateTime(createdAt);
+        return DateOnly.FromDateTime(createdAt.toUTC6());
     }
 }

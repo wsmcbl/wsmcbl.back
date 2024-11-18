@@ -50,6 +50,7 @@ public class StudentEntity
         address = entity.address;
         minedId = entity.minedId;
         profilePicture = entity.profilePicture;
+        accessToken = entity.accessToken;
     }
 
     public async Task saveChanges(DaoFactory daoFactory)
@@ -200,12 +201,6 @@ public class StudentEntity
         public Builder setAddress(string address)
         {
             entity.address = address;
-            return this;
-        }
-
-        public Builder setProfileImage(byte[]? profileImage)
-        {
-            entity.profilePicture = profileImage;
             return this;
         }
 
