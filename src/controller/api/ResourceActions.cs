@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.config;
 using wsmcbl.src.dto.secretary;
 
 namespace wsmcbl.src.controller.api;
@@ -20,6 +21,21 @@ public class ResourceActions(IResourceController controller) : ControllerBase
         return Ok(result.mapToListBasicDto());
     }
     
+    
+    
+    /// <summary>
+    ///  Create a new media resource.
+    /// </summary>
+    /// <response code="201">Returns a new resource.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
+    [HttpPost]
+    [Route("medias")]
+    public async Task<IActionResult> createMedia(MediaToCreateDto dto)
+    {
+        var result = await controller.createMedia(dto.toEntity());
+        return CreatedAtAction(null, result.mapToDto());
+    }
+    
     /// <summary>
     ///  Returns the media by type and schoolyear.
     /// </summary>
@@ -33,5 +49,18 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     {
         var result = await controller.getMedia(type, schoolyear);
         return Ok(new {value = result});
+    }
+    
+    /// <summary>
+    ///  Update media resource.
+    /// </summary>
+    /// <response code="200">Returns the edited resource.</response>
+    /// <response code="404">If resource not exist.</response>
+    [HttpPut]
+    [Route("medias")]
+    public async Task<IActionResult> updateMedia(MediaToCreateDto dto)
+    {
+        var result = await controller.updateMedia(dto.toEntity());
+        return Ok(result.mapToDto());
     }
 }

@@ -1,3 +1,4 @@
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -14,5 +15,15 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     {
         var result = await daoFactory.schoolyearDao!.getSchoolYearByLabel(schoolyear);
         return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, result.id!);
+    }
+
+    public async Task<MediaEntity> updateMedia(MediaEntity media)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<MediaEntity> createMedia(MediaEntity media)
+    {
+        throw new NotImplementedException();
     }
 }
