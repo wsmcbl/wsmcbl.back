@@ -36,7 +36,7 @@ builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTea
 
 builder.Services.AddTransient<ICreateStudentProfileController, CreateStudentProfileController>();
 builder.Services.AddTransient<IAddingStudentGradesController, AddingStudentGradesController>();
-builder.Services.AddTransient<IListController, ListController>();
+builder.Services.AddTransient<IResourceController, ResourceController>();
 builder.Services.AddTransient<ILoginController, LoginController>();
 
 var app = builder.Build();

@@ -3,7 +3,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class ListController(DaoFactory daoFactory) : BaseController(daoFactory), IListController
+public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory), IResourceController
 {
     public async Task<List<StudentEntity>> getStudentList()
     {
@@ -12,6 +12,6 @@ public class ListController(DaoFactory daoFactory) : BaseController(daoFactory),
 
     public async Task<string> getMedia(int type, string schoolyear)
     {
-        return await daoFactory.mediaDao!.getByTypeAndSchoolyear();
+        return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, schoolyear);
     }
 }

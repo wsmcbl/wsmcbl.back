@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("secretary")]
 [ApiController]
-public class ListActions(IListController controller) : ControllerBase
+public class ResourceActions(IResourceController controller) : ControllerBase
 {
     /// <summary>
     ///  Returns the list of all students.
