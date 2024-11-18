@@ -3,6 +3,7 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
@@ -245,3 +246,21 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
         }
     }
 }
+
+public class MediaDaoPostgres(PostgresContext context) : GenericDaoPostgres<MediaEntity, int>(context), IMediaDao
+{
+    public async Task<string> getByTypeAndSchoolyear(int type, string schoolyearId)
+    {
+        var result = await entities.Where(e => e.type == type)
+            .Where(e => e.schoolyearId == schoolyearId)
+            .FirstOrDefaultAsync();
+
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Media with type ({type}) and schoolyearid ({schoolyearId}) not found.");
+        }
+
+        return result.value;
+    }
+}
+    
