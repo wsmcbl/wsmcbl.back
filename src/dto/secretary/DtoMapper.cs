@@ -27,7 +27,7 @@ public static class DtoMapper
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
     private static BasicStudentToEnrollDto mapToBasicEnrollDto(this StudentEntity student) => new(student);
-    private static BasicStudentDto mapToBasicDto(this StudentEntity entity) => new(entity);
+    private static BasicStudentDto mapToBasicDto(this StudentEntity entity, string schoolyear, string enrollment) => new(entity, schoolyear, enrollment);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
@@ -39,8 +39,8 @@ public static class DtoMapper
     public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
 
-    public static List<BasicStudentDto> mapToListBasicDto(this IEnumerable<StudentEntity> list)
-        => list.Select(e => e.mapToBasicDto()).ToList();
+    public static List<BasicStudentDto> mapToListBasicDto(this IEnumerable<(StudentEntity student, string schoolyear, string enrollment)> list)
+        => list.Select(e => e.student.mapToBasicDto(e.schoolyear, e.enrollment)).ToList();
 
     public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => e.mapToBasicEnrollDto()).ToList();

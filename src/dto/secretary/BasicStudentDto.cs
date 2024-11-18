@@ -10,12 +10,12 @@ public class BasicStudentDto
     public string schoolyear { get; set; }
     public string enrollment { get; set; }
     
-    public BasicStudentDto(StudentEntity entity)
+    public BasicStudentDto(StudentEntity entity, string schoolyear, string enrollment)
     {
         studentId = entity.studentId!;
         fullName = entity.fullName();
         isActive = entity.isActive;
-        schoolyear = "Por implementar";
-        enrollment = "Por implementar";
+        this.schoolyear = schoolyear;
+        this.enrollment = enrollment;
     }
 } 

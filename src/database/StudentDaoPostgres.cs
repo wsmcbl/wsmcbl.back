@@ -2,7 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
+using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -47,6 +50,47 @@ public class StudentDaoPostgres(PostgresContext context)
     {
         return (await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync())
             .Find(e => student.getStringData().Equals(e.getStringData()));
+    }
+
+    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment()
+    {
+        var studentList = await getAll();
+        var academyList = await context.Set<model.academy.StudentEntity>().ToListAsync();
+        var result = new List<(StudentEntity student, string schoolyear, string enrollment)>();
+        foreach (var item in studentList)
+        {
+            var academyStudent = academyList.Where(e => e.studentId == item.studentId)
+                .MaxBy(e => GetNumericPart(e.schoolYear));
+
+            var schoolyearLabel = "";
+            var enrollmentLabel = "Sin matrícula";
+            if (academyStudent == null)
+            {
+                result.Add((item, schoolyearLabel, enrollmentLabel));
+                continue;
+            }
+
+            var schoolyear = await context.Set<SchoolYearEntity>()
+                .FirstOrDefaultAsync(e => e.id == academyStudent.schoolYear);
+            if (schoolyear != null)
+                schoolyearLabel = schoolyear.label;
+
+            var enrollment = await context.Set<EnrollmentEntity>()
+                .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
+            if (enrollment != null)
+                enrollmentLabel = enrollment.label;
+            
+            result.Add((item, schoolyearLabel, enrollmentLabel));
+        }
+
+        return result;
+    }
+    
+
+    private static int GetNumericPart(string item)
+    {
+        var numericPart = item.Substring(3);
+        return int.Parse(numericPart);
     }
 
     public async Task<List<StudentEntity>> getAllWithSolvency()

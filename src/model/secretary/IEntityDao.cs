@@ -21,6 +21,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
     public Task<List<StudentEntity>> getAllWithSolvency();
     public Task<StudentEntity> getByIdWithProperties(string id);
     Task<StudentEntity?> getByInformation(StudentEntity student);
+    Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>,

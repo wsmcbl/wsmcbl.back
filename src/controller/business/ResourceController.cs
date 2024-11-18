@@ -7,9 +7,9 @@ namespace wsmcbl.src.controller.business;
 
 public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory), IResourceController
 {
-    public async Task<List<StudentEntity>> getStudentList()
+    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
     {
-        return await daoFactory.studentDao!.getAll();
+        return await daoFactory.studentDao!.getListWhitSchoolyearAndEnrollment();
     }
 
     public async Task<string> getMedia(int type, int schoolyear)
