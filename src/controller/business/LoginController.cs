@@ -38,4 +38,9 @@ public class LoginController : BaseController, ILoginController
         user.password = "";
         return user;
     }
+
+    public async Task<UserEntity> getUserById(string userId)
+    {
+        return await daoFactory.userDao!.getById(userId);
+    }
 }

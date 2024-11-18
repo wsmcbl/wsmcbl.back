@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -45,5 +47,35 @@ public class LoginActions(ILoginController controller) : ControllerBase
     {
         var result = await controller.createUser(dto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
+    }
+    
+    
+    /// <summary>
+    ///  Create new user 
+    /// </summary>
+    /// <remarks>
+    /// The secondName and secondSurname can be null or empty.
+    /// </remarks>
+    /// <response code="201">Returns a new user created.</response>
+    /// <response code="400">If the dto is not valid.</response>
+    /// <response code="409">The email is duplicate.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
+    [HttpGet]
+    [Route("users")]
+    public async Task<IActionResult> getUser()
+    {
+        var result = await controller.getUserById(getUserId());
+        return CreatedAtAction(null, result.mapToDto());
+    }
+
+    private string getUserId()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+        {
+            throw new EntityNotFoundException("user", userId);
+        }
+
+        return userId;
     }
 }
