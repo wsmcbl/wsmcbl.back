@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
+using wsmcbl.src.middleware;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
@@ -21,13 +22,12 @@ public class ResourceActions(IResourceController controller) : ControllerBase
         return Ok(result.mapToListBasicDto());
     }
     
-    
-    
     /// <summary>
     ///  Create a new media resource.
     /// </summary>
     /// <response code="201">Returns a new resource.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
+    [ResourceAuthorizer("admin")]
     [HttpPost]
     [Route("medias")]
     public async Task<IActionResult> createMedia(MediaEntity media)
@@ -56,8 +56,9 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     ///  Returns the list of all students.
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    [ResourceAuthorizer("admin")]
     [HttpGet]
-    [Route("medias")]
+    [Route("medias/lists")]
     public async Task<IActionResult> getMediaList()
     {
         return Ok(await controller.getMediaList());
@@ -68,6 +69,7 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     /// </summary>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="404">If resource not exist.</response>
+    [ResourceAuthorizer("admin")]
     [HttpPut]
     [Route("medias")]
     public async Task<IActionResult> updateMedia(MediaEntity media)

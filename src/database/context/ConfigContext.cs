@@ -76,7 +76,7 @@ public class ConfigContext
 
             entity.ToTable("multimedia", "config");
 
-            entity.Property(e => e.mediaId).HasColumnName("mediaid");
+            entity.Property(e => e.mediaId).HasColumnName("multimediaid");
             entity.Property(e => e.type).HasColumnName("type");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
             entity.Property(e => e.value).HasColumnName("value");
