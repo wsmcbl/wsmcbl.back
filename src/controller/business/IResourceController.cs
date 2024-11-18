@@ -9,4 +9,5 @@ public interface IResourceController
     public Task<string> getMedia(int type, int schoolyear);
     public Task<MediaEntity> updateMedia(MediaEntity media);
     public Task<MediaEntity> createMedia(MediaEntity media);
+    public Task<List<MediaEntity>> getMediaList();
 }

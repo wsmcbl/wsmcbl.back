@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -19,11 +20,27 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
 
     public async Task<MediaEntity> updateMedia(MediaEntity media)
     {
-        throw new NotImplementedException();
+        var result = await daoFactory.mediaDao!.getById(media.mediaId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Media", media.mediaId.ToString());
+        }
+        
+        result.update(media);
+        await daoFactory.execute();
+
+        return result;
     }
 
     public async Task<MediaEntity> createMedia(MediaEntity media)
     {
-        throw new NotImplementedException();
+        daoFactory.mediaDao!.create(media);
+        await daoFactory.execute();
+        return media;
+    }
+
+    public async Task<List<MediaEntity>> getMediaList()
+    {
+        return await daoFactory.mediaDao!.getAll();
     }
 }

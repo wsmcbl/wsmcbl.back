@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.config;
 using wsmcbl.src.dto.secretary;
+using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
 
@@ -30,10 +30,11 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("medias")]
-    public async Task<IActionResult> createMedia(MediaToCreateDto dto)
+    public async Task<IActionResult> createMedia(MediaEntity media)
     {
-        var result = await controller.createMedia(dto.toEntity());
-        return CreatedAtAction(null, result.mapToDto());
+        media.mediaId = 0;
+        var result = await controller.createMedia(media);
+        return CreatedAtAction(null, result);
     }
     
     /// <summary>
@@ -52,15 +53,26 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     }
     
     /// <summary>
+    ///  Returns the list of all students.
+    /// </summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    [HttpGet]
+    [Route("medias")]
+    public async Task<IActionResult> getMediaList()
+    {
+        return Ok(await controller.getMediaList());
+    }
+    
+    /// <summary>
     ///  Update media resource.
     /// </summary>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="404">If resource not exist.</response>
     [HttpPut]
     [Route("medias")]
-    public async Task<IActionResult> updateMedia(MediaToCreateDto dto)
+    public async Task<IActionResult> updateMedia(MediaEntity media)
     {
-        var result = await controller.updateMedia(dto.toEntity());
-        return Ok(result.mapToDto());
+        var result = await controller.updateMedia(media);
+        return Ok(result);
     }
 }
