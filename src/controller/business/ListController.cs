@@ -12,6 +12,6 @@ public class ListController(DaoFactory daoFactory) : BaseController(daoFactory),
 
     public async Task<string> getMedia(int type, string schoolyear)
     {
-        throw new NotImplementedException();
+        return await daoFactory.mediaDao!.getByTypeAndSchoolyear();
     }
 }
