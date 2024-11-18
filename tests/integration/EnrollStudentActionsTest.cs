@@ -12,7 +12,7 @@ public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
     public EnrollStudentActionsTest(EnrollStudentFixture factory) : base(factory)
     {
         baseUri = "/v2/secretary/enrollments";
-        student = factory.getStudent().mapToDto(("enroll0001", 1));
+        student = factory.getStudent().mapToDto(("enroll0001", 1, false));
     }
 
     [Fact]

@@ -5,7 +5,7 @@ namespace wsmcbl.src.dto.academy;
 public class GradeDto
 {
     public int gradeId { get; set; }
-    public string studentId { get; set; }
+    public string? studentId { get; set; }
     public double? grade { get; set; }
     public double? conductGrade { get; set; }
     public string? label { get; set; }
@@ -28,7 +28,7 @@ public class GradeDto
         return new GradeEntity
         {
             gradeId = gradeId,
-            studentId = studentId,
+            studentId = studentId!,
             grade = grade,
             conductGrade = conductGrade,
             label = string.Empty

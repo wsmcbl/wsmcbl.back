@@ -19,7 +19,7 @@ public class ResourceAuthorizer : ActionFilterAttribute
         int status;
         string detail;
         
-        if (!user.Identity.IsAuthenticated)
+        if (!user.Identity!.IsAuthenticated)
         {
             status = StatusCodes.Status401Unauthorized;
             detail = "User not identified.";

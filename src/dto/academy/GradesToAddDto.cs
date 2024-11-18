@@ -4,7 +4,7 @@ namespace wsmcbl.src.dto.academy;
 
 public class GradesToAddDto
 {
-    public TeacherEnrollmentDto teacherEnrollment { get; set; }
+    public TeacherEnrollmentDto teacherEnrollment { get; set; } = null!;
     public List<GradeDto> gradeList { get; set; } = null!;
 
     public List<GradeEntity> getGradeList()

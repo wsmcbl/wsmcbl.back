@@ -1,3 +1,5 @@
+using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.model.academy;
 
 public class StudentEntity
@@ -6,6 +8,8 @@ public class StudentEntity
     public string? enrollmentId { get; set; }
     public string schoolYear { get; set; } = null!;
     public bool isApproved { get; set; }
+    public bool isRepeating { get; set; }
+    public DateTime createdAt { get; set; }
     
     public secretary.StudentEntity student { get; init; } = null!;
     public List<PartialEntity>? partials { get; private set; }
@@ -18,11 +22,9 @@ public class StudentEntity
     {
         this.studentId = studentId;
         this.enrollmentId = enrollmentId;
-    }
-    
-    public void isNewEnroll()
-    {
         isApproved = false;
+        createdAt = DateTime.UtcNow;
+        isRepeating = false;
     }
 
     public void setSchoolyear(string schoolYearId)
@@ -38,5 +40,15 @@ public class StudentEntity
     public void setPartials(List<PartialEntity> list)
     {
         partials = list;
+    }
+
+    public void setIsRepeating(bool repeating)
+    {
+        isRepeating = repeating;
+    }
+
+    public DateOnly getCreateAtByDateOnly()
+    {
+        return DateOnly.FromDateTime(createdAt.toUTC6());
     }
 }

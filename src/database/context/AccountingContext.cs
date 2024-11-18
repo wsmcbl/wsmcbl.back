@@ -55,9 +55,20 @@ internal class AccountingContext
             entity.ToTable("discount", "accounting");
 
             entity.Property(e => e.discountId).ValueGeneratedNever().HasColumnName("discountid");
-            entity.Property(e => e.amount).HasColumnName("amount");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
             entity.Property(e => e.tag).HasMaxLength(50).HasColumnName("tag");
+        });
+
+        modelBuilder.Entity<DiscountEducationalLevelEntity>(entity =>
+        {
+            entity.HasKey(e => e.discountEducationalLeveLId).HasName("discounteducationallevel_pkey");
+            entity.ToTable("discounteducationallevel", "accounting");
+
+            
+            entity.Property(e => e.discountEducationalLeveLId).HasColumnName("del");
+            entity.Property(e => e.discountId).HasColumnName("discountid");
+            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
 
         modelBuilder.Entity<ExchangeRateEntity>(entity =>
@@ -80,7 +91,7 @@ internal class AccountingContext
             entity.Ignore(d => d.enrollmentLabel);
 
             entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
-            entity.Property(e => e.discountId).HasColumnName("discountid");
+            entity.Property(e => e.discountId).HasColumnName("discountel");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
 
             entity.HasOne(d => d.discount).WithMany()

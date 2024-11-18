@@ -22,21 +22,29 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         return await daoFactory.degreeDao!.getValidListForTheSchoolyear();
     }
 
-    public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId)
+    public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId, bool isRepeating)
     {
         var isStudentEnroll = await isAlreadyEnroll(student.studentId!);
         if (isStudentEnroll)
         {
             throw new ConflictException($"The student with id ({student.studentId}) is al ready enroll.");
         }
-        
+
+        student.accessToken = generateAccessToken();
         await student.saveChanges(daoFactory);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
+        academyStudent.setIsRepeating(isRepeating);
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 
         return student;
+    }
+
+    private static string generateAccessToken()
+    {
+        var random = new Random();
+        return random.Next(100000, 1000000).ToString();
     }
 
     private async Task<bool> isAlreadyEnroll(string studentId)
@@ -54,29 +62,37 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         var academyStudent = new model.academy.StudentEntity(studentId, enrollmentId);
         
         academyStudent.setSchoolyear(schoolYear.id!);
-        academyStudent.isNewEnroll();
-
         return academyStudent;
     }
 
-    public async Task<byte[]> getEnrollDocument(string studentId)
+    public async Task<byte[]> getEnrollDocument(string studentId, string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getEnrollDocument(studentId);
+        return await documentMaker.getEnrollDocument(studentId, userId);
     }
 
-    public async Task<(string? enrollmentId, int discountId)> getEnrollmentAndDiscountByStudentId(string studentId)
+    public async Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId)
     {
         var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
 
-        return (academyStudent?.enrollmentId, accountingStudent!.discountId);
+        var discountId = accountingStudent!.discountId switch
+        {
+            < 3 => 1,
+            > 3 and <= 6 => 2,
+            > 6 and < 10 => 3,
+            _ => accountingStudent!.discountId
+        };
+
+        var isRepeating = academyStudent?.isRepeating ?? false;
+        return (academyStudent?.enrollmentId, discountId, isRepeating);
     }
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
-        accountingStudent.discountId = discountId;
+        accountingStudent.discountId = discountId != 2 ? discountId :
+            discountId + accountingStudent.educationalLevel + 1;
         await daoFactory.execute();
     }
 

@@ -5,7 +5,7 @@ using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.database;
 
-public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserEntity, string>(context), IUserDao
+public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserEntity, Guid>(context), IUserDao
 {
     public async Task<UserEntity> getUserByEmail(string email)
     {

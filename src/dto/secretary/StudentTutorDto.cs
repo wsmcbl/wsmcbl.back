@@ -8,6 +8,7 @@ public class StudentTutorDto : IBaseDto<StudentTutorEntity>
     public string? tutorId { get; set; }
     [Required] public string name { get; set; } = null!;
     [Required] public string phone { get; set; } = null!;
+    public string? email { get; set; }
     
     public StudentTutorDto()
     {
@@ -18,10 +19,11 @@ public class StudentTutorDto : IBaseDto<StudentTutorEntity>
         tutorId = entity.tutorId;
         name = entity.name;
         phone = entity.phone;
+        email = entity.email;
     }
     
     public StudentTutorEntity toEntity()
     {
-        return new StudentTutorEntity(name, phone, tutorId);
+        return new StudentTutorEntity(name, phone, tutorId, email);
     }
 }

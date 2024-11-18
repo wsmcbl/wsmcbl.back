@@ -30,6 +30,8 @@ git-create-master: ## Create master branch
 	git branch -d master
 	git branch master 
 
+gpc: ## git push origin current brach
+	git push origin $(shell git rev-parse --abbrev-ref HEAD)
 
 
 
@@ -38,7 +40,6 @@ build: ## Rebuilds all the containers
 	docker-compose build
 
 run: ## Start the containers
-	#docker network create app-network || true
 	docker-compose up -d
 
 stop: ## Stop the containers
@@ -72,6 +73,7 @@ delete-containers: ## Remove all containers
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
 	docker-compose down --volumes --remove-orphans
 	docker system prune
+	docker network create app-network || true
 
 
 

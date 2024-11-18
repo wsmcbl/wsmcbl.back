@@ -13,7 +13,7 @@ public class UserEntity
     public bool isActive { get; set; }
     public DateTime createdAt { get; set; }
     public DateTime updatedAt { get; set; }
-    public RoleEntity role { get; set; }
+    public RoleEntity? role { get; set; }
     public List<PermissionEntity> permissionList { get; set; } = [];
     
     public string fullName()
@@ -28,7 +28,7 @@ public class UserEntity
 
     public string getRole()
     {
-        return role.name;
+        return role!.name;
     }
     
     public List<string> getPermissionList()
@@ -95,5 +95,10 @@ public class UserEntity
             entity.roleId = roleId;
             return this;
         }
+    }
+
+    public string getAlias()
+    {
+        return $"{name[0]}. {surname}";
     }
 }

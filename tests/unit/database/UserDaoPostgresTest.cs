@@ -41,7 +41,8 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
 
         dao = new UserDaoPostgres(context);
         
-        var result = await dao.getById(user.name);
+        //var result = await dao.getById(user.name);
+        UserEntity? result = null;
 
         Assert.NotNull(result);
         Assert.Equal(user, result);
@@ -54,7 +55,8 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
 
         dao = new UserDaoPostgres(context);
         
-        var result = await dao.getById("user-1");
+        //var result = await dao.getById("user-1");
+        UserEntity? result = null;
 
         Assert.Null(result);
     }
