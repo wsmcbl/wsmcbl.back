@@ -40,9 +40,9 @@ public class LoginActions(ILoginController controller) : ActionsBase
     /// </remarks>
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
-    /// <response code="409">The email is duplicate.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="409">The email is duplicate.</response>
     [ResourceAuthorizer("admin")]
     [HttpPost]
     [Route("users")]
@@ -57,9 +57,9 @@ public class LoginActions(ILoginController controller) : ActionsBase
     ///  Get user information
     /// </summary>
     /// <response code="200">Returns a user information.</response>
-    /// <response code="404">If the user not exist.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
     [HttpGet]
     [Route("users")]
@@ -73,9 +73,9 @@ public class LoginActions(ILoginController controller) : ActionsBase
     ///  Update user information
     /// </summary>
     /// <response code="200">Returns a user new information.</response>
-    /// <response code="404">If the user not exist.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin")]
     [HttpPut]
     [Route("users")]
