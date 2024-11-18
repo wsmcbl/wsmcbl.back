@@ -21,14 +21,6 @@ public class BasicDegreeToEnrollDto
         label = degree.label;
         educationalLevel = degree.educationalLevel;
         enrollments = degree.enrollmentList!.mapToListBasicDto();
-
-        try
-        {
-            position = Convert.ToInt32(degree.tag);
-        }
-        catch (Exception)
-        {
-            position = 1;
-        }
+        position = degree.getTag();
     }
 }
