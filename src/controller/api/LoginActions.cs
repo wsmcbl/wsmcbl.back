@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("config")]
 [ApiController]
-public class LoginActions(ILoginController controller) : ControllerBase
+public class LoginActions(ILoginController controller) : ActionsBase
 {
     /// <summary>
     ///  Returns token by credentials (login)
@@ -40,6 +40,8 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="409">The email is duplicate.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     [ResourceAuthorizer("admin")]
     [HttpPost]
     [Route("users")]
@@ -51,31 +53,18 @@ public class LoginActions(ILoginController controller) : ControllerBase
     
     
     /// <summary>
-    ///  Create new user 
+    ///  Get user information
     /// </summary>
-    /// <remarks>
-    /// The secondName and secondSurname can be null or empty.
-    /// </remarks>
-    /// <response code="201">Returns a new user created.</response>
-    /// <response code="400">If the dto is not valid.</response>
-    /// <response code="409">The email is duplicate.</response>
+    /// <response code="200">Returns a user information.</response>
+    /// <response code="404">If the user not exist.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
     [HttpGet]
     [Route("users")]
     public async Task<IActionResult> getUser()
     {
-        var result = await controller.getUserById(getUserId());
+        var result = await controller.getUserById(getAuthenticatedUserId());
         return CreatedAtAction(null, result.mapToDto());
-    }
-
-    private string getUserId()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId == null)
-        {
-            throw new EntityNotFoundException("user", userId);
-        }
-
-        return userId;
     }
 }
