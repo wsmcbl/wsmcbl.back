@@ -8,14 +8,16 @@ public class BasicDegreeDto
     public string? label { get; set; }
     public string? schoolYear { get; set; }
     public int quantity { get; set; }
-    public string? modality { get; set; }
+    public int position { get; set; }
+    public string educationalLevel { get; set; }
 
     public BasicDegreeDto(DegreeEntity degree)
     {
         degreeId = degree.degreeId!;
         label = degree.label;
-        modality = degree.educationalLevel;
+        educationalLevel = degree.educationalLevel;
         quantity = degree.quantity;
         schoolYear = degree.schoolYear;
+        position = degree.getTag();
     }
 }

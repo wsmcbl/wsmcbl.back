@@ -21,6 +21,18 @@ public class DegreeEntity
         subjectList = [];
     }
 
+    public int getTag()
+    {
+        try
+        {
+            return Convert.ToInt32(tag);
+        }
+        catch (Exception)
+        {
+            return 1;
+        }
+    }
+
     public DegreeEntity(DegreeDataEntity degreeData, string schoolYear)
     {
         this.schoolYear = schoolYear;
