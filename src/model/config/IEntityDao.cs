@@ -11,5 +11,5 @@ public interface IUserDao : IGenericDao<UserEntity, Guid>
 
 public interface IMediaDao : IGenericDao<MediaEntity, int>
 {
-    public Task<string> getByTypeAndSchoolyear(int type, string schoolyear);
+    public Task<string> getByTypeAndSchoolyear(int type, string schoolyearId);
 }

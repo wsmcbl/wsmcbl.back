@@ -5,5 +5,5 @@ namespace wsmcbl.src.controller.business;
 public interface IResourceController
 {
     public Task<List<StudentEntity>> getStudentList();
-    public Task<string> getMedia(int type, string schoolyear);
+    public Task<string> getMedia(int type, int schoolyear);
 }

@@ -10,8 +10,9 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         return await daoFactory.studentDao!.getAll();
     }
 
-    public async Task<string> getMedia(int type, string schoolyear)
+    public async Task<string> getMedia(int type, int schoolyear)
     {
-        return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, schoolyear);
+        var result = await daoFactory.schoolyearDao!.getSchoolYearByLabel(schoolyear);
+        return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, result.id!);
     }
 }

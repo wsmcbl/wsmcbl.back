@@ -66,7 +66,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
     }
 
-    private async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
+    public async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
 

@@ -29,7 +29,7 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     /// <response code="404">If resource not exist.</response>
     [HttpGet]
     [Route("medias")]
-    public async Task<IActionResult> getMedia([FromQuery] int type, [FromQuery] string schoolyear)
+    public async Task<IActionResult> getMedia([FromQuery] int type, [FromQuery] int schoolyear)
     {
         var result = await controller.getMedia(type, schoolyear);
         return Ok(new {value = result});
