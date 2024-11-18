@@ -7,9 +7,7 @@ values ('Desarrollo de las habilidades de la comunicación y Talento Artístico 
 
 
 insert into secretary.tariffcatalog(concept, amount, duedate, typeid, educationallevel)
-values ('Pago de matrícula', 0, null, 2, 1),
-       ('Pago de matrícula', 0, null, 2, 2),
-       ('Pago de matrícula', 0, null, 2, 3),
+values ('Pago de matrícula', 0, null, 2, 3),
        ('Pago mes febrero', 0, '28/02/2024', 1, 3),
        ('Pago mes marzo', 0, '28/03/2024', 1, 3),
        ('Pago mes abril', 0, '28/04/2024', 1, 3),
@@ -20,8 +18,8 @@ values ('Pago de matrícula', 0, null, 2, 1),
        ('Pago mes septiembre', 0, '28/09/2024', 1, 3),
        ('Pago mes octubre', 0, '28/10/2024', 1, 3),
        ('Pago mes noviembre', 0, '28/11/2024', 1, 3),
-       ('Pago treceavo mes', 0, '28/12/2024', 1, 3),
-       ('Pago excursión', 0, null, 3, 3);
+       ('Pago mes diciembre', 0, '28/12/2024', 1, 3),
+       ('Pago treceavo mes', 0, '28/12/2024', 1, 3);
 
 insert into secretary.degreecatalog(label, educationalLevel, tag)
 values ('Primer Nivel', 1, '01'),
