@@ -11,12 +11,14 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("secretary/")]
 [ApiController]
-public class EnrollStudentActions(IEnrollStudentController controller) : ControllerBase
+public class EnrollStudentActions(IEnrollStudentController controller) : ActionsBase
 {
     /// <summary>
     ///  Returns the list of students with solvency.
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Registration tariff not found.</response>
     [HttpGet]
     [Route("enrollments/students")]
@@ -30,6 +32,8 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     ///  Returns the student full by id.
     /// </summary>
     /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("enrollments/students/{studentId}")]
@@ -45,6 +49,8 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     ///  Returns the list of degree with enrolments.
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
     [Route("enrollments/degrees")]
@@ -57,6 +63,8 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <summary>Enroll student and update student information.</summary>
     /// <response code="200">Returns the modified resource.</response>
     /// <response code="400">Parameter is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("enrollments/")]
@@ -72,6 +80,8 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     /// <summary>Update student profile picture.</summary>
     /// <response code="200">Returns when the resource has been modified.</response>
     /// <response code="400">Parameter is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("students/{studentId}")]
@@ -88,18 +98,14 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Control
     ///  Returns the enroll document of student.
     /// </summary>
     /// <response code="200">Return existing resources.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("enrollments/documents/{studentId}")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (userId == null)
-        {
-            throw new EntityNotFoundException("user", userId);
-        }
-        
-        var result = await controller.getEnrollDocument(studentId, userId);
+        var result = await controller.getEnrollDocument(studentId, getAuthenticatedUserId());
         return File(result, "application/pdf", $"{studentId}.enroll-sheet.pdf");
     }
 }

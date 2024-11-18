@@ -7,6 +7,24 @@ namespace wsmcbl.src.database;
 
 public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserEntity, Guid>(context), IUserDao
 {
+    public async Task<UserEntity> getById(string userId)
+    {
+        UserEntity? user = null;
+        if (Guid.TryParse(userId, out var userIdGuid))
+        {
+            user = await entities
+                .Include(e => e.role)
+                .FirstOrDefaultAsync(e => e.userId == userIdGuid);
+        }
+        
+        if (user == null)
+        {
+            throw new EntityNotFoundException("User", userId);
+        }
+
+        return user;
+    }
+
     public async Task<UserEntity> getUserByEmail(string email)
     {
         var result = await entities.Include(e => e.role)

@@ -6,4 +6,16 @@ public class RoleEntity
     public string name { get; set; } = null!;
     public string description { get; set; } = null!;
     public List<PermissionEntity> permissionList { get; set; } = [];
+
+    public string getSpanishName()
+    {
+        return name switch
+        {
+            "admin" => "Administrador",
+            "secretary" => "Secretario",
+            "cashier" => "Cajero",
+            "teacher" => "Docente",
+            _ => "Sin roles"
+        };
+    }
 }

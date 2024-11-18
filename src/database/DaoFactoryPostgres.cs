@@ -135,4 +135,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private UserDaoPostgres? _userDao;
     public override IUserDao userDao => _userDao ??= new UserDaoPostgres(context);
+
+    private MediaDaoPostgres? _mediaDaoPostgres;
+    public override IMediaDao mediaDao => _mediaDaoPostgres ??= new MediaDaoPostgres(context);
 }

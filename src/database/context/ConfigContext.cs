@@ -68,6 +68,19 @@ public class ConfigContext
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
         });
+
+
+        modelBuilder.Entity<MediaEntity>(entity =>
+        {
+            entity.HasKey(e => e.mediaId).HasName("multimedia_pkey");
+
+            entity.ToTable("multimedia", "config");
+
+            entity.Property(e => e.mediaId).HasColumnName("multimediaid");
+            entity.Property(e => e.type).HasColumnName("type");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
+            entity.Property(e => e.value).HasColumnName("value");
+        });
     }
     
     private class UserPermission

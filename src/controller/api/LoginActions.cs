@@ -1,14 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
 [Route("config")]
 [ApiController]
-public class LoginActions(ILoginController controller) : ControllerBase
+public class LoginActions(ILoginController controller) : ActionsBase
 {
     /// <summary>
     ///  Returns token by credentials (login)
@@ -37,6 +40,8 @@ public class LoginActions(ILoginController controller) : ControllerBase
     /// </remarks>
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="409">The email is duplicate.</response>
     [ResourceAuthorizer("admin")]
     [HttpPost]
@@ -44,6 +49,39 @@ public class LoginActions(ILoginController controller) : ControllerBase
     public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
         var result = await controller.createUser(dto.toEntity());
+        return CreatedAtAction(null, result.mapToCreateDto());
+    }
+    
+    
+    /// <summary>
+    ///  Get user information
+    /// </summary>
+    /// <response code="200">Returns a user information.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
+    [HttpGet]
+    [Route("users")]
+    public async Task<IActionResult> getUser()
+    {
+        var result = await controller.getUserById(getAuthenticatedUserId());
+        return CreatedAtAction(null, result.mapToDto());
+    }
+    
+    /// <summary>
+    ///  Update user information
+    /// </summary>
+    /// <response code="200">Returns a user new information.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpPut]
+    [Route("users")]
+    public async Task<IActionResult> updateUser([Required] UserDto userDto)
+    {
+        var result = await controller.updateUser(getAuthenticatedUserId(), userDto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
     }
 }
