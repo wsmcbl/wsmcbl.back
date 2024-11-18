@@ -18,7 +18,7 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string? diseases { get; set; }
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
-    public string? profilePictureReadingValue { get; set; }
+    public byte[]? profilePicture { get; set; }
 
 
     [JsonRequired] public StudentFileDto file { get; set; } = null!;
@@ -44,17 +44,12 @@ public class StudentFullDto : IBaseDto<StudentEntity>
         religion = student.religion;
         isActive = student.isActive;
         minedId = student.minedId;
-        setImageReadingValue(student.profileImage);
+        profilePicture = student.profilePicture;
 
         file = student.file.mapToDto();
         tutor = student.tutor.mapToDto();
         measurements = student.measurements.mapToDto();
         parentList = student.parents!.mapListToDto();
-    }
-
-    private void setImageReadingValue(byte[]? profileImage)
-    { 
-        profilePictureReadingValue = profileImage == null ? null : Convert.ToBase64String(profileImage);
     }
 
     public StudentEntity toEntity()

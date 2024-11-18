@@ -1,54 +1,102 @@
+using System.Globalization;
 using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
 public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
+    private string? userName;
     private readonly StudentEntity entity;
+    private model.academy.StudentEntity? academyStudent;
     private readonly string templatesPath;
     
     public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
         this.templatesPath = templatesPath;
         this.entity = entity;
-        isRepetitive = false;
+        isNewEnroll = true;
     }
 
-    public void setGrade(string grade)
+    public void setGrade(string value)
     {
-        this.grade = grade;
+        grade = value;
     }
+
+    public void setUsername(string value)
+    {
+        userName = value;
+    }
+    
+    public void setAcademyStudent(model.academy.StudentEntity student)
+    {
+        academyStudent = student;
+    }
+    
     protected override string getTemplateName() => "enroll-sheet";
 
     protected override string updateContent(string content)
     {
-        content = content.Replace($"\\cbl-logo-wb", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.Replace($"\\date", DateTime.Today.Date.ToString("dd/MM/yyyy"));
-        content = content.Replace($"\\name", entity.fullName());
-        content = content.Replace($"\\grade", grade);
-        content = content.Replace($"\\is.repetitive", getTextByBool(isRepetitive));
-        content = content.Replace($"\\age", getAge(entity.birthday));
-        content = content.Replace($"\\sex", getTextBySex(entity.sex));
-        content = content.Replace($"\\birthday.day", entity.birthday.Day.ToString());
-        content = content.Replace($"\\birthday.month", entity.birthday.Month.ToString());
-        content = content.Replace($"\\birthday.year", entity.birthday.Year.ToString());
-        content = content.Replace($"\\tutor", entity.tutor.name);
-        content = content.Replace($"\\diseases", entity.diseases);
-        content = content.Replace($"\\phones", entity.tutor.phone);
-        content = content.Replace($"\\religion", entity.religion);
-        content = content.Replace($"\\address", entity.address);
+        content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.Replace($"enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
+        content = content.Replace($"student.name.value", entity.fullName());
+        content = content.Replace($"degree.value", grade!);
+        content = content.Replace($"repeating.value", getTextByBool(academyStudent!.isRepeating));
+        content = content.Replace($"student.age.value", getAge(entity.birthday));
+        content = content.Replace($"student.sex.value", getTextBySex(entity.sex));
+        content = content.Replace($"student.birthday.value", getDateFormat(entity.birthday, false));
+        content = content.Replace($"tutor.value", entity.tutor.name);
+        content = content.Replace($"diseases.value", entity.diseases!);
+        content = content.Replace($"phones.value", entity.tutor.phone);
+        content = content.Replace($"email.value", entity.tutor.email);
+        content = content.Replace($"religion.value", entity.religion);
+        content = content.Replace($"address.value", entity.address);
+        
+        
+        content = content.Replace($"secretary.name.value", userName);
+        content = content.Replace($"current.datetime.value", getDateTimeNow());
+        content = content.Replace($"student.id.value", entity.studentId);
+        content = content.Replace($"student.token.value", entity.accessToken);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
         
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        content = content.Replace($"\\current.year", today.Year.ToString());
+        content = content.Replace($"current.year.value", getYearLabel());
         
         return content;
     }
 
-    public bool isRepetitive { get; set; }
+    private static string getYearLabel()
+    {
+        var year = DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+        return year.ToString();
+    }
+
+    private static string getDateFormat(DateOnly date, bool withDay = true)
+    {
+        var culture = new CultureInfo("es-ES");
+
+        var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
+        return date.ToString(format, culture);
+    }
+    
+    
+    private static string getDateTimeNow()
+    {
+        var culture = new CultureInfo("es-ES")
+        {
+            DateTimeFormat =
+            {
+                AMDesignator = "am",
+                PMDesignator = "pm"
+            }
+        };
+        
+        return DateTime.UtcNow.toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
+    }
+
+    private bool isNewEnroll { get; set; }
 
     private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
     {
@@ -70,30 +118,30 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
     private static string setParentNull(string content, string typeParent)
     {
-        content = content.Replace($"\\{typeParent}.name", "");
-        content = content.Replace($"\\{typeParent}.idcard", "");
-        content = content.Replace($"\\{typeParent}.occupation", "");
+        content = content.Replace($"{typeParent}.name.value", "");
+        content = content.Replace($"{typeParent}.idcard.value", "");
+        content = content.Replace($"{typeParent}.occupation.value", "");
 
         return content;
     }
     
     private static string setParent(string content, string typeParent, StudentParentEntity parent)
     {
-        content = content.Replace($"\\{typeParent}.name", parent.name);
-        content = content.Replace($"\\{typeParent}.idcard", parent.idCard);
-        content = content.Replace($"\\{typeParent}.occupation", parent.occupation);
+        content = content.Replace($"{typeParent}.name.value", parent.name);
+        content = content.Replace($"{typeParent}.idcard.value", parent.idCard!);
+        content = content.Replace($"{typeParent}.occupation.value", parent.occupation!);
 
         return content;
     }
 
     private static string setFile(string content, StudentFileEntity file)
     {
-        content = content.Replace($"\\birth.document", getTextByBool(file.birthDocument));
-        content = content.Replace($"\\conduct.document", getTextByBool(file.conductDocument));
-        content = content.Replace($"\\financial.solvency", getTextByBool(file.financialSolvency));
-        content = content.Replace($"\\parent.idcard", getTextByBool(file.parentIdentifier));
-        content = content.Replace($"\\transfer.sheet", getTextByBool(file.transferSheet));
-        content = content.Replace($"\\updated.grade.report", getTextByBool(file.updatedDegreeReport));
+        content = content.Replace($"birth.document.value", getTextByBool(file.birthDocument));
+        content = content.Replace($"conduct.document.value", getTextByBool(file.conductDocument));
+        content = content.Replace($"financial.solvency.value", getTextByBool(file.financialSolvency));
+        content = content.Replace($"parent.idcard.value", getTextByBool(file.parentIdentifier));
+        content = content.Replace($"transfer.sheet.value", getTextByBool(file.transferSheet));
+        content = content.Replace($"updated.grade.report.value", getTextByBool(file.updatedDegreeReport));
 
         return content;
     }
@@ -112,6 +160,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
             age--;
         }
 
-        return age.ToString();
+        return $"{age.ToString()} años";
     }
 }

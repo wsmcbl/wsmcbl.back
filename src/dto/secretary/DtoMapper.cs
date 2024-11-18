@@ -14,7 +14,7 @@ public static class DtoMapper
 
     public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment, TeacherEntity? teacher = null)
         => new(enrollment, teacher);
-    public static EnrollStudentDto mapToDto(this StudentEntity student, (string? enrollmentId, int discountId) ids)
+    public static EnrollStudentDto mapToDto(this StudentEntity student, (string? enrollmentId, int discountId, bool isRepeating) ids)
         => new(student, ids);
     public static StudentFileDto mapToDto(this StudentFileEntity? file) => new(file);
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);

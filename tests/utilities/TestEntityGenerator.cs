@@ -93,7 +93,6 @@ public class TestEntityGenerator
         return new TeacherEntity()
         {
             teacherId = "tc-1",
-            userId = "u001",
             isGuide = true
         };
     }
@@ -135,12 +134,10 @@ public class TestEntityGenerator
 
     public static AccountingStudentEntity aAccountingStudent(string studentId)
     {
-        var discountEntity = new DiscountEntity
+        var discountEntity = new DiscountEducationalLevelEntity()
         {
             discountId = 1,
-            amount = 0.1f,
-            description = "Description",
-            tag = "A"
+            amount = 0.1f
         };
 
         return new AccountingStudentEntity
@@ -238,12 +235,10 @@ public class TestEntityGenerator
     {
         return new UserEntity
         {
-            userId = userId,
             name = "name-v",
             secondName = "sn",
             surname = "surname-v",
-            secondsurName = "ssn",
-            username = "username-1",
+            secondSurname = "ssn",
             password = "12345-password",
             isActive = true,
             email = "user@mail.com"
@@ -255,7 +250,6 @@ public class TestEntityGenerator
         return new CashierEntity
         {
             cashierId = cashierId,
-            userId = "user-1",
             user = aUser("user-1")
         };
     }
@@ -298,12 +292,10 @@ public class TestEntityGenerator
         {
             studentId = "std-10",
             student = aStudent("std-10"),
-            discount = new DiscountEntity
+            discount = new DiscountEducationalLevelEntity()
             {
                 discountId = 1,
-                amount = 0.1f,
-                description = "Description",
-                tag = "A"
+                amount = 0.1f
             },
             enrollmentLabel = "",
             transactions = new List<TransactionEntity>

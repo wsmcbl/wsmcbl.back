@@ -8,7 +8,12 @@ DECLARE
     seq_part TEXT;
     initials_part TEXT;
 BEGIN
-    year_part := TO_CHAR(NOW(), 'YYYY');
+
+    SELECT label INTO year_part  FROM secretary.schoolyear
+    WHERE label ~ '^\d+$'
+    ORDER BY CAST(label AS INTEGER) DESC
+    LIMIT 1;
+    
     seq_part := LPAD(NEXTVAL('secretary.student_id_seq')::TEXT, 4, '0');
     initials_part := LOWER(SUBSTR(NEW.name, 1, 1) || SUBSTR(NEW.secondname, 1, 1) || SUBSTR(NEW.surname, 1, 1) || SUBSTR(NEW.secondsurname, 1, 1));
     NEW.studentid := year_part || '-' || seq_part || '-' || initials_part;

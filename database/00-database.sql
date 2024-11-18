@@ -6,6 +6,7 @@ DO $$
     END
 $$;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 --drop database if exists wsmcbl_database;
 --create database wsmcbl_database;

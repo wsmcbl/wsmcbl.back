@@ -4,7 +4,8 @@ create table if not exists Secretary.StudentTutor
 (
     tutorId varchar(15) primary key default secretary.generate_tutor_id(),
     name varchar(70) not null,
-    phone varchar(50) not null
+    phone varchar(100) not null,
+    email varchar(100)
 );
 
 create table if not exists Secretary.Student
@@ -12,17 +13,17 @@ create table if not exists Secretary.Student
     studentId varchar(20) primary key,
     tutorId varchar(15) not null,
     name varchar(50) not null,
-    secondName varchar(50),
+    secondName varchar(100),
     surname varchar(50) not null,
     secondSurname varchar(50),
     studentState boolean not null,
     sex boolean not null,
     birthday date not null,
-    diseases varchar(100) not null,
-    religion varchar(40) not null,
-    address varchar(100) not null,
+    diseases varchar(200) not null,
+    religion varchar(100) not null,
+    address varchar(500) not null,
     minedId varchar(30) null,
-    profileImage bytea null CHECK (LENGTH(profileImage) <= 100000),
+    profileImage bytea null CHECK (LENGTH(profileImage) <= 1000000),
     accessToken varchar(20) null,
     foreign key (tutorId) references Secretary.StudentTutor
 );
@@ -34,7 +35,7 @@ create table if not exists Secretary.StudentParent
     sex bool not null,
     name varchar(70) not null,
     idCard varchar(25),
-    occupation varchar(30),
+    occupation varchar(150),
     foreign key (studentId) references Secretary.Student
 );
 
@@ -83,7 +84,7 @@ create table if not exists Secretary.Degree
 (
     degreeId varchar(25) primary key default secretary.generate_degree_id(),
     label varchar(25) not null,
-    tag varchar(10) not null,
+    tag varchar(20) not null,
     schoolYear varchar(15) not null,
     educationalLevel varchar(50) not null,
     quantity int not null,
@@ -93,7 +94,7 @@ create table if not exists Secretary.Degree
 create table if not exists Secretary.SubjectArea
 (
     areaId serial not null primary key,
-    name varchar(150) not null
+    name varchar(500) not null
 );
 
 create table if not exists Secretary.Subject
@@ -114,7 +115,7 @@ create table if not exists Secretary.DegreeCatalog
 (
     degreeCatalogId serial primary key,
     label varchar(50) not null,
-    tag varchar(10) not null,
+    tag varchar(20) not null,
     educationalLevel int not null
 );
 

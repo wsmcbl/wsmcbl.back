@@ -4,23 +4,31 @@ create table if not exists Accounting.Discount
 (
     discountId smallint primary key,
     description varchar(200) not null,
-    amount float not null,
     tag varchar(50)
+);
+
+create table if not exists Accounting.DiscountEducationalLevel
+(
+    del serial primary key,
+    discountId int not null,
+    educationalLevel smallint not null,
+    amount float not null,
+    foreign key (discountId) references Accounting.Discount
 );
 
 create table if not exists Accounting.Student
 (
     studentId varchar(20) primary key,
-    discountId smallint not null,
+    discountel int not null,
     educationalLevel smallint not null,
     foreign key (studentId) references Secretary.Student,
-    foreign key (discountId) references Accounting.Discount
+    foreign key (discountel) references Accounting.DiscountEducationalLevel
 );
 
 create table  if not exists Accounting.Cashier
 (
     cashierId varchar(15) primary key,
-    userId varchar(15) not null,
+    userId uuid not null,
     foreign key (userId) references Config.User
 );
 

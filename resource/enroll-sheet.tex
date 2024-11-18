@@ -5,89 +5,197 @@
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{setspace}
+\usepackage[hidelinks]{hyperref}
 \usepackage[spanish]{babel}
-\usepackage{charter}
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
 \usepackage[margin=2cm]{geometry}
+\renewcommand{\normalsize}{\fontsize{13}{18}\selectfont}
 
 \setlength{\parskip}{1.5mm}
 \setlength{\parindent}{0pt}
 \setlength{\headsep}{3mm}
 
 \pagestyle{plain}
-\pagenumbering{gobble}
 
-\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
-\newcommand{\aField}[1]{\uline{\hspace{2mm} #1 \hfill}}
-
+\newcommand{\aField}[1]{#1}
 \newcommand{\lineSlimStretch}{\singlespacing}
 \newcommand{\lineStretch}{\setstretch{1.5}}
 
-\begin{document}
+\newcommand{\studentName}{student.name.value}
+\newcommand{\studentBirthday}{student.birthday.value}
+\newcommand{\studentAge}{student.age.value}
+\newcommand{\studentSex}{student.sex.value}
+\newcommand{\isRepeating}{repeating.value}
+\newcommand{\degree}{degree.value}
+\newcommand{\address}{address.value}
+\newcommand{\religion}{religion.value}
+\newcommand{\diseases}{diseases.value}
+\newcommand{\tutor}{tutor.value}
+\newcommand{\phones}{phones.value}
+\newcommand{\email}{email.value}
+\newcommand{\fatherName}{father.name.value}
+\newcommand{\fatherIdcard}{father.idcard.value}
+\newcommand{\fatherOccupation}{father.occupation.value}
+\newcommand{\motherName}{mother.name.value}
+\newcommand{\motherIdcard}{mother.idcard.value}
+\newcommand{\motherOccupation}{mother.occupation.value}
+\newcommand{\currentYear}{current.year.value}
+\newcommand{\transferSheet}{transfer.sheet.value}
+\newcommand{\birthDocument}{birth.document.value}
+\newcommand{\parentIdcard}{parent.idcard.value}
+\newcommand{\updatedGradeReport}{updated.grade.report.value}
+\newcommand{\conductDocument}{conduct.document.value}
+\newcommand{\financialSolvency}{financial.solvency.value}
+\newcommand{\enrollDate}{enroll.date.value}
+\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\currentDatetime}{current.datetime.value}
+\newcommand{\studentId}{student.id.value}
+\newcommand{\studentToken}{student.token.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
 
+
+\begin{document}
     \begin{minipage}[c][2.5cm]{0.2\textwidth}
-        \includegraphics[width=2.5cm]{\cbl-logo-wb}
+        \includegraphics[width=2.5cm]{logo.value}
     \end{minipage}
     \begin{minipage}[c][2.5cm]{0.6\textwidth}
         \begin{center}
-            \lineSlimStretch
-            \textbf{COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
+            \textbf{\large COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
         \end{center}
     \end{minipage}
     
-    \lineStretch
-    \hfill Fecha: \date
+    \hfill Fecha: \enrollDate
     
-    \aLine{NOMBRE DE ALUMNO: \aField{\name}}
-    \aLine{GRADO: \aField{\grade} REPITENTE: \aField{\is.repetitive}  EDAD: \aField{\age años}  SEXO: \aField{\sex}}
-    \aLine{FECHA DE NACIMIENTO: DIA: \aField{\birthday.day} MES: \aField{\birthday.month} AÑO: \aField{\birthday.year}}
-    
-    \aLine{NOMBRE DEL PADRE: \aField{\father.name}}
-    \aLine{NÚMERO DE CEDULA: \aField{\father.idcard}}
-    \aLine{OCUPACIÓN: \aField{\father.occupation}}
+    \textbf{\uline{Datos del alumno}}\\
+    \textbf{Nombre}: \aField{\studentName}
+    \par\vspace{1mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{Sexo:} \aField{\studentSex}\hspace{7mm} \textbf{Edad:} \aField{\studentAge}\\
+        \textbf{Fecha de Nac.:} \aField{\studentBirthday}\\
+        \textbf{Matriculado en:} \aField{\degree}\\
+        \textbf{Repitente:} \aField{\isRepeating}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{Dirección domiciliar:} \aField{\address}
+    \end{minipage}
+    \par\vspace{4mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Otros datos}}\\
+        \textbf{Religión o congregación:} \aField{\religion}\\
+        \textbf{Padecimientos:} \aField{\diseases}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos del Tutor}}\\
+        \textbf{Nombre:} \aField{\tutor}\\
+        \textbf{Teléfonos:} \aField{\phones}\\
+        \textbf{Correo:} \aField{\email}
+    \end{minipage}
+    \par\vspace{4mm}
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos del Padre}}\\
+        \textbf{Nombre:} \aField{\fatherName}\\
+        \textbf{Cédula:} \aField{\fatherIdcard}\\
+        \textbf{Ocupación:} \aField{\fatherOccupation}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \textbf{\uline{Datos de la Madre}}\\
+        \textbf{Nombre:} \aField{\motherName}\\
+        \textbf{Cédula:} \aField{\motherIdcard}\\
+        \textbf{Ocupación:} \aField{\motherOccupation}
+    \end{minipage}   
 
-    \aLine{NOMBRE DE LA MADRE: \aField{\mother.name}}
-    \aLine{NÚMERO DE CEDULA: \aField{\mother.idcard}}
-    \aLine{OCUPACIÓN: \aField{\mother.occupation}}
-    
-    \aLine{RESPONSABLE O TUTOR: \aField{\tutor}}
-    \aLine{PADECIMIENTOS: \aField{\diseases}}
-    \aLine{TELEFONOS: \aField{\phones}}
-    
-    \lineSlimStretch
-    \aLine{RELIGIÓN O CONGREGACIÓN: \aField{\religion} SE DEBERÁ CUMPLIR}
-    CON LOS PRINCIPIOS BIBLICOS DE ESTA INSTITUCIÓN.
-    \lineStretch
-    
-    \aLine{DIRECCION DOMICILIAR: \aField{\address}}
-
-    \lineSlimStretch
-    \textbf{NOTA:} ME COMPROMETO A PAGAR A LOS 5 DÍAS DE CADA MES, DE LO CONTRARIO PAGARÉ EL \uline{\textbf{10\%}} DE MORA.
-    SE DEBERÁ PAGAR LOS DOCES MESES DEL AÑO MAS 13vo MES.
-    SUS HIJOS ASISTIRAN UNA VEZ AL MES A LA ESCUELA BIBLICA DOMINICAL.
-    INFORMAR CUANDO EL ESTUDIANTE SEA RETIRADO DEL COLEGIO.
-
-    \lineStretch
-    DOCUMENTOS RECIBIDOS
+    \par\vspace{8mm}
+    \textbf{Documentos recibidos}
     \begin{table}[H]
         \centering
-        \begin{tabular}{|p{2cm}|p{2.3cm}|p{2.5cm}|p{2.8cm}|p{2.5cm}|p{2.5cm}|}
+        \begin{tabular}{|p{1.8cm}|p{2.3cm}|p{2.4cm}|p{2.6cm}|p{2.5cm}|p{2cm}|}
             \hline
             Hoja de Traslado &
             Partida de Nacimiento &
             Cedula de los Tutores &
-            Boletín \current.year actualizado &
+            Boletín \currentYear\ actualizado &
             Constancia de Conducta &
             Solvencia financiera\\
             \hline
-            \transfer.sheet &
-            \birth.document &
-            \parent.idcard &
-            \updated.grade.report &
-            \conduct.document &
-            \financial.solvency\\
+            \hspace{7mm}\transferSheet &
+            \hspace{7mm}\birthDocument &
+            \hspace{7mm}\parentIdcard &
+            \hspace{7mm}\updatedGradeReport &
+            \hspace{7mm}\conductDocument &
+            \hspace{7mm}\financialSolvency\\
             \hline
         \end{tabular}
     \end{table}
     
-    \aLine{FIRMA DE PADRE O RESPONSABLE: \aField{}}
+    \textbf{Compromiso de padres y estudiantes}\\
+    Me comprometo a seguir los principios bíblicos del Colegio Bautista Libertad, asi como cumplir con los siguientes aspectos:
+    \begin{itemize}
+        \item Cumplir con las obligaciones de colegiaturas a más tardar el 28 de cada mes. De lo contrario \textbf{pagaré} el 10\% de mora.
+        \item Pagar el treceavo mes durante el año escolar, pudiendo pagarlo por cuotas.
+        \item Me comprometo a asistir a las reuniones de entrega de boletines, reunión de padres o citas especiales.
+        \item Dejaré a mi hijo en el portón principal, su ingreso al centro será debidamente justificado por pagos o citas por los docentes.
+        \item Asistiré al centro escolar decorosamente vestido.
+        \item Mi hijo asistirá una vez al mes a la Escuela Bíblica Dominical, según calendarización sin excepciones.
+        \item Mi hijo portará su biblia todos los días que asista al colegio.
+        \item Mi hijo no asistirá a clases con adornos exagerados o prendas de valor como joyas o dispositivos electrónicos, así como arreglos estéticos exuberantes: cortes de cabello, cabello teñido, uñas pintadas, maquillaje, etc.
+        \item Estoy de acuerdo en que el colegio \textbf{no responde} por la pérdida de prendas que sé que están prohibidas.
+        \item Deberé conocer las faltas (leves, graves y muy graves) y deberes del estudiante.
+        \item Mi hijo cumplirá con las exigencias académicas de la institución.
+    \end{itemize}
+    Seré atendido en horario especial por los docentes.
+    El maestro guía será el responsable de dar respuesta a cualquier situación que se presente con mi hijo, como el rendimiento académico y disciplina estudiantil.
+    Mis reclamos, objeciones o sugerencias las haré por escrito a la dirección académica con el propósito de obtener una respuesta satisfactoria.
+    Mi hijo será respetado y tratado con igualdad, será estimulado al destacarse en sus actividades escolares.
+    Recibirá el apoyo de la dirección y maestros cuando sea solicitado asi como tendrá sus horas de clases estipuladas en el horario.
+    Mi hijo gozará de todos los derechos estipulados.
+    
+    El apoyo de los padres \textbf{es insustituible} para mejorar el rendimiento académico y la disciplina estudiantil.\\
+    \vspace{5mm}
+    \begin{center}
+        \rule{7cm}{0.4pt}\\
+        Firma del responsable
+    \end{center}
+    \vfill
+    \begin{center}
+        ``Acuérdate de tu creador en los días de tu Juventud antes que lleguen los días malos y lleguen los años de los cuales digas no tengo en ellos contentamiento.''\\
+        Eclesiastés 12:1
+    \end{center}
+
+    \footnotetext{Impreso por wsmcbl el \currentDatetime, \secretaryName.}
+    
+    
+    
+    
+    
+    \newpage
+    \begin{center}
+        \textbf{CREDENCIALES PARA LA CONSULTA DE CALIFICACIONES}\\
+    \end{center}
+    \textbf{Código del estudiante:} \studentId\\
+    \textbf{Contraseña:} \studentToken\\
+    
+    Para consultar las calificaciones del estudiante puede visitar nuestro sitio web
+    \begin{center}
+        \href{www.cbl-edu.com/online-grades}{www.cbl-edu.com/online-grades}
+    \end{center}
+    y utilizar estas credenciales,
+    tenga presente que las calificaciones estarán disponibles después de las entregas de notas, esto se notificará por los medios pertinentes.
+    
+    Evite compartir esta información y en caso de perdidas o dudas puede enviarnos un correo a \href{soporte@cbl-edu.com}{soporte@cbl-edu.com} o bien visitarnos en nuestras instalaciones.
+    
+    Para más información sobres los derechos y deberes consulte el \textbf{reglamento interno del Colegio Bautista Libertad}
+    visitando nuestro sitio web
+    \begin{center}
+        \href{www.cbl-edu.com/regulation}{www.cbl-edu.com/regulation}
+    \end{center}
+    
+    \vspace{2cm}
+    \hrule
+    \scriptsize{Última línea}
 \end{document}

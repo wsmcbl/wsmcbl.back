@@ -7,7 +7,7 @@ BEGIN
              (SELECT d.studentid, d.tariffid, round(t.amount * (1 - disc.amount)) as subtotal, t.late as islate
               FROM accounting.debthistory d
                        JOIN accounting.tariff t ON t.tariffid = d.tariffid
-                       JOIN accounting.discount disc ON disc.discountid = new.discountid
+                       JOIN accounting.discounteducationallevel disc ON disc.del = new.discountel
               WHERE d.studentid = new.studentid
                 and t.typeid = 1)
     

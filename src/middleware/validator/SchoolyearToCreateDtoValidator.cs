@@ -1,7 +1,7 @@
 using FluentValidation;
 using wsmcbl.src.dto.secretary;
 
-namespace wsmcbl.src.middleware.filter;
+namespace wsmcbl.src.middleware.validator;
 
 public class SchoolyearToCreateDtoValidator : AbstractValidator<SchoolYearToCreateDto>
 {

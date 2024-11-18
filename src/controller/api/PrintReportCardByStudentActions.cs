@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
 using wsmcbl.src.exception;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
+[ResourceAuthorizer("admin","secretary")]
 [Route("academy/")]
 [ApiController]
 public class PrintReportCardByStudentActions(IPrintReportCardByStudentController controller) : ControllerBase
