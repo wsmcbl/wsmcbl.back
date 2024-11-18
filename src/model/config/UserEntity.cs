@@ -101,4 +101,16 @@ public class UserEntity
     {
         return $"{name[0]}. {surname}";
     }
+
+    public void update(UserEntity user)
+    {
+        roleId = user.roleId;
+        name = user.name;
+        secondName = user.secondName;
+        surname = user.surname;
+        secondSurname = user.secondSurname;
+        email = user.email;
+        isActive = user.isActive;
+        markAsUpdated();
+    }
 }
