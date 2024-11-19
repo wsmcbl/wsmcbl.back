@@ -49,7 +49,7 @@ public class UserDaoPostgresTest : BaseDaoPostgresTest
     }
     
     [Fact]
-    public async Task getById_UserNotFound()
+    public void getById_UserNotFound()
     {
         context = TestDbContext.getInMemory();
 

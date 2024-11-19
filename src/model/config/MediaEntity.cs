@@ -4,8 +4,8 @@ public class MediaEntity
 {
     public int mediaId { get; set; }
     public int type { get; set; }
-    public string schoolyearId { get; set; }
-    public string value { get; set; }
+    public string schoolyearId { get; set; } = null!;
+    public string value { get; set; } = null!;
 
     public MediaEntity()
     {

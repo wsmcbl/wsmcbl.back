@@ -5,13 +5,13 @@ namespace wsmcbl.src.dto.config;
 
 public class UserDto
 {
-    [Required] public string name { get; set; }
+    [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
-    [Required] public string surname { get; set; }
+    [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
-    [Required] public string email { get; set; }
+    [Required] public string email { get; set; } = null!;
     [Required] public bool isActive { get; set; }
-    public string role { get; set; }
+    public string? role { get; set; }
 
     public UserDto()
     {
