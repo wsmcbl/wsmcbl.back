@@ -25,7 +25,11 @@ public static class Utility
         var sb = new StringBuilder();
         foreach (var c in text)
         {
-            if (Array.IndexOf(specialSymbols, c.ToString()) >= 0)
+            if (c == '\\')
+            {
+                sb.Append("\\textbackslash ");
+            }
+            else if (Array.IndexOf(specialSymbols, c.ToString()) >= 0)
             {
                 sb.Append('\\').Append(c);
             }
