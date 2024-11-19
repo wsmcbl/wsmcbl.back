@@ -16,3 +16,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wsmcbl_wsmcbl.back&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wsmcbl_wsmcbl.back)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=wsmcbl_wsmcbl.back&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=wsmcbl_wsmcbl.back)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=wsmcbl_wsmcbl.back&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=wsmcbl_wsmcbl.back)
+
+## Version
+
+* 2.3.1 - SNAHPSHOT
