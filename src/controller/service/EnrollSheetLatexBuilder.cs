@@ -16,7 +16,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         this.templatesPath = templatesPath;
         this.entity = entity;
-        isNewEnroll = true;
     }
 
     public void setGrade(string value)
@@ -35,41 +34,40 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     }
     
     protected override string getTemplateName() => "enroll-sheet";
-
+    
     protected override string updateContent(string content)
     {
-        content = content.Replace($"logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.Replace($"enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
-        content = content.Replace($"student.name.value", entity.fullName());
-        content = content.Replace($"degree.value", grade!);
-        content = content.Replace($"repeating.value", getTextByBool(academyStudent!.isRepeating));
-        content = content.Replace($"student.age.value", getAge(entity.birthday));
-        content = content.Replace($"student.sex.value", getTextBySex(entity.sex));
-        content = content.Replace($"student.birthday.value", getDateFormat(entity.birthday, false));
-        content = content.Replace($"tutor.value", entity.tutor.name);
-        content = content.Replace($"diseases.value", entity.diseases!);
-        content = content.Replace($"phones.value", entity.tutor.phone);
-        content = content.Replace($"email.value", entity.tutor.email);
-        content = content.Replace($"religion.value", entity.religion);
-        content = content.Replace($"address.value", entity.address);
+        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
+        content = content.ReplaceInLatexFormat("student.name.value", entity.fullName());
+        content = content.ReplaceInLatexFormat("degree.value", grade!);
+        content = content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
+        content = content.ReplaceInLatexFormat("student.age.value", getAge(entity.birthday));
+        content = content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
+        content = content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
+        content = content.ReplaceInLatexFormat("tutor.value", entity.tutor.name);
+        content = content.ReplaceInLatexFormat("diseases.value", entity.diseases!);
+        content = content.ReplaceInLatexFormat("phones.value", entity.tutor.phone);
+        content = content.ReplaceInLatexFormat("email.value", entity.tutor.email);
+        content = content.ReplaceInLatexFormat("religion.value", entity.religion);
+        content = content.ReplaceInLatexFormat("address.value", entity.address);
         
-        
-        content = content.Replace($"secretary.name.value", userName);
-        content = content.Replace($"current.datetime.value", getDateTimeNow());
-        content = content.Replace($"student.id.value", entity.studentId);
-        content = content.Replace($"student.token.value", entity.accessToken);
+        content = content.ReplaceInLatexFormat("secretary.name.value", userName);
+        content = content.ReplaceInLatexFormat("current.datetime.value", getDateTimeNow());
+        content = content.ReplaceInLatexFormat("student.id.value", entity.studentId);
+        content = content.ReplaceInLatexFormat("student.token.value", entity.accessToken);
 
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
         
-        content = content.Replace($"current.year.value", getYearLabel());
+        content = content.ReplaceInLatexFormat($"current.year.value", getYearLabel());
         
         return content;
     }
 
     private static string getYearLabel()
     {
-        var year = DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+        var year = DateTime.Today.Month > 10 ? DateTime.Today.Year : DateTime.Today.Year - 1;
         return year.ToString();
     }
 
@@ -80,7 +78,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
         return date.ToString(format, culture);
     }
-    
     
     private static string getDateTimeNow()
     {
@@ -95,8 +92,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         
         return DateTime.UtcNow.toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
     }
-
-    private bool isNewEnroll { get; set; }
 
     private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
     {
@@ -118,30 +113,30 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
     private static string setParentNull(string content, string typeParent)
     {
-        content = content.Replace($"{typeParent}.name.value", "");
-        content = content.Replace($"{typeParent}.idcard.value", "");
-        content = content.Replace($"{typeParent}.occupation.value", "");
+        content = content.ReplaceInLatexFormat($"{typeParent}.name.value", "");
+        content = content.ReplaceInLatexFormat($"{typeParent}.idcard.value", "");
+        content = content.ReplaceInLatexFormat($"{typeParent}.occupation.value", "");
 
         return content;
     }
     
     private static string setParent(string content, string typeParent, StudentParentEntity parent)
     {
-        content = content.Replace($"{typeParent}.name.value", parent.name);
-        content = content.Replace($"{typeParent}.idcard.value", parent.idCard!);
-        content = content.Replace($"{typeParent}.occupation.value", parent.occupation!);
+        content = content.ReplaceInLatexFormat($"{typeParent}.name.value", parent.name);
+        content = content.ReplaceInLatexFormat($"{typeParent}.idcard.value", parent.idCard!);
+        content = content.ReplaceInLatexFormat($"{typeParent}.occupation.value", parent.occupation!);
 
         return content;
     }
 
     private static string setFile(string content, StudentFileEntity file)
     {
-        content = content.Replace($"birth.document.value", getTextByBool(file.birthDocument));
-        content = content.Replace($"conduct.document.value", getTextByBool(file.conductDocument));
-        content = content.Replace($"financial.solvency.value", getTextByBool(file.financialSolvency));
-        content = content.Replace($"parent.idcard.value", getTextByBool(file.parentIdentifier));
-        content = content.Replace($"transfer.sheet.value", getTextByBool(file.transferSheet));
-        content = content.Replace($"updated.grade.report.value", getTextByBool(file.updatedDegreeReport));
+        content = content.ReplaceInLatexFormat($"birth.document.value", getTextByBool(file.birthDocument));
+        content = content.ReplaceInLatexFormat($"conduct.document.value", getTextByBool(file.conductDocument));
+        content = content.ReplaceInLatexFormat($"financial.solvency.value", getTextByBool(file.financialSolvency));
+        content = content.ReplaceInLatexFormat($"parent.idcard.value", getTextByBool(file.parentIdentifier));
+        content = content.ReplaceInLatexFormat($"transfer.sheet.value", getTextByBool(file.transferSheet));
+        content = content.ReplaceInLatexFormat($"updated.grade.report.value", getTextByBool(file.updatedDegreeReport));
 
         return content;
     }
