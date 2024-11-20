@@ -45,7 +45,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(e => e.studentId == studentId)
-            .Where(e => e.schoolyear == currentSchoolyearId || !e.isPaid)
+            .Where(e => e.schoolyear == currentSchoolyearId || e.schoolyear == newSchoolyearId || !e.isPaid)
             .Include(e => e.tariff)
             .ToListAsync();
 

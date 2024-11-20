@@ -30,13 +30,8 @@ public class StudentEntity
         return discount != null ? amount*getDiscount() : amount;
     }
 
-    public async Task loadDebtHistory(IDebtHistoryDao? dao)
+    public async Task loadDebtHistory(IDebtHistoryDao dao)
     {
-        if (dao == null)
-        {
-            return;
-        }
-        
         debtHistory = await dao.getListByStudent(studentId!);
     }
 }

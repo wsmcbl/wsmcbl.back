@@ -25,8 +25,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
             throw new EntityNotFoundException("Student", studentId);
         }
 
-        await student.loadDebtHistory(daoFactory.debtHistoryDao);
-        
+        await student.loadDebtHistory(daoFactory.debtHistoryDao!);
         return student;
     }
     
@@ -65,7 +64,7 @@ public class CollectTariffController : BaseController, ICollectTariffController
     {
         if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
         {
-            throw new ArgumentException($"Some tariff is already paid");
+            throw new ArgumentException($"Some tariff is already paid.");
         }
         
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
