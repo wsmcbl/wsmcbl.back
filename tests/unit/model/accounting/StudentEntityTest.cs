@@ -1,3 +1,5 @@
+using NSubstitute;
+using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.model.accounting;
@@ -8,9 +10,10 @@ public class StudentEntityTest
     [Fact]
     public async Task loadDebtHistory_ShouldNotLoadDebtHistory_WhenIDebtHistoryDaoIsNull()
     {
+        var context = Substitute.For<IDebtHistoryDao>();
         var sut = TestEntityGenerator.aAccountingStudent("std-1");
 
-        await sut.loadDebtHistory(null);
+        await sut.loadDebtHistory(context);
         
         Assert.Null(sut.debtHistory);
     }
