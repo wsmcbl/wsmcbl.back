@@ -52,7 +52,7 @@ public class AddingStudentGradesActions(IAddingStudentGradesController controlle
     }
     
     /// <summary>
-    ///  Update the grades of subject corresponding to a teacher grades's information
+    ///  Update the grades of subject corresponding to a teacher grade's information
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
