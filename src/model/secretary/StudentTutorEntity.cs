@@ -19,6 +19,11 @@ public class StudentTutorEntity
         this.email = email;
     }
 
+    public bool isValidId()
+    {
+        return !string.IsNullOrWhiteSpace(tutorId);
+    }
+    
     public void update(StudentTutorEntity entity)
     {
         name = entity.name;

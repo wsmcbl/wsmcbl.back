@@ -24,16 +24,13 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
     Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();
 }
 
-public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>,
-    IStudentElement<StudentFileEntity>;
-public interface IStudentTutorDao : IGenericDao<StudentTutorEntity, string>, 
-    IStudentElement<StudentTutorEntity>
+public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudentElement<StudentFileEntity>;
+public interface IStudentTutorDao : IGenericDao<StudentTutorEntity, string>, IStudentElement<StudentTutorEntity>
 {
     Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor);
 }
 
-public interface IStudentParentDao : IGenericDao<StudentParentEntity, string>,
-    IStudentElement<StudentParentEntity>;
+public interface IStudentParentDao : IGenericDao<StudentParentEntity, string>, IStudentElement<StudentParentEntity>;
 public interface IStudentMeasurementsDao 
     : IGenericDao<StudentMeasurementsEntity, int>, IStudentElement<StudentMeasurementsEntity>;
 

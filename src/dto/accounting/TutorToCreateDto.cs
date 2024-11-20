@@ -20,6 +20,6 @@ public class TutorToCreateDto
 
     public StudentTutorEntity toEntity()
     {
-        return new StudentTutorEntity(name, phone);
+        return new StudentTutorEntity(name.Trim(), phone.Trim());
     }
 }

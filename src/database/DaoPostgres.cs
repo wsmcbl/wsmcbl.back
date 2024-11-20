@@ -111,7 +111,7 @@ public class StudentTutorDaoPostgres(PostgresContext context)
             return;
         }
 
-        var existingEntity = await getById(entity.tutorId!);
+        var existingEntity = entity.isValidId() ? await getById(entity.tutorId!) : await getByInformation(entity);
 
         if (existingEntity == null)
         {

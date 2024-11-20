@@ -24,6 +24,6 @@ public class StudentTutorDto : IBaseDto<StudentTutorEntity>
     
     public StudentTutorEntity toEntity()
     {
-        return new StudentTutorEntity(name, phone, tutorId, email);
+        return new StudentTutorEntity(name.Trim(), phone.Trim(), tutorId?.Trim(), email?.Trim());
     }
 }

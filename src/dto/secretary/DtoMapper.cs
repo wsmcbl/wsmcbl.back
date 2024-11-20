@@ -8,7 +8,7 @@ namespace wsmcbl.src.dto.secretary;
 
 public static class DtoMapper
 {
-    public static List<StudentParentEntity> toEntity(this IList<StudentParentDto>? list)
+    public static List<StudentParentEntity> toEntityList(this IList<StudentParentDto>? list)
         => list == null || !list.Any() ? [] : list.Select(item => item.toEntity()).ToList();
 
 
