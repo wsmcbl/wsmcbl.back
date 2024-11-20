@@ -63,8 +63,8 @@ public class CollectTariffActions(ICollectTariffController controller) : Control
 
         return key switch
         {
-            "student" => Ok(await controller.getTariffListByStudent(value)),
-            "state" when value.Equals("overdue") => Ok(await controller.getOverdueTariffList()),
+            "student" => Ok((await controller.getTariffListByStudent(value)).mapToListDto()),
+            "state" when value.Equals("overdue") => Ok((await controller.getOverdueTariffList()).mapToListDto()),
             _ => BadRequest("Unknown search key.")
         };
     }

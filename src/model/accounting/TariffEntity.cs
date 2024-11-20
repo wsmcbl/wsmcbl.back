@@ -1,3 +1,4 @@
+using System.Globalization;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.model.accounting;
@@ -38,5 +39,11 @@ public class TariffEntity
         {
             isLate = true;
         }
+    }
+
+    public string getDateString()
+    {
+        var result = dueDate?.ToString("dd / MMM / yyyy" ,new CultureInfo("es-ES"));
+        return result ?? string.Empty;
     }
 }

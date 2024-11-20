@@ -12,12 +12,15 @@ public static class DtoMapper
         => new(student, modality);
     public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
     
-    public static AccountingStudentDto mapToDto(this StudentEntity student) => new(student);
-
-    public static TransactionDto mapToDto(this TransactionEntity transaction) => new(transaction);
+    public static AccountingStudentDto mapToDto(this StudentEntity value) => new(value);
+    private static TariffDto mapToDto(this TariffEntity value) => new(value);
+    public static TransactionDto mapToDto(this TransactionEntity value) => new(value);
     
-    private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student); 
+    private static BasicStudentDto mapToBasicDto(this StudentEntity value) => new(value); 
     
-    public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentEntity> students)
-        => students.Select(student => student.mapToBasicDto()).ToList();
+    public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentEntity> value)
+        => value.Select(student => student.mapToBasicDto()).ToList();
+    
+    public static List<TariffDto> mapToListDto(this IEnumerable<TariffEntity> value)
+        => value.Select(e => e.mapToDto()).ToList();
 }
