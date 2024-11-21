@@ -10,7 +10,7 @@ public class TutorToCreateDtoValidator : AbstractValidator<TutorToCreateDto>
         RuleFor(e => e.name)
             .NotNull().NotEmpty().WithMessage("The name must be not null or empty.")
             .MinimumLength(3).WithMessage("Name be at least 3 characters long.")
-            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Name must contain only letters");
+            .Matches(@"^[a-zA-ZÀ-ÿñÑ\s]+$").WithMessage("Name must contain only letters");
         
         RuleFor(e => e.phone)
             .NotNull().NotEmpty().WithMessage("The phone must be not null or empty.")

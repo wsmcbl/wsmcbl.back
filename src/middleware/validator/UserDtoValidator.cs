@@ -10,12 +10,12 @@ public class UserDtoValidator : AbstractValidator<UserDto>
         RuleFor(e => e.name)
             .NotEmpty().WithMessage("Name must not be empty")
             .MinimumLength(3).WithMessage("Name be at least 3 characters long.")
-            .Matches(@"^[a-zA-Z]+$").WithMessage("Name must contain only letter");
+            .Matches(@"^[a-zA-ZÀ-ÿñÑ]+$").WithMessage("Name must contain only letter");
         
         RuleFor(e => e.surname)
             .NotEmpty().WithMessage("Surname must not be empty")
             .MinimumLength(2).WithMessage("Name be at least 2 characters long.")
-            .Matches(@"^[a-zA-Z]+$").WithMessage("Name must contain only letter");
+            .Matches(@"^[a-zA-ZÀ-ÿñÑ]+$").WithMessage("Name must contain only letter");
         
         RuleFor(e => e.email)
             .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
