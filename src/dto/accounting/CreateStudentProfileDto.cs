@@ -6,9 +6,9 @@ namespace wsmcbl.src.dto.accounting;
 
 public class CreateStudentProfileDto
 {
+    [JsonRequired] public int educationalLevel { get; set; }
     [Required] public StudentToCreateDto student { get; set; } = null!;
     [Required] public TutorToCreateDto tutor { get; set; } = null!;
-    [JsonRequired] public int educationalLevel { get; set; }
 
     public CreateStudentProfileDto()
     {
@@ -17,7 +17,7 @@ public class CreateStudentProfileDto
     public CreateStudentProfileDto(StudentEntity studentEntity, int educationalLevel)
     {
         student = new StudentToCreateDto(studentEntity);
-        tutor = new TutorToCreateDto(studentEntity.tutor!);
+        tutor = new TutorToCreateDto(studentEntity.tutor);
         this.educationalLevel = educationalLevel;
     }
 }

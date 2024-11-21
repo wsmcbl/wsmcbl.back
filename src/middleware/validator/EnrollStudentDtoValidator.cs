@@ -10,5 +10,8 @@ public class EnrollStudentDtoValidator :  AbstractValidator<EnrollStudentDto>
         RuleFor(d => d.discountId)
             .GreaterThan(0)
             .WithMessage("Quantity must be grater that zero.");
+        
+        RuleFor(e => e.student)
+            .SetValidator(new StudentFullDtoValidator());
     }
 }

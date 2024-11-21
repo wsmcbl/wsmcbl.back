@@ -11,5 +11,11 @@ public class CreateStudentProfileDtoValidator : AbstractValidator<CreateStudentP
             .GreaterThan(0)
             .LessThan(4)
             .WithMessage("EducationalLevel must be between 1 and 3");
+        
+        RuleFor(e => e.student)
+            .SetValidator(new StudentToCreateDtoValidator());
+
+        RuleFor(e => e.tutor)
+            .SetValidator(new TutorToCreateDtoValidator());
     }
 }

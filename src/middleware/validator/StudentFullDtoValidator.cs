@@ -16,7 +16,10 @@ public class StudentFullDtoValidator : AbstractValidator<StudentFullDto>
             .WithMessage("The second surname must be not empty.");
         
         RuleFor(e => e.parentList)
-            .Must(list => list == null || list.Count > 0)
-            .WithMessage("The parent list must be not empty.");
+            .Must(list => list == null || list.Count > 0).WithMessage("The parent list must be not empty.")
+            .ForEach(i => i.SetValidator(new StudentParentDtoValidator()));
+
+        RuleFor(e => e.tutor)
+            .SetValidator(new StudentTutorDtoValidator());
     }
 }

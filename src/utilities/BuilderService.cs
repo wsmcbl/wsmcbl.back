@@ -32,11 +32,7 @@ public static class BuilderService
         Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<MediaEntityValidator>();
         Services.AddValidatorsFromAssemblyContaining<SchoolyearToCreateDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<StudentFullDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<StudentParentDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<StudentToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<TutorToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserToCreateDtoValidator>();
     }
