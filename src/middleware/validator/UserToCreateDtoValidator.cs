@@ -33,11 +33,11 @@ public class UserToCreateDtoValidator : AbstractValidator<UserToCreateDto>
             .WithMessage("Password must contain at least one special character (!@#$%^&*()-+=)");
         
         RuleFor(e => e.secondName)
-            .Must(e => e == null || !string.IsNullOrWhiteSpace(e))
+            .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
             .WithMessage("The second surname must be not empty.");
         
         RuleFor(e => e.secondSurname)
-            .Must(e => e == null || !string.IsNullOrWhiteSpace(e))
+            .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
             .WithMessage("The second surname must be not empty.");
     }
 }
