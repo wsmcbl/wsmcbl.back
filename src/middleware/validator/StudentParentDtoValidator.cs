@@ -7,10 +7,6 @@ public class StudentParentDtoValidator : AbstractValidator<StudentParentDto>
 {
     public StudentParentDtoValidator()
     {
-        RuleFor(d => d.parentId)
-            .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
-            .WithMessage("The second surname must be not empty.");
-        
         RuleFor(e => e.name.Trim())
             .NotNull().NotEmpty()
             .MinimumLength(3).WithMessage("Name be at least 3 characters long.");
