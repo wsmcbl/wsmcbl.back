@@ -8,9 +8,13 @@ public class TutorToCreateDtoValidator : AbstractValidator<TutorToCreateDto>
     public TutorToCreateDtoValidator()
     {
         RuleFor(e => e.name)
-            .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
-            .WithMessage("The second secondName must be not empty.")
-            .MinimumLength(2).WithMessage("Student secondName be at least 2 characters long.")
-            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Student secondName must contain only letter");
+            .NotNull().NotEmpty().WithMessage("The name must be not null or empty.")
+            .MinimumLength(3).WithMessage("Name be at least 3 characters long.")
+            .Matches(@"^[a-zA-Z\s]+$").WithMessage("Name must contain only letters");
+        
+        RuleFor(e => e.phone)
+            .NotNull().NotEmpty().WithMessage("The phone must be not null or empty.")
+            .MinimumLength(3).WithMessage("Phone be at least 3 characters long.")
+            .Matches(@"^(N\/A|(\d{8})(,\s*\d{8})*)$").WithMessage("Name must contain only letters");
     }
 }
