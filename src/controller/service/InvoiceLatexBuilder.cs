@@ -19,19 +19,19 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     protected override string updateContent(string content)
     {
-        content = content.Replace("numeration.value", $"{series}{number:00000000}");
-        content = content.Replace("customer.name.value", student.fullName());
-        content = content.Replace("customer.id.value", student.studentId);
-        content = content.Replace("detail.value", getDetail());
-        content = content.Replace("total.value", $"C\\$ {total:F2}");
-        content = content.Replace("discount.value", getDiscountTotal());
-        content = content.Replace("arrears.value", getArrearsTotal());
-        content = content.Replace("total.aux.value", getAuxTotal());
-        content = content.Replace("total.final.value", $"C\\$ {transaction.total:F2}");
-        content = content.Replace("cashier.value", cashier.getAlias());
-        content = content.Replace("datetime.value", getDatetimeFormat(transaction.date));
-        content = content.Replace("exchange.rate.value", exchangeRate);
-        content = content.Replace("general.balance.value", getGeneralBalance());
+        content = content.ReplaceInLatexFormat("numeration.value", $"{series}{number:00000000}");
+        content = content.ReplaceInLatexFormat("customer.name.value", student.fullName());
+        content = content.ReplaceInLatexFormat("customer.id.value", student.studentId);
+        content = content.ReplaceInLatexFormat("detail.value", getDetail());
+        content = content.ReplaceInLatexFormat("total.value", $"C\\$ {total:F2}");
+        content = content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
+        content = content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
+        content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
+        content = content.ReplaceInLatexFormat("total.final.value", $"C\\$ {transaction.total:F2}");
+        content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
+        content = content.ReplaceInLatexFormat("datetime.value", getDatetimeFormat(transaction.date));
+        content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
+        content = content.ReplaceInLatexFormat("general.balance.value", getGeneralBalance());
 
         return content;
     }
