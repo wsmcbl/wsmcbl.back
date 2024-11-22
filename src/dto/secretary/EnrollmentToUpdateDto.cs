@@ -7,17 +7,13 @@ namespace wsmcbl.src.dto.secretary;
 public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
 {
     [Required] public string enrollmentId { get; set; } = null!;
-    public string? teacherId { get; set; }
+    [Required] public string teacherId { get; set; } = null!;
     [Required] public string? section { get; set; }
     [Required] public string label { get; set; } = null!;
     [JsonRequired] public int capacity { get; set; }
     [JsonRequired] public int quantity { get; set; }
 
     public List<SubjectToAssignDto> subjectList { get; set; } = null!;
-
-    public EnrollmentToUpdateDto()
-    {
-    }
     
     public EnrollmentEntity toEntity()
     {

@@ -19,5 +19,5 @@ public interface ICreateOfficialEnrollmentController
     public Task<SubjectDataEntity> createSubject(SubjectDataEntity subject);
     public Task<DegreeEntity> createEnrollments(string degreeId, int quantity);
     public Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment);
-    public Task assignTeacherGuide(string teacherId, string enrollmentId);
+    public Task<TeacherEntity> assignTeacherGuide(string teacherId, string enrollmentId);
 }

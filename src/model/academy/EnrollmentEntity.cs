@@ -24,7 +24,7 @@ public class EnrollmentEntity
         this.degreeId = degreeId;
         this.schoolYear = schoolYear;
         this.label = label;
-        section = "";
+        section = "Aula ";
         this.tag = tag;
     }
 
@@ -60,5 +60,13 @@ public class EnrollmentEntity
         section = enrollment.section;
         capacity = enrollment.capacity;
         quantity = enrollment.quantity;
+    }
+
+    public List<string> getListTeacherIdBySubject()
+    {
+        if (subjectList == null || subjectList.Count == 0)
+            return [];
+        
+        return subjectList.Select(e => e.teacherId).Distinct().ToList()!;
     }
 }

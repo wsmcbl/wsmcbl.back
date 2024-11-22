@@ -23,6 +23,7 @@ public interface ISubjectPartialDao : IGenericDao<SubjectPartialEntity, int>
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>
 {
     public Task<TeacherEntity?> getByEnrollmentId(string enrollmentId);
+    public Task<List<TeacherEntity>> getByListByIdList(List<string> value);
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>

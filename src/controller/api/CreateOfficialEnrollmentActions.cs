@@ -70,19 +70,10 @@ public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
     [Route("degrees/enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto toUpdateDto)
+    public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto dto)
     {
-        var enrollment = await controller.updateEnrollment(toUpdateDto.toEntity());
-
-        var teacherId = toUpdateDto.teacherId;
-
-        if (teacherId == null)
-        {
-            return Ok(enrollment.mapToDto());
-        }
-        
-        await controller.assignTeacherGuide(teacherId, enrollment.enrollmentId!);
-        var teacher = await controller.getTeacherById(teacherId);
+        var teacher = await controller.assignTeacherGuide(dto.teacherId, dto.enrollmentId);
+        var enrollment = await controller.updateEnrollment(dto.toEntity());
 
         return Ok(enrollment.mapToDto(teacher));
     }

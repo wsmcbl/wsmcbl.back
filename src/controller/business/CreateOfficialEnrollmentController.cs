@@ -87,7 +87,7 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         await daoFactory.execute();
     }
 
-    private SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
+    private static SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
     {
         var result = new SemesterEntity
         {
@@ -165,13 +165,15 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         daoFactory.enrollmentDao!.update(existingEntity);
         await daoFactory.execute();
 
-        var list = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
+        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
+        await checkTeacherListById(enrollment.getListTeacherIdBySubject());
 
         foreach (var item in enrollment.subjectList!)
         {
-            var subject = list.Find(e => e.subjectId == item.subjectId);
-
-            if (subject == null) continue;
+            var subject = subjectList.Find(e => e.subjectId == item.subjectId);
+            if (subject == null)
+                continue;
+            
             subject.teacherId = item.teacherId;
             daoFactory.subjectDao.update(subject);
         }
@@ -181,16 +183,41 @@ public class CreateOfficialEnrollmentController : BaseController, ICreateOfficia
         return existingEntity;
     }
 
-    //#######################################################################ads##
-    public async Task assignTeacherGuide(string teacherId, string enrollmentId)
+    private async Task checkTeacherListById(List<string> value)
     {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
+        var teacherList = await daoFactory.teacherDao!.getByListByIdList(value);
 
-        if (teacher != null)
+        foreach (var item in value)
         {
-            teacher.isGuide = true;
-            daoFactory.teacherDao.update(teacher);
-            await daoFactory.execute();
+            var result = teacherList.FirstOrDefault(e => e.teacherId == item);
+            if (result == null)
+            {
+                throw new EntityNotFoundException("Teacher", item);
+            }
         }
+    }
+    
+    public async Task<TeacherEntity> assignTeacherGuide(string teacherId, string enrollmentId)
+    {
+        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        if (existingEntity == null)
+        {
+            throw new EntityNotFoundException("Enrollment", enrollmentId);
+        }
+        
+        var teacher = await daoFactory.teacherDao!.getById(teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("Teacher", teacherId);
+        }
+        
+        if(teacherId == existingEntity.teacherId)
+            return teacher;
+        
+        teacher.isGuide = true;
+        daoFactory.teacherDao.update(teacher);
+        await daoFactory.execute();
+
+        return teacher;
     }
 }

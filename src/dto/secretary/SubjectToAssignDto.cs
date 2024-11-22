@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
@@ -20,11 +21,16 @@ public class SubjectToAssignDto
     
     public SubjectEntity toEntity(string enrollmentId)
     {
+        if (teacherId == null || string.IsNullOrEmpty(teacherId.Trim()))
+        {
+            throw new IncorrectDataBadRequestException("teacherId value");
+        }
+
         return new SubjectEntity
         {
             enrollmentId = enrollmentId,
-            subjectId = subjectId,
-            teacherId = teacherId
+            subjectId = subjectId.Trim(),
+            teacherId = teacherId.Trim()
         };
     }
 }

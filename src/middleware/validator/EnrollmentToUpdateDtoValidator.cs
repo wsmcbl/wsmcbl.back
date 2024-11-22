@@ -8,19 +8,18 @@ public class EnrollmentToUpdateDtoValidator :  AbstractValidator<EnrollmentToUpd
     public EnrollmentToUpdateDtoValidator()
     {
         RuleFor(e => e.capacity)
-            .GreaterThan(0)
-            .WithMessage("The capacity must be greater than zero.");
+            .GreaterThan(0).WithMessage("The capacity must be greater than zero.")
+            .LessThan(60).WithMessage("The capacity must be less than 60.");
         
         RuleFor(e => e.quantity)
-            .GreaterThan(-1)
-            .WithMessage("The quantity must be not negative.");
+            .GreaterThan(-1).WithMessage("The quantity must be not negative.")
+            .LessThan(60).WithMessage("The quantity must be less than 60.");
 
         RuleFor(e => e.section)
-            .NotEmpty()
-            .WithMessage("The section label must be no empty.");
+            .NotEmpty().WithMessage("The section label must be no empty.");
         
         RuleFor(e => e.subjectList)
-            .NotEmpty()
-            .WithMessage("Subject list must be not empty.");
+            .NotEmpty().WithMessage("Subject list must be not empty.")
+            .ForEach(e => e.SetValidator(new SubjectToAssignDtoValidator()));
     }
 }
