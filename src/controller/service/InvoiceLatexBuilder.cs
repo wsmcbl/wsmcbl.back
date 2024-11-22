@@ -22,12 +22,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.ReplaceInLatexFormat("numeration.value", $"{series}{number:00000000}");
         content = content.ReplaceInLatexFormat("customer.name.value", student.fullName());
         content = content.ReplaceInLatexFormat("customer.id.value", student.studentId);
-        content = content.ReplaceInLatexFormat("detail.value", getDetail());
-        content = content.ReplaceInLatexFormat("total.value", $"C\\$ {total:F2}");
+        content = content.Replace("detail.value", getDetail());
+        content = content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
         content = content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
         content = content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
         content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
-        content = content.ReplaceInLatexFormat("total.final.value", $"C\\$ {transaction.total:F2}");
+        content = content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
         content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
         content = content.ReplaceInLatexFormat("datetime.value", getDatetimeFormat(transaction.date));
         content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
@@ -36,9 +36,9 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         return content;
     }
 
-    private string getArrearsTotal() => $"C\\$ {arrearsTotal:F2}";
-    private string getDiscountTotal() => $"C\\$ {discountTotal:F2}";
-    private string getAuxTotal() => $"C\\$ {(total + arrearsTotal - discountTotal):F2}";
+    private string getArrearsTotal() => $"C$ {arrearsTotal:F2}";
+    private string getDiscountTotal() => $"C$ {discountTotal:F2}";
+    private string getAuxTotal() => $"C$ {(total + arrearsTotal - discountTotal):F2}";
 
     private float discountTotal;
     private float arrearsTotal;
@@ -64,7 +64,9 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             arrearsTotal += item.arrears;
             total += item.amount;
 
-            var concept = item.isPaidLate ? $"*{item.concept}" : item.concept;
+            var concept = item.isPaidLate ? $"*{item.concept.ReplaceLatexSpecialSymbols()}" 
+                : item.concept.ReplaceLatexSpecialSymbols();
+            
             content = $@"{content} {concept} & C\$ {item.amount:F2}\\";
         }
 
@@ -79,7 +81,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     private string getGeneralBalance()
     {
         var value = generalBalance[1] - generalBalance[0];
-        return $"C\\$ {value:F2}";
+        return $"C$ {value:F2}";
     }
 
     private static string getDatetimeFormat(DateTime datetime)
