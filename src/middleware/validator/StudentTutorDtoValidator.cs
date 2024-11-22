@@ -20,6 +20,6 @@ public class StudentTutorDtoValidator : AbstractValidator<StudentTutorDto>
         
         RuleFor(e => e.email)
             .Must(e => e == null || !string.IsNullOrEmpty(e.Trim())).WithMessage("The email must be not empty.")
-            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$").WithMessage("The email must be the valid format");
+            .Matches(@"(N\/A|^[^@\s]+@[^@\s]+\.[^@\s]+$)").WithMessage("The email must be the valid format.");
     }
 }

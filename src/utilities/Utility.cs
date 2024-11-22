@@ -16,7 +16,7 @@ public static class Utility
         return text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
     }
     
-    private static readonly string[] specialSymbols = ["$", "€", "£", "¥", "#", "@", "%", "&", "_", "{", "}"];
+    private static readonly string[] specialSymbols = ["$", "€", "£", "¥", "#", "%", "&", "_", "{", "}"];
     private static string ReplaceLatexSpecialSymbols(this string? text)
     {
         if (text == null)

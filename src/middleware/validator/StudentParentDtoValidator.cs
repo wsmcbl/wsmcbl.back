@@ -10,7 +10,7 @@ public class StudentParentDtoValidator : AbstractValidator<StudentParentDto>
         RuleFor(e => e.name.Trim())
             .NotNull().NotEmpty()
             .MinimumLength(3).WithMessage("Name be at least 3 characters long.")
-            .Matches(@"^[a-zA-ZÀ-ÿñÑ\s]+$").WithMessage("Name must contain only letter");;
+            .Matches(@"(N\/A|^[a-zA-ZÀ-ÿñÑ\s]+$)").WithMessage("Name must contain only letter");;
         
         RuleFor(d => d.idCard)
             .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
