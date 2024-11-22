@@ -64,7 +64,7 @@ public class EnrollStudentFixture : BaseFixture
         var accountingStudent = new src.model.accounting.StudentEntity
         {
             studentId = studentEntity.studentId,
-            discountId = 1,
+            discountId = 2,
             educationalLevel = 1,
             enrollmentLabel = null
         };
@@ -77,13 +77,24 @@ public class EnrollStudentFixture : BaseFixture
 
     private async Task seedStudent(DbContext context)
     {
-        var discount = new DiscountEntity()
+        var discount = new DiscountEntity
         {
             discountId = 1,
-            description = "Nada"
+            description = "Hola",
+            tag = "d"
         };
 
         context.Add(discount);
+        await context.SaveChangesAsync();
+        
+        var discountEducationalLevelEntity = new DiscountEducationalLevelEntity()
+        {
+            discountEducationalLeveLId = 2,
+            amount = 10,
+            educationalLevel = 2
+        };
+        discountEducationalLevelEntity.discountId = discount.discountId;
+        context.Add(discountEducationalLevelEntity);
         await context.SaveChangesAsync();
         
         var tutor = TestEntityGenerator.aTutor();

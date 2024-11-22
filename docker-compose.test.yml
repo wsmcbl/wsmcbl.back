@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   
   database-test:
@@ -28,6 +26,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__DefaultConnection=Host=database-test;Database=wsmcbl_database;Username=user;Password=pass12345
       - Resource_Directory=../../../../resource
+      - JWT_KEY=${JWT_KEY}
     depends_on:
       - database-test
     networks:
@@ -39,12 +38,12 @@ services:
       - .:/app/coverage
       - nuget-packages:/root/.nuget/packages
     command: >
-       sh -c "dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml' &&
-          cp coverage.xml /app/coverage/ && cd coverage &&
-          chown 1000:1000 coverage.xml && \
-          chmod 644 coverage.xml"
-        
-        
+      sh -c "dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml' &&
+         cp coverage.xml /app/coverage/ && cd coverage &&
+         chown 1000:1000 coverage.xml && \
+         chmod 644 coverage.xml"
+
+
 volumes:
   nuget-packages:
 

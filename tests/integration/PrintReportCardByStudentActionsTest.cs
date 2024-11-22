@@ -7,9 +7,9 @@ public class PrintReportCardByStudentActionsTest : BaseActionsTest<PrintReportCa
 {
     public PrintReportCardByStudentActionsTest(PrintReportCardByStudentFixture factory) : base(factory)
     {
-        baseUri = "/v1/academy";
+        baseUri = "/v3/academy";
     }
-
+    
     public async Task getStudentInformation_ShouldReturnJson_WhenCalled()
     {
         var response = await client.GetAsync($"{baseUri}/students/hola");
