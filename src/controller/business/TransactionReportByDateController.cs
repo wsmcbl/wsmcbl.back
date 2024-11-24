@@ -1,11 +1,14 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class TransactionReportByDateController : ITransactionReportByDateController
+public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory),
+    ITransactionReportByDateController
 {
-    public Task<List<TransactionEntity>> getReportByDate(int range)
+    public async Task<List<TransactionEntity>> getTransactionList(int range)
     {
-        throw new NotImplementedException();
+        //return daoFactory.transactionDao.getByDate(range);
+        return await daoFactory.transactionDao!.getAll();
     }
 }

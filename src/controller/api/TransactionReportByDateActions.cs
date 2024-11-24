@@ -15,6 +15,8 @@ public class TransactionReportByDateActions(ITransactionReportByDateController c
     /// </summary>
     /// <param name="q">The value must be 1, 2, 3 or 4. Value corresponding to today, yesterday, monthly and yearly.</param>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("transactions/revenues")]
     public async Task<IActionResult> getReportByDate([FromQuery] int q)
@@ -24,7 +26,7 @@ public class TransactionReportByDateActions(ITransactionReportByDateController c
             throw new IncorrectDataBadRequestException("The query value must be 1,2,3 or 4.");
         }
         
-        var list = await controller.getReportByDate(q);
+        var list = await controller.getTransactionList(q);
         return Ok(list);
     }
 }
