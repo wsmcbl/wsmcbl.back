@@ -10,7 +10,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
     public async Task<List<(TransactionEntity, StudentEntity)>> getTransactionList(int range)
     {
         getDateRange(range);
-        transactionList = await daoFactory.transactionDao.getByRange(start, end);
+        transactionList = await daoFactory.transactionDao!.getByRange(start, end);
         return transactionList;
     }
 

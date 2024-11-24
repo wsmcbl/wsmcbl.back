@@ -5,6 +5,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
@@ -193,6 +194,12 @@ public class TransactionDaoPostgres(PostgresContext context)
 
         entity.computeTotal();
         base.create(entity);
+    }
+
+    public async Task<List<(TransactionEntity transaction, StudentEntity student)>> getByRange(DateTime start, DateTime end)
+    {
+        var transaction = await entities.Where(e => e.date > start).ToListAsync();
+        return [];
     }
 }
 
