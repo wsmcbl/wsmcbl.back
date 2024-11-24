@@ -39,6 +39,8 @@ builder.Services.AddTransient<IAddingStudentGradesController, AddingStudentGrade
 builder.Services.AddTransient<IResourceController, ResourceController>();
 builder.Services.AddTransient<ILoginController, LoginController>();
 
+builder.Services.AddTransient<ITransactionReportByDateController, TransactionReportByDateController>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
