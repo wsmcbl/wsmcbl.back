@@ -29,11 +29,11 @@ public class TransactionReportByDateActions(ITransactionReportByDateController c
         
         var response = new ReportByDateDto();
 
-        response.setDateRage(await controller.getDateRange(q));
+        response.setDateRage(controller.getDateRange(q));
         response.setTransactionList(await controller.getTransactionList(q));
         response.userName = await controller.getUserName(getAuthenticatedUserId());
         
-        var result = await controller.getSummary();
+        var result = controller.getSummary();
         response.setValidTransactionData(result[0]);
         response.setInvalidTransactionData(result[1]);
         
