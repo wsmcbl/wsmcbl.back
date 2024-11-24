@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
@@ -26,7 +27,16 @@ public class TransactionReportByDateActions(ITransactionReportByDateController c
             throw new IncorrectDataBadRequestException("The query value must be 1,2,3 or 4.");
         }
         
-        var list = await controller.getTransactionList(q);
-        return Ok(list);
+        var response = new ReportByDateDto();
+
+        response.setDateRage(await controller.getDateRange(q));
+        response.setTransactionList(await controller.getTransactionList(q));
+        response.userName = await controller.getUserName(getAuthenticatedUserId());
+        
+        var result = await controller.getSummary();
+        response.setValidTransactionData(result[0]);
+        response.setInvalidTransactionData(result[1]);
+        
+        return Ok(response);
     }
 }
