@@ -23,16 +23,16 @@ public class TransactionDaoPostgres(PostgresContext context) : GenericDaoPostgre
     public async Task<List<(TransactionEntity transaction, StudentEntity student)>> getByRange(DateTime start, DateTime end)
     {
         var query = from transaction in entities
-            join student in context.Set<StudentEntity>() on transaction.studentId equals student.studentId
-            join secretaryStudent in context.Set<model.secretary.StudentEntity>() on student.studentId equals secretaryStudent.studentId
-            join enrollment in context.Set<EnrollmentEntity>() on student.enrollmentId equals enrollment.enrollmentId into studentEnrollments
+            join secretaryStd in context.Set<model.secretary.StudentEntity>() on transaction.studentId equals secretaryStd.studentId
+            join academyStd in context.Set<StudentEntity>() on secretaryStd.studentId equals academyStd.studentId into academyStdList
+            from academyStd in academyStdList.DefaultIfEmpty()
+            join enrollment in context.Set<EnrollmentEntity>() on academyStd.enrollmentId equals enrollment.enrollmentId into studentEnrollments
             from enrollment in studentEnrollments.DefaultIfEmpty()
             where transaction.total > 0
             select new
             {
                 transaction,
-                student,
-                secretaryStudent,
+                secretaryStudent = secretaryStd,
                 enrollmentLabel = enrollment != null ? enrollment.label : "Sin matrícula"
             };
 
@@ -41,9 +41,10 @@ public class TransactionDaoPostgres(PostgresContext context) : GenericDaoPostgre
         var result = new List<(TransactionEntity, StudentEntity)>();
         foreach (var item in list)
         {
-            item.student.setStudent(item.secretaryStudent);
-            item.student.enrollmentLabel = item.enrollmentLabel;
-            result.Add((item.transaction, item.student));
+            var student = new StudentEntity();
+            student.setStudent(item.secretaryStudent);
+            student.enrollmentLabel = item.enrollmentLabel;
+            result.Add((item.transaction, student));
         }
 
         return result;
