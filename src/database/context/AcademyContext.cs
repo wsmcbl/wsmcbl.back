@@ -109,6 +109,7 @@ internal class AcademyContext
                 .HasConstraintName("student_studentid_fkey");
 
             entity.Ignore(e => e.partials);
+            entity.Ignore(e => e.enrollmentLabel);
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>

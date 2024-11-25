@@ -10,8 +10,9 @@ public class StudentEntity
     public bool isApproved { get; set; }
     public bool isRepeating { get; set; }
     public DateTime createdAt { get; set; }
+    public string? enrollmentLabel { get; set; }
     
-    public secretary.StudentEntity student { get; init; } = null!;
+    public secretary.StudentEntity student { get; set; } = null!;
     public List<PartialEntity>? partials { get; private set; }
     
     public StudentEntity()
@@ -50,5 +51,10 @@ public class StudentEntity
     public DateOnly getCreateAtByDateOnly()
     {
         return DateOnly.FromDateTime(createdAt.toUTC6());
+    }
+
+    public void setStudent(secretary.StudentEntity value)
+    {
+        student = value;
     }
 }

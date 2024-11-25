@@ -151,6 +151,8 @@ internal class AccountingContext
 
             entity.HasMany(t => t.details).WithOne()
                 .HasForeignKey(tt => tt.transactionId);
+
+            entity.Ignore(e => e.isValid);
         });
 
         modelBuilder.Entity<TransactionTariffEntity>(entity =>

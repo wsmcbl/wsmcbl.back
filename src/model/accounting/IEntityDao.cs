@@ -11,7 +11,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>
 {
-    public Task<List<(TransactionEntity transaction, StudentEntity student)>> getByRange(DateTime start, DateTime end);
+    public Task<List<(TransactionEntity transaction, model.academy.StudentEntity student)>> getByRange(DateTime start, DateTime end);
 }
 
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
