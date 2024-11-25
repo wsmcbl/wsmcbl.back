@@ -7,5 +7,5 @@ public interface ITransactionReportByDateController
     public Task<List<(TransactionEntity, StudentEntity)>> getTransactionList(int range);
     public Task<string> getUserName(string getAuthenticatedUserId);
     public (DateTime start, DateTime end) getDateRange(int range);
-    public List<(int quantity, double total) getSummary();
+    public List<(int quantity, double total)> getSummary();
 }

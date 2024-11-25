@@ -5,6 +5,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
@@ -181,20 +182,7 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
     }
 }
 
-public class TransactionDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TransactionEntity, string>(context), ITransactionDao
-{
-    public override void create(TransactionEntity entity)
-    {
-        if (!entity.haveValidContent())
-        {
-            throw new IncorrectDataBadRequestException("Transaction");
-        }
 
-        entity.computeTotal();
-        base.create(entity);
-    }
-}
 
 public class DegreeDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<DegreeDataEntity, string>(context), IDegreeDataDao
