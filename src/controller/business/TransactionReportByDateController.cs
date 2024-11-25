@@ -1,6 +1,7 @@
 using System.Security.Authentication;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 

@@ -14,7 +14,7 @@ public static class DtoMapper
     public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
     public static CreateStudentProfileDto mapToDto(this model.secretary.StudentEntity student, int modality)
         => new(student, modality);
-    private static TransactionReportDto mapToDto(this (TransactionEntity transaction, StudentEntity student) value)
+    private static TransactionReportDto mapToDto(this (TransactionEntity transaction, model.academy.StudentEntity student) value)
         => new(value.transaction, value.student);
     
     private static BasicStudentDto mapToBasicDto(this StudentEntity value) => new(value); 
@@ -25,6 +25,6 @@ public static class DtoMapper
     public static List<TariffDto> mapToListDto(this IEnumerable<TariffEntity> value)
         => value.Select(e => e.mapToDto()).ToList();
     
-    public static List<TransactionReportDto> mapToListDto(this IEnumerable<(TransactionEntity transaction, StudentEntity student)> value)
+    public static List<TransactionReportDto> mapToListDto(this IEnumerable<(TransactionEntity transaction, model.academy.StudentEntity student)> value)
         => value.Select(e => e.mapToDto()).ToList();
 }
