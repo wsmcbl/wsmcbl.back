@@ -9,6 +9,7 @@ public class TransactionEntity
     public float total { get; set; }
     public DateTime date { get; set; }
     public ICollection<TransactionTariffEntity> details { get; set; } = [];
+    public bool isValid { get; set; }
 
     public void computeTotal()
     {
@@ -30,5 +31,10 @@ public class TransactionEntity
     public List<int> getTariffIdList()
     {
         return details.Select(item => item.tariffId).ToList();
+    }
+
+    public int getTariffPaidType()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,14 +1,79 @@
+using System.Security.Authentication;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory),
     ITransactionReportByDateController
 {
-    public async Task<List<TransactionEntity>> getTransactionList(int range)
+    public async Task<List<(TransactionEntity, StudentEntity)>> getTransactionList(int range)
     {
-        //return daoFactory.transactionDao.getByDate(range);
-        return await daoFactory.transactionDao!.getAll();
+        getDateRange(range);
+        transactionList = await daoFactory.transactionDao!.getByRange(start, end);
+        return transactionList;
+    }
+
+    public async Task<string> getUserName(string userId)
+    {
+        var result = await daoFactory.userDao!.getById(userId);
+
+        if (result == null)
+        {
+            throw new AuthenticationException($"User with id ({userId}) not authenticate.");
+        }
+
+        return result.getAlias();
+    }
+
+    private DateTime start = DateTime.Now;
+    private DateTime end = DateTime.Now;
+
+    public (DateTime start, DateTime end) getDateRange(int range)
+    {
+        end = DateTime.Now;
+        start = new DateTime(end.Year, end.Month, end.Day, 0, 0, 0);
+
+        var today = DateTime.Today;
+        switch (range)
+        {
+            case 2:
+                start = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+                end = new DateTime(today.Year, today.Month, today.Day, 23, 59, 59);
+                break;
+            case 3:
+                start = new DateTime(today.Year, today.Month, 1, 0, 0, 0);
+                end = new DateTime(today.Year, today.Month, end.Day, end.Hour, end.Minute, end.Second);
+                break;
+            default:
+                start = new DateTime(today.Year, 1, 1, 0, 0, 0);
+                end = new DateTime(today.Year, today.Month, end.Day, end.Hour, end.Minute, end.Second);
+                break;
+        }
+
+        return (start, end);
+    }
+
+    private List<(TransactionEntity transaction, StudentEntity student)> transactionList = [];
+    public List<(int quantity, double total)> getSummary()
+    {
+        (int quantity, double total) validSummary = (0, 0);
+        (int quantity, double total) invalidSummary = (0, 0);
+        foreach (var item in transactionList)
+        {
+            if (item.transaction.isValid)
+            {
+                validSummary.quantity++;
+                validSummary.total += item.transaction.total;
+            }
+            else
+            {
+                invalidSummary.quantity++;
+                invalidSummary.total += item.transaction.total;
+            }
+        }
+        
+        return [validSummary, invalidSummary];
     }
 }

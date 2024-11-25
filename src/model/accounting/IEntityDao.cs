@@ -9,7 +9,11 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<StudentEntity> getWithoutPropertiesById(string studentId);
 }
 
-public interface ITransactionDao : IGenericDao<TransactionEntity, string>;
+public interface ITransactionDao : IGenericDao<TransactionEntity, string>
+{
+    public Task<List<(TransactionEntity transaction, model.academy.StudentEntity student)>> getByRange(DateTime start, DateTime end);
+}
+
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
 
 public interface IExchangeRateDao : IGenericDao<ExchangeRateEntity, int>
