@@ -11,7 +11,7 @@ public class TransactionReportDto
     public double amount { get; set; }
     public int type { get; set; }
     
-    public TransactionReportDto(TransactionEntity transaction, StudentEntity student)
+    public TransactionReportDto(TransactionEntity transaction, model.academy.StudentEntity student)
     {
         number = transaction.number;
         datetime = transaction.date;
