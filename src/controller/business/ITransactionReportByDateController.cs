@@ -1,4 +1,5 @@
 using wsmcbl.src.model.accounting;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
