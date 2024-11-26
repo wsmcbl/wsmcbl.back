@@ -23,6 +23,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     public async Task<List<TransactionReportView>> getByRange(DateTime start, DateTime end)
     {
         return await context.Set<TransactionReportView>()
+            .Where(e => e.dateTime >= start && e.dateTime <= end)
             .ToListAsync();
     }
 }
