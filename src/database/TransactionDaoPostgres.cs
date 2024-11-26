@@ -24,6 +24,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         return await context.Set<TransactionReportView>()
             .Where(e => e.dateTime >= start && e.dateTime <= end)
+            .OrderByDescending(e => e.number)
             .ToListAsync();
     }
 }

@@ -112,7 +112,7 @@ public class StudentDaoPostgres(PostgresContext context)
         var query = $@"SELECT s.* FROM secretary.student s
                     INNER JOIN accounting.debthistory d ON d.studentid = s.studentid
                     LEFT JOIN academy.student aca on aca.studentid = s.studentid
-                    WHERE ({tariffsId}) AND (d.debtbalance / d.amount) > 0.45 AND aca.enrollmentid is NULL;";
+                    WHERE ({tariffsId}) AND (d.debtbalance / d.amount) > 0.99 AND aca.enrollmentid is NULL;";
         
         return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
     }
