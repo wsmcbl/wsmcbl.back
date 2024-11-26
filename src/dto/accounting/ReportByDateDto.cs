@@ -16,7 +16,7 @@ public class ReportByDateDto
 
     public List<TransactionReportDto> transactionList { get; set; } = [];
 
-    public void setTransactionList(IEnumerable<(TransactionEntity transaction, StudentEntity student)> list)
+    public void setTransactionList(IEnumerable<TransactionReportView> list)
     {
         transactionList = list.mapToListDto();
     }
