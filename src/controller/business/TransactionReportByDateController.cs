@@ -43,10 +43,10 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
                 end = end.Date.AddHours(6).AddSeconds(-1);
                 break;
             case 3:
-                start = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+                start = new DateTime(now.Year, now.Month, 1, 6, 0, 0, DateTimeKind.Utc);
                 break;
             case 4:
-                start = new DateTime(now.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                start = new DateTime(now.Year, 1, 1, 6, 0, 0, DateTimeKind.Utc);
                 break;
         }
 

@@ -19,4 +19,4 @@
 
 ## Version
 
-* 3.0.0 - SNAPSHOT
+* 3.1.0 - SNAPSHOT
