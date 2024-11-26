@@ -148,11 +148,10 @@ internal class AccountingContext
             entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
             entity.Property(e => e.date).HasColumnName("date");
             entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.isValid).HasColumnName("isvalid");
 
             entity.HasMany(t => t.details).WithOne()
                 .HasForeignKey(tt => tt.transactionId);
-
-            entity.Ignore(e => e.isValid);
         });
 
         modelBuilder.Entity<TransactionTariffEntity>(entity =>
@@ -171,7 +170,18 @@ internal class AccountingContext
 
     private void createView()
     {
-        modelBuilder.Entity<TransactionReportView>().ToView("transaction_report_view", "accounting").HasNoKey();
-        modelBuilder.Entity<TransactionReportView>().Property(e => e.transactionId).IsRequired(); 
+        modelBuilder.Entity<TransactionReportView>(entity =>
+        {
+            entity.ToView("transaction_report_view", "accounting").HasNoKey();
+            entity.Property(e => e.transactionId).HasColumnName("transactionid").IsRequired();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.number).HasColumnName("number");
+            entity.Property(e => e.studentName).HasColumnName("studentname");
+            entity.Property(e => e.type).HasColumnName("type");
+            entity.Property(e => e.enrollmentLabel).HasColumnName("enrollmentlabel");
+            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.isValid).HasColumnName("isvalid");
+            entity.Property(e => e.dateTime).HasColumnName("datetime");
+        });
     }
 }
