@@ -61,7 +61,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
         (int quantity, double total) invalidSummary = (0, 0);
         foreach (var item in transactionList)
         {
-            if (item.isvalid)
+            if (item.isValid)
             {
                 validSummary.quantity++;
                 validSummary.total += item.total;

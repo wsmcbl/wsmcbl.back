@@ -15,10 +15,10 @@ public class TransactionReportDto
     public TransactionReportDto(TransactionReportView view)
     {
         number = view.number;
-        datetime = view.datetime.toStringUtc6();
+        datetime = view.dateTime.toStringUtc6();
         amount = view.total;
         type = view.type;
-        studentName = view.studentname;
-        isValid = view.isvalid;
+        studentName = view.studentName;
+        isValid = view.isValid;
     }
 }
