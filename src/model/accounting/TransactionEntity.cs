@@ -32,9 +32,4 @@ public class TransactionEntity
     {
         return details.Select(item => item.tariffId).ToList();
     }
-
-    public int getTariffPaidType()
-    {
-        throw new NotImplementedException();
-    }
 }

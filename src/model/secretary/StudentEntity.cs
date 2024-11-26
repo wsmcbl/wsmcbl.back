@@ -110,7 +110,7 @@ public class StudentEntity
 
         public Builder setSecondName(string? secondName)
         {
-            entity.secondName = secondName ?? string.Empty;
+            entity.secondName = secondName;
             return this;
         }
 
@@ -122,7 +122,7 @@ public class StudentEntity
 
         public Builder setSecondSurname(string? secondSurname)
         {
-            entity.secondSurname = secondSurname ?? string.Empty;
+            entity.secondSurname = secondSurname;
             return this;
         }
 
