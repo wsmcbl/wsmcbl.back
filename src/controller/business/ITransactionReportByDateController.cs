@@ -8,4 +8,5 @@ public interface ITransactionReportByDateController
     public Task<string> getUserName(string getAuthenticatedUserId);
     public (DateTime start, DateTime end) getDateRange(int range);
     public List<(int quantity, double total)> getSummary();
+    public Task<List<TariffTypeEntity>> getTariffTypeList();
 }

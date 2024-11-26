@@ -75,4 +75,18 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
 
         return [validSummary, invalidSummary];
     }
+
+    public async Task<List<TariffTypeEntity>> getTariffTypeList()
+    {
+        var controller = new CollectTariffController(daoFactory);
+
+        var result = await controller.getTariffTypeList();
+        result.Add(new TariffTypeEntity
+        {
+            typeId = 0,
+            description = "Variados"
+        });
+
+        return result;
+    }
 }
