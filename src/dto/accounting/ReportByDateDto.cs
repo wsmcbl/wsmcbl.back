@@ -24,7 +24,7 @@ public class ReportByDateDto
 
     public void setDateRage((DateTime start, DateTime end) value)
     {
-        startDate = value.start;
+        startDate = value.start.toUTC6();
         endDate = value.end.toUTC6();
     }
 
