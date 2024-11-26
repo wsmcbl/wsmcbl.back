@@ -32,21 +32,21 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
     public (DateTime start, DateTime end) getDateRange(int range)
     {
         var now = DateTime.UtcNow;
-        
-        start = now.Date;
+
+        start = now.Date.AddHours(6);
         end = now;
-        
-        switch (range)  
+
+        switch (range)
         {
             case 2:
                 start = start.AddDays(-1);
                 end = end.Date.AddHours(6).AddSeconds(-1);
                 break;
             case 3:
-                start = new DateTime(now.Year, now.Month, 1);
+                start = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
                 break;
             case 4:
-                start = new DateTime(now.Year, 1, 1);
+                start = new DateTime(now.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 break;
         }
 
@@ -54,6 +54,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
     }
 
     private List<TransactionReportView> transactionList = [];
+
     public List<(int quantity, double total)> getSummary()
     {
         (int quantity, double total) validSummary = (0, 0);
@@ -71,7 +72,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
                 invalidSummary.total += item.total;
             }
         }
-        
+
         return [validSummary, invalidSummary];
     }
 }
