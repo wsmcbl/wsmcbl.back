@@ -1,14 +1,13 @@
 using System.Security.Authentication;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
-using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory),
     ITransactionReportByDateController
 {
-    public async Task<List<(TransactionEntity, StudentEntity)>> getTransactionList(int range)
+    public async Task<List<TransactionReportView>> getTransactionList(int range)
     {
         getDateRange(range);
         transactionList = await daoFactory.transactionDao!.getByRange(start, end);
@@ -55,22 +54,22 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
         return (start, end);
     }
 
-    private List<(TransactionEntity transaction, StudentEntity student)> transactionList = [];
+    private List<TransactionReportView> transactionList = [];
     public List<(int quantity, double total)> getSummary()
     {
         (int quantity, double total) validSummary = (0, 0);
         (int quantity, double total) invalidSummary = (0, 0);
         foreach (var item in transactionList)
         {
-            if (item.transaction.isValid)
+            if (item.isvalid)
             {
                 validSummary.quantity++;
-                validSummary.total += item.transaction.total;
+                validSummary.total += item.total;
             }
             else
             {
                 invalidSummary.quantity++;
-                invalidSummary.total += item.transaction.total;
+                invalidSummary.total += item.total;
             }
         }
         

@@ -1,4 +1,5 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.dto.accounting;
@@ -6,9 +7,9 @@ namespace wsmcbl.src.dto.accounting;
 public class ReportByDateDto
 {
     public string userName { get; set; } = string.Empty;
-    public DateTime consultedIn { get; set; } = DateTime.Now;
-    public DateTime start { get; set; }
-    public DateTime end { get; set; }
+    public string consultedIn { get; set; } = DateTime.UtcNow.toStringUtc6();
+    public DateTime startDate { get; set; }
+    public DateTime endDate { get; set; }
     public int validQuantity { get; set; }
     public double validTotal { get; set; }
     public int invalidQuantity { get; set; }
@@ -16,15 +17,15 @@ public class ReportByDateDto
 
     public List<TransactionReportDto> transactionList { get; set; } = [];
 
-    public void setTransactionList(IEnumerable<(TransactionEntity transaction, StudentEntity student)> list)
+    public void setTransactionList(IEnumerable<TransactionReportView> list)
     {
         transactionList = list.mapToListDto();
     }
 
     public void setDateRage((DateTime start, DateTime end) value)
     {
-        start = value.start;
-        end = value.end;
+        startDate = value.start.toUTC6();
+        endDate = value.end.toUTC6();
     }
 
     public void setValidTransactionData((int quantity, double total) value)

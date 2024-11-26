@@ -172,6 +172,6 @@ internal class AccountingContext
     private void createView()
     {
         modelBuilder.Entity<TransactionReportView>().ToView("transaction_report_view", "accounting").HasNoKey();
-        modelBuilder.Entity<TransactionReportView>().Property(e => e.transactionId).IsRequired(); 
+        modelBuilder.Entity<TransactionReportView>().Property(e => e.transactionid).IsRequired(); 
     }
 }
