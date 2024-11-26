@@ -1,4 +1,5 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.dto.accounting;
@@ -6,9 +7,9 @@ namespace wsmcbl.src.dto.accounting;
 public class ReportByDateDto
 {
     public string userName { get; set; } = string.Empty;
-    public DateTime consultedIn { get; set; } = DateTime.Now;
-    public DateTime start { get; set; }
-    public DateTime end { get; set; }
+    public string consultedIn { get; set; } = DateTime.UtcNow.ToString();
+    public string? start { get; set; }
+    public string? end { get; set; }
     public int validQuantity { get; set; }
     public double validTotal { get; set; }
     public int invalidQuantity { get; set; }
@@ -23,8 +24,8 @@ public class ReportByDateDto
 
     public void setDateRage((DateTime start, DateTime end) value)
     {
-        start = value.start;
-        end = value.end;
+        start = value.start.toUTC6().ToString();
+        end = value.end.toUTC6().ToString();
     }
 
     public void setValidTransactionData((int quantity, double total) value)

@@ -1,12 +1,13 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.dto.accounting;
 
 public class TransactionReportDto
 {
-    public string number { get; set; }
+    public int number { get; set; }
     public string studentName { get; set; }
-    public DateTime datetime { get; set; }
+    public string datetime { get; set; }
     public double amount { get; set; }
     public int type { get; set; }
     public bool isValid { get; set; }
@@ -14,10 +15,10 @@ public class TransactionReportDto
     public TransactionReportDto(TransactionReportView view)
     {
         number = view.number;
-        datetime = view.dateTime;
+        datetime = view.datetime.toUTC6().ToString();
         amount = view.total;
         type = view.type;
-        studentName = view.studentName;
-        isValid = view.isValid;
+        studentName = view.studentname;
+        isValid = view.isvalid;
     }
 }
