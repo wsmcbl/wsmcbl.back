@@ -36,7 +36,8 @@ public class TransactionDto
             studentId = studentId!,
             cashierId = cashierId!,
             date = dateTime,
-            total = 0
+            total = 0,
+            isValid = true
         };
 
         foreach (var item in details)
