@@ -7,9 +7,9 @@ namespace wsmcbl.src.dto.accounting;
 public class ReportByDateDto
 {
     public string userName { get; set; } = string.Empty;
-    public string consultedIn { get; set; } = DateTime.UtcNow.ToString();
-    public string? start { get; set; }
-    public string? end { get; set; }
+    public string consultedIn { get; set; } = DateTime.UtcNow.toStringUtc6();
+    public DateTime startDate { get; set; }
+    public DateTime endDate { get; set; }
     public int validQuantity { get; set; }
     public double validTotal { get; set; }
     public int invalidQuantity { get; set; }
@@ -24,8 +24,8 @@ public class ReportByDateDto
 
     public void setDateRage((DateTime start, DateTime end) value)
     {
-        start = value.start.toUTC6().ToString();
-        end = value.end.toUTC6().ToString();
+        startDate = value.start.toUTC6();
+        endDate = value.end.toUTC6();
     }
 
     public void setValidTransactionData((int quantity, double total) value)

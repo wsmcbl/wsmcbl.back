@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 
 namespace wsmcbl.src.utilities;
@@ -10,6 +11,20 @@ public static class Utility
         return TimeZoneInfo.ConvertTimeFromUtc(datetime, timeZoneUTC6);
     }
 
+    
+    public static string toStringUtc6(this DateTime datetime)
+    {
+        var culture = new CultureInfo("es-ES")
+        {
+            DateTimeFormat =
+            {
+                AMDesignator = "AM",
+                PMDesignator = "PM"
+            }
+        };
+
+        return datetime.toUTC6().ToString("ddd. dd/MMM/yyyy, h:mm tt", culture);
+    }
     
     public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
     {
