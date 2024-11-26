@@ -1,4 +1,3 @@
-using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.accounting;
@@ -11,7 +10,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>
 {
-    public Task<List<(TransactionEntity transaction, model.academy.StudentEntity student)>> getByRange(DateTime start, DateTime end);
+    public Task<List<TransactionReportView>> getByRange(DateTime start, DateTime end);
 }
 
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
