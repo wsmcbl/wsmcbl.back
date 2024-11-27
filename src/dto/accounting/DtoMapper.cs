@@ -16,6 +16,8 @@ public static class DtoMapper
         => new(student, modality);
     private static TransactionReportDto mapToDto(this TransactionReportView value)
         => new(value);
+
+    private static TransactionToListDto mapToListDto(this TransactionReportView value) => new(value);
     
     private static BasicStudentDto mapToBasicDto(this StudentEntity value) => new(value); 
     
@@ -27,4 +29,7 @@ public static class DtoMapper
     
     public static List<TransactionReportDto> mapToListDto(this IEnumerable<TransactionReportView> value)
         => value.Select(e => e.mapToDto()).ToList();
+    
+    public static List<TransactionToListDto> mapToTransactionListDto(this IEnumerable<TransactionReportView> value)
+        => value.Select(e => e.mapToListDto()).ToList();
 }
