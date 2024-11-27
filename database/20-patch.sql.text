@@ -29,3 +29,10 @@ FROM accounting.transaction t
      accounting.tariff ta ON tt.tariffId = ta.tariffId
 GROUP BY t.transactionId, t.number, s.studentId, s.name, s.secondsurname, s.surname, s.secondsurname, t.total, t.date,
          e.label, t.isvalid;
+         
+-- initials_part := LOWER(SUBSTR(NEW.name, 1, 1)
+-- || COALESCE(SUBSTR(NEW.secondname, 1, 1), '')
+-- || SUBSTR(NEW.surname, 1, 1) 
+-- || COALESCE(SUBSTR(NEW.secondsurname, 1, 1), ''));         
+         
+         
