@@ -27,4 +27,11 @@ public class TransactionDaoPostgres(PostgresContext context)
             .OrderByDescending(e => e.number)
             .ToListAsync();
     }
+
+    public async Task<List<TransactionReportView>> getViewAll()
+    {
+        return await context.Set<TransactionReportView>()
+            .OrderByDescending(e => e.number)
+            .ToListAsync();
+    }
 }
