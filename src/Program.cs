@@ -40,6 +40,7 @@ builder.Services.AddTransient<IResourceController, ResourceController>();
 builder.Services.AddTransient<ILoginController, LoginController>();
 
 builder.Services.AddTransient<ITransactionReportByDateController, TransactionReportByDateController>();
+builder.Services.AddTransient<ICancelTransactionController, CancelTransactionController>();
 
 var app = builder.Build();
 
