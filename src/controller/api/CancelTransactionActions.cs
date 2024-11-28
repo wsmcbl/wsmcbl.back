@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.middleware;
-using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.controller.api;
 
@@ -11,6 +11,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CancelTransactionActions(ICancelTransactionController controller) : ActionsBase
 {
+    
     /// <summary>
     ///  Returns the list of all transactions.
     /// </summary>
@@ -22,7 +23,7 @@ public class CancelTransactionActions(ICancelTransactionController controller) :
     public async Task<ActionResult> getTransactionList()
     {
         var result = await controller.getTransactionList();
-        return Ok(result);
+        return Ok(result.mapToTransactionListDto());
     }
     
     
@@ -36,7 +37,6 @@ public class CancelTransactionActions(ICancelTransactionController controller) :
     [Route("transactions/{transactionId}")]
     public async Task<ActionResult> cancelTransaction([Required] string transactionId)
     {
-        var result = await controller.cancelTransaction(transactionId);
-        return Ok(result);
+        return Ok(await controller.cancelTransaction(transactionId));
     }
 }
