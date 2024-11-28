@@ -6,7 +6,7 @@ CREATE VIEW accounting.transaction_report_view AS
 SELECT t.transactionId,
        t.number,
        s.studentId,
-       concat_ws(' ', s.name, s.secondsurname, s.surname, s.secondsurname) as studentName,
+       concat_ws(' ', s.name, s.secondname, s.surname, s.secondsurname) as studentName,
        t.total,
        t.date as dateTime,
        t.isvalid,
@@ -27,9 +27,10 @@ FROM accounting.transaction t
      accounting.transaction_tariff tt ON t.transactionId = tt.transactionId
          LEFT JOIN
      accounting.tariff ta ON tt.tariffId = ta.tariffId
-GROUP BY t.transactionId, t.number, s.studentId, s.name, s.secondsurname, s.surname, s.secondsurname, t.total, t.date,
+GROUP BY t.transactionId, t.number, s.studentId, s.name, s.secondname, s.surname, s.secondsurname, t.total, t.date,
          e.label, t.isvalid;
-         
+
+-- FUNCTION: generate_student_id()         
 -- initials_part := LOWER(SUBSTR(NEW.name, 1, 1)
 -- || COALESCE(SUBSTR(NEW.secondname, 1, 1), '')
 -- || SUBSTR(NEW.surname, 1, 1) 
