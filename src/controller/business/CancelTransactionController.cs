@@ -24,6 +24,7 @@ public class CancelTransactionController(DaoFactory daoFactory) : BaseController
             throw new ConflictException("The transaction is already cancelled.");
         }
 
+        await daoFactory.debtHistoryDao!.restoreDebt(transactionId);
         exitingTransaction.isValid = false;
         await daoFactory.execute();
         return exitingTransaction;
