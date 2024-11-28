@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.database;
@@ -60,5 +61,37 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             .Where(e => tariffIdList.Contains(e.tariffId))
             .Include(e => e.tariff)
             .ToListAsync();
+    }
+
+    public async Task restoreDebt(string transactionId)
+    {
+        var transaction = await context.Set<TransactionEntity>()
+            .Include(e => e.details)
+            .FirstOrDefaultAsync(e => e.transactionId == transactionId);
+
+        if (transaction == null)
+        {
+            throw new EntityNotFoundException("transaction", transactionId);
+        }
+
+        if (!transaction.isValid)
+        {
+            throw new ConflictException("The transaction is already cancelled.");
+        }
+
+        var debtList = await entities.Where(e => e.studentId == transaction.studentId).ToListAsync();
+
+        foreach (var item in transaction.details)
+        {
+            var debt = debtList.FirstOrDefault(e => e.tariffId == item.tariffId);
+            
+            if (debt == null)
+            {
+                continue;
+            }
+            
+            debt.debtBalance -= item.amount;
+            update(debt);
+        }
     }
 }
