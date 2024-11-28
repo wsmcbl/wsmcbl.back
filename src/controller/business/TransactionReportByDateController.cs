@@ -33,14 +33,14 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
     {
         var now = DateTime.UtcNow;
 
-        start = now.Date.AddHours(6);
+        start = now.Hour > 6 ? now.Date.AddHours(6) : now.Date.AddDays(-1).AddHours(6);
         end = now;
 
         switch (range)
         {
             case 2:
+                end = start.AddSeconds(-1);
                 start = start.AddDays(-1);
-                end = end.Date.AddHours(6).AddSeconds(-1);
                 break;
             case 3:
                 start = new DateTime(now.Year, now.Month, 1, 6, 0, 0, DateTimeKind.Utc);
