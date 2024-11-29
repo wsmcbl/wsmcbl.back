@@ -1,4 +1,5 @@
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.dto.accounting;
 
@@ -20,7 +21,7 @@ public class TransactionToListDto
         studentName = value.studentName;
         enrollmentLabel = value.enrollmentLabel ??= "Sin matrícula";
         total = value.total;
-        dateTime = value.dateTime;
+        dateTime = value.dateTime.toUTC6();
         type = value.type;
         isValid = value.isValid;
     }
