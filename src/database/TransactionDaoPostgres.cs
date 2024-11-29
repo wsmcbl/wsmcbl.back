@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
-using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -25,6 +24,7 @@ public class TransactionDaoPostgres(PostgresContext context)
         return await context.Set<TransactionReportView>()
             .Where(e => e.dateTime >= start && e.dateTime <= end)
             .OrderByDescending(e => e.number)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -32,6 +32,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         return await context.Set<TransactionReportView>()
             .OrderByDescending(e => e.number)
+            .AsNoTracking()
             .ToListAsync();
     }
 }

@@ -60,6 +60,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             .Where(e => e.studentId == transaction.studentId)
             .Where(e => tariffIdList.Contains(e.tariffId))
             .Include(e => e.tariff)
+            .AsNoTracking()
             .ToListAsync();
     }
 
