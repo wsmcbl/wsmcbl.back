@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using wsmcbl.src.exception;
 
 namespace wsmcbl.src.middleware;
 
@@ -38,11 +37,7 @@ public class ApiExceptionHandler
         {
             Status = statusCode,
             Title = "An error occurred while processing your request.",
-            Detail = exception.Message,
-            Extensions = new Dictionary<string, object?>
-            {
-                { "trace", exception.StackTrace }
-            } 
+            Detail = exception.Message
         };
 
         return context.Response.WriteAsJsonAsync(problemDetails);

@@ -23,8 +23,6 @@ services:
       - ConnectionStrings__DefaultConnection=Host=database;Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}
       - Resource_Directory=resource
       - JWT_KEY=${JWT_KEY}
-    ports:
-      - '4000:8080'
     depends_on:
       - database
     networks:

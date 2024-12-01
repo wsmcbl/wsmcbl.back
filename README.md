@@ -19,4 +19,4 @@
 
 ## Version
 
-* 3.1.1 - SNAPSHOT
+* 3.1.1 - BETA
