@@ -1,5 +1,6 @@
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
-using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -10,4 +11,5 @@ public interface IResourceController
     public Task<MediaEntity> updateMedia(MediaEntity media);
     public Task<MediaEntity> createMedia(MediaEntity media);
     public Task<List<MediaEntity>> getMediaList();
+    public Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId);
 }

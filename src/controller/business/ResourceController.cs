@@ -1,7 +1,8 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
-using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -42,5 +43,12 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     public async Task<List<MediaEntity>> getMediaList()
     {
         return await daoFactory.mediaDao!.getAll();
+    }
+
+    public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
+    {
+        var result = await daoFactory.debtHistoryDao!.forgiveADebt(studentId, tariffId);
+        await daoFactory.execute();
+        return result;
     }
 }
