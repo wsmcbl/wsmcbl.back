@@ -53,7 +53,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.ReplaceInLatexFormat("address.value", entity.address);
         
         content = content.ReplaceInLatexFormat("secretary.name.value", userName);
-        content = content.ReplaceInLatexFormat("current.datetime.value", getDateTimeNow());
+        content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
         content = content.ReplaceInLatexFormat("student.id.value", entity.studentId);
         content = content.ReplaceInLatexFormat("student.token.value", entity.accessToken);
 
@@ -77,20 +77,6 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
         var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
         return date.ToString(format, culture);
-    }
-    
-    private static string getDateTimeNow()
-    {
-        var culture = new CultureInfo("es-ES")
-        {
-            DateTimeFormat =
-            {
-                AMDesignator = "am",
-                PMDesignator = "pm"
-            }
-        };
-        
-        return DateTime.UtcNow.toUTC6().ToString("dddd dd/MMM/yyyy, hh:mm tt", culture);
     }
 
     private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
