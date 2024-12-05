@@ -7,25 +7,24 @@ namespace wsmcbl.src.controller.business;
 public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
     : BaseController(daoFactory), IMoveStudentFromEnrollmentController
 {
-    public async Task<StudentEntity> changeStudentEnrollment(string studentId, string enrollmentId)
+    public async Task<StudentEntity> changeStudentEnrollment(StudentEntity studentValue, string enrollmentId)
     {
-        var student = await isStudentValid(studentId, enrollmentId);
-        var enrollment = await getEntities(enrollmentId);
+        var enrollment = await getEnrollment(enrollmentId);
         
-        var oldEnrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var oldEnrollment = await daoFactory.enrollmentDao!.getById(studentValue.enrollmentId!);
         oldEnrollment!.quantity--;
         
-        student.enrollmentId = enrollmentId;
+        studentValue.enrollmentId = enrollmentId;
         enrollment.quantity++;
 
-        daoFactory.academyStudentDao!.update(student);
+        daoFactory.academyStudentDao!.update(studentValue);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
 
-        return student;
+        return studentValue;
     }
 
-    public async Task<StudentEntity> isStudentValid(string studentId, string enrollmentId)
+    public async Task<StudentEntity> getValidStudent(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getById(studentId);
 
@@ -40,15 +39,10 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
             throw new ConflictException("This student cannot move from enrollment.");
         }
 
-        if (student.enrollmentId == enrollmentId)
-        {
-            throw new ConflictException("The student is already in this enrollment.");
-        }
-
         return student;
     }
 
-    private async Task<EnrollmentEntity> getEntities(string enrollmentId)
+    private async Task<EnrollmentEntity> getEnrollment(string enrollmentId)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
         if (enrollment == null)
