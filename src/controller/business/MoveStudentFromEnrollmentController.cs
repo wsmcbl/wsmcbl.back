@@ -7,14 +7,12 @@ namespace wsmcbl.src.controller.business;
 public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
     : BaseController(daoFactory), IMoveStudentFromEnrollmentController
 {
-    public async Task<StudentEntity> changeStudentEnrollment(StudentEntity studentValue, string enrollmentId)
+    public async Task<StudentEntity> changeStudentEnrollment(StudentEntity studentValue, EnrollmentEntity enrollment)
     {
-        var enrollment = await getEnrollment(enrollmentId);
-        
         var oldEnrollment = await daoFactory.enrollmentDao!.getById(studentValue.enrollmentId!);
         oldEnrollment!.quantity--;
         
-        studentValue.enrollmentId = enrollmentId;
+        studentValue.enrollmentId = enrollment.enrollmentId;
         enrollment.quantity++;
 
         daoFactory.academyStudentDao!.update(studentValue);
@@ -24,7 +22,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
         return studentValue;
     }
 
-    public async Task<StudentEntity> getValidStudent(string studentId)
+    public async Task<StudentEntity> getStudentOrFailed(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getById(studentId);
 
@@ -42,7 +40,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
         return student;
     }
 
-    private async Task<EnrollmentEntity> getEnrollment(string enrollmentId)
+    public async Task<EnrollmentEntity> getEnrollmentOrFailed(string enrollmentId, string oldEnrollmentId)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
         if (enrollment == null)
@@ -51,5 +49,14 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
         }
 
         return enrollment;
+    }
+
+    public async Task<bool> isThereAnActivePartial()
+    {
+        var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+
+        var result = partialList.FirstOrDefault(e => e.isActive);
+        
+        return result != null;
     }
 }
