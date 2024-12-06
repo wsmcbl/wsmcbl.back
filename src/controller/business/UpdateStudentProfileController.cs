@@ -9,8 +9,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory)
 {
     public async Task updateStudent(StudentEntity student)
     {
-        daoFactory.studentDao!.update(student);
-        await daoFactory.execute();
+        await student.saveChanges(daoFactory);
     }
     
     public async Task updateProfilePicture(string studentId, byte[] picture)
@@ -22,6 +21,20 @@ public class UpdateStudentProfileController(DaoFactory daoFactory)
         }
         
         student.profilePicture = picture;
+        await daoFactory.execute();
+    }
+    
+    public async Task updateStudentDiscount(string studentId, int discountId)
+    {
+        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+
+        accountingStudent.discountId = discountId switch
+        {
+            2 => accountingStudent.educationalLevel + 3,
+            3 => accountingStudent.educationalLevel + 6,
+            _ => accountingStudent.discountId
+        };
+
         await daoFactory.execute();
     }
 }
