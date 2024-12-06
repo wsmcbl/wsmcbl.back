@@ -53,6 +53,6 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
             throw new EntityNotFoundException("Enrollment", enrollmentId);
         }
 
-        return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.enrollmentId);
+        return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.degreeId);
     }
 }
