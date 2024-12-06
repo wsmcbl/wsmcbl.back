@@ -29,19 +29,14 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
     public async Task<StudentEntity> getStudentOrFailed(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getById(studentId);
-
         if (student == null)
         {
             throw new EntityNotFoundException("student", studentId);
         }
 
-        if (student.enrollmentId == null)
-        {
-            throw new ConflictException("This student is not enrolled.");
-        }
-
-        var current = await daoFactory.schoolyearDao!.getCurrentSchoolyear();
-        if (student.schoolYear != current.id)
+        var current = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
+        var schoolyear = current.newSchoolyear != string.Empty ? current.newSchoolyear : current.currentSchoolyear;
+        if (student.schoolYear != schoolyear)
         {
             throw new ConflictException("This student cannot move from enrollment.");
         }
