@@ -9,6 +9,10 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
 {
     public async Task<StudentEntity> changeStudentEnrollment(StudentEntity studentValue, EnrollmentEntity enrollment)
     {
+        /*
+         * Se tiene que verificar si el primer semestre ya empezó para bloquear la acción de mover de grado (Solo a sección).
+         */
+        
         var oldEnrollment = await daoFactory.enrollmentDao!.getById(studentValue.enrollmentId!);
         oldEnrollment!.quantity--;
         
@@ -31,6 +35,11 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
             throw new EntityNotFoundException("student", studentId);
         }
 
+        if (student.enrollmentId == null)
+        {
+            throw new ConflictException("This student is not enrolled.");
+        }
+
         var current = await daoFactory.schoolyearDao!.getCurrentSchoolyear();
         if (student.schoolYear != current.id)
         {
@@ -48,6 +57,13 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
             throw new EntityNotFoundException("enrollment", enrollmentId);
         }
 
+        var degree = await daoFactory.degreeDao!.getByEnrollmentId(enrollmentId);
+        var oldDegree = await daoFactory.degreeDao!.getByEnrollmentId(oldEnrollmentId);
+        if (degree.educationalLevel != oldDegree.educationalLevel)
+        {
+            throw new ConflictException("It is not possible to move this student to another educational level.");
+        }
+
         return enrollment;
     }
 
@@ -55,7 +71,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
     {
         var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
 
-        var result = partialList.FirstOrDefault(e => e.isActive);
+        var result = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
         
         return result != null;
     }
