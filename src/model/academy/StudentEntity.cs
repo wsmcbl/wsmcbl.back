@@ -52,9 +52,4 @@ public class StudentEntity
     {
         return DateOnly.FromDateTime(createdAt.toUTC6());
     }
-
-    public void setStudent(secretary.StudentEntity value)
-    {
-        student = value;
-    }
 }
