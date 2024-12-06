@@ -59,7 +59,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
 
         var degree = await daoFactory.degreeDao!.getByEnrollmentId(enrollmentId);
         var oldDegree = await daoFactory.degreeDao!.getByEnrollmentId(oldEnrollmentId);
-        if (degree.educationalLevel != oldDegree.educationalLevel)
+        if (degree!.educationalLevel != oldDegree!.educationalLevel)
         {
             throw new ConflictException("It is not possible to move this student to another educational level.");
         }
