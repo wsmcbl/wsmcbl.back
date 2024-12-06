@@ -7,7 +7,8 @@ using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.database;
 
-public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class AcademyStudentDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
     public async Task<StudentEntity> getByIdInCurrentSchoolyear(string studentId)
     {
@@ -22,13 +23,19 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
             .Include(e => e.student)
             .AsNoTracking()
             .FirstOrDefaultAsync();
-        
+
         if (result == null)
         {
             throw new EntityNotFoundException("AcademyStudent", studentId);
         }
 
         return result;
+    }
+
+    public async Task updateEnrollment(string studentId, string enrollmentId)
+    {
+        FormattableString query = $@"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
+        await context.Database.ExecuteSqlAsync(query);
     }
 
     public new async Task<StudentEntity?> getById(string studentId)
