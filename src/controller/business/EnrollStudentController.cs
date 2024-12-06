@@ -5,7 +5,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory), IEnrollStudentController
+public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {

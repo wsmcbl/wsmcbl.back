@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
-public class CollectTariffActions(ICollectTariffController controller) : ControllerBase
+public class CollectTariffActions(CollectTariffController controller) : ControllerBase
 {
     /// <summary>
     ///  Returns the list of active students.

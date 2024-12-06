@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary","cashier")]
 [Route("accounting")]
 [ApiController]
-public class CreateStudentProfileActions(ICreateStudentProfileController controller) : ControllerBase
+public class CreateStudentProfileActions(CreateStudentProfileController controller) : ControllerBase
 {
     /// <summary>
     /// Create a new student profile to collect tariff

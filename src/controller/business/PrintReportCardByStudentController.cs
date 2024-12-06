@@ -8,7 +8,7 @@ using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 namespace wsmcbl.src.controller.business;
 
 public class PrintReportCardByStudentController(DaoFactory daoFactory)
-    : BaseController(daoFactory), IPrintReportCardByStudentController
+    : BaseController(daoFactory)
 {
     public async Task<StudentEntity> getStudentGradesInformation(string studentId)
     {

@@ -4,7 +4,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class MoveTeacherGuideFromEnrollmentController : BaseController, IMoveTeacherGuideFromEnrollmentController
+public class MoveTeacherGuideFromEnrollmentController : BaseController
 {
     private readonly CreateOfficialEnrollmentController controller;
 

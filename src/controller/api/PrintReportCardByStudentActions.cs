@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("academy/")]
 [ApiController]
-public class PrintReportCardByStudentActions(IPrintReportCardByStudentController controller) : ControllerBase
+public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ControllerBase
 {
     [HttpGet]
     [Route("students/{studentId}")]

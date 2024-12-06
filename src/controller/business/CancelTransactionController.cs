@@ -4,7 +4,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class CancelTransactionController(DaoFactory daoFactory) : BaseController(daoFactory), ICancelTransactionController
+public class CancelTransactionController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<TransactionReportView>> getTransactionList()
     {

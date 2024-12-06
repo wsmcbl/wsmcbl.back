@@ -5,7 +5,7 @@ using wsmcbl.src.model.secretary;
 namespace wsmcbl.src.controller.business;
 
 public class UpdateStudentProfileController(DaoFactory daoFactory)
-    : BaseController(daoFactory), IUpdateStudentProfileController
+    : BaseController(daoFactory)
 {
     public async Task updateStudent(StudentEntity student)
     {

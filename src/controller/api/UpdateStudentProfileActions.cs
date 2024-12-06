@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin", "secretary")]
 [Route("secretary")]
 [ApiController]
-public class UpdateStudentProfileActions(IUpdateStudentProfileController controller) : ActionsBase
+public class UpdateStudentProfileActions(UpdateStudentProfileController controller) : ActionsBase
 {
     /// <summary>Update student information.</summary>
     /// <response code="200">Returns the modified resource.</response>

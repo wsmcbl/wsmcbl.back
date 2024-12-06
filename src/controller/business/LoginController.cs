@@ -5,7 +5,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class LoginController : BaseController, ILoginController
+public class LoginController : BaseController
 {
     private JwtGenerator jwtGenerator { get; }
     private UserAuthenticator userAuthenticator { get; }

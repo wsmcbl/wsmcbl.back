@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("academy")]
 [ApiController]
-public class MoveStudentFromEnrollmentActions(IMoveStudentFromEnrollmentController controller) : ActionsBase
+public class MoveStudentFromEnrollmentActions(MoveStudentFromEnrollmentController controller) : ActionsBase
 {
     /// <summary>
     ///  Change student from enrollment

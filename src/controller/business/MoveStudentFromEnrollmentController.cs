@@ -4,22 +4,21 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
-    : BaseController(daoFactory), IMoveStudentFromEnrollmentController
+public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<StudentEntity> changeStudentEnrollment(StudentEntity studentValue, EnrollmentEntity enrollment)
     {
         /*
          * Se tiene que verificar si el primer semestre ya empezó para bloquear la acción de mover de grado (Solo a sección).
          */
-        
+
         var oldEnrollment = await daoFactory.enrollmentDao!.getById(studentValue.enrollmentId!);
         oldEnrollment!.quantity--;
-        
+
         enrollment.quantity++;
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
-        
+
         await daoFactory.academyStudentDao!.updateEnrollment(studentValue.studentId, enrollment.enrollmentId!);
         studentValue.enrollmentId = enrollment.enrollmentId;
 
@@ -67,7 +66,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
         var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
 
         var result = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
-        
+
         return result != null;
     }
 }

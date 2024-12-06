@@ -6,7 +6,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateOfficialEnrollmentController : BaseController, ICreateOfficialEnrollmentController
+public class CreateOfficialEnrollmentController : BaseController
 {
     public CreateOfficialEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
     {

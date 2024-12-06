@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
-using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -11,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("secretary/")]
 [ApiController]
-public class EnrollStudentActions(IEnrollStudentController controller) : ActionsBase
+public class EnrollStudentActions(EnrollStudentController controller) : ActionsBase
 {
     /// <summary>
     ///  Returns the list of students with solvency.

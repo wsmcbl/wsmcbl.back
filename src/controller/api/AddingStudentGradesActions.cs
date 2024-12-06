@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","teacher")]
 [Route("academy")]
 [ApiController]
-public class AddingStudentGradesActions(IAddingStudentGradesController controller) : ControllerBase
+public class AddingStudentGradesActions(AddingStudentGradesController controller) : ControllerBase
 {
     /// <summary>
     ///  Returns the list of active enrollment by teacher id.

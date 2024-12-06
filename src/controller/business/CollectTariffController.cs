@@ -5,7 +5,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class CollectTariffController : BaseController, ICollectTariffController
+public class CollectTariffController : BaseController
 {
     public CollectTariffController(DaoFactory daoFactory) : base(daoFactory)
     {
