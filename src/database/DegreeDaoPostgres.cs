@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
@@ -42,5 +43,16 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
             .Where(e => e.schoolYear == schoolyearId).ToListAsync();
 
         return list.Where(e => e.enrollmentList!.Count != 0).ToList();
+    }
+
+    public async Task<DegreeEntity?> getByEnrollmentId(string enrollmentId)
+    {
+        var enrollment = await context.Set<EnrollmentEntity>().FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+        if (enrollment == null)
+        {
+            throw new EntityNotFoundException("Enrollment", enrollmentId);
+        }
+
+        return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.enrollmentId);
     }
 }
