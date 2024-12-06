@@ -101,16 +101,4 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
         await daoFactory.execute();
     }
-
-    public async Task updateProfilePicture(string studentId, byte[] picture)
-    {
-        var student = await daoFactory.studentDao!.getById(studentId);
-        if (student == null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-        
-        student.profilePicture = picture;
-        await daoFactory.execute();
-    }
 }

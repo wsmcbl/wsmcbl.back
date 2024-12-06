@@ -5,4 +5,5 @@ namespace wsmcbl.src.controller.business;
 public interface IUpdateStudentProfileController
 {
     public Task updateStudent(StudentEntity student);
+    public Task updateProfilePicture(string studentId, byte[] picture);
 }

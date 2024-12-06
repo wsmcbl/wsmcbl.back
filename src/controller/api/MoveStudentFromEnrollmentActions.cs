@@ -6,12 +6,12 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin","secretary")]
-[Route("secretary/")]
+[Route("academy")]
 [ApiController]
 public class MoveStudentFromEnrollmentActions(IMoveStudentFromEnrollmentController controller) : ActionsBase
 {
     /// <summary>
-    ///  Change student fromm enrollment
+    ///  Change student from enrollment
     /// </summary>
     /// <remarks>
     /// The student must be enrolled in an existing enrollment

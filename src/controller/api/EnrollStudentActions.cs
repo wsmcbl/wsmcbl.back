@@ -77,23 +77,6 @@ public class EnrollStudentActions(IEnrollStudentController controller) : Actions
         return Ok(result.mapToDto(ids));
     }
 
-    /// <summary>Update student profile picture.</summary>
-    /// <response code="200">Returns when the resource has been modified.</response>
-    /// <response code="400">Parameter is not valid.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource not found.</response>
-    [HttpPut]
-    [Route("students/{studentId}")]
-    public async Task<IActionResult> updateProfilePicture([Required] string studentId, IFormFile profilePicture)
-    {
-        using var memoryStream = new MemoryStream();
-        await profilePicture.CopyToAsync(memoryStream);
-        await controller.updateProfilePicture(studentId, memoryStream.ToArray());
-        
-        return Ok();
-    }
-
     /// <summary>
     ///  Returns the enroll document of student.
     /// </summary>

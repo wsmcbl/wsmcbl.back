@@ -11,5 +11,4 @@ public interface IEnrollStudentController
     public Task<byte[]> getEnrollDocument(string studentId, string userId);
     public Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId);
     public Task updateStudentDiscount(string studentId, int discountId);
-    public Task updateProfilePicture(string studentId, byte[] picture);
 }
