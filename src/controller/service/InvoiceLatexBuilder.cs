@@ -29,7 +29,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
         content = content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
         content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
-        content = content.ReplaceInLatexFormat("datetime.value", getDatetimeFormat(transaction.date));
+        content = content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
         content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
         content = content.ReplaceInLatexFormat("general.balance.value", getGeneralBalance());
 
@@ -82,20 +82,6 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     {
         var value = generalBalance[1] - generalBalance[0];
         return $"C$ {value:F2}";
-    }
-
-    private static string getDatetimeFormat(DateTime datetime)
-    {
-        var culture = new CultureInfo("es-ES")
-        {
-            DateTimeFormat =
-            {
-                AMDesignator = "AM",
-                PMDesignator = "PM"
-            }
-        };
-
-        return datetime.toUTC6().ToString("ddd. dd/MMM/yyyy, h:mm tt", culture);
     }
 
     public class Builder

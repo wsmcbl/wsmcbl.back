@@ -14,7 +14,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             .Include(e => e.tariff)
             .ToListAsync();
 
-        return history.Where(dh => dh.havePayments()).ToList();
+        return history.Where(dh => dh.isPaid || dh.havePayments()).ToList();
     }
 
     public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> list)
@@ -94,5 +94,27 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             debt.debtBalance -= item.amount;
             update(debt);
         }
+    }
+
+    public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
+    {
+        var debt = await entities
+            .Where(e => e.studentId == studentId && e.tariffId == tariffId)
+            .FirstOrDefaultAsync();
+        
+        if (debt == null)
+        {
+            throw new EntityNotFoundException($"Entity of type (debt) with student ({studentId}) and tariff ({tariffId}) not found.");
+        }
+        
+        if (debt.isPaid)
+        {
+            throw new ConflictException("The debt is already paid.");
+        }
+        
+        debt.subAmount = 0;
+        update(debt);
+        
+        return debt;
     }
 }

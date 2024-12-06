@@ -10,20 +10,20 @@ public static class Utility
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
         return TimeZoneInfo.ConvertTimeFromUtc(datetime, timeZoneUTC6);
     }
-
     
-    public static string toStringUtc6(this DateTime datetime)
+    public static string toStringUtc6(this DateTime datetime, bool withDayName = false)
     {
         var culture = new CultureInfo("es-ES")
         {
             DateTimeFormat =
             {
-                AMDesignator = "AM",
-                PMDesignator = "PM"
+                AMDesignator = "am",
+                PMDesignator = "pm"
             }
         };
 
-        return datetime.toUTC6().ToString("ddd. dd/MMM/yyyy, h:mm tt", culture);
+        var dayFormat = withDayName ? "dddd" : "ddd.";
+        return datetime.toUTC6().ToString($"{dayFormat} dd/MMM/yyyy, h:mm tt", culture);
     }
     
     public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)

@@ -15,7 +15,7 @@ BEGIN
     LIMIT 1;
     
     seq_part := LPAD(NEXTVAL('secretary.student_id_seq')::TEXT, 4, '0');
-    initials_part := LOWER(SUBSTR(NEW.name, 1, 1) || SUBSTR(NEW.secondname, 1, 1) || SUBSTR(NEW.surname, 1, 1) || SUBSTR(NEW.secondsurname, 1, 1));
+    initials_part := LOWER(SUBSTR(NEW.name, 1, 1) || COALESCE(SUBSTR(NEW.secondname, 1, 1), '') || SUBSTR(NEW.surname, 1, 1) || COALESCE(SUBSTR(NEW.secondsurname, 1, 1), ''));
     NEW.studentid := year_part || '-' || seq_part || '-' || initials_part;
 
     RETURN NEW;

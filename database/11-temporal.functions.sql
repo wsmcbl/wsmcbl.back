@@ -1,6 +1,5 @@
 -- ##################### TEMPORAL ###################### --
-CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT()
-    RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION Accounting.CHANGE_STUDENT_DISCOUNT() RETURNS TRIGGER language plpgsql as
 $$
 BEGIN
     WITH query_aux AS
@@ -9,7 +8,7 @@ BEGIN
                        JOIN accounting.tariff t ON t.tariffid = d.tariffid
                        JOIN accounting.discounteducationallevel disc ON disc.del = new.discountel
               WHERE d.studentid = new.studentid
-                and t.typeid = 1)
+                and t.typeid = 1 and d.ispaid = FALSE)
     
     UPDATE accounting.debthistory
     SET subamount = q.subtotal,
@@ -20,7 +19,7 @@ BEGIN
 
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 CREATE TRIGGER TRG_CHANGE_STUDENT_DISCOUNT
     AFTER UPDATE

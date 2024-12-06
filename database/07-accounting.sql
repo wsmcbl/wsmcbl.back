@@ -57,6 +57,7 @@ create table  if not exists Accounting.Transaction
     number int default NEXTVAL('accounting.transaction_number_seq'),
     total float not null,
     date timestamp with time zone not null,
+    isValid bool default true not null,
     studentId varchar(15) not null,
     cashierId varchar(15) not null,
     foreign key (studentId) references Accounting.Student,
