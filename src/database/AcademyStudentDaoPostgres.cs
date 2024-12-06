@@ -9,20 +9,6 @@ namespace wsmcbl.src.database;
 
 public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
 {
-    public async Task<StudentEntity> getByIdAndSchoolyear(string studentId, string schoolyearId)
-    {
-        var result = await entities
-            .Include(e => e.student)
-            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException("AcademyStudent", studentId);
-        }
-
-        return result;
-    }
-
     public async Task<StudentEntity> getByIdInCurrentSchoolyear(string studentId)
     {
         var schoolyear = DateTime.Today.Year.ToString();
@@ -45,7 +31,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
         return result;
     }
 
-    public async Task<StudentEntity?> getLastById(string studentId)
+    public new async Task<StudentEntity?> getById(string studentId)
     {
         ISchoolyearDao schoolyearDao = new SchoolyearDaoPostgres(context);
         var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
