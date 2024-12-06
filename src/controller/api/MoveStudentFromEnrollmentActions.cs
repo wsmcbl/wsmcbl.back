@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -25,6 +26,19 @@ public class MoveStudentFromEnrollmentActions(IMoveStudentFromEnrollmentControll
     [Route("students")]
     public async Task<ActionResult> changeStudentEnrollment([FromQuery] string studentId, [FromQuery] string enrollmentId)
     {
-        return Ok(await controller.changeStudentEnrollment(studentId, enrollmentId));
+        if (await controller.isThereAnActivePartial())
+        {
+            throw new ConflictException("This operation cannot be performed. The partial is active.");
+        }
+        
+        var student = await controller.getStudentOrFailed(studentId);
+        if (student.enrollmentId == enrollmentId)
+        {
+            throw new ConflictException("The student is already in this enrollment.");
+        }
+
+        var enrollment = await controller.getEnrollmentOrFailed(enrollmentId, student.enrollmentId!);
+        
+        return Ok(await controller.changeStudentEnrollment(student, enrollment));
     }
 }
