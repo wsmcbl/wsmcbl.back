@@ -50,7 +50,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
     private async Task<bool> isAlreadyEnroll(string studentId)
     {
         var ids = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
-        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
+        var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
 
         return academyStudent != null && academyStudent.schoolYear == ids.newSchoolyear;
     }
@@ -73,7 +73,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId)
     {
-        var academyStudent = await daoFactory.academyStudentDao!.getLastById(studentId);
+        var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
 
         var discountId = accountingStudent!.discountId switch
