@@ -16,12 +16,12 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory)
         var oldEnrollment = await daoFactory.enrollmentDao!.getById(studentValue.enrollmentId!);
         oldEnrollment!.quantity--;
         
-        studentValue.enrollmentId = enrollment.enrollmentId;
         enrollment.quantity++;
-
-        daoFactory.academyStudentDao!.update(studentValue);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
+        
+        await daoFactory.academyStudentDao!.updateEnrollment(studentValue.studentId, enrollment.enrollmentId!);
+        studentValue.enrollmentId = enrollment.enrollmentId;
 
         return studentValue;
     }
