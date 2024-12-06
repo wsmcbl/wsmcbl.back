@@ -42,6 +42,7 @@ builder.Services.AddTransient<ILoginController, LoginController>();
 builder.Services.AddTransient<ITransactionReportByDateController, TransactionReportByDateController>();
 builder.Services.AddTransient<ICancelTransactionController, CancelTransactionController>();
 builder.Services.AddTransient<IMoveStudentFromEnrollmentController, MoveStudentFromEnrollmentController>();
+builder.Services.AddTransient<IUpdateStudentProfileController, UpdateStudentProfileController>();
 
 var app = builder.Build();
 

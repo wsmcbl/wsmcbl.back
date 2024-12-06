@@ -16,6 +16,7 @@ public class ResourceActions(IResourceController controller) : ControllerBase
     ///  Returns the list of all students.
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier")]
     [HttpGet]
     [Route("students")]
     public async Task<IActionResult> getStudentsList()
