@@ -5,15 +5,15 @@ namespace wsmcbl.tests.utilities;
 
 public class TestDtoOutputGenerator
 {
-    private DebtDto? _paymentItemDto;
+    private PaymentItemDto? _paymentItemDto;
 
     
-    public DebtDto aPaymentDto(DebtHistoryEntity entity)
+    public PaymentItemDto aPaymentDto(DebtHistoryEntity entity)
     {
         if (_paymentItemDto != null)
             return _paymentItemDto;
         
-        _paymentItemDto = new DebtDto()
+        _paymentItemDto = new PaymentItemDto()
         {
             tariffId = entity.tariffId,
             concept  = entity.tariff.concept,

@@ -10,8 +10,9 @@ public static class DtoMapper
     
     private static TariffDto mapToDto(this TariffEntity value) => new(value);
     public static TransactionDto mapToDto(this TransactionEntity value) => new(value);
-    public static AccountingStudentDto mapToDto(this StudentEntity value) => new(value);
-    public static DebtDto mapToDto(this DebtHistoryEntity entity) => new(entity);
+    public static StudentToListDto mapToDto(this StudentEntity value) => new(value);
+    public static AccountingStudentDto mapToAccountingDto(this StudentEntity value) => new(value);
+    public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
     public static CreateStudentProfileDto mapToDto(this model.secretary.StudentEntity student, int modality)
         => new(student, modality);
     private static TransactionReportDto mapToDto(this TransactionReportView value)
