@@ -6,8 +6,13 @@ namespace wsmcbl.src.controller.business;
 
 public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task updateStudent(StudentEntity student)
+    public async Task<StudentEntity> updateStudent(StudentEntity student, bool generateToken = false)
     {
+        if (generateToken)
+        {
+            student.generateAccessToken();
+        }
+        
         await daoFactory.studentDao!.updateAsync(student);
         await daoFactory.studentTutorDao!.updateAsync(student.tutor);
         await daoFactory.studentFileDao!.updateAsync(student.file);
@@ -19,6 +24,8 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         }
 
         await daoFactory.execute();
+
+        return student;
     }
 
     public async Task updateProfilePicture(string studentId, byte[] picture)
