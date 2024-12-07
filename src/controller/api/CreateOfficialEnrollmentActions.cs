@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("secretary")]
 [ApiController]
-public class CreateOfficialEnrollmentActions(ICreateOfficialEnrollmentController controller) : ControllerBase
+public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController controller) : ControllerBase
 {
     /// <summary>
     ///  Returns the list of active teacher

@@ -4,8 +4,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory),
-    ITransactionReportByDateController
+public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<TransactionReportView>> getTransactionList(int range)
     {

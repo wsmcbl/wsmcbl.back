@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("academy")]
 [ApiController]
-public class MoveTeacherGuideFromEnrollmentActions(IMoveTeacherGuideFromEnrollmentController controller) : ControllerBase
+public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmentController controller) : ControllerBase
 {
     /// <summary>
     /// Return the list of teacher non-guided.
