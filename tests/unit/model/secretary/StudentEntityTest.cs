@@ -48,8 +48,6 @@ public class StudentEntityTest
         var daoFactory = Substitute.For<DaoFactory>();
 
         var sut = TestEntityGenerator.aStudent("std-01");
-
-        await sut.saveChanges(daoFactory);
         
         await daoFactory.studentDao!.Received().updateAsync(sut);
         await daoFactory.studentTutorDao!.Received().updateAsync(sut.tutor);
