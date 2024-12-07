@@ -19,12 +19,11 @@ public class StudentFullDto : IBaseDto<StudentEntity>
     [Required] public string address { get; set; } = null!;
     [JsonRequired] public bool isActive { get; set; }
     public byte[]? profilePicture { get; set; }
-
-
-    [JsonRequired] public StudentFileDto file { get; set; } = null!;
+    
     [JsonRequired] public StudentTutorDto tutor { get; set; } = null!;
     [JsonRequired] public List<StudentParentDto>? parentList { get; set; }
     [JsonRequired] public StudentMeasurementsDto? measurements { get; set; }
+    [JsonRequired] public StudentFileDto file { get; set; } = null!;
 
     public StudentFullDto()
     {
