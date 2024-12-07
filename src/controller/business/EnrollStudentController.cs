@@ -5,8 +5,14 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class EnrollStudentController : BaseController
 {
+    private readonly UpdateStudentProfileController updateStudentProfileController;
+    public EnrollStudentController(DaoFactory daoFactory) : base(daoFactory)
+    {
+        updateStudentProfileController = new UpdateStudentProfileController(daoFactory);
+    }
+    
     public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
         return await daoFactory.studentDao!.getAllWithSolvency();
@@ -29,9 +35,9 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         {
             throw new ConflictException($"The student with id ({student.studentId}) is al ready enroll.");
         }
-
-        student.accessToken = generateAccessToken();
-        await student.saveChanges(daoFactory);
+        
+        student.generateAccessToken();
+        await updateStudentProfileController.updateStudent(student);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
         academyStudent.setIsRepeating(isRepeating);
@@ -39,12 +45,6 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         await daoFactory.execute();
 
         return student;
-    }
-
-    private static string generateAccessToken()
-    {
-        var random = new Random();
-        return random.Next(100000, 1000000).ToString();
     }
 
     private async Task<bool> isAlreadyEnroll(string studentId)
@@ -90,7 +90,6 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
-        var updateStudentController = new UpdateStudentProfileController(daoFactory);
-        await updateStudentController.updateStudentDiscount(studentId, discountId);
+        await updateStudentProfileController.updateStudentDiscount(studentId, discountId);
     }
 }
