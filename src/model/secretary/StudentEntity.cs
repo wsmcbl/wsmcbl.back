@@ -1,5 +1,3 @@
-using wsmcbl.src.model.dao;
-
 namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
@@ -53,26 +51,17 @@ public class StudentEntity
         accessToken = entity.accessToken;
     }
 
-    public async Task saveChanges(DaoFactory daoFactory)
-    {
-        await daoFactory.studentDao!.updateAsync(this);
-        await daoFactory.studentTutorDao!.updateAsync(tutor);
-        await daoFactory.studentFileDao!.updateAsync(file);
-        await daoFactory.studentMeasurementsDao!.updateAsync(measurements);
-
-        foreach (var parent in parents!)
-        {
-            await daoFactory.studentParentDao!.updateAsync(parent);
-        }
-
-        await daoFactory.execute();
-    }
-
     public string getStringData()
     {
         return $"{fullName()} - {sex} - {birthday.ToString()}";
     }
-
+    
+    public void generateAccessToken()
+    {
+        var random = new Random();
+        accessToken = random.Next(100000, 1000000).ToString();
+    }
+    
     public class Builder
     {
         private readonly StudentEntity entity;
