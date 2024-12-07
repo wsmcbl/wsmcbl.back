@@ -34,7 +34,7 @@ public class CollectTariffActions(CollectTariffController controller) : Controll
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var student = await controller.getStudentById(studentId);
-        return Ok(student.mapToListDto());
+        return Ok(student.mapToDto());
     }
 
     /// <summary>
