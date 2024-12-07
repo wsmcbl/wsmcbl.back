@@ -2,7 +2,7 @@ using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
 
-public class PaymentItemDto
+public class DebtDto
 {
     public int tariffId { get; set; }
     public string schoolYear { get; set; } = null!;
@@ -19,11 +19,11 @@ public class PaymentItemDto
         discount = amount - value;
     }
 
-    public PaymentItemDto()
+    public DebtDto()
     {
     }
 
-    public PaymentItemDto(DebtHistoryEntity entity)
+    public DebtDto(DebtHistoryEntity entity)
     {
         tariffId = entity.tariffId;
         concept = entity.tariff.concept;

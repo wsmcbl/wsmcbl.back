@@ -84,7 +84,7 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
     [Route("accounting/students")]
     public async Task<IActionResult> updateDiscount(ChangeStudentDiscountDto dto)
     {
-        if (!dto.adminToken.Equals("36987"))
+        if (!dto.authorizationToken.Equals("36987"))
         {
             throw new UnauthorizedException("Incorrect authorization code.");
         }
