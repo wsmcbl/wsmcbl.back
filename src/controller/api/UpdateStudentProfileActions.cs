@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.dto.secretary;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -57,7 +58,7 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
     }
     
     /// <summary>
-    ///  Returns the student full by id.
+    ///  Returns the accounting student by id.
     /// </summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -83,6 +84,11 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
     [Route("accounting/students")]
     public async Task<IActionResult> updateDiscount(ChangeStudentDiscountDto dto)
     {
+        if (!dto.adminToken.Equals("36987"))
+        {
+            throw new UnauthorizedException("Incorrect authorization code.");
+        }
+        
         await controller.updateStudentDiscount(dto.studentId, dto.discountId);
         return Ok();
     }
