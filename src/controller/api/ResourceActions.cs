@@ -1,21 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.accounting;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
 
 [Route("secretary")]
 [ApiController]
-public class ResourceActions(IResourceController controller) : ControllerBase
+public class ResourceActions(ResourceController controller) : ControllerBase
 {
     /// <summary>
     ///  Returns the list of all students.
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier")]
     [HttpGet]
     [Route("students")]
     public async Task<IActionResult> getStudentsList()

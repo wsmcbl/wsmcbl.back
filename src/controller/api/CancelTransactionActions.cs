@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
-public class CancelTransactionActions(ICancelTransactionController controller) : ActionsBase
+public class CancelTransactionActions(CancelTransactionController controller) : ActionsBase
 {
     
     /// <summary>

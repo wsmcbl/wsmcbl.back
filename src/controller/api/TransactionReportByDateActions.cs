@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin", "secretary", "cashier")]
 [Route("accounting")]
 [ApiController]
-public class TransactionReportByDateActions(ITransactionReportByDateController controller) : ActionsBase
+public class TransactionReportByDateActions(TransactionReportByDateController controller) : ActionsBase
 {
     /// <summary>
     /// Returns summary list of transactions and revenues by date.

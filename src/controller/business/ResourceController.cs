@@ -6,7 +6,7 @@ using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
-public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory), IResourceController
+public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
     {

@@ -3,7 +3,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class AddingStudentGradesController : BaseController, IAddingStudentGradesController
+public class AddingStudentGradesController : BaseController
 {
     public AddingStudentGradesController(DaoFactory daoFactory) : base(daoFactory)
     {

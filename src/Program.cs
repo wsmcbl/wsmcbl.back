@@ -28,20 +28,21 @@ builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
 
-builder.Services.AddTransient<ICollectTariffController, CollectTariffController>();
-builder.Services.AddTransient<ICreateOfficialEnrollmentController, CreateOfficialEnrollmentController>();
-builder.Services.AddTransient<IEnrollStudentController, EnrollStudentController>();
-builder.Services.AddTransient<IPrintReportCardByStudentController, PrintReportCardByStudentController>();
-builder.Services.AddTransient<IMoveTeacherGuideFromEnrollmentController, MoveTeacherGuideFromEnrollmentController>();
+builder.Services.AddTransient<CollectTariffController>();
+builder.Services.AddTransient<CreateOfficialEnrollmentController>();
+builder.Services.AddTransient<EnrollStudentController>();
+builder.Services.AddTransient<PrintReportCardByStudentController>();
+builder.Services.AddTransient<MoveTeacherGuideFromEnrollmentController>();
 
-builder.Services.AddTransient<ICreateStudentProfileController, CreateStudentProfileController>();
-builder.Services.AddTransient<IAddingStudentGradesController, AddingStudentGradesController>();
-builder.Services.AddTransient<IResourceController, ResourceController>();
-builder.Services.AddTransient<ILoginController, LoginController>();
+builder.Services.AddTransient<CreateStudentProfileController>();
+builder.Services.AddTransient<AddingStudentGradesController>();
+builder.Services.AddTransient<ResourceController>();
+builder.Services.AddTransient<LoginController>();
 
-builder.Services.AddTransient<ITransactionReportByDateController, TransactionReportByDateController>();
-builder.Services.AddTransient<ICancelTransactionController, CancelTransactionController>();
-builder.Services.AddTransient<IMoveStudentFromEnrollmentController, MoveStudentFromEnrollmentController>();
+builder.Services.AddTransient<TransactionReportByDateController>();
+builder.Services.AddTransient<CancelTransactionController>();
+builder.Services.AddTransient<MoveStudentFromEnrollmentController>();
+builder.Services.AddTransient<UpdateStudentProfileController>();
 
 var app = builder.Build();
 

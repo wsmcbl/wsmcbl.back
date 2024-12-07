@@ -5,7 +5,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory), IEnrollStudentController
+public class EnrollStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
@@ -76,12 +76,12 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
 
-        var discountId = accountingStudent!.discountId switch
+        var discountId = accountingStudent.discountId switch
         {
             < 3 => 1,
             > 3 and <= 6 => 2,
             > 6 and < 10 => 3,
-            _ => accountingStudent!.discountId
+            _ => accountingStudent.discountId
         };
 
         var isRepeating = academyStudent?.isRepeating ?? false;
@@ -90,27 +90,7 @@ public class EnrollStudentController(DaoFactory daoFactory) : BaseController(dao
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
-        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
-
-        accountingStudent.discountId = discountId switch
-        {
-            2 => accountingStudent.educationalLevel + 3,
-            3 => accountingStudent.educationalLevel + 6,
-            _ => accountingStudent.discountId
-        };
-
-        await daoFactory.execute();
-    }
-
-    public async Task updateProfilePicture(string studentId, byte[] picture)
-    {
-        var student = await daoFactory.studentDao!.getById(studentId);
-        if (student == null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-        
-        student.profilePicture = picture;
-        await daoFactory.execute();
+        var updateStudentController = new UpdateStudentProfileController(daoFactory);
+        await updateStudentController.updateStudentDiscount(studentId, discountId);
     }
 }

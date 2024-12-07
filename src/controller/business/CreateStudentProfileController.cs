@@ -5,7 +5,7 @@ using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateStudentProfileController(DaoFactory daoFactory) : BaseController(daoFactory), ICreateStudentProfileController
+public class CreateStudentProfileController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<StudentEntity> createStudent(StudentEntity student, StudentTutorEntity tutor)
     {
