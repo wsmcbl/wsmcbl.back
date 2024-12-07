@@ -42,6 +42,8 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
             .ThenInclude(d => d.tutor)
             .Include(e => e.transactions)!
             .ThenInclude(t => t.details)
+            .Include(e => e.debtHistory)!
+            .ThenInclude(e => e.tariff)
             .FirstOrDefaultAsync(e => e.studentId == id);
         
         if (student is null)
