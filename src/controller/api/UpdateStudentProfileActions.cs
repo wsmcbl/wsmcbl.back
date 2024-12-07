@@ -25,7 +25,7 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
     {
         var result = await controller.getStudentById(studentId);
 
-        return Ok(result);
+        return Ok(result.mapToDto());
     }
     
     /// <summary>Update student information.</summary>
@@ -70,7 +70,7 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
     {
         var result = await controller.getAccountingStudentById(studentId);
 
-        return Ok(result.mapToDto());
+        return Ok(result.mapToAccountingDto());
     }
     
     /// <summary>Update student discount.</summary>
