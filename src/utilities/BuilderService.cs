@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.middleware.validator;
@@ -24,7 +25,8 @@ public static class BuilderService
     public static void AddFluentValidationConfig(this IServiceCollection Services)
     {
         Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
-        
+
+        Services.AddValidatorsFromAssemblyContaining<ChangeStudentDiscountDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<CreateStudentProfileDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToUpdateDtoValidator>();
