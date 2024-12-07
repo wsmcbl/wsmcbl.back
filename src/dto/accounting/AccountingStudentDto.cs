@@ -4,7 +4,7 @@ namespace wsmcbl.src.dto.accounting;
 
 public class AccountingStudentDto
 {
-    public string studentId { get; set; } 
+    public string studentId { get; set; }
     public string fullName { get; set; }
     public double discountId { get; set; }
     public double discount { get; set; }
@@ -19,6 +19,8 @@ public class AccountingStudentDto
         discount = student.getDiscount();
         isActive = student.isActive;
 
-        debtList = student.debtHistory!.Select(e => new DebtDto(e)).ToList();
+        debtList = student.debtHistory != null 
+            ? student.debtHistory.Select(e => new DebtDto(e)).ToList()
+            : [];
     }
 }
