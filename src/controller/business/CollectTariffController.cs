@@ -5,12 +5,8 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class CollectTariffController : BaseController
+public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public CollectTariffController(DaoFactory daoFactory) : base(daoFactory)
-    {
-    }
-
     public async Task<List<StudentEntity>> getStudentsList()
     {
         return await daoFactory.accountingStudentDao!.getAll();
