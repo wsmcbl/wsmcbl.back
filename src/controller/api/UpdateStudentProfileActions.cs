@@ -11,6 +11,22 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class UpdateStudentProfileActions(UpdateStudentProfileController controller) : ActionsBase
 {
+    /// <summary>
+    ///  Returns the student full by id.
+    /// </summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Student not found.</response>
+    [HttpGet]
+    [Route("secretary/students/{studentId}")]
+    public async Task<IActionResult> getStudentById([Required] string studentId)
+    {
+        var result = await controller.getStudentById(studentId);
+
+        return Ok(result);
+    }
+    
     /// <summary>Update student information.</summary>
     /// <response code="200">Returns the modified resource.</response>
     /// <response code="400">Parameter is not valid.</response>
@@ -38,6 +54,22 @@ public class UpdateStudentProfileActions(UpdateStudentProfileController controll
         await profilePicture.CopyToAsync(memoryStream);
         await controller.updateProfilePicture(studentId, memoryStream.ToArray());
         return Ok();
+    }
+    
+    /// <summary>
+    ///  Returns the student full by id.
+    /// </summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Student not found.</response>
+    [HttpGet]
+    [Route("accounting/students/{studentId}")]
+    public async Task<IActionResult> getAccountingStudentById([Required] string studentId)
+    {
+        var result = await controller.getAccountingStudentById(studentId);
+
+        return Ok(result.mapToDto());
     }
     
     /// <summary>Update student discount.</summary>
