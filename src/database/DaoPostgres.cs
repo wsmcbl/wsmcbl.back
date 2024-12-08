@@ -5,7 +5,6 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
-using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.database;
@@ -37,21 +36,13 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
     }
 }
 
-public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, int>(context), ISubjectDao
+public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, string>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
     {
         return await entities.Where(e => e.enrollmentId == enrollmentId)
             .Include(e => e.secretarySubject)
             .ToListAsync();
-    }
-
-    public async Task<List<SubjectEntity>> getSubjectByTeacherAndEnrollment(string teacherId, string enrollmentId)
-    {
-        var enrollment = await context.Set<EnrollmentEntity>().Include(e => e.subjectList)
-            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
-
-        return enrollment!.subjectList!.Where(e => e.teacherId == teacherId).ToList();
     }
 }
 
