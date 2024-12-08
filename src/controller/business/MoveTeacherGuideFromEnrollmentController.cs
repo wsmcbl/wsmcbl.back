@@ -6,11 +6,11 @@ namespace wsmcbl.src.controller.business;
 
 public class MoveTeacherGuideFromEnrollmentController : BaseController
 {
-    private readonly CreateOfficialEnrollmentController controller;
+    private readonly MoveTeacherFromSubjectController controller;
 
     public MoveTeacherGuideFromEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
     {
-        controller = new CreateOfficialEnrollmentController(daoFactory);
+        controller = new MoveTeacherFromSubjectController(daoFactory);
     }
 
     public async Task<List<TeacherEntity>> getTeacherList()

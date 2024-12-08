@@ -17,11 +17,6 @@ public class CreateOfficialEnrollmentController : BaseController
         return await daoFactory.teacherDao!.getAll();
     }
 
-    public async Task<TeacherEntity?> getTeacherById(string teacherId)
-    {
-        return await daoFactory.teacherDao!.getById(teacherId);
-    }
-
     public async Task<List<DegreeEntity>> getDegreeList()
     {
         return await daoFactory.degreeDao!.getAll();
