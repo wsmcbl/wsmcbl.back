@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -25,18 +26,30 @@ public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController cont
     }
     
     /// <summary>
-    /// Update the teacher of the enrollment.
+    /// Update the teacher of the subject.
     /// </summary>
+    /// <param name="subjectId">The subject id.</param>
+    /// <param name="teacherId">The teacher id.</param>
     /// <response code="200">Returns the edited resource.</response>
-    /// <response code="400">If the dto is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the teacher or subject does not exist.</response>
     [HttpPut]
-    [Route("teachers")]
-    public async Task<IActionResult> updateTeacherEnrollment(MoveTeacherGuideDto dto)
+    [Route("subjects")]
+    public async Task<IActionResult> updateTeacherEnrollment([FromQuery] string subjectId, [FromQuery] string teacherId)
     {
-        await controller.updateTeacherEnrollment(dto.newTeacherId);
+        if (await controller.isThereAnActivePartial())
+        {
+            throw new ConflictException("This operation cannot be performed. The partial is active.");
+        }
+        
+        var teacher = await controller.getTeacherById(teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("Teacher", teacherId);
+        }
+        
+        await controller.updateTeacherFromSubject(subjectId, teacherId);
         return Ok();
     }
 }
