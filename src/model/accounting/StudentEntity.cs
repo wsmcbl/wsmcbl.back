@@ -20,6 +20,21 @@ public class StudentEntity
     {
     }
 
+    public void updateDiscountId(int value)
+    {
+        discountId = value switch
+        {
+            2 => educationalLevel + 3,
+            3 => educationalLevel + 6,
+            _ => discountId
+        };
+    }
+    
+    public int getDiscountIdFormat()
+    {
+        return discount!.getDiscountIdFormat();
+    }
+    
     public float getDiscount()
     {
         return discount != null ? discount!.amount : 0;
