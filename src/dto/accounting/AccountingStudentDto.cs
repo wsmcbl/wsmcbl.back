@@ -15,7 +15,7 @@ public class AccountingStudentDto
     {
         studentId = student.studentId!;
         fullName = student.fullName();
-        discountId = student.discountId;
+        discountId = student.getDiscountIdFormat();
         discount = student.getDiscount();
         isActive = student.isActive;
 
