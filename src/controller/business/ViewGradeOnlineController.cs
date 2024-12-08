@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
@@ -11,12 +12,6 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
         return await controller.isTheStudentSolvent(studentId);
     }
 
-    public async Task<byte[]> getGradeReport(string studentId)
-    {
-        var student = await daoFactory.academyStudentDao!.getById(studentId);
-        return [];
-    }
-
     public async Task<bool> isTokenCorrect(string studentId, string token)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
@@ -26,5 +21,11 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
         }
 
         return student.accessToken == token;
+    }
+
+    public async Task<byte[]> getGradeReport(string studentId)
+    {
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getGradeReportByStudent(studentId);
     }
 }

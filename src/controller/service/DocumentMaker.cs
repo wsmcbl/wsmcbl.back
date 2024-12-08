@@ -96,4 +96,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getGradeReportByStudent(string studentId)
+    {
+        return await getReportCardByStudent(studentId);
+    }
 }
