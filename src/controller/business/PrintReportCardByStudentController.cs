@@ -1,5 +1,6 @@
 using wsmcbl.src.controller.service;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -25,30 +26,28 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory)
         return await documentMaker.getReportCardByStudent(studentId);
     }
 
-    public async Task<bool> getStudentSolvency(string studentId)
+    public async Task<bool> isTheStudentSolvent(string studentId)
     {
         var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        
         var debt = debtHistoryList.Find(isSolvencyInterval);
-
         if (debt == null)
         {
-            throw new EntityNotFoundException("No solvency.");
+            throw new EntityNotFoundException("Monthly tariff not found.");
         }
         
         return debt.isPaid;
     }
 
-    private const int MONTHLY_PAYMENT = 1;
     private static bool isSolvencyInterval(DebtHistoryEntity debt)
     {
         var currentMonth = DateTime.Today.Month;
-        return debt.tariff.type == MONTHLY_PAYMENT && debt.tariff.checkDueMonth(currentMonth);
+        return debt.tariff.type == Const.TARIFF_MONTHLY && debt.tariff.checkDueMonth(currentMonth);
     }
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)
     {
         var result = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
-
         if (result == null)
         {
             throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");

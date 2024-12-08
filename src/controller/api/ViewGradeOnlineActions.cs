@@ -19,9 +19,9 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     [Route("grades/{studentId}")]
     public async Task<IActionResult> getGradesReport(string studentId, [FromQuery] string token)
     {
-        if (await controller.studentIsSolvent(studentId))
+        if (await controller.isTheStudentSolvent(studentId))
         {
-            throw new UnauthorizedException("Student must be solvent.");
+            throw new ConflictException($"Student with id ({studentId}) has no solvency.");
         }
 
         if (await controller.isTokenCorrect(studentId, token))
