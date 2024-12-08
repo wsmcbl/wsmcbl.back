@@ -44,6 +44,7 @@ builder.Services.AddTransient<CancelTransactionController>();
 builder.Services.AddTransient<MoveStudentFromEnrollmentController>();
 builder.Services.AddTransient<UpdateStudentProfileController>();
 builder.Services.AddTransient<MoveTeacherFromSubjectController>();
+builder.Services.AddTransient<ViewGradeOnlineController>();
 
 var app = builder.Build();
 
