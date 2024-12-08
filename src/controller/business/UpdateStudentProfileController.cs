@@ -43,13 +43,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
         var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
-
-        accountingStudent.discountId = discountId switch
-        {
-            2 => accountingStudent.educationalLevel + 3,
-            3 => accountingStudent.educationalLevel + 6,
-            _ => accountingStudent.discountId
-        };
+        accountingStudent.updateDiscountId(discountId);
 
         await daoFactory.execute();
     }

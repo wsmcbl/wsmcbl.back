@@ -28,28 +28,26 @@ public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController cont
     /// <summary>
     /// Update the teacher of the subject.
     /// </summary>
-    /// <param name="subjectId">The subject id.</param>
-    /// <param name="teacherId">The teacher id.</param>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the teacher or subject does not exist.</response>
     [HttpPut]
     [Route("subjects")]
-    public async Task<IActionResult> updateTeacherEnrollment([FromQuery] string subjectId, [FromQuery] string teacherId)
+    public async Task<IActionResult> updateTeacherFromSubject(MoveTeacherDto dto)
     {
         if (await controller.isThereAnActivePartial())
         {
             throw new ConflictException("This operation cannot be performed. The partial is active.");
         }
         
-        var teacher = await controller.getTeacherById(teacherId);
+        var teacher = await controller.getTeacherById(dto.teacherId);
         if (teacher == null)
         {
-            throw new EntityNotFoundException("Teacher", teacherId);
+            throw new EntityNotFoundException("Teacher", dto.teacherId);
         }
         
-        await controller.updateTeacherFromSubject(subjectId, teacherId);
+        await controller.updateTeacherFromSubject(dto.subjectId, dto.enrollmentId, dto.teacherId);
         return Ok();
     }
 }
