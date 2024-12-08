@@ -1,6 +1,6 @@
 namespace wsmcbl.src.controller.business;
 
-public class MoveTeacherController
+public class MoveTeacherFromSubjectController
 {
     public Task updateTeacherEnrollment(string teacherId)
     {

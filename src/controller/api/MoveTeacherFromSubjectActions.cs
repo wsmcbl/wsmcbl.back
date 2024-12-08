@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("academy")]
 [ApiController]
-public class MoveTeacherActions(MoveTeacherController controller) : ControllerBase
+public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController fromSubjectController) : ControllerBase
 {
     /// <summary>
     /// Update the teacher of the enrollment.
@@ -20,7 +20,7 @@ public class MoveTeacherActions(MoveTeacherController controller) : ControllerBa
     [Route("teachers")]
     public async Task<IActionResult> updateTeacherEnrollment(MoveTeacherGuideDto dto)
     {
-        await controller.updateTeacherEnrollment(dto.newTeacherId);
+        await fromSubjectController.updateTeacherEnrollment(dto.newTeacherId);
         return Ok();
     }
 }
