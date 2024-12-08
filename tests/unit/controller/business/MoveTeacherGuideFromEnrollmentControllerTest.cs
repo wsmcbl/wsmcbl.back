@@ -82,7 +82,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         teacherDao.getById(newTeacher.teacherId).Returns(newTeacher);
         daoFactory.teacherDao.Returns(teacherDao);
         
-        await sut.assignTeacherGuide(newTeacher.teacherId, enrollment.enrollmentId!);
+        await sut.assignTeacherGuide(newTeacher, enrollment);
 
         await daoFactory.Received().execute();
     }
@@ -103,7 +103,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         
         daoFactory.teacherDao.Returns(teacherDao);
         
-        await sut.assignTeacherGuide(newTeacher.teacherId, enrollment.enrollmentId!);
+        await sut.assignTeacherGuide(newTeacher, enrollment);
 
         await daoFactory.Received(2).execute();
     }
