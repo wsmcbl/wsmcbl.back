@@ -7,7 +7,7 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin","secretary")]
-[Route("academy")]
+[Route("secretary")]
 [ApiController]
 public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController controller) : ControllerBase
 {
