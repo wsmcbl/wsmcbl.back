@@ -5,7 +5,20 @@ namespace wsmcbl.src.controller.business;
 
 public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<bool> validateStudent(string studentId, string token)
+    public async Task<bool> studentIsSolvent(string studentId)
+    {
+        var student = await daoFactory.studentDao!.getById(studentId);
+
+        return true;
+    }
+
+    public async Task<byte[]> getGradeReport(string studentId)
+    {
+        var student = await daoFactory.academyStudentDao!.getById(studentId);
+        return [];
+    }
+
+    public async Task<bool> isTokenCorrect(string studentId, string token)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
