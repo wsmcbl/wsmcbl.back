@@ -13,18 +13,6 @@ namespace wsmcbl.src.controller.api;
 public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController controller) : ControllerBase
 {
     /// <summary>
-    ///  Returns the list of active teacher
-    /// </summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    [HttpGet]
-    [Route("teachers")]
-    public async Task<IActionResult> getTeacherList()
-    {
-        var list = await controller.getTeacherList();
-        return Ok(list.mapListToDto());
-    }
-
-    /// <summary>
     ///  Returns the list of active degrees
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
