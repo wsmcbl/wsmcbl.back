@@ -22,7 +22,6 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
     public async Task<EnrollmentEntity> getEnrollmentById(string enrollmentId)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
-
         if (enrollment == null)
         {
             throw new EntityNotFoundException("Enrollment", enrollmentId);
@@ -34,7 +33,6 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
     public async Task<TeacherEntity> getTeacherById(string teacherId)
     {
         var result = await controller.getTeacherById(teacherId);
-
         if (result == null)
         {
             throw new EntityNotFoundException("Teacher", teacherId);
@@ -43,9 +41,9 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         return result;
     }
     
-    public async Task assignTeacherGuide(string newTeacherId, string enrollmentId)
+    public async Task assignTeacherGuide(TeacherEntity teacher, EnrollmentEntity enrollment)
     {
-        var oldTeacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        var oldTeacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollment.enrollmentId!);
         if (oldTeacher != null)
         {
             oldTeacher.deleteEnrollment();
@@ -53,9 +51,12 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
             await daoFactory.execute();
         }
 
-        var newTeacher = await getTeacherById(newTeacherId);
-        newTeacher.isGuide = true;
-        daoFactory.teacherDao.update(newTeacher);
+        teacher.isGuide = true;
+        daoFactory.teacherDao.update(teacher);
+        
+        enrollment.teacherId = teacher.teacherId;
+        daoFactory.enrollmentDao!.update(enrollment);
+        
         await daoFactory.execute();
     }
 }

@@ -35,7 +35,7 @@ public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmen
     {
         var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
         var teacher = await controller.getTeacherById(dto.newTeacherId);
-        await controller.assignTeacherGuide(dto.newTeacherId, enrollment.enrollmentId!);
+        await controller.assignTeacherGuide(teacher, enrollment);
         
         return Ok(enrollment.mapToDto(teacher));
     }

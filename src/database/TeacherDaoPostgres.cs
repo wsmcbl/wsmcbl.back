@@ -36,11 +36,16 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
             throw new EntityNotFoundException("Enrollment", enrollmentId);
         }
         
-        return await entities
-            .Where(e => e.teacherId == enrollment.teacherId)
+        var teacher = await entities.Where(e => e.teacherId == enrollment.teacherId)
             .Include(e => e.user)
-            .Include(e => e.enrollment)
             .FirstOrDefaultAsync();
+
+        if (teacher != null)
+        {
+            teacher.enrollment = enrollment;
+        }
+        
+        return teacher;
     }
 
     public async Task<List<TeacherEntity>> getByListByIdList(List<string> value)
