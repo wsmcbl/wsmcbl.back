@@ -22,6 +22,12 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
             .ToListAsync();
     }
 
+    public async Task<List<PartialEntity>> getListWithSubjectByEnrollment(string enrollmentId)
+    {
+        var partialList = await getListByCurrentSchoolyear();
+        throw new NotImplementedException();
+    }
+
     public async Task<List<PartialEntity>> getListByStudentId(string studentId)
     {
         var partials = await getListByCurrentSchoolyear();
