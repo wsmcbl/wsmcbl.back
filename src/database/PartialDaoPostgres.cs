@@ -25,8 +25,9 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
 
         foreach (var item in partialList)
         {
-            var result = await context.Set<SubjectPartialEntity>()
+            item.subjectPartialList = await context.Set<SubjectPartialEntity>()
                 .Where(e => e.partialId == item.partialId && e.enrollmentId == enrollmentId)
+                .Include(e => e.gradeList)
                 .AsNoTracking()
                 .ToListAsync();
         }
