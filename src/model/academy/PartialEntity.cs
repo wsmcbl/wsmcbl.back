@@ -12,14 +12,14 @@ public class PartialEntity
     
     public bool isActive { get; set; }
     public bool gradeRecordIsActive { get; set; }
+    
+    public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
 
     public bool isClosed()
     {
         return deadLine < DateOnly.FromDateTime(DateTime.Today);
     }
     
-    public ICollection<GradeEntity>? grades { get; set; }
-
     public void updateLabel()
     {
         if (semester == 1)
@@ -28,7 +28,15 @@ public class PartialEntity
         }
         else
         {
-            label = partial == 2 ? "II Parcial" : "IV Parcial";
+            label = partial == 2 ? "III Parcial" : "IV Parcial";
+        }
+    }
+
+    public void setGradeListByStudent(string studentId)
+    {
+        foreach (var item in subjectPartialList!)
+        {
+            item.setStudentGrade(studentId);
         }
     }
 }
