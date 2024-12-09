@@ -6,8 +6,8 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
 {
     private StudentEntity student = null!;
     private TeacherEntity teacher = null!;
-    private List<SemesterEntity> _semesters = null!;
-    private List<(string initials, string subjectId)> subjects = null!;
+    private List<SemesterEntity> semesterList = null!;
+    private List<(string initials, string subjectId)> subjectList = null!;
     
     private string degree = null!; 
     
@@ -30,14 +30,14 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     
     private string getColumnQuantity()
     {
-        var quantity = (subjects.Count + 1).ToString();
+        var quantity = (subjectList.Count + 1).ToString();
         return $"|*{{{quantity}}}{{c|}}";
     }
     private string getTitleLine()
     {
         var result = "Parcial";
 
-        foreach (var item in subjects)
+        foreach (var item in subjectList)
         {
             result = $"{result} & {item.initials}";
         }
@@ -47,19 +47,19 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
 
     private string getFirstSemester()
     {
-        return getSemester(_semesters.First(e => e.semester == 1));
+        return getSemester(semesterList.First(e => e.semester == 1));
     }
 
     private string getSecondSemester()
     {
-        return getSemester(_semesters.First(e => e.semester == 2));
+        return getSemester(semesterList.First(e => e.semester == 2));
     }
     
     private string getFinalGrade()
     {        
         var finalGrade = "NF";
 
-        var quantity = subjects.Count;
+        var quantity = subjectList.Count;
         
         while (quantity > 0)
         {
@@ -70,8 +70,6 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         return $"{finalGrade}\\\\ \\hline";
     }
     
-
-    
     private string getSemester(SemesterEntity semester)
     {
         var firstPartial = student.partials!.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
@@ -79,7 +77,7 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         
         var semesterLine = semester.label;
 
-        foreach (var unused in subjects)
+        foreach (var unused in subjectList)
         {
             var firstGrade = 80;
             var secondGrade = 70;
@@ -98,19 +96,19 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         var labelLine = partial.label;
         var gradeLine = " ";
 
-        foreach (var subject in subjects)
+        foreach (var item in subjectList)
         {
-            //////////////////////######################################################
-            var result = partial.grades!.FirstOrDefault(e => subject.subjectId == "Hola");
+            var result = partial.subjectPartialList!
+                .FirstOrDefault(e => e.subjectId == item.subjectId);
 
-            var label = result == null ? "" : result.label;
-            var grade = result == null ? "" : result.grade.ToString();
+            var label = result == null ? "" : result.studentGrade!.label;
+            var grade = result == null ? "" : result.studentGrade!.grade.ToString();
 
             labelLine = $"{labelLine} & {label}";
             gradeLine = $"{gradeLine} & {grade}";
         }
 
-        var quantity = (subjects.Count + 1).ToString();
+        var quantity = (subjectList.Count + 1).ToString();
         labelLine = $"{labelLine}\\\\ \\cline{{2-{quantity}}}\n";
         gradeLine = $"{gradeLine}\\\\ \\hline \n";
 
@@ -148,13 +146,13 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         
         public Builder withSemesters(List<SemesterEntity> parameter)
         {
-            latexBuilder._semesters = parameter;
+            latexBuilder.semesterList = parameter;
             return this;
         }
         
         public Builder withSubjects(List<(string, string)> parameter)
         {
-            latexBuilder.subjects = parameter;
+            latexBuilder.subjectList = parameter;
             return this;
         }
     }
