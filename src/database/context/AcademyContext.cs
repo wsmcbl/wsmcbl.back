@@ -141,6 +141,8 @@ internal class AcademyContext
             
             entity.HasMany(d => d.gradeList).WithOne()
                 .HasForeignKey(d => d.subjectPartialId);
+
+            entity.Ignore(e => e.studentGrade);
         });
 
         modelBuilder.Entity<TeacherEntity>(entity =>

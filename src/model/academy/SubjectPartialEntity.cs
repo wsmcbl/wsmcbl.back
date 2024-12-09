@@ -9,4 +9,5 @@ public class SubjectPartialEntity
     public string teacherId { get; set; } = null!;
 
     public ICollection<GradeEntity> gradeList { get; set; } = null!;
+    public GradeEntity? studentGrade { get; set; }
 }
