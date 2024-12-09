@@ -24,7 +24,7 @@ public class UserAuthenticator
         return result == PasswordVerificationResult.Success ? entity : null;
     }
 
-    public void EncodePassword(UserEntity user, string password)
+    public void encodePassword(UserEntity user, string password)
     {
         user.password = passwordHasher.HashPassword(user, password);
     }

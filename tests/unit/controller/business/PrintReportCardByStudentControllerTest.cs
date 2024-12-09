@@ -39,7 +39,7 @@ public class PrintReportCardByStudentControllerTest
         
         daoFactory.debtHistoryDao!.getListByStudent(studentId).Returns(debtHistoryList);
         
-        var result = await sut.getStudentSolvency(studentId);
+        var result = await sut.isTheStudentSolvent(studentId);
         
         Assert.True(result);
     }
@@ -54,7 +54,7 @@ public class PrintReportCardByStudentControllerTest
         
         daoFactory.debtHistoryDao!.getListByStudent(studentId).Returns(debtHistoryList);
         
-        var result = await sut.getStudentSolvency(studentId);
+        var result = await sut.isTheStudentSolvent(studentId);
         
         Assert.False(result);
     }
@@ -64,6 +64,6 @@ public class PrintReportCardByStudentControllerTest
     {
         const string studentId = "2024-0001-hola";
         daoFactory.debtHistoryDao!.getListByStudent(studentId).Returns([]);
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getStudentSolvency(studentId));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.isTheStudentSolvent(studentId));
     }
 }
