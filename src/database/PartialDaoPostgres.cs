@@ -8,18 +8,15 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
 {
     public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
     {
-        var schoolyear = DateTime.Today.Year.ToString();
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
 
-        FormattableString query =
-            $@"select p.* from academy.partial p
-               inner join academy.semester s on p.semesterid = s.semesterid
-               inner join secretary.schoolyear sy on sy.schoolyearid = s.schoolyear
-               where sy.label = {schoolyear}";
-
-        return await context.Set<PartialEntity>()
-            .FromSqlInterpolated(query)
-            .AsNoTracking()
+        var semesterList = await context.Set<SemesterEntity>()
+            .Where(e => e.schoolyear == ids.currentSchoolyear)
+            .Select(e => e.semesterId)
             .ToListAsync();
+
+        return await entities.Where(e => semesterList.Contains(e.semesterId)).ToListAsync();
     }
 
     public async Task<List<PartialEntity>> getListWithSubjectByEnrollment(string enrollmentId)
