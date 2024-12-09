@@ -24,11 +24,11 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
         var student = await controller.getStudentGradesInformation(studentId);
-        var isSolvency = await controller.getStudentSolvency(studentId);
+        var solvency = await controller.isTheStudentSolvent(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
         var result = new StudentScoreInformationDto(student, teacher);
-        result.setSolvencyStateMessage(isSolvency);
+        result.setSolvencyStateMessage(solvency);
         return Ok(result);
     }
     
@@ -43,11 +43,10 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     [Route("documents/report-cards/{studentId}")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
-        var isSolvency = await controller.getStudentSolvency(studentId);
-
+        var isSolvency = await controller.isTheStudentSolvent(studentId);
         if (!isSolvency)
         {
-            throw new BadRequestException($"Student with id ({studentId}) is not solvency.");
+            throw new ConflictException($"Student with id ({studentId}) has no solvency.");
         }
         
         var result = await controller.getReportCard(studentId);

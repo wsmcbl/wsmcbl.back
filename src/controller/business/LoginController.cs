@@ -30,7 +30,7 @@ public class LoginController : BaseController
         }
         
         var password = user.password;
-        userAuthenticator.EncodePassword(user, password);
+        userAuthenticator.encodePassword(user, password);
         
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
