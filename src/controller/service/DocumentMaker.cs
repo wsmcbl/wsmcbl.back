@@ -107,13 +107,13 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
         }
             
-        var partials = await daoFactory.partialDao!.getListWithSubjectByEnrollment(enrollment!.enrollmentId!);
-        student.setPartials(partials);
+        var partialList = await daoFactory.partialDao!.getListWithSubjectByEnrollment(enrollment!.enrollmentId!);
+        student.setPartials(partialList);
         
         var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment!.label)
+            .withDegree(enrollment.label)
             .withSubjects(await getSubjectSort(student.enrollmentId!))
             .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
             .build();
