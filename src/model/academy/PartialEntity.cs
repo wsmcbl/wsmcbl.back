@@ -31,4 +31,12 @@ public class PartialEntity
             label = partial == 2 ? "III Parcial" : "IV Parcial";
         }
     }
+
+    public void setGradeListByStudent(string studentId)
+    {
+        foreach (var item in subjectPartialList!)
+        {
+            item.setStudentGrade(studentId);
+        }
+    }
 }
