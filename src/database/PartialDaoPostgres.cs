@@ -22,22 +22,15 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
     public async Task<List<PartialEntity>> getListWithSubjectByEnrollment(string enrollmentId)
     {
         var partialList = await getListByCurrentSchoolyear();
-        throw new NotImplementedException();
-    }
 
-    public async Task<List<PartialEntity>> getListByStudentId(string studentId)
-    {
-        var partials = await getListByCurrentSchoolyear();
-
-        foreach (var partial in partials)
+        foreach (var item in partialList)
         {
-            // this need refactor
-            partial.grades = await context.Set<GradeEntity>()
-                .Where(e => e.studentId == studentId && partial.partialId == 100000000)
+            var result = await context.Set<SubjectPartialEntity>()
+                .Where(e => e.partialId == item.partialId && e.enrollmentId == enrollmentId)
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        return partials;
+        return partialList;
     }
 }
