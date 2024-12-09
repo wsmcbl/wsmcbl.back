@@ -35,7 +35,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 public interface IPartialDao : IGenericDao<PartialEntity, int>
 {
     public Task<List<PartialEntity>> getListByCurrentSchoolyear();
-    public Task<List<PartialEntity>> getListByStudentId(string studentId);
+    public Task<List<PartialEntity>> getListWithSubjectByEnrollment(string enrollmentId);
 }
 
 public interface ISemesterDao : IGenericDao<SemesterEntity, int>

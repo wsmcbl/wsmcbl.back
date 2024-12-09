@@ -9,4 +9,10 @@ public class SubjectPartialEntity
     public string teacherId { get; set; } = null!;
 
     public ICollection<GradeEntity> gradeList { get; set; } = null!;
+    public GradeEntity? studentGrade { get; set; }
+
+    public void setStudentGrade(string studentId)
+    {
+        studentGrade = gradeList.FirstOrDefault(e => e.studentId == studentId);
+    }
 }
