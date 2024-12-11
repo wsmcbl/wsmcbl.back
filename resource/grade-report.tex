@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage[spanish]{babel}
+\usepackage[margin=2cm]{geometry}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\setlength{\headsep}{3mm}
+
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+
+\newcommand{\aDupleLeft}[2]{\textbf{#1}\hspace{2mm} #2 \hfill}
+\newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
+\newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
+
+\newcommand{\degree}{degree.value}
+\newcommand{\yearValue}{year.value}
+\newcommand{\studentName}{student.name.value}
+\newcommand{\studentId}{student.minedid.value}
+\newcommand{\teacherName}{teacher.name.value}
+
+\begin{document}
+    \begin{table}[H]
+        \centering
+        \begin{center}
+            \textbf{\Large Colegio Bautista Libertad}\\
+            \par\vspace{2mm}
+            \textbf{Boleta de Calificaciones \yearValue}
+        \end{center}
+        \aLine{ \aDupleLeft{Grado:}{\degree} \aDupleLeft{Alumno:}{\studentName} \aDupleLeft{Código mined:}{\studentId}}
+        \par\medskip
+        \begin{tabular}{column.format.value}
+            \hline
+            titleLine.value
+            \hline
+            firstSemester.value
+            secondSemester.value
+            finalGrade.value
+        \end{tabular}        
+        \par\vspace{3mm}
+        \aLine{\aDupleCenter{Docente guía:}{\teacherName}}
+    \end{table}
+\end{document}

@@ -12,12 +12,13 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     
     private string enroll = null!; 
     
-    protected override string getTemplateName() => "report-card";
+    protected override string getTemplateName() => "grade-report";
 
     protected override string updateContent(string content)
     {
         content = content.Replace("year.value", DateTime.Today.Year.ToString());
         content = content.Replace("student.name.value", student.fullName());
+        content = content.Replace("student.minedid.value", student.student.minedId);
         content = content.Replace("teacher.name.value", teacherName);
         content = content.Replace("degree.value", enroll);
         content = content.Replace("column.format.value", getColumnQuantity());
