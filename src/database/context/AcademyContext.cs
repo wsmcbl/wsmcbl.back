@@ -68,7 +68,10 @@ internal class AcademyContext
             entity.Property(e => e.startDate).HasColumnName("startdate");
             entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
             entity.Property(e => e.isActive).HasColumnName("isactive");
-
+            
+            entity.HasMany(d => d.subjectPartialList)
+                .WithOne()
+                .HasForeignKey(e => e.partialId);
             entity.Ignore(e => e.semester);
         });
 
