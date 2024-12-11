@@ -68,7 +68,10 @@ internal class AcademyContext
             entity.Property(e => e.startDate).HasColumnName("startdate");
             entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
             entity.Property(e => e.isActive).HasColumnName("isactive");
-
+            
+            entity.HasMany(d => d.subjectPartialList)
+                .WithOne()
+                .HasForeignKey(e => e.partialId);
             entity.Ignore(e => e.semester);
         });
 
@@ -129,9 +132,9 @@ internal class AcademyContext
 
         modelBuilder.Entity<SubjectPartialEntity>(entity =>
         {
-            entity.HasKey(e => e.subjectPartialId).HasName("subjectpartial_key");
+            entity.HasKey(e => e.subjectPartialId).HasName("subject_partial_key");
 
-            entity.ToTable("subject_partial", "secretary");
+            entity.ToTable("subject_partial", "academy");
             
             entity.Property(e => e.subjectPartialId).HasColumnName("subjectpartialid");
             entity.Property(e => e.partialId).HasColumnName("partialid");
