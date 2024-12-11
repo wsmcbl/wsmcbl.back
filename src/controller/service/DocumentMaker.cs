@@ -1,5 +1,4 @@
 using wsmcbl.src.exception;
-using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.service;
@@ -23,7 +22,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment!.label)
+            .withDegree(enrollment.label)
             .withSubjects(await getSubjectSort(student.enrollmentId!))
             .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
             .build();
@@ -99,30 +98,28 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     public async Task<byte[]> getGradeReportByStudent(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
-        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
-        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
 
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
-        }
-            
-        var partialList = await daoFactory.partialDao!.getListWithSubjectByEnrollment(enrollment!.enrollmentId!);
-        foreach (var item in partialList)
-        {
-            item.setGradeListByStudent(studentId);
-        }
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        
+        var partialList = await daoFactory.partialDao!.getListWithSubjectByEnrollment(student.enrollmentId!);
+        partialList.ForEach(e => e.setGradeListByStudent(studentId));
         
         var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
-            .withTeacher(teacher)
-            .withDegree(enrollment.label)
+            .withEnroll(enrollment!.label)
+            .withPartialList(partialList)
+            .withTeacherName(await getTeacherName(student.enrollmentId!))
             .withSubjectList(await getSubjectSort(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
-            .withPartialList(partialList)
             .build();
         
         setLatexBuilder(latexBuilder);
         return getPDF();
+    }
+
+    private async Task<string> getTeacherName(string enrollmentId)
+    {
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        return teacher != null ? teacher.fullName() : string.Empty;
     }
 }

@@ -5,12 +5,12 @@ namespace wsmcbl.src.controller.service;
 public class GradeReportLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
 {
     private StudentEntity student = null!;
-    private TeacherEntity teacher = null!;
+    private string teacherName = null!;
     private List<SemesterEntity> semesterList = null!;
     private List<PartialEntity> partialList = null!;
     private List<(string initials, string subjectId)> subjectList = null!;
     
-    private string degree = null!; 
+    private string enroll = null!; 
     
     protected override string getTemplateName() => "report-card";
 
@@ -18,8 +18,8 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     {
         content = content.Replace("year.value", DateTime.Today.Year.ToString());
         content = content.Replace("student.name.value", student.fullName());
-        content = content.Replace("teacher.name.value", teacher.fullName());
-        content = content.Replace("degree.value", degree);
+        content = content.Replace("teacher.name.value", teacherName);
+        content = content.Replace("degree.value", enroll);
         content = content.Replace("column.format.value", getColumnQuantity());
         content = content.Replace("titleLine.value", getTitleLine());
         content = content.Replace("firstSemester.value", getFirstSemester());
@@ -133,15 +133,15 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             return this;
         }
 
-        public Builder withTeacher(TeacherEntity parameter)
+        public Builder withTeacherName(string parameter)
         {
-            latexBuilder.teacher = parameter;
+            latexBuilder.teacherName = parameter;
             return this;
         }
         
-        public Builder withDegree(string parameter)
+        public Builder withEnroll(string parameter)
         {
-            latexBuilder.degree = parameter;
+            latexBuilder.enroll = parameter;
             return this;
         }
         
