@@ -22,8 +22,8 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         content = content.Replace("degree.value", enroll);
         content = content.Replace("column.format.value", getColumnQuantity());
         content = content.Replace("titleLine.value", getTitleLine());
-        content = content.Replace("firstSemester.value", getFirstSemester());
-        content = content.Replace("secondSemester.value", getSecondSemester());
+        content = content.Replace("firstSemester.value", getSemesterContent(1));
+        content = content.Replace("secondSemester.value", getSemesterContent(2));
         content = content.Replace("finalGrade.value", getFinalGrade());
 
         return content;
@@ -34,32 +34,18 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         var quantity = (subjectList.Count + 1).ToString();
         return $"|*{{{quantity}}}{{c|}}";
     }
+    
     private string getTitleLine()
     {
-        var result = "Parcial";
+        var result = subjectList
+            .Aggregate("Parcial", (current, item) => $"{current} & {item.initials}");
 
-        foreach (var item in subjectList)
-        {
-            result = $"{result} & {item.initials}";
-        }
-
-        return $"{result}\\\\";
-    }
-
-    private string getFirstSemester()
-    {
-        return getSemester(semesterList.First(e => e.semester == 1));
-    }
-
-    private string getSecondSemester()
-    {
-        return getSemester(semesterList.First(e => e.semester == 2));
+        return $@"{result}\\";
     }
     
     private string getFinalGrade()
     {        
         var finalGrade = "NF";
-
         var quantity = subjectList.Count;
         
         while (quantity > 0)
@@ -68,28 +54,34 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             quantity--;
         }
 
-        return $"{finalGrade}\\\\ \\hline";
+        return $@"{finalGrade}\\ \hline";
     }
     
-    private string getSemester(SemesterEntity semester)
+    private string getSemesterContent(int type)
     {
+        var semester = semesterList.First(e => e.semester == type);
         var firstPartial = partialList.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
         var secondPartial = partialList.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
         
-        var semesterLine = semester.label;
+        var semesterGrade = semester.label;
 
-        foreach (var unused in subjectList)
+        foreach (var item in subjectList)
         {
-            var firstGrade = 80;
-            var secondGrade = 70;
-
-            var grade = (firstGrade + secondGrade) / 2;
-            semesterLine = $"{semesterLine} & {grade.ToString()}";
+            var firstGrade = firstPartial
+                .subjectPartialList!
+                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId))?.studentGrade?.grade;
+            
+            var secondGrade = secondPartial
+                .subjectPartialList!
+                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId))?.studentGrade?.grade;
+            
+            var grade = secondGrade == null ? firstGrade : (firstGrade + secondGrade) / 2;
+            semesterGrade = $"{semesterGrade} & {grade.ToString()}";
         }
 
-        semesterLine = $"{semesterLine}\\\\ \\hline";
+        semesterGrade = $"{semesterGrade}\\\\ \\hline";
         
-        return $"{getGradeByPartial(firstPartial)} {getGradeByPartial(secondPartial)} {semesterLine}";
+        return $"{getGradeByPartial(firstPartial)} {getGradeByPartial(secondPartial)} {semesterGrade}";
     }
 
     private string getGradeByPartial(PartialEntity partial)
@@ -99,11 +91,16 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
         
         foreach (var item in subjectList)
         {
-            var result = partial.subjectPartialList!
+            var subjectPartial = partial.subjectPartialList!
                 .FirstOrDefault(e => e.subjectId.Equals(item.subjectId));
 
-            var label = result == null ? "" : result.studentGrade?.label;
-            var grade = result == null ? "" : result.studentGrade?.grade.ToString();
+            var label = string.Empty;
+            var grade = string.Empty;
+            if (subjectPartial != null)
+            {
+                label = subjectPartial.studentGrade!.label;
+                grade = subjectPartial.studentGrade.grade.ToString();   
+            }
 
             labelLine = $"{labelLine} & {label}";
             gradeLine = $"{gradeLine} & {grade}";
