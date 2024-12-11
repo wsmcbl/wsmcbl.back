@@ -101,8 +101,8 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             var result = partial.subjectPartialList!
                 .FirstOrDefault(e => e.subjectId == item.subjectId);
 
-            var label = result == null ? "" : result.studentGrade!.label;
-            var grade = result == null ? "" : result.studentGrade!.grade.ToString();
+            var label = result == null ? "" : result.studentGrade?.label;
+            var grade = result == null ? "" : result.studentGrade?.grade.ToString();
 
             labelLine = $"{labelLine} & {label}";
             gradeLine = $"{gradeLine} & {grade}";
