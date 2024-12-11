@@ -15,6 +15,7 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Student not found.</response>
+    /// <response code="409">Student has no solvency.</response>
     [HttpGet]
     [Route("grades/{studentId}")]
     public async Task<IActionResult> getGradesReport(string studentId, [FromQuery] string token)
