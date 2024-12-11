@@ -7,6 +7,7 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     private StudentEntity student = null!;
     private TeacherEntity teacher = null!;
     private List<SemesterEntity> semesterList = null!;
+    private List<PartialEntity> partialList = null!;
     private List<(string initials, string subjectId)> subjectList = null!;
     
     private string degree = null!; 
@@ -72,8 +73,8 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     
     private string getSemester(SemesterEntity semester)
     {
-        var firstPartial = student.partials!.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
-        var secondPartial = student.partials!.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
+        var firstPartial = partialList.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
+        var secondPartial = partialList.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
         
         var semesterLine = semester.label;
 
@@ -95,11 +96,11 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
     {
         var labelLine = partial.label;
         var gradeLine = " ";
-
+        
         foreach (var item in subjectList)
         {
             var result = partial.subjectPartialList!
-                .FirstOrDefault(e => e.subjectId == item.subjectId);
+                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId));
 
             var label = result == null ? "" : result.studentGrade?.label;
             var grade = result == null ? "" : result.studentGrade?.grade.ToString();
@@ -144,15 +145,21 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             return this;
         }
         
-        public Builder withSemesters(List<SemesterEntity> parameter)
+        public Builder withSemesterList(List<SemesterEntity> parameter)
         {
             latexBuilder.semesterList = parameter;
             return this;
         }
         
-        public Builder withSubjects(List<(string, string)> parameter)
+        public Builder withSubjectList(List<(string, string)> parameter)
         {
             latexBuilder.subjectList = parameter;
+            return this;
+        }
+
+        public Builder withPartialList(List<PartialEntity> parameter)
+        {
+            latexBuilder.partialList = parameter;
             return this;
         }
     }
