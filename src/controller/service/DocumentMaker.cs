@@ -108,14 +108,18 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         }
             
         var partialList = await daoFactory.partialDao!.getListWithSubjectByEnrollment(enrollment!.enrollmentId!);
-        student.setPartials(partialList);
+        foreach (var item in partialList)
+        {
+            item.setGradeListByStudent(studentId);
+        }
         
         var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
             .withDegree(enrollment.label)
-            .withSubjects(await getSubjectSort(student.enrollmentId!))
-            .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
+            .withSubjectList(await getSubjectSort(student.enrollmentId!))
+            .withSemesterList(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
+            .withPartialList(partialList)
             .build();
         
         setLatexBuilder(latexBuilder);
