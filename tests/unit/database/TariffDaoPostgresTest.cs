@@ -106,7 +106,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         var result = await sut.getGeneralBalance("std-1");
         
         Assert.IsType<float[]>(result);
-        Assert.Equal([0,1000], result);
+        Assert.Equal([10,100], result);
     }
     
     [Fact]

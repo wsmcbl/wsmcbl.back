@@ -1,5 +1,6 @@
 using wsmcbl.src.database;
 using wsmcbl.src.exception;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
 
@@ -47,7 +48,7 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
     }
 
     [Fact]
-    public async Task getAllForTheCurrentSchoolyear_ShouldReturnList_WhenSchoolyearExist()
+    public async Task getValidListForTheSchoolyear_ShouldReturnList_WhenSchoolyearExist()
     {
         context = TestDbContext.getInMemory();
         
@@ -57,7 +58,11 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
         var degree = TestEntityGenerator.aDegree("dgr001");
         degree.schoolYear = schoolyear.id!;
         context.Set<DegreeEntity>().Add(degree);
+        await context.SaveChangesAsync();
         
+        var enrollment = TestEntityGenerator.aEnrollment();
+        enrollment.degreeId = degree.degreeId!;
+        context.Set<EnrollmentEntity>().Add(enrollment);
         await context.SaveChangesAsync();
         
         var sut = new DegreeDaoPostgres(context);
@@ -68,10 +73,11 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
     }
 
     [Fact]
-    public async Task getAllForTheCurrentSchoolyear_ShouldThrowException_WhenSchoolyearNotExist()
+    public async Task getValidListForTheSchoolyear_ShouldReturnEmptyList_WhenSchoolyearNotExist()
     {
         var sut = new DegreeDaoPostgres(TestDbContext.getInMemory());
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getValidListForTheSchoolyear());
+        var result = await sut.getValidListForTheSchoolyear();
+        Assert.Empty(result);
     }
 }

@@ -1,0 +1,4 @@
+{
+  "collectionBehavior": "CollectionPerAssembly",
+  "collectionOrderer": "wsmcbl.tests.integration.util.CustomCollectionOrderer, wsmcbl.tests"
+}

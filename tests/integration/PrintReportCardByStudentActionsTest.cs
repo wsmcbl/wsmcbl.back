@@ -3,6 +3,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.integration;
 
+[CollectionDefinition("SequentialCollection")]
 public class PrintReportCardByStudentActionsTest : BaseActionsTest<PrintReportCardByStudentFixture>
 {
     public PrintReportCardByStudentActionsTest(PrintReportCardByStudentFixture factory) : base(factory)
@@ -10,6 +11,7 @@ public class PrintReportCardByStudentActionsTest : BaseActionsTest<PrintReportCa
         baseUri = "/v3/academy";
     }
     
+    [Fact]
     public async Task getStudentInformation_ShouldReturnJson_WhenCalled()
     {
         var response = await client.GetAsync($"{baseUri}/students/hola");

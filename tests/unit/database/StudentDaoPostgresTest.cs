@@ -43,7 +43,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     public async Task getByIdWithProperties_ShouldThrowException_WhenTutorNotExist()
     {
         var student = TestEntityGenerator.aStudent("std-00");
-        student.tutorId = "tutor-00";
+        student.tutorId = "tutor-01";
      
         context = TestDbContext.getInMemory();
         context.Set<StudentEntity>().Add(student);

@@ -4,6 +4,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.integration;
 
+[CollectionDefinition("SequentialCollection")]
 [TestCaseOrderer("wsmcbl.tests.integration.util.PriorityOrderer", "wsmcbl.tests")]
 public class EnrollStudentActionsTest : BaseActionsTest<EnrollStudentFixture>
 {

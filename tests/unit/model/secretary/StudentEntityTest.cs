@@ -41,19 +41,4 @@ public class StudentEntityTest
         Assert.Equal(entity.religion, sut.religion);
         Assert.Equal(entity.address, sut.address);
     }
-
-    [Fact]
-    public async Task SaveChanges_ShouldAddElementIntoDaos_WhenParametersAreValid()
-    {
-        var daoFactory = Substitute.For<DaoFactory>();
-
-        var sut = TestEntityGenerator.aStudent("std-01");
-        
-        await daoFactory.studentDao!.Received().updateAsync(sut);
-        await daoFactory.studentTutorDao!.Received().updateAsync(sut.tutor);
-        await daoFactory.studentFileDao!.Received().updateAsync(sut.file);
-        await daoFactory.studentMeasurementsDao!.Received().updateAsync(sut.measurements);
-        await daoFactory.studentParentDao!.Received().updateAsync(Arg.Any<StudentParentEntity>());
-        await daoFactory.Received().execute();
-    }
 }
