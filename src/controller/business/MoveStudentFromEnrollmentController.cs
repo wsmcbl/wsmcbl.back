@@ -65,7 +65,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
     {
         var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
 
-        var result = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
+        var result = partialList.FirstOrDefault(e => e is { isActive: true, gradeRecordIsActive: true });
 
         return result != null;
     }
