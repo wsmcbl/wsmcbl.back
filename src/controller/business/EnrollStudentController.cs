@@ -25,7 +25,13 @@ public class EnrollStudentController : BaseController
 
     public async Task<List<DegreeEntity>> getValidDegreeList()
     {
-        return await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        foreach (var item in list)
+        {
+            item.enrollmentList = item.enrollmentList!.Where(e => !e.isEnrollmentFull()).ToList();
+        }
+
+        return list;
     }
 
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId, bool isRepeating)

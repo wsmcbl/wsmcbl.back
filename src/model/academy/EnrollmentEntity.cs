@@ -65,8 +65,15 @@ public class EnrollmentEntity
     public List<string> getListTeacherIdBySubject()
     {
         if (subjectList == null || subjectList.Count == 0)
+        {
             return [];
+        }
         
         return subjectList.Select(e => e.teacherId).Distinct().ToList()!;
+    }
+
+    public bool isEnrollmentFull()
+    {
+        return quantity >= capacity;
     }
 }
