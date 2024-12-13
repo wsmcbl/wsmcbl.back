@@ -52,8 +52,6 @@ remake: ## Stop, build and run the containers
 	$(MAKE) stop && $(MAKE) build && $(MAKE) run
 
 run-test: ## Run test
-	docker network create test-network || true
-	docker-compose -f docker-compose.test.yml down --volumes --remove-orphans
 	docker-compose -f docker-compose.test.yml build
 	docker-compose -f docker-compose.test.yml run api-test
 	dotnet build
