@@ -37,7 +37,7 @@ public class ResourceAuthorizer : ActionFilterAttribute
         var problemDetails = new ProblemDetails
         {
             Status = status,
-            Title = "Access Denied",
+            Title = "Access Denied.",
             Detail = detail
         };
 
