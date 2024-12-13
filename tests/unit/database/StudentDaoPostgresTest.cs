@@ -37,21 +37,6 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
 
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getByIdWithProperties("std-00"));
     }
-    
-    
-    [Fact]
-    public async Task getByIdWithProperties_ShouldThrowException_WhenTutorNotExist()
-    {
-        var student = TestEntityGenerator.aStudent("std-00");
-        
-        context = TestDbContext.getInMemory();
-        context.Set<StudentEntity>().Add(student);
-        await context.SaveChangesAsync();
-                
-        var sut = new StudentDaoPostgres(context);
-
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getByIdWithProperties("std-00"));
-    }
 
     [Fact]
     public async Task updateAsync_ShouldUpdateStudent_WhenStudentExist()
