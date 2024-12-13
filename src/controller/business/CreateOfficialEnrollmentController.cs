@@ -131,7 +131,11 @@ public class CreateOfficialEnrollmentController : BaseController
         }
 
         var degree = await daoFactory.degreeDao!.getById(degreeId);
-        degree!.createEnrollments(quantity);
+        if (degree == null)
+        {
+            throw new EntityNotFoundException("Degree", degreeId);
+        }
+        degree.createEnrollments(quantity);
 
         foreach (var enrollment in degree.enrollmentList!)
         {

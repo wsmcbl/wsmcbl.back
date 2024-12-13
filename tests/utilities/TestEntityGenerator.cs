@@ -204,7 +204,7 @@ public class TestEntityGenerator
         };
     }
     
-    private static TariffEntity aTariffNotMonthly()
+    public static TariffEntity aTariffNotMonthly()
     {
         return new TariffEntity
         {
@@ -231,7 +231,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static UserEntity aUser(string userId)
+    public static UserEntity aUser()
     {
         return new UserEntity
         {
@@ -250,7 +250,7 @@ public class TestEntityGenerator
         return new CashierEntity
         {
             cashierId = cashierId,
-            user = aUser("user-1")
+            user = aUser()
         };
     }
 

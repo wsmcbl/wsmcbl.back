@@ -58,7 +58,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
 
     
     [Fact]
-    public async Task getListByStudent_ReturnsList()
+    public async Task getListByStudent_ShouldReturnsList()
     {
         var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
@@ -70,9 +70,17 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         sut = new TariffDaoPostgres(context);
 
         var result = await sut.getListByStudent("std-1");
-        
+
         Assert.NotEmpty(result);
-        Assert.Equivalent(TestEntityGenerator.aTariffList(), result);
+        var tariffList = new List<TariffEntity>
+        {
+            TestEntityGenerator.aTariff(),
+            TestEntityGenerator.aTariffNotMonthly()
+        };
+        foreach (var item in tariffList)
+        {
+            Assert.True(result.Contains(item));
+        }
     }
     
     [Fact]
@@ -88,9 +96,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         
         Assert.Empty(result);
     }
-
-
-
+    
     [Fact]
     public async Task getGeneralBalance_ReturnsFloatArray()
     {
