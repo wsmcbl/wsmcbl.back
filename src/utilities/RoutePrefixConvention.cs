@@ -7,10 +7,26 @@ public class RoutePrefixConvention(string prefix) : IControllerModelConvention
     public void Apply(ControllerModel controller)
     {
         foreach (var selector in controller.Selectors
-                     .Select(p => p.AttributeRouteModel)
-                     .Where(s => s != null))
+                     .Where(p => p.AttributeRouteModel != null))
         {
-            selector!.Template = $"{prefix}/{selector.Template}";
+            var routeModel = selector.AttributeRouteModel;
+            if (routeModel != null)
+            {
+                routeModel.Template = $"{prefix}/{routeModel.Template}".Trim('/');
+            }
+        }
+
+        foreach (var action in controller.Actions)
+        {
+            foreach (var selector in action.Selectors
+                         .Where(s => s.AttributeRouteModel != null))
+            {
+                var routeModel = selector.AttributeRouteModel;
+                if (routeModel != null)
+                {
+                    routeModel.Template = $"{prefix}/{routeModel.Template}".Trim('/');
+                }
+            }
         }
     }
 }

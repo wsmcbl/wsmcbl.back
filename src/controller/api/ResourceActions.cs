@@ -11,19 +11,6 @@ namespace wsmcbl.src.controller.api;
 public class ResourceActions(ResourceController controller) : ControllerBase
 {
     /// <summary>
-    ///  Returns the list of all students.
-    /// </summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    [ResourceAuthorizer("admin", "secretary", "cashier")]
-    [HttpGet]
-    [Route("students")]
-    public async Task<IActionResult> getStudentsList()
-    {
-        var result = await controller.getStudentList();
-        return Ok(result.mapToListBasicDto());
-    }
-    
-    /// <summary>
     ///  Create a new media resource.
     /// </summary>
     /// <response code="201">Returns a new resource.</response>

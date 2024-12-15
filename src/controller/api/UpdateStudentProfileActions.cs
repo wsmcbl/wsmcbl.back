@@ -13,6 +13,19 @@ namespace wsmcbl.src.controller.api;
 public class UpdateStudentProfileActions(UpdateStudentProfileController controller) : ActionsBase
 {
     /// <summary>
+    ///  Returns the list of all students.
+    /// </summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier")]
+    [HttpGet]
+    [Route("students")]
+    public async Task<IActionResult> getStudentsList()
+    {
+        var result = await controller.getStudentList();
+        return Ok(result.mapToListBasicDto());
+    }
+    
+    /// <summary>
     ///  Returns the student full by id.
     /// </summary>
     /// <response code="200">Returns a resource.</response>
