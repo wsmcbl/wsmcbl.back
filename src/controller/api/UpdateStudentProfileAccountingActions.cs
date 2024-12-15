@@ -1,14 +1,12 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
-using wsmcbl.src.dto.secretary;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "secretary")]
+[ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
 public class UpdateStudentProfileAccountingActions(UpdateStudentProfileController controller) : ActionsBase
@@ -19,7 +17,6 @@ public class UpdateStudentProfileAccountingActions(UpdateStudentProfileControlle
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
-    [ResourceAuthorizer("cashier")]
     [HttpPut]
     [Route("students")]
     public async Task<IActionResult> updateDiscount(ChangeStudentDiscountDto dto)
