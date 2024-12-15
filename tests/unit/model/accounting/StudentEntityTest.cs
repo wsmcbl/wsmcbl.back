@@ -8,17 +8,6 @@ public class StudentEntityTest
 {
 
     [Fact]
-    public async Task loadDebtHistory_ShouldNotLoadDebtHistory_WhenIDebtHistoryDaoIsNull()
-    {
-        var context = Substitute.For<IDebtHistoryDao>();
-        var sut = TestEntityGenerator.aAccountingStudent("std-1");
-
-        await sut.loadDebtHistory(context);
-        
-        Assert.Null(sut.debtHistory);
-    }
-    
-    [Fact]
     public void calculateDiscount_ShouldReturnParameter_WhenDiscountIsNull()
     {
         var sut = TestEntityGenerator.aAccountingStudent("std-1");

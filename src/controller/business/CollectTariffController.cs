@@ -14,15 +14,7 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var student = await daoFactory.accountingStudentDao!.getById(studentId);
-
-        if (student is null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-
-        await student.loadDebtHistory(daoFactory.debtHistoryDao!);
-        return student;
+        return (await daoFactory.accountingStudentDao!.getById(studentId))!;
     }
     
     public Task<List<TariffEntity>> getTariffListByStudent(string studentId)

@@ -8,9 +8,11 @@ public class StudentToListDto
     public string fullName { get; set; } = null!;
     public string? enrollmentLabel { get; set; }
     public string? tutor { get; set; }
+    public double discountId { get; set; }
     public double discount { get; set; }
     public bool isActive { get; set; }
     public ICollection<PaymentItemDto>? paymentHistory { get; set; }
+    public ICollection<DebtDto>? debtList { get; set; }
 
     public StudentToListDto()
     {
@@ -22,10 +24,14 @@ public class StudentToListDto
         fullName = student.fullName();
         enrollmentLabel = student.enrollmentLabel;
         tutor = student.tutor;
+        discountId = student.getDiscountIdFormat();
         discount = student.getDiscount();
         isActive = student.isActive;
         
         student.debtHistory ??= [];
-        paymentHistory = student.debtHistory.Select(e => e.mapToDto()).ToList();
+        paymentHistory = student.debtHistory
+            .Where(dh => dh.isPaid || dh.havePayments())
+            .Select(e => e.mapToDto()).ToList();
+        debtList = student.debtHistory.Select(e => new DebtDto(e)).ToList();
     }
 }

@@ -28,7 +28,9 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     ///  Returns the student (active or not) by id.
     /// </summary>
     /// <response code="200">Return existing resource.</response>
-    /// <response code="404">Resource not found.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById([Required] string studentId)

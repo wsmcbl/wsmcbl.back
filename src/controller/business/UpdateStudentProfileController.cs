@@ -53,12 +53,6 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         return await daoFactory.studentDao!.getByIdWithProperties(studentId);
     }
 
-    public async Task<model.accounting.StudentEntity> getAccountingStudentById(string studentId)
-    {
-        return (await daoFactory.accountingStudentDao!.getById(studentId))!;
-    }
-
-    
     public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
     {
         return await daoFactory.studentDao!.getListWhitSchoolyearAndEnrollment();
