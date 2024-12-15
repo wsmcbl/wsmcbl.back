@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
-public class CollectTariffActions(CollectTariffController controller) : ControllerBase
+public class CollectTariffActions(CollectTariffController controller) : ActionsBase
 {
     /// <summary>
     ///  Returns the list of active students.
@@ -47,17 +47,7 @@ public class CollectTariffActions(CollectTariffController controller) : Controll
     [Route("tariffs/search")]
     public async Task<IActionResult> getTariffList([FromQuery] string q)
     {
-        if (string.IsNullOrWhiteSpace(q))
-        {
-            throw new BadRequestException("Query parameter 'q' is required.");
-        }
-
-        var parts = q.Split(':');
-        if (parts.Length != 2)
-        {
-            throw new BadRequestException("Query parameter 'q' is not in the correct format.");
-        }
-
+        var parts = validateQueryValue(q);
         var key = parts[0].ToLower();
         var value = parts[1].ToLower();
 
