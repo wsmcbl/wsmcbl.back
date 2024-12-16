@@ -47,7 +47,6 @@ public class StudentEntity
         religion = entity.religion;
         address = entity.address;
         minedId = entity.minedId;
-        profilePicture = entity.profilePicture;
         accessToken = entity.accessToken;
     }
 
