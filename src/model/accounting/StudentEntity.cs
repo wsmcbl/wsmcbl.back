@@ -26,7 +26,7 @@ public class StudentEntity
         {
             2 => educationalLevel + 3,
             3 => educationalLevel + 6,
-            _ => discountId
+            _ => value
         };
     }
     
