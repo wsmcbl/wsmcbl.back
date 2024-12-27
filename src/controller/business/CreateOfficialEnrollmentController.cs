@@ -165,7 +165,6 @@ public class CreateOfficialEnrollmentController : BaseController
         await daoFactory.execute();
 
         var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
-        await checkTeacherListById(enrollment.getListTeacherIdBySubject());
 
         foreach (var item in enrollment.subjectList!)
         {
@@ -180,20 +179,6 @@ public class CreateOfficialEnrollmentController : BaseController
         await daoFactory.execute();
 
         return existingEntity;
-    }
-
-    private async Task checkTeacherListById(List<string> value)
-    {
-        var teacherList = await daoFactory.teacherDao!.getByListByIdList(value);
-
-        foreach (var item in value)
-        {
-            var result = teacherList.FirstOrDefault(e => e.teacherId == item);
-            if (result == null)
-            {
-                throw new EntityNotFoundException("Teacher", item);
-            }
-        }
     }
     
     public async Task<TeacherEntity> assignTeacherGuide(string teacherId, string enrollmentId)
