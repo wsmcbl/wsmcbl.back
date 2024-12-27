@@ -173,7 +173,7 @@ public class CreateOfficialEnrollmentController : BaseController
             if (subject == null)
                 continue;
             
-            subject.teacherId = item.teacherId;
+            subject.teacherId = "tch-001";
             daoFactory.subjectDao.update(subject);
         }
 
