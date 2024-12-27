@@ -17,9 +17,5 @@ public class EnrollmentToUpdateDtoValidator :  AbstractValidator<EnrollmentToUpd
 
         RuleFor(e => e.section)
             .NotEmpty().WithMessage("The section label must be no empty.");
-        
-        RuleFor(e => e.subjectList)
-            .NotEmpty().WithMessage("Subject list must be not empty.")
-            .ForEach(e => e.SetValidator(new SubjectToAssignDtoValidator()));
     }
 }
