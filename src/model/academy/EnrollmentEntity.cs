@@ -26,6 +26,7 @@ public class EnrollmentEntity
         this.label = label;
         section = "Aula ";
         this.tag = tag;
+        teacherId = "tch-001";
     }
 
     public void setSubjectList(List<SubjectEntity> subjects)
