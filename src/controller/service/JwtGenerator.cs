@@ -42,7 +42,8 @@ public class JwtGenerator
         {
             new(ClaimTypes.NameIdentifier, user.userId.ToString()!),
             new(ClaimTypes.Email, user.email),
-            new(ClaimTypes.Role, user.getRole())
+            new(ClaimTypes.Role, user.getRole()),
+            new("roleid", "tch-001")
         };
         
         claimList.AddRange(user.getPermissionList()
