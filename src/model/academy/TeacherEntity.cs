@@ -21,8 +21,9 @@ public class TeacherEntity
         return enrollment!.label;
     }
 
-    public void deleteEnrollment()
+    public void forgetEnrollment()
     {
         enrollment = null;
+        isGuide = false;
     }
 }

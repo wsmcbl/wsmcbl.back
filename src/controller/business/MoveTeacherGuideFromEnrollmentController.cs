@@ -46,7 +46,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         var oldTeacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollment.enrollmentId!);
         if (oldTeacher != null)
         {
-            oldTeacher.deleteEnrollment();
+            oldTeacher.forgetEnrollment();
             daoFactory.teacherDao.update(oldTeacher);
             await daoFactory.execute();
         }
