@@ -25,7 +25,7 @@ BEGIN
     INSERT INTO Accounting.debthistory(studentId, tariffId, schoolyear, subamount, arrear, debtbalance, ispaid)
     SELECT NEW.studentId, t.tariffId, t.schoolyear, t.amount, 0.0, 0, false
     FROM Accounting.tariff t
-    WHERE t.schoolyear = current_school_year or t.schoolyear = new_school_year
+    WHERE (t.schoolyear = current_school_year or t.schoolyear = new_school_year)
       and t.typeid = 2
       and NEW.educationallevel = t.educationallevel;
 

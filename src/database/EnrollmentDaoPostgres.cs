@@ -68,6 +68,6 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
             result.Add(enrollmentList.Find(e => e.enrollmentId == item.enrollmentId)!);
         }
         
-        return result;
+        return result.Distinct().ToList();
     }
 }
