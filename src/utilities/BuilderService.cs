@@ -18,7 +18,7 @@ public static class BuilderService
     {
         Services.AddControllers(options =>
         {
-            options.Conventions.Add(new RoutePrefixConvention("v3"));
+            options.Conventions.Add(new RoutePrefixConvention("v4"));
         });
     }
     
