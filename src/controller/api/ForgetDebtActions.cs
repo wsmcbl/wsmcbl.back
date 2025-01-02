@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -34,8 +35,13 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="409">If the debt is already paid.</response>
     [HttpPut]
     [Route("debts")]
-    public async Task<IActionResult> forgiveADebt([FromQuery] string studentId, [FromQuery] int tariffId)
+    public async Task<IActionResult> forgiveADebt(ForgetDebtDto dto)
     {
-        return Ok(await controller.forgiveADebt(studentId, tariffId));
+        if (!dto.authorizationToken.Equals("36987"))
+        {
+            throw new ForbiddenException("Incorrect authorization code.");
+        }
+        
+        return Ok(await controller.forgiveADebt(dto.studentId, dto.tariffId));
     }
 }
