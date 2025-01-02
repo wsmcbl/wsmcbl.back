@@ -9,8 +9,7 @@ namespace wsmcbl.tests.unit.database;
 public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
 {
     private DebtHistoryDaoPostgres? sut;
-
-
+    
     [Fact]
     public async Task haveTariffsAlreadyPaid_ShouldReturnTrue_WhenDebtIsPaid()
     {
@@ -29,7 +28,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
     }
 
     [Fact]
-    public async Task getListByStudent_ReturnsList()
+    public async Task getListByStudentWithPayments_ReturnsList()
     {
         var list = TestEntityGenerator.aDebtHistoryList("std-1", false);
 
@@ -37,7 +36,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         context.Set<DebtHistoryEntity>().Returns(debtEntities);
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.getListByStudent("std-1");
+        var result = await sut.getListByStudentWithPayments("std-1");
 
         Assert.NotEmpty(result);
         Assert.Equal(list, result);
@@ -50,7 +49,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         context.Set<DebtHistoryEntity>().Returns(debtEntities);
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.getListByStudent("std-1");
+        var result = await sut.getListByStudentWithPayments("std-1");
 
         Assert.Empty(result);
     }

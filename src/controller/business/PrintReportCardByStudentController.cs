@@ -27,7 +27,7 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
 
     public async Task<bool> isTheStudentSolvent(string studentId)
     {
-        var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId);
         
         var debt = debtHistoryList.Find(isSolvencyInterval);
         if (debt == null)

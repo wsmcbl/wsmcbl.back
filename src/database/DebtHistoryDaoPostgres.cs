@@ -9,11 +9,15 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 {
     public async Task<List<DebtHistoryEntity>> getListByStudent(string studentId)
     {
-        var history = await entities
+        return await entities
             .Where(e => e.studentId == studentId)
             .Include(e => e.tariff)
             .ToListAsync();
+    }
 
+    public async Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId)
+    {
+        var history = await getListByStudent(studentId);
         return history.Where(dh => dh.isPaid || dh.havePayments()).ToList();
     }
 
@@ -113,6 +117,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         }
         
         debt.subAmount = 0;
+        debt.arrears = 0;
         update(debt);
         
         return debt;
