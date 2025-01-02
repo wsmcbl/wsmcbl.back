@@ -32,4 +32,7 @@ public static class DtoMapper
     
     public static List<TransactionToListDto> mapToTransactionListDto(this IEnumerable<TransactionReportView> value)
         => value.Select(e => e.mapToListDto()).ToList();
+
+    public static List<DebtDto> mapToListDto(this IEnumerable<DebtHistoryEntity> value)
+        => value.Select(e => new DebtDto(e)).ToList();
 }

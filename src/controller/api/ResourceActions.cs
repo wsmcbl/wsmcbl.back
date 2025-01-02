@@ -65,19 +65,4 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         var result = await controller.updateMedia(media);
         return Ok(result);
     }
-
-    
-    /// <summary>
-    ///  Update forgive a debt.
-    /// </summary>
-    /// <response code="200">Returns the edited resource.</response>
-    /// <response code="404">If resource not exist(student or tariff).</response>
-    /// <response code="409">If the debt is already paid.</response>
-    [ResourceAuthorizer("admin")]
-    [HttpPut]
-    [Route("debts")]
-    public async Task<IActionResult> forgiveADebt([FromQuery] string studentId, [FromQuery] int tariffId)
-    {
-        return Ok(await controller.forgiveADebt(studentId, tariffId));
-    }
 }

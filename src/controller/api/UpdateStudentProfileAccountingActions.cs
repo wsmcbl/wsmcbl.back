@@ -23,7 +23,7 @@ public class UpdateStudentProfileAccountingActions(UpdateStudentProfileControlle
     {
         if (!dto.authorizationToken.Equals("36987"))
         {
-            throw new UnauthorizedException("Incorrect authorization code.");
+            throw new ForbiddenException("Incorrect authorization code.");
         }
         
         await controller.updateStudentDiscount(dto.studentId, dto.discountId);

@@ -44,11 +44,4 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     {
         return await daoFactory.mediaDao!.getAll();
     }
-
-    public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
-    {
-        var result = await daoFactory.debtHistoryDao!.forgiveADebt(studentId, tariffId);
-        await daoFactory.execute();
-        return result;
-    }
 }

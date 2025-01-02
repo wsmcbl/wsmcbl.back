@@ -12,7 +12,6 @@ public class StudentToListDto
     public double discount { get; set; }
     public bool isActive { get; set; }
     public ICollection<PaymentItemDto>? paymentHistory { get; set; }
-    public ICollection<DebtDto>? debtList { get; set; }
 
     public StudentToListDto()
     {
@@ -32,6 +31,5 @@ public class StudentToListDto
         paymentHistory = student.debtHistory
             .Where(dh => dh.isPaid || dh.havePayments())
             .Select(e => e.mapToDto()).ToList();
-        debtList = student.debtHistory.Select(e => new DebtDto(e)).ToList();
     }
 }

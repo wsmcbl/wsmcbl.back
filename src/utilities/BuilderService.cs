@@ -31,6 +31,7 @@ public static class BuilderService
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToUpdateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollStudentDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<ForgetDebtDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<MediaEntityValidator>();
         Services.AddValidatorsFromAssemblyContaining<MoveTeacherDtoValidator>();
