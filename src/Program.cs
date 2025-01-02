@@ -46,6 +46,8 @@ builder.Services.AddTransient<UpdateStudentProfileController>();
 builder.Services.AddTransient<MoveTeacherFromSubjectController>();
 builder.Services.AddTransient<ViewGradeOnlineController>();
 
+builder.Services.AddTransient<ForgetDebtController>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
