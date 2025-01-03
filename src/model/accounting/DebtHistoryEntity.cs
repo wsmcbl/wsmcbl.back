@@ -1,3 +1,5 @@
+using wsmcbl.src.exception;
+
 namespace wsmcbl.src.model.accounting;
 
 public class DebtHistoryEntity
@@ -22,5 +24,21 @@ public class DebtHistoryEntity
     {
         var debt = amount - debtBalance;
         return debt > 0 ? debt : 0;
+    }
+
+    public void forgiveDebt()
+    {
+        if (isPaid)
+        {
+            throw new ConflictException("The debt is already paid.");
+        }
+        
+        subAmount = 0;
+        arrears = 0;
+    }
+
+    public void restoreDebt(float value)
+    {
+        debtBalance -= value;
     }
 }

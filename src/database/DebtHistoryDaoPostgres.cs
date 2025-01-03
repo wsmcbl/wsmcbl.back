@@ -70,16 +70,10 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task restoreDebt(string transactionId)
     {
-        var transaction = await context.Set<TransactionEntity>()
-            .Include(e => e.details)
-            .FirstOrDefaultAsync(e => e.transactionId == transactionId);
+        var transactionDao = new TransactionDaoPostgres(context);
+        var transaction = await transactionDao.getById(transactionId);
 
-        if (transaction == null)
-        {
-            throw new EntityNotFoundException("transaction", transactionId);
-        }
-
-        if (!transaction.isValid)
+        if (!transaction!.isValid)
         {
             throw new ConflictException("The transaction is already cancelled.");
         }
@@ -94,8 +88,8 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
             {
                 continue;
             }
-            
-            debt.debtBalance -= item.amount;
+
+            debt.restoreDebt(item.amount);
             update(debt);
         }
     }
@@ -110,14 +104,8 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         {
             throw new EntityNotFoundException($"Entity of type (debt) with student ({studentId}) and tariff ({tariffId}) not found.");
         }
-        
-        if (debt.isPaid)
-        {
-            throw new ConflictException("The debt is already paid.");
-        }
-        
-        debt.subAmount = 0;
-        debt.arrears = 0;
+
+        debt.forgiveDebt();
         update(debt);
         
         return debt;

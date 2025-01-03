@@ -32,4 +32,9 @@ public class TransactionEntity
     {
         return details.Select(item => item.tariffId).ToList();
     }
+
+    public void setAsInvalid()
+    {
+        isValid = false;
+    }
 }
