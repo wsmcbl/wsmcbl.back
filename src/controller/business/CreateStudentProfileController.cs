@@ -33,14 +33,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
     public async Task createAccountingStudent(StudentEntity student, int educationalLevel)
     {
-        var accountingStudent = new model.accounting.StudentEntity
-        {
-            studentId = student.studentId,
-            discountId = 1,
-            educationalLevel = educationalLevel,
-            enrollmentLabel = null
-        };
-        
+        var accountingStudent = new model.accounting.StudentEntity(student.studentId!, educationalLevel);
         daoFactory.accountingStudentDao!.create(accountingStudent);
         await daoFactory.execute();
     }
