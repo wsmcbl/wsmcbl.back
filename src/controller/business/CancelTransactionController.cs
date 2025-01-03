@@ -25,7 +25,7 @@ public class CancelTransactionController(DaoFactory daoFactory) : BaseController
         }
 
         await daoFactory.debtHistoryDao!.restoreDebt(transactionId);
-        exitingTransaction.isValid = false;
+        exitingTransaction.setAsInvalid();
         await daoFactory.execute();
         return exitingTransaction;
     }

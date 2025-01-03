@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using wsmcbl.src.database;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 using wsmcbl.tests.utilities;
 
@@ -85,5 +86,51 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         Assert.NotNull(debt);
         Assert.Equal(list[0], debt);
         Assert.Equal(0, debt.arrears);
+    }
+
+    [Fact]
+    public async Task getListByStudent_ShouldReturnEmptyList_WhenNotThereDebts()
+    {
+        context = TestDbContext.getInMemory();
+        sut = new DebtHistoryDaoPostgres(context);
+
+        var result = await sut.getListByStudent("student");
+        
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async Task restoreDebt_ThrowException_WhenTransactionNotExist()
+    {
+        context = TestDbContext.getInMemory();       
+        sut = new DebtHistoryDaoPostgres(context);
+
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.restoreDebt("tst-1"));
+    }
+
+    [Fact]
+    public async Task restoreDebt_ThrowException_WhenTransactionIsAlreadyInvalid()
+    {
+        var transaction = TestEntityGenerator.aTransaction("01", []);
+        transaction.setAsInvalid();
+        
+        context = TestDbContext.getInMemory();
+        context.Set<TransactionEntity>().AddRange(transaction);
+        await context.SaveChangesAsync();
+        
+        sut = new DebtHistoryDaoPostgres(context);
+
+        await Assert.ThrowsAsync<ConflictException>(() => sut.restoreDebt("tst-1"));
+    }
+    
+
+    [Fact]
+    public async Task forgiveDebt_ThrowException_WhenDebtDoesNotExist()
+    {
+        context = TestDbContext.getInMemory();
+        
+        sut = new DebtHistoryDaoPostgres(context);
+
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.forgiveADebt("std", 1));
     }
 }

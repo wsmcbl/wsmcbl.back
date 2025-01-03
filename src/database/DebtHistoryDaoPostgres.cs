@@ -70,16 +70,10 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task restoreDebt(string transactionId)
     {
-        var transaction = await context.Set<TransactionEntity>()
-            .Include(e => e.details)
-            .FirstOrDefaultAsync(e => e.transactionId == transactionId);
+        var transactionDao = new TransactionDaoPostgres(context);
+        var transaction = await transactionDao.getById(transactionId);
 
-        if (transaction == null)
-        {
-            throw new EntityNotFoundException("transaction", transactionId);
-        }
-
-        if (!transaction.isValid)
+        if (!transaction!.isValid)
         {
             throw new ConflictException("The transaction is already cancelled.");
         }
