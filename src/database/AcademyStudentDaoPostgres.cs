@@ -30,6 +30,19 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
         await context.Database.ExecuteSqlAsync(query);
     }
 
+    public async Task<bool> hasAEnroll(string studentId)
+    {
+        try
+        {
+            await getByIdInCurrentSchoolyear(studentId);
+            return true;
+        }
+        catch (EntityNotFoundException)
+        {
+            return false;
+        }
+    }
+
     public new async Task<StudentEntity?> getById(string studentId)
     {
         var schoolyearDao = new SchoolyearDaoPostgres(context);

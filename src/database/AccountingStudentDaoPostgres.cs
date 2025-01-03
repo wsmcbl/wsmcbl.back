@@ -80,7 +80,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 
         await using (var reader = await command.ExecuteReaderAsync())
         {
-            student.enrollmentLabel = await reader.ReadAsync() ? reader.GetString(0) : "Sin matrícula";
+            student.setEnrollmentLabel(await reader.ReadAsync() ? reader.GetString(0) : null);
         }
         
         await context.Database.CloseConnectionAsync();
