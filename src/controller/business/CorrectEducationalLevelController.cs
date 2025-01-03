@@ -7,8 +7,7 @@ public class CorrectEducationalLevelController(DaoFactory daoFactory) : BaseCont
 {
     public async Task changeEducationalLevel(string studentId, int level)
     {
-        var value = await daoFactory.academyStudentDao.hasAEnroll(studentId);
-        if (value)
+        if (await daoFactory.academyStudentDao!.hasAEnroll(studentId))
         {
             throw new ConflictException("The student is already enroll. This operation can not be performed.");
         }
