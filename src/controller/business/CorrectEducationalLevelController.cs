@@ -7,11 +7,21 @@ public class CorrectEducationalLevelController(DaoFactory daoFactory) : BaseCont
 {
     public async Task changeEducationalLevel(string studentId, int level)
     {
-        var student = await daoFactory.academyStudentDao!.getById(studentId);
+        var value = await daoFactory.academyStudentDao.hasAEnroll(studentId);
+        if (value)
+        {
+            throw new ConflictException("The student is already enroll. This operation can not be performed.");
+        }
+        
+        var student = await daoFactory.accountingStudentDao!.getById(studentId);
 
         if (student == null)
         {
             throw new EntityNotFoundException("student", studentId);
         }
+        
+        student.updateEducationalLevel(level);
+        await daoFactory.execute();
     }
 }
+
