@@ -10,7 +10,7 @@ namespace wsmcbl.tests.unit.controller.business;
 
 public class CollectTariffControllerTest
 {
-    private readonly CollectTariffController controller;
+    private readonly CollectTariffController sut;
     private readonly DaoFactory daoFactory;
     private readonly IStudentDao studentDao;
     private readonly ITariffDao tariffDao;
@@ -21,7 +21,7 @@ public class CollectTariffControllerTest
         tariffDao = Substitute.For<ITariffDao>();
         
         daoFactory = Substitute.For<DaoFactory>();
-        controller = new CollectTariffController(daoFactory);
+        sut = new CollectTariffController(daoFactory);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class CollectTariffControllerTest
         studentDao.getAll().Returns(list);
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await controller.getStudentsList();
+        var result = await sut.getStudentsList();
 
         Assert.IsType<List<StudentEntity>>(result);
         Assert.NotEmpty(result);
@@ -44,7 +44,7 @@ public class CollectTariffControllerTest
         studentDao.getAll().Returns([]);
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await controller.getStudentsList();
+        var result = await sut.getStudentsList();
 
         Assert.IsType<List<StudentEntity>>(result);
         Assert.Empty(result);
@@ -58,7 +58,7 @@ public class CollectTariffControllerTest
         studentDao.getById(studentId).Returns(TestEntityGenerator.aAccountingStudent(studentId));
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await controller.getStudentById(studentId);
+        var result = await sut.getStudentById(studentId);
 
         Assert.IsType<StudentEntity>(result);
         Assert.NotNull(result);
@@ -72,7 +72,7 @@ public class CollectTariffControllerTest
         studentDao.getById(studentId).Returns(Task.FromResult<StudentEntity?>(null));
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.getStudentById(studentId));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getStudentById(studentId));
     }
 
     
@@ -84,7 +84,7 @@ public class CollectTariffControllerTest
         tariffDao.getListByStudent(studentId).Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 
-        var result = await controller.getTariffListByStudent(studentId);
+        var result = await sut.getTariffListByStudent(studentId);
 
         Assert.IsType<List<TariffEntity>>(result);
         Assert.NotEmpty(result);
@@ -99,7 +99,7 @@ public class CollectTariffControllerTest
         tariffDao.getOverdueList().Returns(list);
         daoFactory.tariffDao.Returns(tariffDao);
 
-        var result = await controller.getOverdueTariffList();
+        var result = await sut.getOverdueTariffList();
 
         Assert.IsType<List<TariffEntity>>(result);
         Assert.NotEmpty(result);
@@ -118,7 +118,7 @@ public class CollectTariffControllerTest
         tariffDao.getById(tariffId).Returns(tariff);
         daoFactory.tariffDao.Returns(tariffDao);
 
-        await controller.applyArrears(tariffId);
+        await sut.applyArrears(tariffId);
         Assert.True(tariff.isLate);
     }
     
@@ -126,7 +126,7 @@ public class CollectTariffControllerTest
     public async Task applyArrears_InvalidId_ReturnsException()
     {
         daoFactory.tariffDao.Returns(tariffDao);
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => controller.applyArrears(1));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.applyArrears(1));
     }
     
     
@@ -138,7 +138,7 @@ public class CollectTariffControllerTest
         var transactionDao = Substitute.For<ITransactionDao>();
         daoFactory.transactionDao.Returns(transactionDao);
 
-        var result = await controller.saveTransaction(entity, []);
+        var result = await sut.saveTransaction(entity, []);
 
         transactionDao.Received().create(entity);
         Assert.Equal(entity, result);
@@ -152,7 +152,7 @@ public class CollectTariffControllerTest
         tariffTypeDao.getAll().Returns(list);
         daoFactory.tariffTypeDao.Returns(tariffTypeDao);
 
-        var result = await controller.getTariffTypeList();
+        var result = await sut.getTariffTypeList();
 
         Assert.IsType<List<TariffTypeEntity>>(result);
         Assert.NotEmpty(result);
