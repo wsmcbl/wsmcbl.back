@@ -1,3 +1,5 @@
+using wsmcbl.src.exception;
+
 namespace wsmcbl.src.model.accounting;
 
 public class StudentEntity
@@ -20,6 +22,14 @@ public class StudentEntity
     {
     }
 
+    public StudentEntity(string studentId, int educationalLevel)
+    {
+        this.studentId = studentId;
+        discountId = 1;
+        this.educationalLevel = educationalLevel;
+        enrollmentLabel = null;
+    }
+    
     public void updateDiscountId(int value)
     {
         discountId = value switch
@@ -43,5 +53,25 @@ public class StudentEntity
     public float calculateDiscount(float amount)
     {
         return discount != null ? amount*getDiscount() : amount;
+    }
+
+    public void updateEducationalLevel(int value)
+    {
+        if (educationalLevel == value)
+        {
+            throw new ConflictException("The student has the same level.");
+        }
+        
+        educationalLevel = value;
+    }
+
+    public void setEnrollmentLabel(string? value)
+    {
+        if (value == null)
+        {
+            enrollmentLabel = "Sin matrícula";
+        }
+
+        enrollmentLabel = value;
     }
 }
