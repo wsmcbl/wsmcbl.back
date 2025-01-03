@@ -58,12 +58,8 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     public async Task<byte[]> getInvoiceDocument(string transactionId)
     {
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
-        if (transaction is null)
-        {
-            throw new EntityNotFoundException("Transaction", transactionId);
-        }
         
-        var cashier = await daoFactory.cashierDao!.getById(transaction.cashierId);
+        var cashier = await daoFactory.cashierDao!.getById(transaction!.cashierId);
         if (cashier is null)
         {
             throw new EntityNotFoundException("Cashier", transaction.cashierId);

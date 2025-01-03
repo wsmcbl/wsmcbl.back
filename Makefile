@@ -51,11 +51,6 @@ restart: ## Restart the containers
 remake: ## Stop, build and run the containers
 	$(MAKE) stop && $(MAKE) build && $(MAKE) run
 
-run-test: ## Run test
-	docker-compose -f docker-compose.test.yml build
-	docker-compose -f docker-compose.test.yml run api-test
-	dotnet build
-
 
 
 
@@ -68,6 +63,8 @@ api-bash: ## Entry api bash
 delete-containers: ## Remove all containers 
 	docker-compose down
 
+## --------------------------------------------------------------------------------------------------------------##
+
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
 	docker-compose down --volumes --remove-orphans
 	docker system prune
@@ -75,6 +72,11 @@ delete-all-services: ## Remove all containers and volumes (***CAUTION***)
 
 
 
+
+run-test: ## Run test
+	docker-compose -f docker-compose.test.yml build
+	docker-compose -f docker-compose.test.yml run api-test
+	dotnet build
 
 SONAR_TOKEN=$(shell echo $$SONAR_TOKEN)
 .PHONY: dn-ss

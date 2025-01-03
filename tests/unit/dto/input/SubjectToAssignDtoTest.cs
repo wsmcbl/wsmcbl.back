@@ -12,11 +12,8 @@ public class SubjectToAssignDtoTest
         var result = sut.toEntity("enr001");
         
         Assert.NotNull(result);
-        Assert.NotNull(result.enrollmentId);
-        Assert.NotNull(result.subjectId);
-        Assert.NotNull(result.teacherId);
-        Assert.NotEmpty(result.enrollmentId);
-        Assert.NotEmpty(result.subjectId);
-        Assert.NotEmpty(result.teacherId);
+        Assert.False(string.IsNullOrWhiteSpace(result.enrollmentId));
+        Assert.False(string.IsNullOrWhiteSpace(result.subjectId));
+        Assert.Null(result.teacherId);
     }
 }
