@@ -47,6 +47,7 @@ builder.Services.AddTransient<MoveTeacherFromSubjectController>();
 builder.Services.AddTransient<ViewGradeOnlineController>();
 
 builder.Services.AddTransient<ForgetDebtController>();
+builder.Services.AddTransient<CorrectEducationalLevelController>();
 
 var app = builder.Build();
 
