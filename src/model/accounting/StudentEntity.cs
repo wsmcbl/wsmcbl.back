@@ -74,4 +74,16 @@ public class StudentEntity
 
         enrollmentLabel = value;
     }
+
+    public DebtHistoryEntity getCurrentRegistrationTariffDebt()
+    {
+        var result = debtHistory!
+            .FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Registration tariff debt not found.");
+        }
+
+        return result;
+    }
 }

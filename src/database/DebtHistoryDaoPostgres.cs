@@ -110,4 +110,15 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         
         return debt;
     }
+
+    public async Task addRegistrationTariffDebtByStudent(StudentEntity student)
+    {
+        var debt = new DebtHistoryEntity
+        {
+            studentId = student.studentId!
+        };
+        
+        create(debt);
+        await context.SaveChangesAsync();
+    }
 }
