@@ -17,7 +17,7 @@ public class CorrectEducationalLevelController : BaseController
         return await collectTariffController.getStudentById(studentId);
     }
     
-    public async Task changeEducationalLevel(string studentId, int level)
+    public async Task<StudentEntity> changeEducationalLevel(string studentId, int level)
     {
         if (await daoFactory.academyStudentDao!.hasAEnroll(studentId))
         {
@@ -32,6 +32,8 @@ public class CorrectEducationalLevelController : BaseController
         await daoFactory.debtHistoryDao!.delete(debt);
 
         await daoFactory.debtHistoryDao.addRegistrationTariffDebtByStudent(student);
+
+        return student;
     }
 }
 

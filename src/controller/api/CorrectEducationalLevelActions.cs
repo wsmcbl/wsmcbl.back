@@ -47,7 +47,7 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
             throw new BadRequestException("The level value must be 1, 2 o 3.");
         }
         
-        await controller.changeEducationalLevel(studentId, level);
-        return Ok();
+        var student = await controller.changeEducationalLevel(studentId, level);
+        return Ok(new StudentWithLevelDto(student));
     }
 }
