@@ -10,6 +10,20 @@ namespace wsmcbl.src.controller.api;
 public class CreateUserActions(CreateUserController controller) : ActionsBase
 {
     /// <summary>
+    /// Get user list
+    /// </summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpGet]
+    [Route("users")]
+    public async Task<IActionResult> getUserList()
+    {
+        return Ok(await controller.getUserList());
+    }
+    
+    /// <summary>
     ///  Create new user 
     /// </summary>
     /// <remarks>

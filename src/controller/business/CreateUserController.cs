@@ -14,6 +14,11 @@ public class CreateUserController : BaseController
         this.userAuthenticator = userAuthenticator; 
     }
 
+    public async Task<List<UserEntity>> getUserList()
+    {
+        return await daoFactory.userDao!.getAll();
+    }
+
     public async Task<UserEntity> createUser(UserEntity user)
     {
         var isDuplicate = await daoFactory.userDao!.isEmailDuplicate(user.email);
