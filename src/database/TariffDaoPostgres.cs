@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 
@@ -99,5 +100,21 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         {
             create(item);
         }
+    }
+
+    public async Task<TariffEntity> getInCurrentSchoolyearByType(int level)
+    {
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        var schoolyear = await schoolyearDao.getValidSchoolyearId();
+        
+        var tariff = await entities
+            .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear);
+
+        if (tariff == null)
+        {
+            throw new EntityNotFoundException($"Tariff with educationalLevel ({level}) in current schoolyear not found.");
+        }
+
+        return tariff;
     }
 }

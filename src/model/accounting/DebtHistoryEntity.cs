@@ -14,6 +14,21 @@ public class DebtHistoryEntity
     public bool isPaid { get; set; }
     
     public TariffEntity tariff { get; set; } = null!;
+
+    public DebtHistoryEntity()
+    {
+    }
+    
+    public DebtHistoryEntity(string studentId, TariffEntity tariff)
+    {
+        this.studentId = studentId;
+        tariffId = tariff.tariffId;
+        subAmount = tariff.amount;
+        schoolyear = string.Empty;
+        arrears = 0;
+        debtBalance = 0;
+        isPaid = false;
+    }
     
     public bool havePayments()
     {
