@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
@@ -18,10 +19,12 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
+    [HttpGet]
+    [Route("students/levels")]
     public async Task<IActionResult> getStudentInformationLevelById(string studentId)
     {
         var student = await controller.getStudentById(studentId);
-        return Ok(student.mapToStudentWithLevelDto());
+        return Ok(new StudentWithLevelDto(student));
     }
     
     /// <summary>
