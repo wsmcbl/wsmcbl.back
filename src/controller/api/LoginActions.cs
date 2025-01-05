@@ -31,27 +31,6 @@ public class LoginActions(LoginController controller) : ActionsBase
     
     
     /// <summary>
-    ///  Create new user 
-    /// </summary>
-    /// <remarks>
-    /// The secondName and secondSurname can be null or empty.
-    /// </remarks>
-    /// <response code="201">Returns a new user created.</response>
-    /// <response code="400">If the dto is not valid.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="409">The email is duplicate.</response>
-    [ResourceAuthorizer("admin")]
-    [HttpPost]
-    [Route("users")]
-    public async Task<IActionResult> createUser(UserToCreateDto dto)
-    {
-        var result = await controller.createUser(dto.toEntity());
-        return CreatedAtAction(null, result.mapToCreateDto());
-    }
-    
-    
-    /// <summary>
     ///  Get user information
     /// </summary>
     /// <response code="200">Returns a user information.</response>
