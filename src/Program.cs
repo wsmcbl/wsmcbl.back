@@ -48,6 +48,7 @@ builder.Services.AddTransient<ViewGradeOnlineController>();
 
 builder.Services.AddTransient<ForgetDebtController>();
 builder.Services.AddTransient<CorrectEducationalLevelController>();
+builder.Services.AddTransient<CreateUserController>();
 
 var app = builder.Build();
 
