@@ -119,11 +119,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
         var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var schoolyearId = await schoolyearDao.getCurrentAndNewSchoolyearIds();
-        debt.schoolyear = !string
-            .IsNullOrEmpty(schoolyearId.currentSchoolyear)
-            ? schoolyearId.currentSchoolyear
-            : schoolyearId.newSchoolyear;
+        debt.schoolyear = await schoolyearDao.getValidSchoolyearId();
         
         create(debt);
         await context.SaveChangesAsync();

@@ -66,6 +66,25 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
     }
 
+    public async Task<string> getValidSchoolyearId()
+    {
+        try
+        {
+            var currentSchoolyear = await getCurrentSchoolyear();
+            return currentSchoolyear.id!;
+        }
+        catch (Exception)
+        {
+            var newSchoolyear = await getNewSchoolyear();
+            if (newSchoolyear == null)
+            {
+                throw new EntityNotFoundException("There is not valid schoolyear.");
+            }
+            
+            return newSchoolyear.id!;
+        }
+    }
+
     public async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
