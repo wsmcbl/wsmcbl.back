@@ -27,6 +27,7 @@ public interface ITariffDao : IGenericDao<TariffEntity, int>
     public Task<List<TariffEntity>> getListByStudent(string studentId);
     public Task<float[]> getGeneralBalance(string studentId);
     public void createList(List<TariffEntity> tariffs);
+    public Task<TariffEntity> getInCurrentSchoolyearByType(int level);
 }
 
 public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
@@ -38,4 +39,5 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task<List<DebtHistoryEntity>> getListByTransaction(TransactionEntity transaction);
     public Task restoreDebt(string transactionId);
     public Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId);
+    public Task addRegistrationTariffDebtByStudent(StudentEntity student);
 }

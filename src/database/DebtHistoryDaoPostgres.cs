@@ -110,4 +110,18 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         
         return debt;
     }
+
+    public async Task addRegistrationTariffDebtByStudent(StudentEntity student)
+    {
+        var tariffDao = new TariffDaoPostgres(context);
+        var tariff = await tariffDao.getInCurrentSchoolyearByType(student.educationalLevel);
+
+        var debt = new DebtHistoryEntity(student.studentId!, tariff);
+        
+        var schoolyearDao = new SchoolyearDaoPostgres(context);
+        debt.schoolyear = await schoolyearDao.getValidSchoolyearId();
+        
+        create(debt);
+        await context.SaveChangesAsync();
+    }
 }
