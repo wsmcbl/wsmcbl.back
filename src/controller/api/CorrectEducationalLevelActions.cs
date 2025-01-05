@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.accounting;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -10,8 +12,24 @@ namespace wsmcbl.src.controller.api;
 public class CorrectEducationalLevelActions(CorrectEducationalLevelController controller) : ActionsBase
 {
     /// <summary>
+    /// Get educational level information of the student
+    /// </summary>
+    /// <response code="200">Returns the resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If resource not exist.</response>
+    public async Task<IActionResult> getStudentInformationLevelById(string studentId)
+    {
+        var student = await controller.getStudentById(studentId);
+        return Ok(student.mapToStudentWithLevelDto());
+    }
+    
+    /// <summary>
     /// Change educational level of the student
     /// </summary>
+    /// <remarks>
+    /// The level value must be 1, 2 or 3
+    /// </remarks>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -21,6 +39,11 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     [Route("students/levels")]
     public async Task<IActionResult> forgiveADebt([FromQuery] string studentId, [FromQuery] int level)
     {
+        if (level is < 1 or > 3)
+        {
+            throw new BadRequestException("The level value must be 1, 2 o 3.");
+        }
+        
         await controller.changeEducationalLevel(studentId, level);
         return Ok();
     }
