@@ -5,6 +5,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
+[ResourceAuthorizer("admin")]
 [Route("admin")]
 [ApiController]
 public class CreateUserActions(CreateUserController controller) : ActionsBase
@@ -15,7 +16,6 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin")]
     [HttpGet]
     [Route("users")]
     public async Task<IActionResult> getUserList()
@@ -34,7 +34,6 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="409">The email is duplicate.</response>
-    [ResourceAuthorizer("admin")]
     [HttpPost]
     [Route("users")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)
