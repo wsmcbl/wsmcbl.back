@@ -1,5 +1,4 @@
 using wsmcbl.src.controller.service;
-using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -21,23 +20,35 @@ public class CreateUserController : BaseController
 
     public async Task<UserEntity> createUser(UserEntity user)
     {
-        var isDuplicate = await daoFactory.userDao!.isEmailDuplicate(user.email);
-        if (isDuplicate)
-        {
-            throw new ConflictException($"A user with email ({user.email}) already exists.");
-        }
-
-        user.generateEmail();
+        user.generateEmail(daoFactory.userDao!);
+        
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
         
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
+        
+        user.password = password;
         return user;
     }
 
     private string generatePassword()
     {
         return "Hola";
+    }
+
+    public async Task addPermissions(List<int> permissionList, Guid userId)
+    {
+        var list = await daoFactory.permissionsDao.getByList(permissionList);
+
+        var entities = new List<UserPermissionEntity>();
+        foreach (var item in list)
+        {
+            entities.Add(new UserPermissionEntityy
+            {
+                userId = userId,
+                permissionId = item.permissionId
+            });
+        }
     }
 }
