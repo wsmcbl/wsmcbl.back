@@ -36,6 +36,32 @@ public class UserEntity
         return permissionList.Select(e => e.name).ToList();
     }
     
+    public string getAlias()
+    {
+        return $"{name[0]}. {surname}";
+    }
+
+    public void update(UserEntity user)
+    {
+        roleId = user.roleId;
+        name = user.name;
+        secondName = user.secondName;
+        surname = user.surname;
+        secondSurname = user.secondSurname;
+        email = user.email;
+        isActive = user.isActive;
+        markAsUpdated();
+    }
+
+    public void generateEmail()
+    {
+        var random = new Random();
+        email = $"{name}.{surname}{random.Next(10, 99)}@cbl-edu.com";
+    }
+    
+    
+    
+    
     
     public class Builder
     {
@@ -78,18 +104,6 @@ public class UserEntity
             return this;
         }
 
-        public Builder setEmail(string email)
-        {
-            entity.email = email;
-            return this;
-        }
-
-        public Builder setPassword(string password)
-        {
-            entity.password = password;
-            return this;
-        }
-
         public Builder setRole(int roleId)
         {
             entity.roleId = roleId;
@@ -97,20 +111,4 @@ public class UserEntity
         }
     }
 
-    public string getAlias()
-    {
-        return $"{name[0]}. {surname}";
-    }
-
-    public void update(UserEntity user)
-    {
-        roleId = user.roleId;
-        name = user.name;
-        secondName = user.secondName;
-        surname = user.surname;
-        secondSurname = user.secondSurname;
-        email = user.email;
-        isActive = user.isActive;
-        markAsUpdated();
-    }
 }
