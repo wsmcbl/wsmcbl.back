@@ -13,3 +13,8 @@ public interface IMediaDao : IGenericDao<MediaEntity, int>
 {
     public Task<string> getByTypeAndSchoolyear(int type, string schoolyearId);
 }
+
+public interface IPermissionDao : IGenericDao<PermissionEntity, string>
+{
+    public Task<bool> checkListId(List<int> permissionIdList);
+}
