@@ -13,7 +13,8 @@ public class UserToCreateDto
     public string? secondSurname { get; set; }
     public string? email { get; set; }
     public string? password { get; set; }
-    
+
+    public List<int> permissionList { get; set; } = null!;
     
     public UserToCreateDto()
     {
