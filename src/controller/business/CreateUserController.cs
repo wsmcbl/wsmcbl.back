@@ -20,7 +20,7 @@ public class CreateUserController : BaseController
 
     public async Task<UserEntity> createUser(UserEntity user)
     {
-        user.generateEmail(daoFactory.userDao!);
+        await user.generateEmail(daoFactory.userDao!);
         
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
@@ -39,15 +39,15 @@ public class CreateUserController : BaseController
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
     {
-        var list = await daoFactory.permissionsDao.getByList(permissionList);
-
-        var entities = new List<UserPermissionEntity>();
-        foreach (var item in list)
+        await daoFactory.permissionDao!.checkListId(permissionList);
+            
+        var list = new List<UserPermissionEntity>();
+        foreach (var item in permissionList)
         {
-            entities.Add(new UserPermissionEntityy
+            list.Add(new UserPermissionEntity
             {
                 userId = userId,
-                permissionId = item.permissionId
+                permissionId = item
             });
         }
     }
