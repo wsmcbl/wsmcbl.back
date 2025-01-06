@@ -26,14 +26,18 @@ public class CreateUserController : BaseController
         {
             throw new ConflictException($"A user with email ({user.email}) already exists.");
         }
-        
-        var password = user.password;
+
+        user.generateEmail();
+        var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
         
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
-
-        user.password = "";
         return user;
+    }
+
+    private string generatePassword()
+    {
+        return "Hola";
     }
 }
