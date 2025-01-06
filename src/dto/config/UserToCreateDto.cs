@@ -11,8 +11,8 @@ public class UserToCreateDto
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
-    [Required] public string email { get; set; } = null!;
-    [Required] public string password { get; set; } = null!;
+    public string? email { get; set; }
+    public string? password { get; set; }
     
     
     public UserToCreateDto()
@@ -26,8 +26,6 @@ public class UserToCreateDto
         secondName = user.secondName;
         surname = user.surname;
         secondSurname = user.secondSurname;
-        email = user.email;
-        password = "";
     }
     
     public UserEntity toEntity()
@@ -37,8 +35,6 @@ public class UserToCreateDto
             .setSecondName(secondName)
             .setSurname(surname)
             .setSecondSurname(secondSurname)
-            .setEmail(email)
-            .setPassword(password)
             .setRole(roleId)
             .build();
     }
