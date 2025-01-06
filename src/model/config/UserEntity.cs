@@ -1,3 +1,5 @@
+using wsmcbl.src.exception;
+
 namespace wsmcbl.src.model.config;
 
 public class UserEntity
@@ -53,10 +55,16 @@ public class UserEntity
         markAsUpdated();
     }
 
-    public void generateEmail()
+    public async Task generateEmail(IUserDao userDao)
     {
         var random = new Random();
         email = $"{name}.{surname}{random.Next(10, 99)}@cbl-edu.com";
+        
+        var isDuplicate = await userDao.isEmailDuplicate(email);
+        if (isDuplicate)
+        {
+            throw new ConflictException($"Email ({email}) is duplicate.");
+        }
     }
     
     
