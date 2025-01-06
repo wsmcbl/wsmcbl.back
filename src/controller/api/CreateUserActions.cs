@@ -20,7 +20,8 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     [Route("users")]
     public async Task<IActionResult> getUserList()
     {
-        return Ok(await controller.getUserList());
+        var result = await controller.getUserList();
+        return Ok(result.mapToListDto());
     }
     
     /// <summary>
