@@ -18,3 +18,5 @@ public interface IPermissionDao : IGenericDao<PermissionEntity, string>
 {
     public Task<bool> checkListId(List<int> permissionIdList);
 }
+
+public interface IUserPermissionDao : IGenericDao<UserPermissionEntity, string>;
