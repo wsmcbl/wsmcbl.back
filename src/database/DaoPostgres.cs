@@ -36,7 +36,8 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
     }
 }
 
-public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<SubjectEntity, string>(context), ISubjectDao
+public class SubjectDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectEntity, string>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)
     {
@@ -44,10 +45,11 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
             .Include(e => e.secretarySubject)
             .ToListAsync();
     }
-    
+
     public async Task<SubjectEntity?> getBySubjectAndEnrollment(string subjectId, string enrollmentId)
     {
-        return await entities.Where(e => e.subjectId == subjectId && e.enrollmentId == enrollmentId).FirstOrDefaultAsync();
+        return await entities.Where(e => e.subjectId == subjectId && e.enrollmentId == enrollmentId)
+            .FirstOrDefaultAsync();
     }
 }
 
@@ -178,8 +180,6 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
     }
 }
 
-
-
 public class DegreeDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<DegreeDataEntity, string>(context), IDegreeDataDao
 {
@@ -247,4 +247,21 @@ public class MediaDaoPostgres(PostgresContext context) : GenericDaoPostgres<Medi
         return result.value;
     }
 }
-    
+
+public class PermissionDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<PermissionEntity, int>(context), IPermissionDao
+{
+    public async Task checkListId(List<int> permissionIdList)
+    {
+        var list = await getAll();
+        var listId = list.Select(e => e.permissionId).ToList();
+
+        foreach (var id in permissionIdList.Where(id => !listId.Contains(id)))
+        {
+            throw new EntityNotFoundException("Permission", id.ToString());
+        }
+    }
+}
+
+public class UserPermissionDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<UserPermissionEntity, string>(context), IUserPermissionDao;

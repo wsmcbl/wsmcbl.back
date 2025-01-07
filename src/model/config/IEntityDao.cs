@@ -14,9 +14,9 @@ public interface IMediaDao : IGenericDao<MediaEntity, int>
     public Task<string> getByTypeAndSchoolyear(int type, string schoolyearId);
 }
 
-public interface IPermissionDao : IGenericDao<PermissionEntity, string>
+public interface IPermissionDao : IGenericDao<PermissionEntity, int>
 {
-    public Task<bool> checkListId(List<int> permissionIdList);
+    public Task checkListId(List<int> permissionIdList);
 }
 
 public interface IUserPermissionDao : IGenericDao<UserPermissionEntity, string>;
