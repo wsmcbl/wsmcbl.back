@@ -5,13 +5,14 @@ namespace wsmcbl.src.dto.config;
 
 public class UserDto
 {
+    public string? role { get; set; }
     [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
     [Required] public string email { get; set; } = null!;
+    public string? password { get; set; }
     [Required] public bool isActive { get; set; }
-    public string? role { get; set; }
 
     public UserDto()
     {
@@ -24,6 +25,7 @@ public class UserDto
         surname = user.surname;
         secondSurname = user.secondSurname;
         email = user.email;
+        password = user.password;
         isActive = user.isActive;
         role = user.role!.getSpanishName();
     }
