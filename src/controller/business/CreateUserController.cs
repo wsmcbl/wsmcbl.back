@@ -45,9 +45,10 @@ public class CreateUserController : BaseController
         throw new NotImplementedException();
     }
 
-    private string generatePassword()
+    private static string generatePassword()
     {
-        return "Hola";
+        var passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.GeneratePassword(8);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
