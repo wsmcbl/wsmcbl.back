@@ -29,7 +29,20 @@ public class CreateUserController : BaseController
         await daoFactory.execute();
         
         user.password = password;
+
+        await createEmailAccount(user);
+        await createNextcloudAccount(user);
         return user;
+    }
+
+    private Task createNextcloudAccount(UserEntity user)
+    {
+        throw new NotImplementedException();
+    }
+
+    private Task createEmailAccount(UserEntity user)
+    {
+        throw new NotImplementedException();
     }
 
     private string generatePassword()
