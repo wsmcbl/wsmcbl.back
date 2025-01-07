@@ -25,6 +25,19 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     }
     
     /// <summary>
+    /// Get permission list
+    /// </summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("permissions")]
+    public async Task<IActionResult> getPermissionList()
+    {
+        return Ok(await controller.getPermissionList());
+    }
+    
+    /// <summary>
     ///  Create new user 
     /// </summary>
     /// <remarks>
@@ -41,6 +54,6 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     {
         var result = await controller.createUser(dto.toEntity());
         await controller.addPermissions(dto.permissionList, (Guid)result.userId!);
-        return CreatedAtAction(null, result.mapToCreateDto());
+        return CreatedAtAction(null, result.mapToDto());
     }
 }

@@ -6,11 +6,13 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateUserController : BaseController
 {
+    private HttpClient httpClient { get; }
     private UserAuthenticator userAuthenticator { get; }
 
-    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator) : base(daoFactory)
+    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
     {
-        this.userAuthenticator = userAuthenticator; 
+        this.httpClient = httpClient;
+        this.userAuthenticator = userAuthenticator;
     }
 
     public async Task<List<UserEntity>> getUserList()
@@ -29,12 +31,27 @@ public class CreateUserController : BaseController
         await daoFactory.execute();
         
         user.password = password;
+
+        await createEmailAccount(user);
+        await createNextcloudAccount(user);
         return user;
     }
 
-    private string generatePassword()
+    private async Task createNextcloudAccount(UserEntity user)
     {
-        return "Hola";
+        var nextcloudUserCreator = new NextcloudUserCreator();
+        await nextcloudUserCreator.createUser(httpClient, user);
+    }
+
+    private async Task createEmailAccount(UserEntity user)
+    {
+        await Task.CompletedTask;
+    }
+
+    private static string generatePassword()
+    {
+        var passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.GeneratePassword(8);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
@@ -50,5 +67,10 @@ public class CreateUserController : BaseController
                 permissionId = item
             });
         }
+    }
+
+    public async Task<List<PermissionEntity>> getPermissionList()
+    {
+        return await daoFactory.permissionDao!.getAll();
     }
 }
