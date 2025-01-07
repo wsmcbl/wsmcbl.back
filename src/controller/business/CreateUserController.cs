@@ -51,4 +51,9 @@ public class CreateUserController : BaseController
             });
         }
     }
+
+    public async Task<List<PermissionEntity>> getPermissionList()
+    {
+        return await daoFactory.permissionDao!.getAll();
+    }
 }
