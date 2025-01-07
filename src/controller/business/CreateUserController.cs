@@ -58,15 +58,18 @@ public class CreateUserController : BaseController
     {
         await daoFactory.permissionDao!.checkListId(permissionList);
             
-        var list = new List<UserPermissionEntity>();
         foreach (var item in permissionList)
         {
-            list.Add(new UserPermissionEntity
+            var userPermission = new UserPermissionEntity
             {
                 userId = userId,
                 permissionId = item
-            });
+            };
+            
+            daoFactory.userPermissionDao!.create(userPermission);
         }
+
+        await daoFactory.execute();
     }
 
     public async Task<List<PermissionEntity>> getPermissionList()
