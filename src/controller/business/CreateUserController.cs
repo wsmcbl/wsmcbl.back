@@ -6,11 +6,13 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateUserController : BaseController
 {
+    private HttpClient httpClient { get; }
     private UserAuthenticator userAuthenticator { get; }
 
-    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator) : base(daoFactory)
+    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
     {
-        this.userAuthenticator = userAuthenticator; 
+        this.httpClient = httpClient;
+        this.userAuthenticator = userAuthenticator;
     }
 
     public async Task<List<UserEntity>> getUserList()
@@ -35,14 +37,15 @@ public class CreateUserController : BaseController
         return user;
     }
 
-    private Task createNextcloudAccount(UserEntity user)
+    private async Task createNextcloudAccount(UserEntity user)
     {
-        throw new NotImplementedException();    
+        var nextcloudUserCreator = new NextcloudUserCreator();
+        await nextcloudUserCreator.createUser(httpClient, user);
     }
 
-    private Task createEmailAccount(UserEntity user)
+    private async Task createEmailAccount(UserEntity user)
     {
-        throw new NotImplementedException();
+        await Task.CompletedTask;
     }
 
     private static string generatePassword()
