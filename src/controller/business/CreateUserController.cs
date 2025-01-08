@@ -9,7 +9,8 @@ public class CreateUserController : BaseController
     private HttpClient httpClient { get; }
     private UserAuthenticator userAuthenticator { get; }
 
-    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
+    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) :
+        base(daoFactory)
     {
         this.httpClient = httpClient;
         this.userAuthenticator = userAuthenticator;
@@ -20,16 +21,22 @@ public class CreateUserController : BaseController
         return await daoFactory.userDao!.getAll();
     }
 
+    public async Task<List<PermissionEntity>> getPermissionList()
+    {
+        return await daoFactory.permissionDao!.getAll();
+    }
+
     public async Task<UserEntity> createUser(UserEntity user)
     {
+        await daoFactory.userDao.isUserDuplicate(user);
         await user.generateEmail(daoFactory.userDao!);
-        
+
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
-        
+
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
-        
+
         user.password = password;
 
         await createEmailAccount(user);
@@ -57,20 +64,18 @@ public class CreateUserController : BaseController
     public async Task addPermissions(List<int> permissionList, Guid userId)
     {
         await daoFactory.permissionDao!.checkListId(permissionList);
-            
-        var list = new List<UserPermissionEntity>();
+
         foreach (var item in permissionList)
         {
-            list.Add(new UserPermissionEntity
+            var userPermission = new UserPermissionEntity
             {
                 userId = userId,
                 permissionId = item
-            });
-        }
-    }
+            };
 
-    public async Task<List<PermissionEntity>> getPermissionList()
-    {
-        return await daoFactory.permissionDao!.getAll();
+            daoFactory.userPermissionDao!.create(userPermission);
+        }
+
+        await daoFactory.execute();
     }
 }
