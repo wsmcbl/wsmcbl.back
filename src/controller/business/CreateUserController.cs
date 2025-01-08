@@ -9,7 +9,8 @@ public class CreateUserController : BaseController
     private HttpClient httpClient { get; }
     private UserAuthenticator userAuthenticator { get; }
 
-    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
+    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) :
+        base(daoFactory)
     {
         this.httpClient = httpClient;
         this.userAuthenticator = userAuthenticator;
@@ -20,16 +21,22 @@ public class CreateUserController : BaseController
         return await daoFactory.userDao!.getAll();
     }
 
+    public async Task<List<PermissionEntity>> getPermissionList()
+    {
+        return await daoFactory.permissionDao!.getAll();
+    }
+
     public async Task<UserEntity> createUser(UserEntity user)
     {
+        await daoFactory.userDao.isUserDuplicate(user);
         await user.generateEmail(daoFactory.userDao!);
-        
+
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
-        
+
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
-        
+
         user.password = password;
 
         await createEmailAccount(user);
@@ -57,7 +64,7 @@ public class CreateUserController : BaseController
     public async Task addPermissions(List<int> permissionList, Guid userId)
     {
         await daoFactory.permissionDao!.checkListId(permissionList);
-            
+
         foreach (var item in permissionList)
         {
             var userPermission = new UserPermissionEntity
@@ -65,15 +72,10 @@ public class CreateUserController : BaseController
                 userId = userId,
                 permissionId = item
             };
-            
+
             daoFactory.userPermissionDao!.create(userPermission);
         }
 
         await daoFactory.execute();
-    }
-
-    public async Task<List<PermissionEntity>> getPermissionList()
-    {
-        return await daoFactory.permissionDao!.getAll();
     }
 }
