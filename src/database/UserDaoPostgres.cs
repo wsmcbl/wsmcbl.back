@@ -44,4 +44,14 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         var result = await entities.FirstOrDefaultAsync(e => e.email == email);
         return result != null;
     }
+
+    public async Task isUserDuplicate(UserEntity user)
+    {
+        var result = await entities.Where(e => e.email == user.email).FirstOrDefaultAsync();
+
+        if (result != null)
+        {
+            throw new ConflictException("User already exists (duplicate).");
+        }
+    }
 }
