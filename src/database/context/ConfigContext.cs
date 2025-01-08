@@ -36,11 +36,7 @@ public class ConfigContext
 
             entity.HasMany(r => r.permissionList)
                 .WithMany()
-                .UsingEntity<UserPermissionEntity>("user_permission",
-                    l => l.HasOne<PermissionEntity>().WithMany()
-                        .HasForeignKey(e => e.permissionId),
-                    r => r.HasOne<UserEntity>().WithMany()
-                        .HasForeignKey(e => e.userId));
+                .UsingEntity<UserPermissionEntity>();
         });
 
         modelBuilder.Entity<RoleEntity>(entity =>
