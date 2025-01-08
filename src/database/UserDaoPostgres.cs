@@ -47,7 +47,11 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
     public async Task isUserDuplicate(UserEntity user)
     {
-        var result = await entities.Where(e => e.fullName() == user.fullName()).FirstOrDefaultAsync();
+        var result = await entities
+            .Where(e => user.name.Trim().Equals(e.name.Trim()) &&
+                        user.secondName == e.secondName &&
+                        user.surname.Trim().Equals(e.surname.Trim()) &&
+                        user.secondSurname == e.secondSurname).FirstOrDefaultAsync();
 
         if (result != null)
         {
