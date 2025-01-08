@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin")]
-[Route("admin")]
+[Route("management")]
 [ApiController]
 public class CreateUserActions(CreateUserController controller) : ActionsBase
 {
