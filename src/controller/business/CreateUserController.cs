@@ -39,8 +39,8 @@ public class CreateUserController : BaseController
 
         user.password = password;
 
-        await createEmailAccount(user);
-        await createNextcloudAccount(user);
+        //await createEmailAccount(user);
+        //await createNextcloudAccount(user);
         return user;
     }
 
@@ -58,7 +58,7 @@ public class CreateUserController : BaseController
     private static string generatePassword()
     {
         var passwordGenerator = new PasswordGenerator();
-        return passwordGenerator.GeneratePassword(9);
+        return passwordGenerator.GeneratePassword(10);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
