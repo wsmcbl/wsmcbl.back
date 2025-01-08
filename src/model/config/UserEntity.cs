@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.config;
@@ -47,11 +46,11 @@ public class UserEntity
     public void update(UserEntity user)
     {
         roleId = user.roleId;
-        name = user.name;
-        secondName = user.secondName;
-        surname = user.surname;
-        secondSurname = user.secondSurname;
-        email = user.email;
+        name = user.name.Trim();
+        secondName = user.secondName?.Trim();
+        surname = user.surname.Trim();
+        secondSurname = user.secondSurname?.Trim();
+        email = user.email.Trim();
         isActive = user.isActive;
         markAsUpdated();
     }
@@ -71,13 +70,12 @@ public class UserEntity
             {
                 break;
             }
-            
         }
     }
 
     private static string getTextInEmailFormat(string value)
     {
-        return value.ToLower().convertToEmailFormat();
+        return value.Trim().ToLower().convertToEmailFormat();
     }
 
 
@@ -100,25 +98,25 @@ public class UserEntity
 
         public Builder setName(string name)
         {
-            entity.name = name;
+            entity.name = name.Trim();
             return this;
         }
 
         public Builder setSecondName(string? secondName)
         {
-            entity.secondName = secondName;
+            entity.secondName = secondName?.Trim();
             return this;
         }
 
         public Builder setSurname(string surname)
         {
-            entity.surname = surname;
+            entity.surname = surname.Trim();
             return this;
         }
 
         public Builder setSecondSurname(string? secondSurname)
         {
-            entity.secondSurname = secondSurname;
+            entity.secondSurname = secondSurname?.Trim();
             return this;
         }
 
