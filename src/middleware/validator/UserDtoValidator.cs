@@ -7,12 +7,12 @@ public class UserDtoValidator : AbstractValidator<UserDto>
 {
     public UserDtoValidator()
     {
-        RuleFor(e => e.name)
+        RuleFor(e => e.name.Trim())
             .NotEmpty().WithMessage("Name must not be empty")
             .MinimumLength(3).WithMessage("Name be at least 3 characters long.")
             .Matches(@"^[a-zA-ZÀ-ÿñÑ]+$").WithMessage("Name must contain only letter");
         
-        RuleFor(e => e.surname)
+        RuleFor(e => e.surname.Trim())
             .NotEmpty().WithMessage("Surname must not be empty")
             .MinimumLength(2).WithMessage("Name be at least 2 characters long.")
             .Matches(@"^[a-zA-ZÀ-ÿñÑ]+$").WithMessage("Name must contain only letter");
