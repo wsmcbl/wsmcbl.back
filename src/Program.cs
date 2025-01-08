@@ -23,6 +23,8 @@ builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(builder.getConnectionString()));
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
