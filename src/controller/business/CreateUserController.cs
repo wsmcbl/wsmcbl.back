@@ -28,7 +28,7 @@ public class CreateUserController : BaseController
 
     public async Task<UserEntity> createUser(UserEntity user)
     {
-        await daoFactory.userDao.isUserDuplicate(user);
+        await daoFactory.userDao!.isUserDuplicate(user);
         await user.generateEmail(daoFactory.userDao!);
 
         var password = generatePassword();
