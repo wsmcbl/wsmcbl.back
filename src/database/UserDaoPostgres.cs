@@ -16,7 +16,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
                 .Include(e => e.role)
                 .FirstOrDefaultAsync(e => e.userId == userIdGuid);
         }
-        
+
         if (user == null)
         {
             throw new EntityNotFoundException("User", userId);
@@ -47,7 +47,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
     public async Task isUserDuplicate(UserEntity user)
     {
-        var result = await entities.Where(e => e.email == user.email).FirstOrDefaultAsync();
+        var result = await entities.Where(e => e.fullName() == user.fullName()).FirstOrDefaultAsync();
 
         if (result != null)
         {

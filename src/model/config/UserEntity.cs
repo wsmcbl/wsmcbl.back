@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.config;
 
@@ -57,20 +58,29 @@ public class UserEntity
 
     public async Task generateEmail(IUserDao userDao)
     {
+        var name_email = getTextInEmailFormat(name);
+        var surname_email = getTextInEmailFormat(surname);
         var random = new Random();
-        email = $"{name}.{surname}{random.Next(10, 99)}@cbl-edu.com";
         
-        var isDuplicate = await userDao.isEmailDuplicate(email);
-        if (isDuplicate)
+        while (true)
         {
-            throw new ConflictException($"Email ({email}) is duplicate.");
+            email = $"{name_email}.{surname_email}{random.Next(10, 99)}@cbl-edu.com";
+        
+            var isDuplicate = await userDao.isEmailDuplicate(email);
+            if (!isDuplicate)
+            {
+                break;
+            }
+            
         }
     }
-    
-    
-    
-    
-    
+
+    private static string getTextInEmailFormat(string value)
+    {
+        return value.ToLower().convertToEmailFormat();
+    }
+
+
     public class Builder
     {
         private readonly UserEntity entity;
