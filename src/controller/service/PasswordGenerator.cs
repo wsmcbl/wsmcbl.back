@@ -8,7 +8,7 @@ public class PasswordGenerator
     private const string LowerCase = "abcdefghijklmnopqrstuvwxyz";
     private const string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private const string Digits = "0123456789";
-    private const string SpecialChars = "!@#$%&*-_=+;:,.?";
+    private const string SpecialChars = "!@#$%&*-_=+:.?";
 
     public string GeneratePassword(int length = 12, bool includeSpecialChars = true)
     {

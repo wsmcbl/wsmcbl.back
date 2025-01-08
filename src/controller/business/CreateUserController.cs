@@ -58,11 +58,16 @@ public class CreateUserController : BaseController
     private static string generatePassword()
     {
         var passwordGenerator = new PasswordGenerator();
-        return passwordGenerator.GeneratePassword(8);
+        return passwordGenerator.GeneratePassword(9);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
     {
+        if (permissionList.Count == 0)
+        {
+            return;
+        }
+        
         await daoFactory.permissionDao!.checkListId(permissionList);
 
         foreach (var item in permissionList)
