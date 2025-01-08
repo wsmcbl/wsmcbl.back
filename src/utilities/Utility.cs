@@ -56,4 +56,21 @@ public static class Utility
 
         return sb.ToString();
     }
+    
+    public static string convertToEmailFormat(this string value)
+    {
+        var text = value.Normalize(NormalizationForm.FormD);
+        var stringBuilder = new StringBuilder();
+
+        foreach (char c in text)
+        {
+            var category = CharUnicodeInfo.GetUnicodeCategory(c);
+            if (category != UnicodeCategory.NonSpacingMark)
+            {
+                stringBuilder.Append(c);
+            }
+        }
+
+        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+    }
 }

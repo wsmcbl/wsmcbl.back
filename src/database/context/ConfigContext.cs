@@ -36,11 +36,7 @@ public class ConfigContext
 
             entity.HasMany(r => r.permissionList)
                 .WithMany()
-                .UsingEntity<UserPermission>("user_permission",
-                    l => l.HasOne<PermissionEntity>().WithMany()
-                        .HasForeignKey(e => e.permissionid),
-                    r => r.HasOne<UserEntity>().WithMany()
-                        .HasForeignKey(e => e.userid));
+                .UsingEntity<UserPermissionEntity>();
         });
 
         modelBuilder.Entity<RoleEntity>(entity =>
@@ -70,6 +66,17 @@ public class ConfigContext
         });
 
 
+        modelBuilder.Entity<UserPermissionEntity>(entity =>
+        {
+            entity.HasKey(e => new { e.userId, e.permissionId }).HasName("user_permission_pkey");
+
+            entity.ToTable("user_permission", "config");
+
+            entity.Property(e => e.userId).HasColumnName("userid");
+            entity.Property(e => e.permissionId).HasColumnName("permissionid");
+        });
+
+
         modelBuilder.Entity<MediaEntity>(entity =>
         {
             entity.HasKey(e => e.mediaId).HasName("multimedia_pkey");
@@ -81,11 +88,5 @@ public class ConfigContext
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
             entity.Property(e => e.value).HasColumnName("value");
         });
-    }
-    
-    private class UserPermission
-    {
-        public Guid userid { get; set; }
-        public int permissionid { get; set; }
     }
 }

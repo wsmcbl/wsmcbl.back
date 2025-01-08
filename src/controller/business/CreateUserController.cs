@@ -6,11 +6,14 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateUserController : BaseController
 {
+    private HttpClient httpClient { get; }
     private UserAuthenticator userAuthenticator { get; }
 
-    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator) : base(daoFactory)
+    public CreateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) :
+        base(daoFactory)
     {
-        this.userAuthenticator = userAuthenticator; 
+        this.httpClient = httpClient;
+        this.userAuthenticator = userAuthenticator;
     }
 
     public async Task<List<UserEntity>> getUserList()
@@ -18,37 +21,66 @@ public class CreateUserController : BaseController
         return await daoFactory.userDao!.getAll();
     }
 
+    public async Task<List<PermissionEntity>> getPermissionList()
+    {
+        return await daoFactory.permissionDao!.getAll();
+    }
+
     public async Task<UserEntity> createUser(UserEntity user)
     {
-        user.generateEmail(daoFactory.userDao!);
-        
+        await daoFactory.userDao!.isUserDuplicate(user);
+        await user.generateEmail(daoFactory.userDao!);
+
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
-        
+
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
-        
+
         user.password = password;
+
+        await createEmailAccount(user);
+        await createNextcloudAccount(user);
         return user;
     }
 
-    private string generatePassword()
+    private async Task createNextcloudAccount(UserEntity user)
     {
-        return "Hola";
+        var nextcloudUserCreator = new NextcloudUserCreator();
+        await nextcloudUserCreator.createUser(httpClient, user);
+    }
+
+    private async Task createEmailAccount(UserEntity user)
+    {
+        await Task.CompletedTask;
+    }
+
+    private static string generatePassword()
+    {
+        var passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.GeneratePassword(9);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
     {
-        var list = await daoFactory.permissionsDao.getByList(permissionList);
-
-        var entities = new List<UserPermissionEntity>();
-        foreach (var item in list)
+        if (permissionList.Count == 0)
         {
-            entities.Add(new UserPermissionEntityy
+            return;
+        }
+        
+        await daoFactory.permissionDao!.checkListId(permissionList);
+
+        foreach (var item in permissionList)
+        {
+            var userPermission = new UserPermissionEntity
             {
                 userId = userId,
-                permissionId = item.permissionId
-            });
+                permissionId = item
+            };
+
+            daoFactory.userPermissionDao!.create(userPermission);
         }
+
+        await daoFactory.execute();
     }
 }

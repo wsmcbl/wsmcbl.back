@@ -50,4 +50,6 @@ public abstract class DaoFactory
     
     public virtual IUserDao? userDao => null;
     public virtual IMediaDao? mediaDao => null;
+    public virtual IPermissionDao? permissionDao => null;
+    public virtual IUserPermissionDao? userPermissionDao => null;
 }

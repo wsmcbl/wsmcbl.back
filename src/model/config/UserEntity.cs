@@ -1,3 +1,5 @@
+using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.model.config;
 
 public class UserEntity
@@ -44,25 +46,39 @@ public class UserEntity
     public void update(UserEntity user)
     {
         roleId = user.roleId;
-        name = user.name;
-        secondName = user.secondName;
-        surname = user.surname;
-        secondSurname = user.secondSurname;
-        email = user.email;
+        name = user.name.Trim();
+        secondName = user.secondName?.Trim();
+        surname = user.surname.Trim();
+        secondSurname = user.secondSurname?.Trim();
+        email = user.email.Trim();
         isActive = user.isActive;
         markAsUpdated();
     }
 
-    public void generateEmail()
+    public async Task generateEmail(IUserDao userDao)
     {
+        var name_email = getTextInEmailFormat(name);
+        var surname_email = getTextInEmailFormat(surname);
         var random = new Random();
-        email = $"{name}.{surname}{random.Next(10, 99)}@cbl-edu.com";
+        
+        while (true)
+        {
+            email = $"{name_email}.{surname_email}{random.Next(10, 99)}@cbl-edu.com";
+        
+            var isDuplicate = await userDao.isEmailDuplicate(email);
+            if (!isDuplicate)
+            {
+                break;
+            }
+        }
     }
-    
-    
-    
-    
-    
+
+    private static string getTextInEmailFormat(string value)
+    {
+        return value.Trim().ToLower().convertToEmailFormat();
+    }
+
+
     public class Builder
     {
         private readonly UserEntity entity;
