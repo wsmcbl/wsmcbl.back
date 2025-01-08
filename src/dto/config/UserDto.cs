@@ -5,7 +5,7 @@ namespace wsmcbl.src.dto.config;
 
 public class UserDto
 {
-    public string? role { get; set; }
+    public int roleId { get; set; }
     [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
@@ -27,18 +27,17 @@ public class UserDto
         email = user.email;
         password = user.password;
         isActive = user.isActive;
-        role = user.role!.getSpanishName();
+        roleId = user.roleId;
     }
 
     public UserEntity toEntity()
     {
         return new UserEntity
         {
-            name = name,
-            secondName = secondName,
-            surname = surname,
-            secondSurname = secondSurname,
-            email = email,
+            name = name.Trim(),
+            secondName = secondName?.Trim(),
+            surname = surname.Trim(),
+            secondSurname = secondSurname?.Trim(),
             isActive = isActive
         };
     }
