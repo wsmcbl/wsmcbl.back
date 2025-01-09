@@ -26,7 +26,7 @@ public class CreateUserController : BaseController
         return await daoFactory.permissionDao!.getAll();
     }
 
-    public async Task<UserEntity> createUser(UserEntity user)
+    public async Task<UserEntity> createUser(UserEntity user, string groupName)
     {
         await daoFactory.userDao!.isUserDuplicate(user);
         await user.generateEmail(daoFactory.userDao!);
@@ -40,14 +40,15 @@ public class CreateUserController : BaseController
         user.password = password;
 
         //await createEmailAccount(user);
-        //await createNextcloudAccount(user);
+        await createNextcloudAccount(user, groupName);
         return user;
     }
 
-    private async Task createNextcloudAccount(UserEntity user)
+    private async Task createNextcloudAccount(UserEntity user, string groupName)
     {
-        var nextcloudUserCreator = new NextcloudUserCreator();
-        await nextcloudUserCreator.createUser(httpClient, user);
+        var nextcloudUserCreator = new NextcloudUserCreator(httpClient);
+        await nextcloudUserCreator.createUser(user);
+        await nextcloudUserCreator.assignGroup(user.email, groupName.Trim());
     }
 
     private async Task createEmailAccount(UserEntity user)
