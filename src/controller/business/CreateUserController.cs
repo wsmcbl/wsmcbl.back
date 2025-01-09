@@ -39,7 +39,7 @@ public class CreateUserController : BaseController
 
         user.password = password;
 
-        //await createEmailAccount(user);
+        await createEmailAccount(user);
         await createNextcloudAccount(user, groupName);
         return user;
     }
@@ -53,7 +53,8 @@ public class CreateUserController : BaseController
 
     private async Task createEmailAccount(UserEntity user)
     {
-        await Task.CompletedTask;
+        var posteUserCreator = new PosteUserCreator(httpClient);
+        await posteUserCreator.createUser(user);
     }
 
     private static string generatePassword()
