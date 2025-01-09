@@ -7,7 +7,14 @@ namespace wsmcbl.src.controller.service;
 
 public class NextcloudUserCreator
 {
-    public async Task<string> createUser(HttpClient httpClient, UserEntity user)
+    private readonly HttpClient httpClient;
+
+    public NextcloudUserCreator(HttpClient httpClient)
+    {
+        this.httpClient = httpClient;
+    }
+
+    public async Task createUser(UserEntity user)
     {
         var authHeaderValue = Convert
             .ToBase64String(Encoding.UTF8.GetBytes($"{getNextcloudUsername()}:{getNextcloudPassword()}"));
@@ -17,7 +24,10 @@ public class NextcloudUserCreator
 
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("userid", user.email),
-            new KeyValuePair<string, string>("password", user.password)
+            new KeyValuePair<string, string>("password", user.password),
+            new KeyValuePair<string, string>("email", user.email),
+            new KeyValuePair<string, string>("displayName", user.fullName()),
+            new KeyValuePair<string, string>("quota", "1GB")
         ]);
 
         var response = await httpClient.PostAsync(getNextcloudUrl(), content);
@@ -26,7 +36,34 @@ public class NextcloudUserCreator
             throw new Exception($"Error al enviar la solicitud: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
-        return await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
+    }
+
+    public async Task assignGroup(string email, string groupName)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(groupName))
+        {
+            return;
+        }
+        
+        var authHeaderValue = Convert
+            .ToBase64String(Encoding.UTF8.GetBytes($"{getNextcloudUsername()}:{getNextcloudPassword()}"));
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+
+        httpClient.DefaultRequestHeaders.Add("OCS-APIRequest", "true");
+
+        var content = new FormUrlEncodedContent([
+            new KeyValuePair<string, string>("groupid", groupName)
+        ]);
+
+        var url = $"{getNextcloudUrl()}/{email}/groups";
+        var response = await httpClient.PostAsync(url, content);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Error al enviar la solicitud: {response.StatusCode} - {response.ReasonPhrase}");
+        }
+
+        await response.Content.ReadAsStringAsync();        
     }
 
     private static string getNextcloudPassword()

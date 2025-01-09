@@ -98,25 +98,25 @@ public class UserEntity
 
         public Builder setName(string name)
         {
-            entity.name = name;
+            entity.name = name.Trim();
             return this;
         }
 
         public Builder setSecondName(string? secondName)
         {
-            entity.secondName = secondName;
+            entity.secondName = secondName?.Trim();
             return this;
         }
 
         public Builder setSurname(string surname)
         {
-            entity.surname = surname;
+            entity.surname = surname.Trim();
             return this;
         }
 
         public Builder setSecondSurname(string? secondSurname)
         {
-            entity.secondSurname = secondSurname;
+            entity.secondSurname = secondSurname?.Trim();
             return this;
         }
 
