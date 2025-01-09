@@ -42,6 +42,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// </summary>
     /// <remarks>
     /// The secondName and secondSurname can be null or empty.
+    /// The nextCloudGroup can be empty.
     /// </remarks>
     /// <response code="201">Returns a new user created.</response>
     /// <response code="400">If the dto is not valid.</response>
