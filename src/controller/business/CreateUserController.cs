@@ -85,4 +85,10 @@ public class CreateUserController : BaseController
 
         await daoFactory.execute();
     }
+
+    public async Task<List<string>> getNextcloudGroupList()
+    {
+        var nextcloudUserCreator = new NextcloudUserCreator(httpClient);
+        return await nextcloudUserCreator.getGroupList();
+    }
 }

@@ -38,6 +38,19 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     }
     
     /// <summary>
+    /// Get nextcloud group list
+    /// </summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("nextcloud/groups")]
+    public async Task<IActionResult> getNextcloudGroupList()
+    {
+        return Ok(await controller.getNextcloudGroupList());
+    }
+    
+    /// <summary>
     ///  Create new user 
     /// </summary>
     /// <remarks>
