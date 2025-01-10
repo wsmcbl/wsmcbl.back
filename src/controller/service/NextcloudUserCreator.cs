@@ -63,7 +63,7 @@ public class NextcloudUserCreator
             throw new Exception($"Error al enviar la solicitud: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
-        await response.Content.ReadAsStringAsync();        
+        await response.Content.ReadAsStringAsync();
     }
 
     private static string getNextcloudPassword()
@@ -97,5 +97,26 @@ public class NextcloudUserCreator
         }
 
         return value;
+    }
+
+    public async Task<List<string>> getGroupList()
+    {
+        var authHeaderValue = Convert
+            .ToBase64String(Encoding.UTF8.GetBytes($"{getNextcloudUsername()}:{getNextcloudPassword()}"));
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+
+        httpClient.DefaultRequestHeaders.Add("OCS-APIRequest", "true");
+
+        var url = $"{getNextcloudUrl()}/groups";
+        var response = await httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception($"Error al enviar la solicitud: {response.StatusCode} - {response.ReasonPhrase}");
+        }
+
+        var result = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Resultado: {result}");
+        
+        return [];
     }
 }
