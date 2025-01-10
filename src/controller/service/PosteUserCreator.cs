@@ -20,16 +20,19 @@ public class PosteUserCreator
             .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
 
         var boxRequest = new BoxDto(user);
-
         var response = await httpClient.PostAsJsonAsync(getPosteUrl(), boxRequest);
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Error al crear el correo: {response.StatusCode} - {response.ReasonPhrase}");
+            throw new InternalException(
+                $"Error al crear el correo: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
-        await response.Content.ReadAsStringAsync();
+        var responseString = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Poste.io api response: {responseString}");
     }
 
     private static string getPostePassword()
@@ -56,10 +59,10 @@ public class PosteUserCreator
 
     private static string getPosteUrl()
     {
-        var value = Environment.GetEnvironmentVariable("NEXTCLOUD_URL");
+        var value = Environment.GetEnvironmentVariable("POSTE_URL");
         if (value == null)
         {
-            throw new InternalException("NEXTCLOUD_URL environment not found.");
+            throw new InternalException("POSTE_URL environment not found.");
         }
 
         return value;

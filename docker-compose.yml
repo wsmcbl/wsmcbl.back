@@ -23,6 +23,7 @@ services:
       - ConnectionStrings__DefaultConnection=Host=database;Database=${DATABASE_NAME};Username=${DATABASE_USER};Password=${DATABASE_PASSWORD}
       - Resource_Directory=resource
       - JWT_KEY=${JWT_KEY}
+      - POSTE_URL=${POSTE_URL}
       - NEXTCLOUD_URL=${NEXTCLOUD_URL}
       - NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME}
       - NEXTCLOUD_PASSWORD=${NEXTCLOUD_PASSWORD}
