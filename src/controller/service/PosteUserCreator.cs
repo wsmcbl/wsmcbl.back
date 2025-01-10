@@ -1,6 +1,5 @@
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 
@@ -19,19 +18,20 @@ public class PosteUserCreator
     {
         var authHeaderValue = Convert
             .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
+
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
 
         var boxRequest = new BoxDto(user);
-        
-        var response = await httpClient.PostAsync(getPosteUrl(), boxRequest.getContent());
+
+        var response = await httpClient.PostAsJsonAsync(getPosteUrl(), boxRequest);
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Error al enviar la solicitud: {response.StatusCode} - {response.ReasonPhrase}");
+            throw new Exception($"Error al crear el correo: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
         await response.Content.ReadAsStringAsync();
     }
-    
+
     private static string getPostePassword()
     {
         var value = Environment.GetEnvironmentVariable("NEXTCLOUD_PASSWORD");
@@ -71,25 +71,11 @@ internal class BoxDto
     public string? name { get; set; }
     public string? email { get; set; }
     public string? passwordPlaintext { get; set; }
-    public bool disabled { get; set; }
-    public bool superAdmin { get; set; }
-    public string[]? redirectTo { get; set; }
-    public string? referenceId { get; set; }
 
     public BoxDto(UserEntity user)
     {
         name = user.fullName();
         email = user.email;
         passwordPlaintext = user.password;
-        disabled = false;
-        superAdmin = false;
-        redirectTo = [];
-        referenceId = null;
-    }
-
-    public StringContent? getContent()
-    {
-        var jsonContent = JsonSerializer.Serialize(this);
-        return new StringContent(jsonContent, Encoding.UTF8, "application/json");
     }
 }
