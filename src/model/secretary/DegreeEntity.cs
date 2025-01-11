@@ -56,7 +56,7 @@ public class DegreeEntity
             throw new IncorrectDataBadRequestException("DegreeEntity");
         }
 
-        if (quantityToCreate < 1 || quantityToCreate > 7)
+        if (quantityToCreate is < 1 or > 7)
         {
             throw new BadRequestException("Quantity invalid. The quantity must be 1 to 7.");
         }
@@ -70,6 +70,16 @@ public class DegreeEntity
         }
     }
 
+    public async Task saveEnrollments(IEnrollmentDao enrollmentDao)
+    {
+        if (enrollmentList == null)
+        {
+            return;
+        }
+        
+        await enrollmentDao.createRange(enrollmentList);
+    }
+    
     public void setSubjectList(List<SubjectEntity> subjects)
     {
         subjectList = subjects;
