@@ -15,6 +15,8 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     ///  Returns the list of active degrees
     /// </summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("degrees")]
     public async Task<IActionResult> getDegreeList()
@@ -27,6 +29,8 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     ///  Returns the degree by id
     /// </summary>
     /// <response code="200">Return existing resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Degree not found.</response>
     [HttpGet]
     [Route("degrees/{degreeId}")]
@@ -38,13 +42,16 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     }
 
     /// <summary>Create new enrollment.</summary>
+    /// <remarks>The quantity value must be between 1 and 9</remarks>
     /// <response code="201">If the resource is created.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource depends on another resource not found (degree) or quantity invalid.</response>
     [HttpPost]
-    [Route("degrees/enrollments")]
-    public async Task<IActionResult> createEnrollment(EnrollmentToCreateDto dto)
+    [Route("degrees/{degreeId}/enrollments")]
+    public async Task<IActionResult> createEnrollment([FromQuery] string degreeId, [FromBody] int quantity)
     {
-        var result = await controller.createEnrollments(dto.degreeId, dto.quantity);
+        var result = await controller.createEnrollments(degreeId, quantity);
         var teacherList = await controller.getTeacherList();
         return CreatedAtAction(nameof(getDegreeById), new { result.degreeId }, result.mapToDto(teacherList));
     }
