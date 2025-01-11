@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
@@ -39,5 +40,17 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
     {
         entities.Remove(entity);
         await context.SaveChangesAsync();
+    }
+
+    public async Task saveAsync()
+    {
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
+        }
     }
 }
