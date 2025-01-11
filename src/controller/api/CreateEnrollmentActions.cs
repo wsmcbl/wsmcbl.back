@@ -7,7 +7,7 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("secretary")]
-[Route("academy")]
+[Route("secretary")]
 [ApiController]
 public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
 {
@@ -46,7 +46,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// The degreeId must be not empty.
     /// </param>
     /// <param name="quantity">
-    /// The quantity value must be between 1 and 9.
+    /// The quantity value must be between 1 and 7.
     /// </param>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -54,7 +54,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="404">Resource depends on another resource not found (degree) or quantity invalid.</response>
     [HttpPost]
     [Route("degrees/{degreeId}/enrollments")]
-    public async Task<IActionResult> createEnrollment([FromQuery] string degreeId, [FromBody] int quantity)
+    public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
     {
         var result = await controller.createEnrollments(degreeId, quantity);
         var teacherList = await controller.getTeacherList();
