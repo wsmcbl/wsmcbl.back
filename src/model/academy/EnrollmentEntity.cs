@@ -26,7 +26,7 @@ public class EnrollmentEntity
         this.label = label;
         section = "Aula ";
         this.tag = tag;
-        teacherId = "tch-001";
+        teacherId = Const.DefaultTeacherId;
     }
 
     public void setSubjectList(List<SubjectEntity> subjects)
@@ -48,7 +48,8 @@ public class EnrollmentEntity
         {
             var subject = new SubjectEntity
             {
-                subjectId = item.subjectId!
+                subjectId = item.subjectId!,
+                teacherId = Const.DefaultTeacherId
             };
 
             subjectList.Add(subject);
@@ -61,16 +62,6 @@ public class EnrollmentEntity
         section = enrollment.section;
         capacity = enrollment.capacity;
         quantity = enrollment.quantity;
-    }
-
-    public List<string> getListTeacherIdBySubject()
-    {
-        if (subjectList == null || subjectList.Count == 0)
-        {
-            return [];
-        }
-        
-        return subjectList.Select(e => e.teacherId).Distinct().ToList()!;
     }
 
     public bool isEnrollmentFull()
