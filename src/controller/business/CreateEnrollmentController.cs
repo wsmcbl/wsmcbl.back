@@ -49,4 +49,28 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
         
         return degree;
     }
+
+    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
+    {
+        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollment.enrollmentId!);
+        if (existingEntity == null)
+        {
+            throw new EntityNotFoundException("Enrollment", enrollment.enrollmentId);
+        }
+
+        existingEntity.update(enrollment);
+        daoFactory.enrollmentDao!.update(existingEntity);
+        await daoFactory.execute();
+
+        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
+        foreach (var item in subjectList)
+        {
+            item.teacherId = "tch-001";
+            daoFactory.subjectDao.update(item);
+        }
+
+        await daoFactory.execute();
+
+        return existingEntity;
+    }    
 }
