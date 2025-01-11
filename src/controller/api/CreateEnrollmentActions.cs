@@ -42,7 +42,12 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     }
 
     /// <summary>Create new enrollment.</summary>
-    /// <remarks>The quantity value must be between 1 and 9</remarks>
+    /// <param name="degreeId">
+    /// The degreeId must be not empty.
+    /// </param>
+    /// <param name="quantity">
+    /// The quantity value must be between 1 and 9.
+    /// </param>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>

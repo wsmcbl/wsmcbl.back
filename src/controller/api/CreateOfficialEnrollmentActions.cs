@@ -17,6 +17,8 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
     [Route("degrees/enrollments")]
@@ -33,6 +35,8 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
     /// </summary>
     /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
     /// <response code="200">Returns the search results.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("configurations/schoolyears")]
@@ -63,6 +67,8 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
 
     /// <summary>Create new schoolyear.</summary>
     /// <response code="201">If the resource is created.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     /// <remarks>
     /// Property semester in partialList can be 1 or 2.
@@ -81,6 +87,8 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
 
     /// <summary>Create new subject catalog.</summary>
     /// <response code="201">If the resource is created.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("configurations/schoolyears/subjects")]
@@ -92,6 +100,8 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
 
     /// <summary>Create new tariff catalog.</summary>
     /// <response code="201">If the resource is created.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("configurations/schoolyears/tariffs")]
