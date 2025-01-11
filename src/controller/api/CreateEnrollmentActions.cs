@@ -56,7 +56,26 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     [Route("degrees/{degreeId}/enrollments")]
     public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
     {
-        var result = await controller.createEnrollments(degreeId, quantity);
-        return CreatedAtAction(nameof(getDegreeById), new { result.degreeId }, result.mapToDto());
+        var degree = await controller.createEnrollments(degreeId, quantity);
+        var result = new DegreeForCreateEnrollmentDto(degree);
+        
+        return CreatedAtAction(nameof(getDegreeById), new { degree.degreeId }, result);
     }
+    
+    /// <summary>
+    ///  Init enrollment record.
+    /// </summary>
+    /// <response code="200">When init is successful.</response>
+    /// <response code="400">The dto in is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Enrollment not found.</response>
+    [HttpPut]
+    [Route("degrees/enrollments")]
+    public async Task<IActionResult> updateEnrollment(EnrollmentToCreateDto dto)
+    {
+        var enrollment = await controller.updateEnrollment(dto.toEntity());
+
+        return Ok(new EnrollmentToCreateDto(enrollment));
+    }    
 }
