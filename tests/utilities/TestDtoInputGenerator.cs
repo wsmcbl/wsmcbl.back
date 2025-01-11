@@ -72,15 +72,6 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static EnrollmentToCreateDto aEnrollmentToCreateDto()
-    {
-        return new EnrollmentToCreateDto
-        {
-            degreeId = "gd01",
-            quantity = 40
-        };
-    }
-    
     public static SchoolYearToCreateDto aSchoolYearToCreateDto()
     {
         return new SchoolYearToCreateDto
