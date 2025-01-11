@@ -28,7 +28,6 @@ public static class BuilderService
 
         Services.AddValidatorsFromAssemblyContaining<ChangeStudentDiscountDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<CreateStudentProfileDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<EnrollmentToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToUpdateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollStudentDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<ForgetDebtDtoValidator>();
