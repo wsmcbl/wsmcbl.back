@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("secretary")]
 [Route("academy")]
 [ApiController]
-public class UpdateEnrollmentActions(UpdateEnrollmentController controller) : ActionsBase
+public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
 {
     /// <summary>
     ///  Update the enrollment resource

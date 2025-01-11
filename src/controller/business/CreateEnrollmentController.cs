@@ -4,7 +4,7 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class UpdateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
     {
