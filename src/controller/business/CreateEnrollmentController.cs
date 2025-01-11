@@ -1,19 +1,59 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
 public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
+    public async Task<List<TeacherEntity>> getTeacherList()
     {
-        var result = await daoFactory.enrollmentDao!.getById(enrollment.enrollmentId!);
-        if (result is null)
+        return await daoFactory.teacherDao!.getAll();
+    }
+
+    public async Task<List<DegreeEntity>> getDegreeList()
+    {
+        return await daoFactory.degreeDao!.getAll();
+    }
+
+    public async Task<DegreeEntity?> getDegreeById(string degreeId)
+    {
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
+
+        if (degree == null)
         {
-            throw new EntityNotFoundException("EnrollmentEntity", enrollment.enrollmentId);
+            throw new EntityNotFoundException("Degree", degreeId);
         }
-        
-        return result;
+
+        return degree;
+    }
+    
+    public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
+    {
+        if (quantity is > 7 or < 1)
+        {
+            throw new BadRequestException("Quantity in not valid");
+        }
+
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
+        if (degree == null)
+        {
+            throw new EntityNotFoundException("Degree", degreeId);
+        }
+        degree.createEnrollments(quantity);
+
+        foreach (var enrollment in degree.enrollmentList!)
+        {
+            daoFactory.enrollmentDao!.create(enrollment);
+            await daoFactory.execute();
+
+            foreach (var subject in enrollment.subjectList!)
+            {
+                daoFactory.Detached(subject);
+            }
+        }
+
+        return degree;
     }
 }
