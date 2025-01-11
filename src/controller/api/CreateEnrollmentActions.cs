@@ -57,7 +57,6 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
     {
         var result = await controller.createEnrollments(degreeId, quantity);
-        var teacherList = await controller.getTeacherList();
-        return CreatedAtAction(nameof(getDegreeById), new { result.degreeId }, result.mapToDto(teacherList));
+        return CreatedAtAction(nameof(getDegreeById), new { result.degreeId }, result.mapToDto());
     }
 }

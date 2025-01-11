@@ -28,7 +28,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
 
         return degree;
     }
-    
+
     public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
     {
         if (quantity is > 7 or < 1)
@@ -41,19 +41,12 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
         {
             throw new EntityNotFoundException("Degree", degreeId);
         }
+
         degree.createEnrollments(quantity);
-
-        foreach (var enrollment in degree.enrollmentList!)
-        {
-            daoFactory.enrollmentDao!.create(enrollment);
-            await daoFactory.execute();
-
-            foreach (var subject in enrollment.subjectList!)
-            {
-                daoFactory.Detached(subject);
-            }
-        }
-
+        
+        daoFactory.enrollmentDao!.createRange(degree.enrollmentList);
+        await daoFactory.execute();
+        
         return degree;
     }
 }
