@@ -32,7 +32,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
     {
         if (quantity is > 7 or < 1)
         {
-            throw new BadRequestException("Quantity in not valid");
+            throw new BadRequestException("Quantity in not valid.");
         }
 
         var degree = await daoFactory.degreeDao!.getById(degreeId);
@@ -42,9 +42,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
         }
 
         degree.createEnrollments(quantity);
-        
-        daoFactory.enrollmentDao!.createRange(degree.enrollmentList);
-        await daoFactory.execute();
+        await degree.saveEnrollments(daoFactory.enrollmentDao!);
         
         return degree;
     }
