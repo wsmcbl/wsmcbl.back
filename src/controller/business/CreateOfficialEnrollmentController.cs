@@ -6,34 +6,8 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateOfficialEnrollmentController : BaseController
+public class CreateOfficialEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public CreateOfficialEnrollmentController(DaoFactory daoFactory) : base(daoFactory)
-    {
-    }
-
-    public async Task<List<TeacherEntity>> getTeacherList()
-    {
-        return await daoFactory.teacherDao!.getAll();
-    }
-
-    public async Task<List<DegreeEntity>> getDegreeList()
-    {
-        return await daoFactory.degreeDao!.getAll();
-    }
-
-    public async Task<DegreeEntity?> getDegreeById(string degreeId)
-    {
-        var degree = await daoFactory.degreeDao!.getById(degreeId);
-
-        if (degree == null)
-        {
-            throw new EntityNotFoundException("Degree", degreeId);
-        }
-
-        return degree;
-    }
-
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
     {
         return await daoFactory.schoolyearDao!.getAll();
@@ -121,34 +95,6 @@ public class CreateOfficialEnrollmentController : BaseController
         daoFactory.subjectDataDao!.create(subject);
         await daoFactory.execute();
         return subject;
-    }
-
-    public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
-    {
-        if (quantity is > 7 or < 1)
-        {
-            throw new BadRequestException("Quantity in not valid");
-        }
-
-        var degree = await daoFactory.degreeDao!.getById(degreeId);
-        if (degree == null)
-        {
-            throw new EntityNotFoundException("Degree", degreeId);
-        }
-        degree.createEnrollments(quantity);
-
-        foreach (var enrollment in degree.enrollmentList!)
-        {
-            daoFactory.enrollmentDao!.create(enrollment);
-            await daoFactory.execute();
-
-            foreach (var subject in enrollment.subjectList!)
-            {
-                daoFactory.Detached(subject);
-            }
-        }
-
-        return degree;
     }
 
     public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
