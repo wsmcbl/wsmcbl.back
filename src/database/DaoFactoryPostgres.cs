@@ -12,17 +12,7 @@ namespace wsmcbl.src.database;
 
 public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
-    public override async Task execute()
-    {
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
-        }
-    }
+    public override async Task execute() => await studentDao.saveAsync();
 
     public override void Detached<T>(T element)
     {
