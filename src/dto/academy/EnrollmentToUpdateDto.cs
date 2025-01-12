@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.dto.secretary;
+namespace wsmcbl.src.dto.academy;
 
 public class EnrollmentToUpdateDto
 {
