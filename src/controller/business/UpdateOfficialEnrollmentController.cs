@@ -100,7 +100,6 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
     public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
     {
         var existingEntity = await daoFactory.enrollmentDao!.getById(enrollment.enrollmentId!);
-
         if (existingEntity == null)
         {
             throw new EntityNotFoundException("Enrollment", enrollment.enrollmentId);
@@ -125,29 +124,5 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         await daoFactory.execute();
 
         return existingEntity;
-    }
-    
-    public async Task<TeacherEntity> assignTeacherGuide(string teacherId, string enrollmentId)
-    {
-        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollmentId);
-        if (existingEntity == null)
-        {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
-        }
-        
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("Teacher", teacherId);
-        }
-        
-        if(teacherId == existingEntity.teacherId)
-            return teacher;
-        
-        teacher.isGuide = true;
-        daoFactory.teacherDao.update(teacher);
-        await daoFactory.execute();
-
-        return teacher;
     }
 }
