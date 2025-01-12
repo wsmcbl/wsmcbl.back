@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.controller.api;
 
@@ -11,9 +12,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController controller) : ControllerBase
 {
-    /// <summary>
-    ///  Update official enrollment resource.
-    /// </summary>
+    /// <summary>Update official enrollment resource.</summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -23,16 +22,15 @@ public class UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController 
     [Route("degrees/enrollments/{enrollmentId}")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
-        var teacher = await controller.assignTeacherGuide(dto.teacherId, enrollmentId);
         var enrollment = await controller.updateEnrollment(dto.toEntity(enrollmentId));
-
-        return Ok(enrollment.mapToDto(teacher));
+        return Ok(enrollment.mapToDto());
     }
 
-    /// <summary>
-    /// Returns the search results based on the provided query.
-    /// </summary>
-    /// <param name="q">The query string in the format "value". Supported values are "all" and "new".</param>
+    /// <summary>Returns the search results based on the provided query.</summary>
+    /// <param name="q">
+    /// The query string in the format "value".
+    /// Supported values are "all" and "new".
+    /// </param>
     /// <response code="200">Returns the search results.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -48,31 +46,33 @@ public class UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController 
 
         var value = q.ToLower();
 
-        if (value.Equals("all"))
+        switch (value)
         {
-            var list = await controller.getSchoolYearList();
-            return Ok(list.mapListToDto());
+            case "all":
+            {
+                var list = await controller.getSchoolYearList();
+                return Ok(list.mapListToDto());
+            }
+            case "new":
+            {
+                var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
+                return Ok(schoolyearBaseInformation.mapToDto());
+            }
+            default:
+                return NotFound("Unknown type value.");
         }
-
-        if (value.Equals("new"))
-        {
-            var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-            return Ok(schoolyearBaseInformation.mapToDto());
-        }
-
-        return NotFound("Unknown type value.");
     }
 
 
     /// <summary>Create new schoolyear.</summary>
-    /// <response code="201">If the resource is created.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
     /// <remarks>
     /// Property semester in partialList can be 1 or 2.
     /// Property exchangeRate can be double.
     /// </remarks>
+    /// <response code="201">If the resource is created.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("configurations/schoolyears")]
     public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
