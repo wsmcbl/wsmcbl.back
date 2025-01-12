@@ -70,4 +70,10 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
         
         return result.Distinct().ToList();
     }
+
+    public async Task createRange(ICollection<EnrollmentEntity> enrollmentList)
+    {
+        entities.AddRange(enrollmentList);
+        await saveAsync();
+    }
 }
