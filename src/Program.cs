@@ -31,7 +31,7 @@ builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntit
 builder.Services.AddScoped<UserAuthenticator>();
 
 builder.Services.AddTransient<CollectTariffController>();
-builder.Services.AddTransient<CreateOfficialEnrollmentController>();
+builder.Services.AddTransient<UpdateOfficialEnrollmentController>();
 builder.Services.AddTransient<EnrollStudentController>();
 builder.Services.AddTransient<PrintReportCardByStudentController>();
 builder.Services.AddTransient<MoveTeacherGuideFromEnrollmentController>();

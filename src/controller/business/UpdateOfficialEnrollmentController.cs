@@ -6,7 +6,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateOfficialEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
     {
