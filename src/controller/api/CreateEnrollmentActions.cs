@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("secretary")]
+[ResourceAuthorizer("admin","secretary")]
 [Route("secretary")]
 [ApiController]
 public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
@@ -66,7 +66,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     ///  Init enrollment record.
     /// </summary>
     /// <response code="200">When init is successful.</response>
-    /// <response code="400">The dto in is not valid.</response>
+    /// <response code="400">The dto is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment not found.</response>
