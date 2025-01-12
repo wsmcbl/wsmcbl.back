@@ -8,13 +8,11 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin", "secretary")]
-[Route("secretary")]
+[Route("academy")]
 [ApiController]
 public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController controller) : ControllerBase
 {
-    /// <summary>
-    ///  Returns the list of active teacher
-    /// </summary>
+    /// <summary>Returns the list of active teacher.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -26,9 +24,10 @@ public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController cont
         return Ok(list.mapListToDto());
     }
 
-    /// <summary>
-    /// Update the teacher of the subject.
-    /// </summary>
+    /// <summary>Update the teacher of the subject.</summary>
+    /// <param name="enrollmentId">The enrollment id to update.</param>
+    /// <param name="subjectId">The subject id to update.</param>
+    /// <param name="teacherId">The teacher id to assign.</param>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>

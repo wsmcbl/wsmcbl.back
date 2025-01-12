@@ -25,12 +25,8 @@ public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmen
     }
 
     /// <summary>Update the teacher guide of the enrollment.</summary>
-    /// <param name="enrollmentId">
-    /// The enrollment id to update.
-    /// </param>
-    /// <param name="teacherId">
-    /// The id of the new teacher to be assigned.
-    /// </param>
+    /// <param name="enrollmentId">The enrollment id to update.</param>
+    /// <param name="teacherId">The id of the new teacher to be assigned.</param>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
