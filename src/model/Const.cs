@@ -4,5 +4,5 @@ public static class Const
 {
     public const int TARIFF_MONTHLY = 1;
     public const int TARIFF_REGISTRATION = 2;
-    public const string DefaultTeacherId = "";
+    public const string DefaultTeacherId = "tch-001";
 }
