@@ -97,32 +97,18 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         return subject;
     }
 
-    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
+    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity value)
     {
-        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollment.enrollmentId!);
-        if (existingEntity == null)
+        var enrollment = await daoFactory.enrollmentDao!.getById(value.enrollmentId!);
+        if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollment.enrollmentId);
+            throw new EntityNotFoundException("Enrollment", value.enrollmentId);
         }
 
-        existingEntity.update(enrollment);
-        daoFactory.enrollmentDao!.update(existingEntity);
+        enrollment.update(value);
+        daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
 
-        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
-
-        foreach (var item in enrollment.subjectList!)
-        {
-            var subject = subjectList.Find(e => e.subjectId == item.subjectId);
-            if (subject == null)
-                continue;
-            
-            subject.teacherId = "tch-001";
-            daoFactory.subjectDao.update(subject);
-        }
-
-        await daoFactory.execute();
-
-        return existingEntity;
+        return enrollment;
     }
 }
