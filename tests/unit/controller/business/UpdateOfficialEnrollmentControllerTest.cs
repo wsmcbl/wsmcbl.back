@@ -9,13 +9,13 @@ namespace wsmcbl.tests.unit.controller.business;
 
 public class UpdateOfficialEnrollmentControllerTest
 {
-    private CreateOfficialEnrollmentController sut;
+    private UpdateOfficialEnrollmentController sut;
     private readonly DaoFactory daoFactory;
 
     public UpdateOfficialEnrollmentControllerTest()
     {
         daoFactory = Substitute.For<DaoFactory>();
-        sut = new CreateOfficialEnrollmentController(daoFactory);
+        sut = new UpdateOfficialEnrollmentController(daoFactory);
     }
 
 
@@ -87,7 +87,7 @@ public class UpdateOfficialEnrollmentControllerTest
          schoolyearDao.getCurrentSchoolyear().Returns(currentSchoolyear);
          daoFactory.schoolyearDao.Returns(schoolyearDao);
 
-         sut = new CreateOfficialEnrollmentController(daoFactory);
+         sut = new UpdateOfficialEnrollmentController(daoFactory);
 
          await sut.createSchoolYear(gradeList, tariffList);
 
