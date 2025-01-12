@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.academy;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 
@@ -10,10 +9,10 @@ namespace wsmcbl.src.controller.api;
 [ResourceAuthorizer("admin","secretary")]
 [Route("secretary")]
 [ApiController]
-public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController controller) : ControllerBase
+public class UpdateOfficialEnrollmentActions(CreateOfficialEnrollmentController controller) : ControllerBase
 {
     /// <summary>
-    ///  Update the enrollment resource
+    ///  Update official enrollment resource.
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
@@ -21,11 +20,11 @@ public class CreateOfficialEnrollmentActions(CreateOfficialEnrollmentController 
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
-    [Route("degrees/enrollments")]
-    public async Task<IActionResult> updateEnrollment(EnrollmentToUpdateDto dto)
+    [Route("degrees/enrollments/{enrollmentId}")]
+    public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
-        var teacher = await controller.assignTeacherGuide(dto.teacherId, dto.enrollmentId);
-        var enrollment = await controller.updateEnrollment(dto.toEntity());
+        var teacher = await controller.assignTeacherGuide(dto.teacherId, enrollmentId);
+        var enrollment = await controller.updateEnrollment(dto.toEntity(enrollmentId));
 
         return Ok(enrollment.mapToDto(teacher));
     }
