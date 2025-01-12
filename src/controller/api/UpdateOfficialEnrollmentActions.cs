@@ -10,21 +10,21 @@ using wsmcbl.src.model.academy;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin", "secretary")]
-[Route("secretary")]
+[Route("academy")]
 [ApiController]
 public class UpdateOfficialEnrollmentActions : ControllerBase
 {
-    private UpdateOfficialEnrollmentController updateOfficialEnrollmentController;
-    private MoveTeacherGuideFromEnrollmentController moveTeacherGuideFromEnrollmentController;
-    private MoveTeacherFromSubjectController moveTeacherFromSubjectController;
+    private readonly UpdateOfficialEnrollmentController enrollmentController;
+    private readonly MoveTeacherGuideFromEnrollmentController teacherGuideController;
+    private readonly MoveTeacherFromSubjectController subjectController;
 
-    public UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController updateOfficialEnrollmentController,
-        MoveTeacherGuideFromEnrollmentController moveTeacherGuideFromEnrollmentController,
-        MoveTeacherFromSubjectController moveTeacherFromSubjectController)
+    public UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController enrollmentController,
+        MoveTeacherGuideFromEnrollmentController teacherGuideController,
+        MoveTeacherFromSubjectController subjectController)
     {
-        this.updateOfficialEnrollmentController = updateOfficialEnrollmentController;
-        this.moveTeacherGuideFromEnrollmentController = moveTeacherGuideFromEnrollmentController;
-        this.moveTeacherFromSubjectController = moveTeacherFromSubjectController;
+        this.enrollmentController = enrollmentController;
+        this.teacherGuideController = teacherGuideController;
+        this.subjectController = subjectController;
     }
 
     /// <summary>Return the list of teacher non-guided.</summary>
@@ -35,7 +35,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     [Route("enrollments/teachers")]
     public async Task<IActionResult> getTeacherList()
     {
-        var list = await moveTeacherGuideFromEnrollmentController.getTeacherList();
+        var list = await teacherGuideController.getTeacherList();
         return Ok(list.mapListToDto());
     }
 
@@ -52,9 +52,9 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     public async Task<IActionResult> setTeacherGuide([Required] string enrollmentId,
         [Required] [FromQuery] string teacherId)
     {
-        var enrollment = await moveTeacherGuideFromEnrollmentController.getEnrollmentById(enrollmentId);
-        var teacher = await moveTeacherGuideFromEnrollmentController.getTeacherById(teacherId);
-        await moveTeacherGuideFromEnrollmentController.assignTeacherGuide(teacher, enrollment);
+        var enrollment = await teacherGuideController.getEnrollmentById(enrollmentId);
+        var teacher = await teacherGuideController.getTeacherById(teacherId);
+        await teacherGuideController.assignTeacherGuide(teacher, enrollment);
 
         return Ok(enrollment.mapToDto(teacher));
     }
@@ -67,7 +67,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     [Route("teachers")]
     public async Task<IActionResult> getTeacherList1()
     {
-        var list = await moveTeacherFromSubjectController.getTeacherList();
+        var list = await subjectController.getTeacherList();
         return Ok(list.mapListToDto());
     }
 
@@ -84,18 +84,18 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
         [Required] string subjectId, [Required] [FromQuery] string teacherId)
     {
-        if (await moveTeacherFromSubjectController.isThereAnActivePartial())
+        if (await subjectController.isThereAnActivePartial())
         {
             throw new ConflictException("This operation cannot be performed. The partial is active.");
         }
 
-        var teacher = await moveTeacherFromSubjectController.getTeacherById(teacherId);
+        var teacher = await subjectController.getTeacherById(teacherId);
         if (teacher == null)
         {
             throw new EntityNotFoundException("Teacher", teacherId);
         }
 
-        await moveTeacherFromSubjectController.updateTeacherFromSubject(subjectId, enrollmentId, teacherId);
+        await subjectController.updateTeacherFromSubject(subjectId, enrollmentId, teacherId);
         return Ok();
     }
 
@@ -109,7 +109,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     [Route("degrees/enrollments/{enrollmentId}")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
-        var enrollment = await updateOfficialEnrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
+        var enrollment = await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
         return Ok(enrollment.mapToDto());
     }
 }
