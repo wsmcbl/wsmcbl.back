@@ -26,16 +26,36 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         this.teacherGuideController = teacherGuideController;
         this.subjectController = subjectController;
     }
-
-    /// <summary>Return the list of teacher non-guided.</summary>
+    
+    /// <summary>Returns the list of teacher.</summary>
+    /// <param name="q">
+    /// Supported values are "active" and "non-guided".
+    /// </param>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("enrollments/teachers")]
-    public async Task<IActionResult> getTeacherList()
+    [Route("teachers")]
+    public async Task<IActionResult> getTeacherList([Required] [FromQuery] string q)
     {
-        var list = await teacherGuideController.getTeacherList();
+        List<TeacherEntity> list;
+        switch (q.ToLower())
+        {
+            case "active":
+            {
+                list = await subjectController.getTeacherList();
+                break;
+            }
+            case "non-guided":
+            {
+                list = await teacherGuideController.getTeacherList();
+                break;
+            }
+            default:
+                return NotFound("Unknown type value.");
+        }
+
         return Ok(list.mapListToDto());
     }
 
@@ -57,18 +77,6 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         await teacherGuideController.assignTeacherGuide(teacher, enrollment);
 
         return Ok(enrollment.mapToDto(teacher));
-    }
-
-    /// <summary>Returns the list of active teacher.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("teachers")]
-    public async Task<IActionResult> getTeacherList1()
-    {
-        var list = await subjectController.getTeacherList();
-        return Ok(list.mapListToDto());
     }
 
     /// <summary>Update the teacher of the subject.</summary>
