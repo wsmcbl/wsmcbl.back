@@ -4,9 +4,8 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
+public class EnrollmentToUpdateDto
 {
-    [Required] public string enrollmentId { get; set; } = null!;
     [Required] public string teacherId { get; set; } = null!;
     [Required] public string? section { get; set; }
     [Required] public string label { get; set; } = null!;
@@ -15,7 +14,7 @@ public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
 
     public List<SubjectToAssignDto> subjectList { get; set; } = null!;
     
-    public EnrollmentEntity toEntity()
+    public EnrollmentEntity toEntity(string enrollmentId)
     {
         var enrollment = new EnrollmentEntity
         {
@@ -26,7 +25,8 @@ public class EnrollmentToUpdateDto : IBaseDto<EnrollmentEntity>
             label = label
         };
         
-        var subjects = subjectList.Select(item => item.toEntity(enrollmentId)).ToList();
+        var subjects = subjectList
+            .Select(item => item.toEntity(enrollmentId)).ToList();
         enrollment.setSubjectList(subjects);
         
         return enrollment;
