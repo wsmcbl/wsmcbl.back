@@ -117,8 +117,8 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     [Route("enrollments/{enrollmentId}")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
-        var enrollment = await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
-        return Ok(enrollment.mapToDto());
+        await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
+        return Ok();
     }
     
     /// <summary>Get enrollment resource.</summary>

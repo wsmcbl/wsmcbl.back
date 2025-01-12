@@ -111,4 +111,9 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
 
         return enrollment;
     }
+
+    public async Task<object> getEnrollmentById(string enrollmentId)
+    {
+        throw new NotImplementedException();
+    }
 }
