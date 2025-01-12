@@ -33,7 +33,6 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
-
         if (tariffsNotValid > 0)
         {
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
@@ -97,23 +96,27 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         return subject;
     }
 
-    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity value)
+    public async Task<EnrollmentEntity> getEnrollmentById(string enrollmentId)
+    {
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(enrollmentId);
+        if (enrollment == null)
+        {
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
+        }
+
+        return enrollment;
+    }
+
+    public async Task updateEnrollment(EnrollmentEntity value)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(value.enrollmentId!);
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", value.enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", value.enrollmentId);
         }
 
         enrollment.update(value);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
-
-        return enrollment;
-    }
-
-    public async Task<object> getEnrollmentById(string enrollmentId)
-    {
-        throw new NotImplementedException();
     }
 }

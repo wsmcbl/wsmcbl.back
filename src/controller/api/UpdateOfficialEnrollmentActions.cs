@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
-using wsmcbl.src.dto.secretary;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.academy;
@@ -14,17 +13,17 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class UpdateOfficialEnrollmentActions : ControllerBase
 {
+    private readonly MoveTeacherFromSubjectController subjectController;
     private readonly UpdateOfficialEnrollmentController enrollmentController;
     private readonly MoveTeacherGuideFromEnrollmentController teacherGuideController;
-    private readonly MoveTeacherFromSubjectController subjectController;
 
     public UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController enrollmentController,
         MoveTeacherGuideFromEnrollmentController teacherGuideController,
         MoveTeacherFromSubjectController subjectController)
     {
+        this.subjectController = subjectController;
         this.enrollmentController = enrollmentController;
         this.teacherGuideController = teacherGuideController;
-        this.subjectController = subjectController;
     }
     
     /// <summary>Returns the list of teacher.</summary>
@@ -57,6 +56,33 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         }
 
         return Ok(list.mapListToDto());
+    }
+    
+    /// <summary>Get enrollment resource.</summary>
+    /// <response code="200">If the request is successful.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Enrollment or internal record not found.</response>
+    [HttpGet]
+    [Route("enrollments/{enrollmentId}")]
+    public async Task<IActionResult> getEnrollmentById([Required] string enrollmentId)
+    {
+        var enrollment = await enrollmentController.getEnrollmentById(enrollmentId);
+        return Ok(enrollment.mapToDto());
+    }
+
+    /// <summary>Update official enrollment resource.</summary>
+    /// <response code="200">When update is successful.</response>
+    /// <response code="400">The dto in is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Enrollment or internal record not found.</response>
+    [HttpPut]
+    [Route("enrollments/{enrollmentId}")]
+    public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
+    {
+        await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
+        return Ok();
     }
 
     /// <summary>Update the teacher guide of the enrollment.</summary>
@@ -105,32 +131,5 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
 
         await subjectController.updateTeacherFromSubject(subjectId, enrollmentId, teacherId);
         return Ok();
-    }
-
-    /// <summary>Update official enrollment resource.</summary>
-    /// <response code="200">When update is successful.</response>
-    /// <response code="400">The dto in is not valid.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Enrollment or internal record not found.</response>
-    [HttpPut]
-    [Route("enrollments/{enrollmentId}")]
-    public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
-    {
-        await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
-        return Ok();
-    }
-    
-    /// <summary>Get enrollment resource.</summary>
-    /// <response code="200">If the request is successful.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Enrollment or internal record not found.</response>
-    [HttpGet]
-    [Route("enrollments/{enrollmentId}")]
-    public async Task<IActionResult> getEnrollmentById([Required] string enrollmentId)
-    {
-        var enrollment = await enrollmentController.getEnrollmentById(enrollmentId);
-        return Ok(enrollment.mapToDto());
     }
 }
