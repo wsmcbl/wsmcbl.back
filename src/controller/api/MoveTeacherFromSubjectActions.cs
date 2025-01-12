@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
@@ -6,7 +7,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
+[ResourceAuthorizer("admin", "secretary")]
 [Route("secretary")]
 [ApiController]
 public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController controller) : ControllerBase
@@ -24,7 +25,7 @@ public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController cont
         var list = await controller.getTeacherList();
         return Ok(list.mapListToDto());
     }
-    
+
     /// <summary>
     /// Update the teacher of the subject.
     /// </summary>
@@ -33,21 +34,22 @@ public class MoveTeacherFromSubjectActions(MoveTeacherFromSubjectController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the teacher or subject does not exist.</response>
     [HttpPut]
-    [Route("subjects")]
-    public async Task<IActionResult> updateTeacherFromSubject(MoveTeacherDto dto)
+    [Route("enrollments/{enrollmentId}/subjects/{subjectId}")]
+    public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
+        [Required] string subjectId, [Required] [FromQuery] string teacherId)
     {
         if (await controller.isThereAnActivePartial())
         {
             throw new ConflictException("This operation cannot be performed. The partial is active.");
         }
-        
-        var teacher = await controller.getTeacherById(dto.teacherId);
+
+        var teacher = await controller.getTeacherById(teacherId);
         if (teacher == null)
         {
-            throw new EntityNotFoundException("Teacher", dto.teacherId);
+            throw new EntityNotFoundException("Teacher", teacherId);
         }
-        
-        await controller.updateTeacherFromSubject(dto.subjectId, dto.enrollmentId, dto.teacherId);
+
+        await controller.updateTeacherFromSubject(subjectId, enrollmentId, teacherId);
         return Ok();
     }
 }
