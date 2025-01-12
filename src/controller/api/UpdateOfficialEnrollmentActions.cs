@@ -23,8 +23,7 @@ public class UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController 
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
         var enrollment = await controller.updateEnrollment(dto.toEntity(enrollmentId));
-        var teacher = new TeacherEntity(); //////////////REVIEW
-        return Ok(enrollment.mapToDto(teacher));
+        return Ok(enrollment.mapToDto());
     }
 
     /// <summary>Returns the search results based on the provided query.</summary>
@@ -47,19 +46,21 @@ public class UpdateOfficialEnrollmentActions(UpdateOfficialEnrollmentController 
 
         var value = q.ToLower();
 
-        if (value.Equals("all"))
+        switch (value)
         {
-            var list = await controller.getSchoolYearList();
-            return Ok(list.mapListToDto());
+            case "all":
+            {
+                var list = await controller.getSchoolYearList();
+                return Ok(list.mapListToDto());
+            }
+            case "new":
+            {
+                var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
+                return Ok(schoolyearBaseInformation.mapToDto());
+            }
+            default:
+                return NotFound("Unknown type value.");
         }
-
-        if (value.Equals("new"))
-        {
-            var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-            return Ok(schoolyearBaseInformation.mapToDto());
-        }
-
-        return NotFound("Unknown type value.");
     }
 
 
