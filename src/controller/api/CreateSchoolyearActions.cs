@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
@@ -16,21 +17,14 @@ public class CreateSchoolyearActions(UpdateOfficialEnrollmentController controll
     /// Supported values are "all" and "new".
     /// </param>
     /// <response code="200">Returns the search results.</response>
+    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getSchoolYears([FromQuery] string q)
+    public async Task<IActionResult> getSchoolYears([Required] [FromQuery] string q)
     {
-        if (string.IsNullOrWhiteSpace(q))
-        {
-            return NotFound("Query parameter 'q' is required.");
-        }
-
-        var value = q.ToLower();
-
-        switch (value)
+        switch (q.ToLower())
         {
             case "all":
             {
