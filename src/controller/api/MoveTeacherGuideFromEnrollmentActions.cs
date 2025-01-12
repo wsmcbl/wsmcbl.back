@@ -12,10 +12,10 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmentController controller) : ControllerBase
 {
-    /// <summary>
-    /// Return the list of teacher non-guided.
-    /// </summary>
+    /// <summary>Return the list of teacher non-guided.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("enrollments/teachers")]
     public async Task<IActionResult> getTeacherList()
@@ -24,11 +24,17 @@ public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmen
         return Ok(list.mapListToDto());
     }
 
-    /// <summary>
-    /// Update the teacher guide of the enrollment.
-    /// </summary>
+    /// <summary>Update the teacher guide of the enrollment.</summary>
+    /// <param name="enrollmentId">
+    /// The enrollment id to update.
+    /// </param>
+    /// <param name="teacherId">
+    /// The id of the new teacher to be assigned.
+    /// </param>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="400">If the dto is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}")]
