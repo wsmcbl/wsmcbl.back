@@ -68,7 +68,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
-    [Route("enrollments/{enrollmentId}")]
+    [Route("enrollments/{enrollmentId}/teachers")]
     public async Task<IActionResult> setTeacherGuide([Required] string enrollmentId,
         [Required] [FromQuery] string teacherId)
     {
@@ -114,10 +114,23 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
-    [Route("degrees/enrollments/{enrollmentId}")]
+    [Route("enrollments/{enrollmentId}")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
         var enrollment = await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
+        return Ok(enrollment.mapToDto());
+    }
+    
+    /// <summary>Get enrollment resource.</summary>
+    /// <response code="200">If the request is successful.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Enrollment or internal record not found.</response>
+    [HttpGet]
+    [Route("enrollments/{enrollmentId}")]
+    public async Task<IActionResult> getEnrollmentById([Required] string enrollmentId)
+    {
+        var enrollment = await enrollmentController.getEnrollmentById(enrollmentId);
         return Ok(enrollment.mapToDto());
     }
 }
