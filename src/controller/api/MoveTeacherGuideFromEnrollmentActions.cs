@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
@@ -6,7 +7,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
+[ResourceAuthorizer("admin", "secretary")]
 [Route("academy")]
 [ApiController]
 public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmentController controller) : ControllerBase
@@ -22,7 +23,7 @@ public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmen
         var list = await controller.getTeacherList();
         return Ok(list.mapListToDto());
     }
-    
+
     /// <summary>
     /// Update the teacher guide of the enrollment.
     /// </summary>
@@ -30,13 +31,14 @@ public class MoveTeacherGuideFromEnrollmentActions(MoveTeacherGuideFromEnrollmen
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
-    [Route("enrollments")]
-    public async Task<IActionResult> setTeacherGuide(MoveTeacherGuideDto dto)
+    [Route("enrollments/{enrollmentId}")]
+    public async Task<IActionResult> setTeacherGuide([Required] string enrollmentId,
+        [Required] [FromQuery] string teacherId)
     {
-        var enrollment = await controller.getEnrollmentById(dto.enrollmentId);
-        var teacher = await controller.getTeacherById(dto.newTeacherId);
+        var enrollment = await controller.getEnrollmentById(enrollmentId);
+        var teacher = await controller.getTeacherById(teacherId);
         await controller.assignTeacherGuide(teacher, enrollment);
-        
+
         return Ok(enrollment.mapToDto(teacher));
     }
 }
