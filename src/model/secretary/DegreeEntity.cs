@@ -78,6 +78,7 @@ public class DegreeEntity
         }
         
         await enrollmentDao.createRange(enrollmentList);
+        quantity = enrollmentList.Count;
     }
     
     public void setSubjectList(List<SubjectEntity> subjects)
