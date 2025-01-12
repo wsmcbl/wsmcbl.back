@@ -63,8 +63,11 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     }
     
     /// <summary>
-    ///  Init enrollment record.
+    ///  Initialize enrollment record.
     /// </summary>
+    /// <remarks>
+    /// The "label" value is not required.
+    /// </remarks>
     /// <response code="200">When init is successful.</response>
     /// <response code="400">The dto is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>

@@ -6,17 +6,21 @@ namespace wsmcbl.src.dto.secretary;
 
 public class EnrollmentToCreateDto
 {
-    [Required] public string enrollmentId { get; set; }
-    [Required] public string label { get; set; }
-    [Required] public string section { get; set; }
+    [Required] public string enrollmentId { get; set; } = null!;
+    public string? label { get; set; }
+    [Required] public string section { get; set; } = null!;
     [JsonRequired] public int capacity { get; set; }
 
+    public EnrollmentToCreateDto()
+    {
+    }
+    
     public EnrollmentToCreateDto(EnrollmentEntity enrollment)
     {
         enrollmentId = enrollment.enrollmentId!;
         label = enrollment.label;
         section = enrollment.section;
-        capacity = 0;
+        capacity = enrollment.capacity;
     }
 
     public EnrollmentEntity toEntity()
