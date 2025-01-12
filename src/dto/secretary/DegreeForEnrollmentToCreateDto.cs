@@ -8,7 +8,7 @@ public class DegreeForCreateEnrollmentDto
     public string label { get; set; }
     public string schoolYear { get; set; }
     public int quantity { get; set; }
-    public List<EnrollmentToCreateDto> enrollmentList { get; set; } = null!;
+    public List<EnrollmentToCreateDto> enrollmentList { get; set; }
 
     public DegreeForCreateEnrollmentDto(DegreeEntity degree)
     {
@@ -17,6 +17,7 @@ public class DegreeForCreateEnrollmentDto
         schoolYear = degree.schoolYear;
         quantity = degree.quantity;
         
+        enrollmentList = [];
         foreach (var enrollment in degree.enrollmentList!)
         {
             enrollmentList.Add(new EnrollmentToCreateDto(enrollment));
