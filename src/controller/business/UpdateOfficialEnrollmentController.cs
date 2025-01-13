@@ -40,7 +40,6 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
 
         await daoFactory.degreeDao!.createRange(degreeList);
         await daoFactory.tariffDao!.createRange(tariffList);
-        await daoFactory.execute();
 
         return await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
     }

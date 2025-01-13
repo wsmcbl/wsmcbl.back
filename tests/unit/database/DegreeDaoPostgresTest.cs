@@ -9,14 +9,14 @@ namespace wsmcbl.tests.unit.database;
 public class DegreeDaoPostgresTest : BaseDaoPostgresTest
 {
     [Fact]
-    public async Task createList_ShouldCreateList_WhenCalled()
+    public async Task createRange_ShouldCreateList_WhenCalled()
     {
         var grade = TestEntityGenerator.aDegree("gd-001");
         context = TestDbContext.getInMemory();
         
         var sut = new DegreeDaoPostgres(context);
         
-        sut.createList([grade]);
+        await sut.createRange([grade]);
         
         await context.SaveChangesAsync();
         Assert.Equal(grade, context.Set<DegreeEntity>().First(e => e.degreeId == "gd-001"));
