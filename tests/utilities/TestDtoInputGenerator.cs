@@ -18,15 +18,6 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectToAssignDto aSubjectEnrollDto()
-    {
-        return new SubjectToAssignDto
-        {
-            subjectId = "sub001",
-            teacherId = "tch001"
-        };
-    }
-    
     public static TransactionDetailDto aDetailDto()
     {
         return new TransactionDetailDto

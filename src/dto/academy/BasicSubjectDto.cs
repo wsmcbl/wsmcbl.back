@@ -1,4 +1,4 @@
-using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.academy;
 
@@ -9,7 +9,7 @@ public class BasicSubjectDto
 
     public BasicSubjectDto(SubjectEntity subject)
     {
-        subjectId = subject.subjectId;
-        name = subject.secretarySubject!.name;
+        subjectId = subject.subjectId!;
+        name = subject.name;
     }
 }

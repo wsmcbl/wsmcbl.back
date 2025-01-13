@@ -1,21 +1,10 @@
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.academy;
-
-/*
- * toEntity()
- * mapToDto()
- * mapListToDto()
- * mapListToBasicDto()
- */
-
 public static class DtoMapper
 {
     public static List<GradeEntity> toEntity(this IEnumerable<GradeDto> gradeList)
         => gradeList.Select(e => e.toEntity()).ToList();
-    
-    
-    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment) => new(enrollment);
     
     private static PartialInformationDto mapToDto(this PartialEntity partial) => new(partial);
     
@@ -29,7 +18,7 @@ public static class DtoMapper
     
     private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student);
     
-    private static BasicSubjectDto mapToBasicDto(this SubjectEntity subject) => new (subject);
+    private static BasicSubjectDto mapToBasicDto(this model.secretary.SubjectEntity subject) => new (subject);
     
     
     
@@ -54,5 +43,7 @@ public static class DtoMapper
     
     
     public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> studentList) => 
+        studentList.Select(e => e.secretarySubject).ToList()!.mapListToBasicDto();
+    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<model.secretary.SubjectEntity> studentList) => 
         studentList.Select(e => e.mapToBasicDto()).ToList();
 }
