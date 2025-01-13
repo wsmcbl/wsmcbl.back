@@ -15,8 +15,7 @@ public static class DtoMapper
         => gradeList.Select(e => e.toEntity()).ToList();
     
     
-    
-    private static EnrollmentByTeacherDto mapToDto(this EnrollmentEntity enrollment) => new(enrollment);
+    public static EnrollmentDto mapToDto(this EnrollmentEntity enrollment) => new(enrollment);
     
     private static PartialInformationDto mapToDto(this PartialEntity partial) => new(partial);
     
@@ -41,7 +40,7 @@ public static class DtoMapper
         studentList.Select(e => e.mapToBasicDto()).ToList();
     
     public static List<EnrollmentByTeacherDto> mapListToDto(this IEnumerable<EnrollmentEntity> enrollmentList) =>
-        enrollmentList.Select(e => e.mapToDto()).ToList();
+        enrollmentList.Select(e => new EnrollmentByTeacherDto(e)).ToList();
     
     public static List<PartialInformationDto> mapListToDto(this IEnumerable<PartialEntity> partialList) =>
         partialList.Select(e => e.mapToDto()).ToList();

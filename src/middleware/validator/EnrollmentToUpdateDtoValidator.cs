@@ -1,5 +1,5 @@
 using FluentValidation;
-using wsmcbl.src.dto.secretary;
+using wsmcbl.src.dto.academy;
 
 namespace wsmcbl.src.middleware.validator;
 
