@@ -26,7 +26,13 @@ public class EnrollmentDto
         capacity = entity.capacity;
         quantity = entity.quantity;
         label = entity.label;
-        subjects = entity.subjectList.mapListToAssignDto();
+
+        if (entity.subjectList == null || entity.subjectList.Count == 0)
+        {
+            subjects = [];
+        }
+        
+        subjects = entity.subjectList!.ToList().mapListToAssignDto();
     }
 
     public EnrollmentDto(EnrollmentEntity enrollment, TeacherEntity? teacher) : this(enrollment)

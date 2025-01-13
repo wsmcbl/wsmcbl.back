@@ -22,7 +22,6 @@ public static class DtoMapper
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
     public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
-    public static DegreeDto mapToDto(this DegreeEntity degree, List<TeacherEntity> teacherList) => new(degree, teacherList);
     private static SubjectToAssignDto MapToAssignDto(this model.academy.SubjectEntity subject) => new(subject);
 
 
@@ -47,8 +46,8 @@ public static class DtoMapper
         => list.Select(e => e.mapToBasicEnrollDto()).ToList();
 
 
-    public static List<SubjectToAssignDto> mapListToAssignDto(this IEnumerable<model.academy.SubjectEntity>? list)
-        => list == null || !list.Any() ? [new SubjectToAssignDto()] : list.Select(e => e.MapToAssignDto()).ToList();
+    public static List<SubjectToAssignDto> mapListToAssignDto(this List<model.academy.SubjectEntity> list) =>
+        list.Select(e => e.MapToAssignDto()).ToList();
 
     public static List<EnrollmentDto> mapListToDto(this ICollection<EnrollmentEntity>? list, List<TeacherEntity> teacherList)
     {
