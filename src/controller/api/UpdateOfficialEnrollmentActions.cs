@@ -102,7 +102,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         var teacher = await teacherGuideController.getTeacherById(teacherId);
         await teacherGuideController.assignTeacherGuide(teacher, enrollment);
 
-        return Ok(enrollment.mapToDto(teacher));
+        return Ok();
     }
 
     /// <summary>Update the teacher of the subject.</summary>
