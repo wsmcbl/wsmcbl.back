@@ -9,7 +9,7 @@ public class BasicSubjectDto
 
     public BasicSubjectDto(SubjectEntity subject)
     {
-        subjectId = subject.subjectId!;
+        subjectId = subject.subjectId;
         name = subject.secretarySubject!.name;
     }
 }
