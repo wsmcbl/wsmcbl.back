@@ -9,7 +9,7 @@ public class BasicStudentDto
 
     public BasicStudentDto(StudentEntity entity)
     {
-        studentId = entity.studentId!;
+        studentId = entity.studentId;
         fullName = entity.fullName();
     }
 }
