@@ -95,7 +95,23 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         await daoFactory.execute();
         return subject;
     }
+    
+    public async Task<List<TeacherEntity>> getTeacherList()
+    {
+        return await daoFactory.teacherDao!.getAll();
+    }
 
+    public async Task<DegreeEntity?> getDegreeById(string degreeId)
+    {
+        var degree = await daoFactory.degreeDao!.getWithAllPropertiesById(degreeId);
+        if (degree == null)
+        {
+            throw new EntityNotFoundException("DegreeEntity", degreeId);
+        }
+
+        return degree;
+    }
+    
     public async Task updateEnrollment(EnrollmentEntity value)
     {
         var enrollment = await daoFactory.enrollmentDao!.getById(value.enrollmentId!);
@@ -107,21 +123,5 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         enrollment.update(value);
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
-    }
-    
-    public async Task<List<TeacherEntity>> getTeacherList()
-    {
-        return await daoFactory.teacherDao!.getAll();
-    }
-
-    public async Task<DegreeEntity?> getDegreeById(string degreeId)
-    {
-        var degree = await daoFactory.degreeDao!.getById(degreeId);
-        if (degree == null)
-        {
-            throw new EntityNotFoundException("DegreeEntity", degreeId);
-        }
-
-        return degree;
     }
 }
