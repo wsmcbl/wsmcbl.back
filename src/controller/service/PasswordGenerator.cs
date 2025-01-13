@@ -8,24 +8,21 @@ public class PasswordGenerator
     private const string LowerCase = "abcdefghijklmnopqrstuvwxyz";
     private const string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private const string Digits = "0123456789";
-    private const string SpecialChars = "!@#$%&*-_=+:.";
+    private const string SpecialChars = "!#$%&*-_=+:.";
+    private int length;
 
-    public string generatePassword(int length = 12, bool includeSpecialChars = true)
+    public string generatePassword(int passwordLength = 12, bool includeSpecialChars = true)
     {
+        length = passwordLength;
         if (length < 8)
         {
             throw new ArgumentException("Password length must be at least 8 characters.");
         }
         
-        var characterSet = LowerCase + UpperCase + Digits;
-        if (includeSpecialChars)
-        {
-            characterSet += SpecialChars;
-        }
-
-        var password = new StringBuilder();
+        const string characterSet = LowerCase + UpperCase;
         var charArray = characterSet.ToCharArray();
 
+        var password = getMinimumChars(includeSpecialChars);
         using (var rng = RandomNumberGenerator.Create())
         {
             var byteBuffer = new byte[sizeof(uint)];
@@ -39,7 +36,25 @@ public class PasswordGenerator
                 password.Append(charArray[index]);
             }
         }
+        
+        var random = new Random();
+        return new string(password.ToString().OrderBy(c => random.Next()).ToArray());
+    }
 
-        return password.ToString();
+    private StringBuilder getMinimumChars(bool includeSpecialChars)
+    {
+        var password = new StringBuilder();
+        
+        var random = new Random();
+        password.Append(Digits[random.Next(Digits.Length)]);
+        password.Append(Digits[random.Next(Digits.Length)]);
+        
+        if (includeSpecialChars)
+        {
+            password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
+            password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
+        }
+        
+        return password;
     }
 }

@@ -10,18 +10,6 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateUserActions(CreateUserController controller) : ActionsBase
 {
-    /// <summary>Get user list.</summary>
-    /// <response code="200">Return list, the list can be empty</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("users")]
-    public async Task<IActionResult> getUserList()
-    {
-        var result = await controller.getUserList();
-        return Ok(result.mapToListDto());
-    }
-    
     /// <summary>Get permission list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -42,6 +30,18 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     public async Task<IActionResult> getNextcloudGroupList()
     {
         return Ok(await controller.getNextcloudGroupList());
+    }
+    
+    /// <summary>Get user list.</summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("users")]
+    public async Task<IActionResult> getUserList()
+    {
+        var result = await controller.getUserList();
+        return Ok(result.mapToListDto());
     }
     
     /// <summary>Create new user.</summary>
