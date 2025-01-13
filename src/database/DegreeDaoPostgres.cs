@@ -41,12 +41,10 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
         return degree;
     }    
 
-    public void createList(List<DegreeEntity> gradeList)
+    public async Task createRange(List<DegreeEntity> degreeList)
     {
-        foreach (var grade in gradeList)
-        {
-            create(grade);
-        }
+        entities.AddRange(degreeList);
+        await saveAsync();
     }
 
     public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
