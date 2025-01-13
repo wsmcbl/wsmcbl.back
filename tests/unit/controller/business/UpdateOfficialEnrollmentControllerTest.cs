@@ -1,6 +1,7 @@
 using NSubstitute;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.exception;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using wsmcbl.tests.utilities;
@@ -107,4 +108,38 @@ public class UpdateOfficialEnrollmentControllerTest
         Assert.NotNull(result);
         Assert.Equivalent(list, result);
     }
+
+    [Fact]
+    public async Task getTeacherList_ShouldReturnsTeacherList_WhenCalled()
+    {
+        var teacherList = TestEntityGenerator.aTeacherList();
+        var teacherDao = Substitute.For<ITeacherDao>();
+        teacherDao.getAll().Returns(teacherList);
+        daoFactory.teacherDao.Returns(teacherDao);
+
+        var result = await sut.getTeacherList();
+
+        Assert.NotNull(result);
+        Assert.Equivalent(teacherList, result);
+    }
+
+    [Fact]
+    public async Task getGradeById_GradeNotFound_ReturnException()
+    {
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getDegreeById("gd-1"));
+    }
+    
+    [Fact]
+    public async Task getGradeById_ReturnGrade()
+    {
+        var grade = TestEntityGenerator.aDegree("gd-1");
+        var gradeDao = Substitute.For<IDegreeDao>();
+        gradeDao.getById("gd-1").Returns(grade);
+        daoFactory.degreeDao.Returns(gradeDao);
+
+        var result = await sut.getDegreeById("gd-1");
+
+        Assert.NotNull(result);
+        Assert.Equivalent(grade, result);
+    } 
 }
