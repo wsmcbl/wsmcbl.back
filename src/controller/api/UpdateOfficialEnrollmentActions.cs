@@ -57,19 +57,24 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
 
         return Ok(list.mapListToDto());
     }
-    
-    /// <summary>Get enrollment resource.</summary>
-    /// <response code="200">If the request is successful.</response>
+
+
+    /// <summary>Returns the degree by id.</summary>
+    /// <response code="200">Return existing resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Enrollment or internal record not found.</response>
+    /// <response code="404">Degree not found.</response>
     [HttpGet]
-    [Route("enrollments/{enrollmentId}")]
-    public async Task<IActionResult> getEnrollmentById([Required] string enrollmentId)
+    [Route("degrees/{degreeId}/enrollments")]
+    public async Task<IActionResult> getDegreeById([Required] string degreeId)
     {
-        var enrollment = await enrollmentController.getEnrollmentById(enrollmentId);
-        return Ok(enrollment.mapToDto());
-    }
+        var degree = await enrollmentController.getDegreeById(degreeId);
+        var teacherList = await enrollmentController.getTeacherList();
+
+        var result = new EnrollmentListDto(degree, teacherList);
+        
+        return Ok(result);
+    }    
 
     /// <summary>Update official enrollment resource.</summary>
     /// <response code="200">When update is successful.</response>
