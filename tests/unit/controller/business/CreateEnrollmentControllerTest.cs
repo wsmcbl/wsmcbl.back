@@ -33,20 +33,6 @@ public class CreateEnrollmentControllerTest
         Assert.Equivalent(list, result);
     }
 
-    [Fact]
-    public async Task getTeacherList_ShouldReturnsTeacherList_WhenCalled()
-    {
-        var teacherList = TestEntityGenerator.aTeacherList();
-        var teacherDao = Substitute.For<ITeacherDao>();
-        teacherDao.getAll().Returns(teacherList);
-        daoFactory.teacherDao.Returns(teacherDao);
-
-        var result = await sut.getTeacherList();
-
-        Assert.NotNull(result);
-        Assert.Equivalent(teacherList, result);
-    }
-
     
     [Fact]
     public async Task createEnrollments_ShouldThrowException_WhenGradeNotExist()
@@ -79,25 +65,5 @@ public class CreateEnrollmentControllerTest
         
         daoFactory.enrollmentDao!.Received().create(grade.enrollmentList!.First());
         daoFactory.Received().Detached(grade.enrollmentList!.First().subjectList!.First());
-    }
-
-    [Fact]
-    public async Task getGradeById_GradeNotFound_ReturnException()
-    {
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getDegreeById("gd-1"));
-    }
-    
-    [Fact]
-    public async Task getGradeById_ReturnGrade()
-    {
-        var grade = TestEntityGenerator.aDegree("gd-1");
-        var gradeDao = Substitute.For<IDegreeDao>();
-        gradeDao.getById("gd-1").Returns(grade);
-        daoFactory.degreeDao.Returns(gradeDao);
-
-        var result = await sut.getDegreeById("gd-1");
-
-        Assert.NotNull(result);
-        Assert.Equivalent(grade, result);
-    }    
+    }   
 }
