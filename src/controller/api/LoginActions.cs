@@ -7,22 +7,18 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("config")]
+[Route("config/users")]
 [ApiController]
 public class LoginActions(LoginController controller) : ActionsBase
 {
-    /// <summary>
-    ///  Returns token by credentials (login)
-    /// </summary>
-    /// <remarks>
-    /// The token property can be null or empty.
-    /// </remarks>
+    /// <summary>Returns token by credentials (login).</summary>
+    /// <remarks>The token property can be null or empty.</remarks>
     /// <response code="200">Returns a token.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [AllowAnonymous]
     [HttpPost]
-    [Route("users/tokens")]
+    [Route("tokens")]
     public async Task<IActionResult> login(LoginDto dto)
     {
         var result = await controller.getTokenByCredentials(dto.toEntity());
@@ -30,35 +26,31 @@ public class LoginActions(LoginController controller) : ActionsBase
     }
     
     
-    /// <summary>
-    ///  Get user information
-    /// </summary>
+    /// <summary>Get user information.</summary>
     /// <response code="200">Returns a user information.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
     [HttpGet]
-    [Route("users")]
-    public async Task<IActionResult> getUser()
+    [Route("{userId}")]
+    public async Task<IActionResult> getUser([Required] string userId)
     {
-        var result = await controller.getUserById(getAuthenticatedUserId());
+        var result = await controller.getUserById(userId);
         return CreatedAtAction(null, result.mapToDto());
     }
     
-    /// <summary>
-    ///  Update user information
-    /// </summary>
+    /// <summary>Update user information.</summary>
     /// <response code="200">Returns a user new information.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin")]
     [HttpPut]
-    [Route("users")]
-    public async Task<IActionResult> updateUser([Required] UserDto userDto)
+    [Route("{userId}")]
+    public async Task<IActionResult> updateUser([Required] string userId, [Required] UserDto userDto)
     {
-        var result = await controller.updateUser(getAuthenticatedUserId(), userDto.toEntity());
+        var result = await controller.updateUser(userId, userDto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
     }
 }

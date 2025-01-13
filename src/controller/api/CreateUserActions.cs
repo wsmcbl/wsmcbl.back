@@ -6,13 +6,11 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin")]
-[Route("management")]
+[Route("config")]
 [ApiController]
 public class CreateUserActions(CreateUserController controller) : ActionsBase
 {
-    /// <summary>
-    /// Get user list
-    /// </summary>
+    /// <summary>Get user list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -24,9 +22,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
         return Ok(result.mapToListDto());
     }
     
-    /// <summary>
-    /// Get permission list
-    /// </summary>
+    /// <summary>Get permission list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -37,9 +33,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
         return Ok(await controller.getPermissionList());
     }
     
-    /// <summary>
-    /// Get nextcloud group list
-    /// </summary>
+    /// <summary>Get nextcloud group list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -50,9 +44,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
         return Ok(await controller.getNextcloudGroupList());
     }
     
-    /// <summary>
-    ///  Create new user 
-    /// </summary>
+    /// <summary>Create new user.</summary>
     /// <remarks>
     /// The secondName and secondSurname can be null or empty.
     /// The nextCloudGroup can be empty.

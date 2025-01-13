@@ -17,7 +17,7 @@ public class UserAuthenticator
 
     public async Task<UserEntity?> authenticateUser(UserEntity user)
     {
-        var entity = await userDao.getUserByEmail(user.email!);
+        var entity = await userDao.getUserByEmail(user.email);
 
         var result = passwordHasher.VerifyHashedPassword(entity, entity.password, user.password);
         
