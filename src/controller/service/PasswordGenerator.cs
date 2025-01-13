@@ -10,7 +10,7 @@ public class PasswordGenerator
     private const string Digits = "0123456789";
     private const string SpecialChars = "!@#$%&*-_=+:.";
 
-    public string GeneratePassword(int length = 12, bool includeSpecialChars = true)
+    public string generatePassword(int length = 12, bool includeSpecialChars = true)
     {
         if (length < 8)
         {

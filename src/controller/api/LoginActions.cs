@@ -7,7 +7,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("config")]
+[Route("config/users")]
 [ApiController]
 public class LoginActions(LoginController controller) : ActionsBase
 {
@@ -18,7 +18,7 @@ public class LoginActions(LoginController controller) : ActionsBase
     /// <response code="404">Resource depends on another resource not found.</response>
     [AllowAnonymous]
     [HttpPost]
-    [Route("users/tokens")]
+    [Route("tokens")]
     public async Task<IActionResult> login(LoginDto dto)
     {
         var result = await controller.getTokenByCredentials(dto.toEntity());
@@ -33,10 +33,10 @@ public class LoginActions(LoginController controller) : ActionsBase
     /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
     [HttpGet]
-    [Route("users")]
-    public async Task<IActionResult> getUser()
+    [Route("{userId}")]
+    public async Task<IActionResult> getUser([Required] string userId)
     {
-        var result = await controller.getUserById(getAuthenticatedUserId());
+        var result = await controller.getUserById(userId);
         return CreatedAtAction(null, result.mapToDto());
     }
     
@@ -47,10 +47,10 @@ public class LoginActions(LoginController controller) : ActionsBase
     /// <response code="404">If the user not exist.</response>
     [ResourceAuthorizer("admin")]
     [HttpPut]
-    [Route("users")]
-    public async Task<IActionResult> updateUser([Required] UserDto userDto)
+    [Route("{userId}")]
+    public async Task<IActionResult> updateUser([Required] string userId, [Required] UserDto userDto)
     {
-        var result = await controller.updateUser(getAuthenticatedUserId(), userDto.toEntity());
+        var result = await controller.updateUser(userId, userDto.toEntity());
         return CreatedAtAction(null, result.mapToDto());
     }
 }

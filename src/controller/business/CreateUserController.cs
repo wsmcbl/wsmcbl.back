@@ -60,7 +60,7 @@ public class CreateUserController : BaseController
     private static string generatePassword()
     {
         var passwordGenerator = new PasswordGenerator();
-        return passwordGenerator.GeneratePassword(10);
+        return passwordGenerator.generatePassword(10);
     }
 
     public async Task addPermissions(List<int> permissionList, Guid userId)
