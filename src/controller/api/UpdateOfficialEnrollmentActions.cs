@@ -71,7 +71,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         var degree = await enrollmentController.getDegreeById(degreeId);
         var teacherList = await enrollmentController.getTeacherList();
 
-        var result = new EnrollmentListDto(degree, teacherList);
+        var result = new EnrollmentListDto(degree!, teacherList);
         
         return Ok(result);
     }    

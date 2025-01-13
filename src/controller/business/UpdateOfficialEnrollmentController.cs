@@ -38,8 +38,8 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
         }
 
-        daoFactory.degreeDao!.createList(degreeList);
-        daoFactory.tariffDao!.createList(tariffList);
+        await daoFactory.degreeDao!.createRange(degreeList);
+        await daoFactory.tariffDao!.createRange(tariffList);
         await daoFactory.execute();
 
         return await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
