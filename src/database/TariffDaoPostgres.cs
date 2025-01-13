@@ -94,14 +94,6 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         return balance;
     }
 
-    public void createList(List<TariffEntity> tariffs)
-    {
-        foreach (var item in tariffs)
-        {
-            create(item);
-        }
-    }
-
     public async Task<TariffEntity> getInCurrentSchoolyearByType(int level)
     {
         var schoolyearDao = new SchoolyearDaoPostgres(context);
@@ -116,5 +108,12 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
         }
 
         return tariff;
+    }
+    
+
+    public async Task createRange(List<TariffEntity> tariffList)
+    {
+        entities.AddRange(tariffList);
+        await saveAsync();
     }
 }

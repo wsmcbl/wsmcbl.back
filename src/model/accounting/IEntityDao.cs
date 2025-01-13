@@ -23,10 +23,10 @@ public interface IExchangeRateDao : IGenericDao<ExchangeRateEntity, int>
 
 public interface ITariffDao : IGenericDao<TariffEntity, int>
 {
+    public Task createRange(List<TariffEntity> tariffList);
     public Task<List<TariffEntity>> getOverdueList();
     public Task<List<TariffEntity>> getListByStudent(string studentId);
     public Task<float[]> getGeneralBalance(string studentId);
-    public void createList(List<TariffEntity> tariffs);
     public Task<TariffEntity> getInCurrentSchoolyearByType(int level);
 }
 

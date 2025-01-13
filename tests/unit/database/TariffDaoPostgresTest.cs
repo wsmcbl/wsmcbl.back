@@ -10,14 +10,14 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     private TariffDaoPostgres? sut;
 
     [Fact]
-    public async Task createList_ShouldCreateList_WhenCalled()
+    public async Task createRange_ShouldCreateList_WhenCalled()
     {
         var tariff = TestEntityGenerator.aTariff();
         context = TestDbContext.getInMemory();
         
         sut = new TariffDaoPostgres(context);
         
-        sut.createList([tariff]);
+        await sut.createRange([tariff]);
         
         await context.SaveChangesAsync();
         Assert.Equal(tariff, context.Set<TariffEntity>().First(e => e.tariffId == tariff.tariffId));

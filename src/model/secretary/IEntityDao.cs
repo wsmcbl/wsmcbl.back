@@ -4,7 +4,7 @@ namespace wsmcbl.src.model.secretary;
 
 public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
-    public void createList(List<DegreeEntity> gradeList);
+    public Task createRange(List<DegreeEntity> degreeList);
     public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
     public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
