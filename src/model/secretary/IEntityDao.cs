@@ -7,6 +7,7 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
     public void createList(List<DegreeEntity> gradeList);
     public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
+    public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
