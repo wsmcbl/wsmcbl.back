@@ -11,12 +11,8 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class LoginActions(LoginController controller) : ActionsBase
 {
-    /// <summary>
-    ///  Returns token by credentials (login)
-    /// </summary>
-    /// <remarks>
-    /// The token property can be null or empty.
-    /// </remarks>
+    /// <summary>Returns token by credentials (login).</summary>
+    /// <remarks>The token property can be null or empty.</remarks>
     /// <response code="200">Returns a token.</response>
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
@@ -30,9 +26,7 @@ public class LoginActions(LoginController controller) : ActionsBase
     }
     
     
-    /// <summary>
-    ///  Get user information
-    /// </summary>
+    /// <summary>Get user information.</summary>
     /// <response code="200">Returns a user information.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -46,9 +40,7 @@ public class LoginActions(LoginController controller) : ActionsBase
         return CreatedAtAction(null, result.mapToDto());
     }
     
-    /// <summary>
-    ///  Update user information
-    /// </summary>
+    /// <summary>Update user information.</summary>
     /// <response code="200">Returns a user new information.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
