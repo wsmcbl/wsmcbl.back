@@ -6,7 +6,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateOfficialEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<SchoolYearEntity>> getSchoolYearList()
     {
@@ -33,7 +33,6 @@ public class CreateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
-
         if (tariffsNotValid > 0)
         {
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
@@ -96,58 +95,33 @@ public class CreateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         await daoFactory.execute();
         return subject;
     }
-
-    public async Task<EnrollmentEntity> updateEnrollment(EnrollmentEntity enrollment)
+    
+    public async Task<List<TeacherEntity>> getTeacherList()
     {
-        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollment.enrollmentId!);
+        return await daoFactory.teacherDao!.getAll();
+    }
 
-        if (existingEntity == null)
+    public async Task<DegreeEntity?> getDegreeById(string degreeId)
+    {
+        var degree = await daoFactory.degreeDao!.getWithAllPropertiesById(degreeId);
+        if (degree == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollment.enrollmentId);
+            throw new EntityNotFoundException("DegreeEntity", degreeId);
         }
 
-        existingEntity.update(enrollment);
-        daoFactory.enrollmentDao!.update(existingEntity);
-        await daoFactory.execute();
-
-        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(existingEntity.enrollmentId!);
-
-        foreach (var item in enrollment.subjectList!)
-        {
-            var subject = subjectList.Find(e => e.subjectId == item.subjectId);
-            if (subject == null)
-                continue;
-            
-            subject.teacherId = "tch-001";
-            daoFactory.subjectDao.update(subject);
-        }
-
-        await daoFactory.execute();
-
-        return existingEntity;
+        return degree;
     }
     
-    public async Task<TeacherEntity> assignTeacherGuide(string teacherId, string enrollmentId)
+    public async Task updateEnrollment(EnrollmentEntity value)
     {
-        var existingEntity = await daoFactory.enrollmentDao!.getById(enrollmentId);
-        if (existingEntity == null)
+        var enrollment = await daoFactory.enrollmentDao!.getById(value.enrollmentId!);
+        if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", value.enrollmentId);
         }
-        
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("Teacher", teacherId);
-        }
-        
-        if(teacherId == existingEntity.teacherId)
-            return teacher;
-        
-        teacher.isGuide = true;
-        daoFactory.teacherDao.update(teacher);
-        await daoFactory.execute();
 
-        return teacher;
+        enrollment.update(value);
+        daoFactory.enrollmentDao!.update(enrollment);
+        await daoFactory.execute();
     }
 }

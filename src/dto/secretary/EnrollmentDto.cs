@@ -21,6 +21,7 @@ public class EnrollmentDto
     private EnrollmentDto(EnrollmentEntity entity)
     {
         enrollmentId = entity.enrollmentId!;
+        teacherId = entity.teacherId;
         section = entity.section;
         capacity = entity.capacity;
         quantity = entity.quantity;
