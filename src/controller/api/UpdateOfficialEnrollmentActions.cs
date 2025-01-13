@@ -118,6 +118,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the teacher or subject does not exist.</response>
+    /// <response code="409">If there is an active partial.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}/subjects/{subjectId}")]
     public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
