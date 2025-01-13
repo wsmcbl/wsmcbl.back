@@ -12,17 +12,34 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
     {
         var degree = await entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
-            .ThenInclude(e => e.subjectList)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.degreeId == id);
 
         if (degree == null)
         {
-            throw new EntityNotFoundException("Grade", id);
+            throw new EntityNotFoundException("GradeEntity", id);
         }
 
         return degree;
     }
+    
+    public async Task<DegreeEntity?> getWithAllPropertiesById(string id)
+    {
+        var query = entities.Include(e => e.subjectList)
+            .Include(e => e.enrollmentList)!
+                .ThenInclude(e => e.studentList)
+            .Include(e => e.enrollmentList)!
+                .ThenInclude(e => e.subjectList)
+            .AsNoTracking();
+
+        var degree = await query.FirstOrDefaultAsync(e => e.degreeId == id);
+        if (degree == null)
+        {
+            throw new EntityNotFoundException("GradeEntity", id);
+        }
+
+        return degree;
+    }    
 
     public void createList(List<DegreeEntity> gradeList)
     {
@@ -47,10 +64,11 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 
     public async Task<DegreeEntity?> getByEnrollmentId(string enrollmentId)
     {
-        var enrollment = await context.Set<EnrollmentEntity>().FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+        var enrollment = await context.Set<EnrollmentEntity>()
+            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
 
         return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.degreeId);
