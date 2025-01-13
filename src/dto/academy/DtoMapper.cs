@@ -1,14 +1,6 @@
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.academy;
-
-/*
- * toEntity()
- * mapToDto()
- * mapListToDto()
- * mapListToBasicDto()
- */
-
 public static class DtoMapper
 {
     public static List<GradeEntity> toEntity(this IEnumerable<GradeDto> gradeList)
