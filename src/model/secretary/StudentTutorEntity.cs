@@ -30,4 +30,9 @@ public class StudentTutorEntity
         phone = entity.phone;
         email = entity.email;
     }
+
+    public bool isValidPhone()
+    {
+        return true;
+    }
 }
