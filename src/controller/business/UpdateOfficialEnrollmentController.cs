@@ -108,6 +108,11 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
             throw new EntityNotFoundException("DegreeEntity", degreeId);
         }
 
+        if (degree.quantity == 0)
+        {
+            throw new BadRequestException($"DegreeEntity with id ({degreeId}) has not enrollments.");
+        }
+        
         return degree;
     }
     
