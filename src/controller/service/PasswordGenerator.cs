@@ -49,6 +49,9 @@ public class PasswordGenerator
         password.Append(Digits[random.Next(Digits.Length)]);
         password.Append(Digits[random.Next(Digits.Length)]);
         
+        password.Append(LowerCase[random.Next(Digits.Length)]);
+        password.Append(UpperCase[random.Next(Digits.Length)]);
+        
         if (includeSpecialChars)
         {
             password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
