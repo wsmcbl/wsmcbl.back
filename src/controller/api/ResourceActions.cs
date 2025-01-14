@@ -10,10 +10,10 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class ResourceActions(ResourceController controller) : ControllerBase
 {
-    /// <summary>
-    ///  Create a new media resource.
-    /// </summary>
+    /// <summary>Create a new media resource.</summary>
     /// <response code="201">Returns a new resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [ResourceAuthorizer("admin")]
     [HttpPost]
@@ -25,12 +25,12 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return CreatedAtAction(null, result);
     }
     
-    /// <summary>
-    ///  Returns the media by type and schoolyear.
-    /// </summary>
+    /// <summary>Returns the media by type and schoolyear.</summary>
     /// <param name="type">The type of the media, the default value is 1.</param>
     /// <param name="schoolyear">The schoolyear of the media, for example, "2024", "2025".</param>
     /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
     [HttpGet]
     [Route("medias")]
@@ -40,9 +40,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(new {value = result});
     }
     
-    /// <summary>
-    ///  Returns the list of all students.
-    /// </summary>
+    /// <summary>Returns the list of all students.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     [ResourceAuthorizer("admin")]
     [HttpGet]
@@ -52,10 +50,10 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(await controller.getMediaList());
     }
     
-    /// <summary>
-    ///  Update media resource.
-    /// </summary>
+    /// <summary>Update media resource.</summary>
     /// <response code="200">Returns the edited resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
     [ResourceAuthorizer("admin")]
     [HttpPut]
@@ -65,4 +63,18 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         var result = await controller.updateMedia(media);
         return Ok(result);
     }
+    
+    
+    /// <summary>Returns the tutor list.</summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("tutors")]
+    public async Task<IActionResult> getTutorList()
+    {
+        var result = await controller.getTutorList();
+        
+        return Ok(result);
+    }  
 }

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace wsmcbl.src.model.secretary;
 
 public class StudentTutorEntity
@@ -29,5 +31,16 @@ public class StudentTutorEntity
         name = entity.name;
         phone = entity.phone;
         email = entity.email;
+    }
+
+    public bool isValidPhone()
+    {
+        if (string.IsNullOrWhiteSpace(phone) || phone.Length < 7)
+        {
+            return false;
+        }
+        
+        var value = phone[..8];
+        return Regex.IsMatch(value, @"^[5-8]\d{7}$");
     }
 }
