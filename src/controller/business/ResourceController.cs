@@ -50,6 +50,6 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         var list = await daoFactory.studentTutorDao!.getAll();
 
         return list.Where(e => e.isValidPhone())
-            .Select(e => e.phone).ToList();
+            .Select(e => e.phone[..8]).Distinct().ToList();
     }
 }
