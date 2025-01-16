@@ -14,10 +14,15 @@ public class PartialEntity
     public bool gradeRecordIsActive { get; set; }
     
     public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
-
+    
     public bool isClosed()
     {
         return deadLine < DateOnly.FromDateTime(DateTime.Today);
+    }
+
+    public bool recordIsActive()
+    {
+        return isActive && gradeRecordIsActive;
     }
     
     public void updateLabel()

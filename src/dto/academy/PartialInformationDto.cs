@@ -12,6 +12,6 @@ public class PartialInformationDto
     {
         partialId = partial.partialId;
         label = partial.label;
-        isActive = partial.isClosed();
+        isActive = partial.recordIsActive();
     }
 }
