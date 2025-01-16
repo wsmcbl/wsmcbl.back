@@ -83,6 +83,7 @@ public class UserEntity
 
     public async Task getIdFromRole(DaoFactory daoFactory)
     {
+        userRoleId = string.Empty;
         if (roleId == 4)
         {
             var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);

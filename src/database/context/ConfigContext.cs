@@ -32,6 +32,8 @@ public class ConfigContext
             entity.Property(e => e.createdAt).HasColumnName("createdat");
             entity.Property(e => e.updatedAt).HasColumnName("updatedat");
 
+            entity.Ignore(e => e.userRoleId);
+
             entity.HasOne(e => e.role).WithMany().HasForeignKey(e => e.roleId);
 
             entity.HasMany(r => r.permissionList)
