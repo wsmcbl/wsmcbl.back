@@ -16,9 +16,14 @@ public class LoginController : BaseController
     
     public async Task<string> getTokenByCredentials(UserEntity user)
     {
-        await user.getIdFromRole(daoFactory);
         var result = await userAuthenticator.authenticateUser(user);
-        return result == null ? string.Empty : jwtGenerator.generateToken(result);
+        if (result == null)
+        {
+            return string.Empty;
+        }
+
+        await result.getIdFromRole(daoFactory);
+        return jwtGenerator.generateToken(result);
     }
 
     public async Task<UserEntity> getUserById(string userId)
