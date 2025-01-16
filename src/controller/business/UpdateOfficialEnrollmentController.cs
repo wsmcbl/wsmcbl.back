@@ -94,11 +94,6 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         await daoFactory.execute();
         return subject;
     }
-    
-    public async Task<List<TeacherEntity>> getTeacherList()
-    {
-        return await daoFactory.teacherDao!.getAll();
-    }
 
     public async Task<DegreeEntity?> getDegreeById(string degreeId)
     {

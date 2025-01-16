@@ -110,20 +110,6 @@ public class UpdateOfficialEnrollmentControllerTest
     }
 
     [Fact]
-    public async Task getTeacherList_ShouldReturnsTeacherList_WhenCalled()
-    {
-        var teacherList = TestEntityGenerator.aTeacherList();
-        var teacherDao = Substitute.For<ITeacherDao>();
-        teacherDao.getAll().Returns(teacherList);
-        daoFactory.teacherDao.Returns(teacherDao);
-
-        var result = await sut.getTeacherList();
-
-        Assert.NotNull(result);
-        Assert.Equivalent(teacherList, result);
-    }
-
-    [Fact]
     public async Task getGradeById_GradeNotFound_ReturnException()
     {
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getDegreeById("gd-1"));
