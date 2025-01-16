@@ -154,7 +154,9 @@ internal class AcademyContext
 
             entity.ToTable("teacher", "academy");
 
-            entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
+            entity.Property(e => e.teacherId).HasDefaultValueSql("academy.generate_teacher_id()")
+                .HasColumnName("teacherid");
+            
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             entity.Property(e => e.isGuide).HasColumnName("isguide");
 

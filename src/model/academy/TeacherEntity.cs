@@ -5,7 +5,7 @@ namespace wsmcbl.src.model.academy;
 public class TeacherEntity
 {
     public Guid userId { get; set; }
-    public string teacherId { get; set; } = null!;
+    public string? teacherId { get; set; }
     public bool isGuide { get; set; }
     
     public UserEntity user { get; set; } = null!;

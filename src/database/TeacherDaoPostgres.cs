@@ -55,7 +55,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
     public async Task<List<TeacherEntity>> getByListByIdList(List<string> value)
     {
-        return await entities.Where(e => value.Contains(e.teacherId)).ToListAsync();
+        return await entities.Where(e => value.Contains(e.teacherId!)).ToListAsync();
     }
 
     public async Task<TeacherEntity> getByUserId(Guid userId)
