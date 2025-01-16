@@ -1,3 +1,4 @@
+using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.config;
@@ -6,6 +7,7 @@ public class UserEntity
 {
     public Guid? userId { get; set; }
     public int roleId { get; set; }
+    public string? userRoleId { get; set; }
     public string name { get; set; } = null!;
     public string? secondName { get; set; }
     public string surname { get; set; } = null!;
@@ -127,4 +129,12 @@ public class UserEntity
         }
     }
 
+    public async Task getIdFromRole(DaoFactory daoFactory)
+    {
+        if (roleId == 4)
+        {
+            var result = await daoFactory.teacherDao!.getByUserId(userId);
+            userRoleId = result.teacherId;
+        }
+    }
 }
