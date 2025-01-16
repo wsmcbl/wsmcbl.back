@@ -8,7 +8,7 @@ public class ActionsBase : ControllerBase
 {
     protected string getAuthenticatedUserId()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue("userid");
         if (userId == null)
         {
             throw new EntityNotFoundException("user", userId);
