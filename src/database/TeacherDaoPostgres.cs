@@ -57,4 +57,15 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
     {
         return await entities.Where(e => value.Contains(e.teacherId)).ToListAsync();
     }
+
+    public async Task<TeacherEntity> getByUserId(Guid userId)
+    {
+        var result = await entities.Where(e => e.userId == userId).FirstOrDefaultAsync();
+        if (result == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", userId.ToString());
+        }
+
+        return result;
+    }
 }

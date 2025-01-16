@@ -25,6 +25,7 @@ public interface ITeacherDao : IGenericDao<TeacherEntity, string>
 {
     public Task<TeacherEntity?> getByEnrollmentId(string enrollmentId);
     public Task<List<TeacherEntity>> getByListByIdList(List<string> value);
+    public Task<TeacherEntity> getByUserId(Guid userId);
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>

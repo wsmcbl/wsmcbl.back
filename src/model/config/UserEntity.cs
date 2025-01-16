@@ -81,6 +81,15 @@ public class UserEntity
     }
 
 
+    public async Task getIdFromRole(DaoFactory daoFactory)
+    {
+        if (roleId == 4)
+        {
+            var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);
+            userRoleId = result.teacherId;
+        }
+    }
+
     public class Builder
     {
         private readonly UserEntity entity;
@@ -126,15 +135,6 @@ public class UserEntity
         {
             entity.roleId = roleId;
             return this;
-        }
-    }
-
-    public async Task getIdFromRole(DaoFactory daoFactory)
-    {
-        if (roleId == 4)
-        {
-            var result = await daoFactory.teacherDao!.getByUserId(userId);
-            userRoleId = result.teacherId;
         }
     }
 }
