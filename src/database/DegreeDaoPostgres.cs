@@ -27,7 +27,8 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
     {
         var query = entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
-                .ThenInclude(e => e.studentList)
+            .ThenInclude(e => e.studentList)!
+                .ThenInclude(e => e.student)
             .Include(e => e.enrollmentList)!
                 .ThenInclude(e => e.subjectList)
             .AsNoTracking();
