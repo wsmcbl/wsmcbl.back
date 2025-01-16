@@ -37,6 +37,7 @@ public class CreateUserController : BaseController
 
         daoFactory.userDao!.create(user);
         await daoFactory.execute();
+        daoFactory.Detached(user);
 
         user.password = password;
 
