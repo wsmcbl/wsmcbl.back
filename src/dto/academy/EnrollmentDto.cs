@@ -10,6 +10,7 @@ public class EnrollmentDto
     public string section { get; set; }
     public int capacity { get; set; }
     public int quantity { get; set; }
+    public string schoolyear { get; set; }
 
     public List<BasicStudentDto> studentList { get; set; } = null!;
     public List<SubjectTeacherIdsDto> subjectList { get; set; } = null!;
@@ -22,6 +23,7 @@ public class EnrollmentDto
         capacity = entity.capacity;
         quantity = entity.quantity;
         label = entity.label;
+        schoolyear = entity.schoolYear;
         
         createStudentList(entity.studentList);
         createSubjectList(entity.subjectList);

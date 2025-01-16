@@ -6,12 +6,12 @@ namespace wsmcbl.src.dto.academy;
 public class EnrollmentListDto
 {
     public List<EnrollmentDto> enrollmentList { get; set; } = null!;
-    public List<BasicSubjectDto> subjectList { get; set; }
+    public List<SubjectDto> subjectList { get; set; }
 
     public EnrollmentListDto(DegreeEntity degree)
     {
         createEnrollmentList(degree.enrollmentList);
-        subjectList = degree.subjectList.mapListToBasicDto();
+        subjectList = degree.subjectList.mapListToDto();
     }
 
     private void createEnrollmentList(ICollection<EnrollmentEntity>? list)
