@@ -33,7 +33,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
         if (result == null)
         {
-            throw new EntityNotFoundException($"User with email ({email}) not found.");
+            throw new BadRequestException($"User with email ({email}) not found.");
         }
 
         return result;
