@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -15,13 +16,17 @@ public class UserAuthenticator
         this.passwordHasher = passwordHasher;
     }
 
-    public async Task<UserEntity?> authenticateUser(UserEntity user)
+    public async Task<UserEntity> authenticateUser(UserEntity user)
     {
         var entity = await userDao.getUserByEmail(user.email);
 
         var result = passwordHasher.VerifyHashedPassword(entity, entity.password, user.password);
-        
-        return result == PasswordVerificationResult.Success ? entity : null;
+        if (result != PasswordVerificationResult.Success)
+        {
+            throw new IncorrectDataBadRequestException("User not authenticated.");
+        }
+
+        return entity;
     }
 
     public void encodePassword(UserEntity user, string password)
