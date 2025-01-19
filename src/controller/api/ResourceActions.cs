@@ -6,25 +6,10 @@ using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("secretary")]
+[Route("resources")]
 [ApiController]
 public class ResourceActions(ResourceController controller) : ControllerBase
 {
-    /// <summary>Create a new media resource.</summary>
-    /// <response code="201">Returns a new resource.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found.</response>
-    [ResourceAuthorizer("admin")]
-    [HttpPost]
-    [Route("medias")]
-    public async Task<IActionResult> createMedia(MediaEntity media)
-    {
-        media.mediaId = 0;
-        var result = await controller.createMedia(media);
-        return CreatedAtAction(null, result);
-    }
-    
     /// <summary>Returns the media by type and schoolyear.</summary>
     /// <param name="type">The type of the media, the default value is 1.</param>
     /// <param name="schoolyear">The schoolyear of the media, for example, "2024", "2025".</param>
@@ -50,6 +35,21 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(await controller.getMediaList());
     }
     
+    /// <summary>Create a new media resource.</summary>
+    /// <response code="201">Returns a new resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpPost]
+    [Route("medias")]
+    public async Task<IActionResult> createMedia(MediaEntity media)
+    {
+        media.mediaId = 0;
+        var result = await controller.createMedia(media);
+        return CreatedAtAction(null, result);
+    }
+    
     /// <summary>Update media resource.</summary>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -64,11 +64,11 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(result);
     }
     
-    
     /// <summary>Returns the tutor list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin")]
     [HttpGet]
     [Route("tutors")]
     public async Task<IActionResult> getTutorList()

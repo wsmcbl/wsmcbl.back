@@ -48,7 +48,6 @@ INSERT INTO Accounting.cashier(cashierid, userid)
 SELECT 'caj-ktinoco', u.userid FROM config.user u
 WHERE u.name = 'Kenny';
 
-
-INSERT INTO academy.teacher(teacherid, userid, isguide)
-SELECT 'tch-001', u.userid, false FROM config.user u
-WHERE u.name = 'Usuario';
+INSERT INTO academy.teacher(userid, isguide)
+SELECT u.userid, false FROM config.user u
+WHERE u.name = 'Usuario' or u.name = 'Kenny' or u.name = 'Ezequiel' or u.name = 'Thelma';
