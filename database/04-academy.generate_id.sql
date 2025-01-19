@@ -17,7 +17,7 @@ $$ LANGUAGE plpgsql;
 
 
 -- Generate secretary.teacher id
-CREATE SEQUENCE if not exists academy.teacher_id_seq START 2;
+CREATE SEQUENCE if not exists academy.teacher_id_seq START 1;
 
 CREATE OR REPLACE FUNCTION academy.generate_teacher_id()
     RETURNS varchar(20) AS $$
