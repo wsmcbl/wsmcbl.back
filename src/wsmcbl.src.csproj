@@ -2,8 +2,8 @@
   
   <PropertyGroup>
     <AssemblyTitle>API WSMCBL SNAPSHOT</AssemblyTitle>
-    <AssemblyVersion>4.2.0</AssemblyVersion>
-    <AssemblyDescription>API del proyecto WSMCBL desarrollado en ASP.NET.</AssemblyDescription>
+    <AssemblyVersion>4.3.0</AssemblyVersion>
+    <AssemblyDescription>API del proyecto WSMCBL desarrollado en .NET 8.</AssemblyDescription>
   </PropertyGroup>
   
   <PropertyGroup>
