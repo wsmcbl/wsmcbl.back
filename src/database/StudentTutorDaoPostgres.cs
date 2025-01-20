@@ -32,4 +32,11 @@ public class StudentTutorDaoPostgres(PostgresContext context)
             .FirstOrDefaultAsync(e =>
                 tutor.name.Equals(e.name) && tutor.phone.Contains(e.phone));
     }
+
+    public async Task<bool> hasOnlyOneStudent(string tutorId)
+    {
+        var studentList = await context.Set<StudentEntity>()
+            .Where(e => e.tutorId == tutorId).ToListAsync();
+        return studentList.Count >= 1;
+    }
 }

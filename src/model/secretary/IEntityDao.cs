@@ -28,12 +28,15 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudentElement<StudentFileEntity>;
+
 public interface IStudentTutorDao : IGenericDao<StudentTutorEntity, string>, IStudentElement<StudentTutorEntity>
 {
-    Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor);
+    public Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor);
+    public Task<bool> hasOnlyOneStudent(string tutorId);
 }
 
 public interface IStudentParentDao : IGenericDao<StudentParentEntity, string>, IStudentElement<StudentParentEntity>;
+
 public interface IStudentMeasurementsDao 
     : IGenericDao<StudentMeasurementsEntity, int>, IStudentElement<StudentMeasurementsEntity>;
 

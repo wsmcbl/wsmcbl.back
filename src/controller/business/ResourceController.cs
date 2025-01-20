@@ -74,7 +74,7 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         await daoFactory.studentDao!.delete(student);
         
         var result = await daoFactory.studentTutorDao!.hasOnlyOneStudent(student.tutorId);
-        if (!result)
+        if (result)
             return;
 
         var tutor = await daoFactory.studentTutorDao!.getById(student.tutorId);
