@@ -1,6 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.config;
 
@@ -76,5 +76,17 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         var result = await controller.getTutorList();
         
         return Ok(result);
+    }  
+    
+    /// <summary>Delete student profile by id (TEMPORAL).</summary>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpDelete]
+    [Route("students/{studentId}")]
+    public async Task<IActionResult> deleteStudent([Required] string studentId)
+    {
+        await controller.deleteStudentById(studentId);
+        return Ok();
     }  
 }

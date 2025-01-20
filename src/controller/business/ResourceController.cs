@@ -52,4 +52,32 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         return list.Where(e => e.isValidPhone())
             .Select(e => e.phone[..8]).Distinct().ToList();
     }
+
+    public async Task deleteStudentById(string studentId)
+    {
+        var debtList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        if(debtList.Count == 0)
+            throw new EntityNotFoundException("Student", studentId);
+        
+        await daoFactory.debtHistoryDao!.deleteRange(debtList);
+        
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        if(accountingStudent == null)
+            throw new EntityNotFoundException("Student", studentId);
+        
+        await daoFactory.accountingStudentDao!.delete(accountingStudent);
+        
+        var student = await daoFactory.studentDao!.getById(studentId);
+        if(student == null)
+            throw new EntityNotFoundException("Student", studentId);
+
+        await daoFactory.studentDao!.delete(student);
+        
+        var result = await daoFactory.studentTutorDao!.hasOnlyOneStudent(student.tutorId);
+        if (!result)
+            return;
+
+        var tutor = await daoFactory.studentTutorDao!.getById(student.tutorId);
+        await daoFactory.studentTutorDao!.delete(tutor!);
+    }
 }
