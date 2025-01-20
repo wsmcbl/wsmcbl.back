@@ -122,6 +122,12 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         debt.schoolyear = await schoolyearDao.getValidSchoolyearId();
         
         create(debt);
-        await context.SaveChangesAsync();
+        await saveAsync();
+    }
+
+    public async Task deleteRange(List<DebtHistoryEntity> debtList)
+    {
+        entities.RemoveRange(debtList);
+        await saveAsync();
     }
 }

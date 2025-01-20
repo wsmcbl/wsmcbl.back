@@ -40,4 +40,5 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task restoreDebt(string transactionId);
     public Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId);
     public Task addRegistrationTariffDebtByStudent(StudentEntity student);
+    public Task deleteRange(List<DebtHistoryEntity> debtList);
 }
