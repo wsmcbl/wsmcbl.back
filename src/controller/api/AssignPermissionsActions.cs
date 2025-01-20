@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
 
@@ -23,7 +24,7 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     public async Task<IActionResult> updateUser(UserToCreateDto dto)
     {
         var result = await controller.updateUser(dto.toEntity(), dto.nextCloudGroup);
-        await controller.asignPermissions(dto.permissionList, (Guid)result.userId!);
+        await controller.assignPermissions(dto.permissionList, (Guid)result.userId!);
         return Ok(new UserToCreateDto(result));
     }
 }
