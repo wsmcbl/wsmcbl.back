@@ -45,9 +45,9 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("students")]
-    public async Task<IActionResult> updateStudent(StudentFullDto dto)
+    public async Task<IActionResult> updateStudent(StudentFullDto dto, [FromQuery] bool withNewToken = false)
     {
-        return Ok(await controller.updateStudent(dto.toEntity()));
+        return Ok(await controller.updateStudent(dto.toEntity(), withNewToken));
     }
     
     /// <summary>Update student profile picture.</summary>
