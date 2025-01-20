@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
@@ -19,9 +20,10 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     /// <response code="400">If the dto is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
     [HttpPut]
     [Route("users/{userId}")]
-    public async Task<IActionResult> updateUser(UserToCreateDto dto)
+    public async Task<IActionResult> updateUser(UserToCreateDto dto, [Required] string userId)
     {
         var result = await controller.updateUser(dto.toEntity(), dto.nextCloudGroup);
         await controller.assignPermissions(dto.permissionList, (Guid)result.userId!);

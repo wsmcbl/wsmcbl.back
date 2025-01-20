@@ -39,18 +39,4 @@ public class LoginActions(LoginController controller) : ActionsBase
         var result = await controller.getUserById(userId);
         return CreatedAtAction(null, result.mapToDto());
     }
-    
-    /// <summary>Update user information.</summary>
-    /// <response code="200">Returns a user new information.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">If the user not exist.</response>
-    [ResourceAuthorizer("admin")]
-    [HttpPut]
-    [Route("{userId}")]
-    public async Task<IActionResult> updateUser([Required] string userId, [Required] UserDto userDto)
-    {
-        var result = await controller.updateUser(userId, userDto.toEntity());
-        return CreatedAtAction(null, result.mapToDto());
-    }
 }

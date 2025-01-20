@@ -20,6 +20,9 @@ public class AssignPermissionsController : BaseController
         {
             throw new EntityNotFoundException("UserEntity", value.userId!.ToString());
         }
+        
+        user.update(value);
+        await daoFactory.execute();
 
         return user;
     }
