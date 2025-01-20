@@ -133,4 +133,13 @@ public class StudentDaoPostgres(PostgresContext context)
         existingStudent.update(entity);
         update(existingStudent);
     }
+
+    public new async Task delete(StudentEntity entity)
+    {
+        FormattableString query =
+            $@"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
+        await context.Database.ExecuteSqlAsync(query);
+        
+        await base.delete(entity);
+    }
 }
