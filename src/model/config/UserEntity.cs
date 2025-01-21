@@ -95,11 +95,11 @@ public class UserEntity
     {
         private readonly UserEntity entity;
 
-        public Builder()
+        public Builder(Guid? userId = null)
         {
-            entity = new UserEntity()
+            entity = new UserEntity
             {
-                userId = null,
+                userId = userId,
                 createdAt = DateTime.UtcNow,
                 isActive = true
             };
