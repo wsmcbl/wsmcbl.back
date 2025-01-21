@@ -22,11 +22,6 @@ public class CreateUserController : BaseController
         return await daoFactory.userDao!.getAll();
     }
 
-    public async Task<List<PermissionEntity>> getPermissionList()
-    {
-        return await daoFactory.permissionDao!.getAll();
-    }
-
     public async Task<UserEntity> createUser(UserEntity user, string groupName)
     {
         await daoFactory.userDao!.isUserDuplicate(user);
@@ -82,29 +77,6 @@ public class CreateUserController : BaseController
     {
         var passwordGenerator = new PasswordGenerator();
         return passwordGenerator.generatePassword(10);
-    }
-
-    public async Task addPermissions(List<int> permissionList, Guid userId)
-    {
-        if (permissionList.Count == 0)
-        {
-            return;
-        }
-        
-        await daoFactory.permissionDao!.checkListId(permissionList);
-
-        foreach (var item in permissionList)
-        {
-            var userPermission = new UserPermissionEntity
-            {
-                userId = userId,
-                permissionId = item
-            };
-
-            daoFactory.userPermissionDao!.create(userPermission);
-        }
-
-        await daoFactory.execute();
     }
 
     public async Task<List<string>> getNextcloudGroupList()
