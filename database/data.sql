@@ -6,7 +6,7 @@ values ('admin','Full system access'),
        ('cashier','Access to the accounting module'),
        ('teacher','Access to the academic module');
 
-insert into config.permission(name, spanishname, group, description)
+insert into config.permission(name, spanishname, area, description)
 values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme');
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
