@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.dto.config;
@@ -22,11 +23,16 @@ public class UserToUpdateDto
     
     public UserEntity toEntity(string userId)
     {
-        return new UserEntity.Builder((Guid)userId!)
-            .setName(name)
-            .setSecondName(secondName)
-            .setSurname(surname)
-            .setSecondSurname(secondSurname)
-            .build();
+        if (Guid.TryParse(userId, out var userIdGuid))
+        {
+            return new UserEntity.Builder(userIdGuid)
+                .setName(name)
+                .setSecondName(secondName)
+                .setSurname(surname)
+                .setSecondSurname(secondSurname)
+                .build();
+        }
+
+        throw new BadRequestException("UserId is not a valid.");
     }
 }
