@@ -11,7 +11,7 @@ public class AssignPermissionsController(DaoFactory daoFactory) : BaseController
         return await daoFactory.permissionDao!.getAll();
     }
 
-    public async Task<UserEntity> updateUser(UserEntity value)
+    public async Task<UserEntity> updateUser(UserEntity value, string nextCloudGroup)
     {
         var user = await daoFactory.userDao!.getById((Guid)value.userId!);
         if (user == null)
