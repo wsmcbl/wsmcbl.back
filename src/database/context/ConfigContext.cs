@@ -63,7 +63,9 @@ public class ConfigContext
             entity.ToTable("permission", "config");
 
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
+            entity.Property(e => e.area).HasColumnName("area");
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
+            entity.Property(e => e.spanishName).HasColumnName("spanishname");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
         });
 

@@ -6,8 +6,8 @@ values ('admin','Full system access'),
        ('cashier','Access to the accounting module'),
        ('teacher','Access to the academic module');
 
-insert into config.permission(name, description)
-values ('CanCreateStudent','Permission for the creation of students in the secretary scheme');
+insert into config.permission(name, spanishname, area, description)
+values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme');
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
@@ -48,6 +48,11 @@ INSERT INTO Accounting.cashier(cashierid, userid)
 SELECT 'caj-ktinoco', u.userid FROM config.user u
 WHERE u.name = 'Kenny';
 
+
 INSERT INTO academy.teacher(userid, isguide)
 SELECT u.userid, false FROM config.user u
-WHERE u.name = 'Usuario' or u.name = 'Kenny' or u.name = 'Ezequiel' or u.name = 'Thelma';
+WHERE u.name = 'Usuario';
+
+INSERT INTO academy.teacher(userid, isguide)
+SELECT u.userid, false FROM config.user u
+WHERE u.name = 'Kenny' or u.name = 'Ezequiel' or u.name = 'Thelma';
