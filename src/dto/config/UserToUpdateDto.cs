@@ -1,39 +1,32 @@
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.dto.config;
 
-public class UserToCreateDto
+public class UserToUpdateDto
 {
-    [JsonRequired] public int roleId { get; set; }
     [Required] public string name { get; set; } = null!;
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
+    public List<int> permissionList { get; set; } = null!;
     public string nextCloudGroup { get; set; } = null!;
-
-    public UserToCreateDto()
+    
+    public UserToUpdateDto(UserEntity user)
     {
-    }
-
-    public UserToCreateDto(UserEntity user)
-    {
-        roleId = user.roleId;
         name = user.name;
         secondName = user.secondName;
         surname = user.surname;
         secondSurname = user.secondSurname;
     }
     
-    public UserEntity toEntity()
+    public UserEntity toEntity(string userId)
     {
-        return new UserEntity.Builder()
+        return new UserEntity.Builder((Guid)userId!)
             .setName(name)
             .setSecondName(secondName)
             .setSurname(surname)
             .setSecondSurname(secondSurname)
-            .setRole(roleId)
             .build();
     }
 }
