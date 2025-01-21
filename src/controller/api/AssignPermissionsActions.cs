@@ -19,7 +19,8 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     [Route("permissions")]
     public async Task<IActionResult> getPermissionList()
     {
-        return Ok(await controller.getPermissionList());
+        var result = await controller.getPermissionList();
+        return Ok(result.mapToListDto());
     }
     
     /// <summary>Assign permissions and update user.</summary>
