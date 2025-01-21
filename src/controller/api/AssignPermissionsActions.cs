@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -34,7 +35,7 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     [Route("users/{userId}")]
     public async Task<IActionResult> updateUser([Required] string userId, UserToUpdateDto dto)
     {
-        var result = await controller.updateUser(dto.toEntity(userId));
+        var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup);
         await controller.assignPermissions(dto.permissionList, (Guid)result.userId!);
         
         return Ok(new UserToUpdateDto(result));
