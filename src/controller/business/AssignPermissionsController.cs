@@ -4,21 +4,14 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class AssignPermissionsController : BaseController
+public class AssignPermissionsController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    private readonly CreateUserController userController;
-
-    public AssignPermissionsController(DaoFactory daoFactory, CreateUserController userController) : base(daoFactory)
-    {
-        this.userController = userController;
-    }
-
     public async Task<List<PermissionEntity>> getPermissionList()
     {
         return await daoFactory.permissionDao!.getAll();
     }
 
-    public async Task<UserEntity> updateUser(UserEntity value, string nextCloudGroup)
+    public async Task<UserEntity> updateUser(UserEntity value)
     {
         var user = await daoFactory.userDao!.getById((Guid)value.userId!);
         if (user == null)
@@ -34,6 +27,24 @@ public class AssignPermissionsController : BaseController
 
     public async Task assignPermissions(List<int> permissionList, Guid userId)
     {
-        await userController.addPermissions(permissionList, userId);
+        if (permissionList.Count == 0)
+        {
+            return;
+        }
+        
+        await daoFactory.permissionDao!.checkListId(permissionList);
+
+        foreach (var item in permissionList)
+        {
+            var userPermission = new UserPermissionEntity
+            {
+                userId = userId,
+                permissionId = item
+            };
+
+            daoFactory.userPermissionDao!.create(userPermission);
+        }
+
+        await daoFactory.execute();
     }
 }

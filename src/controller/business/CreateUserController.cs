@@ -79,29 +79,6 @@ public class CreateUserController : BaseController
         return passwordGenerator.generatePassword(10);
     }
 
-    public async Task addPermissions(List<int> permissionList, Guid userId)
-    {
-        if (permissionList.Count == 0)
-        {
-            return;
-        }
-        
-        await daoFactory.permissionDao!.checkListId(permissionList);
-
-        foreach (var item in permissionList)
-        {
-            var userPermission = new UserPermissionEntity
-            {
-                userId = userId,
-                permissionId = item
-            };
-
-            daoFactory.userPermissionDao!.create(userPermission);
-        }
-
-        await daoFactory.execute();
-    }
-
     public async Task<List<string>> getNextcloudGroupList()
     {
         var nextcloudUserCreator = new NextcloudUserCreator(httpClient);

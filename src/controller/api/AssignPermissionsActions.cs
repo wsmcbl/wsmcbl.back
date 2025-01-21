@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
