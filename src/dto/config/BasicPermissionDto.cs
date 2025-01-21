@@ -12,6 +12,6 @@ public class BasicPermissionDto
     {
         permissionId = value.permissionId;
         name = value.spanishName;
-        group = value.group;
+        group = value.area;
     }
 }
