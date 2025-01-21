@@ -29,7 +29,9 @@ create unique index IDX_email ON config.User (email);
 create table if not exists Config.Permission
 (
     permissionId serial primary key not null,
+    area varchar(50) not null,
     name varchar(50) not null,
+    spanishName varchar(50) not null,
     description varchar(150) not null
 );
 
