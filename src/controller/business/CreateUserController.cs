@@ -22,11 +22,6 @@ public class CreateUserController : BaseController
         return await daoFactory.userDao!.getAll();
     }
 
-    public async Task<List<PermissionEntity>> getPermissionList()
-    {
-        return await daoFactory.permissionDao!.getAll();
-    }
-
     public async Task<UserEntity> createUser(UserEntity user, string groupName)
     {
         await daoFactory.userDao!.isUserDuplicate(user);
