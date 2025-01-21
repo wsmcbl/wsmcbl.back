@@ -11,7 +11,6 @@ public class UserToCreateDto
     public string? secondName { get; set; }
     [Required] public string surname { get; set; } = null!;
     public string? secondSurname { get; set; }
-    public List<int> permissionList { get; set; } = null!;
     public string nextCloudGroup { get; set; } = null!;
 
     public UserToCreateDto()
