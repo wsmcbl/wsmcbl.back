@@ -6,9 +6,9 @@ namespace wsmcbl.src.controller.business;
 
 public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<TransactionReportView>> getTransactionList(int range)
+    public async Task<List<TransactionReportView>> getTransactionList(DateTime start, DateTime end)
     {
-        getDateRange(range);
+        getDateRange(1);
         transactionList = await daoFactory.transactionDao!.getByRange(start, end);
         return transactionList;
     }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
@@ -14,23 +15,23 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <summary>
     /// Returns summary list of transactions and revenues by date.
     /// </summary>
-    /// <param name="q">The value must be 1, 2, 3 or 4. Value corresponding to today, yesterday, monthly and yearly.</param>
+    /// <param name="start">The value must be "day-month-year".</param>
+    /// <param name="end">The value must be "day-month-year".</param>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("transactions/revenues")]
-    public async Task<IActionResult> getReportByDate([FromQuery] int q)
+    public async Task<IActionResult> getReportByDate([FromQuery] [Required] string start, [FromQuery] string end)
     {
-        if (q is < 1 or > 4)
+        if (!hasDateFormat(start) || !hasDateFormat(end))
         {
-            throw new IncorrectDataBadRequestException("The query value must be 1,2,3 or 4.");
+            throw new BadRequestException("The dates has not valid format.");
         }
         
         var response = new ReportByDateDto();
-
-        response.setDateRage(controller.getDateRange(q));
-        response.setTransactionList(await controller.getTransactionList(q));
+        response.setDateRage(controller.getDateRange(1));
+        response.setTransactionList(await controller.getTransactionList(new DateTime(), new DateTime()));
         response.userName = await controller.getUserName(getAuthenticatedUserId());
         
         var result = controller.getSummary();
@@ -39,7 +40,12 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         
         return Ok(response);
     }
-    
+
+    private bool hasDateFormat(string start)
+    {
+        return true;
+    }
+
     /// <summary>
     ///  Returns the list of tariff type.
     /// </summary>
