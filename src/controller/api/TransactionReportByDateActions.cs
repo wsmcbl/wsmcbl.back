@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
@@ -26,24 +27,36 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     {
         if (!hasDateFormat(start) || !hasDateFormat(end))
         {
-            throw new BadRequestException("The dates has not valid format.");
+            throw new IncorrectDataBadRequestException("The dates has not valid format.");
         }
-        
+
         var response = new ReportByDateDto();
-        response.setDateRage(controller.getDateRange(1));
-        response.setTransactionList(await controller.getTransactionList(new DateTime(), new DateTime()));
+        response.setDateRage(controller.getDateRange(start, end));
+        response.setTransactionList(await controller.getTransactionList(start, end));
         response.userName = await controller.getUserName(getAuthenticatedUserId());
-        
+
         var result = controller.getSummary();
         response.setValidTransactionData(result[0]);
         response.setInvalidTransactionData(result[1]);
-        
+
         return Ok(response);
     }
 
-    private bool hasDateFormat(string start)
+    private bool hasDateFormat(string value)
     {
-        return true;
+        var minYear = 2000;
+        var maxYear = 2100;
+
+        try
+        {
+            DateTime date = DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            var year = date.Year;
+            return year >= minYear && year <= maxYear;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
     /// <summary>
