@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Security.Authentication;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -30,6 +31,13 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
 
     public (DateTime start, DateTime end) getDateRange(string startValue, string endValue)
     {
+        if (startValue == endValue)
+        {
+            var now = DateTime.UtcNow;
+            end = now;
+            start = now.Hour > 6 ? now.Date.AddHours(6) : now.Date.AddDays(-1).AddHours(6);
+        }
+        
         return (start, end);
     }
 
