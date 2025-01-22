@@ -30,9 +30,12 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
             throw new IncorrectDataBadRequestException("The dates has not valid format.");
         }
 
+        var dates = parseToDateTime(start, end);
+        var transactionList = await controller.getTransactionList(dates.start, dates.end);
+        
         var response = new ReportByDateDto();
-        response.setDateRage(controller.getDateRange(start, end));
-        response.setTransactionList(await controller.getTransactionList(start, end));
+        response.setDateRage(dates.start, dates.end);
+        response.setTransactionList(transactionList);
         response.userName = await controller.getUserName(getAuthenticatedUserId());
 
         var result = controller.getSummary();
@@ -57,6 +60,11 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         {
             return false;
         }
+    }
+
+    private (DateTime start, DateTime end) parseToDateTime(string start, string end)
+    {
+        return (DateTime.Now, DateTime.Now);
     }
 
     /// <summary>
