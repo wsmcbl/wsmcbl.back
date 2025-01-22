@@ -5,6 +5,7 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
 
@@ -27,14 +28,14 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     {
         if (!hasDateFormat(start) || !hasDateFormat(end))
         {
-            throw new IncorrectDataBadRequestException("The dates has not valid format.");
+            throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
         }
 
         var dates = parseToDateTime(start, end);
         var transactionList = await controller.getTransactionList(dates.start, dates.end);
         
         var response = new ReportByDateDto();
-        response.setDateRage(dates.start, dates.end);
+        response.setDateRange(dates.start, dates.end);
         response.setTransactionList(transactionList);
         response.userName = await controller.getUserName(getAuthenticatedUserId());
 
@@ -62,9 +63,22 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         }
     }
 
-    private (DateTime start, DateTime end) parseToDateTime(string start, string end)
+    private static (DateTime start, DateTime end) parseToDateTime(string start, string end)
     {
-        return (DateTime.Now, DateTime.Now);
+        var startDate = DateTime.ParseExact(start, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        var endDate = DateTime.ParseExact(end, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+
+        if (startDate.Date < endDate.Date)
+        {
+            throw new BadRequestException("The date range is not valid.");
+        }
+
+        startDate = startDate.setHours(6);
+        
+        endDate = endDate.setHours(6);
+        endDate = endDate.Date.AddDays(-1).AddSeconds(-1);
+        
+        return (startDate, endDate);
     }
 
     /// <summary>

@@ -21,7 +21,7 @@ public class ReportByDateDto
         transactionList = list.mapToListDto();
     }
 
-    public void setDateRage(DateTime start, DateTime end)
+    public void setDateRange(DateTime start, DateTime end)
     {
         startDate = start.toUTC6();
         endDate = end.toUTC6();
