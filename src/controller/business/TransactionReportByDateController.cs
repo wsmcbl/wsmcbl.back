@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Security.Authentication;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -7,67 +6,14 @@ namespace wsmcbl.src.controller.business;
 
 public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<TransactionReportView>> getTransactionList(string startValue, string endValue)
+    private List<TransactionReportView> transactionList = [];
+    
+    public async Task<List<TransactionReportView>> getTransactionList(DateTime start, DateTime end)
     {
-        getDateRange(startValue, endValue);
         transactionList = await daoFactory.transactionDao!.getByRange(start, end);
         return transactionList;
     }
-
-    public async Task<string> getUserName(string userId)
-    {
-        var result = await daoFactory.userDao!.getById(userId);
-
-        if (result == null)
-        {
-            throw new AuthenticationException($"User with id ({userId}) not authenticate.");
-        }
-
-        return result.getAlias();
-    }
-
-    private DateTime start { get; set; }
-    private DateTime end { get; set; }
-
-    public (DateTime start, DateTime end) getDateRange(string startValue, string endValue)
-    {
-        if (startValue == endValue)
-        {
-            var now = DateTime.UtcNow;
-            end = now;
-            start = now.Hour > 6 ? now.Date.AddHours(6) : now.Date.AddDays(-1).AddHours(6);
-        }
-        
-        return (start, end);
-    }
-
-    public (DateTime start, DateTime end) getDateRange(int range)
-    {
-        var now = DateTime.UtcNow;
-        
-        end = now;
-        switch (range)
-        {
-            case 1:
-                start = now.Hour > 6 ? now.Date.AddHours(6) : now.Date.AddDays(-1).AddHours(6);
-                break;
-            case 2:
-                start = now.Hour > 6 ? now.Date.AddDays(-1).AddHours(6) : now.Date.AddDays(-2).AddHours(6);
-                end = now.Hour > 6 ? now.Date.AddHours(6).AddSeconds(-1) : now.Date.AddDays(-1).AddHours(6).AddSeconds(-1);
-                break;
-            case 3:
-                start = new DateTime(now.Year, now.Month, 1, 6, 0, 0, DateTimeKind.Utc);
-                break;
-            case 4:
-                start = new DateTime(now.Year, 1, 1, 6, 0, 0, DateTimeKind.Utc);
-                break;
-        }
-
-        return (start, end);
-    }
-
-    private List<TransactionReportView> transactionList = [];
-
+    
     public List<(int quantity, double total)> getSummary()
     {
         (int quantity, double total) validSummary = (0, 0);
@@ -101,5 +47,17 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
         });
 
         return result;
+    }
+    
+    public async Task<string> getUserName(string userId)
+    {
+        var result = await daoFactory.userDao!.getById(userId);
+
+        if (result == null)
+        {
+            throw new AuthenticationException($"User with id ({userId}) not authenticate.");
+        }
+
+        return result.getAlias();
     }
 }
