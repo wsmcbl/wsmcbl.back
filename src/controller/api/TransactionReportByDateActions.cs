@@ -17,9 +17,16 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <summary>
     /// Returns summary list of transactions and revenues by date.
     /// </summary>
-    /// <param name="start">The value must be "day-month-year".</param>
-    /// <param name="end">The value must be "day-month-year".</param>
+    /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
+    /// <remarks> A date before 2,000 is not accepted.</remarks>
+    /// <param name="start">The default time is set to 00:00 hours.</param>
+    /// <param name="end">
+    /// The default time is set to 23:59.
+    /// If the date entered corresponds to the current date,
+    /// the time will be adjusted to the time at which the query is made.
+    /// </param>
     /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="400">If any of the dates are not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
@@ -48,14 +55,13 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
 
     private bool hasDateFormat(string value)
     {
-        var minYear = 2000;
-        var maxYear = 2100;
+        const int minYear = 2000;
+        const int maxYear = 2100;
 
         try
         {
-            DateTime date = DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-            var year = date.Year;
-            return year >= minYear && year <= maxYear;
+            var date = DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            return date.Year is >= minYear and <= maxYear;
         }
         catch (FormatException)
         {
@@ -68,18 +74,21 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         var startDate = DateTime.ParseExact(start, "dd-MM-yyyy", CultureInfo.InvariantCulture);
         var endDate = DateTime.ParseExact(end, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 
-        if (startDate.Date < endDate.Date)
+        if (startDate.Date > endDate.Date)
         {
             throw new BadRequestException("The date range is not valid.");
         }
 
         startDate = startDate.setHours(6);
         
-        endDate = endDate.setHours(6);
-        endDate = endDate.Date.AddDays(-1).AddSeconds(-1);
+        endDate = isToday(endDate) ? DateTime.UtcNow :
+            endDate.setHours(0).Date.AddDays(1).AddHours(6).AddSeconds(-1);
         
         return (startDate, endDate);
     }
+
+    private static bool isToday(DateTime date) => date.Date == DateTime.Today.Date;
+    
 
     /// <summary>
     ///  Returns the list of tariff type.
