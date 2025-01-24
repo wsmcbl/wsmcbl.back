@@ -121,7 +121,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         debt.schoolyear = schoolyear.id!;
         
         create(debt);

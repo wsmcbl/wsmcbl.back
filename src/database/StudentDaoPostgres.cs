@@ -97,7 +97,7 @@ public class StudentDaoPostgres(PostgresContext context)
     public async Task<List<StudentEntity>> getAllWithRegistrationTariffPaid()
     {
         DaoFactory daoFactory = new DaoFactoryPostgres(context);
-        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrentSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
         var tariffList = await context.Set<model.accounting.TariffEntity>()
             .Where(e => e.schoolYear == schoolyear.id)

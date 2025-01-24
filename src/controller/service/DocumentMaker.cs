@@ -121,7 +121,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNewSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         
         var user = await daoFactory.userDao!.getById(userId);
         var degreeList = await daoFactory.degreeDao!.getAll(schoolyear.id!, true);

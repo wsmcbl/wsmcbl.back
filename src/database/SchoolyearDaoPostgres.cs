@@ -20,7 +20,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
     
-    public async Task<SchoolYearEntity> getCurrentSchoolyear(bool withProperties = true)
+    public async Task<SchoolYearEntity> getCurrent(bool withProperties = true)
     {
         var result = await getByLabel(DateTime.Today.Year);
         if (!withProperties)
@@ -41,11 +41,11 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     
     private static int newOrCurrentLabel() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
     
-    public async Task<SchoolYearEntity> getCurrentOrNewSchoolyear()
+    public async Task<SchoolYearEntity> getCurrentOrNew()
     {
         try
         {
-            return await getCurrentSchoolyear(false);
+            return await getCurrent(false);
         }
         catch (EntityNotFoundException)
         {
@@ -57,7 +57,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
     }
 
-    public async Task<SchoolYearEntity> getNewOrCurrentSchoolyear()
+    public async Task<SchoolYearEntity> getNewOrCurrent()
     {
         try
         {
@@ -65,7 +65,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
         catch (EntityNotFoundException)
         {
-            return await getCurrentSchoolyear(false);
+            return await getCurrent(false);
         }
         catch (Exception)
         {
@@ -73,7 +73,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
     }
 
-    public async Task<SchoolYearEntity> getOrCreateNewSchoolyear()
+    public async Task<SchoolYearEntity> getOrCreateNew()
     {
         try
         {

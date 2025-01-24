@@ -13,7 +13,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNewSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
         var tariffs = await entities
             .Where(e => e.schoolYear == schoolyear.id)
@@ -27,8 +27,8 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNewSchoolyear();
-        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrentSchoolyear();
+        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
         
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(e => e.studentId == studentId)
@@ -42,8 +42,8 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<float[]> getGeneralBalance(string studentId)
     {
-        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNewSchoolyear();
-        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrentSchoolyear();
+        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
         
         var debts = await context.Set<DebtHistoryEntity>()
             .Where(d => d.studentId == studentId)
@@ -65,7 +65,7 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<TariffEntity> getAllInCurrentSchoolyear(int level)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentSchoolyear(false);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
         
         var tariff = await entities
             .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear.id);

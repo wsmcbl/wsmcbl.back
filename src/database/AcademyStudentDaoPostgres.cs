@@ -14,7 +14,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
  
     public async Task<StudentEntity> getByIdInCurrentSchoolyear(string studentId)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNewSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         
         var result = await entities
             .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyear.id);
@@ -48,7 +48,7 @@ public class AcademyStudentDaoPostgres(PostgresContext context) : GenericDaoPost
 
     public new async Task<StudentEntity?> getById(string studentId)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrentSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
         return await entities
             .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyear.id);
     }
