@@ -11,6 +11,7 @@ public static class DtoMapper
     private static SubjectPartialDto mapToDto(this SubjectPartialEntity subjectPartial) => new(subjectPartial);
 
     private static GradeDto mapToDto(this GradeEntity grade) => new(grade);
+    private static TeacherDto mapToDto(this TeacherEntity value) => new(value);
     
     
     
