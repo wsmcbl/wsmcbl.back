@@ -37,7 +37,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(result.mapToBasicDto());
     }
 
-    /// <summary>Returns the list of active enrollment by teacher id.</summary>
+    /// <summary>Returns the list of active enrollment by teacher.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -51,7 +51,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     }
 
     /// <summary>
-    ///  Returns the list of subject, students and grades corresponding to a teacher grade's information
+    /// Returns the list of subjects, students and grades of an enrollment corresponding to a partial.
     /// </summary>
     /// <response code="200">Returns the list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -60,18 +60,18 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
     public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId,
-        [Required] string enrollmentId, [Required] [FromQuery] int partial)
+        [Required] string enrollmentId, [Required] [FromQuery] int partialId)
     {
         var enrollment = await controller.getEnrollmentById(enrollmentId);
 
-        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partial);
+        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
         var subjectPartialList = await controller.getSubjectPartialList(subjectPartial);
 
         return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
 
     /// <summary>
-    ///  Update the grades of subject corresponding to a teacher grade's information
+    /// Update the grades of subjects of an enrollment corresponding to a partial.
     /// </summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
@@ -81,9 +81,9 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     [HttpPut]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
     public async Task<IActionResult> addGrades([Required] string teacherId,
-        [Required] string enrollmentId, [Required] [FromQuery] int partial, List<GradeDto> gradeList)
+        [Required] string enrollmentId, [Required] [FromQuery] int partialId, List<GradeDto> gradeList)
     {
-        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partial);
+        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
         await controller.addGrades(subjectPartial, gradeList.toEntity());
         return Ok();
     }
