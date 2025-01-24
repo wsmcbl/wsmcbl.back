@@ -118,4 +118,10 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
         return teacher != null ? teacher.fullName() : string.Empty;
     }
+
+    public async Task<byte[]> getAssistanceListDocument()
+    {
+        await Task.CompletedTask;
+        return [];
+    }
 }
