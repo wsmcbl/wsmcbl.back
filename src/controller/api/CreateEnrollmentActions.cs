@@ -15,6 +15,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("teacher")]
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> getDegreeList()

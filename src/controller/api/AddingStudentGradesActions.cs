@@ -47,7 +47,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     public async Task<IActionResult> getEnrollmentListByTeacherId([Required] string teacherId)
     {
         var result = await controller.getEnrollmentListByTeacherId(teacherId);
-        return Ok(result.mapListToDto());
+        return Ok(result.mapListToDto(teacherId));
     }
 
     /// <summary>
