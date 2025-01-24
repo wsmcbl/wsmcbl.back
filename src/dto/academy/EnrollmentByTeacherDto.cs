@@ -4,18 +4,20 @@ namespace wsmcbl.src.dto.academy;
 
 public class EnrollmentByTeacherDto
 {
-    public string teacherId { get; set; } = null!;
-    public string enrollmentId { get; set; } = null!;
-    public string enrollmentLabel { get; set; } = null!;
-
-    public EnrollmentByTeacherDto()
-    {
-    }
+    public string degreeId { get; set; }
+    public string enrollmentId { get; set; }
+    public string enrollmentLabel { get; set; }
+    public int position { get; set; }
+    public int studentQuantity { get; set; }
+    public int subjectQuantity { get; set; }
     
-    public EnrollmentByTeacherDto(EnrollmentEntity enrollment)
+    public EnrollmentByTeacherDto(EnrollmentEntity enrollment, string teacherId)
     {
-        teacherId = enrollment.teacherId!;
+        degreeId = enrollment.degreeId;
         enrollmentId = enrollment.enrollmentId!;
         enrollmentLabel = enrollment.label;
+        position = Convert.ToInt32(enrollment.tag);
+        studentQuantity = enrollment.quantity;
+        subjectQuantity = enrollment.getSubjectListByTeacherId(teacherId).Count;
     }
 }

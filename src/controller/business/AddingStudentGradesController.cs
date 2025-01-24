@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
@@ -33,5 +34,16 @@ public class AddingStudentGradesController : BaseController
     public async Task<List<PartialEntity>> getPartialList()
     {
         return await daoFactory.partialDao!.getListByCurrentSchoolyear();
+    }
+
+    public async Task<TeacherEntity> getTeacherById(string teacherId)
+    {
+        var result = await daoFactory.teacherDao!.getById(teacherId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
+
+        return result;
     }
 }

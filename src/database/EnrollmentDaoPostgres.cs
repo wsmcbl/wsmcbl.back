@@ -60,7 +60,9 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
         var schoolyearDao = new SchoolyearDaoPostgres(context);
         var currentSchoolyear = await schoolyearDao.getCurrentSchoolyear();
 
-        var enrollmentList = await entities.Where(e => e.schoolYear == currentSchoolyear.id).ToListAsync();
+        var enrollmentList = await entities.Where(e => e.schoolYear == currentSchoolyear.id)
+            .Include(e => e.subjectList)
+            .ToListAsync();
 
         List<EnrollmentEntity> result = [];
         foreach (var item in subjectList)
