@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
@@ -6,6 +7,7 @@ public class PrintDocumentController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<byte[]> getAssistanceListDocument()
     {
-        throw new NotImplementedException();
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getAssistanceListDocument();
     }
 }
