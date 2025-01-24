@@ -61,11 +61,19 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
         return list.Where(e => e.enrollmentList!.Count != 0).ToList();
     }
 
-    public async Task<List<DegreeEntity>> getAll(string schoolyearId)
+    public async Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment = false)
     {
-        return await entities
+        var query = entities
             .Include(e => e.enrollmentList)
-            .Where(e => e.schoolYear == schoolyearId).ToListAsync();
+            .Where(e => e.schoolYear == schoolyearId);
+
+        if (withStudentsInEnrollment)
+        {
+            query = query.Include(e => e.enrollmentList)!
+                .ThenInclude(e => e.studentList);
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<DegreeEntity?> getByEnrollmentId(string enrollmentId)

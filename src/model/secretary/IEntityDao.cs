@@ -8,7 +8,7 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
     public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
     public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
-    public Task<List<DegreeEntity>> getAll(string schoolyearId);
+    public Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment);
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
