@@ -20,9 +20,13 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
     
-    public async Task<SchoolYearEntity> getCurrentSchoolyear()
+    public async Task<SchoolYearEntity> getCurrentSchoolyear(bool withProperties = true)
     {
         var result = await getByLabel(DateTime.Today.Year);
+        if (!withProperties)
+        {
+            return result;
+        }
         
         var gradeList = await context.Set<DegreeEntity>()
             .Where(e => e.schoolYear == result.id).ToListAsync();
@@ -31,7 +35,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         var tariffList = await context.Set<TariffEntity>()
             .Where(e => e.schoolYear == result.id).ToListAsync();
         result.setTariffList(tariffList);
-        
+
         return result;
     }
 

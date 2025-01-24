@@ -14,7 +14,7 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
     public Task<SchoolYearEntity> getByLabel(int year);
-    public Task<SchoolYearEntity> getCurrentSchoolyear();
+    public Task<SchoolYearEntity> getCurrentSchoolyear(bool withProperties = true);
     public Task<SchoolYearEntity> getCurrentOrNewSchoolyear();
     public Task<SchoolYearEntity> getNewOrCurrentSchoolyear();
     public Task<SchoolYearEntity> getOrCreateNewSchoolyear();
