@@ -14,7 +14,7 @@ public static class DtoMapper
     
     
     
-    private static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
+    public static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
     
     private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student);
     
