@@ -119,7 +119,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return teacher != null ? teacher.fullName() : string.Empty;
     }
 
-    public async Task<byte[]> getAssistanceListDocument()
+    public async Task<byte[]> getOfficialEnrollmentListDocument()
     {
         await Task.CompletedTask;
         return [];

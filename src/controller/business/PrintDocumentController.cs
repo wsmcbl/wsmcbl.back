@@ -5,9 +5,9 @@ namespace wsmcbl.src.controller.business;
 
 public class PrintDocumentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<byte[]> getAssistanceListDocument()
+    public async Task<byte[]> getOfficialEnrollmentListDocument()
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getAssistanceListDocument();
+        return await documentMaker.getOfficialEnrollmentListDocument();
     }
 }
