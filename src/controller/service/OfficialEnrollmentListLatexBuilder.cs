@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service;
@@ -10,7 +11,7 @@ public class OfficialEnrollmentListLatexBuilder(string templatesPath, string out
     //
 
     private string userName { get; set; } = null!;
-    private string teacherName { get; set; } = null!;
+    private List<TeacherEntity> teacherList { get; set; } = null!;
     private List<DegreeEntity> degreeList { get; set; } = null!;
     
     protected override string getTemplateName() => "official-enrollment-list";
@@ -38,9 +39,9 @@ public class OfficialEnrollmentListLatexBuilder(string templatesPath, string out
             return this;
         }
 
-        public Builder withTeacherName(string parameter)
+        public Builder withTeacherList(List<TeacherEntity> parameter)
         {
-            latexBuilder.teacherName = parameter;
+            latexBuilder.teacherList = parameter;
             return this;
         }
 
