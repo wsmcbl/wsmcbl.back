@@ -28,8 +28,8 @@ public static class DtoMapper
     public static List<BasicStudentDto> mapListToDto(this IEnumerable<StudentEntity> studentList) => 
         studentList.Select(e => e.mapToBasicDto()).ToList();
     
-    public static List<EnrollmentByTeacherDto> mapListToDto(this IEnumerable<EnrollmentEntity> enrollmentList) =>
-        enrollmentList.Select(e => new EnrollmentByTeacherDto(e)).ToList();
+    public static List<EnrollmentByTeacherDto> mapListToDto(this IEnumerable<EnrollmentEntity> enrollmentList, string teacherId) =>
+        enrollmentList.Select(e => new EnrollmentByTeacherDto(e, teacherId)).ToList();
     
     public static List<PartialInformationDto> mapListToDto(this IEnumerable<PartialEntity> partialList) =>
         partialList.Select(e => e.mapToDto()).ToList();
