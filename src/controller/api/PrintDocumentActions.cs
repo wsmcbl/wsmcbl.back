@@ -18,7 +18,7 @@ public class PrintDocumentActions(PrintDocumentController controller) : ActionsB
     [Route("degrees/documents")]
     public async Task<IActionResult> getOfficialEnrollmentListDocument()
     {
-        var result = await controller.getOfficialEnrollmentListDocument();
+        var result = await controller.getOfficialEnrollmentListDocument(getAuthenticatedUserId());
         return File(result, "application/pdf", "official-enrollment-list.pdf");
     }    
 }
