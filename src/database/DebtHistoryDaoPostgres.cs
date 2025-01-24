@@ -2,11 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgres<DebtHistoryEntity, string>(context), IDebtHistoryDao
+public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, string>, IDebtHistoryDao
 {
+    private DaoFactory daoFactory { get; set; }
+    
+    public DebtHistoryDaoPostgres(PostgresContext context) : base(context)
+    {
+        daoFactory = new DaoFactoryPostgres(context);
+    }
+    
     public async Task<List<DebtHistoryEntity>> getListByStudent(string studentId)
     {
         return await entities
@@ -33,7 +41,6 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         foreach (var item in list)
         {
             var debt = debts.Find(e => e.tariffId == item.tariffId);
-
             if (debt == null)
             {
                 continue;
@@ -70,9 +77,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task restoreDebt(string transactionId)
     {
-        var transactionDao = new TransactionDaoPostgres(context);
-        var transaction = await transactionDao.getById(transactionId);
-
+        var transaction = await daoFactory.transactionDao!.getById(transactionId);
         if (!transaction!.isValid)
         {
             throw new ConflictException("The transaction is already cancelled.");
@@ -83,7 +88,6 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         foreach (var item in transaction.details)
         {
             var debt = debtList.FirstOrDefault(e => e.tariffId == item.tariffId);
-            
             if (debt == null)
             {
                 continue;
@@ -113,13 +117,11 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task addRegistrationTariffDebtByStudent(StudentEntity student)
     {
-        var daoFactory = new DaoFactoryPostgres(context);
-        
-        var tariff = await daoFactory.tariffDao.getAllInCurrentSchoolyear(student.educationalLevel);
+        var tariff = await daoFactory.tariffDao!.getAllInCurrentSchoolyear(student.educationalLevel);
 
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
-        var schoolyear = await daoFactory.schoolyearDao.getCurrentSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentSchoolyear();
         debt.schoolyear = schoolyear.id!;
         
         create(debt);
