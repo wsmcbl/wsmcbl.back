@@ -54,10 +54,10 @@ public class EnrollStudentController : BaseController
 
     private async Task<bool> isAlreadyEnroll(string studentId)
     {
-        var ids = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrentSchoolyear();
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
 
-        return academyStudent != null && academyStudent.schoolYear == ids.newSchoolyear;
+        return academyStudent != null && academyStudent.schoolYear == schoolyear.id;
     }
 
     private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)

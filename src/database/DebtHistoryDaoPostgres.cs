@@ -113,13 +113,13 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
 
     public async Task addRegistrationTariffDebtByStudent(StudentEntity student)
     {
-        var tariffDao = new TariffDaoPostgres(context);
-        var tariff = await tariffDao.getInCurrentSchoolyearByType(student.educationalLevel);
+        var daoFactory = new DaoFactoryPostgres(context);
+        
+        var tariff = await daoFactory.tariffDao.getInCurrentSchoolyearByType(student.educationalLevel);
 
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var schoolyear = await schoolyearDao.getCurrentSchoolyear();
+        var schoolyear = await daoFactory.schoolyearDao.getCurrentSchoolyear();
         debt.schoolyear = schoolyear.id!;
         
         create(debt);
