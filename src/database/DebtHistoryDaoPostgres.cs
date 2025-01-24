@@ -119,7 +119,8 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
         var schoolyearDao = new SchoolyearDaoPostgres(context);
-        debt.schoolyear = await schoolyearDao.getValidSchoolyearId();
+        var schoolyear = await schoolyearDao.getCurrentSchoolyear();
+        debt.schoolyear = schoolyear.id!;
         
         create(debt);
         await saveAsync();

@@ -97,10 +97,10 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
     public async Task<TariffEntity> getInCurrentSchoolyearByType(int level)
     {
         var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var schoolyear = await schoolyearDao.getValidSchoolyearId();
+        var schoolyear = await schoolyearDao.getCurrentSchoolyear();
         
         var tariff = await entities
-            .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear);
+            .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear.id);
 
         if (tariff == null)
         {

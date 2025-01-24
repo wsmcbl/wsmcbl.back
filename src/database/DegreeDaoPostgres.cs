@@ -50,13 +50,12 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 
     public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
     {
-        var dao = new SchoolyearDaoPostgres(context);
-        var ID = await dao.getCurrentAndNewSchoolyearIds();
-        var schoolyearId = ID.newSchoolyear != "" ? ID.newSchoolyear : ID.currentSchoolyear;
+        ISchoolyearDao dao = new SchoolyearDaoPostgres(context);
+        var schoolyear = await dao.getNewOrCurrentSchoolyear();
 
         var list = await entities
             .Include(e => e.enrollmentList)
-            .Where(e => e.schoolYear == schoolyearId).ToListAsync();
+            .Where(e => e.schoolYear == schoolyear.id).ToListAsync();
 
         return list.Where(e => e.enrollmentList!.Count != 0).ToList();
     }

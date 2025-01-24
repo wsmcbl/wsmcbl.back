@@ -13,13 +13,12 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
+    public Task<SchoolYearEntity> getByLabel(int year);
     public Task<SchoolYearEntity> getCurrentSchoolyear();
     public Task<SchoolYearEntity> getCurrentOrNewSchoolyear();
     public Task<SchoolYearEntity> getNewOrCurrentSchoolyear();
     public Task<SchoolYearEntity> getOrCreateNewSchoolyear();
-    public Task<string> getValidSchoolyearId();
     public Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds();
-    public Task<SchoolYearEntity> getSchoolYearByLabel(int year);
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
