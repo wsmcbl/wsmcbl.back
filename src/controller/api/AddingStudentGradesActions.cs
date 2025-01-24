@@ -33,7 +33,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     [Route("teachers/{teacherId}")]
     public async Task<IActionResult> getTeacherById([Required] string teacherId)
     {
-        var result = await controller.getTeacherById();
+        var result = await controller.getTeacherById(teacherId);
         return Ok(result.mapToBasicDto());
     }
 
