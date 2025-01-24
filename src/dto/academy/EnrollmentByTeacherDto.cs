@@ -10,7 +10,6 @@ public class EnrollmentByTeacherDto
     public int position { get; set; }
     public int studentQuantity { get; set; }
     public int subjectQuantity { get; set; }
-    public int numberOfGrades { get; set; }
     
     public EnrollmentByTeacherDto(EnrollmentEntity enrollment, string teacherId)
     {
