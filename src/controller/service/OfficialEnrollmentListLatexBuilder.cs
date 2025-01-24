@@ -1,24 +1,30 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
-public class OfficialEnrollmentListLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
+public class OfficialEnrollmentListLatexBuilder : LatexBuilder
 {
-    // enrollment (lista )
-    // teacher (list)
-    // usuario que imprime
-    //
-
     private string userName { get; set; } = null!;
     private List<TeacherEntity> teacherList { get; set; } = null!;
     private List<DegreeEntity> degreeList { get; set; } = null!;
+    
+
+    private readonly string templatesPath;
+    private OfficialEnrollmentListLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
+    {
+        this.templatesPath = templatesPath;
+    }
     
     protected override string getTemplateName() => "official-enrollment-list";
 
     protected override string updateContent(string content)
     {
-        throw new NotImplementedException();
+        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("date.value", DateTime.Now.ToString("dd-MM-yyyy"));
+
+        return content;
     }
 
     
