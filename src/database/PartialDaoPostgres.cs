@@ -8,11 +8,11 @@ public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<Pa
 {
     public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
     {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
-
+        var daoFactory = new DaoFactoryPostgres(context);
+        var schoolyear = await daoFactory.schoolyearDao.getCurrentSchoolyear();
+        
         var semesterList = await context.Set<SemesterEntity>()
-            .Where(e => e.schoolyear == ids.currentSchoolyear)
+            .Where(e => e.schoolyear == schoolyear.id)
             .Select(e => e.semesterId)
             .ToListAsync();
 
