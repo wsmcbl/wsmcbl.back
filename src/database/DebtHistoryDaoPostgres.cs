@@ -115,7 +115,7 @@ public class DebtHistoryDaoPostgres(PostgresContext context) : GenericDaoPostgre
     {
         var daoFactory = new DaoFactoryPostgres(context);
         
-        var tariff = await daoFactory.tariffDao.getInCurrentSchoolyearByType(student.educationalLevel);
+        var tariff = await daoFactory.tariffDao.getAllInCurrentSchoolyear(student.educationalLevel);
 
         var debt = new DebtHistoryEntity(student.studentId!, tariff);
         
