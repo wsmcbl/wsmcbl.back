@@ -18,7 +18,6 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
     public new async Task<List<TeacherEntity>> getAll()
     {
         var result = await entities.Include(e => e.user).ToListAsync();
-
         if (result.Count == 0)
         {
             throw new InternalException("There is not teacher in the records.");
