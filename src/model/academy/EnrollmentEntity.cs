@@ -68,4 +68,9 @@ public class EnrollmentEntity
     {
         return quantity >= capacity;
     }
+
+    public List<SubjectEntity> getSubjectListByTeacherId(string id)
+    {
+        return subjectList == null ? [] : subjectList.Where(e => e.teacherId == id).Distinct().ToList();
+    }
 }

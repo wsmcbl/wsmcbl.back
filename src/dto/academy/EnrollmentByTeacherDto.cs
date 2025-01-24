@@ -19,6 +19,6 @@ public class EnrollmentByTeacherDto
         enrollmentLabel = enrollment.label;
         position = Convert.ToInt32(enrollment.tag);
         studentQuantity = enrollment.quantity;
-        subjectQuantity = enrollment.getSubjectListByTeacher(teacherId).Count;
+        subjectQuantity = enrollment.getSubjectListByTeacherId(teacherId).Count;
     }
 }
