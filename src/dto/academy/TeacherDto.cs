@@ -15,7 +15,16 @@ public class TeacherDto
         teacherId = entity.teacherId!;
         fullName = entity.fullName();
         isGuide = entity.isGuide;
-        enrollmentId = entity.enrollment!.enrollmentId!;
-        enrollmentLabel = entity.enrollment!.label;
+
+        enrollmentId = string.Empty;
+        enrollmentLabel = "Sin matrícula.";
+
+        if (entity.enrollment == null)
+        {
+            return;
+        }
+        
+        enrollmentId = entity.enrollment.enrollmentId!;
+        enrollmentLabel = entity.enrollment.label;
     }
 }
