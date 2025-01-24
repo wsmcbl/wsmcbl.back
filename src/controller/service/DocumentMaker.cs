@@ -121,8 +121,10 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)
     {
+        var schoolyear = await daoFactory.schoolyearDao.getCurrentOrNewSchoolyear();
+        
         var user = await daoFactory.userDao!.getById(userId);
-        var degreeList = await daoFactory.degreeDao!.getAllInCurrentSchoolyearWithAllProperties();
+        var degreeList = await daoFactory.degreeDao!.getAll(schoolyear.id, true);
         var teacherList = await daoFactory.teacherDao!.getAll();
         
         var latexBuilder = new OfficialEnrollmentListLatexBuilder.Builder(resource,$"{resource}/out")
