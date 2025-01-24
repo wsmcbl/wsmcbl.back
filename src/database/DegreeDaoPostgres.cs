@@ -50,8 +50,8 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 
     public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
     {
-        ISchoolyearDao dao = new SchoolyearDaoPostgres(context);
-        var schoolyear = await dao.getNewOrCurrentSchoolyear();
+        var daoFactory = new DaoFactoryPostgres(context);
+        var schoolyear = await daoFactory.schoolyearDao.getNewOrCurrentSchoolyear();
 
         var list = await entities
             .Include(e => e.enrollmentList)
