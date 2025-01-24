@@ -22,7 +22,7 @@ public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
-    public Task<List<StudentEntity>> getAllWithSolvency();
+    public Task<List<StudentEntity>> getAllWithRegistrationTariffPaid();
     public Task<StudentEntity> getByIdWithProperties(string id);
     Task<StudentEntity?> getByInformation(StudentEntity student);
     Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();

@@ -15,7 +15,7 @@ public class EnrollStudentController : BaseController
     
     public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
-        return await daoFactory.studentDao!.getAllWithSolvency();
+        return await daoFactory.studentDao!.getAllWithRegistrationTariffPaid();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
