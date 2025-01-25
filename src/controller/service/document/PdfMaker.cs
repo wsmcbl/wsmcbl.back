@@ -1,6 +1,6 @@
 using wsmcbl.src.exception;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class PdfMaker
 {

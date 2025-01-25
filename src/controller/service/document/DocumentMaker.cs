@@ -1,7 +1,7 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {

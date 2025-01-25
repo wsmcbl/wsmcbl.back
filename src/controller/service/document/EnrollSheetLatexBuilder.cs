@@ -2,7 +2,7 @@ using System.Globalization;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class EnrollSheetLatexBuilder : LatexBuilder
 {

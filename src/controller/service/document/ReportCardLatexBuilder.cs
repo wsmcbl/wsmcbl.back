@@ -1,6 +1,6 @@
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class ReportCardLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
 {
