@@ -32,9 +32,9 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         {
             body += getDegreeContent(item);
         }
-
+        
         content = content.Replace("body.value", body);
-
+        
         return content;
     }
 
@@ -63,11 +63,11 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         foreach (var item in enrollment.studentList!.OrderBy(e => e.fullName()))
         {
             counter++;
-            result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline";
+            result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n";
         }
         
-        result += "\\end{longtable}\n";
-        result += "Si encuentra algún error por favor reportelo a secretaría para la debida corrección.";
+        result += "\\end{longtable}\n\n";
+        result += "Si encuentra algún error, por favor repórtelo a secretaría para la debida corrección.\n";
         
         if (counter > 28)
         {
@@ -75,6 +75,8 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         }
         
         result += "\\newpage\n";
+        
+        result += "\\setcounter{page}{1}\n\n\n";
         return result;
     }
 
