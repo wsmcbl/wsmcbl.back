@@ -17,7 +17,7 @@ public class TeacherDto
         isGuide = entity.isGuide;
 
         enrollmentId = string.Empty;
-        enrollmentLabel = "Sin matrícula.";
+        enrollmentLabel = "Sin asignar";
 
         if (entity.enrollment == null)
         {
