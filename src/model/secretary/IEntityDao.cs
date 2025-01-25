@@ -5,23 +5,24 @@ namespace wsmcbl.src.model.secretary;
 public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
     public Task createRange(List<DegreeEntity> degreeList);
-    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
     public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
+    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
+    public Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment);
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 {
-    public Task<SchoolYearEntity> getCurrentSchoolyear();
-    public Task<SchoolYearEntity> getOrCreateNewSchoolyear();
-    public Task<string> getValidSchoolyearId();
-    public Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds();
-    public Task<SchoolYearEntity> getSchoolYearByLabel(int year);
+    public Task<SchoolYearEntity> getByLabel(int year);
+    public Task<SchoolYearEntity> getCurrent(bool withProperties = true);
+    public Task<SchoolYearEntity> getCurrentOrNew();
+    public Task<SchoolYearEntity> getNewOrCurrent();
+    public Task<SchoolYearEntity> getOrCreateNew();
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
-    public Task<List<StudentEntity>> getAllWithSolvency();
+    public Task<List<StudentEntity>> getAllWithRegistrationTariffPaid();
     public Task<StudentEntity> getByIdWithProperties(string id);
     Task<StudentEntity?> getByInformation(StudentEntity student);
     Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();

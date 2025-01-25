@@ -3,6 +3,7 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
 using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
@@ -93,13 +94,13 @@ public class StudentDaoPostgres(PostgresContext context)
         return int.Parse(numericPart);
     }
 
-    public async Task<List<StudentEntity>> getAllWithSolvency()
+    public async Task<List<StudentEntity>> getAllWithRegistrationTariffPaid()
     {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+        DaoFactory daoFactory = new DaoFactoryPostgres(context);
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
         var tariffList = await context.Set<model.accounting.TariffEntity>()
-            .Where(e => e.schoolYear == ID.currentSchoolyear || e.schoolYear == ID.newSchoolyear)
+            .Where(e => e.schoolYear == schoolyear.id)
             .Where(e => e.type == Const.TARIFF_REGISTRATION).ToListAsync();
 
         if (tariffList.Count == 0)

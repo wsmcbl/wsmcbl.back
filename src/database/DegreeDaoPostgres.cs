@@ -50,15 +50,29 @@ public class DegreeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Deg
 
     public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
     {
-        var dao = new SchoolyearDaoPostgres(context);
-        var ID = await dao.getCurrentAndNewSchoolyearIds();
-        var schoolyearId = ID.newSchoolyear != "" ? ID.newSchoolyear : ID.currentSchoolyear;
+        var daoFactory = new DaoFactoryPostgres(context);
+        var schoolyear = await daoFactory.schoolyearDao.getNewOrCurrent();
 
         var list = await entities
             .Include(e => e.enrollmentList)
-            .Where(e => e.schoolYear == schoolyearId).ToListAsync();
+            .Where(e => e.schoolYear == schoolyear.id).ToListAsync();
 
         return list.Where(e => e.enrollmentList!.Count != 0).ToList();
+    }
+
+    public async Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment = false)
+    {
+        var query = entities
+            .Include(e => e.enrollmentList)
+            .Where(e => e.schoolYear == schoolyearId);
+
+        if (withStudentsInEnrollment)
+        {
+            query = query.Include(e => e.enrollmentList)!
+                .ThenInclude(e => e.studentList);
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<DegreeEntity?> getByEnrollmentId(string enrollmentId)

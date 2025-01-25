@@ -33,6 +33,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         var quantity = (subjects.Count + 1).ToString();
         return $"|*{{{quantity}}}{{c|}}";
     }
+    
     private string getTitleLine()
     {
         var result = "Parcial";
@@ -69,8 +70,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         return $"{finalGrade}\\\\ \\hline";
     }
-    
-
     
     private string getSemester(SemesterEntity semester)
     {
@@ -116,7 +115,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         return $"{labelLine} {gradeLine}";
     }
-    
     
 
     public class Builder

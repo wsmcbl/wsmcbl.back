@@ -15,7 +15,7 @@ public class EnrollStudentController : BaseController
     
     public async Task<List<StudentEntity>> getStudentListWithSolvency()
     {
-        return await daoFactory.studentDao!.getAllWithSolvency();
+        return await daoFactory.studentDao!.getAllWithRegistrationTariffPaid();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
@@ -54,15 +54,15 @@ public class EnrollStudentController : BaseController
 
     private async Task<bool> isAlreadyEnroll(string studentId)
     {
-        var ids = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
 
-        return academyStudent != null && academyStudent.schoolYear == ids.newSchoolyear;
+        return academyStudent != null && academyStudent.schoolYear == schoolyear.id;
     }
 
     private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)
     {
-        var schoolYear = await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
+        var schoolYear = await daoFactory.schoolyearDao!.getOrCreateNew();
         
         var academyStudent = new model.academy.StudentEntity(studentId, enrollmentId);
         

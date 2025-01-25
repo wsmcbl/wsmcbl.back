@@ -27,7 +27,7 @@ public interface ITariffDao : IGenericDao<TariffEntity, int>
     public Task<List<TariffEntity>> getOverdueList();
     public Task<List<TariffEntity>> getListByStudent(string studentId);
     public Task<float[]> getGeneralBalance(string studentId);
-    public Task<TariffEntity> getInCurrentSchoolyearByType(int level);
+    public Task<TariffEntity> getAllInCurrentSchoolyear(int level);
 }
 
 public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>

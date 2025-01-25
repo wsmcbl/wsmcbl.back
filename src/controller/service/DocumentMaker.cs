@@ -119,9 +119,21 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return teacher != null ? teacher.fullName() : string.Empty;
     }
 
-    public async Task<byte[]> getAssistanceListDocument()
+    public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)
     {
-        await Task.CompletedTask;
-        return [];
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        
+        var user = await daoFactory.userDao!.getById(userId);
+        var degreeList = await daoFactory.degreeDao!.getAll(schoolyear.id!, true);
+        var teacherList = await daoFactory.teacherDao!.getAll();
+        
+        var latexBuilder = new OfficialEnrollmentListLatexBuilder.Builder(resource,$"{resource}/out")
+            .withDegreeList(degreeList)
+            .withTeacherList(teacherList)
+            .withUserName(user.getAlias())
+            .build();
+        
+        setLatexBuilder(latexBuilder);
+        return getPDF();
     }
 }
