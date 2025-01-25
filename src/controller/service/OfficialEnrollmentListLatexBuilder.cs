@@ -51,7 +51,8 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     private string getEnrollmentContent(EnrollmentEntity enrollment)
     {
         var result = $"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n";
-        result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}} \\hfill \\textbf{{Fecha}}: {getDateFormat(false)}\n";
+        result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}";
+        result += $"\\hfill \\textbf{{Fecha}}: {getDateFormat(false)}\n";
         result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         result += "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";

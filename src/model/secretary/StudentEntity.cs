@@ -26,7 +26,21 @@ public class StudentEntity
 
     public string fullName()
     {
-        return $"{name} {secondName} {surname} {secondSurname}";
+        var result = name;
+
+        if (!string.IsNullOrEmpty(secondName?.Trim()))
+        {
+            result += $" {secondName}";
+        }
+        
+        result += $" {surname}";
+        
+        if (!string.IsNullOrEmpty(secondSurname?.Trim()))
+        {
+            result += $" {secondSurname}";
+        }
+        
+        return result;
     }
 
     public string getTutorName()
