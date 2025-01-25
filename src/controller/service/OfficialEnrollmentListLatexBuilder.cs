@@ -16,27 +16,8 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     private OfficialEnrollmentListLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
         this.templatesPath = templatesPath;
-        now = DateTime.Now;
+        now = DateTime.UtcNow;
     }
-    
-    /*
-     * 
-       
-       \begin{center}
-           \textbf{\large Septimo Grado A}
-       \end{center}
-       \textbf{Docente guía}: \aField{teacherName} \hfill \textbf{Fecha}: \printDate
-       \footnotetext{Impreso por wsmcbl el \currentDatetime, \userName.}
-       
-       \begin{longtable}{| c || l || p{\dimexpr\textwidth-6cm\relax} |}
-           \hline
-           \textbf{N°} & \textbf{Código} & \textbf{Nombre}\\\hline\hline
-           1 & 2025-0005-djmr & Diego Jireth Mercado Ramirez\\\hline
-       \end{longtable}
-       Si encuentra algún error por favor reportelo a secretaría para la debida corrección.
-       \footnotetext{Impreso por wsmcbl el \currentDatetime, \userName.}
-       \newpage
-     */
     
     protected override string getTemplateName() => "official-enrollment-list";
     
@@ -71,7 +52,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     {
         var result = $"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n";
         result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}} \\hfill \\textbf{{Fecha}}: {getDateFormat(false)}\n";
-        result += $"\\footnotetext{{Impreso por wsmcbl el {getDateFormat()}, {userName}.}}\n";
+        result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         result += "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
         result += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
@@ -84,6 +65,12 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         }
         
         result += "\\end{longtable}\n";
+        result += "Si encuentra algún error por favor reportelo a secretaría para la debida corrección.";
+        
+        if (counter > 28)
+        {
+            result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+        }
         
         result += "\\newpage\n";
         return result;
