@@ -8,28 +8,44 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[spanish]{babel}
 \usepackage{mlmodern}
+\usepackage{longtable}
+\usepackage{tabularx}
 \usepackage[T1]{fontenc}
-\usepackage[margin=2cm]{geometry}
+\usepackage[left=2cm, right=2cm, top=3.5cm, bottom=2.1cm, headheight=2cm, headsep=1cm]{geometry}
 \renewcommand{\normalsize}{\fontsize{13}{18}\selectfont}
 
-\setlength{\parskip}{1.5mm}
+\newcommand{\currentYear}{year.value}
+
+\pagestyle{fancy}
+\fancyhead[C]
+{
+    \makebox[\textwidth]{
+        \hspace{-0.2\textwidth}
+        \begin{minipage}[c][2.5cm]{0.2\textwidth}
+            \includegraphics[width=2.5cm]{logo.value}
+        \end{minipage}
+        \hspace{0.01\textwidth}
+        \begin{minipage}[c][2.5cm]{0.6\textwidth}
+            \centering
+            \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
+            \textbf{\Large Lista oficial \currentYear}\\
+            Contacto: info@cbl-edu.com
+        \end{minipage}
+    }
+}
+\fancyfoot[C]{Pág. \thepage}
+\setlength{\parskip}{1.7mm}
 \setlength{\parindent}{0pt}
-\setlength{\headsep}{3mm}
+\renewcommand{\headrulewidth}{0pt}
 
-\pagestyle{plain}
+\newcommand{\aField}[1]{#1}
 
-\newcommand{\printDate}{date.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
+
 
 \begin{document}
-
-    \begin{minipage}[c][2.5cm]{0.2\textwidth}
-        \includegraphics[width=2.5cm]{logo.value}
-    \end{minipage}
-    \begin{minipage}[c][2.5cm]{0.6\textwidth}
-        \begin{center}
-            \textbf{\large COLEGIO BAUTISTA LIBERTAD\\HOJA DE MATRÍCULA}
-        \end{center}
-    \end{minipage}
-
-    \hfill Fecha: \printDate
+    body.value
+    
 \end{document}
