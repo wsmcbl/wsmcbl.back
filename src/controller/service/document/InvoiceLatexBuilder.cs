@@ -2,7 +2,7 @@ using System.Globalization;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.utilities;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
 {

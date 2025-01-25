@@ -1,4 +1,4 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
