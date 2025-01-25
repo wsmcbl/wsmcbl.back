@@ -1,4 +1,5 @@
 using System.Globalization;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -59,7 +60,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         result += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
         
         var counter = 0;
-        foreach (var item in enrollment.studentList!)
+        foreach (var item in enrollment.studentList!.OrderBy(e => e.fullName()))
         {
             counter++;
             result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline";
@@ -110,7 +111,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
 
         public Builder withTeacherList(List<TeacherEntity> parameter)
         {
-            latexBuilder.teacherList = parameter;
+            latexBuilder.teacherList = parameter.Where(e => e.teacherId != Const.DefaultTeacherId).ToList();
             return this;
         }
 
