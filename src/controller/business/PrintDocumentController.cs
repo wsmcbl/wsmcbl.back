@@ -1,4 +1,4 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
