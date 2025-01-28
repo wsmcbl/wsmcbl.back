@@ -2,33 +2,32 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
-using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
-    public async Task<StudentEntity> getByIdWithProperties(string id)
+    private DaoFactory daoFactory { get; set; }
+    public StudentDaoPostgres(PostgresContext context) : base(context)
+    {
+        daoFactory = new DaoFactoryPostgres(context);
+    }
+
+    public async Task<StudentEntity> getFullById(string id)
     {
         var entity = await entities.FirstOrDefaultAsync(e => e.studentId == id);
-
         if (entity == null)
         {
-            throw new EntityNotFoundException("Student", id);
+            throw new EntityNotFoundException("StudentEntity", id);
         }
 
-        var tutor = await context.Set<StudentTutorEntity>()
-            .AsNoTracking()
+        var tutor = await context.Set<StudentTutorEntity>().AsNoTracking()
             .FirstOrDefaultAsync(e => e.tutorId == entity.tutorId);
-
         if (tutor == null)
         {
-            throw new EntityNotFoundException($"Entity of type (Tutor) with StudentId ({id}) not found.");
+            throw new EntityNotFoundException($"Entity of type (TutorEntity) with StudentId ({id}) not found.");
         }
 
         entity.tutor = tutor;
@@ -47,17 +46,18 @@ public class StudentDaoPostgres(PostgresContext context)
         return entity;
     }
 
-    public async Task<StudentEntity?> getByInformation(StudentEntity student)
+    public async Task<StudentEntity?> findByDuplicateOrNull(StudentEntity student)
     {
-        return (await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync())
-            .Find(e => student.getStringData().Equals(e.getStringData()));
+        var list = await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync();
+        return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
     public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment()
     {
         var studentList = await getAll();
-        var academyList = await context.Set<model.academy.StudentEntity>().ToListAsync();
+        var academyList = await daoFactory.academyStudentDao!.getAll();
         var result = new List<(StudentEntity student, string schoolyear, string enrollment)>();
+        
         foreach (var item in studentList)
         {
             var academyStudent = academyList.Where(e => e.studentId == item.studentId)
@@ -71,15 +71,17 @@ public class StudentDaoPostgres(PostgresContext context)
                 continue;
             }
 
-            var schoolyear = await context.Set<SchoolYearEntity>()
-                .FirstOrDefaultAsync(e => e.id == academyStudent.schoolYear);
+            var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent.schoolYear);
             if (schoolyear != null)
+            {
                 schoolyearLabel = schoolyear.label;
+            }
 
-            var enrollment = await context.Set<EnrollmentEntity>()
-                .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
+            var enrollment = await daoFactory.enrollmentDao!.getById(academyStudent.enrollmentId ?? string.Empty);
             if (enrollment != null)
+            {
                 enrollmentLabel = enrollment.label;
+            }
             
             result.Add((item, schoolyearLabel, enrollmentLabel));
         }
@@ -94,9 +96,8 @@ public class StudentDaoPostgres(PostgresContext context)
         return int.Parse(numericPart);
     }
 
-    public async Task<List<StudentEntity>> getAllWithRegistrationTariffPaid()
+    public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
     {
-        DaoFactory daoFactory = new DaoFactoryPostgres(context);
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
         var tariffList = await context.Set<model.accounting.TariffEntity>()
@@ -110,14 +111,14 @@ public class StudentDaoPostgres(PostgresContext context)
         }
 
         var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
-        var query = $@"SELECT s.* FROM secretary.student s
-                    INNER JOIN accounting.debthistory d ON d.studentid = s.studentid
-                    LEFT JOIN academy.student aca on aca.studentid = s.studentid
-                    WHERE ({tariffsId}) AND aca.enrollmentid is NULL AND
-                          CASE
-                              WHEN d.amount = 0 THEN 1
-                              ELSE (d.debtbalance / d.amount)
-                          END >= 0.4;";
+        var query = "SELECT s.* FROM secretary.student s";
+        query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
+        query += " LEFT JOIN academy.student aca on aca.studentid = s.studentid";
+        query += $" WHERE ({tariffsId}) AND aca.enrollmentid is NULL AND";
+        query += " CASE";
+        query += "   WHEN d.amount = 0 THEN 1";
+        query += "   ELSE (d.debtbalance / d.amount)";                              
+        query += " END >= 0.4;";
         
         return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
     }
@@ -141,8 +142,7 @@ public class StudentDaoPostgres(PostgresContext context)
 
     public new async Task delete(StudentEntity entity)
     {
-        FormattableString query =
-            $@"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
+        FormattableString query =$"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
         await context.Database.ExecuteSqlAsync(query);
         
         await base.delete(entity);

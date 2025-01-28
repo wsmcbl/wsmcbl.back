@@ -25,7 +25,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         
         var sut = new StudentDaoPostgres(context);
 
-        var result = await sut.getByIdWithProperties("std-00");
+        var result = await sut.getFullById("std-00");
 
         Assert.NotNull(result);
     }
@@ -35,7 +35,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
     {
         var sut = new StudentDaoPostgres(TestDbContext.getInMemory());
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getByIdWithProperties("std-00"));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.getFullById("std-00"));
     }
 
     [Fact]
