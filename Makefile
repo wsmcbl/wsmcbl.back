@@ -6,8 +6,6 @@ help: ## Show this help message
 	@echo 'targets:'
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
-
-
 b = unknown
 
 mer-b2dev: ## Merge branch (b) into develop
