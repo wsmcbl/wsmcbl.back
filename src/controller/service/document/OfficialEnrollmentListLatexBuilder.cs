@@ -41,7 +41,9 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     private string getDegreeContent(DegreeEntity degree)
     {
         var result = string.Empty;
-        foreach (var item in degree.enrollmentList!.OrderBy(e => e.tag))
+        
+        var list = degree.enrollmentList!.Where(e => e.studentList!.Count != 0).ToList();
+        foreach (var item in list.OrderBy(e => e.tag))
         {
             result += getEnrollmentContent(item);
         }
@@ -53,23 +55,34 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     {
         var result = $"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n";
         result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}";
-        result += $"\\hfill \\textbf{{Fecha}}: {getDateFormat(false)}\n";
+        result += $"\\hfill \\textbf{{Fecha}}: {getDateFormat()}\n";
         result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         result += "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
         result += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
         
         var counter = 0;
-        foreach (var item in enrollment.studentList!.OrderBy(e => e.fullName()))
+        var womanList = enrollment.studentList!.Where(e => !e.student.sex).ToList();
+        foreach (var item in womanList.OrderBy(e => e.fullName()))
+        {
+            counter++;
+            result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n";
+        }
+
+        result += "\\hline\n";
+        
+        var menList = enrollment.studentList!.Where(e => e.student.sex).ToList();
+        foreach (var item in menList.OrderBy(e => e.fullName()))
         {
             counter++;
             result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n";
         }
         
         result += "\\end{longtable}\n\n";
-        result += "Si encuentra algún error, por favor repórtelo a secretaría para la debida corrección.\n";
+        result += "Si encuentra algún error, por favor repórtelo a secretaría para realizar la corrección.\n";
+        result += $"Esta es la lista oficial de {enrollment.label}, si alguna hoja de matrícula no coincide, es posible que dicha hoja no esté actualizada.\n";
         
-        if (counter > 28)
+        if (counter > 24)
         {
             result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
         }
@@ -86,12 +99,10 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         return teacher != null ? teacher.fullName() : "Sin asignar";
     }
     
-    private string getDateFormat(bool withDay = true)
+    private string getDateFormat()
     {
         var culture = new CultureInfo("es-ES");
-
-        var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
-        return now.ToString(format, culture);
+        return now.toUTC6().ToString("dd/MMMM/yyyy", culture);
     }
 
     public class Builder
