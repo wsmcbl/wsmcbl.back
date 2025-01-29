@@ -12,7 +12,7 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
 {
     public async Task<StudentEntity> getStudentGradesInformation(string studentId)
     {
-        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var partials = await daoFactory.partialDao!.getListByCurrentSchoolyear();
         student.setPartials(partials);
 

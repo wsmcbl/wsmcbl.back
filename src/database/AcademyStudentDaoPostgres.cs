@@ -20,7 +20,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
     {
         try
         {
-            await getByIdInCurrentSchoolyear(studentId);
+            await getCurrentById(studentId);
             return true;
         }
         catch (EntityNotFoundException)
@@ -41,7 +41,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         await context.Database.ExecuteSqlAsync(query);
     }
  
-    public async Task<StudentEntity> getByIdInCurrentSchoolyear(string studentId)
+    public async Task<StudentEntity> getCurrentById(string studentId)
     {
         var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         

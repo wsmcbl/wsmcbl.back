@@ -7,7 +7,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
     public async Task<byte[]> getReportCardByStudent(string studentId)
     {
-        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
 
@@ -95,7 +95,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getGradeReportByStudent(string studentId)
     {
-        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
 
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         
