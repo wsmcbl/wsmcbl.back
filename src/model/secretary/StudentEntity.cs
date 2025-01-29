@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
@@ -23,24 +25,24 @@ public class StudentEntity
     public StudentTutorEntity tutor { get; set; } = null!;
     public List<StudentParentEntity>? parents { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
-
+    
     public string fullName()
     {
-        var result = name;
+        var builder = new StringBuilder(name);
 
-        if (!string.IsNullOrEmpty(secondName?.Trim()))
+        if (!string.IsNullOrWhiteSpace(secondName))
         {
-            result += $" {secondName}";
+            builder.Append(' ').Append(secondName);
         }
-        
-        result += $" {surname}";
-        
-        if (!string.IsNullOrEmpty(secondSurname?.Trim()))
+
+        builder.Append(' ').Append(surname);
+
+        if (!string.IsNullOrWhiteSpace(secondSurname))
         {
-            result += $" {secondSurname}";
+            builder.Append(' ').Append(secondSurname);
         }
-        
-        return result;
+
+        return builder.ToString();
     }
 
     public string getTutorName()
