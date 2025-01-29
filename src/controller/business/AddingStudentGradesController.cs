@@ -20,14 +20,14 @@ public class AddingStudentGradesController : BaseController
         return await daoFactory.enrollmentDao!.getListByTeacherId(teacherId);
     }
 
-    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity baseSubjectPartial)
+    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity parameter)
     {
-        return await daoFactory.subjectPartialDao!.getListByTeacherAndEnrollment(baseSubjectPartial);
+        return await daoFactory.subjectPartialDao!.getListBySubject(parameter);
     }
 
-    public async Task addGrades(SubjectPartialEntity baseSubjectPartial, List<GradeEntity> gradeList)
+    public async Task addGrades(SubjectPartialEntity parameter, List<GradeEntity> gradeList)
     {
-        await daoFactory.gradeDao!.addRange(baseSubjectPartial, gradeList);
+        await daoFactory.gradeDao!.addRange(parameter, gradeList);
         await daoFactory.execute();
     }
 

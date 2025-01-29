@@ -21,7 +21,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         var result = await entities.Include(e => e.user).ToListAsync();
         if (result.Count == 0)
         {
-            throw new InternalException("There is not teacher in the records.");
+            throw new ConflictException("There is not teacher in the records.");
         }
 
         return result;
@@ -51,11 +51,6 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         }
         
         return teacher;
-    }
-
-    public async Task<List<TeacherEntity>> getByListByIdList(List<string> value)
-    {
-        return await entities.Where(e => value.Contains(e.teacherId!)).ToListAsync();
     }
 
     public async Task<TeacherEntity> getByUserId(Guid userId)

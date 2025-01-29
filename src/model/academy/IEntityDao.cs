@@ -18,13 +18,12 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, string>
 
 public interface ISubjectPartialDao : IGenericDao<SubjectPartialEntity, int>
 {
-    public Task<List<SubjectPartialEntity>> getListByTeacherAndEnrollment(SubjectPartialEntity subjectPartial);
+    public Task<List<SubjectPartialEntity>> getListBySubject(SubjectPartialEntity subjectPartial);
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>
 {
     public Task<TeacherEntity?> getByEnrollmentId(string enrollmentId);
-    public Task<List<TeacherEntity>> getByListByIdList(List<string> value);
     public Task<TeacherEntity> getByUserId(Guid userId);
 }
 
