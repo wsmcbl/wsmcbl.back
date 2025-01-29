@@ -16,18 +16,21 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         daoFactory = new DaoFactoryPostgres(context);
     }
     
-    public async Task<List<DebtHistoryEntity>> getListByStudent(string studentId)
+    public async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
     {
-        return await entities
-            .Where(e => e.studentId == studentId)
-            .Include(e => e.tariff)
-            .ToListAsync();
+        var query = entities.Where(e => e.studentId == studentId);
+        if (withTariff)
+        {
+            query = query.Include(e => e.tariff);
+        }
+        
+        return await query.ToListAsync();
     }
 
     public async Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId)
     {
-        var history = await getListByStudent(studentId);
-        return history.Where(dh => dh.isPaid || dh.havePayments()).ToList();
+        var debtList = await getListByStudentId(studentId);
+        return debtList.Where(dh => dh.isPaid || dh.havePayments()).ToList();
     }
 
     public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> list)
@@ -37,11 +40,11 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             return;
         }
         
-        var debts = await entities.Where(e => e.studentId == studentId).ToListAsync();
+        var debtList = await getListByStudentId(studentId,false);
         
         foreach (var item in list)
         {
-            var debt = debts.Find(e => e.tariffId == item.tariffId);
+            var debt = debtList.FirstOrDefault(e => e.tariffId == item.tariffId);
             if (debt == null)
             {
                 continue;
@@ -54,13 +57,13 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
     public async Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction)
     {
-        var debts = await entities
+        var debtList = await entities
             .Where(e => e.studentId == transaction.studentId)
             .Where(e => e.isPaid)
             .ToListAsync();
 
-        var detail = transaction.details
-            .FirstOrDefault(t => debts.Exists(e => e.tariffId == t.tariffId));
+        var detail = transaction.details.FirstOrDefault(t
+            => debtList.Exists(e => e.tariffId == t.tariffId));
         
         return detail != null;
     }
@@ -84,7 +87,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             throw new ConflictException("The transaction is already cancelled.");
         }
 
-        var debtList = await entities.Where(e => e.studentId == transaction.studentId).ToListAsync();
+        var debtList = await getListByStudentId(transaction.studentId, false);
 
         foreach (var item in transaction.details)
         {
@@ -101,8 +104,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
     public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
     {
-        var debt = await entities
-            .Where(e => e.studentId == studentId && e.tariffId == tariffId)
+        var debt = await entities.Where(e => e.studentId == studentId && e.tariffId == tariffId)
             .FirstOrDefaultAsync();
         
         if (debt == null)
@@ -116,15 +118,16 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         return debt;
     }
 
-    public async Task addRegistrationTariffDebtByStudent(StudentEntity student)
+    public async Task createRegistrationDebtByStudent(StudentEntity student)
     {
-        var tariff = await daoFactory.tariffDao!.getAllInCurrentSchoolyear(student.educationalLevel);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
+        var tariff = await daoFactory.tariffDao!.getRegistrationTariff(schoolyear.id!, student.educationalLevel);
+ 
+        var debt = new DebtHistoryEntity(student.studentId!, tariff)
+        {
+            schoolyear = schoolyear.id!
+        };
 
-        var debt = new DebtHistoryEntity(student.studentId!, tariff);
-        
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
-        debt.schoolyear = schoolyear.id!;
-        
         create(debt);
         await saveAsync();
     }
@@ -140,7 +143,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
         
-        var debts = await entities.Where(d => d.studentId == studentId)
+        var debtList = await entities.Where(d => d.studentId == studentId)
             .Where(d => d.schoolyear == currentSch.id || d.schoolyear == newSch.id)
             .Include(d => d.tariff)
             .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
@@ -148,7 +151,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
         float[] balance = [0, 0];
 
-        foreach (var debt in debts)
+        foreach (var debt in debtList)
         {
             balance[0] += debt.debtBalance;
             balance[1] += debt.amount;

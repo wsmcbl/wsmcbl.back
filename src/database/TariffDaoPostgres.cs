@@ -34,25 +34,24 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
     {
         var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
-        
-        var debts = await context.Set<DebtHistoryEntity>()
+
+        var debtList = await context.Set<DebtHistoryEntity>()
             .Where(e => e.studentId == studentId)
             .Where(e => e.schoolyear == currentSch.id || e.schoolyear == newSch.id || !e.isPaid)
             .Include(e => e.tariff)
             .ToListAsync();
-        
-        return debts.Select(e => e.tariff).ToList();
+
+        return debtList.Select(e => e.tariff).ToList();
     }
-    
-    public async Task<TariffEntity> getAllInCurrentSchoolyear(int level)
+
+    public async Task<TariffEntity> getRegistrationTariff(string schoolyearId, int level)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
-        
-        var tariff = await entities
-            .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear.id);
+        var tariff = await entities.FirstOrDefaultAsync(e =>
+            e.schoolYear == schoolyearId && e.educationalLevel == level && e.type == Const.TARIFF_REGISTRATION);
         if (tariff == null)
         {
-            throw new EntityNotFoundException($"Tariff with educationalLevel ({level}) in current schoolyear not found.");
+            throw new EntityNotFoundException(
+                $"Tariff with educationalLevel ({level}) in current schoolyear not found.");
         }
 
         return tariff;

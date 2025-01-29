@@ -95,7 +95,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         context = TestDbContext.getInMemory();
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.getListByStudent("student");
+        var result = await sut.getListByStudentId("student");
         
         Assert.Empty(result);
     }

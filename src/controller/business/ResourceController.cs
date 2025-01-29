@@ -48,7 +48,7 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
 
     public async Task deleteStudentById(string studentId)
     {
-        var debtList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        var debtList = await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
         if(debtList.Count == 0)
             throw new EntityNotFoundException("Student", studentId);
         
