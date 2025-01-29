@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.config;
-using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
@@ -11,11 +9,11 @@ public class CashierDaoPostgres(PostgresContext context) : GenericDaoPostgres<Ca
 {
     public override async Task<CashierEntity?> getById(string id)
     {
-        var cashier = await entities.Where(e => e.cashierId == id)
-            .Include(e => e.user).FirstOrDefaultAsync();
+        var cashier = await entities.Include(e => e.user)
+            .FirstOrDefaultAsync(e => e.cashierId == id);
         if (cashier == null)
         {
-            throw new EntityNotFoundException("Cashier", id);
+            throw new EntityNotFoundException("CashierEntity", id);
         }
         
         return cashier;

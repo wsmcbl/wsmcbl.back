@@ -23,7 +23,7 @@ public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
     public Task<StudentEntity> getFullById(string id);
-    public Task<StudentEntity?> findByDuplicateOrNull(StudentEntity student);
+    public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);
     public Task<List<StudentEntity>> getAllWithSolvencyInRegistration();
     public Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();
 }

@@ -46,7 +46,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return entity;
     }
 
-    public async Task<StudentEntity?> findByDuplicateOrNull(StudentEntity student)
+    public async Task<StudentEntity?> findDuplicateOrNull(StudentEntity student)
     {
         var list = await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync();
         return list.Find(e => student.getStringData().Equals(e.getStringData()));

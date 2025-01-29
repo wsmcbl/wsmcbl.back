@@ -1,18 +1,11 @@
 using wsmcbl.src.exception;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
-    {
-        return await daoFactory.studentDao!.getListWhitSchoolyearAndEnrollment();
-    }
-
     public async Task<string> getMedia(int type, int schoolyear)
     {
         var result = await daoFactory.schoolyearDao!.getByLabel(schoolyear);

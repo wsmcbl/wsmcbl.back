@@ -9,7 +9,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
 {
     public async Task<StudentEntity> createStudent(StudentEntity student, StudentTutorEntity tutor)
     {
-        var existingStudent = await daoFactory.studentDao!.findByDuplicateOrNull(student);
+        var existingStudent = await daoFactory.studentDao!.findDuplicateOrNull(student);
         if (existingStudent != null)
         {
             throw new ConflictException($"The student profile already exist with id ({existingStudent.studentId}).");
