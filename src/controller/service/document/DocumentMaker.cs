@@ -44,13 +44,14 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var student = await daoFactory.studentDao!.getFullById(studentId);
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
-        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolYear);
+        var label = schoolyear != null ? schoolyear.label : "";
         
         var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out", student);
         latexBuilder.setGrade(enrollment.label);
-        latexBuilder.setAcademyStudent(academyStudent!);
+        latexBuilder.setAcademyStudent(academyStudent);
         latexBuilder.setUsername(user.getAlias());
-        latexBuilder.setSchoolyear(schoolyear.label);
+        latexBuilder.setSchoolyear(label);
         
         setLatexBuilder(latexBuilder);
         return getPDF();

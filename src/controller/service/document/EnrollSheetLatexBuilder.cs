@@ -43,7 +43,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     
     protected override string updateContent(string content)
     {
-        content = content.ReplaceInLatexFormat($"schoolyear.value", newSchoolyear);
+        content = content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
         
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
