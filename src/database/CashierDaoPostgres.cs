@@ -9,8 +9,10 @@ public class CashierDaoPostgres(PostgresContext context) : GenericDaoPostgres<Ca
 {
     public override async Task<CashierEntity?> getById(string id)
     {
-        var cashier = await entities.Include(e => e.user)
-            .FirstOrDefaultAsync(e => e.cashierId == id);
+        var cashier = await entities.Where(e => e.cashierId == id)
+            .Include(e => e.user)
+            .FirstOrDefaultAsync();
+        
         if (cashier == null)
         {
             throw new EntityNotFoundException("CashierEntity", id);
