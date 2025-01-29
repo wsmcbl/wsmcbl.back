@@ -43,7 +43,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var user = await daoFactory.userDao!.getById(userId);
         var student = await daoFactory.studentDao!.getFullById(studentId);
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
-        var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId);
+        var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId!);
         var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolYear);
         var label = schoolyear != null ? schoolyear.label : "";
         

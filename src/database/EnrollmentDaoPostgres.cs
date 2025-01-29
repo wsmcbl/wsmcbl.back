@@ -2,11 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres<EnrollmentEntity, string>(context), IEnrollmentDao
+public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string>, IEnrollmentDao
 {
+    private DaoFactory daoFactory {get; set;}
+
+    public EnrollmentDaoPostgres(PostgresContext context) : base(context)
+    {
+        daoFactory = new DaoFactoryPostgres(context);
+    }
+    
     public new async Task<List<EnrollmentEntity>> getAll()
     {
         return await entities
@@ -18,35 +26,33 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
     public async Task<EnrollmentEntity> getFullById(string enrollmentId)
     {
         var result = await entities
+            .Where(e => e.enrollmentId == enrollmentId)
             .Include(e => e.studentList)!
             .ThenInclude(e => e.student)
             .Include(e => e.subjectList)!
             .ThenInclude(e => e.secretarySubject)
-            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
+            .FirstOrDefaultAsync();
 
         if (result == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
 
         return result;
     }
 
-    public async Task<EnrollmentEntity> getByStudentId(string? studentId)
+    public async Task<EnrollmentEntity> getByStudentId(string studentId)
     {
-        var student = await context.Set<StudentEntity>().FirstOrDefaultAsync(e => e.studentId == studentId);
-
+        var student = await daoFactory.academyStudentDao!.getById(studentId);
         if (student == null)
         {
             throw new EntityNotFoundException($"There is not Enrollment that contains the student with id ({studentId}).");
         }
 
-        var result = await entities
-            .FirstOrDefaultAsync(e => e.enrollmentId == student.enrollmentId);
-
+        var result = await getById(student.enrollmentId ?? string.Empty);
         if (result == null)
         {   
-            throw new EntityNotFoundException("Enrollment", student.enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", student.enrollmentId);
         }
 
         return result;
@@ -54,17 +60,15 @@ public class EnrollmentDaoPostgres(PostgresContext context) : GenericDaoPostgres
 
     public async Task<List<EnrollmentEntity>> getListByTeacherId(string teacherId)
     {
-        var subjectList = await context.Set<SubjectEntity>()
-            .Where(e => e.teacherId == teacherId).ToListAsync();
-
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var currentSchoolyear = await schoolyearDao.getCurrent();
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
 
         var enrollmentList = await entities.Where(e => e.schoolYear == currentSchoolyear.id)
             .Include(e => e.subjectList)
             .ToListAsync();
 
-        List<EnrollmentEntity> result = [];
+        var subjectList = await daoFactory.subjectDao!.getListByTeacherId(teacherId);
+        
+        var result = new List<EnrollmentEntity>();
         foreach (var item in subjectList)
         {
             result.Add(enrollmentList.Find(e => e.enrollmentId == item.enrollmentId)!);

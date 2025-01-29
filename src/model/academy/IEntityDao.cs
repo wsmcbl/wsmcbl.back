@@ -5,13 +5,14 @@ namespace wsmcbl.src.model.academy;
 public interface IEnrollmentDao : IGenericDao<EnrollmentEntity, string>
 {
     public Task<EnrollmentEntity> getFullById(string enrollmentId);
-    public Task<EnrollmentEntity> getByStudentId(string? studentId);
+    public Task<EnrollmentEntity> getByStudentId(string studentId);
     public Task<List<EnrollmentEntity>> getListByTeacherId(string teacherId);
     public Task createRange(ICollection<EnrollmentEntity> enrollmentList);
 }
 
 public interface ISubjectDao : IGenericDao<SubjectEntity, string>
 {
+    public Task<List<SubjectEntity>> getListByTeacherId(string teacherId);
     public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId);
     public Task<SubjectEntity?> getBySubjectAndEnrollment(string subjectId, string enrollmentId);
 }

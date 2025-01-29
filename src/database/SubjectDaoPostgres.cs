@@ -19,4 +19,9 @@ public class SubjectDaoPostgres(PostgresContext context)
         return await entities.Where(e => e.subjectId == subjectId && e.enrollmentId == enrollmentId)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<List<SubjectEntity>> getListByTeacherId(string teacherId)
+    {
+        return await context.Set<SubjectEntity>().Where(e => e.teacherId == teacherId).ToListAsync();
+    }
 }
