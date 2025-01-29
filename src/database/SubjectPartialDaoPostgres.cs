@@ -27,4 +27,14 @@ public class SubjectPartialDaoPostgres(PostgresContext context) :
 
         return result;
     }
+
+    public async Task<List<int>> getIdListBySubject(SubjectPartialEntity subjectPartial)
+    {
+        return await entities
+            .Where(e => e.enrollmentId == subjectPartial.enrollmentId
+                        && e.teacherId == subjectPartial.teacherId
+                        && e.partialId == subjectPartial.partialId)
+            .Select(e => e.subjectPartialId)
+            .ToListAsync();
+    }
 }
