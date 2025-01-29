@@ -57,49 +57,6 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return await context.Set<StudentView>().ToListAsync();
     }
 
-    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment()
-    {
-        var studentList = await getAll();
-        var academyList = await daoFactory.academyStudentDao!.getAll();
-        var result = new List<(StudentEntity student, string schoolyear, string enrollment)>();
-        
-        foreach (var item in studentList)
-        {
-            var academyStudent = academyList.Where(e => e.studentId == item.studentId)
-                .MaxBy(e => GetNumericPart(e.schoolYear));
-
-            var schoolyearLabel = "";
-            var enrollmentLabel = "Sin matrícula";
-            if (academyStudent == null)
-            {
-                result.Add((item, schoolyearLabel, enrollmentLabel));
-                continue;
-            }
-
-            var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent.schoolYear);
-            if (schoolyear != null)
-            {
-                schoolyearLabel = schoolyear.label;
-            }
-
-            var enrollment = await daoFactory.enrollmentDao!.getById(academyStudent.enrollmentId ?? string.Empty);
-            if (enrollment != null)
-            {
-                enrollmentLabel = enrollment.label;
-            }
-            
-            result.Add((item, schoolyearLabel, enrollmentLabel));
-        }
-
-        return result;
-    }
-    
-    private static int GetNumericPart(string item)
-    {
-        var numericPart = item.Substring(3);
-        return int.Parse(numericPart);
-    }
-
     public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
     {
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();

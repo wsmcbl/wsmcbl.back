@@ -237,7 +237,7 @@ internal class SecretaryContext
     {
         modelBuilder.Entity<StudentView>(entity =>
         {
-            entity.ToView("student_view", "secretary").HasNoKey();
+            entity.ToView("student_to_list_view", "secretary").HasNoKey();
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.fullName).HasColumnName("fullname");
             entity.Property(e => e.isActive).HasColumnName("studentstate");
