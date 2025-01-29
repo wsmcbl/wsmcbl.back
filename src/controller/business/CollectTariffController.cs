@@ -58,7 +58,7 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     {
         if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
         {
-            throw new ArgumentException($"Some tariff is already paid.");
+            throw new ArgumentException("Some tariff is already paid.");
         }
         
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);

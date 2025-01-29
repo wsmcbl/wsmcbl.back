@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -132,5 +133,27 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
     {
         entities.RemoveRange(debtList);
         await saveAsync();
+    }
+    
+    public async Task<float[]> getGeneralBalance(string studentId)
+    {
+        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        
+        var debts = await entities.Where(d => d.studentId == studentId)
+            .Where(d => d.schoolyear == currentSch.id || d.schoolyear == newSch.id)
+            .Include(d => d.tariff)
+            .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
+            .ToListAsync();
+
+        float[] balance = [0, 0];
+
+        foreach (var debt in debts)
+        {
+            balance[0] += debt.debtBalance;
+            balance[1] += debt.amount;
+        }
+
+        return balance;
     }
 }
