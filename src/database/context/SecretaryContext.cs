@@ -240,7 +240,7 @@ internal class SecretaryContext
             entity.ToView("student_view", "secretary").HasNoKey();
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.fullName).HasColumnName("fullname");
-            entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.isActive).HasColumnName("studentstate");
             entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
         });

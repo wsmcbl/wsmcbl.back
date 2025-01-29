@@ -11,6 +11,6 @@ public class StudentView
     public void initLabels()
     {
         schoolyear ??= string.Empty;
-        enrollment ??= string.Empty;
+        enrollment ??= "Sin matrícula";
     }
 }
