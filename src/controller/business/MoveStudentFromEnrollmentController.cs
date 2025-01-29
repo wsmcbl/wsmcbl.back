@@ -62,7 +62,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
 
     public async Task<bool> isThereAnActivePartial()
     {
-        var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
 
         var result = partialList.FirstOrDefault(e => e is { isActive: true, gradeRecordIsActive: true });
 

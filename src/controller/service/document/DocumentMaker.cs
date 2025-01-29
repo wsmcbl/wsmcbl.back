@@ -16,15 +16,15 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
         }
             
-        var partials = await daoFactory.partialDao!.getListWithSubjectByEnrollment(enrollment!.enrollmentId!);
+        var partials = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
         student.setPartials(partials);
         
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
             .withDegree(enrollment.label)
-            .withSubjects(await getSubjectSort(student.enrollmentId!))
-            .withSemesters(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
+            .withSubjectList(await getSubjectSort(student.enrollmentId!))
+            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);
@@ -99,7 +99,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         
-        var partialList = await daoFactory.partialDao!.getListWithSubjectByEnrollment(student.enrollmentId!);
+        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(student.enrollmentId!);
         partialList.ForEach(e => e.setGradeListByStudent(studentId));
         
         var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
@@ -108,7 +108,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withPartialList(partialList)
             .withTeacherName(await getTeacherName(student.enrollmentId!))
             .withSubjectList(await getSubjectSort(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getAllOfCurrentSchoolyear())
+            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);

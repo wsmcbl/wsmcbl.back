@@ -146,13 +146,13 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             return this;
         }
         
-        public Builder withSemesters(List<SemesterEntity> parameter)
+        public Builder withSemesterList(List<SemesterEntity> parameter)
         {
             latexBuilder._semesters = parameter;
             return this;
         }
         
-        public Builder withSubjects(List<(string, string)> parameter)
+        public Builder withSubjectList(List<(string, string)> parameter)
         {
             latexBuilder.subjects = parameter;
             return this;
