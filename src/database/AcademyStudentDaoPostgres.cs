@@ -35,7 +35,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return await getById(studentId, schoolyear.id!);
     }
 
-    public async Task updateEnrollment(string studentId, string enrollmentId)
+    public async Task update(string studentId, string enrollmentId)
     {
         FormattableString query = $"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
         await context.Database.ExecuteSqlAsync(query);

@@ -30,7 +30,7 @@ public interface ITeacherDao : IGenericDao<TeacherEntity, string>
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     public Task<bool> hasAEnroll(string studentId);
-    public Task updateEnrollment(string studentId, string enrollmentId);
+    public Task update(string studentId, string enrollmentId);
     public Task<StudentEntity> getCurrentById(string studentId);
 }
 
