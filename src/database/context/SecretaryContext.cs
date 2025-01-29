@@ -229,5 +229,20 @@ internal class SecretaryContext
             entity.Property(e => e.typeId).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
+
+        createView();
+    }
+
+    private void createView()
+    {
+        modelBuilder.Entity<StudentView>(entity =>
+        {
+            entity.ToView("student_view", "secretary").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.enrollment).HasColumnName("enrollment");
+        });
     }
 }

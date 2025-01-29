@@ -1,6 +1,6 @@
 namespace wsmcbl.src.model.secretary;
 
-public class StudentViewEntity
+public class StudentView
 {
     public string studentId { get; set; } = null!;
     public string fullName { get; set; } = null!;

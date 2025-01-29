@@ -52,6 +52,11 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
+    public async Task<List<StudentView>> getStudentViewList()
+    {
+        return await context.Set<StudentView>().ToListAsync();
+    }
+
     public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment()
     {
         var studentList = await getAll();
@@ -89,7 +94,6 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return result;
     }
     
-
     private static int GetNumericPart(string item)
     {
         var numericPart = item.Substring(3);
