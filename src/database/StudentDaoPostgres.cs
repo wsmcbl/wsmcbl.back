@@ -17,31 +17,16 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<StudentEntity> getFullById(string id)
     {
-        var entity = await entities.FirstOrDefaultAsync(e => e.studentId == id);
+        var entity = await entities.Include(e => e.tutor)
+            .Include(e => e.file)
+            .Include(e => e.parents)
+            .Include(e => e.measurements)
+            .FirstOrDefaultAsync(e => e.studentId == id);
+        
         if (entity == null)
         {
             throw new EntityNotFoundException("StudentEntity", id);
         }
-
-        var tutor = await context.Set<StudentTutorEntity>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.tutorId == entity.tutorId);
-        if (tutor == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (TutorEntity) with StudentId ({id}) not found.");
-        }
-
-        entity.tutor = tutor;
-
-        entity.measurements = await context.Set<StudentMeasurementsEntity>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
-
-        entity.file = await context.Set<StudentFileEntity>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
-
-        entity.parents = await context.Set<StudentParentEntity>()
-            .Where(e => e.studentId == id)
-            .AsNoTracking()
-            .ToListAsync();
 
         return entity;
     }
