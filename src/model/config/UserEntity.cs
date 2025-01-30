@@ -47,13 +47,12 @@ public class UserEntity
 
     public void update(UserEntity user)
     {
-        roleId = user.roleId;
         name = user.name.Trim();
         secondName = user.secondName?.Trim();
         surname = user.surname.Trim();
         secondSurname = user.secondSurname?.Trim();
-        email = user.email.Trim();
         isActive = user.isActive;
+        
         markAsUpdated();
     }
 

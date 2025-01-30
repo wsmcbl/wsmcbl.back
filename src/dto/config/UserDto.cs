@@ -13,6 +13,7 @@ public class UserDto
     [Required] public string email { get; set; } = null!;
     public string? password { get; set; }
     [Required] public bool isActive { get; set; }
+    public string? nextCloudGroup { get; set; }
 
     public UserDto()
     {
@@ -28,6 +29,7 @@ public class UserDto
         password = user.password;
         isActive = user.isActive;
         roleId = user.roleId;
+        nextCloudGroup = "Docentes";
     }
 
     public UserEntity toEntity()

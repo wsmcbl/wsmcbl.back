@@ -21,7 +21,7 @@ public class AssignPermissionsController : BaseController
 
     public async Task<UserEntity> updateUser(UserEntity value, string nextCloudGroup)
     {
-        var user = await daoFactory.userDao!.getById((Guid)value.userId!);
+        var user = await daoFactory.userDao!.getById(value.userId.ToString()!);
         if (user == null)
         {
             throw new EntityNotFoundException("UserEntity", value.userId!.ToString());
