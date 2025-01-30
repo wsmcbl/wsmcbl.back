@@ -40,7 +40,7 @@ public class AssignPermissionsController : BaseController
         await nextcloudUserCreator.assignGroup(user.email, nextCloudGroup.Trim());
     }
 
-    public async Task assignPermissions(List<int> permissionList, Guid userId)
+    public async Task assignPermissions(UserEntity user, List<int> permissionList)
     {
         if (permissionList.Count == 0)
         {
@@ -48,12 +48,17 @@ public class AssignPermissionsController : BaseController
         }
 
         await daoFactory.permissionDao!.checkListId(permissionList);
-
+        
         foreach (var item in permissionList)
         {
+            if (user.isAlreadyAssigned(item))
+            {
+                continue;
+            }
+            
             var userPermission = new UserPermissionEntity
             {
-                userId = userId,
+                userId = (Guid)user.userId!,
                 permissionId = item
             };
 

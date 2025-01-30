@@ -151,4 +151,9 @@ public class UserEntity
                secondSurname == value.secondSurname &&
                roleId == value.roleId;
     }
+
+    public bool isAlreadyAssigned(int permissionId)
+    {
+        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
+    }
 }

@@ -37,7 +37,7 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     public async Task<IActionResult> updateUser([Required] string userId, UserToUpdateDto dto)
     {
         var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
-        await controller.assignPermissions(dto.permissionList, (Guid)result.userId!);
+        await controller.assignPermissions(result, dto.permissionList);
 
         var nextCloudGroup = await controller.getNextCloudGroup(result);
         var response = new UserDto(result, nextCloudGroup);
