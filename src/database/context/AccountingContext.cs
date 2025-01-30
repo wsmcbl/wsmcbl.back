@@ -98,7 +98,7 @@ internal class AccountingContext
                 .HasForeignKey(d => d.discountId);
 
             entity.HasOne(d => d.student).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId);
+                .HasForeignKey<model.secretary.StudentEntity>(d => d.studentId);
             
             entity.HasMany(s => s.transactions)
                 .WithOne()

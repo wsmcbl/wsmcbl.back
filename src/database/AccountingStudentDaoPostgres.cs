@@ -70,9 +70,11 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         query += " CASE";
         query += "   WHEN d.amount = 0 THEN 1";
         query += "   ELSE (d.debtbalance / d.amount)";
-        query += " END >= 0.4;";
+        query += " END >= 0.4";
 
-        return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
+        return await entities.FromSqlRaw(query)
+            .Include(e => e.student).AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<bool> hasSolvencyInRegistration(string studentId)
@@ -87,11 +89,11 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
         var query = "SELECT s.* FROM accounting.student s";
         query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
-        query += $" WHERE studentid = '{studentId}' AND ({tariffsId}) AND";
+        query += $" WHERE s.studentid = '{studentId}' AND ({tariffsId}) AND";
         query += " CASE";
         query += "   WHEN d.amount = 0 THEN 1";
         query += "   ELSE (d.debtbalance / d.amount)";
-        query += " END >= 0.4;";
+        query += " END >= 0.4";
 
         return await entities.FromSqlRaw(query).AsNoTracking().FirstOrDefaultAsync() != null;
     }
