@@ -36,49 +36,17 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
         return Ok(student.mapToDto());
     }
 
-    /// <summary>Returns the search results based on the provided query.</summary>
-    /// <param name="q">The query string in the format "key:value".
-    /// Supported keys are "student:{id}" and "state:overdue".</param>
+    /// <summary>Returns the tariff list by student id.</summary>
     /// <response code="200">Returns the search results.</response>
-    /// <response code="400">Query parameter is missing or not in the correct format.</response>
-    [HttpGet]
-    [Route("tariffs/search")]
-    public async Task<IActionResult> getTariffList([FromQuery] string q)
-    {
-        var parts = validateQueryValue(q);
-        var key = parts[0].ToLower();
-        var value = parts[1].ToLower();
-
-        return key switch
-        {
-            "student" => Ok((await controller.getTariffListByStudent(value)).mapToListDto()),
-            "state" when value.Equals("overdue") => Ok((await controller.getOverdueTariffList()).mapToListDto()),
-            _ => BadRequest("Unknown search key.")
-        };
-    }
-
-    /// <summary>Returns the list of tariff type.</summary>
-    /// <response code="200">Return existing resources (can be empty list).</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Student not found.</response>
     [HttpGet]
-    [Route("tariffs/types")]
-    public async Task<ActionResult> getTariffTypeList()
+    [Route("students/{studentId}/tariffs")]
+    public async Task<IActionResult> getTariffListByStudentId([Required] string studentId)
     {
-        return Ok(await controller.getTariffTypeList());
-    }
-
-    /// <summary>Applies arrears to overdue tariff.</summary>
-    /// <response code="200">Returns the modified resource.</response>
-    /// <response code="400">Parameter is not valid.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource not found.</response>
-    [HttpPut]
-    [Route("arrears/{tariffId:int}")]
-    public async Task<IActionResult> applyArrears(int tariffId)
-    {
-        return Ok(await controller.applyArrears(tariffId));
+        var result = await controller.getTariffListByStudent(studentId);
+        return Ok(result.mapToListDto());
     }
 
     /// <summary>Create new transaction resource.</summary>
@@ -95,7 +63,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     }
 
     
-    /// <summary>Returns the invoice document of transactionId.</summary>
+    /// <summary>Returns the invoice document by transactionId.</summary>
     /// <response code="200">Return existing resources.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -106,5 +74,41 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     {
         var result = await controller.getInvoiceDocument(transactionId);
         return File(result, "application/pdf", $"{transactionId}.invoice.pdf");
+    }
+    
+    /// <summary>Applies arrears to overdue tariff.</summary>
+    /// <response code="200">Returns the modified resource.</response>
+    /// <response code="400">Parameter is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("tariffs/{tariffId:int}")]
+    public async Task<IActionResult> applyArrears(int tariffId)
+    {
+        return Ok(await controller.applyArrears(tariffId));
+    }
+    
+    /// <summary>Returns the list of tariff type.</summary>
+    /// <response code="200">Return existing resources (can be empty list).</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("tariffs/types")]
+    public async Task<ActionResult> getTariffTypeList()
+    {
+        return Ok(await controller.getTariffTypeList());
+    }
+    
+    /// <summary>Returns overdue tariff list.</summary>
+    /// <response code="200">Returns the search results.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("tariffs/overdues")]
+    public async Task<IActionResult> getOverdueTariffList()
+    {
+        var result = await controller.getOverdueTariffList();
+        return Ok(result.mapToListDto());
     }
 }
