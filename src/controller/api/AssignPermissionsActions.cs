@@ -38,12 +38,9 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     {
         var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
         await controller.assignPermissions(dto.permissionList, (Guid)result.userId!);
-        
-        var response = new UserDto(result)
-        {
-            nextCloudGroup = dto.nextCloudGroup,
-            permissionList = dto.permissionList
-        };
+
+        var nextCloudGroup = await controller.getNextCloudGroup(result);
+        var response = new UserDto(result, nextCloudGroup);
 
         return Ok(response);
     }

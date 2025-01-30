@@ -7,13 +7,13 @@ namespace wsmcbl.src.controller.business;
 
 public class AssignPermissionsController : BaseController
 {
-    private readonly HttpClient httpClient;
+    private NextcloudUserCreator nextcloudUserCreator { get; set; }
 
     public AssignPermissionsController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
     {
-        this.httpClient = httpClient;
+        nextcloudUserCreator = new NextcloudUserCreator(httpClient);
     }
-    
+
     public async Task<List<PermissionEntity>> getPermissionList()
     {
         return await daoFactory.permissionDao!.getAll();
@@ -26,7 +26,7 @@ public class AssignPermissionsController : BaseController
         {
             throw new EntityNotFoundException("UserEntity", value.userId!.ToString());
         }
-        
+
         user.update(value);
         await daoFactory.execute();
 
@@ -37,7 +37,6 @@ public class AssignPermissionsController : BaseController
 
     private async Task assignNextcloudGroup(UserEntity user, string nextCloudGroup)
     {
-        var nextcloudUserCreator = new NextcloudUserCreator(httpClient);
         await nextcloudUserCreator.assignGroup(user.email, nextCloudGroup.Trim());
     }
 
@@ -47,7 +46,7 @@ public class AssignPermissionsController : BaseController
         {
             return;
         }
-        
+
         await daoFactory.permissionDao!.checkListId(permissionList);
 
         foreach (var item in permissionList)
@@ -62,5 +61,10 @@ public class AssignPermissionsController : BaseController
         }
 
         await daoFactory.execute();
+    }
+
+    public async Task<string> getNextCloudGroup(UserEntity entity)
+    {
+        return await nextcloudUserCreator.getGroupByUserMail(entity.email);
     }
 }

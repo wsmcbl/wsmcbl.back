@@ -8,14 +8,14 @@ public class LoginController : BaseController
 {
     private JwtGenerator jwtGenerator { get; }
     private UserAuthenticator userAuthenticator { get; }
-    private HttpClient httpClient { get; }
+    private AssignPermissionsController assignPermissionsController { get; }
 
     public LoginController(DaoFactory daoFactory, JwtGenerator jwtGenerator, UserAuthenticator userAuthenticator,
-        HttpClient httpClient) : base(daoFactory)
+        AssignPermissionsController assignPermissionsController) : base(daoFactory)
     {
         this.jwtGenerator = jwtGenerator;
         this.userAuthenticator = userAuthenticator;
-        this.httpClient = httpClient;
+        this.assignPermissionsController = assignPermissionsController;
     }
 
     public async Task<string> getTokenByCredentials(UserEntity user)
@@ -30,9 +30,8 @@ public class LoginController : BaseController
         return await daoFactory.userDao!.getById(userId);
     }
 
-    public async Task<string> getNextCloudGroupByUser(UserEntity result)
+    public async Task<string> getNextCloudGroupByUser(UserEntity entity)
     {
-        var nextcloudUserCreator = new NextcloudUserCreator(httpClient);
-        return await nextcloudUserCreator.getGroupByUserMail(result.email);
+        return await assignPermissionsController.getNextCloudGroup(entity);
     }
 }
