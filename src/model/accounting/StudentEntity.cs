@@ -77,13 +77,23 @@ public class StudentEntity
 
     public DebtHistoryEntity getCurrentRegistrationTariffDebt()
     {
-        var result = debtHistory!
-            .FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
+        var result = debtHistory!.FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
         if (result == null)
         {
-            throw new EntityNotFoundException($"Registration tariff debt not found.");
+            throw new EntityNotFoundException("Registration tariff debt not found.");
         }
 
         return result;
+    }
+
+    public string getEducationalLevelLabel()
+    {
+        return educationalLevel switch
+        {
+            1 => "Preescolar",
+            2 => "Primaria",
+            3 => "Secundaria",
+            _ => ""
+        };
     }
 }

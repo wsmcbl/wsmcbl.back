@@ -34,6 +34,7 @@ public class EnrollStudentController : BaseController
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
         academyStudent.setIsRepeating(isRepeating);
+        
         daoFactory.academyStudentDao!.create(academyStudent);
         await daoFactory.execute();
 
@@ -114,7 +115,8 @@ public class EnrollStudentController : BaseController
         }
         
         var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
-        var degreeList = list.Where(e => e.educationalLevel == accountingStudent.educationalLevel.ToString()).ToList();
+        var degreeList = list.Where(e => e.educationalLevel == accountingStudent.getEducationalLevelLabel())
+            .ToList();
         
         foreach (var item in degreeList)
         {
