@@ -32,7 +32,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
         return key switch
         {
             "one" => Ok((await controller.getStudentById(value)).mapToDto()),
-            "many" when value.Equals("all") => Ok(await controller.getStudentList()),
+            "many" when value.Equals("all") => Ok((await controller.getStudentList()).mapToListBasicDto()),
             _ => BadRequest("Unknown search key.")
         };
     }

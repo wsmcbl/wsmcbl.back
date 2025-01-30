@@ -1,8 +1,5 @@
-using wsmcbl.src.model.academy;
-using wsmcbl.src.model.accounting;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
-using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.dto.secretary;
 
@@ -24,13 +21,15 @@ public static class DtoMapper
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
     private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
-    private static BasicEnrollmentDto mapToBasicDto(this EnrollmentEntity enrollment) => new(enrollment);
-
+    private static BasicEnrollmentDto mapToBasicDto(this model.academy.EnrollmentEntity enrollment) => new(enrollment);
+    
+    public static List<BasicStudentDto> mapToListBasicDto(this List<StudentView> list)
+        => list.Select(e => new BasicStudentDto(e)).ToList();
 
     public static List<BasicDegreeToEnrollDto> mapToListBasicDto(this IEnumerable<DegreeEntity> list)
         => list.Select(e => e.mapToBasicEnrollDto()).ToList();
 
-    public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<EnrollmentEntity> list)
+    public static List<BasicEnrollmentDto> mapToListBasicDto(this IEnumerable<model.academy.EnrollmentEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
 
     public static List<StudentParentDto> mapListToDto(this IList<StudentParentEntity> list)
@@ -39,7 +38,7 @@ public static class DtoMapper
     public static List<BasicSchoolYearDto> mapListToDto(this IEnumerable<SchoolYearEntity> list)
         => list.Select(e => e.mapToBasicDto()).ToList();
 
-    public static List<TariffToCreateDto> mapListToDto(this IEnumerable<TariffEntity> tariffs)
+    public static List<TariffToCreateDto> mapListToDto(this IEnumerable<model.accounting.TariffEntity> tariffs)
         => tariffs.Select(e => new TariffToCreateDto(e)).ToList();
 
     public static List<DegreeToCreateDto> mapListToDto(this IEnumerable<DegreeEntity> grades)

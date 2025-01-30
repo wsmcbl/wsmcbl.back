@@ -61,12 +61,6 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
     public async Task<List<StudentView>> getStudentList()
     {
-        var result = await daoFactory.studentDao!.getStudentViewList();
-        foreach (var item in result)
-        {
-            item.initLabels();
-        }
-        
-        return result;
+        return await daoFactory.studentDao!.getStudentViewList();
     }
 }
