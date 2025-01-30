@@ -15,6 +15,8 @@ public class BasicStudentDto
 
     public BasicStudentDto(StudentView entity)
     {
+        entity.initLabels();
+        
         studentId = entity.studentId;
         fullName = entity.fullName;
         enrollmentLabel = entity.enrollment!;

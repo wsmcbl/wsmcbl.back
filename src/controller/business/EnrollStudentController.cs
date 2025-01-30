@@ -123,6 +123,6 @@ public class EnrollStudentController : BaseController
             item.enrollmentList = item.enrollmentList!.Where(e => !e.isEnrollmentFull()).ToList();
         }
 
-        return list;
+        return degreeList;
     }
 }

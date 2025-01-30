@@ -65,16 +65,6 @@ public class StudentEntity
         educationalLevel = value;
     }
 
-    public void setEnrollmentLabel(string? value)
-    {
-        if (value == null)
-        {
-            enrollmentLabel = "Sin matrícula";
-        }
-
-        enrollmentLabel = value;
-    }
-
     public DebtHistoryEntity getCurrentRegistrationTariffDebt()
     {
         var result = debtHistory!.FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);

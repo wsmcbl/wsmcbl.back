@@ -34,17 +34,19 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
             throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
-        student.setEnrollmentLabel(await getEnrollmentLabel(studentId));
+        student.enrollmentLabel = await getEnrollmentLabel(studentId);
         return student;
     }
     
-    private async Task<string?> getEnrollmentLabel(string studentId)
+    private async Task<string> getEnrollmentLabel(string studentId)
     {
-        var result = await context.Set<StudentView>()
-            .Where(e => e.studentId == studentId)
+        var result = await context.Set<StudentView>().Where(e => e.studentId == studentId)
             .FirstOrDefaultAsync();
-
-        return result?.enrollment;
+        
+        if(result == null) return "Sin matrícula";
+        
+        result.initLabels();
+        return result.enrollment!;
     }
     
 
