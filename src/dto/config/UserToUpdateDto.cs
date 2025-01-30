@@ -12,18 +12,6 @@ public class UserToUpdateDto
     public string? secondSurname { get; set; }
     public List<int> permissionList { get; set; } = null!;
     public string? nextCloudGroup { get; set; }
-
-    public UserToUpdateDto()
-    {
-    }
-    
-    public UserToUpdateDto(UserEntity user)
-    {
-        name = user.name;
-        secondName = user.secondName;
-        surname = user.surname;
-        secondSurname = user.secondSurname;
-    }
     
     public UserEntity toEntity(string userId)
     {

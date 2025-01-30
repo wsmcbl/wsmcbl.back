@@ -40,6 +40,11 @@ public class UserEntity
         return permissionList.Select(e => e.name).ToList();
     }
     
+    public List<int> getPermissionIdList()
+    {
+        return permissionList.Select(e => e.permissionId).ToList();
+    }
+    
     public string getAlias()
     {
         return $"{name[0]}. {surname}";

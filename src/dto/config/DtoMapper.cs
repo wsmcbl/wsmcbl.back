@@ -6,7 +6,7 @@ public static class DtoMapper
 {
     public static LoginDto mapToDto(this string token) => new(token);
     
-    public static UserDto mapToDto(this UserEntity user) => new(user);
+    public static UserDto mapToDto(this UserEntity user, string nextcloudGruop) => new(user, nextcloudGruop);
     
     public static List<UserToListDto> mapToListDto(this List<UserEntity> value)
         => value.Select(e => new UserToListDto(e)).ToList();
