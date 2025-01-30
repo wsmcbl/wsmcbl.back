@@ -71,21 +71,16 @@ delete-all-services: ## Remove all containers and volumes (***CAUTION***)
 
 
 
-run-test: ## Run test
-	docker-compose -f docker-compose.test.yml build
-	docker-compose -f docker-compose.test.yml run api-test
-	dotnet build
-
 SONAR_TOKEN=$(shell echo $$SONAR_TOKEN)
 .PHONY: dn-ss
 
-current_dir=$(shell pwd)
-
 dn-ss: ## Run SonarCloud Scanner
-	sed -i 's|/app/|$(current_dir)/|g' coverage.xml
-	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, tests/**/*.*' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 	dotnet build --no-incremental
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
+
+run-test: ## Run test
+	dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
 
 sonar: ## Update sonar
 	$(MAKE) run-test || $(MAKE) dn-ss
