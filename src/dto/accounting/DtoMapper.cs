@@ -35,4 +35,7 @@ public static class DtoMapper
 
     public static List<DebtDto> mapToListDto(this IEnumerable<DebtHistoryEntity> value)
         => value.Select(e => new DebtDto(e)).ToList();
+    
+    public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
+        => list.Select(e => new BasicStudentToEnrollDto(e)).ToList();
 }

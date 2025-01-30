@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 
