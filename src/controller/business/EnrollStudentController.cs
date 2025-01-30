@@ -8,34 +8,22 @@ namespace wsmcbl.src.controller.business;
 public class EnrollStudentController : BaseController
 {
     private readonly UpdateStudentProfileController updateStudentProfileController;
+    
     public EnrollStudentController(DaoFactory daoFactory) : base(daoFactory)
     {
         updateStudentProfileController = new UpdateStudentProfileController(daoFactory);
     }
-    
-    public async Task<List<StudentEntity>> getStudentListWithSolvency()
-    {
-        return await daoFactory.studentDao!.getAllWithSolvencyInRegistration();
-    }
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
+        await hasSolvencyInRegistrationOrFail(studentId);
         return await daoFactory.studentDao!.getFullById(studentId);
     }
-
-    public async Task<List<DegreeEntity>> getValidDegreeList()
-    {
-        var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
-        foreach (var item in list)
-        {
-            item.enrollmentList = item.enrollmentList!.Where(e => !e.isEnrollmentFull()).ToList();
-        }
-
-        return list;
-    }
-
+    
     public async Task<StudentEntity> saveEnroll(StudentEntity student, string enrollmentId, bool isRepeating)
     {
+        await hasSolvencyInRegistrationOrFail(student.studentId!);
+        
         var isStudentEnroll = await isAlreadyEnroll(student.studentId!);
         if (isStudentEnroll)
         {
@@ -96,5 +84,38 @@ public class EnrollStudentController : BaseController
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
         await updateStudentProfileController.updateStudentDiscount(studentId, discountId);
+    }
+
+    private async Task hasSolvencyInRegistrationOrFail(string studentId)
+    {
+        var result = await daoFactory.accountingStudentDao!.hasSolvencyInRegistration(studentId);
+        if (!result)
+        {
+            throw new ConflictException("The student has no solvency in registration.");
+        }
+    }
+
+    public async Task<List<StudentEntity>> getStudentListWithSolvencyInRegistration()
+    {
+        return await daoFactory.studentDao!.getAllWithSolvencyInRegistration();
+    }
+
+    public async Task<List<DegreeEntity>> getDegreeListByStudentId(string studentId)
+    {
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        if (accountingStudent == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
+        
+        var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var degreeList = list.Where(e => e.educationalLevel == accountingStudent.educationalLevel.ToString()).ToList();
+        
+        foreach (var item in degreeList)
+        {
+            item.enrollmentList = item.enrollmentList!.Where(e => !e.isEnrollmentFull()).ToList();
+        }
+
+        return list;
     }
 }
