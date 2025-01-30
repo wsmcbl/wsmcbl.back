@@ -20,7 +20,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     [Route("students")]
     public async Task<IActionResult> getStudentsList()
     {
-        var result = await controller.getStudentListWithSolvency();
+        var result = await controller.getStudentListWithRegistrationSolvency();
         return Ok(result.mapToListBasicEnrollDto());
     }
 
@@ -33,6 +33,8 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     [Route("students/{studentId}")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
+        await controller.checkRegistrationSolvencyOrFail(studentId);
+        
         var result = await controller.getStudentById(studentId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(studentId);
 
@@ -45,10 +47,10 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
-    [Route("degrees")]
-    public async Task<IActionResult> getValidDegreeList()
+    [Route("students/{studentId}/degrees")]
+    public async Task<IActionResult> getDegreeListByStudentId([Required] string studentId)
     {
-        var result = await controller.getValidDegreeList();
+        var result = await controller.getDegreeListByStudentId(studentId);
         return Ok(result.mapToListBasicDto());
     }
 
@@ -62,7 +64,11 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     [Route("")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
-        var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!, dto.isRepeating);
+        var student = dto.getStudent();
+        await controller.checkRegistrationSolvencyOrFail(student.studentId);
+        
+        var result = await controller.saveEnroll(student, dto.enrollmentId!, dto.isRepeating);
+        
         await controller.updateStudentDiscount(dto.getStudentId(), dto.discountId);
         var ids = await controller.getEnrollmentAndDiscountByStudentId(dto.getStudentId());
 
