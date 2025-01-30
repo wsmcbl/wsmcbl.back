@@ -163,6 +163,8 @@ internal class AccountingContext
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
+
+            entity.Ignore(e => e.tariff);
         });
         
         createView();
