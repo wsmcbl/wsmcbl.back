@@ -7,6 +7,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     public Task<StudentEntity> getFullById(string studentId);
     public Task<bool> hasSolvencyInRegistration(string studentId);
+    public Task<List<StudentEntity>> getAllWithSolvencyInRegistration();
 }
 
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>

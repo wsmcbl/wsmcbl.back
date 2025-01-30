@@ -100,9 +100,9 @@ public class EnrollStudentController : BaseController
         }
     }
 
-    public async Task<List<StudentEntity>> getStudentListWithSolvencyInRegistration()
+    public async Task<List<model.accounting.StudentEntity>> getStudentListWithSolvencyInRegistration()
     {
-        return await daoFactory.studentDao!.getAllWithSolvencyInRegistration();
+        return await daoFactory.accountingStudentDao!.getAllWithSolvencyInRegistration();
     }
 
     public async Task<List<DegreeEntity>> getDegreeListByStudentId(string studentId)

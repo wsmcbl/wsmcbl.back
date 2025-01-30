@@ -24,7 +24,6 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
 {
     public Task<StudentEntity> getFullById(string id);
     public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);
-    public Task<List<StudentEntity>> getAllWithSolvencyInRegistration();
     public Task<List<StudentView>> getStudentViewList();
 }
 
