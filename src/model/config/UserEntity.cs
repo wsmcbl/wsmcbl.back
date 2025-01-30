@@ -138,4 +138,13 @@ public class UserEntity
             return this;
         }
     }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
 }
