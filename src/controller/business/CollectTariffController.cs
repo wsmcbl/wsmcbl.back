@@ -1,5 +1,6 @@
 using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -7,7 +8,7 @@ namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<model.secretary.StudentView>> getStudentsList()
+    public async Task<List<StudentView>> getStudentsList()
     {
         return await daoFactory.accountingStudentDao!.getStudentViewList();
     }

@@ -1,3 +1,4 @@
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
@@ -20,7 +21,7 @@ public static class DtoMapper
     private static TransactionToListDto mapToListDto(this TransactionReportView value) => new(value);
      
     
-    public static List<BasicStudentDto> mapListTo(this IEnumerable<model.secretary.StudentView> value)
+    public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentView> value)
         => value.Select(e => new BasicStudentDto(e)).ToList();
     
     public static List<TariffDto> mapToListDto(this IEnumerable<TariffEntity> value)

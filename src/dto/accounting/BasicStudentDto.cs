@@ -1,4 +1,4 @@
-using wsmcbl.src.model.secretary;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.dto.accounting;
 

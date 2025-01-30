@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database.context;
