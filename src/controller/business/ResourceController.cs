@@ -55,8 +55,10 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         await daoFactory.debtHistoryDao!.deleteRange(debtList);
         
         var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
-        if(accountingStudent == null)
+        if (accountingStudent == null)
+        {
             throw new EntityNotFoundException("Student", studentId);
+        }
         
         await daoFactory.accountingStudentDao!.delete(accountingStudent);
         

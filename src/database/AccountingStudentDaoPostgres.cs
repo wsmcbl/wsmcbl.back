@@ -66,12 +66,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 
     public async Task<StudentEntity> getFullById(string studentId)
     {
-        return (await getById(studentId))!;
-    }
-
-    public new async Task<StudentEntity?> getById(string id)
-    {
-        var student = await entities.Where(e => e.studentId == id)
+        var student = await entities.Where(e => e.studentId == studentId)
             .Include(e => e.discount)
             .Include(e => e.student)
             .ThenInclude(d => d.tutor)
@@ -83,7 +78,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         
         if (student == null)
         {
-            throw new EntityNotFoundException("StudentEntity", id);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
         await setEnrollmentLabel(student);

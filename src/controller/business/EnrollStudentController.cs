@@ -67,7 +67,12 @@ public class EnrollStudentController : BaseController
     public async Task<(string? enrollmentId, int discountId, bool isRepeating)> getEnrollmentAndDiscountByStudentId(string studentId)
     {
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
-        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+        
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        if (accountingStudent == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
 
         var discountId = accountingStudent.discountId switch
         {
