@@ -14,6 +14,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         {
             user = await entities.Where(e => e.userId == userIdGuid)
                 .Include(e => e.role)
+                .Include(e => e.permissionList)
                 .FirstOrDefaultAsync();
         }
 
