@@ -5,6 +5,7 @@ namespace wsmcbl.src.model.accounting;
 public interface ICashierDao : IGenericDao<CashierEntity, string>;
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
+    public Task<bool> hasSolvencyInRegistration(string studentId);
     public Task<StudentEntity> getWithoutPropertiesById(string studentId);
 }
 

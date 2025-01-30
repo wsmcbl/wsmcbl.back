@@ -29,6 +29,12 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         return list;
     }
 
+    public async Task<bool> hasSolvencyInRegistration(string studentId)
+    {
+        await getById(studentId);
+        return true;
+    }
+
     public async Task<StudentEntity> getWithoutPropertiesById(string studentId)
     {
         return (await entities.FirstOrDefaultAsync(e => e.studentId == studentId))!;
@@ -36,7 +42,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 
     public new async Task<StudentEntity?> getById(string id)
     {
-        var student = await entities
+        var student = await entities.Where(e => e.studentId == id)
             .Include(e => e.discount)
             .Include(e => e.student)
             .ThenInclude(d => d.tutor)
@@ -44,9 +50,9 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
             .ThenInclude(t => t.details)
             .Include(e => e.debtHistory)!
             .ThenInclude(e => e.tariff)
-            .FirstOrDefaultAsync(e => e.studentId == id);
+            .FirstOrDefaultAsync();
         
-        if (student is null)
+        if (student == null)
         {
             throw new EntityNotFoundException("Student", id);
         }
