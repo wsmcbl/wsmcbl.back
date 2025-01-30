@@ -37,6 +37,8 @@ public class LoginActions(LoginController controller) : ActionsBase
     public async Task<IActionResult> getUser([Required] string userId)
     {
         var result = await controller.getUserById(userId);
-        return CreatedAtAction(null, result.mapToDto());
+        var nextCloudGroup = await controller.getNextCloudGroupByUser(result);
+        
+        return CreatedAtAction(null, result.mapToDto(nextCloudGroup));
     }
 }
