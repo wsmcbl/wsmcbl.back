@@ -3,6 +3,7 @@ using wsmcbl.src.model.dao;
 namespace wsmcbl.src.model.accounting;
 
 public interface ICashierDao : IGenericDao<CashierEntity, string>;
+
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     public Task<StudentEntity> getFullById(string studentId);

@@ -75,7 +75,6 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
     }
     
-    
     public async Task<bool> hasSolvencyInRegistration(string studentId)
     {
         var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
@@ -96,8 +95,6 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         
         return await entities.FromSqlRaw(query).AsNoTracking().FirstOrDefaultAsync() != null;
     }
-    
-    
     
     
     private async Task setEnrollmentLabel(StudentEntity student)

@@ -1,4 +1,4 @@
-using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.accounting;
 
@@ -13,11 +13,11 @@ public class BasicStudentDto
     {
     }
 
-    public BasicStudentDto(StudentEntity entity)
+    public BasicStudentDto(StudentView entity)
     {
-        studentId = entity.studentId!;
-        fullName = entity.fullName();
-        enrollmentLabel = entity.enrollmentLabel!;
+        studentId = entity.studentId;
+        fullName = entity.fullName;
+        enrollmentLabel = entity.enrollment!;
         tutor = entity.tutor;
     }
 }

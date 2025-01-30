@@ -7,9 +7,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<StudentEntity>> getStudentsList()
+    public async Task<List<model.secretary.StudentView>> getStudentsList()
     {
-        return await daoFactory.accountingStudentDao!.getAll();
+        return await daoFactory.accountingStudentDao!.getStudentViewList();
     }
     
     public async Task<StudentEntity> getStudentById(string studentId)
