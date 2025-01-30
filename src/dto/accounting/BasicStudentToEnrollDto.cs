@@ -1,6 +1,6 @@
-using wsmcbl.src.model.secretary;
+using wsmcbl.src.model.accounting;
 
-namespace wsmcbl.src.dto.secretary;
+namespace wsmcbl.src.dto.accounting;
 
 public class BasicStudentToEnrollDto
 {

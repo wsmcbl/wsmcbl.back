@@ -44,28 +44,6 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return await context.Set<StudentView>().ToListAsync();
     }
 
-    public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
-    {
-        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
-        if (tariffList.Count == 0)
-        {
-            throw new EntityNotFoundException(
-                $"Entities of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
-        }
-
-        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
-        var query = "SELECT s.* FROM secretary.student s";
-        query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
-        query += " LEFT JOIN academy.student aca on aca.studentid = s.studentid";
-        query += $" WHERE ({tariffsId}) AND aca.enrollmentid is NULL AND";
-        query += " CASE";
-        query += "   WHEN d.amount = 0 THEN 1";
-        query += "   ELSE (d.debtbalance / d.amount)";                              
-        query += " END >= 0.4;";
-        
-        return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
-    }
-
     public async Task updateAsync(StudentEntity? entity)
     {
         if (entity == null)

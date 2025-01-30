@@ -1,5 +1,5 @@
 using wsmcbl.src.dto.accounting;
-using wsmcbl.src.model.accounting;
+using wsmcbl.src.model;
 using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.dto.output;
@@ -24,7 +24,7 @@ public class DtoMapperTest
     {
         var studentBasicDtoList = TestDtoOutputGenerator.aStudentBasicDtoList();
 
-        List<StudentEntity> studentList = [TestEntityGenerator.aAccountingStudent("std-1")];
+        List<StudentView> studentList = TestEntityGenerator.aStudentList();
 
         var result = studentList.mapListTo();
 

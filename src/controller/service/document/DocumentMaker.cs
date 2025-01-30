@@ -67,12 +67,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException("Cashier", transaction.cashierId);
         }
         
-        var student = await daoFactory.accountingStudentDao!.getById(transaction.studentId);
-        if (student is null)
-        {
-            throw new EntityNotFoundException("Student", transaction.studentId);
-        }
-        
+        var student = await daoFactory.accountingStudentDao!.getFullById(transaction.studentId);
         var debtList = await daoFactory.debtHistoryDao!.getListByTransaction(transaction);
         var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.debtHistoryDao!.getGeneralBalance(transaction.studentId);

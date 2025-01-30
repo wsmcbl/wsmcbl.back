@@ -43,9 +43,10 @@ CREATE VIEW secretary.student_to_list_view AS
 SELECT s.studentid,
        concat_ws(' ', s.name, s.secondname, s.surname, s.secondsurname) as fullName,
        s.studentstate,
+       t.name as tutor,
        sch.label AS schoolyear,
        enr.label AS enrollment
-FROM secretary.student s LEFT JOIN
+FROM secretary.student s LEFT JOIN secretary.studenttutor t ON s.tutorid = t.tutorid LEFT JOIN
      (
          SELECT DISTINCT ON (aca.studentid) aca.studentid, aca.schoolyear, aca.enrollmentid
          FROM academy.student aca

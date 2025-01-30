@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -33,7 +34,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
         {
-            throw new EntityNotFoundException("Student", studentId);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
         student.profilePicture = picture;
@@ -42,7 +43,12 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
-        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        if (accountingStudent == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
+        
         accountingStudent.updateDiscountId(discountId);
 
         await daoFactory.execute();
@@ -55,12 +61,6 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
     public async Task<List<StudentView>> getStudentList()
     {
-        var result = await daoFactory.studentDao!.getStudentViewList();
-        foreach (var item in result)
-        {
-            item.initLabels();
-        }
-        
-        return result;
+        return await daoFactory.studentDao!.getStudentViewList();
     }
 }

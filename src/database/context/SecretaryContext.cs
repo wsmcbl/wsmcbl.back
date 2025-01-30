@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database.context;
@@ -245,6 +246,7 @@ internal class SecretaryContext
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.fullName).HasColumnName("fullname");
             entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
             entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
         });
