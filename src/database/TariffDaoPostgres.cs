@@ -57,6 +57,14 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
         return tariff;
     }
 
+    public async Task<List<TariffEntity>> getCurrentRegistrationTariffList()
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        return await entities
+            .Where(e => e.schoolYear == schoolyear.id && e.type == Const.TARIFF_REGISTRATION)
+            .ToListAsync();
+    }
+
     public async Task createRange(List<TariffEntity> tariffList)
     {
         entities.AddRange(tariffList);

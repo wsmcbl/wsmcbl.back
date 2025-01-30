@@ -29,28 +29,21 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
     public async Task<TeacherEntity?> getByEnrollmentId(string enrollmentId)
     {
-        var enrollment = await context.Set<EnrollmentEntity>()
-            .Where(e => e.enrollmentId == enrollmentId).FirstOrDefaultAsync();
+        var enrollment = await context.Set<EnrollmentEntity>().Where(e => e.enrollmentId == enrollmentId)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+        
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
         
         if (enrollment.teacherId == null)
         {
-            throw new EntityNotFoundException("Teacher", "null");
+            throw new EntityNotFoundException("TeacherEntity", "null");
         }
-        
-        var teacher = await entities.Where(e => e.teacherId == enrollment.teacherId)
-            .Include(e => e.user)
-            .FirstOrDefaultAsync();
 
-        if (teacher != null)
-        {
-            teacher.enrollment = enrollment;
-        }
-        
-        return teacher;
+        return await getById(enrollment.teacherId);
     }
 
     public async Task<TeacherEntity> getByUserId(Guid userId)

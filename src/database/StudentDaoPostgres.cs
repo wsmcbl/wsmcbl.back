@@ -10,6 +10,7 @@ namespace wsmcbl.src.database;
 public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
     private DaoFactory daoFactory { get; set; }
+    
     public StudentDaoPostgres(PostgresContext context) : base(context)
     {
         daoFactory = new DaoFactoryPostgres(context);
@@ -17,11 +18,12 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<StudentEntity> getFullById(string id)
     {
-        var entity = await entities.Include(e => e.tutor)
+        var entity = await entities.Where(e => e.studentId == id)
+            .Include(e => e.tutor)
             .Include(e => e.file)
             .Include(e => e.parents)
             .Include(e => e.measurements)
-            .FirstOrDefaultAsync(e => e.studentId == id);
+            .FirstOrDefaultAsync();
         
         if (entity == null)
         {
@@ -33,7 +35,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<StudentEntity?> findDuplicateOrNull(StudentEntity student)
     {
-        var list = await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync();
+        var list = await entities.Where(e => student.name == e.name).ToListAsync();
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
@@ -44,12 +46,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
-
-        var tariffList = await context.Set<model.accounting.TariffEntity>()
-            .Where(e => e.schoolYear == schoolyear.id)
-            .Where(e => e.type == Const.TARIFF_REGISTRATION).ToListAsync();
-
+        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
         if (tariffList.Count == 0)
         {
             throw new EntityNotFoundException(

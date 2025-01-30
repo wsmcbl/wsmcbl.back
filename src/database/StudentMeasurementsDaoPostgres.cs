@@ -14,7 +14,6 @@ public class StudentMeasurementsDaoPostgres(PostgresContext context)
         }
 
         var existingEntity = await getById(entity.measurementId);
-
         if (existingEntity == null)
         {
             create(entity);

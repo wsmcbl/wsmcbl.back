@@ -15,7 +15,6 @@ public class StudentTutorDaoPostgres(PostgresContext context)
         }
 
         var existingEntity = entity.isValidId() ? await getById(entity.tutorId!) : await getByInformation(entity);
-
         if (existingEntity == null)
         {
             create(entity);
