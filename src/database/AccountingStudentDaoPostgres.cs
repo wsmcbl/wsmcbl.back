@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
@@ -10,11 +12,11 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 {
     public new async Task<List<StudentEntity>> getAll()
     {
-        FormattableString query = $@"select std.* from accounting.student std 
-        join secretary.student as sec_std on sec_std.studentid = std.studentid
-        where sec_std.studentstate = 'true'";
+        FormattableString query = $@"select acc.* from accounting.student acc 
+        join secretary.student as s on s.studentid = acc.studentid
+        where s.studentstate = 'true'";
 
-        var list = await context.Set<StudentEntity>()
+        var list = await entities
             .FromSqlInterpolated(query)
             .AsNoTracking()
             .Include(e => e.student)
@@ -31,13 +33,40 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
 
     public async Task<bool> hasSolvencyInRegistration(string studentId)
     {
-        await getById(studentId);
-        return true;
+        DaoFactory daoFactory = new DaoFactoryPostgres(context);
+        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
+        if (tariffList.Count == 0)
+        {
+            throw new EntityNotFoundException(
+                $"Entities of type (TariffEntity) with type ({Const.TARIFF_REGISTRATION}) not found.");
+        }
+
+        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
+        var query = "SELECT s.* FROM accounting.student s";
+        query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
+        query += $" WHERE studentid = '{studentId}' AND ({tariffsId}) AND";
+        query += " CASE";
+        query += "   WHEN d.amount = 0 THEN 1";
+        query += "   ELSE (d.debtbalance / d.amount)";                              
+        query += " END >= 0.4;";
+        
+        return await entities.FromSqlRaw(query).AsNoTracking().FirstOrDefaultAsync() != null;
     }
 
     public async Task<StudentEntity> getWithoutPropertiesById(string studentId)
     {
-        return (await entities.FirstOrDefaultAsync(e => e.studentId == studentId))!;
+        var result = await entities.FirstOrDefaultAsync(e => e.studentId == studentId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
+        
+        return result;
+    }
+
+    public async Task<StudentEntity> getFullById(string studentId)
+    {
+        return (await getById(studentId))!;
     }
 
     public new async Task<StudentEntity?> getById(string id)
@@ -54,7 +83,7 @@ public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoP
         
         if (student == null)
         {
-            throw new EntityNotFoundException("Student", id);
+            throw new EntityNotFoundException("StudentEntity", id);
         }
 
         await setEnrollmentLabel(student);
