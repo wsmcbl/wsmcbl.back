@@ -30,7 +30,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         var student = await daoFactory.academyStudentDao!.getById(studentId);
         if (student == null)
         {
-            throw new EntityNotFoundException("student", studentId);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
@@ -47,7 +47,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
 
         var degree = await daoFactory.degreeDao!.getByEnrollmentId(enrollmentId);

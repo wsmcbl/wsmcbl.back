@@ -35,13 +35,14 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<StudentEntity?> findDuplicateOrNull(StudentEntity student)
     {
-        var list = await entities.Where(e => student.name == e.name).ToListAsync();
+        var list = await entities.Where(e => student.name == e.name)
+            .AsNoTracking().ToListAsync();
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
     public async Task<List<StudentView>> getStudentViewList()
     {
-        return await context.Set<StudentView>().ToListAsync();
+        return await context.Set<StudentView>().AsNoTracking().ToListAsync();
     }
 
     public async Task updateAsync(StudentEntity? entity)

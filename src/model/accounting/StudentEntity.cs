@@ -24,6 +24,11 @@ public class StudentEntity
 
     public StudentEntity(string studentId, int educationalLevel)
     {
+        if (string.IsNullOrWhiteSpace(studentId))
+        {
+            throw new InternalException("The studentId property is required.");
+        }
+        
         this.studentId = studentId;
         discountId = 1;
         this.educationalLevel = educationalLevel;

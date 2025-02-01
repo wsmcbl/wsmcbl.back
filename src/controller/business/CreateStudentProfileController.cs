@@ -25,8 +25,19 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
         student.tutorId = existingTutor.tutorId!;
         student.tutor = existingTutor;
+
+        student.studentId = string.Empty;
         daoFactory.studentDao!.create(student);
         await daoFactory.execute();
+        daoFactory.Detached(student);
+        
+        var value = await daoFactory.studentDao!.findDuplicateOrNull(student);
+        if (value == null)
+        {
+            throw new InternalException();
+        }
+        
+        student.studentId = value.studentId!;
         
         return student;
     }

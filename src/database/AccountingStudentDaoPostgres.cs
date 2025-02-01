@@ -40,8 +40,8 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
     
     private async Task<string> getEnrollmentLabel(string studentId)
     {
-        var result = await context.Set<StudentView>().Where(e => e.studentId == studentId)
-            .FirstOrDefaultAsync();
+        var result = await context.Set<StudentView>().AsNoTracking()
+            .Where(e => e.studentId == studentId).FirstOrDefaultAsync();
         
         if(result == null) return "Sin matrícula";
         
@@ -52,7 +52,8 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
 
     public async Task<List<StudentView>> getStudentViewList()
     {
-        return await context.Set<StudentView>().Where(e => e.isActive).ToListAsync();
+        return await context.Set<StudentView>().AsNoTracking()
+            .Where(e => e.isActive).ToListAsync();
     }
 
     public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
