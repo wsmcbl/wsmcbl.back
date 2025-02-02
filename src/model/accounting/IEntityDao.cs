@@ -2,7 +2,10 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.accounting;
 
-public interface ICashierDao : IGenericDao<CashierEntity, string>;
+public interface ICashierDao : IGenericDao<CashierEntity, string>
+{
+    public Task<CashierEntity> getByUserId(Guid userId);
+}
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
