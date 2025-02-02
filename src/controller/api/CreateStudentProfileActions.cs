@@ -5,7 +5,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary","cashier")]
+[ResourceAuthorizer("CanCreateStudent")]
 [Route("accounting")]
 [ApiController]
 public class CreateStudentProfileActions(CreateStudentProfileController controller) : ControllerBase
