@@ -43,7 +43,10 @@ public class UserEntity
     
     public List<string> getPermissionList()
     {
-        return permissionList.Select(e => e.name).ToList();
+        var list = role!.getPermissionList();
+        list.AddRange(permissionList.Select(e => e.name));
+
+        return list.Distinct().ToList();
     }
     
     public List<int> getPermissionIdList()
