@@ -8,6 +8,8 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
 {
     public async Task<StudentEntity> createStudent(StudentEntity student, StudentTutorEntity tutor)
     {
+        await checkForSchoolyearOrFail();
+        
         var existingStudent = await daoFactory.studentDao!.findDuplicateOrNull(student);
         if (existingStudent != null)
         {
@@ -39,6 +41,18 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
         student.studentId = value.studentId!;
         
         return student;
+    }
+
+    private async Task checkForSchoolyearOrFail()
+    {
+        try
+        {
+            await daoFactory.schoolyearDao!.getNewOrCurrent();
+        }
+        catch (Exception)
+        {
+            throw new EntityNotFoundException("There is no schoolyear.");
+        }
     }
 
     public async Task createAccountingStudent(StudentEntity student, int educationalLevel)
