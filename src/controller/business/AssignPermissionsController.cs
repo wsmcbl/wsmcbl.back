@@ -7,13 +7,13 @@ namespace wsmcbl.src.controller.business;
 
 public class AssignPermissionsController : BaseController
 {
-    private readonly HttpClient httpClient;
+    private NextcloudUserCreator nextcloudUserCreator { get; set; }
 
     public AssignPermissionsController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
     {
-        this.httpClient = httpClient;
+        nextcloudUserCreator = new NextcloudUserCreator(httpClient);
     }
-    
+
     public async Task<List<PermissionEntity>> getPermissionList()
     {
         return await daoFactory.permissionDao!.getAll();
@@ -21,12 +21,12 @@ public class AssignPermissionsController : BaseController
 
     public async Task<UserEntity> updateUser(UserEntity value, string nextCloudGroup)
     {
-        var user = await daoFactory.userDao!.getById((Guid)value.userId!);
+        var user = await daoFactory.userDao!.getById(value.userId.ToString()!);
         if (user == null)
         {
             throw new EntityNotFoundException("UserEntity", value.userId!.ToString());
         }
-        
+
         user.update(value);
         await daoFactory.execute();
 
@@ -37,24 +37,28 @@ public class AssignPermissionsController : BaseController
 
     private async Task assignNextcloudGroup(UserEntity user, string nextCloudGroup)
     {
-        var nextcloudUserCreator = new NextcloudUserCreator(httpClient);
         await nextcloudUserCreator.assignGroup(user.email, nextCloudGroup.Trim());
     }
 
-    public async Task assignPermissions(List<int> permissionList, Guid userId)
+    public async Task assignPermissions(UserEntity user, List<int> permissionList)
     {
         if (permissionList.Count == 0)
         {
             return;
         }
-        
-        await daoFactory.permissionDao!.checkListId(permissionList);
 
+        await daoFactory.permissionDao!.checkListId(permissionList);
+        
         foreach (var item in permissionList)
         {
+            if (user.isAlreadyAssigned(item))
+            {
+                continue;
+            }
+            
             var userPermission = new UserPermissionEntity
             {
-                userId = userId,
+                userId = (Guid)user.userId!,
                 permissionId = item
             };
 
@@ -62,5 +66,10 @@ public class AssignPermissionsController : BaseController
         }
 
         await daoFactory.execute();
+    }
+
+    public async Task<string> getNextCloudGroup(UserEntity entity)
+    {
+        return await nextcloudUserCreator.getGroupByUserMail(entity.email);
     }
 }

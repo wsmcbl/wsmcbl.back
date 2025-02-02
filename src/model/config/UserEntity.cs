@@ -40,6 +40,11 @@ public class UserEntity
         return permissionList.Select(e => e.name).ToList();
     }
     
+    public List<int> getPermissionIdList()
+    {
+        return permissionList.Select(e => e.permissionId).ToList();
+    }
+    
     public string getAlias()
     {
         return $"{name[0]}. {surname}";
@@ -47,13 +52,12 @@ public class UserEntity
 
     public void update(UserEntity user)
     {
-        roleId = user.roleId;
         name = user.name.Trim();
         secondName = user.secondName?.Trim();
         surname = user.surname.Trim();
         secondSurname = user.secondSurname?.Trim();
-        email = user.email.Trim();
         isActive = user.isActive;
+        
         markAsUpdated();
     }
 
@@ -137,5 +141,19 @@ public class UserEntity
             entity.roleId = roleId;
             return this;
         }
+    }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
+
+    public bool isAlreadyAssigned(int permissionId)
+    {
+        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
     }
 }

@@ -9,8 +9,7 @@ public class MediaDaoPostgres(PostgresContext context) : GenericDaoPostgres<Medi
 {
     public async Task<string> getByTypeAndSchoolyear(int type, string schoolyearId)
     {
-        var result = await entities.Where(e => e.type == type)
-            .Where(e => e.schoolyearId == schoolyearId)
+        var result = await entities.Where(e => e.type == type && e.schoolyearId == schoolyearId)
             .FirstOrDefaultAsync();
 
         if (result == null)

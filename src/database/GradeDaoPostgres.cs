@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
@@ -8,15 +9,10 @@ public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<Grad
 {
     public async Task addRange(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList)
     {
-        var subjectPartialIdsList = await context.Set<SubjectPartialEntity>()
-            .Where(e => e.enrollmentId == subjectPartial.enrollmentId
-                        && e.teacherId == subjectPartial.teacherId
-                        && e.partialId == subjectPartial.partialId)
-            .Select(e => e.subjectPartialId)
-            .ToListAsync();
+        DaoFactory daoFactory = new DaoFactoryPostgres(context);
+        var subjectPartialIdsList = await daoFactory.subjectPartialDao!.getIdListBySubject(subjectPartial);
 
-        var currentGradeList = await entities
-            .Where(e => subjectPartialIdsList.Contains(e.subjectPartialId))
+        var currentGradeList = await entities.Where(e => subjectPartialIdsList.Contains(e.subjectPartialId))
             .ToListAsync();
 
         foreach (var currentGrade in currentGradeList)

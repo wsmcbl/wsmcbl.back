@@ -29,7 +29,7 @@ public class StudentParentDto : IBaseDto<StudentParentEntity>
     {
         return new StudentParentEntity
         {
-            parentId =  string.IsNullOrEmpty(parentId?.Trim()) ? null : parentId.Trim(),
+            parentId = string.IsNullOrEmpty(parentId?.Trim()) ? null : parentId.Trim(),
             sex = sex,
             name = name.Trim(),
             idCard = idCard?.Trim(),

@@ -26,6 +26,6 @@ public class StudentScoreInformationDto
     public void setSolvencyStateMessage(bool isSolvency)
     {
         solvencyStateMessage = isSolvency ? "Estudiante solvente, seleccionar imprimir." :
-            "Estudiante no solvente, impresión la boleta inhabilitada.";
+            "Estudiante no solvente, impresión de boleta inhabilitada.";
     }
 }

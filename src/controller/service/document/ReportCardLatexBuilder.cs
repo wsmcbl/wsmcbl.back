@@ -1,6 +1,6 @@
 using wsmcbl.src.model.academy;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class ReportCardLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
 {
@@ -33,6 +33,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         var quantity = (subjects.Count + 1).ToString();
         return $"|*{{{quantity}}}{{c|}}";
     }
+    
     private string getTitleLine()
     {
         var result = "Parcial";
@@ -69,8 +70,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         return $"{finalGrade}\\\\ \\hline";
     }
-    
-
     
     private string getSemester(SemesterEntity semester)
     {
@@ -117,7 +116,6 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         return $"{labelLine} {gradeLine}";
     }
     
-    
 
     public class Builder
     {
@@ -148,13 +146,13 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             return this;
         }
         
-        public Builder withSemesters(List<SemesterEntity> parameter)
+        public Builder withSemesterList(List<SemesterEntity> parameter)
         {
             latexBuilder._semesters = parameter;
             return this;
         }
         
-        public Builder withSubjects(List<(string, string)> parameter)
+        public Builder withSubjectList(List<(string, string)> parameter)
         {
             latexBuilder.subjects = parameter;
             return this;

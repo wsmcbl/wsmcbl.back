@@ -98,7 +98,7 @@ internal class AccountingContext
                 .HasForeignKey(d => d.discountId);
 
             entity.HasOne(d => d.student).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId);
+                .HasForeignKey<model.secretary.StudentEntity>(d => d.studentId);
             
             entity.HasMany(s => s.transactions)
                 .WithOne()
@@ -163,6 +163,10 @@ internal class AccountingContext
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnName("amount");
+
+            entity.HasOne(d => d.tariff).WithMany()
+                .HasForeignKey(d => d.tariffId);
+            
         });
         
         createView();

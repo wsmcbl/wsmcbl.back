@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public abstract class LatexBuilder
 {

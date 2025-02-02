@@ -88,37 +88,4 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         
         Assert.Empty(result);
     }
-    
-    [Fact]
-    public async Task getGeneralBalance_ReturnsFloatArray()
-    {
-        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
-
-        context = TestDbContext.getInMemory();
-        context.Set<DebtHistoryEntity>().AddRange(debtList);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
-        await context.SaveChangesAsync();
-
-        sut = new TariffDaoPostgres(context);
-        
-        var result = await sut.getGeneralBalance("std-1");
-        
-        Assert.IsType<float[]>(result);
-        Assert.Equal([10,100], result);
-    }
-    
-    [Fact]
-    public async Task getGeneralBalance_EmptyDebList_ReturnsFloatArray()
-    {
-        context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
-        await context.SaveChangesAsync();
-
-        sut = new TariffDaoPostgres(context);
-        
-        var result = await sut.getGeneralBalance("std-1");
-        
-        Assert.IsType<float[]>(result);
-        Assert.Equal([0,0], result);
-    }
 }

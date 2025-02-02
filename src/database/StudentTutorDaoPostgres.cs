@@ -15,7 +15,6 @@ public class StudentTutorDaoPostgres(PostgresContext context)
         }
 
         var existingEntity = entity.isValidId() ? await getById(entity.tutorId!) : await getByInformation(entity);
-
         if (existingEntity == null)
         {
             create(entity);
@@ -29,8 +28,8 @@ public class StudentTutorDaoPostgres(PostgresContext context)
     public async Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor)
     {
         return await context.Set<StudentTutorEntity>()
-            .FirstOrDefaultAsync(e =>
-                tutor.name.Equals(e.name) && tutor.phone.Contains(e.phone));
+            .Where(e => tutor.name.Equals(e.name) && tutor.phone.Contains(e.phone))
+            .FirstOrDefaultAsync();
     }
 
     public async Task<bool> hasOnlyOneStudent(string tutorId)

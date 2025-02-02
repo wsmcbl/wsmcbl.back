@@ -24,6 +24,11 @@ public class StudentEntity
 
     public StudentEntity(string studentId, int educationalLevel)
     {
+        if (string.IsNullOrWhiteSpace(studentId))
+        {
+            throw new InternalException("The studentId property is required.");
+        }
+        
         this.studentId = studentId;
         discountId = 1;
         this.educationalLevel = educationalLevel;
@@ -65,25 +70,25 @@ public class StudentEntity
         educationalLevel = value;
     }
 
-    public void setEnrollmentLabel(string? value)
-    {
-        if (value == null)
-        {
-            enrollmentLabel = "Sin matrícula";
-        }
-
-        enrollmentLabel = value;
-    }
-
     public DebtHistoryEntity getCurrentRegistrationTariffDebt()
     {
-        var result = debtHistory!
-            .FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
+        var result = debtHistory!.FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
         if (result == null)
         {
-            throw new EntityNotFoundException($"Registration tariff debt not found.");
+            throw new EntityNotFoundException("Registration tariff debt not found.");
         }
 
         return result;
+    }
+
+    public string getEducationalLevelLabel()
+    {
+        return educationalLevel switch
+        {
+            1 => "Preescolar",
+            2 => "Primaria",
+            3 => "Secundaria",
+            _ => ""
+        };
     }
 }

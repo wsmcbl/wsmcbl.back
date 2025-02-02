@@ -73,4 +73,9 @@ public static class Utility
 
         return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
+    
+    public static DateTime setHours(this DateTime value, int hour)
+    {
+        return new DateTime(value.Year, value.Month, value.Day, hour, 0, 0, DateTimeKind.Utc);
+    }
 }
