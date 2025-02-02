@@ -25,15 +25,10 @@ public class ResourceAuthorizer : ActionFilterAttribute
             status = StatusCodes.Status401Unauthorized;
             detail = "User not identified.";
         }
-        else if (!_roles.Any(role => user.IsInRole(role)))
+        else if (!hasPermission(user) && !hasRoles(user))   
         {
             status = StatusCodes.Status403Forbidden;
             detail = "You do not have the necessary permissions to access this resource.";
-        }
-        else if (!hasPermission(user))
-        {
-            status = StatusCodes.Status403Forbidden;
-            detail = "You do not have the necessary permissions to access this resource (TEST).";
         }
         else
         {
@@ -53,12 +48,17 @@ public class ResourceAuthorizer : ActionFilterAttribute
         };
     }
 
+    private bool hasRoles(ClaimsPrincipal user)
+    {
+        return !_roles.Any(user.IsInRole);
+    }
+
     private bool hasPermission(ClaimsPrincipal user)
     {
-        var permissions = user.Claims
+        var permissionList = user.Claims
             .Where(c => c.Type == "Permission")
-            .Select(c => c.Value);
+            .Select(c => c.Value).ToList();
 
-        return permissions.Contains(_roles.ToList().ToString()!);
+        return _roles.Any(permission => permissionList.Contains(permission));
     }
 }
