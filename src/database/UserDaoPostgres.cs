@@ -12,15 +12,14 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         UserEntity? user = null;
         if (Guid.TryParse(userId, out var userIdGuid))
         {
-            user = await entities.Where(e => e.userId == userIdGuid)
-                .Include(e => e.role)
+            user = await entities.Include(e => e.role)
                 .Include(e => e.permissionList)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.userId == userIdGuid);
         }
 
         if (user == null)
         {
-            throw new EntityNotFoundException("User", userId);
+            throw new EntityNotFoundException("UserEntity", userId);
         }
 
         return user;
@@ -28,10 +27,11 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
     public async Task<UserEntity> getUserByEmail(string email)
     {
-        var result = await entities.Where(e => e.email == email)
+        var result = await entities
             .Include(e => e.role)
+            .ThenInclude(e => e!.permissionList)
             .Include(e => e.permissionList)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(e => e.email == email);
         
         if (result == null)
         {

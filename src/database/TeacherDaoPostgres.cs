@@ -10,10 +10,9 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
     public new async Task<TeacherEntity?> getById(string id)
     {
         return await entities
-            .Where(e => e.teacherId == id)
             .Include(e => e.user)
             .Include(e => e.enrollment)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(e => e.teacherId == id);
     }
 
     public new async Task<List<TeacherEntity>> getAll()
@@ -29,9 +28,8 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
     public async Task<TeacherEntity?> getByEnrollmentId(string enrollmentId)
     {
-        var enrollment = await context.Set<EnrollmentEntity>().Where(e => e.enrollmentId == enrollmentId)
-            .AsNoTracking()
-            .FirstOrDefaultAsync();
+        var enrollment = await context.Set<EnrollmentEntity>().AsNoTracking()
+            .FirstOrDefaultAsync(e => e.enrollmentId == enrollmentId);
         
         if (enrollment == null)
         {
@@ -48,10 +46,10 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
     public async Task<TeacherEntity> getByUserId(Guid userId)
     {
-        var result = await entities.Where(e => e.userId == userId).FirstOrDefaultAsync();
+        var result = await entities.FirstOrDefaultAsync(e => e.userId == userId);
         if (result == null)
         {
-            throw new EntityNotFoundException("TeacherEntity", userId.ToString());
+            throw new EntityNotFoundException($"Teacher wit user id ({userId.ToString()}) not found.");
         }
 
         return result;
