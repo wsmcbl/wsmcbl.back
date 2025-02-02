@@ -1,3 +1,4 @@
+using System.Text;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
@@ -22,7 +23,12 @@ public class UserEntity
     
     public string fullName()
     {
-        return $"{name} {secondName} {surname} {secondSurname}";
+        var builder = new StringBuilder(name);
+        builder.AppendName(secondName);
+        builder.Append(' ').Append(surname);
+        builder.AppendName(secondSurname);
+        
+        return builder.ToString();
     }
     
     private void markAsUpdated()
