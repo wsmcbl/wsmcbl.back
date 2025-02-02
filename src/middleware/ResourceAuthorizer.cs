@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -29,6 +30,11 @@ public class ResourceAuthorizer : ActionFilterAttribute
             status = StatusCodes.Status403Forbidden;
             detail = "You do not have the necessary permissions to access this resource.";
         }
+        else if (!hasPermission(user))
+        {
+            status = StatusCodes.Status403Forbidden;
+            detail = "You do not have the necessary permissions to access this resource (TEST).";
+        }
         else
         {
             return;
@@ -45,5 +51,14 @@ public class ResourceAuthorizer : ActionFilterAttribute
         {
             StatusCode = status
         };
+    }
+
+    private bool hasPermission(ClaimsPrincipal user)
+    {
+        var permissions = user.Claims
+            .Where(c => c.Type == "Permission")
+            .Select(c => c.Value);
+
+        return permissions.Contains(_roles.ToList().ToString()!);
     }
 }
