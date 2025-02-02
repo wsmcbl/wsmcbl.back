@@ -1,4 +1,5 @@
 using System.Text;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.secretary;
 
@@ -29,19 +30,10 @@ public class StudentEntity
     public string fullName()
     {
         var builder = new StringBuilder(name);
-
-        if (!string.IsNullOrWhiteSpace(secondName))
-        {
-            builder.Append(' ').Append(secondName);
-        }
-
+        builder.AppendName(secondName);
         builder.Append(' ').Append(surname);
-
-        if (!string.IsNullOrWhiteSpace(secondSurname))
-        {
-            builder.Append(' ').Append(secondSurname);
-        }
-
+        builder.AppendName(secondSurname);
+        
         return builder.ToString();
     }
 
