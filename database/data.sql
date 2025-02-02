@@ -1,13 +1,18 @@
 set datestyle to 'European';
 
 insert into config.role(name, description)
-values ('admin','Full system access'),
-       ('secretary','Access to the secretary and academy modules'),
-       ('cashier','Access to the accounting module'),
-       ('teacher','Access to the academic module');
+values ('admin','Full system access.'),
+       ('secretary','Access to the secretary and academy modules.'),
+       ('cashier','Access to the accounting module.'),
+       ('teacher','Access to the academic module.');
 
 insert into config.permission(name, spanishname, area, description)
-values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme');
+values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme.');
+
+insert into config.role_permission(roleid, permissionid)
+values (1,1),
+       (2,1),
+       (3,1);
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
