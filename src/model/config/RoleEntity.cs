@@ -8,15 +8,8 @@ public class RoleEntity
     
     public List<PermissionEntity> permissionList { get; set; } = [];
 
-    public string getSpanishName()
+    public List<string> getPermissionList()
     {
-        return name switch
-        {
-            "admin" => "Administrador",
-            "secretary" => "Secretario",
-            "cashier" => "Cajero",
-            "teacher" => "Docente",
-            _ => "Sin roles"
-        };
+        return permissionList.Select(e => e.name).ToList();
     }
 }
