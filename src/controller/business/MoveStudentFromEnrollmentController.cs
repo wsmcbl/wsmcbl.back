@@ -19,7 +19,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.execute();
 
-        await daoFactory.academyStudentDao!.updateEnrollment(studentValue.studentId, enrollment.enrollmentId!);
+        await daoFactory.academyStudentDao!.update(studentValue.studentId, enrollment.enrollmentId!);
         studentValue.enrollmentId = enrollment.enrollmentId;
 
         return studentValue;
@@ -30,12 +30,11 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         var student = await daoFactory.academyStudentDao!.getById(studentId);
         if (student == null)
         {
-            throw new EntityNotFoundException("student", studentId);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
-        var current = await daoFactory.schoolyearDao!.getCurrentAndNewSchoolyearIds();
-        var schoolyear = current.newSchoolyear != string.Empty ? current.newSchoolyear : current.currentSchoolyear;
-        if (student.schoolYear != schoolyear)
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        if (student.schoolYear != schoolyear.id)
         {
             throw new ConflictException("This student cannot move from enrollment.");
         }
@@ -48,7 +47,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
 
         var degree = await daoFactory.degreeDao!.getByEnrollmentId(enrollmentId);
@@ -63,7 +62,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
 
     public async Task<bool> isThereAnActivePartial()
     {
-        var partialList = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
 
         var result = partialList.FirstOrDefault(e => e is { isActive: true, gradeRecordIsActive: true });
 

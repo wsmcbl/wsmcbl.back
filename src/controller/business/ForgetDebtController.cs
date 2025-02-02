@@ -14,6 +14,6 @@ public class ForgetDebtController(DaoFactory daoFactory) : BaseController(daoFac
 
     public async Task<List<DebtHistoryEntity>> getDebtListByStudent(string studentId)
     {
-        return await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        return await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
     }
 }

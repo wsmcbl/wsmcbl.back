@@ -2,12 +2,13 @@ using System.Globalization;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.document;
 
 public class EnrollSheetLatexBuilder : LatexBuilder
 {
     private string? grade;
     private string? userName;
+    private string? newSchoolyear;
     private readonly StudentEntity entity;
     private model.academy.StudentEntity? academyStudent;
     private readonly string templatesPath;
@@ -27,6 +28,11 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         userName = value;
     }
+
+    public void setSchoolyear(string value)
+    {
+        newSchoolyear = value;
+    }
     
     public void setAcademyStudent(model.academy.StudentEntity student)
     {
@@ -37,6 +43,8 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     
     protected override string updateContent(string content)
     {
+        content = content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
+        
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
         content = content.ReplaceInLatexFormat("student.name.value", entity.fullName());
@@ -60,7 +68,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = setParents(content, entity.parents);
         content = setFile(content, entity.file!);
         
-        content = content.ReplaceInLatexFormat($"current.year.value", getYearLabel());
+        content = content.ReplaceInLatexFormat("current.year.value", getYearLabel());
         
         return content;
     }

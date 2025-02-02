@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.accounting;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
@@ -12,9 +11,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CorrectEducationalLevelActions(CorrectEducationalLevelController controller) : ActionsBase
 {
-    /// <summary>
-    /// Get educational level information of the student
-    /// </summary>
+    /// <summary>Get educational level information of the student.</summary>
     /// <response code="200">Returns the resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -27,16 +24,12 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
         return Ok(new StudentWithLevelDto(student));
     }
     
-    /// <summary>
-    /// Change educational level of the student
-    /// </summary>
-    /// <remarks>
-    /// The level value must be 1, 2 or 3
-    /// </remarks>
+    /// <summary>Change educational level of the student.</summary>
+    /// <remarks>The level value must be 1, 2 or 3.</remarks>
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">If resource not exist(student or tariff).</response>
+    /// <response code="404">If a resource not exist (student or tariff).</response>
     /// <response code="409">If the student has the same level.</response>
     [HttpPut]
     [Route("students/levels")]

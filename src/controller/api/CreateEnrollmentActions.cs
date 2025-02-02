@@ -6,7 +6,6 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
 [Route("secretary/degrees")]
 [ApiController]
 public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
@@ -15,6 +14,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin","secretary","teacher")]
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> getDegreeList()
@@ -30,6 +30,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree) or quantity invalid.</response>
+    [ResourceAuthorizer("admin","secretary")]
     [HttpPost]
     [Route("{degreeId}/enrollments")]
     public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
@@ -47,6 +48,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment not found.</response>
+    [ResourceAuthorizer("admin","secretary")]
     [HttpPut]
     [Route("enrollments")]
     public async Task<IActionResult> updateEnrollment(EnrollmentToCreateDto dto)

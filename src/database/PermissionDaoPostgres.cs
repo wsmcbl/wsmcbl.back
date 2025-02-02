@@ -13,7 +13,7 @@ public class PermissionDaoPostgres(PostgresContext context) : GenericDaoPostgres
 
         foreach (var id in permissionIdList.Where(id => !listId.Contains(id)))
         {
-            throw new EntityNotFoundException("Permission", id.ToString());
+            throw new EntityNotFoundException("PermissionEntity", id.ToString());
         }
     }
 }

@@ -1,5 +1,6 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -7,20 +8,14 @@ namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<StudentEntity>> getStudentsList()
+    public async Task<List<StudentView>> getStudentsList()
     {
-        return await daoFactory.accountingStudentDao!.getAll();
+        return await daoFactory.accountingStudentDao!.getStudentViewList();
     }
     
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        var result = await daoFactory.accountingStudentDao!.getById(studentId);
-        if (result == null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-        
-        return result;
+        return await daoFactory.accountingStudentDao!.getFullById(studentId);
     }
     
     public Task<List<TariffEntity>> getTariffListByStudent(string studentId)
@@ -58,7 +53,7 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     {
         if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
         {
-            throw new ArgumentException($"Some tariff is already paid.");
+            throw new ArgumentException("Some tariff is already paid.");
         }
         
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);

@@ -38,6 +38,9 @@ internal class AcademyContext
 
             entity.HasMany(d => d.subjectList).WithOne()
                 .HasForeignKey(d => d.enrollmentId);
+
+            entity.HasOne<TeacherEntity>().WithOne(e => e.enrollment)
+                .HasForeignKey<EnrollmentEntity>(e => e.teacherId);
         });
 
         modelBuilder.Entity<GradeEntity>(entity =>
@@ -53,7 +56,7 @@ internal class AcademyContext
             entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
         });
-        
+
         modelBuilder.Entity<PartialEntity>(entity =>
         {
             entity.HasKey(e => e.partialId).HasName("partial_pkey");
@@ -68,7 +71,7 @@ internal class AcademyContext
             entity.Property(e => e.startDate).HasColumnName("startdate");
             entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
             entity.Property(e => e.isActive).HasColumnName("isactive");
-            
+
             entity.HasMany(d => d.subjectPartialList)
                 .WithOne()
                 .HasForeignKey(e => e.partialId);
@@ -135,13 +138,13 @@ internal class AcademyContext
             entity.HasKey(e => e.subjectPartialId).HasName("subject_partial_key");
 
             entity.ToTable("subject_partial", "academy");
-            
+
             entity.Property(e => e.subjectPartialId).HasColumnName("subjectpartialid");
             entity.Property(e => e.partialId).HasColumnName("partialid");
             entity.Property(e => e.teacherId).HasMaxLength(15).HasColumnName("teacherid");
             entity.Property(e => e.subjectId).HasMaxLength(15).HasColumnName("subjectid");
             entity.Property(e => e.enrollmentId).HasMaxLength(15).HasColumnName("enrollmentid");
-            
+
             entity.HasMany(d => d.gradeList).WithOne()
                 .HasForeignKey(d => d.subjectPartialId);
 
@@ -156,15 +159,13 @@ internal class AcademyContext
 
             entity.Property(e => e.teacherId).HasDefaultValueSql("academy.generate_teacher_id()")
                 .HasColumnName("teacherid");
-            
+
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             entity.Property(e => e.isGuide).HasColumnName("isguide");
 
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
-            
-            entity.Ignore(e => e.enrollment);
         });
     }
 }

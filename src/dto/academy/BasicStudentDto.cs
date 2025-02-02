@@ -6,10 +6,12 @@ public class BasicStudentDto
 {
     public string studentId { get; set; }
     public string fullName { get; set; }
+    public bool sex { get; set; }
 
     public BasicStudentDto(StudentEntity entity)
     {
         studentId = entity.studentId;
         fullName = entity.fullName();
+        sex = entity.student.sex;
     }
 }

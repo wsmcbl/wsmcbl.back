@@ -1,35 +1,35 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class PartialDaoPostgres(PostgresContext context) : GenericDaoPostgres<PartialEntity, int>(context), IPartialDao
+public class PartialDaoPostgres : GenericDaoPostgres<PartialEntity, int>, IPartialDao
 {
-    public async Task<List<PartialEntity>> getListByCurrentSchoolyear()
+    private DaoFactory daoFactory { get; set; }
+    
+    public PartialDaoPostgres(PostgresContext context) : base(context)
     {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ids = await schoolyearDao.getCurrentAndNewSchoolyearIds();
+        daoFactory = new DaoFactoryPostgres(context);
+    }
+    
+    public async Task<List<PartialEntity>> getListInCurrentSchoolyear()
+    {
+        var semesterList = await daoFactory.semesterDao!.getListInCurrentSchoolyear();
+        var idList = semesterList.Select(e => e.semesterId).ToList();
 
-        var semesterList = await context.Set<SemesterEntity>()
-            .Where(e => e.schoolyear == ids.currentSchoolyear)
-            .Select(e => e.semesterId)
-            .ToListAsync();
-
-        return await entities.Where(e => semesterList.Contains(e.semesterId)).ToListAsync();
+        return await entities.Where(e => idList.Contains(e.semesterId)).ToListAsync();
     }
 
-    public async Task<List<PartialEntity>> getListWithSubjectByEnrollment(string enrollmentId)
+    public async Task<List<PartialEntity>> getListByEnrollmentId(string enrollmentId)
     {
-        var partialList = await getListByCurrentSchoolyear();
+        var partialList = await getListInCurrentSchoolyear();
 
         foreach (var item in partialList)
         {
-            item.subjectPartialList = await context.Set<SubjectPartialEntity>()
-                .Where(e => e.partialId == item.partialId && e.enrollmentId == enrollmentId)
-                .Include(e => e.gradeList)
-                .AsNoTracking()
-                .ToListAsync();
+            item.subjectPartialList =
+                await daoFactory.subjectPartialDao!.getByPartialAndEnrollmentId(item.partialId, enrollmentId);
         }
 
         return partialList;

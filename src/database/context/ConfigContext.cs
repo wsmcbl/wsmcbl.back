@@ -52,7 +52,8 @@ public class ConfigContext
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
 
             entity.HasMany(e => e.permissionList)
-                .WithMany();
+                .WithMany()
+                .UsingEntity<RolePermissionEntity>();
         });
 
 
@@ -63,7 +64,7 @@ public class ConfigContext
             entity.ToTable("permission", "config");
 
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
-            entity.Property(e => e.group).HasColumnName("group");
+            entity.Property(e => e.area).HasColumnName("area");
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.spanishName).HasColumnName("spanishname");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
@@ -77,6 +78,17 @@ public class ConfigContext
             entity.ToTable("user_permission", "config");
 
             entity.Property(e => e.userId).HasColumnName("userid");
+            entity.Property(e => e.permissionId).HasColumnName("permissionid");
+        });
+
+
+        modelBuilder.Entity<RolePermissionEntity>(entity =>
+        {
+            entity.HasKey(e => new { e.roleId, e.permissionId }).HasName("user_permission_pkey");
+
+            entity.ToTable("role_permission", "config");
+
+            entity.Property(e => e.roleId).HasColumnName("roleid");
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
         });
 

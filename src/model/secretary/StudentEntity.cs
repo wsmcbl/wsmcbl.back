@@ -1,3 +1,6 @@
+using System.Text;
+using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.model.secretary;
 
 public class StudentEntity
@@ -23,10 +26,15 @@ public class StudentEntity
     public StudentTutorEntity tutor { get; set; } = null!;
     public List<StudentParentEntity>? parents { get; set; }
     public StudentMeasurementsEntity? measurements { get; set; }
-
+    
     public string fullName()
     {
-        return $"{name} {secondName} {surname} {secondSurname}";
+        var builder = new StringBuilder(name);
+        builder.AppendName(secondName);
+        builder.Append(' ').Append(surname);
+        builder.AppendName(secondSurname);
+        
+        return builder.ToString();
     }
 
     public string getTutorName()
@@ -63,18 +71,7 @@ public class StudentEntity
     
     public class Builder
     {
-        private readonly StudentEntity entity;
-
-        public Builder()
-        {
-            entity = new StudentEntity
-            {
-                parents = [],
-                file = new StudentFileEntity(),
-                tutor = new StudentTutorEntity(),
-                measurements = new StudentMeasurementsEntity()
-            };
-        }
+        private readonly StudentEntity entity = new();
 
         public StudentEntity build() => entity;
 
@@ -146,11 +143,12 @@ public class StudentEntity
 
         public Builder setFile(StudentFileEntity? file)
         {
-            if (file != null)
+            if (file == null)
             {
-                file.studentId = entity.studentId!;
+                return this;
             }
 
+            file.studentId = entity.studentId!;
             entity.file = file;
             return this;
         }
@@ -163,11 +161,12 @@ public class StudentEntity
 
         public Builder setMeasurements(StudentMeasurementsEntity? studentMeasurements)
         {
-            if (studentMeasurements != null)
+            if (studentMeasurements == null)
             {
-                studentMeasurements.studentId = entity.studentId!;
+                return this;
             }
 
+            studentMeasurements.studentId = entity.studentId!;
             entity.measurements = studentMeasurements;
             return this;
         }

@@ -8,7 +8,7 @@ create table if not exists Config.Multimedia
 );
 
 
--- New view ---
+-- Transaction_Report_View view ---
 CREATE VIEW accounting.transaction_report_view AS
 SELECT t.transactionId,
        t.number,
@@ -36,3 +36,21 @@ FROM accounting.transaction t
      accounting.tariff ta ON tt.tariffId = ta.tariffId
 GROUP BY t.transactionId, t.number, s.studentId, s.name, s.secondname, s.surname, s.secondsurname, t.total, t.date,
          e.label, t.isvalid;
+
+
+--- Student_View View ---
+CREATE VIEW secretary.student_to_list_view AS
+SELECT s.studentid,
+       concat_ws(' ', s.name, s.secondname, s.surname, s.secondsurname) as fullName,
+       s.studentstate,
+       t.name as tutor,
+       sch.label AS schoolyear,
+       enr.label AS enrollment
+FROM secretary.student s LEFT JOIN secretary.studenttutor t ON s.tutorid = t.tutorid LEFT JOIN
+     (
+         SELECT DISTINCT ON (aca.studentid) aca.studentid, aca.schoolyear, aca.enrollmentid
+         FROM academy.student aca
+         ORDER BY aca.studentid, aca.schoolyear DESC
+     ) aca ON aca.studentid = s.studentid
+                         LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
+                         LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid;

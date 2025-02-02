@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.database;
@@ -9,15 +10,15 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
 {
     public async Task<ExchangeRateEntity> getLastRate()
     {
-        var schoolyearId = await getLastSchoolyearId();
-        return await entities.Where(e => e.schoolyear == schoolyearId).FirstAsync();
-    }
+        var daoFactory = new DaoFactoryPostgres(context);
+        var schoolyear = await daoFactory.schoolyearDao.getNewOrCurrent();
 
-    private async Task<string> getLastSchoolyearId()
-    {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
-
-        return ID.newSchoolyear != "" ? ID.newSchoolyear : ID.currentSchoolyear;
+        var result = await entities.FirstOrDefaultAsync(e => e.schoolyear == schoolyear.id);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("Exchange rate not found");
+        }
+        
+        return result;
     }
 }

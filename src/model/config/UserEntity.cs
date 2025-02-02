@@ -1,3 +1,4 @@
+using System.Text;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
@@ -22,7 +23,12 @@ public class UserEntity
     
     public string fullName()
     {
-        return $"{name} {secondName} {surname} {secondSurname}";
+        var builder = new StringBuilder(name);
+        builder.AppendName(secondName);
+        builder.Append(' ').Append(surname);
+        builder.AppendName(secondSurname);
+        
+        return builder.ToString();
     }
     
     private void markAsUpdated()
@@ -37,7 +43,15 @@ public class UserEntity
     
     public List<string> getPermissionList()
     {
-        return permissionList.Select(e => e.name).ToList();
+        var list = role!.getPermissionList();
+        list.AddRange(permissionList.Select(e => e.name));
+
+        return list.Distinct().ToList();
+    }
+    
+    public List<int> getPermissionIdList()
+    {
+        return permissionList.Select(e => e.permissionId).ToList();
     }
     
     public string getAlias()
@@ -47,13 +61,12 @@ public class UserEntity
 
     public void update(UserEntity user)
     {
-        roleId = user.roleId;
         name = user.name.Trim();
         secondName = user.secondName?.Trim();
         surname = user.surname.Trim();
         secondSurname = user.secondSurname?.Trim();
-        email = user.email.Trim();
         isActive = user.isActive;
+        
         markAsUpdated();
     }
 
@@ -84,7 +97,14 @@ public class UserEntity
     public async Task getIdFromRole(DaoFactory daoFactory)
     {
         userRoleId = string.Empty;
-        if (roleId is 1 or 4)
+
+        if (roleId == 3)
+        {
+            var result = await daoFactory.cashierDao!.getByUserId((Guid)userId!);
+            userRoleId = result.cashierId;
+        }
+        
+        if (roleId == 4)
         {
             var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);
             userRoleId = result.teacherId;
@@ -137,5 +157,19 @@ public class UserEntity
             entity.roleId = roleId;
             return this;
         }
+    }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
+
+    public bool isAlreadyAssigned(int permissionId)
+    {
+        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
     }
 }
