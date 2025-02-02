@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
@@ -19,19 +20,30 @@ public class AddingStudentGradesController : BaseController
         return await daoFactory.enrollmentDao!.getListByTeacherId(teacherId);
     }
 
-    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity baseSubjectPartial)
+    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity parameter)
     {
-        return await daoFactory.subjectPartialDao!.getListByTeacherAndEnrollment(baseSubjectPartial);
+        return await daoFactory.subjectPartialDao!.getListBySubject(parameter);
     }
 
-    public async Task addGrades(SubjectPartialEntity baseSubjectPartial, List<GradeEntity> gradeList)
+    public async Task addGrades(SubjectPartialEntity parameter, List<GradeEntity> gradeList)
     {
-        await daoFactory.gradeDao!.addRange(baseSubjectPartial, gradeList);
+        await daoFactory.gradeDao!.addRange(parameter, gradeList);
         await daoFactory.execute();
     }
 
     public async Task<List<PartialEntity>> getPartialList()
     {
-        return await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        return await daoFactory.partialDao!.getListInCurrentSchoolyear();
+    }
+
+    public async Task<TeacherEntity> getTeacherById(string teacherId)
+    {
+        var result = await daoFactory.teacherDao!.getById(teacherId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
+
+        return result;
     }
 }

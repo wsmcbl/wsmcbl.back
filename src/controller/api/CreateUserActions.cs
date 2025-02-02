@@ -47,7 +47,8 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     [Route("users")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
-        var result = await controller.createUser(dto.toEntity(), dto.nextCloudGroup);
-        return CreatedAtAction(null, result.mapToDto());
+        var group = dto.nextCloudGroup ?? string.Empty;
+        var result = await controller.createUser(dto.toEntity(), group);
+        return CreatedAtAction(null, new UserToCreateDto(result, group));
     }
 }

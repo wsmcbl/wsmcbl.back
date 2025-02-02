@@ -1,4 +1,4 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
@@ -12,8 +12,8 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
 {
     public async Task<StudentEntity> getStudentGradesInformation(string studentId)
     {
-        var student = await daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId);
-        var partials = await daoFactory.partialDao!.getListByCurrentSchoolyear();
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        var partials = await daoFactory.partialDao!.getListInCurrentSchoolyear();
         student.setPartials(partials);
 
         return student;

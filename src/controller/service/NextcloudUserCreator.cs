@@ -29,7 +29,7 @@ public class NextcloudUserCreator
         var response = await httpClient.PostAsync($"{getNextcloudUrl()}/users", content);
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Error creating user to Nextcloud.");
+            throw new InternalException("Error creating user to Nextcloud.");
         }
     }
 
@@ -76,6 +76,33 @@ public class NextcloudUserCreator
             return [];
         }
     }
+
+    public async Task<string> getGroupByUserMail(string mail)
+    {
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        var url = $"{getNextcloudUrl()}users/{mail}/groups";
+        var response = await httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InternalException("Error getting list of groups.");
+        }
+        
+        try
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var parsedJson = JObject.Parse(json);
+            var groupsArray = (JArray)parsedJson["ocs"]?["data"]?["groups"]!;
+            var list = groupsArray.ToObject<List<string>>();
+            return list!.First();
+        }
+        catch (Exception)
+        {
+            return string.Empty;
+        }
+    }
+
 
     private void initConfiguration()
     {

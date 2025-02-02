@@ -14,7 +14,6 @@ public class StudentFileDaoPostgres(PostgresContext context)
         }
 
         var existingEntity = await getById(entity.fileId);
-
         if (existingEntity == null)
         {
             create(entity);

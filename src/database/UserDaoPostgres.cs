@@ -12,9 +12,10 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         UserEntity? user = null;
         if (Guid.TryParse(userId, out var userIdGuid))
         {
-            user = await entities
+            user = await entities.Where(e => e.userId == userIdGuid)
                 .Include(e => e.role)
-                .FirstOrDefaultAsync(e => e.userId == userIdGuid);
+                .Include(e => e.permissionList)
+                .FirstOrDefaultAsync();
         }
 
         if (user == null)
@@ -27,10 +28,11 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
     public async Task<UserEntity> getUserByEmail(string email)
     {
-        var result = await entities.Include(e => e.role)
+        var result = await entities.Where(e => e.email == email)
+            .Include(e => e.role)
             .Include(e => e.permissionList)
-            .FirstOrDefaultAsync(e => e.email == email);
-
+            .FirstOrDefaultAsync();
+        
         if (result == null)
         {
             throw new BadRequestException($"User with email ({email}) not found.");
@@ -47,13 +49,10 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
 
     public async Task isUserDuplicate(UserEntity user)
     {
-        var result = await entities
-            .Where(e => user.name.Trim().Equals(e.name.Trim()) &&
-                        user.secondName == e.secondName &&
-                        user.surname.Trim().Equals(e.surname.Trim()) &&
-                        user.secondSurname == e.secondSurname).FirstOrDefaultAsync();
-
-        if (result != null)
+        var userList = await entities.Where(e => e.name == user.name).ToListAsync();
+        
+        var values = userList.Where(user.isADuplicate).ToList();
+        if (values.Count != 0)
         {
             throw new ConflictException("User already exists (duplicate).");
         }

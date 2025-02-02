@@ -21,10 +21,9 @@ public class StudentParentDaoPostgres(PostgresContext context)
         }
 
         var existingEntity = await getById(entity.parentId);
-
         if (existingEntity == null)
         {
-            throw new EntityNotFoundException("Tutor", entity.parentId);
+            throw new EntityNotFoundException("TutorEntity", entity.parentId);
         }
 
         existingEntity.update(entity);

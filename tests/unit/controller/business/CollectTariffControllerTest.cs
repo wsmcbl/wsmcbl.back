@@ -1,8 +1,8 @@
 using NSubstitute;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
-using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 using wsmcbl.tests.utilities;
 
@@ -28,12 +28,12 @@ public class CollectTariffControllerTest
     public async Task getStudentsList_ReturnsList()
     {
         var list = TestEntityGenerator.aStudentList();
-        studentDao.getAll().Returns(list);
+        studentDao.getStudentViewList().Returns(list);
         daoFactory.accountingStudentDao.Returns(studentDao);
 
         var result = await sut.getStudentsList();
 
-        Assert.IsType<List<StudentEntity>>(result);
+        Assert.IsType<List<StudentView>>(result);
         Assert.NotEmpty(result);
         Assert.Equal(list, result);
     }

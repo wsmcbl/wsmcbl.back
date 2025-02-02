@@ -1,21 +1,14 @@
 using wsmcbl.src.exception;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
-    {
-        return await daoFactory.studentDao!.getListWhitSchoolyearAndEnrollment();
-    }
-
     public async Task<string> getMedia(int type, int schoolyear)
     {
-        var result = await daoFactory.schoolyearDao!.getSchoolYearByLabel(schoolyear);
+        var result = await daoFactory.schoolyearDao!.getByLabel(schoolyear);
         return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, result.id!);
     }
 
@@ -55,15 +48,17 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
 
     public async Task deleteStudentById(string studentId)
     {
-        var debtList = await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        var debtList = await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
         if(debtList.Count == 0)
             throw new EntityNotFoundException("Student", studentId);
         
         await daoFactory.debtHistoryDao!.deleteRange(debtList);
         
         var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
-        if(accountingStudent == null)
+        if (accountingStudent == null)
+        {
             throw new EntityNotFoundException("Student", studentId);
+        }
         
         await daoFactory.accountingStudentDao!.delete(accountingStudent);
         

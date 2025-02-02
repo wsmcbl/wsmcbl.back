@@ -7,34 +7,34 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ResourceAuthorizer("admin", "secretary")]
-[Route("secretary")]
+[Route("secretary/students")]
 [ApiController]
 public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
 {
-    /// <summary>
-    ///  Returns the basic student list or student full by id.
-    /// </summary>
-    /// <param name="q">The query string in the format "key:value". Supported keys are "one:{studentId}" and "many:all".</param> 
+    /// <summary>Returns the basic student list.</summary>
+    /// <response code="200">Returns a resource by query params.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin", "secretary", "cashier")]
+    [HttpGet]
+    [Route("")]
+    public async Task<IActionResult> getStudentList()
+    {
+        var result = await controller.getStudentList();
+        return Ok(result.mapToListBasicDto());
+    }
+    
+    /// <summary>Returns student full by id.</summary> 
     /// <response code="200">Returns a resource by query params.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Student not found.</response>
-    [ResourceAuthorizer("admin", "secretary", "cashier")]
     [HttpGet]
-    [Route("students")]
-    public async Task<IActionResult> getStudentById([FromQuery] string q)
+    [Route("{studentId}")]
+    public async Task<IActionResult> getStudentById([Required] string studentId)
     {
-        var parts = validateQueryValue(q);
-        
-        var key = parts[0].ToLower();
-        var value = parts[1].ToLower();
-
-        return key switch
-        {
-            "one" => Ok((await controller.getStudentById(value)).mapToDto()),
-            "many" when value.Equals("all") => Ok((await controller.getStudentList()).mapToListBasicDto()),
-            _ => BadRequest("Unknown search key.")
-        };
+        var result = await controller.getStudentById(studentId);
+        return Ok(result.mapToDto());
     }
     
     /// <summary>Update student information.</summary>
@@ -44,10 +44,13 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("students")]
-    public async Task<IActionResult> updateStudent(StudentFullDto dto, [FromQuery] bool withNewToken = false)
+    [Route("{studentId}")]
+    public async Task<IActionResult> updateStudent([Required] string studentId, StudentFullDto dto, [FromQuery] bool withNewToken = false)
     {
-        return Ok(await controller.updateStudent(dto.toEntity(), withNewToken));
+        var entity = dto.toEntity();
+        entity.studentId = studentId;
+        
+        return Ok(await controller.updateStudent(entity, withNewToken));
     }
     
     /// <summary>Update student profile picture.</summary>
@@ -57,7 +60,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("students/{studentId}")]
+    [Route("{studentId}/pictures")]
     public async Task<IActionResult> updateProfilePicture([Required] string studentId, IFormFile profilePicture)
     {
         using var memoryStream = new MemoryStream();

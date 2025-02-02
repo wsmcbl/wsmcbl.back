@@ -15,4 +15,15 @@ public class SubjectPartialEntity
     {
         studentGrade = gradeList.FirstOrDefault(e => e.studentId == studentId);
     }
+
+    public SubjectPartialEntity()
+    {
+    }
+
+    public SubjectPartialEntity(string teacherId, string enrollmentId, int partialId)
+    {
+        this.teacherId = teacherId;
+        this.enrollmentId = enrollmentId;
+        this.partialId = partialId;
+    }
 }

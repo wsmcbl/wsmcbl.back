@@ -9,15 +9,15 @@ public class GradeEntity
     public double? grade { get; set; }
     public double? conductGrade { get; set; }
 
-    public void updateGrades(double? grade, double? conductGrade)
+    public void updateGrades(double? gradeValue, double? conductGradeValue)
     {
-        if (grade == null || conductGrade == null)
+        if (gradeValue == null || conductGradeValue == null)
         {
             throw new ArgumentException("The values of grade and conductGrade must be not null.");
         }
         
-        this.grade = grade;
-        this.conductGrade = conductGrade;
+        grade = gradeValue;
+        conductGrade = conductGradeValue;
 
         updateLabel();
     }

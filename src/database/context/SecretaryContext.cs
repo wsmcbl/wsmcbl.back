@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database.context;
@@ -85,12 +86,7 @@ internal class SecretaryContext
             entity.Property(e => e.profilePicture).HasColumnName("profileimage");
             entity.Property(e => e.accessToken).HasMaxLength(20).HasColumnName("accesstoken");
             
-            entity.HasOne(e => e.tutor).WithMany()
-                .HasForeignKey(e => e.tutorId);
-
-            entity.Ignore(e => e.file);
-            entity.Ignore(e => e.parents);
-            entity.Ignore(e => e.measurements);
+            entity.HasOne(e => e.tutor).WithMany().HasForeignKey(e => e.tutorId);
         });
 
         modelBuilder.Entity<StudentFileEntity>(entity =>
@@ -108,6 +104,9 @@ internal class SecretaryContext
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.transferSheet).HasColumnName("transfersheet");
             entity.Property(e => e.updatedDegreeReport).HasColumnName("updatedgradereport");
+            
+            entity.HasOne<StudentEntity>().WithOne(e => e.file)
+                .HasForeignKey<StudentFileEntity>(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentMeasurementsEntity>(entity =>
@@ -120,6 +119,9 @@ internal class SecretaryContext
             entity.Property(e => e.height).HasColumnName("height");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.weight).HasColumnName("weight");
+            
+            entity.HasOne<StudentEntity>().WithOne(e => e.measurements)
+                .HasForeignKey<StudentMeasurementsEntity>(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentParentEntity>(entity =>
@@ -137,6 +139,9 @@ internal class SecretaryContext
             entity.Property(e => e.occupation).HasColumnName("occupation");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.sex).HasColumnName("sex");
+            
+            entity.HasOne<StudentEntity>().WithMany(e => e.parents)
+                .HasForeignKey(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentTutorEntity>(entity =>
@@ -228,6 +233,22 @@ internal class SecretaryContext
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.typeId).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+        });
+
+        createView();
+    }
+
+    private void createView()
+    {
+        modelBuilder.Entity<StudentView>(entity =>
+        {
+            entity.ToView("student_to_list_view", "secretary").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.enrollment).HasColumnName("enrollment");
         });
     }
 }

@@ -53,6 +53,7 @@ builder.Services.AddTransient<CorrectEducationalLevelController>();
 builder.Services.AddTransient<CreateUserController>();
 builder.Services.AddTransient<CreateEnrollmentController>();
 builder.Services.AddTransient<AssignPermissionsController>();
+builder.Services.AddTransient<PrintDocumentController>();
 
 var app = builder.Build();
 

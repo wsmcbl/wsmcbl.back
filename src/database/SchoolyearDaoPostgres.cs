@@ -9,47 +9,79 @@ namespace wsmcbl.src.database;
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolYearEntity, string>(context), ISchoolyearDao
 {
-    public async Task<SchoolYearEntity> getCurrentSchoolyear()
+    public async Task<SchoolYearEntity> getByLabel(int year)
     {
-        var result = await getSchoolYearByLabel(DateTime.Today.Year);
-        
-        var gradeList = await context.Set<DegreeEntity>().Where(e => e.schoolYear == result.id).ToListAsync();
-        result.setGradeList(gradeList);
+        var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Entity of type (Schoolyear) with label ({year}) not found.");
+        }
 
-        var tariffList = await context.Set<TariffEntity>().Where(e => e.schoolYear == result.id).ToListAsync();
-        result.setTariffList(tariffList);
-        
         return result;
     }
+    
+    public async Task<SchoolYearEntity> getCurrent(bool withProperties = true)
+    {
+        var result = await getByLabel(DateTime.Today.Year);
+        if (!withProperties)
+        {
+            return result;
+        }
+        
+        var gradeList = await context.Set<DegreeEntity>()
+            .Where(e => e.schoolYear == result.id).ToListAsync();
+        result.setGradeList(gradeList);
 
-    private async Task<SchoolYearEntity?> getNewSchoolyear()
+        var tariffList = await context.Set<TariffEntity>()
+            .Where(e => e.schoolYear == result.id).ToListAsync();
+        result.setTariffList(tariffList);
+
+        return result;
+    }
+    
+    private static int newOrCurrentLabel() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
+    
+    public async Task<SchoolYearEntity> getCurrentOrNew()
     {
         try
         {
-            return await getSchoolYearByLabel(getLabelOfTheNewSchoolYear());
+            return await getCurrent(false);
+        }
+        catch (EntityNotFoundException)
+        {
+            return await getByLabel(newOrCurrentLabel());
         }
         catch (Exception)
         {
-            return null;
+            throw new EntityNotFoundException("There is not valid schoolyear.");
         }
     }
 
-    public async Task<SchoolYearEntity> getOrCreateNewSchoolyear()
+    public async Task<SchoolYearEntity> getNewOrCurrent()
     {
         try
         {
-            var result = await getNewSchoolyear();
-
-            if (result == null)
-            {
-                throw new ConflictException("New Schoolyear not found");
-            }
-
-            return result;
+            return await getByLabel(newOrCurrentLabel());
+        }
+        catch (EntityNotFoundException)
+        {
+            return await getCurrent(false);
         }
         catch (Exception)
         {
-            var year = getLabelOfTheNewSchoolYear();
+            throw new EntityNotFoundException("There is not valid schoolyear.");
+        }
+    }
+
+    public async Task<SchoolYearEntity> getOrCreateNew()
+    {
+        try
+        {
+            return await getByLabel(newOrCurrentLabel());
+        }
+        catch (EntityNotFoundException)
+        {
+            var year = newOrCurrentLabel();
             
             var schoolYearEntity = new SchoolYearEntity
             {
@@ -64,57 +96,5 @@ public class SchoolyearDaoPostgres(PostgresContext context)
 
             return schoolYearEntity;
         }
-    }
-
-    public async Task<string> getValidSchoolyearId()
-    {
-        try
-        {
-            var currentSchoolyear = await getCurrentSchoolyear();
-            return currentSchoolyear.id!;
-        }
-        catch (Exception)
-        {
-            var newSchoolyear = await getNewSchoolyear();
-            if (newSchoolyear == null)
-            {
-                throw new EntityNotFoundException("There is not valid schoolyear.");
-            }
-            
-            return newSchoolyear.id!;
-        }
-    }
-
-    public async Task<SchoolYearEntity> getSchoolYearByLabel(int year)
-    {
-        var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
-
-        if (result == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (Schoolyear) with label ({year}) not found.");
-        }
-
-        return result;
-    }
-
-    private static int getLabelOfTheNewSchoolYear() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
-    
-    public async Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds()
-    {
-        string currentSchoolyearId;
-        try
-        {
-            var currentSchoolyear = await getCurrentSchoolyear();
-            currentSchoolyearId = currentSchoolyear.id!;
-        }
-        catch (Exception)
-        {
-            currentSchoolyearId = string.Empty;
-        }
-
-        var newSchoolyear = await getNewSchoolyear();
-        var newSchoolyearId = newSchoolyear == null ? string.Empty : newSchoolyear.id!;
-
-        return (currentSchoolyearId, newSchoolyearId);
     }
 }

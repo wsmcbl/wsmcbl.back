@@ -18,7 +18,7 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
-        var newSchoolYear = await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
+        var newSchoolYear = await daoFactory.schoolyearDao!.getOrCreateNew();
         newSchoolYear.setDegreeDataList(degreeList);
         newSchoolYear.setTariffDataList(tariffList);
 
@@ -41,7 +41,7 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
         await daoFactory.degreeDao!.createRange(degreeList);
         await daoFactory.tariffDao!.createRange(tariffList);
 
-        return await daoFactory.schoolyearDao!.getOrCreateNewSchoolyear();
+        return await daoFactory.schoolyearDao!.getOrCreateNew();
     }
 
     public async Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList)
