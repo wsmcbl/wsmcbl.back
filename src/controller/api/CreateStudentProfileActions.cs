@@ -5,7 +5,6 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("CanCreateStudent")]
 [Route("accounting")]
 [ApiController]
 public class CreateStudentProfileActions(CreateStudentProfileController controller) : ControllerBase
@@ -22,6 +21,7 @@ public class CreateStudentProfileActions(CreateStudentProfileController controll
     /// <response code="409">If the student profile already exists.</response>
     [HttpPost]
     [Route("students")]
+    [ResourceAuthorizer("student:create")]
     public async Task<IActionResult> createStudent(CreateStudentProfileDto dto)
     {
         var result = await controller.createStudent(dto.student.toEntity(), dto.tutor.toEntity());
