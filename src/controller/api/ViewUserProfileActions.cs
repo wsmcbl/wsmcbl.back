@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
 [Route("config/users")]
 [ApiController]
-public class ViewUserProfile(ViewUserController controller) : ActionsBase
+public class ViewUserProfileActions(ViewUserProfileController controller) : ActionsBase
 {
     /// <summary>Get user information.</summary>
     /// <response code="200">Returns a user information.</response>
