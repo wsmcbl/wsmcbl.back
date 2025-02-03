@@ -4,6 +4,6 @@ namespace wsmcbl.src.dto.management;
 
 public static class DtoMapper
 {
-    public static List<PartialDto> mapListToDto(this IEnumerable<PartialEntity> partialList) =>
-        partialList.Select(e => new PartialDto(e)).ToList();
+    public static List<PartialDto> mapListToDto(this List<PartialEntity> list) =>
+        list.Select(e => new PartialDto(e)).ToList();
 }
