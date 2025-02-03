@@ -55,6 +55,7 @@ builder.Services.AddTransient<CreateEnrollmentController>();
 builder.Services.AddTransient<AssignPermissionsController>();
 builder.Services.AddTransient<PrintDocumentController>();//Auxiliary
 builder.Services.AddTransient<ViewUserProfileController>();
+builder.Services.AddTransient<EnablePartialGradeRecordingController>();
 
 var app = builder.Build();
 
