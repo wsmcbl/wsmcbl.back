@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace wsmcbl.src.model.academy;
 
 public class PartialEntity
@@ -15,11 +17,6 @@ public class PartialEntity
     
     public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
     
-    public bool isClosed()
-    {
-        return deadLine < DateOnly.FromDateTime(DateTime.Today);
-    }
-
     public bool recordIsActive()
     {
         return isActive && gradeRecordIsActive;
@@ -43,5 +40,16 @@ public class PartialEntity
         {
             item.setStudentGrade(studentId);
         }
+    }
+
+    public string getPeriodLabel()
+    {
+        var culture = new CultureInfo("es-ES");
+        return $"{startDate.ToString("dd/MMM/yyyy", culture)} - {deadLine.ToString("dd/MMM/yyyy", culture)}";
+    }
+
+    public string getSemesterLabel()
+    {
+        return semester == 1 ? "I Semestre" : "II Semestre";
     }
 }
