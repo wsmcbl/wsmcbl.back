@@ -32,6 +32,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     [ResourceAuthorizer("partial:update")]
     public async Task<IActionResult> enablePartialGradeRecording([Required] int partialId)
     {
-        return Ok(await controller.getPartialList());
+        await controller.enableGradeRecording(partialId);
+        return Ok();
     }
 }
