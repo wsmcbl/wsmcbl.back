@@ -5,7 +5,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("management")]
+[Route("management/partials")]
 [ApiController]
 public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingController controller) : ActionsBase
 {
@@ -14,11 +14,12 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("partial/list")]
+    [Route("")]
     [ResourceAuthorizer("partial:read")]
     public async Task<IActionResult> getPartialList()
     {
-        return Ok(await controller.getPartialList());
+        var result = await controller.getPartialList();
+        return Ok(result.mapToListDto());
     }
     
     /// <summary>Enable partial grade recording by id.</summary>
@@ -26,7 +27,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpPut]
-    [Route("partial")]
+    [Route("{partialId:int}")]
     [ResourceAuthorizer("partial:update")]
     public async Task<IActionResult> enablePartialGradeRecording([Required] int partialId)
     {
