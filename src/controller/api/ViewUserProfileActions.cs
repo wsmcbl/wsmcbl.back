@@ -27,14 +27,15 @@ public class ViewUserProfileActions(ViewUserProfileController controller) : Acti
     }
     
     /// <summary>Get roles list.</summary>
-    /// <response code="200">Returns a list information, the list can be empty.</response>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [ResourceAuthorizer("rol:read")]
     [HttpGet]
     [Route("roles")]
-    public async Task<IActionResult> getRolesList([Required] string userId)
+    public async Task<IActionResult> getRolesList()
     {
-        return Ok(await controller.getRolesList());
+        var result = await controller.getRolesList();
+        return Ok(result.Select(e => new { e.roleId, e.name}));
     }
 }
