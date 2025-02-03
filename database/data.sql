@@ -7,9 +7,9 @@ values ('admin','Full system access.'),
        ('teacher','Access to the academic module.');
 
 insert into config.permission(name, spanishname, area, description)
-values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme.'),
+values ('student:create', 'Crear estudiantes','secretary', 'Permission for the creation of students in the secretary scheme.'),
        ('user:read', 'Ver perfiles de usuarios','config', 'Permissions for reading user profiles.'),
-       ('roles:read', 'Ver roles','config', 'Permissions for reading roles.');
+       ('rol:read', 'Ver roles','config', 'Permissions for reading roles.');
 
 insert into config.role_permission(roleid, permissionid)
 values (1,1),
