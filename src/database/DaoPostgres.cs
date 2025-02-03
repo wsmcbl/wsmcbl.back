@@ -16,3 +16,5 @@ public class TariffTypeDaoPostgres(PostgresContext context)
 
 public class UserPermissionDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserPermissionEntity, string>(context), IUserPermissionDao;
+
+public class RoleDaoPostgres(PostgresContext context) : GenericDaoPostgres<RoleEntity, int>(context), IRoleDao;
