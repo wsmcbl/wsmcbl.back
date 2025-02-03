@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.management;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -19,7 +20,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     public async Task<IActionResult> getPartialList()
     {
         var result = await controller.getPartialList();
-        return Ok(result.mapToListDto());
+        return Ok(result.mapListToDto());
     }
     
     /// <summary>Enable partial grade recording by id.</summary>
