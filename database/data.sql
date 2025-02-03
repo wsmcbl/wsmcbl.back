@@ -4,25 +4,34 @@ insert into config.role(name, description)
 values ('admin','Full system access.'),
        ('secretary','Access to the secretary and academy modules.'),
        ('cashier','Access to the accounting module.'),
-       ('teacher','Access to the academic module.');
+       ('teacher','Access to the academic module.'),
+       ('principal','Access to the management module.'),
+       ('viceprincipal','Access to the management module.');
 
 insert into config.permission(name, spanishname, area, description)
 values ('student:create', 'Crear estudiantes','secretary', 'Permission for the creation of students in the secretary scheme.'),
        ('user:read', 'Ver perfiles de usuarios','config', 'Permissions for reading user profiles.'),
-       ('rol:read', 'Ver roles','config', 'Permissions for reading roles.');
+       ('rol:read', 'Ver roles','config', 'Permissions for reading roles.'),
+       ('partial:read', 'Ver parciales','academy', 'Permissions for reading partials.'),
+       ('partial:update', 'Modificar parciales','academy', 'Permissions for update partials.');
 
 insert into config.role_permission(roleid, permissionid)
 values (1,1),
        (1,2),
        (1,3),
+       (1,4),
+       (1,5),
        (2,1),
        (2,2),
        (2,3),
        (3,1),
        (3,2),
+       (3,4),
        (3,3),
        (4,2),
-       (4,3);
+       (4,3),
+       (5,3),
+       (5,4);
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
