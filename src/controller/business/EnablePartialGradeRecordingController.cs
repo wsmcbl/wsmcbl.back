@@ -19,6 +19,16 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
             throw new EntityNotFoundException("PartialEntity", partialId.ToString());
         }
 
+        if (!partial.isActive)
+        {
+            throw new ConflictException($"The partial with id ({partialId}) is not active.");
+        }
+
+        if (partial.gradeRecordIsActive)
+        {
+            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
+        }
+
         partial.gradeRecordIsActive = true;
         await daoFactory.execute();
     }
