@@ -15,9 +15,9 @@ public class ViewUserProfileActions(ViewUserProfileController controller) : Acti
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the user not exist.</response>
-    [ResourceAuthorizer("user:read")]
     [HttpGet]
     [Route("users/{userId}")]
+    [ResourceAuthorizer("user:read")]
     public async Task<IActionResult> getUser([Required] string userId)
     {
         var result = await controller.getUserById(userId);
@@ -30,9 +30,9 @@ public class ViewUserProfileActions(ViewUserProfileController controller) : Acti
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("rol:read")]
     [HttpGet]
     [Route("roles")]
+    [ResourceAuthorizer("rol:read")]
     public async Task<IActionResult> getRolesList()
     {
         var result = await controller.getRolesList();
