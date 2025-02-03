@@ -25,6 +25,6 @@ public class ViewUserProfileController : BaseController
 
     public async Task<List<RoleEntity>> getRolesList()
     {
-        return await daoFactory.roleDao.getAll();
+        return await daoFactory.roleDao!.getAll();
     }
 }
