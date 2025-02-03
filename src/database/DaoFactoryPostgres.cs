@@ -134,4 +134,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IUserPermissionDao? _userPermissionDao;
     public override IUserPermissionDao userPermissionDao => _userPermissionDao ??= new UserPermissionDaoPostgres(context);
+
+    private IRoleDao? _roleDao;
+    public override IRoleDao roleDao => _roleDao ??= new RoleDaoPostgres(context);
 }

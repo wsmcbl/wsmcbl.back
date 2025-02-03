@@ -11,6 +11,16 @@ public class TeacherEntity
     public UserEntity user { get; set; } = null!;
     public EnrollmentEntity? enrollment { get; set; }
 
+    public TeacherEntity()
+    {
+    }
+
+    public TeacherEntity(Guid userId)
+    {
+        this.userId = userId;
+        isGuide = false;
+    }
+
     public string fullName()
     {
         return user.fullName();
