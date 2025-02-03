@@ -1,4 +1,6 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.model.academy;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -35,10 +37,28 @@ public class CreateUserController : BaseController
 
         user.password = password;
 
+        await createRole(user);
         await createEmailAccount(user);
         await createNextcloudAccount(user, groupName);
         
         return user;
+    }
+
+    private async Task createRole(UserEntity user)
+    {
+        if (user.roleId == 3)
+        {
+            var entity = new CashierEntity{ userId = (Guid)user.userId! };
+            daoFactory.cashierDao!.create(entity);
+            await daoFactory.execute();
+        }
+        
+        if (user.roleId == 4)
+        {
+            var entity = new TeacherEntity((Guid)user.userId!);
+            daoFactory.teacherDao!.create(entity);
+            await daoFactory.execute();
+        }
     }
 
     private async Task createNextcloudAccount(UserEntity user, string groupName)
