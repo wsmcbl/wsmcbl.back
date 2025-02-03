@@ -8,14 +8,12 @@ public class LoginController : BaseController
 {
     private JwtGenerator jwtGenerator { get; }
     private UserAuthenticator userAuthenticator { get; }
-    private AssignPermissionsController assignPermissionsController { get; }
 
-    public LoginController(DaoFactory daoFactory, JwtGenerator jwtGenerator, UserAuthenticator userAuthenticator,
-        AssignPermissionsController assignPermissionsController) : base(daoFactory)
+    public LoginController(DaoFactory daoFactory, JwtGenerator jwtGenerator, UserAuthenticator userAuthenticator) :
+        base(daoFactory)
     {
         this.jwtGenerator = jwtGenerator;
         this.userAuthenticator = userAuthenticator;
-        this.assignPermissionsController = assignPermissionsController;
     }
 
     public async Task<string> getTokenByCredentials(UserEntity user)
@@ -23,15 +21,5 @@ public class LoginController : BaseController
         var result = await userAuthenticator.authenticateUser(user);
         await result.getIdFromRole(daoFactory);
         return jwtGenerator.generateToken(result);
-    }
-
-    public async Task<UserEntity> getUserById(string userId)
-    {
-        return await daoFactory.userDao!.getById(userId);
-    }
-
-    public async Task<string> getNextCloudGroupByUser(UserEntity entity)
-    {
-        return await assignPermissionsController.getNextCloudGroup(entity);
     }
 }

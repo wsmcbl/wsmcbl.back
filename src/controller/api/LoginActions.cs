@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
-using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
@@ -23,22 +21,5 @@ public class LoginActions(LoginController controller) : ActionsBase
     {
         var result = await controller.getTokenByCredentials(dto.toEntity());
         return Ok(result.mapToDto());
-    }
-    
-    
-    /// <summary>Get user information.</summary>
-    /// <response code="200">Returns a user information.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">If the user not exist.</response>
-    [ResourceAuthorizer("admin", "secretary", "cashier","teacher")]
-    [HttpGet]
-    [Route("{userId}")]
-    public async Task<IActionResult> getUser([Required] string userId)
-    {
-        var result = await controller.getUserById(userId);
-        var nextCloudGroup = await controller.getNextCloudGroupByUser(result);
-        
-        return CreatedAtAction(null, result.mapToDto(nextCloudGroup));
     }
 }

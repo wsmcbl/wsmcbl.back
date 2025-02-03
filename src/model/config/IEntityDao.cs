@@ -21,3 +21,5 @@ public interface IPermissionDao : IGenericDao<PermissionEntity, int>
 }
 
 public interface IUserPermissionDao : IGenericDao<UserPermissionEntity, string>;
+
+public interface IRoleDao : IGenericDao<RoleEntity, int>;
