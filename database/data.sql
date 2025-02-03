@@ -7,12 +7,22 @@ values ('admin','Full system access.'),
        ('teacher','Access to the academic module.');
 
 insert into config.permission(name, spanishname, area, description)
-values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme.');
+values ('CanCreateStudent', 'Crear perfil de estudiante','secretary', 'Permission for the creation of students in the secretary scheme.'),
+       ('user:read', 'Ver perfiles de usuarios','config', 'Permissions for reading user profiles.'),
+       ('roles:read', 'Ver roles','config', 'Permissions for reading roles.');
 
 insert into config.role_permission(roleid, permissionid)
 values (1,1),
+       (1,2),
+       (1,3),
        (2,1),
-       (3,1);
+       (2,2),
+       (2,3),
+       (3,1),
+       (3,2),
+       (3,3),
+       (4,2),
+       (4,3);
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
