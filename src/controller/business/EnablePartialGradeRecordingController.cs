@@ -11,8 +11,13 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
         return await daoFactory.partialDao!.getAll();
     }
 
-    public async Task enableGradeRecording(int partialId)
+    public async Task enableGradeRecording(int partialId, DateTime deadline)
     {
+        if (deadline < DateTime.Now)
+        {
+            throw new BadRequestException("The deadline has to be greater than current date.");
+        }
+        
         var partial = await daoFactory.partialDao!.getById(partialId);
         if (partial == null)
         {
