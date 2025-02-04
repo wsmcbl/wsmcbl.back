@@ -34,7 +34,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
             return;
         }
 
-        if (DateTime.Now > item.gradeRecordDeadline)
+        if (DateTime.UtcNow > item.gradeRecordDeadline)
         {
             item.disableGradeRecording();
             await daoFactory.execute();
