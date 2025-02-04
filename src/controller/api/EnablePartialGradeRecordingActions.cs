@@ -25,7 +25,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     }
 
     /// <summary>Enable or disable partial grade recording by id.</summary>
-    /// <param name="partialId">Id of partial, the partial must be active.</param>>
+    /// <param name="partialId">Partial id, the partial must be active.</param>>
     /// <param name="enable">A boolean value, if false the other parameter is not needed.</param>>
     /// <param name="deadline">A Datetime value, it must be a datetime greater than the current one.</param>>
     /// <response code="200">Returns the modified resource.</response>
@@ -55,6 +55,5 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         
         await controller.enableGradeRecording(partialId, date);
         return Ok();
-
     }
 }

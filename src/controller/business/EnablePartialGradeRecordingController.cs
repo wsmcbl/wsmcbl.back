@@ -17,7 +17,33 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
         {
             throw new BadRequestException("The deadline has to be greater than current date.");
         }
-        
+
+        var partial = await getPartialById(partialId);
+
+        if (partial.gradeRecordIsActive)
+        {
+            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
+        }
+
+        partial.gradeRecordIsActive = true;
+        await daoFactory.execute();
+    }
+
+    public async Task disableGradeRecording(int partialId)
+    {
+        var partial = await getPartialById(partialId);
+
+        if (!partial.gradeRecordIsActive)
+        {
+            return;
+        }
+ 
+        partial.gradeRecordIsActive = false;
+        await daoFactory.execute();
+    }
+
+    private async Task<PartialEntity> getPartialById(int partialId)
+    {
         var partial = await daoFactory.partialDao!.getById(partialId);
         if (partial == null)
         {
@@ -29,12 +55,6 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
             throw new ConflictException($"The partial with id ({partialId}) is not active.");
         }
 
-        if (partial.gradeRecordIsActive)
-        {
-            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
-        }
-
-        partial.gradeRecordIsActive = true;
-        await daoFactory.execute();
+        return partial;
     }
 }
