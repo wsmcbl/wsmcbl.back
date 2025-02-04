@@ -4,16 +4,23 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class EnablePartialGradeRecordingController : BaseController
 {
+    private DateTime now { get; }
+
+    public EnablePartialGradeRecordingController(DaoFactory daoFactory) : base(daoFactory)
+    {
+        now = DateTime.UtcNow;
+    }
+    
     public async Task<List<PartialEntity>> getPartialList()
     {
-        return await daoFactory.partialDao!.getAll();
+        return await daoFactory.partialDao!.getListInCurrentSchoolyear();
     }
 
     public async Task enableGradeRecording(int partialId, DateTime deadline)
     {
-        if (deadline < DateTime.Now)
+        if (checkDateOrFail(deadline))
         {
             throw new BadRequestException("The deadline has to be greater than current date.");
         }
@@ -21,6 +28,13 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
         var partial = await getPartialById(partialId);
         partial.enableGradeRecording(deadline);
         await daoFactory.execute();
+    }
+
+    private bool checkDateOrFail(DateTime deadline)
+    {
+        var nextHour = now.AddHours(1);
+        var nextFortnight = now.AddDays(15);
+        return deadline < nextHour || deadline > nextFortnight;
     }
 
     public async Task disableGradeRecording(int partialId)
@@ -44,5 +58,27 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
         }
 
         return partial;
+    }
+
+    public async Task checkForPartialEnabledOrFail()
+    {
+        var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+
+        if (list.Where(e => e.gradeRecordIsActive).ToList().Count != 0)
+        {
+            throw new ConflictException("There is already a partial with the grade recording period active.");
+        }
+    }
+
+    public async Task<PartialEntity> getPartialEnabled()
+    {
+        var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var result = list.Where(e => e.gradeRecordIsActive).ToList();
+        if (result.Count == 0)
+        {
+            throw new EntityNotFoundException("Partial entity with gradeRecordIsActive enabled not found.");
+        }
+        
+        return result.First();
     }
 }
