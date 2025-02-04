@@ -29,6 +29,7 @@ builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
+builder.Services.AddHostedService<DisablePartialGradeRecordingBackground>();
 
 builder.Services.AddTransient<CollectTariffController>();
 builder.Services.AddTransient<UpdateOfficialEnrollmentController>();
