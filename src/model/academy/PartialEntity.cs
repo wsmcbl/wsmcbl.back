@@ -14,6 +14,7 @@ public class PartialEntity
     
     public bool isActive { get; set; }
     public bool gradeRecordIsActive { get; set; }
+    public DateTime? gradeRecordDeadline { get; set; }
     
     public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
     
