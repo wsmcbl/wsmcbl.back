@@ -16,8 +16,7 @@ BEGIN
                                     inner JOIN academy.enrollment e on s.enrollmentid = e.enrollmentid
                            WHERE e.schoolyear = current_school_year)
 
-        INSERT
-        INTO academy.subject_partial(subjectid, enrollmentid, partialid, teacherid)
+        INSERT INTO academy.subject_partial(subjectid, enrollmentid, partialid, teacherid)
         SELECT qa.subjectid, qa.enrollmentid, new.partialid, qa.teacherid
         FROM query_aux qa;
 
@@ -43,8 +42,7 @@ DECLARE
 BEGIN
     WITH query_aux AS (SELECT studentid FROM academy.student WHERE enrollmentid = new.enrollmentid)
 
-    INSERT
-    INTO academy.grade(studentid, subjectpartialid, grade, conductgrade, label)
+    INSERT INTO academy.grade(studentid, subjectpartialid, grade, conductgrade, label)
     SELECT qa.studentid, new.subjectpartialid, 0, 0, 'AI' FROM query_aux qa;
 
     RETURN NEW;
