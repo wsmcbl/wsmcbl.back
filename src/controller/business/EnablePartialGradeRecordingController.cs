@@ -19,26 +19,14 @@ public class EnablePartialGradeRecordingController(DaoFactory daoFactory) : Base
         }
 
         var partial = await getPartialById(partialId);
-
-        if (partial.gradeRecordIsActive)
-        {
-            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
-        }
-
-        partial.gradeRecordIsActive = true;
+        partial.enableGradeRecording(deadline);
         await daoFactory.execute();
     }
 
     public async Task disableGradeRecording(int partialId)
     {
         var partial = await getPartialById(partialId);
-
-        if (!partial.gradeRecordIsActive)
-        {
-            return;
-        }
- 
-        partial.gradeRecordIsActive = false;
+        partial.disableGradeRecording();
         await daoFactory.execute();
     }
 
