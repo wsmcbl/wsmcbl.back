@@ -69,6 +69,6 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     public async Task<IActionResult> getPartialEnabled()
     {
         var result = await controller.getPartialEnabled();
-        return Ok(result);
+        return Ok(new {result.partialId, result.label, semester = result.getSemesterLabel(), result.gradeRecordDeadline});
     }
 }
