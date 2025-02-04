@@ -53,8 +53,22 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
             throw new BadRequestException("The deadline is not valid.");
         }
 
-        await controller.checkForPartialEnableOrFail();
+        await controller.checkForPartialEnabledOrFail();
         await controller.enableGradeRecording(partialId, date);
         return Ok();
+    }
+    
+    /// <summary>Get a partial with grade recording enabled.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the partial not found.</response>
+    [HttpGet]
+    [Route("/enables")]
+    [ResourceAuthorizer("partial:read")]
+    public async Task<IActionResult> getPartialEnabled()
+    {
+        var result = await controller.getPartialEnabled();
+        return Ok(result);
     }
 }

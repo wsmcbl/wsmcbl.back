@@ -60,7 +60,7 @@ public class EnablePartialGradeRecordingController : BaseController
         return partial;
     }
 
-    public async Task checkForPartialEnableOrFail()
+    public async Task checkForPartialEnabledOrFail()
     {
         var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
 
