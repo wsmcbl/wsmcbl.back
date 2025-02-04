@@ -52,7 +52,8 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         {
             throw new BadRequestException("The deadline is not valid.");
         }
-        
+
+        await controller.checkForPartialEnableOrFail();
         await controller.enableGradeRecording(partialId, date);
         return Ok();
     }
