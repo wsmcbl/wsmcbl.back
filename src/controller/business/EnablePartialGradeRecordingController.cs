@@ -69,4 +69,16 @@ public class EnablePartialGradeRecordingController : BaseController
             throw new ConflictException("There is already a partial with the grade recording period active.");
         }
     }
+
+    public async Task<PartialEntity> getPartialEnabled()
+    {
+        var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var result = list.Where(e => e.gradeRecordIsActive).ToList();
+        if (result.Count == 0)
+        {
+            throw new EntityNotFoundException("Partial entity with gradeRecordIsActive enabled not found.");
+        }
+        
+        return result.First();
+    }
 }
