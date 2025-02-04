@@ -10,6 +10,7 @@ public class UserDto
     public string? secondName { get; set; }
     [Required] public string surname { get; set; }
     public string? secondSurname { get; set; }
+    public string? email {get; set;}
     
     public bool isActive { get; set; }
     public string? nextCloudGroup { get; set; }
@@ -23,6 +24,7 @@ public class UserDto
         secondName = user.secondName;
         surname = user.surname;
         secondSurname = user.secondSurname;
+        email = user.email;
         isActive = user.isActive;
         roleId = user.roleId;
         permissionList = user.getPermissionIdList();
