@@ -5,51 +5,34 @@ namespace wsmcbl.src.controller.service;
 
 public class DisablePartialGradeRecordingBackground : BackgroundService
 {
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly DaoFactory daoFactory;
 
-    public DisablePartialGradeRecordingBackground(IServiceScopeFactory scopeFactory)
+    public DisablePartialGradeRecordingBackground(DaoFactory daoFactory)
     {
-        _scopeFactory = scopeFactory;
+        this.daoFactory = daoFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await checkPartials();
+            try
+            {
+                await checkPartials();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+            }
+
             await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
         }
     }
 
     private async Task checkPartials()
     {
-        using var scope = _scopeFactory.CreateScope();
-        var daoFactory = scope.ServiceProvider.GetRequiredService<DaoFactory>();
-
-        try
-        {
-            await checkPartials(daoFactory);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"An error occurred: {e.Message}");
-        }
-    }
-
-    private async Task checkPartials(DaoFactory daoFactory)
-    {
-        try
-        {
-            await sendNotification(new PartialEntity());
-            return;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-        
         var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
-        
+
         var item = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
         if (item == null)
         {
@@ -67,6 +50,14 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
     private async Task sendNotification(PartialEntity partial)
     {
         var emailNotifier = new EmailNotifierService();
-        await emailNotifier.sendEmail("admin@cbl-edu.com", "Subject", "Message");
+        var userList = await daoFactory.userDao!.getAll();
+        var list = userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3).ToList();
+
+        foreach (var user in list)
+        {
+            await emailNotifier.sendEmail(user.email, "Cierre del período de calificaciones",
+                $"El período {partial.label} ha finalizado a las {partial.gradeRecordDeadline.ToString()}." +
+                " Ya no es posible registrar calificaciones.");
+        }
     }
 }
