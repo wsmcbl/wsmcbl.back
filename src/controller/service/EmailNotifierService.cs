@@ -37,7 +37,7 @@ public class EmailNotifierService
                 await client.DisconnectAsync(true);
             }
 
-            var d = emailList.Aggregate("", (current, email) => current + $", {email}");
+            var d = emailList.Aggregate("", (current, email) => current + $"{email}, ");
             Console.WriteLine($"Mail sent to {d}");
         }
         catch (Exception ex)
@@ -46,7 +46,7 @@ public class EmailNotifierService
         }
     }
 
-    private static string getTitle() => "Registro de calificaciones";
+    private static string getTitle() => "Colegio Bautista Libertad";
 
     private static string getPassword()
     {
