@@ -38,6 +38,16 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task checkPartials(DaoFactory daoFactory)
     {
+        try
+        {
+            await sendNotification(new PartialEntity());
+            return;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
         var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
         
         var item = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
@@ -56,6 +66,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task sendNotification(PartialEntity partial)
     {
-        await Task.CompletedTask;
+        var emailNotifier = new EmailNotifierService();
+        await emailNotifier.sendEmail("admin@cbl-edu.com", "Subject", "Message");
     }
 }
