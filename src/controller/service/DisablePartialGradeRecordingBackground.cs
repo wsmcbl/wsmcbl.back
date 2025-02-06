@@ -1,33 +1,39 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
 public class DisablePartialGradeRecordingBackground : BackgroundService
 {
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly DaoFactory daoFactory;
 
-    public DisablePartialGradeRecordingBackground(IServiceScopeFactory scopeFactory)
+    public DisablePartialGradeRecordingBackground(DaoFactory daoFactory)
     {
-        _scopeFactory = scopeFactory;
+        this.daoFactory = daoFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await checkPartials();
+            try
+            {
+                await checkPartials();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+            }
+
             await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
         }
     }
 
     private async Task checkPartials()
     {
-        using var scope = _scopeFactory.CreateScope();
-        var daoFactory = scope.ServiceProvider.GetRequiredService<DaoFactory>();
-
         var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
-        
+
         var item = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
         if (item == null)
         {
@@ -44,6 +50,16 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task sendNotification(PartialEntity partial)
     {
-        await Task.CompletedTask;
+        var emailNotifier = new EmailNotifierService();
+        var userList = await daoFactory.userDao!.getAll();
+        var list = userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3)
+            .Select(e => e.email).ToList();
+
+        var date = partial.gradeRecordDeadline!.toStringUtc6();
+        var message =
+            $"Estimado docente, ha finalizado el registro de calificaciones para el {partial.label.ToUpper()} el día {date}.\n" +
+            "Ya no es posible modificar calificaciones en wsm.cbl-edu.com.";
+        
+        await emailNotifier.sendEmail(list,"Cierre del registro de calificaciones", message);
     }
 }

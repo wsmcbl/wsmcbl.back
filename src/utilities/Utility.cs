@@ -10,6 +10,9 @@ public static class Utility
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
         return TimeZoneInfo.ConvertTimeFromUtc(datetime, timeZoneUTC6);
     }
+
+    public static string toStringUtc6(this DateTime? datetime, bool withDayName = false)
+        => toStringUtc6((DateTime)datetime!, withDayName);
     
     public static string toStringUtc6(this DateTime datetime, bool withDayName = false)
     {
