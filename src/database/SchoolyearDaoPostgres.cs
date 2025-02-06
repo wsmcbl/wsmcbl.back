@@ -14,7 +14,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
         if (result == null)
         {
-            throw new EntityNotFoundException($"Entity of type (Schoolyear) with label ({year}) not found.");
+            throw new EntityNotFoundException($"Entity of type (SchoolyearEntity) with label ({year}) not found.");
         }
 
         return result;
