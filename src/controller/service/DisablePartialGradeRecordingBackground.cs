@@ -1,5 +1,6 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -51,13 +52,14 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
     {
         var emailNotifier = new EmailNotifierService();
         var userList = await daoFactory.userDao!.getAll();
-        var list = userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3).ToList();
+        var list = userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3)
+            .Select(e => e.email).ToList();
 
-        foreach (var user in list)
-        {
-            await emailNotifier.sendEmail(user.email, "Cierre del período de calificaciones",
-                $"El período {partial.label} ha finalizado a las {partial.gradeRecordDeadline.ToString()}." +
-                " Ya no es posible registrar calificaciones.");
-        }
+        var date = partial.gradeRecordDeadline!.toStringUtc6();
+        var message =
+            $"Estimado docente, ha finalizado el registro de calificaciones para el {partial.label.ToUpper()} el día {date}.\n" +
+            "Ya no es posible modificar calificaciones en wsm.cbl-edu.com.";
+        
+        await emailNotifier.sendEmail(list,"Cierre del registro de calificaciones", message);
     }
 }
