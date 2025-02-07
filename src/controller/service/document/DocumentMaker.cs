@@ -134,8 +134,13 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return getPDF();
     }
 
-    public Task<byte[]> getDebtorReport()
+    public async Task<byte[]> getDebtorReport()
     {
-        throw new NotImplementedException();
+        await Task.CompletedTask;
+        
+        var latexBuilder = new DebtorReportLatexBuilder(resource, $"{resource}/out");
+        
+        setLatexBuilder(latexBuilder);
+        return getPDF();
     }
 }
