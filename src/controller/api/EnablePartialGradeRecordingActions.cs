@@ -57,6 +57,21 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         await controller.enableGradeRecording(partialId, date);
         return Ok();
     }
+
+    /// <summary>Activate or deactivates partial by id.</summary>
+    /// <param name="partialId">Partial id, the partial must be active.</param>>
+    /// <param name="isActive">A boolean value.</param>>
+    /// <response code="200">Returns the modified resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpPut]
+    [Route("{partialId:int}")]
+    [ResourceAuthorizer("partial:update")]
+    public async Task<IActionResult> activatePartial([Required] int partialId, [Required] [FromQuery] bool isActive)
+    {
+        await controller.activatePartial(partialId, isActive);
+        return Ok();
+    }
     
     /// <summary>Get a partial with grade recording enabled.</summary>
     /// <response code="200">Returns a resource.</response>
