@@ -133,4 +133,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public Task<byte[]> getDebtorReport()
+    {
+        throw new NotImplementedException();
+    }
 }
