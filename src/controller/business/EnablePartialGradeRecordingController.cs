@@ -81,4 +81,21 @@ public class EnablePartialGradeRecordingController : BaseController
         
         return result.First();
     }
+
+    public async Task activatePartial(int partialId, bool isActive)
+    {
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+
+        if(partial.isActive == isActive)
+        {
+            return;
+        }
+        
+        partial.isActive = isActive;
+        await daoFactory.execute();
+    }
 }

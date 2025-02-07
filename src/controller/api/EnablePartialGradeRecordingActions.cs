@@ -65,7 +65,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpPut]
-    [Route("{partialId:int}")]
+    [Route("{partialId:int}/activate")]
     [ResourceAuthorizer("partial:update")]
     public async Task<IActionResult> activatePartial([Required] int partialId, [Required] [FromQuery] bool isActive)
     {
