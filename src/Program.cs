@@ -57,6 +57,7 @@ builder.Services.AddTransient<AssignPermissionsController>();
 builder.Services.AddTransient<PrintDocumentController>();//Auxiliary
 builder.Services.AddTransient<ViewUserProfileController>();
 builder.Services.AddTransient<EnablePartialGradeRecordingController>();
+builder.Services.AddTransient<GenerateDebtorReportController>();
 
 var app = builder.Build();
 

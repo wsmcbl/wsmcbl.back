@@ -133,4 +133,14 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getDebtorReport()
+    {
+        await Task.CompletedTask;
+        
+        var latexBuilder = new DebtorReportLatexBuilder(resource, $"{resource}/out");
+        
+        setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
 }
