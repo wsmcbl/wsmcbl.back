@@ -69,7 +69,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         var query = "SELECT s.* FROM accounting.student s";
         query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
         query += " LEFT JOIN academy.student aca on aca.studentid = s.studentid";
-        query += $" WHERE ({tariffsId}) AND aca.enrollmentid is NULL AND";
+        query += $" WHERE s.studentstate = true AND ({tariffsId}) AND aca.enrollmentid is NULL AND";
         query += " CASE";
         query += "   WHEN d.amount = 0 THEN 1";
         query += "   ELSE (d.debtbalance / d.amount)";
@@ -92,7 +92,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
         var query = "SELECT s.* FROM accounting.student s";
         query += " INNER JOIN accounting.debthistory d ON d.studentid = s.studentid";
-        query += $" WHERE s.studentid = '{studentId}' AND ({tariffsId}) AND";
+        query += $" WHERE s.studentstate = true AND s.studentid = '{studentId}' AND ({tariffsId}) AND";
         query += " CASE";
         query += "   WHEN d.amount = 0 THEN 1";
         query += "   ELSE (d.debtbalance / d.amount)";
