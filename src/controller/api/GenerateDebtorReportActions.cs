@@ -18,7 +18,7 @@ public class GenerateDebtorReportActions(GenerateDebtorReportController controll
     [Route("documents/debtor")]
     public async Task<IActionResult> getDebtorReport()
     {
-        var result = await controller.getDebtorReport();
+        var result = await controller.getDebtorReport(getAuthenticatedUserId());
         return File(result, "application/pdf", "debtor.report.pdf");
     }
 }
