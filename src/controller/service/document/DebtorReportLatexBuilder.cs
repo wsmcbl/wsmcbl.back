@@ -1,3 +1,4 @@
+using System.Globalization;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.utilities;
 
@@ -21,27 +22,43 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     protected override string updateContent(string content)
     {
-        var total = 10000.1;
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("total.value", total.ToString());
+        content = content.ReplaceInLatexFormat("total.value", getTotal().ToString(CultureInfo.InvariantCulture));
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
-
-        var body = string.Empty;
-        foreach (var item in studentList!.OrderBy(e => e.fullName))
-        {
-            body += getDegreeContent(item);
-        }
-        
-        content = content.Replace("body.value", body);
-        
-        content += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+        content = content.ReplaceInLatexFormat("today.value", getDateFormat());
+        content = content.Replace("body.value", getDegreeContent());
         
         return content;
     }
 
-    private string getDegreeContent(DebtorStudentView item)
+    private double getTotal()
     {
-        return "";
+        return studentList!.Sum(item => item.total);
+    }
+
+    private string getDegreeContent()
+    {
+        if (studentList!.Count == 0)
+        {
+            return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
+        }
+
+        var body = string.Empty;
+        foreach (var item in studentList)
+        {
+            body += item.fullName;
+        }
+        
+        body += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+
+        return body;
+    }
+    
+    
+    private string getDateFormat()
+    {
+        var culture = new CultureInfo("es-ES");
+        return now.toUTC6().ToString("dd/MMMM/yyyy", culture);
     }
 
     public class Builder
