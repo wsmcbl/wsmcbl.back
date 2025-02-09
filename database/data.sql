@@ -13,25 +13,29 @@ values ('student:create', 'Crear estudiantes','secretary', 'Permission for the c
        ('user:read', 'Ver perfiles de usuarios','config', 'Permissions for reading user profiles.'),
        ('rol:read', 'Ver roles','config', 'Permissions for reading roles.'),
        ('partial:read', 'Ver parciales','academy', 'Permissions for reading partials.'),
-       ('partial:update', 'Modificar parciales','academy', 'Permissions for update partials.');
+       ('partial:update', 'Modificar parciales','academy', 'Permissions for update partials.'),
+       ('report:read', 'Ver reporte','academy', 'Permissions for reading report.');
 
 insert into config.role_permission(roleid, permissionid)
 values (1,1),
        (1,2),
        (1,3),
-       (1,4),
-       (1,5),
+       (1,4),-- TEMPORAL
+       (1,5),-- TEMPORAL
+       (1,6),-- TEMPORAL
        (2,1),
        (2,2),
        (2,3),
+       (2,6),
        (3,1),
        (3,2),
-       (3,4),
        (3,3),
+       (3,4),
        (4,2),
        (4,3),
        (5,3),
-       (5,4);
+       (5,4),
+       (5,6);
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
