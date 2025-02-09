@@ -187,5 +187,18 @@ internal class AccountingContext
             entity.Property(e => e.isValid).HasColumnName("isvalid");
             entity.Property(e => e.dateTime).HasColumnName("datetime");
         });
+        
+        modelBuilder.Entity<DebtorStudentView>(entity =>
+        {
+            entity.ToView("debtor_student_view", "accounting").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.enrollment).HasColumnName("enrollment");
+            entity.Property(e => e.quantity).HasColumnName("quantity");
+            entity.Property(e => e.total).HasColumnName("total");
+        });
     }
 }
