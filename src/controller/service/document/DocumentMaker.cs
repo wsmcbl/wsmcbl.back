@@ -136,9 +136,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getDebtorReport()
     {
-        await Task.CompletedTask;
-        
-        var latexBuilder = new DebtorReportLatexBuilder(resource, $"{resource}/out");
+        var latexBuilder = new DebtorReportLatexBuilder.Builder(resource, $"{resource}/out")
+            .withStudentList(await daoFactory.accountingStudentDao!.getDebtorStudentList())
+            .build();
         
         setLatexBuilder(latexBuilder);
         return getPDF();
