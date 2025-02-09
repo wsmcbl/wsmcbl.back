@@ -99,6 +99,12 @@ public class DebtorReportLatexBuilder : LatexBuilder
             latexBuilder.studentList = parameter;
             return this;
         }
+        
+        public Builder withDegreeList(List<DegreeEntity> parameter)
+        {
+            latexBuilder.degreeList = parameter;
+            return this;
+        }
 
         public Builder withUserName(string parameter)
         {
