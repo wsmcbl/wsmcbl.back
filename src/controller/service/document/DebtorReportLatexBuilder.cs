@@ -1,4 +1,5 @@
 using System.Globalization;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.utilities;
 
@@ -43,15 +44,28 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
 
-        var body = string.Empty;
-        foreach (var item in studentList)
-        {
-            body += item.fullName;
-        }
+        var body = "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
+        body += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
         
+        body += getEnrollmentContent(studentList);
+        
+        body += "\\end{longtable}\n\n";
         body += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         return body;
+    }
+    
+    private string getEnrollmentContent(List<DebtorStudentView> list)
+    {
+        var counter = 0;
+        var result = string.Empty;
+        foreach (var item in list.OrderBy(e => e.fullName))
+        {
+            counter++;
+            result += $"{counter} & {item.studentId} & {item.fullName}\\\\\\hline\n";
+        }
+        
+        return result;
     }
     
     public class Builder
