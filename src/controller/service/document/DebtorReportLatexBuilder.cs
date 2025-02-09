@@ -1,6 +1,6 @@
 using System.Globalization;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.document;
@@ -9,7 +9,8 @@ public class DebtorReportLatexBuilder : LatexBuilder
 {
     private DateTime now { get; set; }
     private string userName { get; set; } = null!;
-    private List<DebtorStudentView>? studentList { get; set; }
+    private List<DebtorStudentView> studentList { get; set; } = null!;
+    private List<DegreeEntity> degreeList { get; set; } = null!;
 
     private readonly string templatesPath;
 
@@ -44,10 +45,24 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
 
-        var body = "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
-        body += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
-        
-        body += getEnrollmentContent(studentList);
+        var body = "\\begin{longtable}{| c || l || l || l || l |}\n";
+        body += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\\hline\n";
+
+        foreach (var degree in degreeList.OrderBy(e => e.tag))
+        {
+            foreach (var enrollment in degree.enrollmentList!)
+            {
+                var list = studentList
+                    .Where(e => e.enrollmentId == enrollment.enrollmentId).ToList();
+                if (list.Count == 0)
+                {
+                    continue;
+                }
+
+                body += $"\\multicolumn{{5}}{{|l|}}{{{enrollment.label}}}\\\\\\hline\n";
+                body += getEnrollmentContent(list);
+            }
+        }
         
         body += "\\end{longtable}\n\n";
         body += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
@@ -62,7 +77,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         foreach (var item in list.OrderBy(e => e.fullName))
         {
             counter++;
-            result += $"{counter} & {item.studentId} & {item.fullName}\\\\\\hline\n";
+            result += $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total}\\\\\\hline\n";
         }
         
         return result;
