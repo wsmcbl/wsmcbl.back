@@ -24,7 +24,7 @@ public class DebtorReportLatexBuilder(string templatesPath, string outPath) : La
 
         public DebtorReportLatexBuilder build() => latexBuilder;
 
-        public Builder withDegreeList(List<DebtorStudentView> parameter)
+        public Builder withStudentList(List<DebtorStudentView> parameter)
         {
             latexBuilder.studentList = parameter;
             return this;
