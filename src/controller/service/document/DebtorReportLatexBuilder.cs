@@ -25,7 +25,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("total.value", getTotal().ToString(CultureInfo.InvariantCulture));
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
-        content = content.ReplaceInLatexFormat("today.value", getDateFormat());
+        content = content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
         content = content.Replace("body.value", getDegreeContent());
         
         return content;
@@ -54,13 +54,6 @@ public class DebtorReportLatexBuilder : LatexBuilder
         return body;
     }
     
-    
-    private string getDateFormat()
-    {
-        var culture = new CultureInfo("es-ES");
-        return now.toUTC6().ToString("dd/MMMM/yyyy", culture);
-    }
-
     public class Builder
     {
         private readonly DebtorReportLatexBuilder latexBuilder;
