@@ -52,5 +52,26 @@ FROM secretary.student s LEFT JOIN secretary.studenttutor t ON s.tutorid = t.tut
          FROM academy.student aca
          ORDER BY aca.studentid, aca.schoolyear DESC
      ) aca ON aca.studentid = s.studentid
-                         LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
-                         LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid;
+LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
+LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid;
+
+
+--- debtor_student_View View ---
+CREATE VIEW accounting.debtor_student_view AS
+SELECT s.studentid,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
+       sch.schoolyearid,
+       sch.label AS schoolyear,
+       enr.enrollmentid,
+       enr.label AS enrollment,
+       COUNT(deb.tariffid) AS quantity,
+       SUM(deb.amount) AS total
+FROM secretary.student s
+         LEFT JOIN (SELECT DISTINCT ON (aca.studentid) aca.studentid, aca.schoolyear, aca.enrollmentid
+                    FROM academy.student aca ORDER BY aca.studentid, aca.schoolyear DESC) aca ON aca.studentid = s.studentid
+         LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
+         LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid
+         JOIN accounting.debthistory deb ON deb.studentid = s.studentid
+         JOIN accounting.tariff t on t.tariffid = deb.tariffid
+WHERE s.studentstate = TRUE AND t.duedate < CURRENT_DATE AND deb.ispaid = FALSE
+GROUP BY (s.studentid, sch.schoolyearid, sch.label, enr.enrollmentid, enr.label);
