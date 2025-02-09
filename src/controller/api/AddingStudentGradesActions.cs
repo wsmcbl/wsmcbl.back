@@ -7,7 +7,6 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "teacher")]
 [Route("academy")]
 [ApiController]
 public class AddingStudentGradesActions(AddingStudentGradesController controller) : ControllerBase
@@ -18,6 +17,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("partials")]
+    [ResourceAuthorizer("partial:read")]
     public async Task<IActionResult> getPartialList()
     {
         var result = await controller.getPartialList();
@@ -31,6 +31,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}")]
+    [ResourceAuthorizer("admin", "teacher")]
     public async Task<IActionResult> getTeacherById([Required] string teacherId)
     {
         var result = await controller.getTeacherById(teacherId);
@@ -44,21 +45,21 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments")]
+    [ResourceAuthorizer("admin", "teacher")]
     public async Task<IActionResult> getEnrollmentListByTeacherId([Required] string teacherId)
     {
         var result = await controller.getEnrollmentListByTeacherId(teacherId);
         return Ok(result.mapListToDto(teacherId));
     }
 
-    /// <summary>
-    /// Returns the list of subjects, students and grades of an enrollment corresponding to a partial.
-    /// </summary>
+    /// <summary>Returns the list of subjects, students and grades of an enrollment corresponding to a partial.</summary>
     /// <response code="200">Returns the list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher, enrollment or partial not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
+    [ResourceAuthorizer("admin", "teacher")]
     public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId)
     {
@@ -70,9 +71,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
 
-    /// <summary>
-    /// Update the grades of subjects of an enrollment corresponding to a partial.
-    /// </summary>
+    /// <summary>Update the grades of subjects of an enrollment corresponding to a partial.</summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -80,6 +79,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher or internal record not found.</response>
     [HttpPut]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
+    [ResourceAuthorizer("admin", "teacher")]
     public async Task<IActionResult> addGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId, List<GradeDto> gradeList)
     {

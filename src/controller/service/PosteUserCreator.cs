@@ -28,7 +28,7 @@ public class PosteUserCreator
         if (!response.IsSuccessStatusCode)
         {
             throw new InternalException(
-                $"Error al crear el correo: {response.StatusCode} - {response.ReasonPhrase}");
+                $"Error creating email: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
         var responseString = await response.Content.ReadAsStringAsync();
