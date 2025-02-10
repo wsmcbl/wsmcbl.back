@@ -6,7 +6,6 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "cashier")]
 [Route("accounting")]
 [ApiController]
 public class CollectTariffActions(CollectTariffController controller) : ActionsBase
@@ -17,6 +16,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("students")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentList()
     {
         var students = await controller.getStudentsList();
@@ -30,6 +30,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var student = await controller.getStudentById(studentId);
@@ -43,6 +44,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}/tariffs")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getTariffListByStudentId([Required] string studentId)
     {
         var result = await controller.getTariffListByStudent(studentId);
@@ -56,6 +58,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("transactions")]
+    [ResourceAuthorizer("transaction:create")]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transaction = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
@@ -70,6 +73,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("documents/invoices/{transactionId}")]
+    [ResourceAuthorizer("transaction:read")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
         var result = await controller.getInvoiceDocument(transactionId);
@@ -84,6 +88,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("tariffs/{tariffId:int}")]
+    [ResourceAuthorizer("tariff:update")]
     public async Task<IActionResult> applyArrears(int tariffId)
     {
         return Ok(await controller.applyArrears(tariffId));
@@ -95,6 +100,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("tariffs/types")]
+    [ResourceAuthorizer("tariff:read")]
     public async Task<ActionResult> getTariffTypeList()
     {
         return Ok(await controller.getTariffTypeList());
@@ -106,6 +112,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("tariffs/overdues")]
+    [ResourceAuthorizer("tariff:read")]
     public async Task<IActionResult> getOverdueTariffList()
     {
         var result = await controller.getOverdueTariffList();
