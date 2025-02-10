@@ -213,6 +213,8 @@ internal class AccountingContext
             entity.Property(e => e.cashier).HasColumnName("cashier");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.student).HasColumnName("student");
+
+            entity.Ignore(e => e.date);
         });
     }
 }

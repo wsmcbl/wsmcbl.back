@@ -31,8 +31,7 @@ public static class Utility
     
     public static string toDateUtc6(this DateTime datetime)
     {
-        var culture = new CultureInfo("es-ES");
-        return datetime.toUTC6().ToString("dd/MMMM/yyyy", culture);
+        return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
     }
     
     public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
