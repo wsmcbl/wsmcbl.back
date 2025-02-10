@@ -77,8 +77,8 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         await daoFactory.studentTutorDao!.delete(tutor!);
     }
 
-    public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList()
+    public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)
     {
-        return await daoFactory.transactionDao!.getTransactionInvoiceViewList();
+        return await daoFactory.transactionDao!.getTransactionInvoiceViewList(from, to);
     }
 }
