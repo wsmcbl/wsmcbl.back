@@ -55,7 +55,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     {
         var result = $"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n";
         result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}";
-        result += $"\\hfill \\textbf{{Fecha}}: {getDateFormat()}\n";
+        result += $"\\hfill \\textbf{{Fecha}}: {now.toDateUtc6()}\n";
         result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         result += "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
@@ -97,12 +97,6 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     {
         var teacher = teacherList.FirstOrDefault(e => e.teacherId == teacherId);
         return teacher != null ? teacher.fullName() : "Sin asignar";
-    }
-    
-    private string getDateFormat()
-    {
-        var culture = new CultureInfo("es-ES");
-        return now.toUTC6().ToString("dd/MMMM/yyyy", culture);
     }
 
     public class Builder
