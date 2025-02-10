@@ -41,31 +41,37 @@ values (1, 1),
        (1, 3),
        (1, 4),
        (1, 5),
-       (1, 6),-- TEMPORAL
-       (1, 7),-- TEMPORAL
+       (1, 6),
+       (1, 7),
        (1, 8),-- TEMPORAL
        (1, 9),-- TEMPORAL
        (1, 10),-- TEMPORAL
        (1, 11),-- TEMPORAL
        (1, 12),-- TEMPORAL
        (1, 13),-- TEMPORAL
-       (1, 14);-- TEMPORAL
+       (1, 14),-- TEMPORAL
+       (1, 15);-- TEMPORAL
+
+-- Secretary --
+insert into config.role_permission(roleid, permissionid)
+values (2, 1),
+       (2, 2),
+       (2, 3),
+       (2, 5),
+       (2, 10);
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
 values (3, 1),
        (3, 2),
-       (3, 4),
-       (1, 8),
-       (1, 9),
-       (1, 10);
+       (3, 3),
+       (3, 5),
+       (3, 8),
+       (3, 9),
+       (3, 10);
 
 insert into config.role_permission(roleid, permissionid)
-values (2, 1),
-       (2, 2),
-       (2, 3),
-       (2, 6),
-       (4, 2),
+values (4, 2),
        (4, 3),
        (5, 3),
        (5, 4),
