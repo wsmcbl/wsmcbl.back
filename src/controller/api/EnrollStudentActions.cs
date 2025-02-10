@@ -7,7 +7,6 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
 [Route("secretary/enrollments")]
 [ApiController]
 public class EnrollStudentActions(EnrollStudentController controller) : ActionsBase
@@ -19,6 +18,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Registration tariff not found.</response>
     [HttpGet]
     [Route("students")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentsList()
     {
         var result = await controller.getStudentListWithSolvencyInRegistration();
@@ -32,6 +32,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
@@ -47,6 +48,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
     [Route("students/{studentId}/degrees")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getDegreeListByStudentId([Required] string studentId)
     {
         var result = await controller.getDegreeListByStudentId(studentId);
@@ -61,6 +63,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("")]
+    [ResourceAuthorizer("student:enroll")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!, dto.isRepeating);
@@ -78,6 +81,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("documents/{studentId}")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId, getAuthenticatedUserId());
