@@ -19,6 +19,7 @@ values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com
 
 insert into config.permission(name, spanishname, area, description)
 values ('student:create', 'Crear estudiantes', 'secretary','Permission for the creation of students in the secretary scheme.'),
+       ('student:update', 'Modificar estudiantes', 'secretary','Permission for the update of students in the secretary scheme.'),
        ('student:read', 'Ver estudiantes', 'secretary','Permission for the reading of students in the secretary scheme.'),
        ('user:update', 'Modificar perfiles de usuarios', 'config', 'Permission for update user profiles.'),
        ('user:read', 'Ver perfiles de usuarios', 'config', 'Permission for reading user profiles.'),
@@ -40,31 +41,37 @@ values (1, 1),
        (1, 3),
        (1, 4),
        (1, 5),
-       (1, 6),-- TEMPORAL
-       (1, 7),-- TEMPORAL
+       (1, 6),
+       (1, 7),
        (1, 8),-- TEMPORAL
        (1, 9),-- TEMPORAL
        (1, 10),-- TEMPORAL
        (1, 11),-- TEMPORAL
        (1, 12),-- TEMPORAL
        (1, 13),-- TEMPORAL
-       (1, 14);-- TEMPORAL
+       (1, 14),-- TEMPORAL
+       (1, 15);-- TEMPORAL
+
+-- Secretary --
+insert into config.role_permission(roleid, permissionid)
+values (2, 1),
+       (2, 2),
+       (2, 3),
+       (2, 5),
+       (2, 10);
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
 values (3, 1),
        (3, 2),
-       (3, 4),
-       (1, 8),
-       (1, 9),
-       (1, 10);
+       (3, 3),
+       (3, 5),
+       (3, 8),
+       (3, 9),
+       (3, 10);
 
 insert into config.role_permission(roleid, permissionid)
-values (2, 1),
-       (2, 2),
-       (2, 3),
-       (2, 6),
-       (4, 2),
+values (4, 2),
        (4, 3),
        (5, 3),
        (5, 4),
