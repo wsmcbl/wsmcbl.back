@@ -6,7 +6,6 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "secretary")]
 [Route("secretary/students")]
 [ApiController]
 public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
@@ -15,9 +14,9 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="200">Returns a resource by query params.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin", "secretary", "cashier")]
     [HttpGet]
     [Route("")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentList()
     {
         var result = await controller.getStudentList();
@@ -31,6 +30,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("{studentId}")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
@@ -45,6 +45,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{studentId}")]
+    [ResourceAuthorizer("student:update")]
     public async Task<IActionResult> updateStudent([Required] string studentId, StudentFullDto dto, [FromQuery] bool withNewToken = false)
     {
         var entity = dto.toEntity();
@@ -61,6 +62,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{studentId}/pictures")]
+    [ResourceAuthorizer("student:update")]
     public async Task<IActionResult> updateProfilePicture([Required] string studentId, IFormFile profilePicture)
     {
         using var memoryStream = new MemoryStream();
