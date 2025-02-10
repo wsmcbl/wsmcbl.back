@@ -1,4 +1,5 @@
 using System.Globalization;
+using wsmcbl.src.exception;
 
 namespace wsmcbl.src.model.academy;
 
@@ -14,6 +15,7 @@ public class PartialEntity
     
     public bool isActive { get; set; }
     public bool gradeRecordIsActive { get; set; }
+    public DateTime? gradeRecordDeadline { get; set; }
     
     public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
     
@@ -30,7 +32,7 @@ public class PartialEntity
         }
         else
         {
-            label = partial == 2 ? "III Parcial" : "IV Parcial";
+            label = partial == 1 ? "III Parcial" : "IV Parcial";
         }
     }
 
@@ -51,5 +53,27 @@ public class PartialEntity
     public string getSemesterLabel()
     {
         return semester == 1 ? "I Semestre" : "II Semestre";
+    }
+
+    public void enableGradeRecording(DateTime deadline)
+    {
+        if (gradeRecordIsActive)
+        {
+            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
+        }
+
+        gradeRecordIsActive = true;
+        gradeRecordDeadline = deadline;
+    }
+
+    public void disableGradeRecording()
+    {
+        if (!gradeRecordIsActive)
+        {
+            return;
+        }
+ 
+        gradeRecordIsActive = false;
+        gradeRecordDeadline = null;
     }
 }

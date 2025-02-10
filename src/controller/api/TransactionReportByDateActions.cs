@@ -39,10 +39,10 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         }
 
         var dates = parseToDateTime(start, end);
-        var transactionList = await controller.getTransactionList(dates.start, dates.end);
+        var transactionList = await controller.getTransactionList(dates.from, dates.to);
         
         var response = new ReportByDateDto();
-        response.setDateRange(dates.start, dates.end);
+        response.setDateRange(dates.from, dates.to);
         response.setTransactionList(transactionList);
         response.userName = await controller.getUserName(getAuthenticatedUserId());
 
@@ -53,7 +53,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         return Ok(response);
     }
 
-    private bool hasDateFormat(string value)
+    public static bool hasDateFormat(string value)
     {
         const int minYear = 2000;
         const int maxYear = 2100;
@@ -69,10 +69,10 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         }
     }
 
-    private static (DateTime start, DateTime end) parseToDateTime(string start, string end)
+    public static (DateTime from, DateTime to) parseToDateTime(string from, string to)
     {
-        var startDate = DateTime.ParseExact(start, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        var endDate = DateTime.ParseExact(end, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        var startDate = DateTime.ParseExact(from, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        var endDate = DateTime.ParseExact(to, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 
         if (startDate.Date > endDate.Date)
         {

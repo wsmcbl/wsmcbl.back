@@ -52,5 +52,42 @@ FROM secretary.student s LEFT JOIN secretary.studenttutor t ON s.tutorid = t.tut
          FROM academy.student aca
          ORDER BY aca.studentid, aca.schoolyear DESC
      ) aca ON aca.studentid = s.studentid
-                         LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
-                         LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid;
+LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
+LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid;
+
+
+--- debtor_student_View View ---
+CREATE VIEW accounting.debtor_student_view AS
+SELECT s.studentid,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
+       sch.schoolyearid,
+       sch.label AS schoolyear,
+       enr.enrollmentid,
+       enr.label AS enrollment,
+       COUNT(deb.tariffid) AS quantity,
+       SUM(deb.amount - deb.debtbalance) AS total
+FROM secretary.student s
+         LEFT JOIN (SELECT DISTINCT ON (aca.studentid) aca.studentid, aca.schoolyear, aca.enrollmentid
+                    FROM academy.student aca ORDER BY aca.studentid, aca.schoolyear DESC) aca ON aca.studentid = s.studentid
+         LEFT JOIN secretary.schoolyear sch ON aca.schoolyear = sch.schoolyearid
+         LEFT JOIN academy.enrollment enr ON aca.enrollmentid = enr.enrollmentid
+         JOIN accounting.debthistory deb ON deb.studentid = s.studentid
+         JOIN accounting.tariff t on t.tariffid = deb.tariffid
+WHERE s.studentstate = TRUE AND t.duedate < CURRENT_DATE AND deb.ispaid = FALSE
+GROUP BY (s.studentid, sch.schoolyearid, sch.label, enr.enrollmentid, enr.label);
+
+
+-- transaction_invoice_view view
+CREATE VIEW accounting.transaction_invoice_view as 
+SELECT t.transactionid, t.number, t.total, t.date, t.isvalid,
+       CONCAT_WS(' ', u.name, u.surname) AS cashier,
+       t.studentid,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS student,
+       STRING_AGG(tr.concept, ', ') AS concept
+From accounting.transaction t
+         JOIN secretary.student s ON t.studentid = s.studentid
+         JOIN accounting.transaction_tariff tt ON t.transactionid = tt.transactionid
+         JOIN accounting.tariff tr ON tt.tariffid = tr.tariffid
+         JOIN accounting.cashier c ON c.cashierid = t.cashierid
+         JOIN config.user u ON u.userid = c.userid
+GROUP BY t.transactionid, s.studentid, u.userid;

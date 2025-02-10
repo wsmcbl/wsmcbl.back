@@ -29,6 +29,7 @@ builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
+builder.Services.AddHostedService<DisablePartialGradeRecordingBackground>();
 
 builder.Services.AddTransient<CollectTariffController>();
 builder.Services.AddTransient<UpdateOfficialEnrollmentController>();
@@ -56,6 +57,7 @@ builder.Services.AddTransient<AssignPermissionsController>();
 builder.Services.AddTransient<PrintDocumentController>();//Auxiliary
 builder.Services.AddTransient<ViewUserProfileController>();
 builder.Services.AddTransient<EnablePartialGradeRecordingController>();
+builder.Services.AddTransient<GenerateDebtorReportController>();
 
 var app = builder.Build();
 

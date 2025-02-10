@@ -11,13 +11,18 @@ BEGIN
         FROM secretary.schoolyear
         WHERE label = to_char(current_date, 'YYYY');
 
-        WITH query_aux AS (SELECT s.*
-                           FROM academy.subject s
-                                    inner JOIN academy.enrollment e on s.enrollmentid = e.enrollmentid
-                           WHERE e.schoolyear = current_school_year)
+        WITH query_aux AS
+        (SELECT s.* FROM academy.subject s
+            inner JOIN academy.enrollment e 
+                on s.enrollmentid = e.enrollmentid
+            left join academy.subject_partial sp
+                on sp.subjectid = s.subjectid and
+                   sp.enrollmentid = s.enrollmentid and
+                   sp.partialid = new.partialid and 
+                   s.teacherid = sp.teacherid
+        WHERE e.schoolyear = current_school_year and sp.subjectpartialid is null)
 
-        INSERT
-        INTO academy.subject_partial(subjectid, enrollmentid, partialid, teacherid)
+        INSERT INTO academy.subject_partial(subjectid, enrollmentid, partialid, teacherid)
         SELECT qa.subjectid, qa.enrollmentid, new.partialid, qa.teacherid
         FROM query_aux qa;
 
@@ -43,8 +48,7 @@ DECLARE
 BEGIN
     WITH query_aux AS (SELECT studentid FROM academy.student WHERE enrollmentid = new.enrollmentid)
 
-    INSERT
-    INTO academy.grade(studentid, subjectpartialid, grade, conductgrade, label)
+    INSERT INTO academy.grade(studentid, subjectpartialid, grade, conductgrade, label)
     SELECT qa.studentid, new.subjectpartialid, 0, 0, 'AI' FROM query_aux qa;
 
     RETURN NEW;

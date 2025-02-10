@@ -133,4 +133,20 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getDebtorReport(string userId)
+    {
+        var user = await daoFactory.userDao!.getById(userId);
+        var studentList = await daoFactory.accountingStudentDao!.getDebtorStudentList();
+        var degreeList = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        
+        var latexBuilder = new DebtorReportLatexBuilder.Builder(resource, $"{resource}/out")
+            .withStudentList(studentList)
+            .withDegreeList(degreeList)
+            .withUserName(user.getAlias())
+            .build();
+        
+        setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
 }
