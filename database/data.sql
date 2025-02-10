@@ -44,70 +44,26 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.');
 
 -- Admin --
-insert into config.role_permission(roleid, permissionid)
-values (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (1, 5),
-       (1, 6),
-       (1, 7),
-       (1, 8),
-       (1, 9),-- TEMPORAL
-       (1, 10),-- TEMPORAL
-       (1, 11),-- TEMPORAL
-       (1, 12),-- TEMPORAL
-       (1, 13),-- TEMPORAL
-       (1, 14),-- TEMPORAL
-       (1, 15),-- TEMPORAL
-       (1, 16),-- TEMPORAL
-       (1, 17),-- TEMPORAL
-       (1, 18),-- TEMPORAL
-       (1, 20),-- TEMPORAL
-       (1, 21),-- TEMPORAL
-       (1, 22),-- TEMPORAL
-       (1, 23),-- TEMPORAL
-       (1, 24);-- TEMPORAL
+-- There are permissions that do not correspond to this role, they are temporary --
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 1, p.permissionid FROM config.permission p;
 
 -- Secretary --
-insert into config.role_permission(roleid, permissionid)
-values (2, 1),
-       (2, 2),
-       (2, 3),
-       (2, 7),
-       (2, 12),
-       (2, 18),
-       (2, 19),
-       (2, 20),
-       (2, 24);
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 2, p.permissionid FROM config.permission p
+WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read', 'report:read', 'enrollment:create',
+                 'enrollment:update','enrollment:read','teacher:read');
 
 -- Cashier --
-insert into config.role_permission(roleid, permissionid)
-values (3, 1),
-       (3, 2),
-       (3, 3),
-       (3, 7),
-       (3, 12),
-       (3, 13),
-       (3, 14),
-       (3, 15),
-       (3, 16),
-       (3, 17),
-       (3, 18),
-       (3, 22),
-       (3, 23);
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 3, p.permissionid FROM config.permission p
+WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read', 'report:read', 'transaction:create',
+                 'transaction:update', 'transaction:read', 'tariff:update', 'tariff:read', 'debt:update', 'debt:read');
 
 -- Teacher --
-insert into config.role_permission(roleid, permissionid)
-values (4, 7),
-       (4, 10),
-       (4, 11),
-       (4, 21);
-
-insert into config.role_permission(roleid, permissionid)
-values (5, 3),
-       (5, 4),
-       (5, 6);
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 4, p.permissionid FROM config.permission p
+WHERE p.name in ('user:read', 'partial:read', 'degree:read');
 
 
 -- ############################## ---
