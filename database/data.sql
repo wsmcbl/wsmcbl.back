@@ -31,8 +31,12 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('transaction:create', 'Crear transacciones', 'accounting', 'Permission for creation transactions.'),
        ('transaction:update', 'Modificar transacciones', 'accounting', 'Permission for update transactions.'),
        ('transaction:read', 'Ver transacciones', 'accounting', 'Permission for reading transactions.'),
-       ('tariff:update', 'Modificar tarifas', 'accounting', 'Permission for update transactions.'),
-       ('tariff:read', 'Ver tarifas', 'accounting', 'Permission for reading transactions.');
+       ('tariff:update', 'Modificar tarifas', 'accounting', 'Permission for update tariffs.'),
+       ('tariff:read', 'Ver tarifas', 'accounting', 'Permission for reading tariffs.'),
+       ('enrollment:create', 'Crear matrículas', 'academy', 'Permission for creation enrollments.'),
+       ('enrollment:update', 'Modificar matrículas', 'academy', 'Permission for update enrollments.'),
+       ('enrollment:read', 'Ver matrículas', 'academy', 'Permission for reading enrollments.'),
+       ('degree:read', 'Ver grados', 'academy', 'Permission for reading degrees.');
 
 -- Admin --
 insert into config.role_permission(roleid, permissionid)
@@ -50,7 +54,10 @@ values (1, 1),
        (1, 12),-- TEMPORAL
        (1, 13),-- TEMPORAL
        (1, 14),-- TEMPORAL
-       (1, 15);-- TEMPORAL
+       (1, 15),-- TEMPORAL
+       (1, 16),-- TEMPORAL
+       (1, 17),-- TEMPORAL
+       (1, 19);-- TEMPORAL
 
 -- Secretary --
 insert into config.role_permission(roleid, permissionid)
@@ -58,7 +65,10 @@ values (2, 1),
        (2, 2),
        (2, 3),
        (2, 5),
-       (2, 10);
+       (2, 10),
+       (2, 16),
+       (2, 17),
+       (2, 18);
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
@@ -66,14 +76,22 @@ values (3, 1),
        (3, 2),
        (3, 3),
        (3, 5),
-       (3, 8),
-       (3, 9),
-       (3, 10);
+       (3, 10),
+       (3, 11),
+       (3, 12),
+       (3, 13),
+       (3, 14),
+       (3, 15);
+
+-- Teacher --
+insert into config.role_permission(roleid, permissionid)
+values (4, 5),
+       (4, 8),
+       (4, 9),
+       (4, 19);
 
 insert into config.role_permission(roleid, permissionid)
-values (4, 2),
-       (4, 3),
-       (5, 3),
+values (5, 3),
        (5, 4),
        (5, 6);
 
