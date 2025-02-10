@@ -9,9 +9,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateStudentProfileActions(CreateStudentProfileController controller) : ControllerBase
 {
-    /// <summary>
-    /// Create a new student profile to collect tariff
-    /// </summary>
+    /// <summary>Create a new student profile to collect tariff.</summary>
     /// <remarks>
     /// The educationalLevel property can only take the values 1 (Preescolar), 2 (Primaria) and 3 (Secundaria).
     /// The studentId must be null or empty.
