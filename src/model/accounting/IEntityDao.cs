@@ -12,6 +12,8 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<StudentEntity> getFullById(string studentId);
     public Task<List<StudentView>> getStudentViewList();
     public Task<List<StudentEntity>> getAllWithSolvencyInRegistration();
+
+    public Task<List<DebtorStudentView>> getDebtorStudentList(); 
     
     public Task<bool> hasSolvencyInRegistration(string studentId);
 }

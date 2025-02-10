@@ -5,9 +5,9 @@ namespace wsmcbl.src.controller.business;
 
 public class GenerateDebtorReportController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<byte[]> getDebtorReport()
+    public async Task<byte[]> getDebtorReport(string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getDebtorReport();
+        return await documentMaker.getDebtorReport(userId);
     }
 }
