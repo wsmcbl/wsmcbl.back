@@ -53,9 +53,16 @@ public class TransactionDaoPostgres(PostgresContext context)
 
     public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)
     {
-        return await context.Set<TransactionInvoiceView>()
+        var result = await context.Set<TransactionInvoiceView>()
             .AsNoTracking()
             .Where(e => e.dateTime >= from && e.dateTime <= to)
             .ToListAsync();
+
+        foreach (var item in result)
+        {
+            item.ChangeToUtc6();
+        }
+
+        return result;
     }
 }

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.database;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.config;
@@ -93,12 +92,20 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     }  
     
     /// <summary>Returns the transaction invoice view list.</summary>
+    /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
+    /// <remarks> A date before 2,000 is not accepted.</remarks>
+    /// <param name="from">The default time is set to 00:00 hours.</param>
+    /// <param name="to">
+    /// The default time is set to 23:59.
+    /// If the date entered corresponds to the current date,
+    /// the time will be adjusted to the time at which the query is made.
+    /// </param>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [ResourceAuthorizer("admin")]
     [HttpGet]
-    [Route("transaction/invoice")]
+    [Route("transactions/invoices")]
     public async Task<IActionResult> getTransactionInvoiceViewList([FromQuery] [Required] string from, [FromQuery] string to)
     {
         if (!TransactionReportByDateActions.hasDateFormat(from) || !TransactionReportByDateActions.hasDateFormat(to))

@@ -1,3 +1,5 @@
+using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.model.accounting;
 
 public class TransactionInvoiceView
@@ -11,4 +13,9 @@ public class TransactionInvoiceView
     public string concept { get; set; } = null!;
     public string cashier { get; set; } = null!;
     public DateTime dateTime { get; set; }
+
+    public void ChangeToUtc6()
+    {
+        dateTime = dateTime.toUTC6();
+    }
 }
