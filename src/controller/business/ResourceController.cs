@@ -79,7 +79,6 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
 
     public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        return await daoFactory.transactionDao!.getTransactionInvoiceViewList();
     }
 }

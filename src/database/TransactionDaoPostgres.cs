@@ -50,4 +50,9 @@ public class TransactionDaoPostgres(PostgresContext context)
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList()
+    {
+        return await context.Set<TransactionInvoiceView>().ToListAsync();
+    }
 }

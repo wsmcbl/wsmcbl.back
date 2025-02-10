@@ -22,6 +22,7 @@ public interface ITransactionDao : IGenericDao<TransactionEntity, string>
 {
     public Task<List<TransactionReportView>> getByRange(DateTime start, DateTime end);
     public Task<List<TransactionReportView>> getViewAll();
+    public Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList();
 }
 
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
