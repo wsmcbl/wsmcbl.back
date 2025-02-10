@@ -89,4 +89,16 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         await controller.deleteStudentById(studentId);
         return Ok();
     }  
+    
+    /// <summary>Returns the transaction invoice view list.</summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [ResourceAuthorizer("admin")]
+    [HttpGet]
+    [Route("transaction/invoice")]
+    public async Task<IActionResult> getTransactionInvoiceViewList()
+    {
+        return Ok(await controller.getTransactionInvoiceViewList());
+    } 
 }

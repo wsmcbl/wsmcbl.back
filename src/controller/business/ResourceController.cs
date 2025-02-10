@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -74,5 +75,11 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
 
         var tutor = await daoFactory.studentTutorDao!.getById(student.tutorId);
         await daoFactory.studentTutorDao!.delete(tutor!);
+    }
+
+    public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList()
+    {
+        await Task.CompletedTask;
+        throw new NotImplementedException();
     }
 }
