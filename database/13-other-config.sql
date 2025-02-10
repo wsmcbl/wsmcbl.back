@@ -65,7 +65,7 @@ SELECT s.studentid,
        enr.enrollmentid,
        enr.label AS enrollment,
        COUNT(deb.tariffid) AS quantity,
-       SUM(deb.amount) AS total
+       SUM(deb.amount - deb.debtbalance) AS total
 FROM secretary.student s
          LEFT JOIN (SELECT DISTINCT ON (aca.studentid) aca.studentid, aca.schoolyear, aca.enrollmentid
                     FROM academy.student aca ORDER BY aca.studentid, aca.schoolyear DESC) aca ON aca.studentid = s.studentid
