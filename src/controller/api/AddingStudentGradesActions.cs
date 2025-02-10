@@ -31,7 +31,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}")]
-    [ResourceAuthorizer("admin", "teacher")]
+    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getTeacherById([Required] string teacherId)
     {
         var result = await controller.getTeacherById(teacherId);
@@ -45,7 +45,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments")]
-    [ResourceAuthorizer("admin", "teacher")]
+    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentListByTeacherId([Required] string teacherId)
     {
         var result = await controller.getEnrollmentListByTeacherId(teacherId);
@@ -59,7 +59,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher, enrollment or partial not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
-    [ResourceAuthorizer("admin", "teacher")]
+    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId)
     {
@@ -79,7 +79,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher or internal record not found.</response>
     [HttpPut]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
-    [ResourceAuthorizer("admin", "teacher")]
+    [ResourceAuthorizer("grade:update")]
     public async Task<IActionResult> addGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId, List<GradeDto> gradeList)
     {
