@@ -8,22 +8,38 @@ values ('admin','Full system access.'),
        ('principal','Access to the management module.'),
        ('viceprincipal','Access to the management module.');
 
+insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
+values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
+       (1, 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kenny.tinoco@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEOKy+ElmYTF+ClhQ68aqO1TCREwarjQMzylachhHEo0/duwGTqkAf5IWQRQeNdEH+g=='),
+       (1, 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(),now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA=='),
+       (1, 'Thelma', null, 'Ríos', 'Zeas', 'thelma.rios@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEMexOu51jrRZOshRdeF0yZ5wm3HCcmvzJLuZI1aIeX1h4Mcfwx6BbHJMi+UyaZlUDA==');
+
+
+
+
 insert into config.permission(name, spanishname, area, description)
 values ('student:create', 'Crear estudiantes','secretary', 'Permission for the creation of students in the secretary scheme.'),
-       ('user:read', 'Ver perfiles de usuarios','config', 'Permissions for reading user profiles.'),
-       ('rol:read', 'Ver roles','config', 'Permissions for reading roles.'),
-       ('partial:read', 'Ver parciales','academy', 'Permissions for reading partials.'),
-       ('partial:update', 'Modificar parciales','academy', 'Permissions for update partials.'),
-       ('report:read', 'Ver reporte','academy', 'Permissions for reading report.');
+       ('user:read', 'Ver perfiles de usuarios','config', 'Permission for reading user profiles.'),
+       ('user:update', 'Modificar perfiles de usuarios','config', 'Permission for update user profiles.'),
+       ('rol:read', 'Ver roles','config', 'Permission for reading roles.'),
+       ('permission:read', 'Ver permisos','config', 'Permission for reading permissions.'),
+       ('partial:read', 'Ver parciales','academy', 'Permission for reading partials.'),
+       ('partial:update', 'Modificar parciales','academy', 'Permission for update partials.'),
+       ('report:read', 'Ver reportes','academy', 'Permission for reading report.');
 
+-- Admin --
 insert into config.role_permission(roleid, permissionid)
 values (1,1),
        (1,2),
        (1,3),
-       (1,4),-- TEMPORAL
-       (1,5),-- TEMPORAL
+       (1,4),
+       (1,5),
        (1,6),-- TEMPORAL
-       (2,1),
+       (1,7),-- TEMPORAL
+       (1,8);-- TEMPORAL
+       
+insert into config.role_permission(roleid, permissionid)
+values (2,1),
        (2,2),
        (2,3),
        (2,6),
@@ -37,12 +53,6 @@ values (1,1),
        (5,4),
        (5,6);
 
-insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
-values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
-       (1, 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kenny.tinoco@cbl-edu.com', true, now(),now(), 'AQAAAAIAAYagAAAAEOKy+ElmYTF+ClhQ68aqO1TCREwarjQMzylachhHEo0/duwGTqkAf5IWQRQeNdEH+g=='),
-       (1, 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(),now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA=='),
-       (1, 'Thelma', null, 'Ríos', 'Zeas', 'thelma.rios@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEMexOu51jrRZOshRdeF0yZ5wm3HCcmvzJLuZI1aIeX1h4Mcfwx6BbHJMi+UyaZlUDA==');
-    
 
 -- ############################## ---
 insert into accounting.discount(discountid, description, tag)
