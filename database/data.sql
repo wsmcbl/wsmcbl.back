@@ -19,6 +19,7 @@ values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com
 
 insert into config.permission(name, spanishname, area, description)
 values ('student:create', 'Crear estudiantes', 'secretary','Permission for the creation of students in the secretary scheme.'),
+       ('student:update', 'Modificar estudiantes', 'secretary','Permission for the update of students in the secretary scheme.'),
        ('student:read', 'Ver estudiantes', 'secretary','Permission for the reading of students in the secretary scheme.'),
        ('user:update', 'Modificar perfiles de usuarios', 'config', 'Permission for update user profiles.'),
        ('user:read', 'Ver perfiles de usuarios', 'config', 'Permission for reading user profiles.'),
