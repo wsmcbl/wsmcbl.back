@@ -51,8 +51,6 @@ create table if not exists Accounting.Tariff
     foreign key (typeId) references Accounting.TariffType
 );
 
-create index IDX_date ON Accounting.Transaction (date);
-
 create table  if not exists Accounting.Transaction
 (
     transactionId varchar(20) primary key default accounting.generate_transaction_id(),
@@ -65,6 +63,8 @@ create table  if not exists Accounting.Transaction
     foreign key (studentId) references Accounting.Student,
     foreign key (cashierId) references Accounting.Cashier
 );
+
+create index IDX_date ON Accounting.Transaction (date);
 
 create table if not exists Accounting.Transaction_Tariff
 (
