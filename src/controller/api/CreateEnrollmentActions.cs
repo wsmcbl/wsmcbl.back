@@ -14,9 +14,9 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin","secretary","teacher")]
     [HttpGet]
     [Route("")]
+    [ResourceAuthorizer("degree:read", "enrollment:read")]
     public async Task<IActionResult> getDegreeList()
     {
         var result = await controller.getDegreeList();
@@ -30,9 +30,9 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree) or quantity invalid.</response>
-    [ResourceAuthorizer("admin","secretary")]
     [HttpPost]
     [Route("{degreeId}/enrollments")]
+    [ResourceAuthorizer("enrollment:create")]
     public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
     {
         var degree = await controller.createEnrollments(degreeId, quantity);
@@ -48,9 +48,9 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Enrollment not found.</response>
-    [ResourceAuthorizer("admin","secretary")]
     [HttpPut]
     [Route("enrollments")]
+    [ResourceAuthorizer("enrollment:update")]
     public async Task<IActionResult> updateEnrollment(EnrollmentToCreateDto dto)
     {
         var enrollment = await controller.updateEnrollment(dto.toEntity());
