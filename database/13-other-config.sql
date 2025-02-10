@@ -79,10 +79,10 @@ GROUP BY (s.studentid, sch.schoolyearid, sch.label, enr.enrollmentid, enr.label)
 
 -- transaction_invoice_view view
 CREATE VIEW accounting.transaction_invoice_view as 
-SELECT t.transactionid, t.number, t.total, t.date,
+SELECT t.transactionid, t.number, t.total, t.date, t.isvalid,
        CONCAT_WS(' ', u.name, u.surname) AS cashier,
        t.studentid,
-       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS student,
        STRING_AGG(tr.concept, ', ') AS concept
 From accounting.transaction t
          JOIN secretary.student s ON t.studentid = s.studentid
