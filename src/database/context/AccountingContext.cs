@@ -200,5 +200,21 @@ internal class AccountingContext
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.total).HasColumnName("total");
         });
+        
+        modelBuilder.Entity<TransactionInvoiceView>(entity =>
+        {
+            entity.ToView("transaction_invoice_view", "accounting").HasNoKey();
+            entity.Property(e => e.transactionId).HasColumnName("transactionid");
+            entity.Property(e => e.number).HasColumnName("number");
+            entity.Property(e => e.isValid).HasColumnName("isvalid");
+            entity.Property(e => e.dateTime).HasColumnName("date");
+            entity.Property(e => e.concept).HasColumnName("concept");
+            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.cashier).HasColumnName("cashier");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.student).HasColumnName("student");
+
+            entity.Ignore(e => e.date);
+        });
     }
 }

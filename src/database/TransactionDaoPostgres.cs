@@ -34,12 +34,12 @@ public class TransactionDaoPostgres(PostgresContext context)
         base.create(entity);
     }
 
-    public async Task<List<TransactionReportView>> getByRange(DateTime start, DateTime end)
+    public async Task<List<TransactionReportView>> getByRange(DateTime from, DateTime to)
     {
         return await context.Set<TransactionReportView>()
-            .Where(e => e.dateTime >= start && e.dateTime <= end)
-            .OrderByDescending(e => e.number)
             .AsNoTracking()
+            .Where(e => e.dateTime >= from && e.dateTime <= to)
+            .OrderByDescending(e => e.number)
             .ToListAsync();
     }
 
@@ -49,5 +49,20 @@ public class TransactionDaoPostgres(PostgresContext context)
             .OrderByDescending(e => e.number)
             .AsNoTracking()
             .ToListAsync();
+    }
+
+    public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)
+    {
+        var result = await context.Set<TransactionInvoiceView>()
+            .AsNoTracking()
+            .Where(e => e.dateTime >= from && e.dateTime <= to)
+            .ToListAsync();
+
+        foreach (var item in result)
+        {
+            item.ChangeToUtc6();
+        }
+
+        return result;
     }
 }

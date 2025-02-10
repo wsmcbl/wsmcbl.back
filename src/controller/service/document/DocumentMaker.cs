@@ -137,10 +137,12 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     public async Task<byte[]> getDebtorReport(string userId)
     {
         var user = await daoFactory.userDao!.getById(userId);
-        var list = await daoFactory.accountingStudentDao!.getDebtorStudentList();
+        var studentList = await daoFactory.accountingStudentDao!.getDebtorStudentList();
+        var degreeList = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
         
         var latexBuilder = new DebtorReportLatexBuilder.Builder(resource, $"{resource}/out")
-            .withStudentList(list)
+            .withStudentList(studentList)
+            .withDegreeList(degreeList)
             .withUserName(user.getAlias())
             .build();
         

@@ -29,6 +29,11 @@ public static class Utility
         return datetime.toUTC6().ToString($"{dayFormat} dd/MMM/yyyy, h:mm tt", culture);
     }
     
+    public static string toDateUtc6(this DateTime datetime)
+    {
+        return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
+    }
+    
     public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
     {
         return text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
