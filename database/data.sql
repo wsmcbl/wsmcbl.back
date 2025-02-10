@@ -31,8 +31,12 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('transaction:create', 'Crear transacciones', 'accounting', 'Permission for creation transactions.'),
        ('transaction:update', 'Modificar transacciones', 'accounting', 'Permission for update transactions.'),
        ('transaction:read', 'Ver transacciones', 'accounting', 'Permission for reading transactions.'),
-       ('tariff:update', 'Modificar tarifas', 'accounting', 'Permission for update transactions.'),
-       ('tariff:read', 'Ver tarifas', 'accounting', 'Permission for reading transactions.');
+       ('tariff:update', 'Modificar tarifas', 'accounting', 'Permission for update tariffs.'),
+       ('tariff:read', 'Ver tarifas', 'accounting', 'Permission for reading tariffs.'),
+       ('enrollment:create', 'Crear matrículas', 'academy', 'Permission for creation enrollments.'),
+       ('enrollment:update', 'Modificar matrículas', 'academy', 'Permission for update enrollments.'),
+       ('enrollment:read', 'Ver matrículas', 'academy', 'Permission for reading enrollments.'),
+       ('degree:read', 'Ver grados', 'academy', 'Permission for reading degrees.');
 
 -- Admin --
 insert into config.role_permission(roleid, permissionid)
