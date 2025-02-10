@@ -44,7 +44,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
 
-        var body = "\\begin{longtable}{| l || l || l || c || l |}\n\\hline ";
+        var body = "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
         body +=
             "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
 

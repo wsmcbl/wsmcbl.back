@@ -75,3 +75,19 @@ FROM secretary.student s
          JOIN accounting.tariff t on t.tariffid = deb.tariffid
 WHERE s.studentstate = TRUE AND t.duedate < CURRENT_DATE AND deb.ispaid = FALSE
 GROUP BY (s.studentid, sch.schoolyearid, sch.label, enr.enrollmentid, enr.label);
+
+
+-- transaction_invoice_view view
+CREATE VIEW accounting.transaction_invoice_view as 
+SELECT t.transactionid, t.number, t.total, t.date,
+       CONCAT_WS(' ', u.name, u.surname) AS cashier,
+       t.studentid,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
+       STRING_AGG(tr.concept, ', ') AS concept
+From accounting.transaction t
+         JOIN secretary.student s ON t.studentid = s.studentid
+         JOIN accounting.transaction_tariff tt ON t.transactionid = tt.transactionid
+         JOIN accounting.tariff tr ON tt.tariffid = tr.tariffid
+         JOIN accounting.cashier c ON c.cashierid = t.cashierid
+         JOIN config.user u ON u.userid = c.userid
+GROUP BY t.transactionid, s.studentid, u.userid;
