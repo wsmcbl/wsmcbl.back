@@ -40,17 +40,17 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     private string getDegreeContent()
     {
-        if (studentList!.Count == 0)
+        if (studentList.Count == 0)
         {
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
 
-        var body = "\\begin{longtable}{| c || l || l || l || l |}\n";
-        body += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\\hline\n";
+        var body = "\\begin{longtable}{| c || l || l || l || l |}\n\\hline ";
+        body += "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
 
         foreach (var degree in degreeList.OrderBy(e => e.tag))
         {
-            foreach (var enrollment in degree.enrollmentList!)
+            foreach (var enrollment in degree.enrollmentList!.OrderBy(e => e.tag))
             {
                 var list = studentList
                     .Where(e => e.enrollmentId == enrollment.enrollmentId).ToList();
@@ -58,8 +58,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
                 {
                     continue;
                 }
-
-                body += $"\\multicolumn{{5}}{{|l|}}{{{enrollment.label}}}\\\\\\hline\n";
+                body += $"\\multicolumn{{5}}{{l}}{{\\textbf{{\\small -- {enrollment.label} --}}}}\\\\\\hline\n";
                 body += getEnrollmentContent(list);
             }
         }
@@ -70,9 +69,10 @@ public class DebtorReportLatexBuilder : LatexBuilder
         return body;
     }
     
+    private int counter;
+    
     private string getEnrollmentContent(List<DebtorStudentView> list)
     {
-        var counter = 0;
         var result = string.Empty;
         foreach (var item in list.OrderBy(e => e.fullName))
         {
