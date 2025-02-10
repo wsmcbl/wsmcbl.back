@@ -6,8 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "secretary","cashier")]
-[Route("secretary")]
+[Route("secretary/students/levels")]
 [ApiController]
 public class CorrectEducationalLevelActions(CorrectEducationalLevelController controller) : ActionsBase
 {
@@ -17,7 +16,8 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
     [HttpGet]
-    [Route("students/levels")]
+    [Route("")]
+    [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentInformationLevelById(string studentId)
     {
         var student = await controller.getStudentById(studentId);
@@ -32,8 +32,9 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     /// <response code="404">If a resource not exist (student or tariff).</response>
     /// <response code="409">If the student has the same level.</response>
     [HttpPut]
-    [Route("students/levels")]
-    public async Task<IActionResult> forgiveADebt([FromQuery] string studentId, [FromQuery] int level)
+    [Route("")]
+    [ResourceAuthorizer("student:update")]
+    public async Task<IActionResult> moveFromEducationLevel([FromQuery] string studentId, [FromQuery] int level)
     {
         if (level is < 1 or > 3)
         {
