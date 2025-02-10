@@ -8,7 +8,6 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "secretary")]
 [Route("academy")]
 [ApiController]
 public class UpdateOfficialEnrollmentActions : ControllerBase
@@ -27,15 +26,14 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     }
     
     /// <summary>Returns the list of teacher.</summary>
-    /// <param name="q">
-    /// Supported values are "active" and "non-guided".
-    /// </param>
+    /// <param name="q">Supported values are "active" and "non-guided".</param>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="400">If the query parameter is missing or not in the correct format.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers")]
+    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getTeacherList([Required] [FromQuery] string q)
     {
         List<TeacherEntity> list;
@@ -66,6 +64,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">Degree not found.</response>
     [HttpGet]
     [Route("degrees/{degreeId}/enrollments")]
+    [ResourceAuthorizer("degree:read")]
     public async Task<IActionResult> getDegreeById([Required] string degreeId)
     {
         var degree = await enrollmentController.getDegreeById(degreeId);
@@ -82,6 +81,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}")]
+    [ResourceAuthorizer("enrollment:update")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
         await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
@@ -98,6 +98,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}/teachers")]
+    [ResourceAuthorizer("enrollment:update")]
     public async Task<IActionResult> setTeacherGuide([Required] string enrollmentId,
         [Required] [FromQuery] string teacherId)
     {
@@ -119,6 +120,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="409">If there is an active partial.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}/subjects/{subjectId}")]
+    [ResourceAuthorizer("enrollment:update")]
     public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
         [Required] string subjectId, [Required] [FromQuery] string teacherId)
     {
