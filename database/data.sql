@@ -39,8 +39,9 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('enrollment:update', 'Modificar matrículas', 'academy', 'Permission for update enrollments.'),
        ('enrollment:read', 'Ver matrículas', 'academy', 'Permission for reading enrollments.'),
        ('degree:read', 'Ver grados', 'academy', 'Permission for reading degrees.'),
-       ('debt:update', 'Modificar deudas', 'academy', 'Permission for update debt.'),
-       ('debt:read', 'Ver deudas', 'academy', 'Permission for reading debt.');
+       ('debt:update', 'Modificar deudas', 'accounting', 'Permission for update debt.'),
+       ('debt:read', 'Ver deudas', 'accounting', 'Permission for reading debt.'),
+       ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.');
 
 -- Admin --
 insert into config.role_permission(roleid, permissionid)
@@ -65,7 +66,8 @@ values (1, 1),
        (1, 20),-- TEMPORAL
        (1, 21),-- TEMPORAL
        (1, 22),-- TEMPORAL
-       (1, 23);-- TEMPORAL
+       (1, 23),-- TEMPORAL
+       (1, 24);-- TEMPORAL
 
 -- Secretary --
 insert into config.role_permission(roleid, permissionid)
@@ -76,7 +78,8 @@ values (2, 1),
        (2, 12),
        (2, 18),
        (2, 19),
-       (2, 20);
+       (2, 20),
+       (2, 24);
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
@@ -84,6 +87,7 @@ values (3, 1),
        (3, 2),
        (3, 3),
        (3, 7),
+       (3, 12),
        (3, 13),
        (3, 14),
        (3, 15),
