@@ -19,15 +19,19 @@ values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com
 
 insert into config.permission(name, spanishname, area, description)
 values ('student:create', 'Crear estudiantes', 'secretary','Permission for the creation of students in the secretary scheme.'),
-       ('user:read', 'Ver perfiles de usuarios', 'config', 'Permission for reading user profiles.'),
+       ('student:read', 'Ver estudiantes', 'secretary','Permission for the reading of students in the secretary scheme.'),
        ('user:update', 'Modificar perfiles de usuarios', 'config', 'Permission for update user profiles.'),
+       ('user:read', 'Ver perfiles de usuarios', 'config', 'Permission for reading user profiles.'),
        ('rol:read', 'Ver roles', 'config', 'Permission for reading roles.'),
        ('permission:read', 'Ver permisos', 'config', 'Permission for reading permissions.'),
-       ('partial:read', 'Ver parciales', 'academy', 'Permission for reading partials.'),
        ('partial:update', 'Modificar parciales', 'academy', 'Permission for update partials.'),
+       ('partial:read', 'Ver parciales', 'academy', 'Permission for reading partials.'),
        ('report:read', 'Ver reportes', 'academy', 'Permission for reading report.'),
+       ('transaction:create', 'Crear transacciones', 'accounting', 'Permission for creation transactions.'),
+       ('transaction:update', 'Modificar transacciones', 'accounting', 'Permission for update transactions.'),
        ('transaction:read', 'Ver transacciones', 'accounting', 'Permission for reading transactions.'),
-       ('transaction:update', 'Update transacciones', 'accounting', 'Permission for update transactions.');
+       ('tariff:update', 'Modificar tarifas', 'accounting', 'Permission for update transactions.'),
+       ('tariff:read', 'Ver tarifas', 'accounting', 'Permission for reading transactions.');
 
 -- Admin --
 insert into config.role_permission(roleid, permissionid)
@@ -40,13 +44,17 @@ values (1, 1),
        (1, 7),-- TEMPORAL
        (1, 8),-- TEMPORAL
        (1, 9),-- TEMPORAL
-       (1, 10);-- TEMPORAL
+       (1, 10),-- TEMPORAL
+       (1, 11),-- TEMPORAL
+       (1, 12),-- TEMPORAL
+       (1, 13),-- TEMPORAL
+       (1, 14);-- TEMPORAL
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
 values (3, 1),
        (3, 2),
-       (3, 3),
+       (3, 4),
        (1, 8),
        (1, 9),
        (1, 10);
