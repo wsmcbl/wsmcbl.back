@@ -1,4 +1,3 @@
-using System.Globalization;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -25,7 +24,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
     protected override string updateContent(string content)
     {
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("total.value", getTotal().ToString(CultureInfo.InvariantCulture));
+        content = content.ReplaceInLatexFormat("total.value", getTotal().ToString("N2"));
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
         content = content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
         content = content.Replace("body.value", getDegreeContent());
@@ -33,9 +32,9 @@ public class DebtorReportLatexBuilder : LatexBuilder
         return content;
     }
 
-    private double getTotal()
+    private decimal getTotal()
     {
-        return studentList!.Sum(item => item.total);
+        return (decimal)studentList.Sum(item => item.total);
     }
 
     private string getDegreeContent()
@@ -45,7 +44,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
 
-        var body = "\\begin{longtable}{| c || l || l || l || l |}\n\\hline ";
+        var body = "\\begin{longtable}{| l || l || l || c || l |}\n\\hline ";
         body +=
             "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
 
@@ -98,7 +97,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         {
             counter++;
             result +=
-                $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total}\\\\\\hline\n";
+                $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total.ToString("N2")}\\\\\\hline\n";
         }
 
         return result;
