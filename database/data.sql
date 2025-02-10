@@ -44,13 +44,17 @@ values (1, 1),
        (1, 7),-- TEMPORAL
        (1, 8),-- TEMPORAL
        (1, 9),-- TEMPORAL
-       (1, 10);-- TEMPORAL
+       (1, 10),-- TEMPORAL
+       (1, 11),-- TEMPORAL
+       (1, 12),-- TEMPORAL
+       (1, 13),-- TEMPORAL
+       (1, 14);-- TEMPORAL
 
 -- Cashier --
 insert into config.role_permission(roleid, permissionid)
 values (3, 1),
        (3, 2),
-       (3, 3),
+       (3, 4),
        (1, 8),
        (1, 9),
        (1, 10);
