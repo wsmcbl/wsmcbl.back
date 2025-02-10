@@ -9,14 +9,11 @@ using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin", "secretary", "cashier")]
-[Route("accounting")]
+[Route("accounting/transactions")]
 [ApiController]
 public class TransactionReportByDateActions(TransactionReportByDateController controller) : ActionsBase
 {
-    /// <summary>
-    /// Returns summary list of transactions and revenues by date.
-    /// </summary>
+    /// <summary>Returns summary list of transactions and revenues by date.</summary>
     /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
     /// <remarks> A date before 2,000 is not accepted.</remarks>
     /// <param name="start">The default time is set to 00:00 hours.</param>
@@ -30,7 +27,8 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("transactions/revenues")]
+    [Route("revenues")]
+    [ResourceAuthorizer("report:read")]
     public async Task<IActionResult> getReportByDate([FromQuery] [Required] string start, [FromQuery] string end)
     {
         if (!hasDateFormat(start) || !hasDateFormat(end))
@@ -90,14 +88,13 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     private static bool isToday(DateTime date) => date.Date == DateTime.Today.Date;
     
 
-    /// <summary>
-    ///  Returns the list of tariff type.
-    /// </summary>
+    /// <summary>Returns the list of tariff type.</summary>
     /// <response code="200">Return existing resources (can be empty list).</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("transactions/types")]
+    [Route("types")]
+    [ResourceAuthorizer("tariff:read")]
     public async Task<ActionResult> getTariffTypeList()
     {
         return Ok(await controller.getTariffTypeList());
