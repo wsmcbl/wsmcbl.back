@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using wsmcbl.src.exception;
 
 namespace wsmcbl.src.utilities;
 
@@ -32,14 +31,5 @@ public static class JwtServiceConfigurations
                     ClockSkew = TimeSpan.Zero
                 };
             });
-    }
-
-    public static void AddAuthorization(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("CreateStudentPolicy", policy =>
-                policy.RequireRole("admin").RequireClaim("Permission", "CanStudentPolicy"));
-        });
     }
 }

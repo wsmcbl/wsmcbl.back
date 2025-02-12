@@ -12,7 +12,6 @@ using wsmcbl.src.utilities;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddJWTAuthentication();
-builder.AddAuthorization();
 
 builder.Services.AddControllersOptions();
 builder.Services.AddFluentValidationConfig();
@@ -25,10 +24,10 @@ builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(buil
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
-builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
+builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddHostedService<DisablePartialGradeRecordingBackground>();
 
 builder.Services.AddTransient<CollectTariffController>();
