@@ -13,6 +13,8 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     private readonly string templatesPath;
 
+    private DegreeEntity? aDegree { get; set; }
+
     private DebtorReportLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
         this.templatesPath = templatesPath;
@@ -24,7 +26,6 @@ public class DebtorReportLatexBuilder : LatexBuilder
     protected override string updateContent(string content)
     {
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("total.value", getTotal().ToString("N2"));
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
         content = content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
         content = content.Replace("body.value", getDegreeContent());
@@ -32,8 +33,19 @@ public class DebtorReportLatexBuilder : LatexBuilder
         return content;
     }
 
-    private decimal getTotal()
+    private decimal getTotal(int value)
     {
+        if (value == 1)
+        {
+            return (decimal)studentList.Where(e => e.schoolyearId == aDegree!.schoolYear)
+                .Sum(item => item.total);
+        }
+
+        if (value == 2)
+        {
+            return getTotal(0) - getTotal(1);
+        }
+        
         return (decimal)studentList.Sum(item => item.total);
     }
 
@@ -43,8 +55,10 @@ public class DebtorReportLatexBuilder : LatexBuilder
         {
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
-
-        var body = "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
+        
+        var std = studentList.First(e => e.schoolyearId == aDegree!.schoolYear);
+        var body = $"\\textbf{{Año lectivo {std.schoolyear}}} \\hfill\\textbf{{Total:}} C\\$ {getTotal(1):N2}";
+        body += "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
         body +=
             "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
 
@@ -63,27 +77,29 @@ public class DebtorReportLatexBuilder : LatexBuilder
                 body += getEnrollmentContent(list);
             }
         }
-
-        body += getFromOtherSchoolyear();
-
         body += "\\end{longtable}\n\n";
+        
+        body += getFromOtherSchoolyear();
+        
+        body += $"\\hfill\\textbf{{Super total:}} C\\$ {getTotal(0):N2}";
         body += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
 
         return body;
     }
-
+    
     private string getFromOtherSchoolyear()
     {
-        var degree = degreeList.First();
-        
-        var list = studentList.Where(e => e.schoolyearId != degree.schoolYear).ToList();
+        var list = studentList.Where(e => e.schoolyearId != aDegree!.schoolYear).ToList();
         if (list.Count == 0)
         {
             return string.Empty;
         }
-
-        var body = "\\multicolumn{{5}}{{l}}{{\\textbf{{\\small -- Años anteriores --}}}}\\\\\\hline\n";
+        
+        var body = $"\\textbf{{Año lectivo anteriores}}\\hfill\\textbf{{Total:}} C\\$ {getTotal(2):N2}";
+        body += "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
+        body += "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
         body += getEnrollmentContent(list);
+        body += "\\end{longtable}\n\n";
 
         return body;
     }
@@ -123,6 +139,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         public Builder withDegreeList(List<DegreeEntity> parameter)
         {
             latexBuilder.degreeList = parameter;
+            latexBuilder.aDegree = latexBuilder.degreeList.First();
             return this;
         }
 
