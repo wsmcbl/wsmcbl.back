@@ -71,7 +71,11 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
         var result = new List<EnrollmentEntity>();
         foreach (var item in subjectList)
         {
-            result.Add(enrollmentList.Find(e => e.enrollmentId == item.enrollmentId)!);
+            var value = enrollmentList.FirstOrDefault(e => e.enrollmentId == item.enrollmentId);
+            if (value != null)
+            {
+                result.Add(value);
+            }
         }
         
         return result.Distinct().ToList();
