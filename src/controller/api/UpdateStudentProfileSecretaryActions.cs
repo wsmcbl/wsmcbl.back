@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.api;
 
@@ -10,17 +11,21 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
 {
-    /// <summary>Returns the basic student list.</summary>
-    /// <response code="200">Returns a resource by query params.</response>
+    /// <summary>Returns paged basic student list.</summary>
+    /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList()
+    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
     {
-        var result = await controller.getStudentList();
-        return Ok(result.mapToListBasicDto());
+        var result = await controller.getStudentList(request);
+        
+        var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToListBasicDto());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Returns student full by id.</summary> 

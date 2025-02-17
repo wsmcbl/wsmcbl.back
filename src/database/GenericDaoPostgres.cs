@@ -53,4 +53,34 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
             throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
         }
     }
+
+    public async Task<PagedResult<T>> getPaged(PagedRequest request)
+    {
+        var query = context.Set<T>().AsQueryable();
+        return await getPaged(query, request);
+    }
+
+    protected async Task<PagedResult<P>> getPaged<P>(IQueryable<P> query, PagedRequest request) where P : class
+    { 
+        var totalCount = await query.CountAsync();
+
+        if (!string.IsNullOrEmpty(request.sortBy))
+        {
+            query = !request.isDescending ? query.OrderBy(e => EF.Property<object>(e, request.sortBy))
+                : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy));
+        }
+
+        var data = await query
+            .Skip((request.page - 1) * request.pageSize)
+            .Take(request.pageSize)
+            .ToListAsync();
+
+        return new PagedResult<P>
+        {
+            data = data,
+            quantity = totalCount,
+            page = request.page,
+            pageSize = request.pageSize
+        };
+    }
 }
