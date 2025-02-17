@@ -61,6 +61,6 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
     public async Task<PagedResult<StudentView>> getStudentList(PagedRequest request)
     {
-        return await daoFactory.studentDao!.getStudentViewList();
+        return await daoFactory.studentDao!.getStudentViewList(request);
     }
 }

@@ -22,8 +22,8 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     {
         var result = await controller.getStudentList(request);
         
-        var pagedResult = new PagedResult<BasicStudentDto>(result);
-        pagedResult.data = result.data.mapToListBasicDto();
+        var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToListBasicDto());
+        pagedResult.setup(result);
         
         return Ok(pagedResult);
     }
