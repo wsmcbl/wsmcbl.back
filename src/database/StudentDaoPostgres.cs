@@ -43,6 +43,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
     public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
         var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
+        request.sortBy ??= "studentId";
         return await getPaged(query, request);
     }
 
