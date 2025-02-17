@@ -20,6 +20,10 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
     { 
         var totalCount = await query.CountAsync();
 
+        query = search(query, request);
+        query = filter(query, request);
+        query = sort(query, request);
+        
         if (!string.IsNullOrEmpty(request.sortBy))
         {
             query = !request.isDescending ? query.OrderBy(e => EF.Property<object>(e, request.sortBy))
@@ -40,12 +44,17 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
         };
     }
     
-    public IQueryable<T> search(IQueryable<T> query, PagedRequest request)
+    public IQueryable<P> search<P>(IQueryable<P> query, PagedRequest request)
     {
         throw new NotImplementedException();
     }
 
-    public IQueryable<T> filter(IQueryable<T> query, PagedRequest request)
+    public IQueryable<P> filter<P>(IQueryable<P> query, PagedRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IQueryable<P> sort<P>(IQueryable<P> query, PagedRequest request)
     {
         throw new NotImplementedException();
     }
