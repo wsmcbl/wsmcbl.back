@@ -1,6 +1,6 @@
 namespace wsmcbl.src.model.dao;
 
-public class PagedQuery
+public class PagedRequest
 {
     public string? search { get; set; }
     public string? sortBy { get; set; }

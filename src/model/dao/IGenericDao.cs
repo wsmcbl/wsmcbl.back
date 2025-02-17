@@ -8,5 +8,5 @@ public interface IGenericDao<T, in ID>
     public Task<List<T>> getAll();
     public Task delete(T entity);
     internal Task saveAsync();
-    public Task<PagedResult<T>> getPaged(PagedQuery request);
+    public Task<PagedResult<T>> getPaged(PagedRequest request);
 }
