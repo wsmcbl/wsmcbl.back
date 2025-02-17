@@ -40,9 +40,10 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<List<StudentView>> getStudentViewList()
+    public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
-        return await context.Set<StudentView>().AsNoTracking().ToListAsync();
+        var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
+        return await getPaged(query, request);
     }
 
     public async Task updateAsync(StudentEntity? entity)

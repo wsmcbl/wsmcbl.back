@@ -66,7 +66,8 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
 
         if (!string.IsNullOrEmpty(request.sortBy))
         {
-            query = request.isDescending ? query.OrderByDescending(e => EF.Property<object>(e, request.sortBy))
+            query = request.isDescending
+                ? query.OrderByDescending(e => EF.Property<object>(e, request.sortBy))
                 : query.OrderBy(e => EF.Property<object>(e, request.sortBy));
         }
 
