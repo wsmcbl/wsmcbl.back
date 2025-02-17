@@ -11,14 +11,14 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
 {
-    /// <summary>Returns the basic student list.</summary>
-    /// <response code="200">Returns a resource by query params.</response>
+    /// <summary>Returns paged basic student list.</summary>
+    /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList(PagedRequest request)
+    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
     {
         var result = await controller.getStudentList(request);
         
