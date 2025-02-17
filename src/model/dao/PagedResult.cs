@@ -1,4 +1,4 @@
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.model.dao;
 
 public class PagedResult<T>
 {
