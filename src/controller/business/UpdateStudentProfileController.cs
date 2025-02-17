@@ -59,7 +59,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         return await daoFactory.studentDao!.getFullById(studentId);
     }
 
-    public async Task<List<StudentView>> getStudentList()
+    public async Task<PagedResult<StudentView>> getStudentList(PagedRequest request)
     {
         return await daoFactory.studentDao!.getStudentViewList();
     }

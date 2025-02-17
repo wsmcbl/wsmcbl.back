@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.api;
 
@@ -17,10 +18,14 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList()
+    public async Task<IActionResult> getStudentList(PagedRequest request)
     {
-        var result = await controller.getStudentList();
-        return Ok(result.mapToListBasicDto());
+        var result = await controller.getStudentList(request);
+        
+        var pagedResult = new PagedResult<BasicStudentDto>(result);
+        pagedResult.data = result.data.mapToListBasicDto();
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Returns student full by id.</summary> 
