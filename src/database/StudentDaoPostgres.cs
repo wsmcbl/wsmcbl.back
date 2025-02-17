@@ -7,13 +7,10 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
+public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, string>, IStudentDao
 {
-    private DaoFactory daoFactory { get; set; }
-    
     public StudentDaoPostgres(PostgresContext context) : base(context)
     {
-        daoFactory = new DaoFactoryPostgres(context);
     }
 
     public async Task<StudentEntity> getFullById(string id)
