@@ -57,6 +57,11 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
     public async Task<PagedResult<T>> getPaged(PagedQuery request)
     {
         var query = context.Set<T>().AsQueryable();
+        return await getPaged(query, request);
+    }
+
+    protected async Task<PagedResult<T>> getPaged(IQueryable<T> query, PagedQuery request)
+    { 
         var totalCount = await query.CountAsync();
 
         if (!string.IsNullOrEmpty(request.sortBy))
