@@ -50,6 +50,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.ReplaceInLatexFormat("student.name.value", entity.fullName());
         content = content.ReplaceInLatexFormat("degree.value", grade!);
         content = content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
+        content = content.ReplaceInLatexFormat("mined.id.value", entity.minedId ?? "N/A");
         content = content.ReplaceInLatexFormat("student.age.value", getAge(entity.birthday));
         content = content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
         content = content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
