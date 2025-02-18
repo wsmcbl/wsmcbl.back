@@ -24,11 +24,7 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
         }
         
         query = filter(query, request);
-        
-        if (!string.IsNullOrWhiteSpace(request.sortBy))
-        {
-            query = sort(query, request);
-        }
+        query = sort(query, request);
         
         var totalCount = await query.CountAsync();
         
@@ -46,18 +42,23 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
         };
     }
     
-    public IQueryable<P> search<P>(IQueryable<P> query, PagedRequest request)
+    public virtual IQueryable<P> search<P>(IQueryable<P> query, PagedRequest request)
     {
         return query;
     }
 
-    public IQueryable<P> filter<P>(IQueryable<P> query, PagedRequest request)
+    public virtual IQueryable<P> filter<P>(IQueryable<P> query, PagedRequest request)
     {
         return query;
     }
 
-    public IQueryable<P> sort<P>(IQueryable<P> query, PagedRequest request) where P : class
+    public virtual IQueryable<P> sort<P>(IQueryable<P> query, PagedRequest request) where P : class
     {
+        if (string.IsNullOrWhiteSpace(request.sortBy))
+        {
+            return query;
+        }
+            
         return !request.isDescending
             ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
             : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy!));
