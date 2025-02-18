@@ -23,7 +23,6 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
             query = search(query, request);
         }
         
-        query = filter(query, request);
         query = sort(query, request);
         
         var totalCount = await query.CountAsync();
@@ -43,11 +42,6 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
     }
     
     public virtual IQueryable<P> search<P>(IQueryable<P> query, PagedRequest request)
-    {
-        return query;
-    }
-
-    public virtual IQueryable<P> filter<P>(IQueryable<P> query, PagedRequest request)
     {
         return query;
     }
