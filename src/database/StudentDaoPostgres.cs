@@ -40,8 +40,13 @@ public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, str
     public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
         var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
-        request.sortBy ??= "studentId";
         return await getPaged(query, request);
+    }
+
+    public override IQueryable<P> sort<P>(IQueryable<P> query, PagedRequest request)
+    {
+        request.sortBy ??= "studentId";
+        return base.sort(query, request);
     }
 
     public async Task updateAsync(StudentEntity? entity)
