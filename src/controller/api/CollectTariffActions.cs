@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -10,17 +11,21 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CollectTariffActions(CollectTariffController controller) : ActionsBase
 {
-    /// <summary>Returns the list of active students.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <summary>Returns paged list of active students.</summary>
+    /// <response code="200">Returns a paged list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("students")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList()
+    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
     {
-        var students = await controller.getStudentsList();
-        return Ok(students.mapListTo());
+        var result = await controller.getStudentList(request);
+        
+        var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToList());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Returns the student (active or not) by id.</summary>

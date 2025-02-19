@@ -31,7 +31,7 @@ public class CollectTariffControllerTest
         studentDao.getStudentViewList().Returns(list);
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await sut.getStudentsList();
+        var result = await sut.getStudentList();
 
         Assert.IsType<List<StudentView>>(result);
         Assert.NotEmpty(result);
@@ -44,7 +44,7 @@ public class CollectTariffControllerTest
         studentDao.getAll().Returns([]);
         daoFactory.accountingStudentDao.Returns(studentDao);
 
-        var result = await sut.getStudentsList();
+        var result = await sut.getStudentList();
 
         Assert.IsType<List<StudentEntity>>(result);
         Assert.Empty(result);
