@@ -20,7 +20,7 @@ public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
     public Task<SchoolYearEntity> getOrCreateNew();
 }
 
-public interface IStudentDao : IGenericDaoWithPaged<StudentEntity, string>, IStudentElement<StudentEntity>
+public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
     public Task<StudentEntity> getFullById(string id);
     public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);

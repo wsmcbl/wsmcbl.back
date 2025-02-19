@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
@@ -7,7 +8,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, string>, IStudentDao
+public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
     public StudentDaoPostgres(PostgresContext context) : base(context)
     {
@@ -40,13 +41,23 @@ public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, str
     public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
         var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
-        return await getPaged(query, request);
+
+        var pagedService = new PagedService<StudentView>(query);
+        return await pagedService.getPaged(request);
     }
 
-    public override IQueryable<P> sort<P>(IQueryable<P> query, PagedRequest request)
+    public IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
     {
         request.sortBy ??= "studentId";
-        return base.sort(query, request);
+        var pagedService = new PagedService<StudentView>(query);
+        return pagedService.sort(request);
+    }
+
+    public IQueryable<StudentView> search(IQueryable<StudentView> query, PagedRequest request)
+    {
+        return query.Where(e => e.studentId.Contains(request.search!) ||
+                                e.fullName.Contains(request.search!));
+
     }
 
     public async Task updateAsync(StudentEntity? entity)
