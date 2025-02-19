@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -28,10 +29,14 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     [HttpGet]
     [Route("users")]
     [ResourceAuthorizer("user:read")]
-    public async Task<IActionResult> getUserList()
+    public async Task<IActionResult> getUserList([FromQuery] PagedRequest request)
     {
-        var result = await controller.getUserList();
-        return Ok(result.mapToListDto());
+        var result = await controller.getUserList(request);
+
+        var pagedResult = new PagedResult<UserToListDto>(result.data.mapToListDto());
+        pagedResult.setup(result);
+        
+        return Ok(result);
     }
     
     /// <summary>Create new user.</summary>
