@@ -43,15 +43,20 @@ public class UserEntity
     
     public List<string> getPermissionList()
     {
-        var list = role!.getPermissionList();
-        list.AddRange(permissionList.Select(e => e.name));
-
-        return list.Distinct().ToList();
+        return getPermissionUnifiedList().Select(e => e.name).Distinct().ToList();
     }
     
     public List<int> getPermissionIdList()
     {
-        return permissionList.Select(e => e.permissionId).ToList();
+        return getPermissionUnifiedList().Select(e => e.permissionId).Distinct().ToList();
+    }
+
+    private List<PermissionEntity> getPermissionUnifiedList()
+    {
+        var list = role!.permissionList;
+        list.AddRange(permissionList);
+
+        return list;
     }
     
     public string getAlias()
