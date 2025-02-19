@@ -43,7 +43,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         var query = context.GetQueryable<StudentView>();
         var pagedService = new PagedService<StudentView>(query, search);
         
-        request.sortBy ??= "studentId";
+        request.setDefaultSort("studentId");
         return await pagedService.getPaged(request);
     }
     
