@@ -1,25 +1,32 @@
 using Microsoft.EntityFrameworkCore;
-using wsmcbl.src.model.dao;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.database.service;
 
 public class PagedService<T> where T : class
 {
     private IQueryable<T> query { get; set; }
+    private Func<IQueryable<T>, string, IQueryable<T>> search { get; set; }
     
-    public PagedService(IQueryable<T> query)
+    public PagedService(IQueryable<T> query, Func<IQueryable<T>, string, IQueryable<T>> search)
     {
         this.query = query; 
+        this.search = search;
     }
     
     public async Task<PagedResult<T>> getPaged(PagedRequest request)
     {
         if (!string.IsNullOrWhiteSpace(request.search))
         {
-            query = search(request);
+            query = search(query, request.search);
         }
 
-        query = sort(request);
+        if (!string.IsNullOrWhiteSpace(request.sortBy))
+        {
+            query = request.isAscending
+                ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
+                : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy!));
+        }
 
         var totalCount = await query.CountAsync();
 
@@ -35,22 +42,5 @@ public class PagedService<T> where T : class
             page = request.page,
             pageSize = request.pageSize
         };
-    }
-
-    public IQueryable<T> search(PagedRequest request)
-    {
-        return query;
-    }
-
-    public IQueryable<T> sort(PagedRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.sortBy))
-        {
-            return query;
-        }
-
-        return request.isAscending
-            ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
-            : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy!));
     }
 }

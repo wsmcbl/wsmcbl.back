@@ -3,7 +3,6 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
-using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
@@ -38,26 +37,31 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
+    public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
     {
-        var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
-
-        var pagedService = new PagedService<StudentView>(query);
+        var query = context.GetQueryable<StudentView>();
+        
+        if (request.isActive != null)
+        {
+            query = query.Where(e => e.isActive == (bool)request.isActive);
+        }
+        
+        var pagedService = new PagedService<StudentView>(query, search);
+        
+        request.setDefaultSort("studentId");
         return await pagedService.getPaged(request);
     }
-
-    public IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
-    {
-        request.sortBy ??= "studentId";
-        var pagedService = new PagedService<StudentView>(query);
-        return pagedService.sort(request);
-    }
-
-    public IQueryable<StudentView> search(IQueryable<StudentView> query, PagedRequest request)
-    {
-        return query.Where(e => e.studentId.Contains(request.search!) ||
-                                e.fullName.Contains(request.search!));
-
+    
+    private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+           EF.Functions.Like(e.studentId, value) ||
+           EF.Functions.Like(e.fullName.ToLower(), value) ||
+           EF.Functions.Like(e.tutor.ToLower(), value) ||
+           (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
+           (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
     }
 
     public async Task updateAsync(StudentEntity? entity)

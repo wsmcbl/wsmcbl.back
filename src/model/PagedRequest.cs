@@ -1,4 +1,4 @@
-namespace wsmcbl.src.model.dao;
+namespace wsmcbl.src.model;
 
 public class PagedRequest
 {
@@ -7,4 +7,10 @@ public class PagedRequest
     public int page { get; set; } = 1;
     public int pageSize { get; set; } = 10;
     public bool isAscending { get; set; } = true;
+
+    public void setDefaultSort(string parameter)
+    {
+        sortBy ??= parameter;
+        search = search?.Trim().ToLower();
+    }
 }

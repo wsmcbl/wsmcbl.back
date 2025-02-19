@@ -1,5 +1,5 @@
 using FluentValidation;
-using wsmcbl.src.model.dao;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.middleware.validator;
 

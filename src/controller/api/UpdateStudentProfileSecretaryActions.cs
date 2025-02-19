@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
-using wsmcbl.src.model.dao;
+using wsmcbl.src.model;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
@@ -18,7 +19,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
+    public async Task<IActionResult> getStudentList([FromQuery] StudentPagedRequest request)
     {
         var result = await controller.getStudentList(request);
         
