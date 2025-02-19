@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -17,10 +18,14 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("transaction:read")]
-    public async Task<ActionResult> getTransactionList()
+    public async Task<ActionResult> getTransactionList([FromQuery] PagedRequest request)
     {
-        var result = await controller.getTransactionList();
-        return Ok(result.mapToTransactionListDto());
+        var result = await controller.getTransactionList(request);
+
+        var pagedResult = new PagedResult<TransactionToListDto>(result.data.mapToTransactionListDto());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Cancel transaction by id.</summary>

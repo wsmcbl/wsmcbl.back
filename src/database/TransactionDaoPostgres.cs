@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.database;
@@ -43,12 +45,25 @@ public class TransactionDaoPostgres(PostgresContext context)
             .ToListAsync();
     }
 
-    public async Task<List<TransactionReportView>> getViewAll()
+    public async Task<PagedResult<TransactionReportView>> getAll(PagedRequest request)
     {
-        return await context.Set<TransactionReportView>()
-            .OrderByDescending(e => e.number)
-            .AsNoTracking()
-            .ToListAsync();
+        var query = context.GetQueryable<TransactionReportView>();
+
+        var pagedService = new PagedService<TransactionReportView>(query, search);
+        
+        request.setDefaultSort("number");
+        return await pagedService.getPaged(request);
+    }
+    
+    private IQueryable<TransactionReportView> search(IQueryable<TransactionReportView> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+            EF.Functions.Like(e.transactionId, value) ||
+            EF.Functions.Like(e.studentId, value) ||
+            EF.Functions.Like(e.studentName.ToLower(), value) ||
+            (e.enrollmentLabel != null && EF.Functions.Like(e.enrollmentLabel.ToLower(), value)));
     }
 
     public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)

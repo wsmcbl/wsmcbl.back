@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -6,9 +7,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CancelTransactionController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<TransactionReportView>> getTransactionList()
+    public async Task<PagedResult<TransactionReportView>> getTransactionList(PagedRequest request)
     {
-        return await daoFactory.transactionDao!.getViewAll();
+        return await daoFactory.transactionDao!.getAll(request);
     }
 
     public async Task<TransactionEntity> cancelTransaction(string transactionId)
