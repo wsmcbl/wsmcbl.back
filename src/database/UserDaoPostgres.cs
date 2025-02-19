@@ -13,6 +13,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         if (Guid.TryParse(userId, out var userIdGuid))
         {
             user = await entities.Include(e => e.role)
+                .ThenInclude(e => e!.permissionList)
                 .Include(e => e.permissionList)
                 .FirstOrDefaultAsync(e => e.userId == userIdGuid);
         }
