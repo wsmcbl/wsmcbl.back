@@ -53,8 +53,7 @@ public class GenericDaoWithPagedPostgres<T, ID> : GenericDaoPostgres<T, ID>, IGe
             return query;
         }
             
-        return !request.isDescending
-            ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
+        return request.isAscending ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
             : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy!));
     }
 }
