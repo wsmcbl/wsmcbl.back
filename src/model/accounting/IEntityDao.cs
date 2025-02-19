@@ -21,7 +21,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 public interface ITransactionDao : IGenericDao<TransactionEntity, string>
 {
     public Task<List<TransactionReportView>> getByRange(DateTime from, DateTime to);
-    public Task<List<TransactionReportView>> getViewAll();
+    public Task<PagedResult<TransactionReportView>> getAll(PagedRequest request);
     public Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to);
 }
 
