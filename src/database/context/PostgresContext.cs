@@ -24,4 +24,9 @@ public class PostgresContext(DbContextOptions<PostgresContext> options) : DbCont
         modelBuilder.HasSequence("subject_id_seq", "secretary").StartsAt(10L);
         modelBuilder.HasSequence("transaction_id_seq", "accounting").StartsAt(10L);
     }
+
+    public IQueryable<T> GetQueryable<T>() where T : class
+    {
+        return Set<T>().AsNoTracking().AsQueryable();
+    }
 }
