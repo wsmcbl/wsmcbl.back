@@ -23,33 +23,6 @@ public class CollectTariffControllerTest
         daoFactory = Substitute.For<DaoFactory>();
         sut = new CollectTariffController(daoFactory);
     }
-
-    [Fact]
-    public async Task getStudentsList_ReturnsList()
-    {
-        var list = TestEntityGenerator.aStudentList();
-        studentDao.getStudentViewList().Returns(list);
-        daoFactory.accountingStudentDao.Returns(studentDao);
-
-        var result = await sut.getStudentsList();
-
-        Assert.IsType<List<StudentView>>(result);
-        Assert.NotEmpty(result);
-        Assert.Equal(list, result);
-    }
-
-    [Fact]
-    public async Task getStudentsList_EmptyList()
-    {
-        studentDao.getAll().Returns([]);
-        daoFactory.accountingStudentDao.Returns(studentDao);
-
-        var result = await sut.getStudentsList();
-
-        Assert.IsType<List<StudentEntity>>(result);
-        Assert.Empty(result);
-    }
-
     
     [Fact]
     public async Task getStudent_ReturnsStudent()

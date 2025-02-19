@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -7,9 +8,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<DegreeEntity>> getDegreeList()
+    public async Task<PagedResult<DegreeEntity>> getDegreeList(PagedRequest request)
     {
-        return await daoFactory.degreeDao!.getAll();
+        return await daoFactory.degreeDao!.getAll(request);
     }
 
     public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)

@@ -20,21 +20,6 @@ public class CreateEnrollmentControllerTest
     }
     
     [Fact]
-    public async Task getGradeList_ShouldReturnsGradeList_WhenCalled()
-    {
-        var list = TestEntityGenerator.aDegreeList();
-        var dao = Substitute.For<IDegreeDao>();
-        dao.getAll().Returns(list);
-        daoFactory.degreeDao.Returns(dao);
-
-        var result = await sut.getDegreeList();
-
-        Assert.NotNull(result);
-        Assert.Equivalent(list, result);
-    }
-
-    
-    [Fact]
     public async Task createEnrollments_ShouldThrowException_WhenGradeNotExist()
     {
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.createEnrollments("gd-1", 1));

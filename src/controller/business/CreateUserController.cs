@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
@@ -18,9 +19,9 @@ public class CreateUserController : BaseController
         this.userAuthenticator = userAuthenticator;
     }
 
-    public async Task<List<UserEntity>> getUserList()
+    public async Task<PagedResult<UserEntity>> getUserList(PagedRequest request)
     {
-        return await daoFactory.userDao!.getAll();
+        return await daoFactory.userDao!.getAll(request);
     }
 
     public async Task<UserEntity> createUser(UserEntity user, string groupName)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -10,17 +11,21 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
 {
-    /// <summary>Returns the list of active degrees.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <summary>Returns the paged list of active degrees.</summary>
+    /// <response code="200">Returns a paged list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("degree:read", "enrollment:read")]
-    public async Task<IActionResult> getDegreeList()
+    public async Task<IActionResult> getDegreeList([FromQuery] PagedRequest request)
     {
-        var result = await controller.getDegreeList();
-        return Ok(result.mapListToBasicDto());
+        var result = await controller.getDegreeList(request);
+
+        var pagedResult = new PagedResult<BasicDegreeDto>(result.data.mapListToBasicDto());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
 
     /// <summary>Create new enrollment.</summary>

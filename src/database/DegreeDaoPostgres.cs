@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -49,8 +51,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         }
 
         return degree;
-    }    
-
+    }
     public async Task createRange(List<DegreeEntity> degreeList)
     {
         entities.AddRange(degreeList);
@@ -96,5 +97,26 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         }
 
         return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.degreeId);
+    }
+    
+    public async Task<PagedResult<DegreeEntity>> getAll(PagedRequest request)
+    {
+        var query = context.GetQueryable<DegreeEntity>();
+
+        var pagedService = new PagedService<DegreeEntity>(query, search);
+        
+        request.setDefaultSort("tag");
+        return await pagedService.getPaged(request);
+    }
+    
+    private IQueryable<DegreeEntity> search(IQueryable<DegreeEntity> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+            EF.Functions.Like(e.degreeId!, value) ||
+            EF.Functions.Like(e.label.ToLower(), value) ||
+            EF.Functions.Like(e.educationalLevel.ToLower(), value) ||
+            EF.Functions.Like(e.schoolYear, value));
     }
 }

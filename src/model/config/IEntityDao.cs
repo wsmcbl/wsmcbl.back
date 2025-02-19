@@ -4,6 +4,7 @@ namespace wsmcbl.src.model.config;
 
 public interface IUserDao : IGenericDao<UserEntity, Guid>
 {
+    public Task<PagedResult<UserEntity>> getAll(PagedRequest request);
     public Task<UserEntity> getById(string userId);
     public Task<UserEntity> getUserByEmail(string email);
     public Task<bool> isEmailDuplicate(string email);

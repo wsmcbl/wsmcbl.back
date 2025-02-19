@@ -35,9 +35,8 @@ public class PagedService<T> where T : class
             .Take(request.pageSize)
             .ToListAsync();
 
-        return new PagedResult<T>
+        return new PagedResult<T>(data)
         {
-            data = data,
             quantity = totalCount,
             page = request.page,
             pageSize = request.pageSize

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.config;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -21,17 +22,21 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
         return Ok(await controller.getNextcloudGroupList());
     }
     
-    /// <summary>Get user list.</summary>
-    /// <response code="200">Return list, the list can be empty</response>
+    /// <summary>Get user paged list.</summary>
+    /// <response code="200">Return a paged list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("users")]
     [ResourceAuthorizer("user:read")]
-    public async Task<IActionResult> getUserList()
+    public async Task<IActionResult> getUserList([FromQuery] PagedRequest request)
     {
-        var result = await controller.getUserList();
-        return Ok(result.mapToListDto());
+        var result = await controller.getUserList(request);
+
+        var pagedResult = new PagedResult<UserToListDto>(result.data.mapToListDto());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Create new user.</summary>

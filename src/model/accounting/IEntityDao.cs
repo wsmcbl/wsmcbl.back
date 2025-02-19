@@ -10,7 +10,7 @@ public interface ICashierDao : IGenericDao<CashierEntity, string>
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     public Task<StudentEntity> getFullById(string studentId);
-    public Task<List<StudentView>> getStudentViewList();
+    public Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request);
     public Task<List<StudentEntity>> getAllWithSolvencyInRegistration();
 
     public Task<List<DebtorStudentView>> getDebtorStudentList(); 
