@@ -43,7 +43,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         
         if (request.isActive != null)
         {
-            query = query.Where(e => e.isActive);
+            query = query.Where(e => e.isActive == (bool)request.isActive);
         }
         
         var pagedService = new PagedService<StudentView>(query, search);
