@@ -36,7 +36,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
         var pagedResult = new PagedResult<UserToListDto>(result.data.mapToListDto());
         pagedResult.setup(result);
         
-        return Ok(result);
+        return Ok(pagedResult);
     }
     
     /// <summary>Create new user.</summary>
