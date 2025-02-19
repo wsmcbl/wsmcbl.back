@@ -94,10 +94,4 @@ public static class Utility
             builder.Append(' ').Append(value);
         }
     }
-
-    public static bool ContainsInLower(this string? parameter, string value)
-    {
-        return parameter != null &&
-               parameter.Trim().ToLowerInvariant().Contains(value.ToLowerInvariant());
-    }
 }

@@ -11,6 +11,6 @@ public class PagedRequest
     public void setDefaultSort(string parameter)
     {
         sortBy ??= parameter;
-        search = search?.ToLower();
+        search = search?.Trim().ToLower();
     }
 }

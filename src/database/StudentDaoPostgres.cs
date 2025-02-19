@@ -3,9 +3,7 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
-using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
-using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.database;
 
@@ -49,11 +47,15 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
     }
     
     private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
-    {
-        return query.Where(e => e.studentId.ContainsInLower(search) ||
-                            e.fullName.ContainsInLower(search) || 
-                            e.enrollment.ContainsInLower(search) ||
-                            e.tutor.ContainsInLower(search));
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+           EF.Functions.Like(e.studentId, value) ||
+           EF.Functions.Like(e.fullName.ToLower(), value) ||
+           EF.Functions.Like(e.tutor.ToLower(), value) ||
+           (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
+           (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
     }
 
     public async Task updateAsync(StudentEntity? entity)
