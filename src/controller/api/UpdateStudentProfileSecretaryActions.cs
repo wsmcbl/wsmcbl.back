@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
-using wsmcbl.src.model.dao;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 

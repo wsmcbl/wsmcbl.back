@@ -1,4 +1,4 @@
-namespace wsmcbl.src.model.dao;
+namespace wsmcbl.src.model;
 
 public class PagedRequest
 {
