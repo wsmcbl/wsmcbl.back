@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
@@ -40,7 +41,9 @@ public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, str
     public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
         var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
-        return await getPaged(query, request);
+
+        var pagedService = new PagedService<StudentView>(query);
+        return await pagedService.getPaged(request);
     }
 
     public override IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
