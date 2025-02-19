@@ -26,7 +26,7 @@ public class DtoMapperTest
 
         List<StudentView> studentList = TestEntityGenerator.aStudentList();
 
-        var result = studentList.mapListTo();
+        var result = studentList.mapToList();
 
         Assert.NotEmpty(result);
         Assert.Equivalent(studentBasicDtoList, result);
