@@ -24,7 +24,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentEleme
 {
     public Task<StudentEntity> getFullById(string id);
     public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);
-    public Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request);
+    public Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request);
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudentElement<StudentFileEntity>;
