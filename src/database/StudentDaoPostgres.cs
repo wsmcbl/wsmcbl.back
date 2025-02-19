@@ -8,7 +8,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, string, StudentView>, IStudentDao
+public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
     public StudentDaoPostgres(PostgresContext context) : base(context)
     {
@@ -46,13 +46,14 @@ public class StudentDaoPostgres : GenericDaoWithPagedPostgres<StudentEntity, str
         return await pagedService.getPaged(request);
     }
 
-    public override IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
+    public IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
     {
         request.sortBy ??= "studentId";
-        return base.sort(query, request);
+        var pagedService = new PagedService<StudentView>(query);
+        return pagedService.sort(request);
     }
 
-    public override IQueryable<StudentView> search(IQueryable<StudentView> query, PagedRequest request)
+    public IQueryable<StudentView> search(IQueryable<StudentView> query, PagedRequest request)
     {
         return query.Where(e => e.studentId.Contains(request.search!) ||
                                 e.fullName.Contains(request.search!));

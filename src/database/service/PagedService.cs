@@ -44,6 +44,13 @@ public class PagedService<T> where T : class
 
     public IQueryable<T> sort(PagedRequest request)
     {
-        return query;
+        if (string.IsNullOrWhiteSpace(request.sortBy))
+        {
+            return query;
+        }
+
+        return request.isAscending
+            ? query.OrderBy(e => EF.Property<object>(e, request.sortBy!))
+            : query.OrderByDescending(e => EF.Property<object>(e, request.sortBy!));
     }
 }
