@@ -5,6 +5,7 @@ using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.database;
 
@@ -49,8 +50,10 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
     
     private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
     {
-        return query.Where(e
-            => e.studentId.Contains(search) || e.fullName.Contains(search));
+        return query.Where(e => e.studentId.ContainsInLower(search) ||
+                            e.fullName.ContainsInLower(search) || 
+                            e.enrollment.ContainsInLower(search) ||
+                            e.tutor.ContainsInLower(search));
     }
 
     public async Task updateAsync(StudentEntity? entity)
