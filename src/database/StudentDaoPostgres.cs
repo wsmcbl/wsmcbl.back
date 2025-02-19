@@ -40,24 +40,17 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
 
     public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
-        var query = context.Set<StudentView>().AsNoTracking().AsQueryable();
-
-        var pagedService = new PagedService<StudentView>(query);
+        var query = context.GetQueryable<StudentView>();
+        var pagedService = new PagedService<StudentView>(query, search);
+        
+        request.sortBy ??= "studentId";
         return await pagedService.getPaged(request);
     }
-
-    public IQueryable<StudentView> sort(IQueryable<StudentView> query, PagedRequest request) 
+    
+    private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
     {
-        request.sortBy ??= "studentId";
-        var pagedService = new PagedService<StudentView>(query);
-        return pagedService.sort(request);
-    }
-
-    public IQueryable<StudentView> search(IQueryable<StudentView> query, PagedRequest request)
-    {
-        return query.Where(e => e.studentId.Contains(request.search!) ||
-                                e.fullName.Contains(request.search!));
-
+        return query.Where(e
+            => e.studentId.Contains(search) || e.fullName.Contains(search));
     }
 
     public async Task updateAsync(StudentEntity? entity)
