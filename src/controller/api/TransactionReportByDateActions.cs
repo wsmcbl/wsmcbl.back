@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
@@ -16,8 +16,9 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <summary>Returns summary list of transactions and revenues by date.</summary>
     /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
     /// <remarks> A date before 2,000 is not accepted.</remarks>
-    /// <param name="start">The default time is set to 00:00 hours.</param>
-    /// <param name="end">
+    /// <param name="request">Paged request</param>
+    /// <param name="request.from">The default time is set to 00:00 hours.</param>
+    /// <param name="request.to">
     /// The default time is set to 23:59.
     /// If the date entered corresponds to the current date,
     /// the time will be adjusted to the time at which the query is made.
@@ -29,30 +30,37 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     [HttpGet]
     [Route("revenues")]
     [ResourceAuthorizer("report:read")]
-    public async Task<IActionResult> getReportByDate([FromQuery] [Required] string start, [FromQuery] string end)
+    public async Task<IActionResult> getReportByDate([FromQuery] TransactionReportViewPagedRequest request)
     {
-        if (!hasDateFormat(start) || !hasDateFormat(end))
+        if (!hasDateFormat(request.from) || !hasDateFormat(request.to))
         {
             throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
         }
-
-        var dates = parseToDateTime(start, end);
-        var transactionList = await controller.getTransactionList(dates.from, dates.to);
         
-        var response = new ReportByDateDto();
-        response.setDateRange(dates.from, dates.to);
-        response.setTransactionList(transactionList);
-        response.userName = await controller.getUserName(getAuthenticatedUserId());
-
-        var result = controller.getSummary();
-        response.setValidTransactionData(result[0]);
-        response.setInvalidTransactionData(result[1]);
-
-        return Ok(response);
+        var result = await controller.getTransactionList(request);
+        
+        var pagedResult = new PagedReportByDateDto(result.data.mapToListDto());
+        pagedResult.setup(result);
+        
+        var dates = parseToDateTime(request.from!, request.to!);
+        var summaryReport = await controller.getSummary(dates.from, dates.to);
+        
+        pagedResult.setValidTransactionData(summaryReport[0]);
+        pagedResult.setInvalidTransactionData(summaryReport[1]);
+        
+        pagedResult.setDateRange(dates.from, dates.to);
+        pagedResult.setUserName(await controller.getUserName(getAuthenticatedUserId()));
+        
+        return Ok(pagedResult);
     }
 
-    public static bool hasDateFormat(string value)
+    public static bool hasDateFormat(string? value)
     {
+        if (value == null)
+        {
+            return false;
+        }
+        
         const int minYear = 2000;
         const int maxYear = 2100;
 
