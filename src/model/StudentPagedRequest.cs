@@ -1,4 +1,4 @@
-namespace wsmcbl.src.model.secretary;
+namespace wsmcbl.src.model;
 
 public class StudentPagedRequest : PagedRequest
 {

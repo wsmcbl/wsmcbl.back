@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
@@ -15,13 +15,13 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
 {
     /// <summary>Returns summary list of transactions and revenues by date.</summary>
     /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
-    /// <remarks> A date before 2,000 is not accepted.</remarks>
-    /// <param name="start">The default time is set to 00:00 hours.</param>
-    /// <param name="end">
+    /// <remarks> A date before 2,000 is not accepted.
+    /// The default time is set to 00:00 hours.
     /// The default time is set to 23:59.
     /// If the date entered corresponds to the current date,
     /// the time will be adjusted to the time at which the query is made.
-    /// </param>
+    /// </remarks>
+    /// <param name="request">Paged request</param>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="400">If any of the dates are not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -29,30 +29,38 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     [HttpGet]
     [Route("revenues")]
     [ResourceAuthorizer("report:read")]
-    public async Task<IActionResult> getReportByDate([FromQuery] [Required] string start, [FromQuery] string end)
+    public async Task<IActionResult> getReportByDate([FromQuery] TransactionReportViewPagedRequest request)
     {
-        if (!hasDateFormat(start) || !hasDateFormat(end))
+        if (!hasDateFormat(request.from) || !hasDateFormat(request.to))
         {
             throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
         }
-
-        var dates = parseToDateTime(start, end);
-        var transactionList = await controller.getTransactionList(dates.from, dates.to);
         
-        var response = new ReportByDateDto();
-        response.setDateRange(dates.from, dates.to);
-        response.setTransactionList(transactionList);
-        response.userName = await controller.getUserName(getAuthenticatedUserId());
-
-        var result = controller.getSummary();
-        response.setValidTransactionData(result[0]);
-        response.setInvalidTransactionData(result[1]);
-
-        return Ok(response);
+        request.parseRangeToDatetime();
+        
+        var result = await controller.getTransactionList(request);
+        
+        var pagedResult = new PagedReportByDateDto(result.data.mapToListDto());
+        pagedResult.setup(result);
+        
+        var summaryReport = await controller.getSummary(request.From(), request.To());
+        
+        pagedResult.setValidTransactionData(summaryReport[0]);
+        pagedResult.setInvalidTransactionData(summaryReport[1]);
+        
+        pagedResult.setDateRange(request.From(), request.To());
+        pagedResult.setUserName(await controller.getUserName(getAuthenticatedUserId()));
+        
+        return Ok(pagedResult);
     }
 
-    public static bool hasDateFormat(string value)
+    public static bool hasDateFormat(string? value)
     {
+        if (value == null)
+        {
+            return false;
+        }
+        
         const int minYear = 2000;
         const int maxYear = 2100;
 
@@ -66,27 +74,6 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
             return false;
         }
     }
-
-    public static (DateTime from, DateTime to) parseToDateTime(string from, string to)
-    {
-        var startDate = DateTime.ParseExact(from, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        var endDate = DateTime.ParseExact(to, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-
-        if (startDate.Date > endDate.Date)
-        {
-            throw new BadRequestException("The date range is not valid.");
-        }
-
-        startDate = startDate.setHours(6);
-        
-        endDate = isToday(endDate) ? DateTime.UtcNow :
-            endDate.setHours(0).Date.AddDays(1).AddHours(6).AddSeconds(-1);
-        
-        return (startDate, endDate);
-    }
-
-    private static bool isToday(DateTime date) => date.Date == DateTime.Today.Date;
-    
 
     /// <summary>Returns the list of tariff type.</summary>
     /// <response code="200">Return existing resources (can be empty list).</response>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
@@ -113,7 +114,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
             throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
         }
 
-        var range = TransactionReportByDateActions.parseToDateTime(from, to);
+        var range = TransactionReportViewPagedRequest.parseToDateTime(from, to);
         return Ok(await controller.getTransactionInvoiceViewList(range.from, range.to));
     } 
 }
