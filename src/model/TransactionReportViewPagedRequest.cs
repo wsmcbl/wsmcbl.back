@@ -15,7 +15,7 @@ public class TransactionReportViewPagedRequest : PagedRequest
     private DateTime _from;
     public DateTime From() => _from;
 
-    public void parseRange()
+    public void parseRangeToDatetime()
     {
         var dates = parseToDateTime(from!,to!);
         

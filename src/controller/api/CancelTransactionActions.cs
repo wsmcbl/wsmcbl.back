@@ -18,7 +18,7 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("transaction:read")]
-    public async Task<ActionResult> getTransactionList([FromQuery] PagedRequest request)
+    public async Task<ActionResult> getTransactionList([FromQuery] TransactionReportViewPagedRequest request)
     {
         var result = await controller.getTransactionList(request);
 

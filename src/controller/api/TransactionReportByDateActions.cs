@@ -36,7 +36,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
             throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
         }
         
-        request.parseRange();
+        request.parseRangeToDatetime();
         
         var result = await controller.getTransactionList(request);
         

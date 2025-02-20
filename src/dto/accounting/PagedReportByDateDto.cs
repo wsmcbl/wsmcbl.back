@@ -5,10 +5,11 @@ namespace wsmcbl.src.dto.accounting;
 
 public class PagedReportByDateDto : PagedResult<TransactionReportDto>
 {
-    public ReportByDateDto summary { get; set; } = null!;
+    public ReportByDateDto summary { get; set; }
 
     public PagedReportByDateDto(List<TransactionReportDto> list) : base(list)
     {
+        summary = new ReportByDateDto();
     }
 
     public void setDateRange(DateTime start, DateTime end)
