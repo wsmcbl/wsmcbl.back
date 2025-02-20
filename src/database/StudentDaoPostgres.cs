@@ -36,9 +36,11 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             .AsNoTracking().ToListAsync();
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
-
+    
     public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
     {
+        request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
+        
         var query = context.GetQueryable<StudentView>();
         
         if (request.isActive != null)
@@ -48,7 +50,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         
         var pagedService = new PagedService<StudentView>(query, search);
         
-        request.setDefaultSort("fullName");
+        request.setDefaultSort("fullName");   
         return await pagedService.getPaged(request);
     }
     
