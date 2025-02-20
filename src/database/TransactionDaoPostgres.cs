@@ -45,9 +45,14 @@ public class TransactionDaoPostgres(PostgresContext context)
             .ToListAsync();
     }
 
-    public async Task<PagedResult<TransactionReportView>> getAll(PagedRequest request)
+    public async Task<PagedResult<TransactionReportView>> getAll(TransactionReportViewPagedRequest request)
     {
         var query = context.GetQueryable<TransactionReportView>();
+
+        if (request is { from: not null, to: not null })
+        {
+            query = query.Where(e => e.dateTime >= request.From() && e.dateTime <= request.To());
+        }
 
         var pagedService = new PagedService<TransactionReportView>(query, search);
         
