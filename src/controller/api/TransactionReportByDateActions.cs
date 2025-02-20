@@ -15,12 +15,13 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
 {
     /// <summary>Returns summary list of transactions and revenues by date.</summary>
     /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
-    /// <remarks> A date before 2,000 is not accepted.
-    /// The default time is set to 00:00 hours.
-    /// The default time is set to 23:59.
+    /// <remarks>A date before 2,000 is not accepted.</remarks>
+    /// <remarks>The default from time is set to 00:00 hours.</remarks>
+    /// <remarks> The default to time is set to 23:59.
     /// If the date entered corresponds to the current date,
     /// the time will be adjusted to the time at which the query is made.
     /// </remarks>
+    /// <remarks>Values for sortBy: transactionId, number, studentId, studentName, total isValid, enrollmentLabel, type and dateTime.</remarks>
     /// <param name="request">Paged request</param>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="400">If any of the dates are not valid.</response>
@@ -31,6 +32,8 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     [ResourceAuthorizer("report:read")]
     public async Task<IActionResult> getReportByDate([FromQuery] TransactionReportViewPagedRequest request)
     {
+        request.checkSortByValue(["transactionId", "number", "studentId", "studentName", "total", "isValid", "enrollmentLabel", "type", "dateTime"]);
+        
         if (!hasDateFormat(request.from) || !hasDateFormat(request.to))
         {
             throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");

@@ -12,6 +12,7 @@ namespace wsmcbl.src.controller.api;
 public class CollectTariffActions(CollectTariffController controller) : ActionsBase
 {
     /// <summary>Returns paged list of active students.</summary>
+    /// <remarks>Values for sortBy: studentId, fullName, isActive, tutor, schoolyear and enrollment.</remarks>
     /// <response code="200">Returns a paged list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -20,6 +21,8 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
     {
+        request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
+        
         var result = await controller.getStudentList(request);
         
         var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToList());

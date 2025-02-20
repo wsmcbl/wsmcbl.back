@@ -39,8 +39,6 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
     
     public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
     {
-        request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
-        
         var query = context.GetQueryable<StudentView>();
         
         if (request.isActive != null)
