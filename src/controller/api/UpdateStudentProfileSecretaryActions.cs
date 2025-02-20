@@ -13,6 +13,7 @@ namespace wsmcbl.src.controller.api;
 public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
 {
     /// <summary>Returns paged basic student list.</summary>
+    /// <remarks>Values for sortBy: studentId, fullName, isActive, tutor, schoolyear and enrollment.</remarks>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -21,6 +22,8 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentList([FromQuery] StudentPagedRequest request)
     {
+        request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
+        
         var result = await controller.getStudentList(request);
         
         var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToListBasicDto());

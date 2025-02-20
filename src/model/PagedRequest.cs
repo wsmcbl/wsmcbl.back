@@ -1,3 +1,5 @@
+using wsmcbl.src.exception;
+
 namespace wsmcbl.src.model;
 
 public class PagedRequest
@@ -12,5 +14,18 @@ public class PagedRequest
     {
         sortBy ??= parameter;
         search = search?.Trim().ToLower();
+    }
+
+    public void checkSortByValue(List<string> sortByList)
+    {
+        if (sortBy == null)
+        {
+            return;
+        }
+
+        if (!sortByList.Contains(sortBy))
+        {
+            throw new IncorrectDataBadRequestException("sortBy");
+        }
     }
 }

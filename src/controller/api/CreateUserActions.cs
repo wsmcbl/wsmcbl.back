@@ -23,6 +23,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     }
     
     /// <summary>Get user paged list.</summary>
+    /// <remarks>Values for sortBy: userId, roleId, name, email, isActive, createAt and updateAt.</remarks>
     /// <response code="200">Return a paged list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -31,6 +32,8 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     [ResourceAuthorizer("user:read")]
     public async Task<IActionResult> getUserList([FromQuery] PagedRequest request)
     {
+        request.checkSortByValue(["userId", "roleId", "name", "email", "isActive", "createAt", "updateAt"]);
+        
         var result = await controller.getUserList(request);
 
         var pagedResult = new PagedResult<UserToListDto>(result.data.mapToListDto());

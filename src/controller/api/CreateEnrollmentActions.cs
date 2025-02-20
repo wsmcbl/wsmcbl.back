@@ -12,6 +12,7 @@ namespace wsmcbl.src.controller.api;
 public class CreateEnrollmentActions(CreateEnrollmentController controller) : ActionsBase
 {
     /// <summary>Returns the paged list of active degrees.</summary>
+    /// <remarks>Values for sortBy: degreeId, label, schoolYear, quantity, educationalLevel and tag.</remarks>
     /// <response code="200">Returns a paged list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -20,6 +21,8 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     [ResourceAuthorizer("degree:read", "enrollment:read")]
     public async Task<IActionResult> getDegreeList([FromQuery] PagedRequest request)
     {
+        request.checkSortByValue(["degreeId", "label", "schoolYear", "quantity", "educationalLevel", "tag"]);
+        
         var result = await controller.getDegreeList(request);
 
         var pagedResult = new PagedResult<BasicDegreeDto>(result.data.mapListToBasicDto());
