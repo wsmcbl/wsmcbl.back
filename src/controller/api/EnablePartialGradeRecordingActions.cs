@@ -4,6 +4,7 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.management;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
 
@@ -54,7 +55,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         }
 
         await controller.checkForPartialEnabledOrFail();
-        await controller.enableGradeRecording(partialId, date);
+        await controller.enableGradeRecording(partialId, date.toUTC6());
         return Ok();
     }
 
