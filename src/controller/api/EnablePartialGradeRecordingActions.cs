@@ -36,7 +36,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     [Route("{partialId:int}")]
     [ResourceAuthorizer("partial:update")]
     public async Task<IActionResult> enablePartialGradeRecording([Required] int partialId,
-        [Required] [FromQuery] bool enable, [FromQuery] string? deadline)
+        [Required] [FromQuery] bool enable, [FromQuery] DateTime? deadline)
     {
         if (!enable)
         {
@@ -44,18 +44,13 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
             return Ok();
         }
         
-        if (string.IsNullOrWhiteSpace(deadline))
+        if (deadline == null)
         {
             throw new BadRequestException("The deadline must be provided.");
         }
 
-        if (!DateTime.TryParse(deadline, out var date))
-        {
-            throw new BadRequestException("The deadline is not valid.");
-        }
-
         await controller.checkForPartialEnabledOrFail();
-        await controller.enableGradeRecording(partialId, date.toUTC6());
+        await controller.enableGradeRecording(partialId, deadline.toUTC6());
         return Ok();
     }
 
