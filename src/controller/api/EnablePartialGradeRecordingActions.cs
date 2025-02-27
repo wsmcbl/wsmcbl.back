@@ -50,7 +50,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         }
 
         await controller.checkForPartialEnabledOrFail();
-        await controller.enableGradeRecording(partialId, deadline.toUTC6());
+        await controller.enableGradeRecording(partialId, ((DateTime)deadline).ToUniversalTime());
         return Ok();
     }
 
