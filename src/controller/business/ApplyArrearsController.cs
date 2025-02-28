@@ -21,7 +21,12 @@ public class ApplyArrearsController(DaoFactory daoFactory) : BaseController(daoF
         var tariff = await daoFactory.tariffDao!.getById(tariffId);
         if (tariff is null)
         {
-            throw new EntityNotFoundException("Tariff", tariffId.ToString());
+            throw new EntityNotFoundException("TariffEntity", tariffId.ToString());
+        }
+
+        if (tariff.isLate)
+        {
+            throw new BadRequestException("The tariff is already overdue.");
         }
         
         tariff.isLate = true;
