@@ -58,6 +58,8 @@ builder.Services.AddTransient<ViewUserProfileController>();
 builder.Services.AddTransient<EnablePartialGradeRecordingController>();
 builder.Services.AddTransient<GenerateDebtorReportController>();
 
+builder.Services.AddTransient<ApplyArrearsController>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionHandler>();
