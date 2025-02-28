@@ -1,5 +1,4 @@
 using wsmcbl.src.controller.service.document;
-using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -21,32 +20,6 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     public Task<List<TariffEntity>> getTariffListByStudent(string studentId)
     {
         return daoFactory.tariffDao!.getListByStudent(studentId);
-    }
-    
-    public Task<List<TariffEntity>> getOverdueTariffList()
-    {
-        return daoFactory.tariffDao!.getOverdueList();
-    }
-
-    public async Task<TariffEntity> applyArrears(int tariffId)
-    {
-        if (tariffId <= 0)
-        {
-            throw new BadRequestException("Invalid ID.");
-        }
-        
-        var tariff = await daoFactory.tariffDao!.getById(tariffId);
-        if (tariff is null)
-        {
-            throw new EntityNotFoundException("Tariff", tariffId.ToString());
-        }
-        
-        tariff.isLate = true;
-        
-        daoFactory.tariffDao!.update(tariff);
-        await daoFactory.execute();
-        
-        return tariff;
     }
     
     public async Task<TransactionEntity> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)

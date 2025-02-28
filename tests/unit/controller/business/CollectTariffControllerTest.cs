@@ -64,46 +64,6 @@ public class CollectTariffControllerTest
         Assert.Equal(list, result);
     }
 
-    
-    [Fact]
-    public async Task getOverdueTariffList_ReturnsList()
-    {
-        var list = TestEntityGenerator.aTariffList();
-        tariffDao.getOverdueList().Returns(list);
-        daoFactory.tariffDao.Returns(tariffDao);
-
-        var result = await sut.getOverdueTariffList();
-
-        Assert.IsType<List<TariffEntity>>(result);
-        Assert.NotEmpty(result);
-        Assert.Equal(list, result);
-    }
-
-
-    [Fact]
-    public async Task applyArrears_ValidId_ArrearsApplied()
-    {
-        const int tariffId = 10;
-        var tariff = new TariffEntity();
-        tariff.tariffId = tariffId;
-        tariff.isLate = false; 
-        
-        tariffDao.getById(tariffId).Returns(tariff);
-        daoFactory.tariffDao.Returns(tariffDao);
-
-        await sut.applyArrears(tariffId);
-        Assert.True(tariff.isLate);
-    }
-    
-    [Fact]
-    public async Task applyArrears_InvalidId_ReturnsException()
-    {
-        daoFactory.tariffDao.Returns(tariffDao);
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.applyArrears(1));
-    }
-    
-    
-    
     [Fact]
     public async Task saveTransaction_TransactionIsSave()
     {
