@@ -37,7 +37,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
 
     public async Task<List<TariffTypeEntity>> getTariffTypeList()
     {
-        var controller = new CollectTariffController(daoFactory);
+        var controller = new ApplyArrearsController(daoFactory);
 
         var result = await controller.getTariffTypeList();
         result.Add(new TariffTypeEntity
