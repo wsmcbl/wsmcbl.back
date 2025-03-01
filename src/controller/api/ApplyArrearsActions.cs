@@ -35,4 +35,16 @@ public class ApplyArrearsActions(ApplyArrearsController controller) : ActionsBas
     {
         return Ok(await controller.applyArrears(tariffId));
     }
+    
+    /// <summary>Returns the list of tariff type.</summary>
+    /// <response code="200">Return existing resources (can be empty list).</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("tariffs/types")]
+    [ResourceAuthorizer("tariff:read")]
+    public async Task<ActionResult> getTariffTypeList()
+    {
+        return Ok(await controller.getTariffTypeList());
+    }
 }
