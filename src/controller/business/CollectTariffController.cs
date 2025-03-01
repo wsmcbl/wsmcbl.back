@@ -36,11 +36,6 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
         return transaction;
     }
 
-    public Task<List<TariffTypeEntity>> getTariffTypeList()
-    {
-        return daoFactory.tariffTypeDao!.getAll();
-    }
-
     public async Task<byte[]> getInvoiceDocument(string transactionId)
     {
         var documentMaker = new DocumentMaker(daoFactory);

@@ -76,19 +76,4 @@ public class CollectTariffControllerTest
         transactionDao.Received().create(entity);
         Assert.Equal(entity, result);
     }
-    
-    [Fact]
-    public async Task getTariffTypeList_ReturnsList()
-    {
-        var list = TestEntityGenerator.aTariffTypeList();
-        var tariffTypeDao = Substitute.For<ITariffTypeDao>();
-        tariffTypeDao.getAll().Returns(list);
-        daoFactory.tariffTypeDao.Returns(tariffTypeDao);
-
-        var result = await sut.getTariffTypeList();
-
-        Assert.IsType<List<TariffTypeEntity>>(result);
-        Assert.NotEmpty(result);
-        Assert.Equal(list, result);
-    }
 }

@@ -36,4 +36,9 @@ public class ApplyArrearsController(DaoFactory daoFactory) : BaseController(daoF
         
         return tariff;
     }
+
+    public Task<List<TariffTypeEntity>> getTariffTypeList()
+    {
+        return daoFactory.tariffTypeDao!.getAll();
+    }
 }
