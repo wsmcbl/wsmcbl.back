@@ -21,8 +21,9 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
         var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
         var tariffs = await entities
+            .AsNoTracking()
             .Where(e => e.schoolYear == schoolyear.id)
-            .Where(e => e.isLate && e.type == Const.TARIFF_MONTHLY)
+            .Where(e => e.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -46,8 +47,10 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
 
     public async Task<TariffEntity> getRegistrationTariff(string schoolyearId, int level)
     {
-        var tariff = await entities.FirstOrDefaultAsync(e =>
-            e.schoolYear == schoolyearId && e.educationalLevel == level && e.type == Const.TARIFF_REGISTRATION);
+        var tariff = await entities
+            .FirstOrDefaultAsync(e => e.schoolYear == schoolyearId
+                                      && e.educationalLevel == level && e.type == Const.TARIFF_REGISTRATION);
+        
         if (tariff == null)
         {
             throw new EntityNotFoundException(
