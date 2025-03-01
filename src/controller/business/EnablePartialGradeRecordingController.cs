@@ -94,6 +94,11 @@ public class EnablePartialGradeRecordingController : BaseController
         {
             return;
         }
+
+        if (!isActive && partial.gradeRecordIsActive)
+        {
+            throw new ConflictException("This partial cannot be deactivated because the grade record is active.");
+        }
         
         partial.isActive = isActive;
         await daoFactory.execute();
