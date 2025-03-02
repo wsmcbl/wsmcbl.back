@@ -10,6 +10,7 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - database-volume:/var/lib/postgresql/data
+      - postgres_backups:/var/lib/postgresql/backups
     networks:
       - app-network
   
@@ -34,9 +35,12 @@ services:
       - database
     networks:
       - app-network
+    volumes:
+      - postgres_backups:/backups
 
 volumes:
   database-volume:
+  postgres_backups:
     
 networks:
   app-network:
