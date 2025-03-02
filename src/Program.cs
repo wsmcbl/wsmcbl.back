@@ -59,6 +59,7 @@ builder.Services.AddTransient<EnablePartialGradeRecordingController>();
 builder.Services.AddTransient<GenerateDebtorReportController>();
 
 builder.Services.AddTransient<ApplyArrearsController>();
+builder.Services.AddTransient<CreateBackupsController>();
 
 var app = builder.Build();
 
