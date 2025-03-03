@@ -27,8 +27,7 @@ public class PosteUserCreator
         var response = await httpClient.PostAsJsonAsync(getPosteUrl(), boxRequest);
         if (!response.IsSuccessStatusCode)
         {
-            throw new InternalException(
-                $"Error creating email: {response.StatusCode} - {response.ReasonPhrase}");
+            throw new InternalException($"Error creating email: {response.StatusCode} - {response.ReasonPhrase}");
         }
 
         var responseString = await response.Content.ReadAsStringAsync();
@@ -66,6 +65,26 @@ public class PosteUserCreator
         }
 
         return value;
+    }
+
+    public async Task updateUserPassword(UserEntity user)
+    {
+        var authHeaderValue = Convert
+            .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
+
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+        var request = new { passwordPlaintext = user.password};
+        var response = await httpClient.PatchAsJsonAsync($"{getPosteUrl()}/{user.email}", request);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InternalException($"Error update password: {response.StatusCode} - {response.ReasonPhrase}");
+        }
+
+        var responseString = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Poste.io api response: {responseString}");
     }
 }
 
