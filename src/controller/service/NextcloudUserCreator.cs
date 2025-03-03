@@ -106,7 +106,8 @@ public class NextcloudUserCreator
     public async Task updateUserPassword(UserEntity user)
     {
         var content = new FormUrlEncodedContent([
-            new KeyValuePair<string, string>("password", user.password)
+            new KeyValuePair<string, string>("key", "password"),
+            new KeyValuePair<string, string>("value", user.password)
         ]);
 
         var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}", content);
