@@ -9,10 +9,12 @@ public class UpdateUserController : BaseController
 {
     private NextcloudUserCreator nextcloudUserCreator { get; set; }
     private UserAuthenticator userAuthenticator { get; set; }
+    private HttpClient httpClient { get; set; }
 
     public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator,  HttpClient httpClient) : base(daoFactory)
     {
-        nextcloudUserCreator = new NextcloudUserCreator(httpClient);
+        this.httpClient = httpClient;
+        nextcloudUserCreator = new NextcloudUserCreator(this.httpClient);
         this.userAuthenticator = userAuthenticator;
     }
 
@@ -90,7 +92,8 @@ public class UpdateUserController : BaseController
         daoFactory.Detached(user);
 
         user.password = password;
-        
+
+        await updatePasswordEmailAccount(user);
         await nextcloudUserCreator.updateUserPassword(user);
         
         return user;
@@ -100,5 +103,11 @@ public class UpdateUserController : BaseController
     {
         var passwordGenerator = new PasswordGenerator();
         return passwordGenerator.generatePassword(10);
+    }
+    
+    private async Task updatePasswordEmailAccount(UserEntity user)
+    {
+        var posteUserCreator = new PosteUserCreator(httpClient);
+        await posteUserCreator.updateUserPassword(user);
     }
 }
