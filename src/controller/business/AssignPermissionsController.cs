@@ -72,4 +72,9 @@ public class AssignPermissionsController : BaseController
     {
         return await nextcloudUserCreator.getGroupByUserMail(entity.email);
     }
+
+    public async Task<UserEntity> updateUserPassword(string userId)
+    {
+        throw new NotImplementedException();
+    }
 }
