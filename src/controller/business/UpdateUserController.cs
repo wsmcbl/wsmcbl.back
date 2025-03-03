@@ -91,7 +91,7 @@ public class UpdateUserController : BaseController
 
         user.password = password;
         
-        await nextcloudUserCreator.updateUser(user);
+        await nextcloudUserCreator.updateUserPassword(user);
         
         return user;
     }

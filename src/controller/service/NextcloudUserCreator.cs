@@ -103,6 +103,18 @@ public class NextcloudUserCreator
         }
     }
 
+    public async Task updateUserPassword(UserEntity user)
+    {
+        var content = new FormUrlEncodedContent([
+            new KeyValuePair<string, string>("password", user.password)
+        ]);
+
+        var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}", content);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InternalException("Error creating user to Nextcloud.");
+        }
+    }
 
     private void initConfiguration()
     {
