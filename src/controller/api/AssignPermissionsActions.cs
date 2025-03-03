@@ -52,13 +52,11 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If the user not exist.</response>
     [HttpPut]
-    [Route("users/{userId}/password")]
+    [Route("users/{userId}/passwords")]
     [ResourceAuthorizer("user:update")]
     public async Task<IActionResult> updateUserPassword([Required] string userId)
     {
         var result = await controller.updateUserPassword(userId);
-        var response = new UserDto(result);
-
-        return Ok(response);
+        return Ok(new UserToCreateDto(result, string.Empty));
     }
 }
