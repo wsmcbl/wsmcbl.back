@@ -22,9 +22,4 @@ public class ViewUserProfileController : BaseController
     {
         return await updateUserController.getNextCloudGroup(entity);
     }
-
-    public async Task<List<RoleEntity>> getRolesList()
-    {
-        return await daoFactory.roleDao!.getAll();
-    }
 }

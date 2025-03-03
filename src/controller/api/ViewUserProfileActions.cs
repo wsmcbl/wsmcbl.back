@@ -25,17 +25,4 @@ public class ViewUserProfileActions(ViewUserProfileController controller) : Acti
         
         return CreatedAtAction(null, result.mapToDto(nextCloudGroup));
     }
-    
-    /// <summary>Get roles list.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("roles")]
-    [ResourceAuthorizer("rol:read")]
-    public async Task<IActionResult> getRolesList()
-    {
-        var result = await controller.getRolesList();
-        return Ok(result.Select(e => new { e.roleId, e.name}));
-    }
 }
