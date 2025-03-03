@@ -24,6 +24,7 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
             .AsNoTracking()
             .Where(e => e.schoolYear == schoolyear.id)
             .Where(e => e.type == Const.TARIFF_MONTHLY)
+            .Where(e => e.isLate == false)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
