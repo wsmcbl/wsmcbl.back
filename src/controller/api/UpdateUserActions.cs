@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("config")]
 [ApiController]
-public class AssignPermissionsActions(AssignPermissionsController controller) : ActionsBase
+public class UpdateUserActions(UpdateUserController controller) : ActionsBase
 {
     /// <summary>Get permission list.</summary>
     /// <response code="200">Return list, the list can be empty</response>

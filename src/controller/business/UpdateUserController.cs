@@ -5,11 +5,11 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class AssignPermissionsController : BaseController
+public class UpdateUserController : BaseController
 {
     private NextcloudUserCreator nextcloudUserCreator { get; set; }
 
-    public AssignPermissionsController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
+    public UpdateUserController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
     {
         nextcloudUserCreator = new NextcloudUserCreator(httpClient);
     }
