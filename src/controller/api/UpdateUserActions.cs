@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("config")]
 [ApiController]
-public class AssignPermissionsActions(AssignPermissionsController controller) : ActionsBase
+public class UpdateUserActions(UpdateUserController controller) : ActionsBase
 {
     /// <summary>Get permission list.</summary>
     /// <response code="200">Return list, the list can be empty</response>
@@ -44,5 +44,19 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
         var response = new UserDto(result, nextCloudGroup);
 
         return Ok(response);
+    }
+    
+    /// <summary>Update user password by id.</summary>
+    /// <response code="201">Returns a user updated.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
+    [HttpPut]
+    [Route("users/{userId}/passwords")]
+    [ResourceAuthorizer("user:update")]
+    public async Task<IActionResult> updateUserPassword([Required] string userId)
+    {
+        var result = await controller.updateUserPassword(userId);
+        return Ok(new UserToCreateDto(result, string.Empty));
     }
 }

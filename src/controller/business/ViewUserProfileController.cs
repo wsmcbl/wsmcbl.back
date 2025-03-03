@@ -5,12 +5,12 @@ namespace wsmcbl.src.controller.business;
 
 public class ViewUserProfileController : BaseController
 {
-    private AssignPermissionsController assignPermissionsController { get; }
+    private UpdateUserController updateUserController { get; }
 
-    public ViewUserProfileController(DaoFactory daoFactory, AssignPermissionsController assignPermissionsController) :
+    public ViewUserProfileController(DaoFactory daoFactory, UpdateUserController updateUserController) :
         base(daoFactory)
     {
-        this.assignPermissionsController = assignPermissionsController;
+        this.updateUserController = updateUserController;
     }
 
     public async Task<UserEntity> getUserById(string userId)
@@ -20,7 +20,7 @@ public class ViewUserProfileController : BaseController
 
     public async Task<string> getNextCloudGroupByUser(UserEntity entity)
     {
-        return await assignPermissionsController.getNextCloudGroup(entity);
+        return await updateUserController.getNextCloudGroup(entity);
     }
 
     public async Task<List<RoleEntity>> getRolesList()

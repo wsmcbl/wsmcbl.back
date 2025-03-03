@@ -27,7 +27,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(new {value = result});
     }
     
-    /// <summary>Returns the list of all students.</summary>
+    /// <summary>Returns the list of all media.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     [ResourceAuthorizer("admin")]
     [HttpGet]

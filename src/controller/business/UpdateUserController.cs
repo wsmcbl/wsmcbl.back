@@ -5,13 +5,17 @@ using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class AssignPermissionsController : BaseController
+public class UpdateUserController : BaseController
 {
     private NextcloudUserCreator nextcloudUserCreator { get; set; }
+    private UserAuthenticator userAuthenticator { get; set; }
+    private HttpClient httpClient { get; set; }
 
-    public AssignPermissionsController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
+    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator,  HttpClient httpClient) : base(daoFactory)
     {
-        nextcloudUserCreator = new NextcloudUserCreator(httpClient);
+        this.httpClient = httpClient;
+        nextcloudUserCreator = new NextcloudUserCreator(this.httpClient);
+        this.userAuthenticator = userAuthenticator;
     }
 
     public async Task<List<PermissionEntity>> getPermissionList()
@@ -71,5 +75,39 @@ public class AssignPermissionsController : BaseController
     public async Task<string> getNextCloudGroup(UserEntity entity)
     {
         return await nextcloudUserCreator.getGroupByUserMail(entity.email);
+    }
+
+    public async Task<UserEntity> updateUserPassword(string userId)
+    {
+        var user = await daoFactory.userDao!.getById(userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException("UserEntity", userId);
+        }
+
+        var password = generatePassword();
+        userAuthenticator.encodePassword(user, password);
+
+        await daoFactory.execute();
+        daoFactory.Detached(user);
+
+        user.password = password;
+
+        await updatePasswordEmailAccount(user);
+        await nextcloudUserCreator.updateUserPassword(user);
+        
+        return user;
+    }
+
+    private static string generatePassword()
+    {
+        var passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.generatePassword(10);
+    }
+    
+    private async Task updatePasswordEmailAccount(UserEntity user)
+    {
+        var posteUserCreator = new PosteUserCreator(httpClient);
+        await posteUserCreator.updateUserPassword(user);
     }
 }
