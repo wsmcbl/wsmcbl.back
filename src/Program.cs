@@ -60,6 +60,7 @@ builder.Services.AddTransient<GenerateDebtorReportController>();
 
 builder.Services.AddTransient<ApplyArrearsController>();
 builder.Services.AddTransient<CreateBackupsController>();
+builder.Services.AddTransient<UpdateRolesController>();
 
 var app = builder.Build();
 
