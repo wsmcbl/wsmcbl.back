@@ -45,4 +45,20 @@ public class AssignPermissionsActions(AssignPermissionsController controller) : 
 
         return Ok(response);
     }
+    
+    /// <summary>Update user password by id.</summary>
+    /// <response code="201">Returns a user updated.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
+    [HttpPut]
+    [Route("users/{userId}/password")]
+    [ResourceAuthorizer("user:update")]
+    public async Task<IActionResult> updateUserPassword([Required] string userId)
+    {
+        var result = await controller.updateUserPassword(userId);
+        var response = new UserDto(result);
+
+        return Ok(response);
+    }
 }
