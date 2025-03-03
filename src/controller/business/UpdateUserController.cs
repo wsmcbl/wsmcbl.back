@@ -8,10 +8,12 @@ namespace wsmcbl.src.controller.business;
 public class UpdateUserController : BaseController
 {
     private NextcloudUserCreator nextcloudUserCreator { get; set; }
+    private UserAuthenticator userAuthenticator { get; set; }
 
-    public UpdateUserController(DaoFactory daoFactory, HttpClient httpClient) : base(daoFactory)
+    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator,  HttpClient httpClient) : base(daoFactory)
     {
         nextcloudUserCreator = new NextcloudUserCreator(httpClient);
+        this.userAuthenticator = userAuthenticator;
     }
 
     public async Task<List<PermissionEntity>> getPermissionList()
@@ -75,6 +77,28 @@ public class UpdateUserController : BaseController
 
     public async Task<UserEntity> updateUserPassword(string userId)
     {
-        throw new NotImplementedException();
+        var user = await daoFactory.userDao!.getById(userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException("UserEntity", userId);
+        }
+
+        var password = generatePassword();
+        userAuthenticator.encodePassword(user, password);
+
+        await daoFactory.execute();
+        daoFactory.Detached(user);
+
+        user.password = password;
+        
+        await nextcloudUserCreator.updateUser(user);
+        
+        return user;
+    }
+
+    private static string generatePassword()
+    {
+        var passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.generatePassword(10);
     }
 }
