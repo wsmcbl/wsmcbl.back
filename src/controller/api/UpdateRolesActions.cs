@@ -20,7 +20,7 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     public async Task<IActionResult> getRoleList()
     {
         var result = await controller.getRoleList();
-        return Ok(result.mapToBasicDto());
+        return Ok(result.mapToListDto());
     }   
     
     /// <summary>Get roles by id.</summary>
