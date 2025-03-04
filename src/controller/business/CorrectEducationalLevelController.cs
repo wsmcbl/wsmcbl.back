@@ -29,7 +29,7 @@ public class CorrectEducationalLevelController : BaseController
         await daoFactory.execute();
         
         var debt = student.getCurrentRegistrationTariffDebt();
-        await daoFactory.debtHistoryDao!.delete(debt);
+        await daoFactory.debtHistoryDao!.deleteAsync(debt);
 
         await daoFactory.debtHistoryDao.createRegistrationDebtByStudent(student);
 

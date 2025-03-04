@@ -61,20 +61,20 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
             throw new EntityNotFoundException("Student", studentId);
         }
         
-        await daoFactory.accountingStudentDao!.delete(accountingStudent);
+        await daoFactory.accountingStudentDao!.deleteAsync(accountingStudent);
         
         var student = await daoFactory.studentDao!.getById(studentId);
         if(student == null)
             throw new EntityNotFoundException("Student", studentId);
 
-        await daoFactory.studentDao!.delete(student);
+        await daoFactory.studentDao!.deleteAsync(student);
         
         var result = await daoFactory.studentTutorDao!.hasOnlyOneStudent(student.tutorId);
         if (result)
             return;
 
         var tutor = await daoFactory.studentTutorDao!.getById(student.tutorId);
-        await daoFactory.studentTutorDao!.delete(tutor!);
+        await daoFactory.studentTutorDao!.deleteAsync(tutor!);
     }
 
     public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)
