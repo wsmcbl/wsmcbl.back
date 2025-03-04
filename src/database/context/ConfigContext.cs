@@ -35,10 +35,8 @@ public class ConfigContext
             entity.Ignore(e => e.userRoleId);
 
             entity.HasOne(e => e.role).WithMany().HasForeignKey(e => e.roleId);
-
-            entity.HasMany(r => r.permissionList)
-                .WithMany()
-                .UsingEntity<UserPermissionEntity>();
+            
+            entity.HasMany(e => e.userPermissionList).WithOne().HasForeignKey(e => e.userId);
         });
 
         modelBuilder.Entity<RoleEntity>(entity =>
