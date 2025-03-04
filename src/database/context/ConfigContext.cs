@@ -51,9 +51,8 @@ public class ConfigContext
             entity.Property(e => e.name).HasMaxLength(50).HasColumnName("name");
             entity.Property(e => e.description).HasMaxLength(150).HasColumnName("description");
 
-            entity.HasMany(e => e.permissionList)
-                .WithMany()
-                .UsingEntity<RolePermissionEntity>();
+            entity.HasMany(e => e.rolePermissionList).WithOne()
+                .HasForeignKey(e => e.roleId);
         });
 
 
@@ -90,6 +89,9 @@ public class ConfigContext
 
             entity.Property(e => e.roleId).HasColumnName("roleid");
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
+            
+            entity.HasOne(d => d.permission).WithMany()
+                .HasForeignKey(d => d.permissionId);
         });
 
 
