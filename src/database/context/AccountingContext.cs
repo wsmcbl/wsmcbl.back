@@ -18,8 +18,10 @@ internal class AccountingContext
         {
             entity.HasKey(e => e.cashierId);
             entity.ToTable("cashier", "accounting");
-
-            entity.Property(e => e.cashierId).HasMaxLength(15).HasColumnName("cashierid");
+            
+            entity.Property(e => e.cashierId).HasDefaultValueSql("accounting.generate_cashier_id()")
+                .HasColumnName("cashierid");
+            
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             
             entity.HasOne(c => c.user).WithMany().HasForeignKey(c => c.userId);
@@ -31,9 +33,7 @@ internal class AccountingContext
 
             entity.ToTable("debthistory", "accounting");
 
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasColumnName("studentid");
+            entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
             entity.Property(e => e.arrears).HasColumnName("arrear");
             entity.Property(e => e.debtBalance).HasColumnName("debtbalance");

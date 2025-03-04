@@ -97,15 +97,11 @@ values ('Mensualidad'),
        ('Otros');
 
 
-INSERT INTO Accounting.cashier(cashierid, userid)
-SELECT 'caj-eurbina', u.userid
-FROM config.user u
-WHERE u.name = 'Ezequiel';
+INSERT INTO Accounting.cashier(userid)
+SELECT u.userid FROM config.user u WHERE u.name = 'Ezequiel';
 
-INSERT INTO Accounting.cashier(cashierid, userid)
-SELECT 'caj-ktinoco', u.userid
-FROM config.user u
-WHERE u.name = 'Kenny';
+INSERT INTO Accounting.cashier(userid)
+SELECT u.userid FROM config.user u WHERE u.name = 'Kenny';
 
 INSERT INTO academy.teacher(userid, isguide)
 SELECT u.userid, false

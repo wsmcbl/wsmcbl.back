@@ -49,15 +49,13 @@ public class CreateUserController : BaseController
     {
         if (user.roleId == 3)
         {
-            var entity = new CashierEntity{ userId = (Guid)user.userId! };
-            daoFactory.cashierDao!.create(entity);
+            daoFactory.cashierDao!.create(new CashierEntity((Guid)user.userId!));
             await daoFactory.execute();
         }
         
         if (user.roleId == 4)
         {
-            var entity = new TeacherEntity((Guid)user.userId!);
-            daoFactory.teacherDao!.create(entity);
+            daoFactory.teacherDao!.create(new TeacherEntity((Guid)user.userId!));
             await daoFactory.execute();
         }
     }
