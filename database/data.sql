@@ -6,7 +6,7 @@ values ('admin', 'Full system access.'),
        ('cashier', 'Access to the accounting module.'),
        ('teacher', 'Access to the academic module.'),
        ('principal', 'Access to the management module.'),
-       ('viceprincipal', 'Access to the management module.');
+       ('inspector', 'Access to the student incident module.');
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
 values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
@@ -26,6 +26,7 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('user:update', 'Modificar perfiles de usuarios', 'config', 'Permission for update user profiles.'),
        ('user:read', 'Ver perfiles de usuarios', 'config', 'Permission for reading user profiles.'),
        ('rol:read', 'Ver roles', 'config', 'Permission for reading roles.'),
+       ('rol:update', 'Modificar roles', 'config', 'Permission for update roles.'),
        ('permission:read', 'Ver permisos', 'config', 'Permission for reading permissions.'),
        ('partial:update', 'Modificar parciales', 'academy', 'Permission for update partials.'),
        ('partial:read', 'Ver parciales', 'academy', 'Permission for reading partials.'),
@@ -65,6 +66,11 @@ WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read'
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 4, p.permissionid FROM config.permission p
 WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update');
+
+-- Principal --
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 5, p.permissionid FROM config.permission p
+WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read');
 
 
 -- ############################## ---
