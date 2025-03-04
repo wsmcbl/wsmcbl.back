@@ -6,10 +6,14 @@ public class RoleEntity
     public string name { get; set; } = null!;
     public string description { get; set; } = null!;
 
-    public List<RolePermissionEntity> rolePermissionList { get; set; } = [];
-    public List<PermissionEntity> permissionList { get; set; } = [];
+    public List<RolePermissionEntity> rolePermissionList { get; set; } = null!;
 
-    public void updateRolePermissionList(List<PermissionEntity> list, IRolePermissionDao rolePermissionDao)
+    public List<PermissionEntity> getPermissionList()
+    {
+        return rolePermissionList.Select(e => e.permission).ToList();
+    }
+
+    public void updateRolePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
     {
         throw new NotImplementedException();
     }

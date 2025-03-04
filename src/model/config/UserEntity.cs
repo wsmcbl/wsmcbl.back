@@ -53,7 +53,7 @@ public class UserEntity
 
     private List<PermissionEntity> getPermissionUnifiedList()
     {
-        var list = role!.permissionList;
+        var list = role!.getPermissionList();
         list.AddRange(permissionList);
 
         return list;
