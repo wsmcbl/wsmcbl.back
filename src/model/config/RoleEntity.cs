@@ -8,8 +8,8 @@ public class RoleEntity
     
     public List<PermissionEntity> permissionList { get; set; } = [];
 
-    public List<string> getPermissionList()
+    public void updateRolePermissionList(List<PermissionEntity> list, IRolePermissionDao rolePermissionDao)
     {
-        return permissionList.Select(e => e.name).ToList();
+        throw new NotImplementedException();
     }
 }
