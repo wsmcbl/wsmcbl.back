@@ -22,8 +22,6 @@ public class UserEntity
     
     public List<UserPermissionEntity>? userPermissionList { get; set; }
     
-    public List<PermissionEntity> permissionList { get; set; } = [];
-    
     public string fullName()
     {
         var builder = new StringBuilder(name);
@@ -56,8 +54,10 @@ public class UserEntity
 
     private List<PermissionEntity> getPermissionUnifiedList()
     {
+        userPermissionList ??= [];
+        
         var list = role!.getPermissionList();
-        list.AddRange(permissionList);
+        list.AddRange(userPermissionList!.Select(e => e.permission!).ToList());
 
         return list;
     }
@@ -127,9 +127,11 @@ public class UserEntity
                roleId == value.roleId;
     }
 
-    public bool isAlreadyAssigned(int permissionId)
+    public List<UserPermissionEntity> checkPermissionsAlreadyAssigned(List<UserPermissionEntity> list)
     {
-        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
+        return list.Where(item 
+            => !role!.hasPermission(item) &&
+               userPermissionList!.All(e => e.permissionId != item.permissionId)).ToList();
     }
     
     public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
