@@ -7,24 +7,11 @@ public class BasicPermissionDto
     public int permissionId { get; set; }
     public string? name { get; set; }
     public string? area { get; set; }
-
-    public BasicPermissionDto()
-    {
-    }
     
     public BasicPermissionDto(PermissionEntity value)
     {
         permissionId = value.permissionId;
         name = value.spanishName;
         area = value.area;
-    }
-
-    public RolePermissionEntity toRolePermissionEntity(int roleId)
-    {
-        return new RolePermissionEntity
-        {
-            roleId = roleId,
-            permissionId = permissionId
-        };
     }
 }
