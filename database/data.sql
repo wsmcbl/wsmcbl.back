@@ -67,6 +67,11 @@ INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 4, p.permissionid FROM config.permission p
 WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update');
 
+-- Principal --
+INSERT INTO config.role_permission(roleid, permissionid)
+SELECT 5, p.permissionid FROM config.permission p
+WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read');
+
 
 -- ############################## ---
 insert into accounting.discount(discountid, description, tag)
