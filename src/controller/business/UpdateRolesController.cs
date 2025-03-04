@@ -24,16 +24,12 @@ public class UpdateRolesController(DaoFactory daoFactory) : BaseController(daoFa
 
     public async Task<RoleEntity> updateRole(RoleEntity value)
     {
-        var rol = await getRoleById(value.roleId);
-
-        if (rol.description != value.description)
-        {
-            rol.description = value.description;
-        }
-
-        rol.updateRolePermissionList(value.permissionList, daoFactory.rolePermissionDao!);
+        var role = await getRoleById(value.roleId);
+        
+        role.setDescription(value.description);
+        role.updateRolePermissionList(value.rolePermissionList, daoFactory.rolePermissionDao!);
         await daoFactory.execute();
             
-        return rol;
+        return role;
     }
 }
