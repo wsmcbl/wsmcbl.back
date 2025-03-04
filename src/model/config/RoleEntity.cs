@@ -15,6 +15,20 @@ public class RoleEntity
 
     public void updateRolePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
     {
-        throw new NotImplementedException();
+        foreach (var item in rolePermissionList)
+        {
+            if (!list.Any(e => e.roleId == item.roleId && e.permissionId == item.permissionId))
+            {
+                rolePermissionDao.delete(item);
+            }
+        }
+
+        foreach (var item in list)
+        {
+            if (!rolePermissionList.Any(e => e.roleId == item.roleId && e.permissionId == item.permissionId))
+            {
+                rolePermissionDao.create(item);
+            }
+        }
     }
 }
