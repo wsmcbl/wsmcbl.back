@@ -53,4 +53,5 @@ public abstract class DaoFactory
     public virtual IPermissionDao? permissionDao => null;
     public virtual IUserPermissionDao? userPermissionDao => null;
     public virtual IRoleDao? roleDao => null;
+    public virtual IRolePermissionDao? rolePermissionDao => null;
 }
