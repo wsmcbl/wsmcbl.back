@@ -5,7 +5,7 @@ namespace wsmcbl.src.dto.config;
 public class RoleToUpdateDto
 {
     public string description { get; set; } = null!;
-    public List<BasicPermissionDto> permissionList { get; set; } = null!;
+    public List<int> permissionList { get; set; } = null!;
     
     public RoleEntity toEntity(int roleId)
     {
@@ -13,9 +13,15 @@ public class RoleToUpdateDto
         {
             roleId = roleId,
             description = description,
-            rolePermissionList = permissionList.Select(e => e.toRolePermissionEntity(roleId)).ToList()
+            rolePermissionList = getPermissionList(roleId)
         };
 
         return result;
+    }
+
+    private List<RolePermissionEntity> getPermissionList(int roleId)
+    {
+        return permissionList
+            .Select(id => new RolePermissionEntity { roleId = roleId, permissionId = id }).ToList();
     }
 }
