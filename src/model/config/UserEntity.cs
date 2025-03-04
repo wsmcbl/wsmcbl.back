@@ -100,8 +100,7 @@ public class UserEntity
     {
         return value.Trim().ToLower().convertToEmailFormat();
     }
-
-
+    
     public async Task getIdFromRole(DaoFactory daoFactory)
     {
         userRoleId = string.Empty;
@@ -116,6 +115,41 @@ public class UserEntity
         {
             var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);
             userRoleId = result.teacherId;
+        }
+    }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
+
+    public bool isAlreadyAssigned(int permissionId)
+    {
+        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
+    }
+    
+    public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
+    {
+        userPermissionList ??= [];
+        
+        foreach (var item in userPermissionList)
+        {
+            if (!list.Any(e => e.equals(item)))
+            {
+                rolePermissionDao.delete(item);
+            }
+        }
+
+        foreach (var item in list)
+        {
+            if (!userPermissionList.Any(e => e.userId == item.userId && e.permissionId == item.permissionId))
+            {
+                rolePermissionDao.create(item);
+            }
         }
     }
 
@@ -165,19 +199,5 @@ public class UserEntity
             entity.roleId = roleId;
             return this;
         }
-    }
-
-    public bool isADuplicate(UserEntity value)
-    {
-        return name == value.name &&
-               secondName == value.secondName &&
-               surname == value.surname &&
-               secondSurname == value.secondSurname &&
-               roleId == value.roleId;
-    }
-
-    public bool isAlreadyAssigned(int permissionId)
-    {
-        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
     }
 }
