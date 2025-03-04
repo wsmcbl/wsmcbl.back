@@ -19,7 +19,8 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     [ResourceAuthorizer("rol:read")]
     public async Task<IActionResult> getRoleList()
     {
-        return Ok(await controller.getRoleList());
+        var result = await controller.getRoleList();
+        return Ok(result.mapToBasicDto());
     }   
     
     /// <summary>Get roles by id.</summary>
@@ -32,7 +33,8 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     [ResourceAuthorizer("rol:read")]
     public async Task<IActionResult> getRoleById(int roleId)
     {
-        return Ok(await controller.getRoleById(roleId));
+        var result = await controller.getRoleById(roleId);
+        return Ok(result.mapToDto());
     }   
     
     /// <summary>Update roles by id.</summary>
@@ -46,6 +48,6 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     public async Task<IActionResult> updateRole(int roleId, [Required] RoleToUpdateDto dto)
     {
         var result = await controller.updateRole(dto.toEntity(roleId));
-        return Ok(result);
+        return Ok(result.mapToDto());
     }    
 }
