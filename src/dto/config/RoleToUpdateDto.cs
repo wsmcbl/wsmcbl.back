@@ -21,7 +21,7 @@ public class RoleToUpdateDto
 
     private List<RolePermissionEntity> getPermissionList(int roleId)
     {
-        return permissionList
+        return permissionList.Distinct()
             .Select(id => new RolePermissionEntity { roleId = roleId, permissionId = id }).ToList();
     }
 }
