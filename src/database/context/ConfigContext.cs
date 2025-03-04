@@ -89,6 +89,9 @@ public class ConfigContext
 
             entity.Property(e => e.roleId).HasColumnName("roleid");
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
+            
+            entity.HasOne(d => d.permission).WithMany()
+                .HasForeignKey(d => d.permissionId);
         });
 
 
