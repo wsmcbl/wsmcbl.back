@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
+[ResourceAuthorizer("admin","secretary", "cashier","teacher", "principal")] // Temporal
 [Route("secretary/configurations/schoolyears")]
 [ApiController]
 public class CreateSchoolyearActions(UpdateOfficialEnrollmentController controller) : ControllerBase
