@@ -39,4 +39,7 @@ public class RoleEntity
             description = value;
         }
     }
+
+    public bool hasPermission(UserPermissionEntity value) => 
+        rolePermissionList.Any(item => item.permissionId == value.permissionId);
 }
