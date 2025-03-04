@@ -13,14 +13,9 @@ public class RoleToUpdateDto
         {
             roleId = roleId,
             description = description,
-            permissionList = getPermissionList(roleId)
+            permissionList = permissionList.Select(e => e.toEntity()).ToList()
         };
 
         return result;
-    }
-
-    private List<PermissionEntity> getPermissionList(int roleId)
-    {
-        throw new NotImplementedException();
     }
 }
