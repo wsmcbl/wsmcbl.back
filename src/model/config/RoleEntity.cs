@@ -10,7 +10,7 @@ public class RoleEntity
 
     public List<PermissionEntity> getPermissionList()
     {
-        return rolePermissionList.Select(e => e.permission).ToList();
+        return rolePermissionList.Select(e => e.permission!).ToList();
     }
 
     public void updateRolePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
@@ -29,6 +29,14 @@ public class RoleEntity
             {
                 rolePermissionDao.create(item);
             }
+        }
+    }
+
+    public void setDescription(string value)
+    {
+        if (description != value)
+        {
+            description = value;
         }
     }
 }

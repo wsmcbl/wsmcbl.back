@@ -19,8 +19,12 @@ public class BasicPermissionDto
         area = value.area;
     }
 
-    public PermissionEntity toEntity()
+    public RolePermissionEntity toRolePermissionEntity(int roleId)
     {
-        return new PermissionEntity(permissionId);
+        return new RolePermissionEntity
+        {
+            roleId = roleId,
+            permissionId = permissionId
+        };
     }
 }

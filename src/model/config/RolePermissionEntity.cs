@@ -5,5 +5,5 @@ public class RolePermissionEntity
     public int roleId { get; set; }
     public int permissionId { get; set; }
 
-    public PermissionEntity permission { get; set; } = null!;
+    public PermissionEntity? permission { get; set; }
 }
