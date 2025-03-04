@@ -166,7 +166,6 @@ internal class AccountingContext
 
             entity.HasOne(d => d.tariff).WithMany()
                 .HasForeignKey(d => d.tariffId);
-            
         });
         
         createView();
