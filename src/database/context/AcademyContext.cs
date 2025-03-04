@@ -20,8 +20,7 @@ internal class AcademyContext
 
             entity.ToTable("enrollment", "academy");
 
-            entity.Property(e => e.enrollmentId).HasMaxLength(15)
-                .HasDefaultValueSql("academy.generate_enrollment_id()")
+            entity.Property(e => e.enrollmentId).HasDefaultValueSql("academy.generate_enrollment_id()")
                 .HasColumnName("enrollmentid");
 
             entity.Property(e => e.teacherId).HasMaxLength(20).HasColumnName("teacherid");
