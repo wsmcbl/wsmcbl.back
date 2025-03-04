@@ -27,7 +27,7 @@ create table if not exists Accounting.Student
 
 create table  if not exists Accounting.Cashier
 (
-    cashierId varchar(15) primary key,
+    cashierId varchar(15) primary key default accounting.generate_cashier_id(),
     userId uuid not null,
     foreign key (userId) references Config.User
 );
