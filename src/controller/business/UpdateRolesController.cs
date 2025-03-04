@@ -30,6 +30,6 @@ public class UpdateRolesController(DaoFactory daoFactory) : BaseController(daoFa
         role.updateRolePermissionList(value.rolePermissionList, daoFactory.rolePermissionDao!);
         await daoFactory.execute();
             
-        return role;
+        return await getRoleById(value.roleId);
     }
 }
