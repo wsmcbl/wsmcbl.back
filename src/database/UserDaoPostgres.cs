@@ -39,6 +39,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         {
             user = await entities.Include(e => e.role)
                 .ThenInclude(e => e!.rolePermissionList)
+                .ThenInclude(e => e.permission)
                 .Include(e => e.permissionList)
                 .FirstOrDefaultAsync(e => e.userId == userIdGuid);
         }
@@ -56,6 +57,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         var result = await entities
             .Include(e => e.role)
             .ThenInclude(e => e!.rolePermissionList)
+            .ThenInclude(e => e.permission)
             .Include(e => e.permissionList)
             .FirstOrDefaultAsync(e => e.email == email);
         
