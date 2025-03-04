@@ -31,4 +31,12 @@ public class RoleEntity
             }
         }
     }
+
+    public void setDescription(string value)
+    {
+        if (description != value)
+        {
+            description = value;
+        }
+    }
 }
