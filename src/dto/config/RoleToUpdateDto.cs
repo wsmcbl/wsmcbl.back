@@ -13,7 +13,7 @@ public class RoleToUpdateDto
         {
             roleId = roleId,
             description = description,
-            permissionList = permissionList.Select(e => e.toEntity()).ToList()
+            rolePermissionList = permissionList.Select(e => e.toRolePermissionEntity(roleId)).ToList()
         };
 
         return result;
