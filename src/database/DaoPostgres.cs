@@ -18,4 +18,10 @@ public class UserPermissionDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<UserPermissionEntity, string>(context), IUserPermissionDao;
 
 public class RolePermissionDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<RolePermissionEntity, int>(context), IRolePermissionDao;
+    : GenericDaoPostgres<RolePermissionEntity, int>(context), IRolePermissionDao
+{
+    public void deleteItem(RolePermissionEntity item)
+    {
+        entities.Remove(item);
+    }
+}

@@ -81,11 +81,11 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         update(existingStudent);
     }
 
-    public new async Task delete(StudentEntity entity)
+    public new async Task deleteAsync(StudentEntity entity)
     {
         FormattableString query =$"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
         await context.Database.ExecuteSqlAsync(query);
         
-        await base.delete(entity);
+        await base.deleteAsync(entity);
     }
 }
