@@ -10,4 +10,10 @@ public class GenerateStudentRegisterController(DaoFactory daoFactory) : BaseCont
     {
         return await daoFactory.studentDao!.getStudentViewList(request);
     }
+
+    public async Task<byte[]> getStudentRegisterDocument(string userId)
+    {
+        await Task.CompletedTask;
+        return [];
+    }
 }
