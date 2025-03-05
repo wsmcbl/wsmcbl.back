@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -16,6 +17,8 @@ public class PosteUserCreator
 
     public async Task createUser(UserEntity user)
     {
+        if (Utility.inDevelopmentEnvironment()) return;
+
         var authHeaderValue = Convert
             .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
 
@@ -33,7 +36,29 @@ public class PosteUserCreator
         var responseString = await response.Content.ReadAsStringAsync();
         Console.WriteLine($"Poste.io api response: {responseString}");
     }
+    
+    public async Task updateUserPassword(UserEntity user)
+    {
+        if (Utility.inDevelopmentEnvironment()) return;
+        
+        var authHeaderValue = Convert
+            .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
 
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+        httpClient.DefaultRequestHeaders.Accept.Clear();
+        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+        var request = new { passwordPlaintext = user.password };
+        var response = await httpClient.PatchAsJsonAsync($"{getPosteUrl()}/{user.email}", request);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InternalException($"Error update password: {response.StatusCode} - {response.ReasonPhrase}");
+        }
+
+        var responseString = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"Poste.io api response: {responseString}");
+    }
+    
     private static string getPostePassword()
     {
         var value = Environment.GetEnvironmentVariable("NEXTCLOUD_PASSWORD");
@@ -65,26 +90,6 @@ public class PosteUserCreator
         }
 
         return value;
-    }
-
-    public async Task updateUserPassword(UserEntity user)
-    {
-        var authHeaderValue = Convert
-            .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
-
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
-        httpClient.DefaultRequestHeaders.Accept.Clear();
-        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-
-        var request = new { passwordPlaintext = user.password};
-        var response = await httpClient.PatchAsJsonAsync($"{getPosteUrl()}/{user.email}", request);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new InternalException($"Error update password: {response.StatusCode} - {response.ReasonPhrase}");
-        }
-
-        var responseString = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"Poste.io api response: {responseString}");
     }
 }
 

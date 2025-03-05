@@ -3,6 +3,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -18,6 +19,8 @@ public class NextcloudUserCreator
 
     public async Task createUser(UserEntity user)
     {
+        if (Utility.inDevelopmentEnvironment()) return;
+
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("userid", user.email),
             new KeyValuePair<string, string>("password", user.password),
@@ -35,11 +38,13 @@ public class NextcloudUserCreator
 
     public async Task assignGroup(string email, string groupName)
     {
+        if (Utility.inDevelopmentEnvironment()) return;
+
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(groupName))
         {
             return;
         }
-        
+
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("groupid", groupName)
         ]);
@@ -63,7 +68,7 @@ public class NextcloudUserCreator
         {
             throw new InternalException("Error getting list of groups.");
         }
-        
+
         try
         {
             var json = await response.Content.ReadAsStringAsync();
@@ -88,7 +93,7 @@ public class NextcloudUserCreator
         {
             throw new InternalException("Error getting list of groups.");
         }
-        
+
         try
         {
             var json = await response.Content.ReadAsStringAsync();
@@ -105,6 +110,8 @@ public class NextcloudUserCreator
 
     public async Task updateUserPassword(UserEntity user)
     {
+        if (Utility.inDevelopmentEnvironment()) return;
+        
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("key", "password"),
             new KeyValuePair<string, string>("value", user.password)
@@ -124,7 +131,7 @@ public class NextcloudUserCreator
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
         httpClient.DefaultRequestHeaders.Add("OCS-APIRequest", "true");
     }
-    
+
     private static string getNextcloudPassword()
     {
         var value = Environment.GetEnvironmentVariable("NEXTCLOUD_PASSWORD");
