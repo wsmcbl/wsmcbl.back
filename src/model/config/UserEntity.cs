@@ -41,23 +41,13 @@ public class UserEntity
     {
         return role!.name;
     }
-    
-    public List<string> getPermissionList()
-    {
-        return getPermissionUnifiedList().Select(e => e.name).Distinct().ToList();
-    }
-    
-    public List<int> getPermissionIdList()
-    {
-        return getPermissionUnifiedList().Select(e => e.permissionId).Distinct().ToList();
-    }
 
-    private List<PermissionEntity> getPermissionUnifiedList()
+    public List<PermissionEntity> getPermissionList()
     {
         userPermissionList ??= [];
         
         var list = role!.getPermissionList();
-        list.AddRange(userPermissionList!.Select(e => e.permission!).ToList());
+        list.AddRange(userPermissionList!.Select(e => e.permission!).Distinct().ToList());
 
         return list;
     }
@@ -129,29 +119,22 @@ public class UserEntity
 
     public List<UserPermissionEntity> checkPermissionsAlreadyAssigned(List<UserPermissionEntity> list)
     {
-        return list.Where(item 
-            => !role!.hasPermission(item) &&
-               userPermissionList!.All(e => e.permissionId != item.permissionId)).ToList();
+        var permissionList = getPermissionList();
+        return list
+            .Where(e => permissionList.All(p => e.permissionId != p.permissionId))
+            .ToList();
     }
     
     public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
     {
-        userPermissionList ??= [];
-        
-        foreach (var item in userPermissionList)
+        foreach (var item in userPermissionList!.Where(item => !list.Any(e => e.equals(item))))
         {
-            if (!list.Any(e => e.equals(item)))
-            {
-                rolePermissionDao.delete(item);
-            }
+            rolePermissionDao.delete(item);
         }
 
-        foreach (var item in list)
+        foreach (var item in list.Where(item => !userPermissionList!.Any(e => e.equals(item))))
         {
-            if (!userPermissionList.Any(e => e.userId == item.userId && e.permissionId == item.permissionId))
-            {
-                rolePermissionDao.create(item);
-            }
+            rolePermissionDao.create(item);
         }
     }
 
