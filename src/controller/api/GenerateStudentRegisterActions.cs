@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
@@ -24,7 +25,7 @@ public class GenerateStudentRegisterActions(GenerateStudentRegisterController co
         
         var result = await controller.getStudentRegisterList(request);
         
-        var pagedResult = new PagedResult<StudentEntity>(result.data.mapToListBasicDto());
+        var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToListBasicDto());
         pagedResult.setup(result);
         
         return Ok(pagedResult);
