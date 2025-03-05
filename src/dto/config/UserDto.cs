@@ -27,7 +27,7 @@ public class UserDto
         email = user.email;
         isActive = user.isActive;
         roleId = user.roleId;
-        permissionList = user.getPermissionIdList();
+        permissionList = user.getPermissionList().Select(e => e.permissionId).ToList();
         nextCloudGroup = nextcloudGroup;
     }
 }

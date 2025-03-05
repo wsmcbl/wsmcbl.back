@@ -11,7 +11,7 @@ public class UpdateUserController : BaseController
     private UserAuthenticator userAuthenticator { get; set; }
     private HttpClient httpClient { get; set; }
 
-    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator,  HttpClient httpClient) : base(daoFactory)
+    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
     {
         this.httpClient = httpClient;
         nextcloudUserCreator = new NextcloudUserCreator(this.httpClient);
@@ -44,31 +44,19 @@ public class UpdateUserController : BaseController
         await nextcloudUserCreator.assignGroup(user.email, nextCloudGroup.Trim());
     }
 
-    public async Task assignPermissions(UserEntity user, List<int> permissionList)
+    public async Task assignPermissions(UserEntity user, List<UserPermissionEntity> permissionList)
     {
         if (permissionList.Count == 0)
         {
             return;
         }
 
-        await daoFactory.permissionDao!.checkListId(permissionList);
-        
-        foreach (var item in permissionList)
-        {
-            if (user.isAlreadyAssigned(item))
-            {
-                continue;
-            }
-            
-            var userPermission = new UserPermissionEntity
-            {
-                userId = (Guid)user.userId!,
-                permissionId = item
-            };
+        await daoFactory.permissionDao!
+            .checkListId(permissionList.Select(e => e.permissionId).ToList());
 
-            daoFactory.userPermissionDao!.create(userPermission);
-        }
+        var list = user.checkPermissionsAlreadyAssigned(permissionList);
 
+        user.updatePermissionList(list, daoFactory.userPermissionDao!);
         await daoFactory.execute();
     }
 

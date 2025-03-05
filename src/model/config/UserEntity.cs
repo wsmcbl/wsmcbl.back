@@ -19,7 +19,8 @@ public class UserEntity
     public DateTime createdAt { get; set; }
     public DateTime updatedAt { get; set; }
     public RoleEntity? role { get; set; }
-    public List<PermissionEntity> permissionList { get; set; } = [];
+    
+    public List<UserPermissionEntity>? userPermissionList { get; set; }
     
     public string fullName()
     {
@@ -40,21 +41,13 @@ public class UserEntity
     {
         return role!.name;
     }
-    
-    public List<string> getPermissionList()
-    {
-        return getPermissionUnifiedList().Select(e => e.name).Distinct().ToList();
-    }
-    
-    public List<int> getPermissionIdList()
-    {
-        return getPermissionUnifiedList().Select(e => e.permissionId).Distinct().ToList();
-    }
 
-    private List<PermissionEntity> getPermissionUnifiedList()
+    public List<PermissionEntity> getPermissionList()
     {
+        userPermissionList ??= [];
+        
         var list = role!.getPermissionList();
-        list.AddRange(permissionList);
+        list.AddRange(userPermissionList!.Select(e => e.permission!).Distinct().ToList());
 
         return list;
     }
@@ -97,8 +90,7 @@ public class UserEntity
     {
         return value.Trim().ToLower().convertToEmailFormat();
     }
-
-
+    
     public async Task getIdFromRole(DaoFactory daoFactory)
     {
         userRoleId = string.Empty;
@@ -113,6 +105,36 @@ public class UserEntity
         {
             var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);
             userRoleId = result.teacherId;
+        }
+    }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
+
+    public List<UserPermissionEntity> checkPermissionsAlreadyAssigned(List<UserPermissionEntity> list)
+    {
+        var permissionList = getPermissionList();
+        return list
+            .Where(e => permissionList.All(p => e.permissionId != p.permissionId))
+            .ToList();
+    }
+    
+    public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
+    {
+        foreach (var item in userPermissionList!.Where(item => !list.Any(e => e.equals(item))))
+        {
+            rolePermissionDao.delete(item);
+        }
+
+        foreach (var item in list.Where(item => !userPermissionList!.Any(e => e.equals(item))))
+        {
+            rolePermissionDao.create(item);
         }
     }
 
@@ -162,19 +184,5 @@ public class UserEntity
             entity.roleId = roleId;
             return this;
         }
-    }
-
-    public bool isADuplicate(UserEntity value)
-    {
-        return name == value.name &&
-               secondName == value.secondName &&
-               surname == value.surname &&
-               secondSurname == value.secondSurname &&
-               roleId == value.roleId;
-    }
-
-    public bool isAlreadyAssigned(int permissionId)
-    {
-        return permissionList.FirstOrDefault(e => e.permissionId == permissionId) != null; 
     }
 }

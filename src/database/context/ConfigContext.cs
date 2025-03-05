@@ -35,10 +35,8 @@ public class ConfigContext
             entity.Ignore(e => e.userRoleId);
 
             entity.HasOne(e => e.role).WithMany().HasForeignKey(e => e.roleId);
-
-            entity.HasMany(r => r.permissionList)
-                .WithMany()
-                .UsingEntity<UserPermissionEntity>();
+            
+            entity.HasMany(e => e.userPermissionList).WithOne().HasForeignKey(e => e.userId);
         });
 
         modelBuilder.Entity<RoleEntity>(entity =>
@@ -78,6 +76,8 @@ public class ConfigContext
 
             entity.Property(e => e.userId).HasColumnName("userid");
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
+            
+            entity.HasOne(d => d.permission).WithMany().HasForeignKey(d => d.permissionId);
         });
 
 
@@ -90,8 +90,7 @@ public class ConfigContext
             entity.Property(e => e.roleId).HasColumnName("roleid");
             entity.Property(e => e.permissionId).HasColumnName("permissionid");
             
-            entity.HasOne(d => d.permission).WithMany()
-                .HasForeignKey(d => d.permissionId);
+            entity.HasOne(d => d.permission).WithMany().HasForeignKey(d => d.permissionId);
         });
 
 

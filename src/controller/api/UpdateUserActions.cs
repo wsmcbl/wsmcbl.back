@@ -38,7 +38,8 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
     public async Task<IActionResult> updateUser([Required] string userId, UserToUpdateDto dto)
     {
         var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
-        await controller.assignPermissions(result, dto.permissionList);
+        
+        await controller.assignPermissions(result, dto.getUserPermissionList(userId));
 
         var nextCloudGroup = await controller.getNextCloudGroup(result);
         var response = new UserDto(result, nextCloudGroup);

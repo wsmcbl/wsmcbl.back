@@ -13,11 +13,11 @@ public class RoleEntity
         return rolePermissionList.Select(e => e.permission!).ToList();
     }
 
-    public void updateRolePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
+    public void updatePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
     {
         foreach (var item in rolePermissionList)
         {
-            if (!list.Any(e => e.roleId == item.roleId && e.permissionId == item.permissionId))
+            if (!list.Any(e => e.equals(item)))
             {
                 rolePermissionDao.delete(item);
             }
@@ -25,7 +25,7 @@ public class RoleEntity
 
         foreach (var item in list)
         {
-            if (!rolePermissionList.Any(e => e.roleId == item.roleId && e.permissionId == item.permissionId))
+            if (!rolePermissionList.Any(e => e.equals(item)))
             {
                 rolePermissionDao.create(item);
             }

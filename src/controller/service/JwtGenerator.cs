@@ -47,7 +47,7 @@ public class JwtGenerator
         };
         
         claimList.AddRange(user.getPermissionList().Select(permission
-            => new Claim("Permission", permission)));
+            => new Claim("Permission", permission.name)));
 
         return new ClaimsIdentity(claimList);
     }

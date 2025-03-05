@@ -15,16 +15,26 @@ public class UserToUpdateDto
     
     public UserEntity toEntity(string userId)
     {
-        if (Guid.TryParse(userId, out var userIdGuid))
+        if (!Guid.TryParse(userId, out var userIdGuid))
         {
-            return new UserEntity.Builder(userIdGuid)
-                .setName(name)
-                .setSecondName(secondName)
-                .setSurname(surname)
-                .setSecondSurname(secondSurname)
-                .build();
+            throw new BadRequestException("UserId is not a valid.");
+        }
+        
+        return new UserEntity.Builder(userIdGuid)
+            .setName(name)
+            .setSecondName(secondName)
+            .setSurname(surname)
+            .setSecondSurname(secondSurname)
+            .build();
+    }
+
+    public List<UserPermissionEntity> getUserPermissionList(string userId)
+    {
+        if (!Guid.TryParse(userId, out var userIdGuid))
+        {
+            throw new BadRequestException("UserId is not a valid.");
         }
 
-        throw new BadRequestException("UserId is not a valid.");
+        return permissionList.Select(item => new UserPermissionEntity(userIdGuid, item)).ToList();
     }
 }
