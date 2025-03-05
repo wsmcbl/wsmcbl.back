@@ -19,4 +19,4 @@
 
 ## Version
 
-* 5.0.0 - SNAPSHOT
+* 5.0.0 - BETA
