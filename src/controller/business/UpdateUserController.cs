@@ -11,7 +11,7 @@ public class UpdateUserController : BaseController
     private UserAuthenticator userAuthenticator { get; set; }
     private HttpClient httpClient { get; set; }
 
-    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator,  HttpClient httpClient) : base(daoFactory)
+    public UpdateUserController(DaoFactory daoFactory, UserAuthenticator userAuthenticator, HttpClient httpClient) : base(daoFactory)
     {
         this.httpClient = httpClient;
         nextcloudUserCreator = new NextcloudUserCreator(this.httpClient);

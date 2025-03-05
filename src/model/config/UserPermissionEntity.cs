@@ -7,6 +7,16 @@ public class UserPermissionEntity
 
     public PermissionEntity? permission { get; set; }
 
+    public UserPermissionEntity()
+    {
+    }
+
+    public UserPermissionEntity(Guid userId, int permissionId)
+    {
+        this.userId = userId;
+        this.permissionId = permissionId;
+    }
+    
     public bool equals(UserPermissionEntity value)
     {
         return userId == value.userId && permissionId == value.permissionId;
