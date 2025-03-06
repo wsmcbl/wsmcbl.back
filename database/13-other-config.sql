@@ -115,7 +115,9 @@ SELECT s.studentid,
        e.schoolyear as schoolyearId,
        d.educationallevel,
        d.label as degree,
+       d.tag as degreePosition,
        RIGHT(e.label, 1) AS section,
+       e.tag as sectionPosition,
        a.createdAt as enrollDate,
        a.isRepeating
 FROM secretary.student s 
