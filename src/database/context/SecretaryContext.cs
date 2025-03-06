@@ -250,5 +250,35 @@ internal class SecretaryContext
             entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
         });
+        
+        modelBuilder.Entity<StudentRecordView>(entity =>
+        {
+            entity.ToView("student_record_view", "secretary").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.minedId).HasColumnName("minedid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.sex).HasColumnName("sex");
+            entity.Property(e => e.birthday).HasColumnName("birthday");
+            entity.Property(e => e.diseases).HasColumnName("diseases");
+            entity.Property(e => e.address).HasColumnName("address");
+            entity.Property(e => e.height).HasColumnName("height");
+            entity.Property(e => e.weight).HasColumnName("weight");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.phone).HasColumnName("phone");
+            entity.Property(e => e.father).HasColumnName("father");
+            entity.Property(e => e.fatherIdCard).HasColumnName("fatheridcard");
+            entity.Property(e => e.mother).HasColumnName("mother");
+            entity.Property(e => e.motherIdCard).HasColumnName("motheridcard");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+            entity.Property(e => e.degree).HasColumnName("degree");
+            entity.Property(e => e.degreePosition).HasColumnName("degreeposition");
+            entity.Property(e => e.section).HasColumnName("section");
+            entity.Property(e => e.sectionPosition).HasColumnName("sectionposition");
+            entity.Property(e => e.enrollDate).HasColumnName("enrolldate");
+            entity.Property(e => e.isRepeating).HasColumnName("isrepeating");
+        });
     }
 }
