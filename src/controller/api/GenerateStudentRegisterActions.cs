@@ -25,7 +25,7 @@ public class GenerateStudentRegisterActions(GenerateStudentRegisterController co
         
         var result = await controller.getStudentRegisterList(request);
         
-        var pagedResult = new PagedResult<StudentRecordViewDto>(result.data.mapToListDto());
+        var pagedResult = new PagedResult<StudentRegisterViewDto>(result.data.mapListToDto());
         pagedResult.setup(result);
         
         return Ok(pagedResult);
