@@ -43,7 +43,8 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('debt:update', 'Modificar deudas', 'accounting', 'Permission for update debt.'),
        ('debt:read', 'Ver deudas', 'accounting', 'Permission for reading debt.'),
        ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.'),
-       ('grade:update', 'Modificar calificaciones', 'academy', 'Permission for update grades.');
+       ('grade:update', 'Modificar calificaciones', 'academy', 'Permission for update grades.'),
+       ('register:read', 'Leer padrón', 'secretary', 'Permission for reading student register.');
 
 -- Admin --
 -- There are permissions that do not correspond to this role, they are temporary --
