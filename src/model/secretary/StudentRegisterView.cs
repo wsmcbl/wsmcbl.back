@@ -1,6 +1,6 @@
 namespace wsmcbl.src.model.secretary;
 
-public class StudentRecordView
+public class StudentRegisterView
 {
     public string? studentId { get; set; }
     public string? minedId { get; set; }

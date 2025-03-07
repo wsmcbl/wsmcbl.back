@@ -251,7 +251,7 @@ internal class SecretaryContext
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
         });
         
-        modelBuilder.Entity<StudentRecordView>(entity =>
+        modelBuilder.Entity<StudentRegisterView>(entity =>
         {
             entity.ToView("student_record_view", "secretary").HasNoKey();
             entity.Property(e => e.studentId).HasColumnName("studentid");
