@@ -14,7 +14,7 @@ public class GenerateStudentRegisterController(DaoFactory daoFactory) : BaseCont
 
     public async Task<byte[]> getStudentRegisterDocument(string userId)
     {
-        var spreadSheetMaker = new SpreadSheetMaker(daoFactory.studentDao!);
+        var spreadSheetMaker = new SpreadSheetMaker(daoFactory);
         return await spreadSheetMaker.getStudentRegisterInCurrentSchoolyear(userId);
     }
 }
