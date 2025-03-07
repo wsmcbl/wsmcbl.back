@@ -36,6 +36,21 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             .AsNoTracking().ToListAsync();
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
+
+    public async Task<PagedResult<StudentRecordView>> getStudentRecordViewList(StudentPagedRequest request)
+    {
+        var query = context.GetQueryable<StudentRecordView>();
+        
+        if (request.isActive != null)
+        {
+            query = query.Where(e => e.isActive == (bool)request.isActive);
+        }
+        
+        var pagedService = new PagedService<StudentRecordView>(query, searchInStudentRecordView);
+        
+        request.setDefaultSort("fullName");   
+        return await pagedService.getPaged(request);
+    }
     
     public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
     {
@@ -46,13 +61,13 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             query = query.Where(e => e.isActive == (bool)request.isActive);
         }
         
-        var pagedService = new PagedService<StudentView>(query, search);
+        var pagedService = new PagedService<StudentView>(query, searchInStudentView);
         
         request.setDefaultSort("fullName");   
         return await pagedService.getPaged(request);
     }
     
-    private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
+    private static IQueryable<StudentView> searchInStudentView(IQueryable<StudentView> query, string search)
     { 
         var value = $"%{search}%";
         
@@ -62,6 +77,24 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
            EF.Functions.Like(e.tutor.ToLower(), value) ||
            (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
            (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
+    }
+
+    private static IQueryable<StudentRecordView> searchInStudentRecordView(IQueryable<StudentRecordView> query, string search)
+    {
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+            EF.Functions.Like(e.studentId, value) ||
+            EF.Functions.Like(e.fullName.ToLower(), value) ||
+            EF.Functions.Like(e.tutor.ToLower(), value) ||
+            EF.Functions.Like(e.address.ToLower(), value) ||
+            (e.minedId != null && EF.Functions.Like(e.minedId.ToLower(), value)) ||
+            (e.father != null && EF.Functions.Like(e.father.ToLower(), value)) ||
+            (e.mother != null && EF.Functions.Like(e.mother.ToLower(), value)) ||
+            (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
+            (e.degree != null && EF.Functions.Like(e.degree.ToLower(), value)) ||
+            (e.diseases != null && EF.Functions.Like(e.diseases.ToLower(), value)) ||
+            (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
     public async Task updateAsync(StudentEntity? entity)
