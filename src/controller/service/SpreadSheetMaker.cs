@@ -21,7 +21,7 @@ public class SpreadSheetMaker
     {
         var user = await daoFactory.userDao!.getById(userId);
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
-        var list = await daoFactory.studentDao!.getStudentRegisterInCurrentSchoolyear();
+        var registerList = await daoFactory.studentDao!.getStudentRegisterInCurrentSchoolyear();
 
         var title = $"Padrón {currentSchoolyear.label}";
         
@@ -36,15 +36,19 @@ public class SpreadSheetMaker
         const int headerRow = 7;
         setHeader(headerRow);
         
+        var list = registerList
+            .OrderBy(e => e.degreePosition)
+            .ThenBy(e => e.sectionPosition)
+            .ThenBy(e => e.fullName);
+        
         var counter = headerRow + 1;
-        foreach (var item in list.OrderBy(e => e.degreePosition))
+        foreach (var item in list)
         {
             setBody(counter, item, counter - headerRow);
-            var rowStyle = worksheet.Range($"B{counter}:{lastColumnName}{counter}");
             counter++;
         }
 
-        var lastRow = list.Count + headerRow;
+        var lastRow = registerList.Count + headerRow;
         
         setBorder(lastRow, headerRow);
         
@@ -120,7 +124,7 @@ public class SpreadSheetMaker
         worksheet.Cell(counter, bodyColumn++).Value = item.tutor; 
         worksheet.Cell(counter, bodyColumn++).Value = item.phone; 
         worksheet.Cell(counter, bodyColumn++).Value = item.getIsRepeatingString();
-        worksheet.Cell(counter, bodyColumn + 1).Value = item.getEnrollDateString();
+        worksheet.Cell(counter, bodyColumn++).Value = item.getEnrollDateString();
     }
 
     private void setHeader(int headerRow)
@@ -152,6 +156,6 @@ public class SpreadSheetMaker
         worksheet.Cell(headerRow, headerColumn++).Value = "Tutor";
         worksheet.Cell(headerRow, headerColumn++).Value = "Teléfono";
         worksheet.Cell(headerRow, headerColumn++).Value = "Repitente";
-        worksheet.Cell(headerRow, headerColumn + 1).Value = "F. matrícula";
+        worksheet.Cell(headerRow, headerColumn++).Value = "F. matrícula";
     }
 }
