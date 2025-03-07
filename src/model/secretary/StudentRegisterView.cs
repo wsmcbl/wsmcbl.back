@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentRegisterView
 {
-    public string? studentId { get; set; }
+    public string studentId { get; set; } = null!;
     public string? minedId { get; set; }
     public string fullName { get; set; } = null!;
     public bool isActive { get; set; }
