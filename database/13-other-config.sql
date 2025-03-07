@@ -93,8 +93,8 @@ FROM accounting.transaction t
 GROUP BY t.transactionid, s.studentid, u.userid;
 
 
--- student_record_view view
-CREATE VIEW secretary.student_record_view as
+-- student_register_view view
+CREATE VIEW secretary.student_register_view as
 SELECT s.studentid,
        s.minedid,
        CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
