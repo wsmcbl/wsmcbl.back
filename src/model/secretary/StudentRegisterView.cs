@@ -1,6 +1,6 @@
 namespace wsmcbl.src.model.secretary;
 
-public class StudentRecordView
+public class StudentRegisterView
 {
     public string? studentId { get; set; }
     public string? minedId { get; set; }
@@ -22,14 +22,23 @@ public class StudentRecordView
     public string? schoolyearId { get; set; }
     public string? educationalLevel { get; set; }
     public string? degree { get; set; }
-    public string? section { get; set; }
     public int degreePosition { get; set; }
+    public string? section { get; set; }
     public int sectionPosition { get; set; }
     public DateTime? enrollDate { get; set; }
     public bool? isRepeating { get; set; }
 
     public int getAge()
     {
-        return 1;
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        var age = today.Year - birthday.Year;
+        
+        if (today < new DateOnly(today.Year, birthday.Month, birthday.Day))
+        {
+            age--;
+        }
+
+        return age;
     }
 }
