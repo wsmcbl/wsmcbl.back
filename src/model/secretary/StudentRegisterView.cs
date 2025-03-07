@@ -2,7 +2,7 @@ namespace wsmcbl.src.model.secretary;
 
 public class StudentRegisterView
 {
-    public string? studentId { get; set; }
+    public string studentId { get; set; } = null!;
     public string? minedId { get; set; }
     public string fullName { get; set; } = null!;
     public bool isActive { get; set; }
@@ -22,9 +22,9 @@ public class StudentRegisterView
     public string? schoolyearId { get; set; }
     public string? educationalLevel { get; set; }
     public string? degree { get; set; }
-    public int degreePosition { get; set; }
+    public string? degreePosition { get; set; }
     public string? section { get; set; }
-    public int sectionPosition { get; set; }
+    public string? sectionPosition { get; set; }
     public DateTime? enrollDate { get; set; }
     public bool? isRepeating { get; set; }
 
