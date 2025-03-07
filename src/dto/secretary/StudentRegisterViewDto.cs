@@ -10,7 +10,7 @@ public class StudentRegisterViewDto
     public string fullName { get; set; }
     public bool isActive { get; set; }
     public bool sex { get; set; }
-    public DateOnly birthday { get; set; }
+    public string birthday { get; set; }
     public int age { get; set; }
     public string? diseases { get; set; }
     public string address { get; set; }
@@ -26,7 +26,7 @@ public class StudentRegisterViewDto
     public string educationalLevel { get; set; }
     public string degree { get; set; }
     public string section { get; set; }
-    public DateTime enrollDate { get; set; }
+    public string enrollDate { get; set; }
     public bool isRepeating { get; set; }
     
 
@@ -37,7 +37,7 @@ public class StudentRegisterViewDto
         fullName = value.fullName;
         isActive = value.isActive;
         sex = value.sex;
-        birthday = value.birthday;
+        birthday = value.birthday.ToString("dd-MM-yyyy");
         age = value.getAge();
         diseases = value.diseases;
         address = value.address;
@@ -53,7 +53,7 @@ public class StudentRegisterViewDto
         educationalLevel = value.educationalLevel.getOrDefault();
         degree = value.degree.getOrDefault();
         section = value.section.getOrDefault();
-        enrollDate = value.enrollDate.GetValueOrDefault();
+        enrollDate = value.enrollDate == null ? "N/A" : ((DateTime)value.enrollDate).ToString("dd-MM-yyy");
         isRepeating = value.isRepeating ?? false;
     }
 }
