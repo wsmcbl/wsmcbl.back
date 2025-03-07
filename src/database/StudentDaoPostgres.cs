@@ -37,16 +37,16 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<PagedResult<StudentRecordView>> getStudentRecordViewList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentRegisterView>> getStudentRecordViewList(StudentPagedRequest request)
     {
-        var query = context.GetQueryable<StudentRecordView>();
+        var query = context.GetQueryable<StudentRegisterView>();
         
         if (request.isActive != null)
         {
             query = query.Where(e => e.isActive == (bool)request.isActive);
         }
         
-        var pagedService = new PagedService<StudentRecordView>(query, searchInStudentRecordView);
+        var pagedService = new PagedService<StudentRegisterView>(query, searchInStudentRecordView);
         
         request.setDefaultSort("fullName");   
         return await pagedService.getPaged(request);
@@ -79,7 +79,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
            (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
     }
 
-    private static IQueryable<StudentRecordView> searchInStudentRecordView(IQueryable<StudentRecordView> query, string search)
+    private static IQueryable<StudentRegisterView> searchInStudentRecordView(IQueryable<StudentRegisterView> query, string search)
     {
         var value = $"%{search}%";
         
