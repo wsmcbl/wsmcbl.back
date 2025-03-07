@@ -119,7 +119,7 @@ public class SpreadSheetMaker
         worksheet.Cell(counter, bodyColumn++).Value = item.fatherIdCard;
         worksheet.Cell(counter, bodyColumn++).Value = item.tutor; 
         worksheet.Cell(counter, bodyColumn++).Value = item.phone; 
-        worksheet.Cell(counter, bodyColumn++).Value = item.getIsRepetingText();
+        worksheet.Cell(counter, bodyColumn++).Value = item.getIsRepeatingString();
         worksheet.Cell(counter, bodyColumn + 1).Value = item.getEnrollDateString();
     }
 

@@ -41,4 +41,17 @@ public class StudentRegisterView
 
         return age;
     }
+
+    public string getIsRepeatingString()
+    {
+        if (isRepeating == null)
+            return string.Empty;
+
+        return (bool)isRepeating ? "Sí" : "No";
+    }
+
+    public string getEnrollDateString()
+    {
+        return enrollDate == null ? "N/A" : ((DateTime)enrollDate).ToString("dd-MM-yyyy");
+    }
 }

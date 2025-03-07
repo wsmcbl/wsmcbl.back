@@ -53,7 +53,7 @@ public class StudentRegisterViewDto
         educationalLevel = value.educationalLevel.getOrDefault();
         degree = value.degree.getOrDefault();
         section = value.section.getOrDefault();
-        enrollDate = value.enrollDate == null ? "N/A" : ((DateTime)value.enrollDate).ToString("dd-MM-yyy");
+        enrollDate = value.getEnrollDateString();
         isRepeating = value.isRepeating ?? false;
     }
 }
