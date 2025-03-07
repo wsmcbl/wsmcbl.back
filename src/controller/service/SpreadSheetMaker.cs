@@ -1,24 +1,26 @@
 using ClosedXML.Excel;
-using wsmcbl.src.model.secretary;
+using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
 public class SpreadSheetMaker
 {
-    private IStudentDao studentDao {get; set;}
+    private DaoFactory daoFactory {get; set;}
     
-    public SpreadSheetMaker(IStudentDao studentDao)
+    public SpreadSheetMaker(DaoFactory daoFactory)
     {
-        this.studentDao = studentDao;
+        this.daoFactory = daoFactory;
     }
     
     public async Task<byte[]> getStudentRegisterInCurrentSchoolyear(string userId)
     {
-        var list = await studentDao.getStudentRegisterInCurrentSchoolyear();
+        var user = await daoFactory.userDao!.getById(userId);
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var list = await daoFactory.studentDao!.getStudentRegisterInCurrentSchoolyear();
         
         using var workbook = new XLWorkbook();
-        var worksheet = workbook.Worksheets.Add("Padrón FALTA");
+        var worksheet = workbook.Worksheets.Add($"Padrón {currentSchoolyear.label}");
         
         worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
         
@@ -29,28 +31,30 @@ public class SpreadSheetMaker
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
+        worksheet.Cell(1, 2).Value = user.getAlias();
         
-        worksheet.Cell(1, 2).Value = "Código";
-        worksheet.Cell(1, 3).Value = "Cód. Mined";
-        worksheet.Cell(1, 4).Value = "Nombre";
-        worksheet.Cell(1, 5).Value = "Modalidad";
-        worksheet.Cell(1, 6).Value = "Grado";
-        worksheet.Cell(1, 7).Value = "Seción";
-        worksheet.Cell(1, 8).Value = "F. Matrícula";
-        worksheet.Cell(1, 9).Value = "Sexo";
-        worksheet.Cell(1, 10).Value = "F. Nacimiento";
-        worksheet.Cell(1, 11).Value = "Edad";
-        worksheet.Cell(1, 12).Value = "Talla";
-        worksheet.Cell(1, 13).Value = "Peso";
-        worksheet.Cell(1, 14).Value = "Tutor";
-        worksheet.Cell(1, 15).Value = "Telefono";
-        worksheet.Cell(1, 16).Value = "Padre";
-        worksheet.Cell(1, 17).Value = "C. padre";
-        worksheet.Cell(1, 18).Value = "Madre";
-        worksheet.Cell(1, 19).Value = "C. Madre";
-        worksheet.Cell(1, 20).Value = "Repitente";
+        var header = 2;
+        worksheet.Cell(header, 2).Value = "Código";
+        worksheet.Cell(header, 3).Value = "Cód. Mined";
+        worksheet.Cell(header, 4).Value = "Nombre";
+        worksheet.Cell(header, 5).Value = "Modalidad";
+        worksheet.Cell(header, 6).Value = "Grado";
+        worksheet.Cell(header, 7).Value = "Seción";
+        worksheet.Cell(header, 8).Value = "F. Matrícula";
+        worksheet.Cell(header, 9).Value = "Sexo";
+        worksheet.Cell(header, 10).Value = "F. Nacimiento";
+        worksheet.Cell(header, 11).Value = "Edad";
+        worksheet.Cell(header, 12).Value = "Talla";
+        worksheet.Cell(header, 13).Value = "Peso";
+        worksheet.Cell(header, 14).Value = "Tutor";
+        worksheet.Cell(header, 15).Value = "Telefono";
+        worksheet.Cell(header, 16).Value = "Padre";
+        worksheet.Cell(header, 17).Value = "C. padre";
+        worksheet.Cell(header, 18).Value = "Madre";
+        worksheet.Cell(header, 19).Value = "C. Madre";
+        worksheet.Cell(header, 20).Value = "Repitente";
 
-        var counter = 2;
+        var counter = 3;
         foreach (var item in list.OrderBy(e => e.degreePosition))
         {
             worksheet.Cell(counter, 2).Value = item.studentId; 
