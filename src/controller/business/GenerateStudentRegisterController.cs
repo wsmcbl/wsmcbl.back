@@ -6,9 +6,9 @@ namespace wsmcbl.src.controller.business;
 
 public class GenerateStudentRegisterController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<PagedResult<StudentView>> getStudentRegisterList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentRegisterView>> getStudentRegisterList(StudentPagedRequest request)
     {
-        return await daoFactory.studentDao!.getStudentViewList(request);
+        return await daoFactory.studentDao!.getStudentRegisterViewList(request);
     }
 
     public async Task<byte[]> getStudentRegisterDocument(string userId)
