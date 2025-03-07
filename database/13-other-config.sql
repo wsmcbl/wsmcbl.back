@@ -84,10 +84,49 @@ SELECT t.transactionid, t.number, t.total, t.date, t.isvalid,
        t.studentid,
        CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS student,
        STRING_AGG(tr.concept, ', ') AS concept
-From accounting.transaction t
+FROM accounting.transaction t
          JOIN secretary.student s ON t.studentid = s.studentid
          JOIN accounting.transaction_tariff tt ON t.transactionid = tt.transactionid
          JOIN accounting.tariff tr ON tt.tariffid = tr.tariffid
          JOIN accounting.cashier c ON c.cashierid = t.cashierid
          JOIN config.user u ON u.userid = c.userid
 GROUP BY t.transactionid, s.studentid, u.userid;
+
+
+-- student_record_view view
+CREATE VIEW secretary.student_record_view as
+SELECT s.studentid,
+       s.minedid,
+       CONCAT_WS(' ', s.name, s.secondname, s.surname, s.secondsurname) AS fullName,
+       s.studentstate as isActive,
+       s.sex,
+       s.birthday,
+       s.address,
+       s.diseases,
+       m.height,
+       m.weight,
+       t.name as tutor,
+       t.phone as phone,
+       fa.name as fatherName,
+       fa.idcard fatherIdCard,
+       ma.name as motherName,
+       ma.idcard as motherIdCard,
+       sch.label as schoolyear,
+       e.schoolyear as schoolyearId,
+       d.educationallevel,
+       d.label as degree,
+       d.tag as degreePosition,
+       RIGHT(e.label, 1) AS section,
+       e.tag as sectionPosition,
+       a.createdAt as enrollDate,
+       a.isRepeating
+FROM secretary.student s 
+JOIN secretary.studenttutor t on t.tutorid = s.tutorid
+LEFT JOIN secretary.studentmeasurements m ON m.studentid = s.studentid
+LEFT JOIN secretary.studentparent fa ON fa.studentid = s.studentid and fa.sex = true
+LEFT JOIN secretary.studentparent ma ON ma.studentid = s.studentid and ma.sex = false
+LEFT JOIN (SELECT DISTINCT ON (a.studentid) * FROM academy.student a ORDER BY a.studentid, a.schoolyear DESC) a
+    ON a.studentid = s.studentid
+LEFT JOIN secretary.schoolyear sch ON sch.schoolyearid = a.schoolyear
+LEFT JOIN academy.enrollment e ON e.enrollmentid = a.enrollmentid
+LEFT JOIN secretary.degree d on d.degreeid = e.degreeid;
