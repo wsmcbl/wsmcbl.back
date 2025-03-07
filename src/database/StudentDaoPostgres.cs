@@ -37,7 +37,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<PagedResult<StudentRegisterView>> getStudentRecordViewList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentRegisterView>> getStudentRegisterViewList(StudentPagedRequest request)
     {
         var query = context.GetQueryable<StudentRegisterView>();
         
@@ -51,7 +51,15 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         request.setDefaultSort("fullName");   
         return await pagedService.getPaged(request);
     }
-    
+
+    public async Task<List<StudentRegisterView>> getStudentRegisterInCurrentSchoolyear()
+    {
+        var daoFactory = new DaoFactoryPostgres(context);
+
+        var current = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        return await context.Set<StudentRegisterView>().Where(e => e.schoolyearId == current.id).ToListAsync();
+    }
+
     public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
     {
         var query = context.GetQueryable<StudentView>();

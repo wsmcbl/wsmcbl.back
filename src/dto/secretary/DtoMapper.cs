@@ -44,6 +44,9 @@ public static class DtoMapper
     public static List<DegreeToCreateDto> mapListToDto(this IEnumerable<DegreeEntity> grades)
         => grades.Select(e => e.mapToNewSchoolyearDto()).ToList();
 
+    public static List<StudentRegisterViewDto> mapListToDto(this List<StudentRegisterView> value)
+        => value.Select(e => new StudentRegisterViewDto(e)).ToList();
+
 
     public static List<SubjectToCreateDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectToCreateDto(e)).ToList();

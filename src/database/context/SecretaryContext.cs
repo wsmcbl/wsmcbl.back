@@ -257,7 +257,7 @@ internal class SecretaryContext
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.minedId).HasColumnName("minedid");
             entity.Property(e => e.fullName).HasColumnName("fullname");
-            entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.sex).HasColumnName("sex");
             entity.Property(e => e.birthday).HasColumnName("birthday");
             entity.Property(e => e.diseases).HasColumnName("diseases");
@@ -266,9 +266,9 @@ internal class SecretaryContext
             entity.Property(e => e.weight).HasColumnName("weight");
             entity.Property(e => e.tutor).HasColumnName("tutor");
             entity.Property(e => e.phone).HasColumnName("phone");
-            entity.Property(e => e.father).HasColumnName("father");
+            entity.Property(e => e.father).HasColumnName("fathername");
             entity.Property(e => e.fatherIdCard).HasColumnName("fatheridcard");
-            entity.Property(e => e.mother).HasColumnName("mother");
+            entity.Property(e => e.mother).HasColumnName("mothername");
             entity.Property(e => e.motherIdCard).HasColumnName("motheridcard");
             entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
