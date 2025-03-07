@@ -22,9 +22,9 @@ public class StudentRegisterView
     public string? schoolyearId { get; set; }
     public string? educationalLevel { get; set; }
     public string? degree { get; set; }
-    public int degreePosition { get; set; }
+    public string? degreePosition { get; set; }
     public string? section { get; set; }
-    public int sectionPosition { get; set; }
+    public string? sectionPosition { get; set; }
     public DateTime? enrollDate { get; set; }
     public bool? isRepeating { get; set; }
 
