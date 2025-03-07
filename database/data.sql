@@ -55,7 +55,7 @@ SELECT 1, p.permissionid FROM config.permission p;
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 2, p.permissionid FROM config.permission p
 WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read', 'report:read', 'enrollment:create',
-                 'enrollment:update','enrollment:read','teacher:read');
+                 'enrollment:update','enrollment:read','teacher:read', 'register:read');
 
 -- Cashier --
 INSERT INTO config.role_permission(roleid, permissionid)
@@ -71,7 +71,7 @@ WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'gr
 -- Principal --
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 5, p.permissionid FROM config.permission p
-WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read');
+WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read', 'register:read');
 
 
 -- ############################## ---
