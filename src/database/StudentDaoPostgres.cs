@@ -37,7 +37,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<PagedResult<StudentRegisterView>> getStudentRecordViewList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentRegisterView>> getStudentRegisterViewList(StudentPagedRequest request)
     {
         var query = context.GetQueryable<StudentRegisterView>();
         
