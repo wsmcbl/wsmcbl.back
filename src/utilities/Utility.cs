@@ -106,4 +106,6 @@ public static class Utility
 
         return value == "Development";
     }
+
+    public static string getOrDefault(this string? value) => string.IsNullOrWhiteSpace(value) ? "N/A" : value;
 }
