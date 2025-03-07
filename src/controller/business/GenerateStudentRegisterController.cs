@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service;
 using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -13,7 +14,7 @@ public class GenerateStudentRegisterController(DaoFactory daoFactory) : BaseCont
 
     public async Task<byte[]> getStudentRegisterDocument(string userId)
     {
-        await Task.CompletedTask;
-        return [];
+        var spreadSheetMaker = new SpreadSheetMaker(daoFactory.studentDao!);
+        return await spreadSheetMaker.getStudentRegisterInCurrentSchoolyear(userId);
     }
 }
