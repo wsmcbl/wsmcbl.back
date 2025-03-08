@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
@@ -11,7 +12,31 @@ public class ViewEnrollmentGuideController : BaseController
     
     public async Task<EnrollmentEntity> getEnrollmentGuideByTeacherId(string teacherId)
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        var teacher = await daoFactory.teacherDao!.getById(teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
+        
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.teacherId!);
+        if (enrollment == null)
+        {
+            throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");
+        }
+
+        return enrollment;
+    }
+
+    public async Task<string> getEnrollmentGuideMetric(string teacherId)
+    {
+        var teacher = await daoFactory.teacherDao!.getById(teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
+        
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.teacherId!);
+        
+        return enrollment.studentList!.Count.ToString();
     }
 }
