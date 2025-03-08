@@ -15,8 +15,8 @@ public static class DtoMapper
     
     public static TeacherDto mapToDto(this TeacherEntity value) => new(value);
 
-    public static EnrollmentGuideDto mapToDto(this EnrollmentEntity value, List<model.secretary.SubjectEntity> list)
-        => new(value, list);
+    public static EnrollmentGuideDto mapToDto(this EnrollmentEntity? value)
+        => new(value);
 
 
     public static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
