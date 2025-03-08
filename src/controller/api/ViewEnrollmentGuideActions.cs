@@ -7,6 +7,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy/teachers/{teacherId}/enrollments/guide")]
 [ApiController]
+[ResourceAuthorizer("teacher:enrollment:guide")]
 public class ViewEnrollmentGuideActions(ViewEnrollmentGuideController controller) : ActionsBase
 {
     /// <summary>Returns enrollment guide by teacher.</summary>
@@ -16,11 +17,10 @@ public class ViewEnrollmentGuideActions(ViewEnrollmentGuideController controller
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentGuide([Required] string teacherId)
     {
         var result = await controller.getEnrollmentGuideByTeacherId(teacherId);
-        return Ok(result);
+        return Ok(result.mapToDto());
     }
     
     /// <summary>Returns enrollment guide metrics by teacher.</summary>
@@ -30,7 +30,6 @@ public class ViewEnrollmentGuideActions(ViewEnrollmentGuideController controller
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("metrics")]
-    [ResourceAuthorizer("teacher:read")]
     public async Task<IActionResult> getMetricOfEnrollmentGuide([Required] string teacherId)
     {
         var result = await controller.getEnrollmentGuideMetric(teacherId);
