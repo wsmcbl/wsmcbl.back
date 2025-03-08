@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.academy;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -20,7 +21,7 @@ public class ViewEnrollmentGuideActions(ViewEnrollmentGuideController controller
     public async Task<IActionResult> getEnrollmentGuide([Required] string teacherId)
     {
         var result = await controller.getEnrollmentGuideByTeacherId(teacherId);
-        return Ok(result.mapToDto());
+        return Ok(result.mapToDto([]));
     }
     
     /// <summary>Returns enrollment guide metrics by teacher.</summary>
