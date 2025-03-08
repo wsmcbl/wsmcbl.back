@@ -62,6 +62,7 @@ builder.Services.AddTransient<ApplyArrearsController>();
 builder.Services.AddTransient<CreateBackupsController>();
 builder.Services.AddTransient<UpdateRolesController>();
 builder.Services.AddTransient<GenerateStudentRegisterController>();
+builder.Services.AddTransient<ViewEnrollmentGuideController>();
 
 var app = builder.Build();
 
