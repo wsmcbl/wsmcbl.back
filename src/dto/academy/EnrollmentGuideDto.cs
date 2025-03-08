@@ -7,14 +7,20 @@ public class EnrollmentGuideDto
     public EnrollmentDto enrollment { get; set; }
     public List<SubjectDto> subjectList { get; set; }
 
-    public EnrollmentGuideDto(EnrollmentEntity enrollment, List<model.secretary.SubjectEntity> subjectList)
+    public EnrollmentGuideDto(EnrollmentEntity? enrollment)
     {
-        this.enrollment = new EnrollmentDto(enrollment);
-
-        this.subjectList = [];
-        foreach (var item in subjectList)
+        subjectList = [];
+        
+        if (enrollment == null)
         {
-            this.subjectList.Add(new SubjectDto(item));
+            this.enrollment = new EnrollmentDto();
+            return;
+        }
+        
+        this.enrollment = new EnrollmentDto(enrollment);
+        foreach (var item in enrollment.subjectList!)
+        {
+            subjectList.Add(new SubjectDto(item.secretarySubject!));
         }
     }
 }

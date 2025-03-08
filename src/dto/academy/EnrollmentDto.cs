@@ -14,6 +14,17 @@ public class EnrollmentDto
 
     public List<BasicStudentDto> studentList { get; set; } = null!;
     public List<SubjectTeacherIdsDto> subjectList { get; set; } = null!;
+
+    public EnrollmentDto()
+    {
+        enrollmentId = string.Empty;
+        teacherId = string.Empty;
+        label = "Sin sección guida";
+        section = string.Empty;
+        schoolyear = string.Empty;
+        studentList = [];
+        subjectList = [];
+    }
     
     public EnrollmentDto(EnrollmentEntity entity)
     {
