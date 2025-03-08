@@ -10,15 +10,20 @@ public class ViewEnrollmentGuideController : BaseController
     {
     }
     
-    public async Task<EnrollmentEntity> getEnrollmentGuideByTeacherId(string teacherId)
+    public async Task<EnrollmentEntity?> getEnrollmentGuideByTeacherId(string teacherId)
     {
         var teacher = await daoFactory.teacherDao!.getById(teacherId);
         if (teacher == null)
         {
             throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
+
+        if (teacher.enrollment == null)
+        {
+            return null;
+        }
         
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.teacherId!);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.enrollment.enrollmentId!);
         if (enrollment == null)
         {
             throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");
@@ -35,7 +40,7 @@ public class ViewEnrollmentGuideController : BaseController
             throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
         
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.teacherId!);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.enrollment!.enrollmentId!);
         
         return enrollment.studentList!.Count.ToString();
     }
