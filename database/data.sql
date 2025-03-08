@@ -44,7 +44,8 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('debt:read', 'Ver deudas', 'accounting', 'Permission for reading debt.'),
        ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.'),
        ('grade:update', 'Modificar calificaciones', 'academy', 'Permission for update grades.'),
-       ('register:read', 'Leer padrón', 'secretary', 'Permission for reading student register.');
+       ('register:read', 'Ver padrón', 'secretary', 'Permission for reading student register.'),
+       ('teacher:enrollment:guide', 'Ver sección guidada', 'academy', 'Permission for reading enrollment guide (teacher).');
 
 -- Admin --
 -- There are permissions that do not correspond to this role, they are temporary --
@@ -66,7 +67,7 @@ WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read'
 -- Teacher --
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 4, p.permissionid FROM config.permission p
-WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update');
+WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update', 'teacher:enrollment:guide');
 
 -- Principal --
 INSERT INTO config.role_permission(roleid, permissionid)
