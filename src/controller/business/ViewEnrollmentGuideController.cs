@@ -19,7 +19,7 @@ public class ViewEnrollmentGuideController : BaseController
         }
 
         await teacher.setCurrentEnrollment(daoFactory.schoolyearDao!);
-        if (teacher.enrollment == null)
+        if (!teacher.hasCurrentEnrollment())
         {
             return null;
         }
