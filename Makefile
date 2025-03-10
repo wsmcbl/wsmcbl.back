@@ -51,7 +51,6 @@ remake: ## Stop, build and run the containers
 
 
 
-
 logs: ## Show all logs
 	docker-compose logs
 
@@ -59,16 +58,35 @@ api-bash: ## Entry api bash
 	 docker-compose exec api bash
 
 delete-containers: ## Remove all containers 
-	docker-compose down
 
-## --------------------------------------------------------------------------------------------------------------##
+
+
+
+
+
+restore-bash: 
+	docker exec -it database_restore bash
+
+build-restore:
+	docker build -t custom-base-image config/base
+	docker-compose -f docker-compose.restore.yml build
+
+run-restore:
+	docker-compose -f docker-compose.restore.yml up -d
+
+stop-restore:
+	docker-compose -f docker-compose.restore.yml stop
+
+restart-restore: 
+	$(MAKE) stop-restore && $(MAKE) run-restore	
+
+remake-restore:
+	$(MAKE) stop-restore && $(MAKE) build-restore && $(MAKE) run-restore
 
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
-	docker-compose down --volumes --remove-orphans
+	docker-compose -f docker-compose.yml -f docker-compose.restore.yml down --volumes --remove-orphans
 	docker system prune
 	docker network create app-network || true
-
-
 
 
 SONAR_TOKEN=$(shell echo $$SONAR_TOKEN)
