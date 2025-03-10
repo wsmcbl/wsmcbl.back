@@ -37,9 +37,6 @@ internal class AcademyContext
 
             entity.HasMany(d => d.subjectList).WithOne()
                 .HasForeignKey(d => d.enrollmentId);
-
-            entity.HasOne<TeacherEntity>().WithOne(e => e.enrollment)
-                .HasForeignKey<EnrollmentEntity>(e => e.teacherId);
         });
 
         modelBuilder.Entity<GradeEntity>(entity =>
@@ -165,6 +162,8 @@ internal class AcademyContext
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
+            
+            entity.HasMany(e => e.enrollmentList).WithOne().HasForeignKey(e => e.teacherId);
         });
     }
 }
