@@ -31,17 +31,4 @@ public class ViewEnrollmentGuideController : BaseController
 
         return enrollment;
     }
-
-    public async Task<string> getEnrollmentGuideMetric(string teacherId)
-    {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("TeacherEntity", teacherId);
-        }
-        
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.enrollment!.enrollmentId!);
-        
-        return enrollment.studentList!.Count.ToString();
-    }
 }
