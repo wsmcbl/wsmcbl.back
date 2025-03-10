@@ -39,10 +39,10 @@ public class StudentRegisterViewDto
         sex = value.sex;
         birthday = value.birthday.ToString("dd-MM-yyyy");
         age = value.getAge();
-        diseases = value.diseases;
-        address = value.address;
-        height = value.height;
-        weight = value.weight;
+        diseases = value.diseases.getOrDefault();
+        address = value.address.getOrDefault();
+        height = value.height ?? 0;
+        weight = value.weight ?? 0;
         tutor = value.tutor;
         phone = value.phone.getOrDefault();
         father = value.father.getOrDefault();
