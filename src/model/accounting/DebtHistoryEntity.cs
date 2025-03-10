@@ -47,9 +47,15 @@ public class DebtHistoryEntity
         {
             throw new ConflictException("The debt is already paid.");
         }
+
+        if (debtBalance > subAmount)
+        {
+            arrears = debtBalance - subAmount;
+            return;
+        }
         
-        subAmount = 0;
         arrears = 0;
+        subAmount = debtBalance;
     }
 
     public void restoreDebt(float value)
