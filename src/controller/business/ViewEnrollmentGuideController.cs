@@ -18,13 +18,13 @@ public class ViewEnrollmentGuideController : BaseController
             throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
 
-        var teacherEnrollment = await teacher.getCurrentEnrollment(daoFactory.schoolyearDao!);
-        if (teacherEnrollment == null)
+        await teacher.setCurrentEnrollment(daoFactory.schoolyearDao!);
+        if (teacher.enrollment == null)
         {
             return null;
         }
         
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacherEnrollment.enrollmentId!);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.getCurrentEnrollmentId());
         if (enrollment == null)
         {
             throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");

@@ -52,6 +52,8 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
             throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");
         }
 
+        await result.setCurrentEnrollment(daoFactory.schoolyearDao!);
+        
         return result;
     }
 }
