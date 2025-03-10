@@ -104,20 +104,26 @@ CREATE TRIGGER trg_update_debt_history_by_enroll_student AFTER insert ON academy
 CREATE OR REPLACE FUNCTION Accounting.update_debt_history_by_tariff_overdue()
     RETURNS TRIGGER AS $$
 BEGIN
-    WITH query_aux AS
-             (SELECT s.studentid, d.tariffid, round(new.amount*(1 - disc.amount)) as subtotal, new.late as islate
-              FROM accounting.debthistory d
-                       JOIN accounting.student s on s.studentid = d.studentid
-                       JOIN accounting.DiscountEducationalLevel disc ON disc.del = s.discountel
-              WHERE d.tariffid = new.tariffid and new.typeid = 1)
+    
+    IF (new.late = TRUE) THEN
 
-    UPDATE Accounting.DebtHistory dh
-    SET subamount = q.subtotal,
-        arrear = case when q.islate then round(q.subtotal*0.1) else 0.0 end
-    FROM query_aux as q
-    where dh.studentid = q.studentid and
-        dh.tariffid = q.tariffid;
+        WITH query_aux AS
+                 (SELECT s.studentid, d.tariffid, round(new.amount*(1 - disc.amount)) as subtotal, new.late as islate
+                  FROM accounting.debthistory d
+                           JOIN accounting.student s on s.studentid = d.studentid
+                           JOIN accounting.DiscountEducationalLevel disc ON disc.del = s.discountel
+                  WHERE d.tariffid = new.tariffid and new.typeid = 1)
 
+        UPDATE Accounting.DebtHistory dh
+        SET subamount = q.subtotal,
+            arrear = case when q.islate then round(q.subtotal*0.1) else 0.0 end
+        FROM query_aux as q
+        where dh.studentid = q.studentid and
+            dh.tariffid = q.tariffid and 
+            dh.ispaid = FALSE;
+
+    END IF;
+    
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

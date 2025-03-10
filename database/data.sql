@@ -9,10 +9,11 @@ values ('admin', 'Full system access.'),
        ('inspector', 'Access to the student incident module.');
 
 insert into config.user(roleid, name, secondname, surname, secondsurname, email, userstate, createdat, updatedat, password)
-values (4, 'Usuario', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
+values (4, 'Docente', 'por', 'Defecto', 'del sistema', 'user.default@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEBA+otefABAFYU//4mkRSCB+4Ehre7sDid871rFP7vW3snwji5+cxvjXsWUa1AasZw=='),
        (1, 'Kenny', 'Jordan', 'Tinoco', 'Cerda', 'kenny.tinoco@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEOKy+ElmYTF+ClhQ68aqO1TCREwarjQMzylachhHEo0/duwGTqkAf5IWQRQeNdEH+g=='),
-       (1, 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA=='),
-       (1, 'Thelma', null, 'Ríos', 'Zeas', 'thelma.rios@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEMexOu51jrRZOshRdeF0yZ5wm3HCcmvzJLuZI1aIeX1h4Mcfwx6BbHJMi+UyaZlUDA==');
+       (1, 'Admin', 'por', 'Defecto',null,'admin@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEB74WP4DVQ7eME5thSW/ObX5yiT0jyJKmv/vPC9lO3DEZFPzD5yO9s3AReuMfaLvxw=='),
+       (3, 'Ezequiel', 'De jesús', 'Urbina', 'Zeledón', 'ezequiel.urbina@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEK/ObbY+PMQMXK/Q2rqJQyZKPUwiZGPALh/Bww0t6j9gozilS/PVoYQfLo8eDoHmFA=='),
+       (3, 'Thelma', null, 'Ríos', 'Zeas', 'thelma.rios@cbl-edu.com', true, now(), now(),'AQAAAAIAAYagAAAAEMexOu51jrRZOshRdeF0yZ5wm3HCcmvzJLuZI1aIeX1h4Mcfwx6BbHJMi+UyaZlUDA==');
 
 
 
@@ -44,7 +45,8 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('debt:read', 'Ver deudas', 'accounting', 'Permission for reading debt.'),
        ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.'),
        ('grade:update', 'Modificar calificaciones', 'academy', 'Permission for update grades.'),
-       ('register:read', 'Leer padrón', 'secretary', 'Permission for reading student register.');
+       ('register:read', 'Ver padrón', 'secretary', 'Permission for reading student register.'),
+       ('teacher:enrollment:guide', 'Ver sección guidada', 'academy', 'Permission for reading enrollment guide (teacher).');
 
 -- Admin --
 -- There are permissions that do not correspond to this role, they are temporary --
@@ -66,7 +68,7 @@ WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read'
 -- Teacher --
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 4, p.permissionid FROM config.permission p
-WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update');
+WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'grade:update', 'teacher:enrollment:guide');
 
 -- Principal --
 INSERT INTO config.role_permission(roleid, permissionid)
@@ -101,10 +103,7 @@ values ('Mensualidad'),
 INSERT INTO Accounting.cashier(userid)
 SELECT u.userid FROM config.user u WHERE u.name = 'Ezequiel';
 
-INSERT INTO Accounting.cashier(userid)
-SELECT u.userid FROM config.user u WHERE u.name = 'Kenny';
-
-INSERT INTO academy.teacher(userid, isguide)
+INSERT INTO Academy.teacher(userid, isguide)
 SELECT u.userid, false
 FROM config.user u
-WHERE u.name = 'Usuario';
+WHERE u.name = 'Docente';
