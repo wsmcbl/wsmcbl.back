@@ -51,7 +51,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         content = content.ReplaceInLatexFormat("degree.value", grade!);
         content = content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
         content = content.ReplaceInLatexFormat("mined.id.value", entity.minedId ?? "N/A");
-        content = content.ReplaceInLatexFormat("student.age.value", getAge(entity.birthday));
+        content = content.ReplaceInLatexFormat("student.age.value", $"{entity.getAge()} años");
         content = content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
         content = content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
         content = content.ReplaceInLatexFormat("tutor.value", entity.tutor.name);
@@ -138,18 +138,4 @@ public class EnrollSheetLatexBuilder : LatexBuilder
 
     private static string getTextByBool(bool isSomething) => isSomething ? "Sí" : "No";
     private static string getTextBySex(bool sex) => sex ? "Hombre" : "Mujer";
-    
-    private static string getAge(DateOnly birthday)
-    {
-        var today = DateOnly.FromDateTime(DateTime.Today);
-
-        var age = today.Year - birthday.Year;
-
-        if (today < birthday.AddYears(age))
-        {
-            age--;
-        }
-
-        return $"{age.ToString()} años";
-    }
 }
