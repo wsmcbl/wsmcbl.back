@@ -68,6 +68,20 @@ public class StudentEntity
         var random = new Random();
         accessToken = random.Next(100000, 1000000).ToString();
     }
+
+    public int getAge()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+
+        var age = today.Year - birthday.Year;
+        
+        if (today < new DateOnly(today.Year, birthday.Month, birthday.Day))
+        {
+            age--;
+        }
+
+        return age;
+    }
     
     public class Builder
     {

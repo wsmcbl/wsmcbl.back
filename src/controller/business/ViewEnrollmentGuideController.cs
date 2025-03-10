@@ -18,30 +18,18 @@ public class ViewEnrollmentGuideController : BaseController
             throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
 
+        await teacher.setCurrentEnrollment(daoFactory.schoolyearDao!);
         if (teacher.enrollment == null)
         {
             return null;
         }
         
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.enrollment.enrollmentId!);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.getCurrentEnrollmentId());
         if (enrollment == null)
         {
             throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");
         }
 
         return enrollment;
-    }
-
-    public async Task<string> getEnrollmentGuideMetric(string teacherId)
-    {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("TeacherEntity", teacherId);
-        }
-        
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.enrollment!.enrollmentId!);
-        
-        return enrollment.studentList!.Count.ToString();
     }
 }
