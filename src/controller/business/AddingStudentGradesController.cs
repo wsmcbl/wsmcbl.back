@@ -44,6 +44,8 @@ public class AddingStudentGradesController : BaseController
             throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
 
+        await result.setCurrentEnrollment(daoFactory.schoolyearDao!);
+
         return result;
     }
 }
