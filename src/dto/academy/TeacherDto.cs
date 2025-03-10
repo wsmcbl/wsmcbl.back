@@ -19,12 +19,12 @@ public class TeacherDto
         enrollmentId = string.Empty;
         enrollmentLabel = "Sin asignar";
 
-        if (entity.enrollment == null)
+        if (!entity.hasCurrentEnrollment())
         {
             return;
         }
         
-        enrollmentId = entity.enrollment.enrollmentId!;
-        enrollmentLabel = entity.enrollment.label;
+        enrollmentId = entity.getCurrentEnrollmentId();
+        enrollmentLabel = entity.getEnrollmentLabel();
     }
 }
