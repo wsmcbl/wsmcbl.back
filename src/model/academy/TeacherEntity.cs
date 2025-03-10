@@ -1,4 +1,5 @@
 using wsmcbl.src.model.config;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.model.academy;
 
@@ -35,5 +36,17 @@ public class TeacherEntity
     {
         enrollment = null;
         isGuide = false;
+    }
+
+    public async Task<EnrollmentEntity?> getCurrentEnrollment(ISchoolyearDao schoolyearDao)
+    {
+        if (enrollmentList == null)
+        {
+            return null;
+        }
+        
+        var current = await schoolyearDao.getCurrentOrNew();
+
+        return enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
     }
 }
