@@ -29,6 +29,11 @@ public class TeacherEntity
     {
         return user.fullName();
     }
+    
+    public string getCurrentEnrollmentId()
+    {
+        return enrollment!.enrollmentId!;
+    }
 
     public string getEnrollmentLabel()
     {
