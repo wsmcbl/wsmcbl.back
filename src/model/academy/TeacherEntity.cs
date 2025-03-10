@@ -8,11 +8,9 @@ public class TeacherEntity
     public Guid userId { get; set; }
     public string? teacherId { get; set; }
     public bool isGuide { get; set; }
-    
+
     public UserEntity user { get; set; } = null!;
-    
-    public EnrollmentEntity? enrollment { get; set; }
-    
+
     public List<EnrollmentEntity>? enrollmentList { get; set; }
 
     public TeacherEntity()
@@ -29,7 +27,14 @@ public class TeacherEntity
     {
         return user.fullName();
     }
-    
+
+    private EnrollmentEntity? enrollment { get; set; }
+
+    public bool hasCurrentEnrollment()
+    {
+        return enrollment != null;
+    }
+
     public string getCurrentEnrollmentId()
     {
         return enrollment!.enrollmentId!;
@@ -45,7 +50,7 @@ public class TeacherEntity
         enrollment = null;
         isGuide = false;
     }
-    
+
     public async Task setCurrentEnrollment(ISchoolyearDao schoolyearDao)
     {
         if (enrollmentList == null)
@@ -53,7 +58,7 @@ public class TeacherEntity
             enrollment = null;
             return;
         }
-        
+
         var current = await schoolyearDao.getCurrentOrNew();
         enrollment = enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
     }
