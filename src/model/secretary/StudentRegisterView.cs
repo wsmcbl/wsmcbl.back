@@ -10,8 +10,8 @@ public class StudentRegisterView
     public DateOnly birthday { get; set; }
     public string? diseases { get; set; }
     public string address { get; set; } = null!;
-    public float height { get; set; }
-    public float weight { get; set; }
+    public float? height { get; set; }
+    public float? weight { get; set; }
     public string tutor { get; set; } = null!;
     public string? phone { get; set; }
     public string? father { get; set; }
