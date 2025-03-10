@@ -40,18 +40,6 @@ public class TeacherEntity
         enrollment = null;
         isGuide = false;
     }
-
-    public async Task<EnrollmentEntity?> getCurrentEnrollment(ISchoolyearDao schoolyearDao)
-    {
-        if (enrollmentList == null)
-        {
-            return null;
-        }
-        
-        var current = await schoolyearDao.getCurrentOrNew();
-
-        return enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
-    }
     
     public async Task setCurrentEnrollment(ISchoolyearDao schoolyearDao)
     {
