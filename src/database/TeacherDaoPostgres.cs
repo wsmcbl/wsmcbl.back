@@ -11,7 +11,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
     {
         return await entities
             .Include(e => e.user)
-            .Include(e => e.enrollment)
+            .Include(e => e.enrollmentList)
             .FirstOrDefaultAsync(e => e.teacherId == id);
     }
 
