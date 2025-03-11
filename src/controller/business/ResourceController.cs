@@ -39,44 +39,6 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         return await daoFactory.mediaDao!.getAll();
     }
 
-    public async Task<List<string>> getTutorList()
-    {
-        var list = await daoFactory.studentTutorDao!.getAll();
-
-        return list.Where(e => e.isValidPhone())
-            .Select(e => e.phone[..8]).Distinct().ToList();
-    }
-
-    public async Task deleteStudentById(string studentId)
-    {
-        var debtList = await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
-        if(debtList.Count == 0)
-            throw new EntityNotFoundException("Student", studentId);
-        
-        await daoFactory.debtHistoryDao!.deleteRange(debtList);
-        
-        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
-        if (accountingStudent == null)
-        {
-            throw new EntityNotFoundException("Student", studentId);
-        }
-        
-        await daoFactory.accountingStudentDao!.deleteAsync(accountingStudent);
-        
-        var student = await daoFactory.studentDao!.getById(studentId);
-        if(student == null)
-            throw new EntityNotFoundException("Student", studentId);
-
-        await daoFactory.studentDao!.deleteAsync(student);
-        
-        var result = await daoFactory.studentTutorDao!.hasOnlyOneStudent(student.tutorId);
-        if (result)
-            return;
-
-        var tutor = await daoFactory.studentTutorDao!.getById(student.tutorId);
-        await daoFactory.studentTutorDao!.deleteAsync(tutor!);
-    }
-
     public async Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to)
     {
         return await daoFactory.transactionDao!.getTransactionInvoiceViewList(from, to);

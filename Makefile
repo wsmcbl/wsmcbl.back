@@ -58,30 +58,27 @@ api-bash: ## Entry api bash
 	 docker-compose exec api bash
 
 delete-containers: ## Remove all containers 
+	docker-compose down
 
 
 
 
 
+pg-restore:
+	docker exec -i database_restore pg_restore -U $(DATABASE_USER) -d $(DATABASE_NAME) /backup.sql
 
-restore-bash: 
-	docker exec -it database_restore bash
+restore.stop:
+	docker-compose -f docker-compose.restore.yml stop
 
-build-restore:
+restore.build:
 	docker build -t custom-base-image config/base
 	docker-compose -f docker-compose.restore.yml build
 
-run-restore:
-	docker-compose -f docker-compose.restore.yml up -d
-
-stop-restore:
-	docker-compose -f docker-compose.restore.yml stop
-
-restart-restore: 
-	$(MAKE) stop-restore && $(MAKE) run-restore	
+restore.run:
+	docker-compose -f docker-compose.restore.yml up -d	
 
 remake-restore:
-	$(MAKE) stop-restore && $(MAKE) build-restore && $(MAKE) run-restore
+	$(MAKE) restore.stop && $(MAKE) restore.build && $(MAKE) restore.run
 
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
 	docker-compose -f docker-compose.yml -f docker-compose.restore.yml down --volumes --remove-orphans
