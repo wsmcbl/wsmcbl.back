@@ -37,17 +37,4 @@ public static class TestDtoInputGenerator
             semester = 2
         };
     }
-    
-    public static TariffToCreateDto aTariffDto()
-    {
-        return new TariffToCreateDto
-        {
-            schoolYear = "sch001",
-            amount = 700,
-            concept = "Pago febrero",
-            type = 1,
-            modality = 1,
-            dueDate = new DateOnlyDto(2024,1,1)
-        };
-    }
 }
