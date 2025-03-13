@@ -28,8 +28,10 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         if (withProperties)
         {
             query = query.Include(e => e.exchangeRate)
-                .Include(e => e.semesterList)
-                .Include(e => e.degreeList)
+                .Include(e => e.semesterList)!
+                .ThenInclude(e => e.partialList)
+                .Include(e => e.degreeList)!
+                .ThenInclude(e => e.subjectList)
                 .Include(e => e.tariffList);
         }
 
