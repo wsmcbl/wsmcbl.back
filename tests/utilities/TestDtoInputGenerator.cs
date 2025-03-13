@@ -28,18 +28,6 @@ public static class TestDtoInputGenerator
         };
     }
     
-    
-    public static DegreeToCreateDto aGradeDto()
-    {
-        return new DegreeToCreateDto()
-        {
-            label = "5to",
-            schoolYear = "sch01",
-            modality = "primaria",
-            subjects = []
-        };
-    }
-    
     public static SubjectToCreateDto aSubjectDto()
     {
         return new SubjectToCreateDto

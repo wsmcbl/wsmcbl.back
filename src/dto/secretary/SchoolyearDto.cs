@@ -18,7 +18,7 @@ public class SchoolyearDto
 
     public List<PartialDto>? partialList { get; set; }
     
-    public List<DegreeToCreateDto>? degreeList { get; set; }
+    public List<DegreeSubjectDto>? degreeList { get; set; }
     
     public List<TariffToCreateDto>? tariffList { get; set; }
 
