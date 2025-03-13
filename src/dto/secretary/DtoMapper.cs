@@ -20,7 +20,6 @@ public static class DtoMapper
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
     private static BasicDegreeDto mapToBasicDto(this DegreeEntity degree) => new(degree);
-    private static BasicSchoolYearDto mapToBasicDto(this SchoolYearEntity schoolYear) => new(schoolYear);
     private static BasicEnrollmentDto mapToBasicDto(this model.academy.EnrollmentEntity enrollment) => new(enrollment);
     
     public static List<BasicStudentDto> mapToListBasicDto(this List<StudentView> list)
@@ -35,8 +34,8 @@ public static class DtoMapper
     public static List<StudentParentDto> mapListToDto(this IList<StudentParentEntity> list)
         => !list.Any() ? [] : list.Select(item => item.mapToDto()).ToList();
 
-    public static List<BasicSchoolYearDto> mapListToDto(this IEnumerable<SchoolYearEntity> list)
-        => list.Select(e => e.mapToBasicDto()).ToList();
+    public static List<BasicSchoolyearDto> mapListToDto(this IEnumerable<SchoolYearEntity> list)
+        => list.Select(e => new BasicSchoolyearDto(e)).ToList();
 
     public static List<TariffToCreateDto> mapListToDto(this IEnumerable<model.accounting.TariffEntity> tariffs)
         => tariffs.Select(e => new TariffToCreateDto(e)).ToList();
