@@ -32,20 +32,21 @@ public class SchoolyearDto
 
         exchangeRate = schoolyear.exchangeRate;
 
-        setPartialList(schoolyear.partialList);
+        setPartialList(schoolyear.semesterList!);
         setDegreeList(schoolyear.degreeList);
         setTariffList(schoolyear.tariffList);
     }
 
-    private void setPartialList(List<PartialEntity>? list)
+    private void setPartialList(List<SemesterEntity>? list)
     {
-        if (list == null || list.Count == 0)
-        {
-            partialList = [];
-            return;
-        }
+        partialList = [];
+        
+        if (list == null) return;
 
-        partialList = list.mapListToDto();
+        foreach (var item in list)
+        {
+            partialList.AddRange(item.partialList!.mapListToDto());
+        }
     }
 
     private void setDegreeList(List<DegreeEntity>? list)
