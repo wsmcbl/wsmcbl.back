@@ -6,10 +6,10 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary", "cashier","teacher", "principal")] // Temporal
-[Route("secretary/configurations/schoolyears")]
+[Route("secretary/schoolyears")]
+[ResourceAuthorizer("schoolyear:read")]
 [ApiController]
-public class CreateSchoolyearActions(UpdateOfficialEnrollmentController controller) : ControllerBase
+public class CreateSchoolyearActions(CreateSchoolyearController controller) : ControllerBase
 {
     /// <summary>Returns the search results based on the provided query.</summary>
     /// <param name="q">
