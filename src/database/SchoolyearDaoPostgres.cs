@@ -20,28 +20,9 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         return result;
     }
     
-    public async Task<SchoolyearEntity> getCurrent(bool withProperties = true)
+    public async Task<SchoolyearEntity> getCurrent()
     {
-        var year = DateTime.Today.Year.ToString();
-        var query = entities.Where(e => e.label == year);
-        
-        if (withProperties)
-        {
-            query = query.Include(e => e.exchangeRate)
-                .Include(e => e.semesterList)!
-                .ThenInclude(e => e.partialList)
-                .Include(e => e.degreeList)!
-                .ThenInclude(e => e.subjectList)
-                .Include(e => e.tariffList);
-        }
-
-        var result = await query.FirstOrDefaultAsync();
-        if (result == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (SchoolyearEntity) with label ({year}) not found.");
-        }
-        
-        return result;
+        return await getByLabel(DateTime.Now.Year);
     }
     
     private static int newOrCurrentLabel() => DateTime.Today.Month > 10 ? DateTime.Today.Year + 1 : DateTime.Today.Year;
@@ -50,7 +31,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     {
         try
         {
-            return await getCurrent(false);
+            return await getCurrent();
         }
         catch (EntityNotFoundException)
         {
@@ -70,7 +51,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
         catch (EntityNotFoundException)
         {
-            return await getCurrent(false);
+            return await getCurrent();
         }
         catch (Exception)
         {

@@ -120,7 +120,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
     public async Task createRegistrationDebtByStudent(StudentEntity student)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         var tariff = await daoFactory.tariffDao!.getRegistrationTariff(schoolyear.id!, student.educationalLevel);
  
         var debt = new DebtHistoryEntity(student.studentId!, tariff)
