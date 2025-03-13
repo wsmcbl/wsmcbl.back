@@ -99,7 +99,7 @@ public class CreateSchoolyearController: BaseController
     {
         var entity = new ExchangeRateEntity
         {
-            schoolyear = schoolyear.id!,
+            schoolyearId = schoolyear.id!,
             value = 0
         };
         
