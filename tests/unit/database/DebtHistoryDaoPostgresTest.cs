@@ -143,7 +143,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new DebtHistoryDaoPostgres(context);
@@ -158,7 +158,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
     public async Task getGeneralBalance_EmptyDebList_ReturnsFloatArray()
     {
         context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new DebtHistoryDaoPostgres(context);

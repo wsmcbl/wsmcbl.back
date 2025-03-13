@@ -14,7 +14,7 @@ public class SchoolYearDaoPostgresTest
         schoolyear.label = year.ToString();
         var context = TestDbContext.getInMemory();
         
-        context.Set<SchoolYearEntity>().Add(schoolyear);
+        context.Set<SchoolyearEntity>().Add(schoolyear);
         await context.SaveChangesAsync();
         
         var sut = new SchoolyearDaoPostgres(context);
@@ -35,7 +35,7 @@ public class SchoolYearDaoPostgresTest
         var result = await sut.getOrCreateNew();
 
         Assert.NotNull(result);
-        Assert.IsType<SchoolYearEntity>(result);
+        Assert.IsType<SchoolyearEntity>(result);
 
         Assert.True(result.isActive);
         Assert.NotNull(result.label);

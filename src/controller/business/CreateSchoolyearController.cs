@@ -10,23 +10,23 @@ public class CreateSchoolyearController: BaseController
 {
     public CreateSchoolyearController(DaoFactory daoFactory) : base(daoFactory)
     {
-        schoolyear = new SchoolYearEntity();
+        schoolyear = new SchoolyearEntity();
     }
     
-    public async Task<List<SchoolYearEntity>> getSchoolyearList()
+    public async Task<List<SchoolyearEntity>> getSchoolyearList()
     {
         return await daoFactory.schoolyearDao!.getAll();
     }
 
-    private SchoolYearEntity schoolyear { get; set; }
-    public SchoolYearEntity getSchoolyearCreated() => schoolyear;
+    private SchoolyearEntity schoolyear { get; set; }
+    public SchoolyearEntity getSchoolyearCreated() => schoolyear;
     
     public async Task createSchoolyear()
     {
         schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
     }
 
-    public async Task<SchoolYearEntity> getSchoolyearById(string schoolyearId)
+    public async Task<SchoolyearEntity> getSchoolyearById(string schoolyearId)
     {
         var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();

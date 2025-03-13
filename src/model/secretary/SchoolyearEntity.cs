@@ -3,7 +3,7 @@ using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.model.secretary;
 
-public class SchoolYearEntity
+public class SchoolyearEntity
 {
     public string? id { get; set; }
     public string label { get; set; } = null!;

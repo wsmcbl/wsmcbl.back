@@ -71,9 +71,9 @@ public class TestEntityGenerator
     }
 
 
-    public static SchoolYearEntity aSchoolYear()
+    public static SchoolyearEntity aSchoolYear()
     {
-        return new SchoolYearEntity
+        return new SchoolyearEntity
         {
             id = "sch001",
             label = DateTime.Now.Year.ToString(),
@@ -83,7 +83,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<SchoolYearEntity> aSchoolYearList()
+    public static List<SchoolyearEntity> aSchoolYearList()
     {
         return [aSchoolYear()];
     }

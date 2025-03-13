@@ -22,7 +22,7 @@ public class SchoolyearDto
     
     public List<TariffToCreateDto>? tariffList { get; set; }
 
-    public SchoolyearDto(SchoolYearEntity schoolyear)
+    public SchoolyearDto(SchoolyearEntity schoolyear)
     {
         schoolyearId = schoolyear.id!;
         label = schoolyear.label;

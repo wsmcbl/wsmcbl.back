@@ -31,7 +31,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
 
         context = TestDbContext.getInMemory();
         context.Set<TariffEntity>().AddRange(list);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -46,7 +46,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     public async Task getOverdueList_EmptyList()
     {
         context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -64,7 +64,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -79,7 +79,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     public async Task getListByStudent_EmptyList()
     {
         context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
