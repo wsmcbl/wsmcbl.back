@@ -28,18 +28,6 @@ public static class TestDtoInputGenerator
         };
     }
     
-    
-    public static DegreeToCreateDto aGradeDto()
-    {
-        return new DegreeToCreateDto()
-        {
-            label = "5to",
-            schoolYear = "sch01",
-            modality = "primaria",
-            subjects = []
-        };
-    }
-    
     public static SubjectToCreateDto aSubjectDto()
     {
         return new SubjectToCreateDto
@@ -47,19 +35,6 @@ public static class TestDtoInputGenerator
             name = "Lengua y Literatura",
             isMandatory = true,
             semester = 2
-        };
-    }
-    
-    public static TariffToCreateDto aTariffDto()
-    {
-        return new TariffToCreateDto
-        {
-            schoolYear = "sch001",
-            amount = 700,
-            concept = "Pago febrero",
-            type = 1,
-            modality = 1,
-            dueDate = new DateOnlyDto(2024,1,1)
         };
     }
 }
