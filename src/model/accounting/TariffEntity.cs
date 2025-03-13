@@ -6,7 +6,7 @@ namespace wsmcbl.src.model.accounting;
 public class TariffEntity
 {
     public int tariffId { get; set; }
-    public string? schoolYear { get; set; }
+    public string? schoolyearId { get; set; }
     public string concept { get; set; }  = null!;
     public float amount { get; set; }
     public DateOnly? dueDate { get; set; }
@@ -18,9 +18,9 @@ public class TariffEntity
     {
     }
     
-    public TariffEntity(TariffDataEntity tariffData, string schoolYear)
+    public TariffEntity(TariffDataEntity tariffData, string schoolyearId)
     {
-        this.schoolYear = schoolYear;
+        this.schoolyearId = schoolyearId;
         type = tariffData.typeId;
         concept = tariffData.concept;
         amount = tariffData.amount;

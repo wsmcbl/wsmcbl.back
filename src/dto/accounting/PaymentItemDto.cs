@@ -29,7 +29,7 @@ public class PaymentItemDto
         concept = entity.tariff.concept;
         amount = entity.tariff.amount;
         itPaidLate = entity.tariff.isLate;
-        schoolYear = entity.tariff.schoolYear!;
+        schoolYear = entity.tariff.schoolyearId!;
         arrears = entity.arrears;
         subTotal = entity.amount;
         debtBalance = entity.getDebtBalance();

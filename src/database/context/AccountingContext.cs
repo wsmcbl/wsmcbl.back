@@ -119,7 +119,7 @@ internal class AccountingContext
             entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
-            entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
