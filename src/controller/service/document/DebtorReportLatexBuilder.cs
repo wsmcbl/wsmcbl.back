@@ -37,7 +37,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
     {
         if (value == 1)
         {
-            return (decimal)studentList.Where(e => e.schoolyearId == aDegree!.schoolYear)
+            return (decimal)studentList.Where(e => e.schoolyearId == aDegree!.schoolyearId)
                 .Sum(item => item.total);
         }
 
@@ -56,7 +56,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return "\\begin{center}\n\\textbf{\\large No hay deudores}\n\\end{center}\n";
         }
         
-        var std = studentList.First(e => e.schoolyearId == aDegree!.schoolYear);
+        var std = studentList.First(e => e.schoolyearId == aDegree!.schoolyearId);
         var body = $"\\textbf{{Año lectivo {std.schoolyear}}} \\hfill\\textbf{{Total:}} C\\$ {getTotal(1):N2}";
         body += "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
         body +=
@@ -89,7 +89,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
     
     private string getFromOtherSchoolyear()
     {
-        var list = studentList.Where(e => e.schoolyearId != aDegree!.schoolYear).ToList();
+        var list = studentList.Where(e => e.schoolyearId != aDegree!.schoolyearId).ToList();
         if (list.Count == 0)
         {
             return string.Empty;

@@ -3,7 +3,7 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.model.secretary;
 
-public class SchoolYearEntityTest
+public class SchoolyearEntityTest
 {
     [Fact]
     public void setTariffDataList_ShouldSetTariffDataList_WhenDataIsProvide()
@@ -11,7 +11,7 @@ public class SchoolYearEntityTest
         var tariffDataList = new List<TariffDataEntity>{ TestEntityGenerator.aTariffData() };
         tariffDataList[0].dueDate = new DateOnly(2020, 1, 1);
         
-        var sut = new SchoolYearEntity
+        var sut = new SchoolyearEntity
         {
             label = DateTime.Now.Year.ToString()
         };

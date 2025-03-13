@@ -26,7 +26,7 @@ internal class SecretaryContext
                 .HasDefaultValueSql("secretary.generate_degree_id()")
                 .HasColumnName("degreeid");
             entity.Property(e => e.label).HasColumnName("label");
-            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
             entity.Property(e => e.tag).HasColumnName("tag");
@@ -38,25 +38,23 @@ internal class SecretaryContext
                 .HasForeignKey(d => d.degreeId);
         });
 
-        modelBuilder.Entity<SchoolYearEntity>(entity =>
+        modelBuilder.Entity<SchoolyearEntity>(entity =>
         {
             entity.HasKey(e => e.id).HasName("schoolyear_pkey");
 
             entity.ToTable("schoolyear", "secretary");
 
-            entity.Ignore(e => e.degreeList);
-            entity.Ignore(e => e.tariffList);
-
-            entity.Property(e => e.id)
-                .HasMaxLength(15)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("secretary.generate_schoolyear_id()")
-                .HasColumnName("schoolyearid");
+            entity.Property(e => e.id).ValueGeneratedOnAdd()
+                .HasDefaultValueSql("secretary.generate_schoolyear_id()").HasColumnName("schoolyearid");
 
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
+            
+            entity.HasMany(e => e.degreeList).WithOne().HasForeignKey(e => e.schoolyearId);
+            entity.HasMany(e => e.tariffList).WithOne().HasForeignKey(e => e.schoolyearId);
+            entity.HasMany(e => e.semesterList).WithOne().HasForeignKey(e => e.schoolyearId);
         });
 
         modelBuilder.Entity<StudentEntity>(entity =>

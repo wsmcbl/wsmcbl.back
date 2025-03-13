@@ -71,9 +71,9 @@ public class TestEntityGenerator
     }
 
 
-    public static SchoolYearEntity aSchoolYear()
+    public static SchoolyearEntity aSchoolYear()
     {
-        return new SchoolYearEntity
+        return new SchoolyearEntity
         {
             id = "sch001",
             label = DateTime.Now.Year.ToString(),
@@ -83,7 +83,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<SchoolYearEntity> aSchoolYearList()
+    public static List<SchoolyearEntity> aSchoolYearList()
     {
         return [aSchoolYear()];
     }
@@ -126,7 +126,7 @@ public class TestEntityGenerator
             degreeId = degreeId,
             label = "11vo",
             educationalLevel = "secundaria",
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             enrollmentList = [],
             subjectList = [aSubject()],
             tag = "01"
@@ -199,7 +199,7 @@ public class TestEntityGenerator
             concept = "pago mes de abril",
             isLate = true,
             educationalLevel = 1,
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             type = 1,
             dueDate = new DateOnly(2024,1,1)
         };
@@ -214,7 +214,7 @@ public class TestEntityGenerator
             concept = "Pago excursion",
             isLate = true,
             educationalLevel = 1,
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             type = 2
         };
     }

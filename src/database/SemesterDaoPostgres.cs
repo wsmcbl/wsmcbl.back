@@ -12,6 +12,6 @@ public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<S
         DaoFactory daoFactory = new DaoFactoryPostgres(context);
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
         
-        return await entities.Where(e => e.schoolyear == schoolyear.id).AsNoTracking().ToListAsync();
+        return await entities.Where(e => e.schoolyearId == schoolyear.id).AsNoTracking().ToListAsync();
     }
 }
