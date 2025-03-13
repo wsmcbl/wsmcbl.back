@@ -56,7 +56,7 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
         context.Set<SchoolyearEntity>().Add(schoolyear);
 
         var degree = TestEntityGenerator.aDegree("dgr001");
-        degree.schoolYear = schoolyear.id!;
+        degree.schoolyearId = schoolyear.id!;
         context.Set<DegreeEntity>().Add(degree);
         await context.SaveChangesAsync();
         

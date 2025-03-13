@@ -26,7 +26,7 @@ internal class SecretaryContext
                 .HasDefaultValueSql("secretary.generate_degree_id()")
                 .HasColumnName("degreeid");
             entity.Property(e => e.label).HasColumnName("label");
-            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
             entity.Property(e => e.tag).HasColumnName("tag");
@@ -52,7 +52,7 @@ internal class SecretaryContext
             entity.Property(e => e.label).HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
             
-            entity.HasMany(e => e.degreeList).WithOne().HasForeignKey(e => e.schoolYear);
+            entity.HasMany(e => e.degreeList).WithOne().HasForeignKey(e => e.schoolyearId);
             entity.HasMany(e => e.tariffList).WithOne().HasForeignKey(e => e.schoolYear);
             entity.HasMany(e => e.semesterList).WithOne().HasForeignKey(e => e.schoolyear);
         });
