@@ -31,7 +31,7 @@ public class CreateSchoolyearController: BaseController
         var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
-        var result = await daoFactory.schoolyearDao!.getById(schoolyearId);
+        var result = await daoFactory.schoolyearDao!.getById(schoolyearId, true);
         if (result == null)
         {
             throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
