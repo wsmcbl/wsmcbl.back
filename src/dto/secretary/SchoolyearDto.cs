@@ -1,22 +1,29 @@
+using wsmcbl.src.dto.management;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class SchoolYearDto
+public class SchoolyearDto
 {
-    public string id { get; set; }
+    public string schoolyearId { get; set; }
     public string label { get; set; }
     public DateOnly startDate { get; set; }
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
+
+    public ExchangeRateEntity? exchangeRate { get; set; }
+
+    public List<PartialDto>? partialList { get; set; }
+    
     public List<DegreeToCreateDto>? degreeList { get; set; }
+    
     public List<TariffToCreateDto>? tariffList { get; set; }
 
-    public SchoolYearDto(SchoolYearEntity schoolYear)
+    public SchoolyearDto(SchoolYearEntity schoolYear)
     {
-        id = schoolYear.id!;
+        schoolyearId = schoolYear.id!;
         label = schoolYear.label;
         isActive = schoolYear.isActive;
         startDate = schoolYear.startDate;

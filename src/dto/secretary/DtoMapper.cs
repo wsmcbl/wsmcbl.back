@@ -15,7 +15,7 @@ public static class DtoMapper
     public static StudentTutorDto mapToDto(this StudentTutorEntity tutor) => new(tutor);
     private static StudentParentDto mapToDto(this StudentParentEntity parent) => new(parent);
     public static StudentMeasurementsDto mapToDto(this StudentMeasurementsEntity? measurements) => new(measurements);
-    public static SchoolYearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
+    public static SchoolyearDto mapToDto(this SchoolYearEntity schoolYear) => new(schoolYear);
 
 
     private static BasicDegreeToEnrollDto mapToBasicEnrollDto(this DegreeEntity degree) => new(degree);
