@@ -10,23 +10,23 @@ public class CreateSchoolyearController: BaseController
 {
     public CreateSchoolyearController(DaoFactory daoFactory) : base(daoFactory)
     {
-        schoolyear = new SchoolYearEntity();
+        schoolyear = new SchoolyearEntity();
     }
     
-    public async Task<List<SchoolYearEntity>> getSchoolyearList()
+    public async Task<List<SchoolyearEntity>> getSchoolyearList()
     {
         return await daoFactory.schoolyearDao!.getAll();
     }
 
-    private SchoolYearEntity schoolyear { get; set; }
-    public SchoolYearEntity getSchoolyearCreated() => schoolyear;
+    private SchoolyearEntity schoolyear { get; set; }
+    public SchoolyearEntity getSchoolyearCreated() => schoolyear;
     
     public async Task createSchoolyear()
     {
         schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
     }
 
-    public async Task<SchoolYearEntity> getSchoolyearById(string schoolyearId)
+    public async Task<SchoolyearEntity> getSchoolyearById(string schoolyearId)
     {
         var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
@@ -87,7 +87,7 @@ public class CreateSchoolyearController: BaseController
             isActive = false,
             label = semester == 1 ? "I Semester" : "II Semester",
             semester = semester,
-            schoolyear = schoolyear.id!,
+            schoolyearId = schoolyear.id!,
             partialList = partialList.Where(e => e.semester == semester).ToList()
         };
         result.updateDeadLine();
@@ -99,7 +99,7 @@ public class CreateSchoolyearController: BaseController
     {
         var entity = new ExchangeRateEntity
         {
-            schoolyear = schoolyear.id!,
+            schoolyearId = schoolyear.id!,
             value = 0
         };
         

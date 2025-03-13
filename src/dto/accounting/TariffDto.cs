@@ -17,7 +17,7 @@ public class TariffDto
     public TariffDto(TariffEntity entity)
     {
         tariffId = entity.tariffId;
-        schoolYear = entity.schoolYear!;
+        schoolYear = entity.schoolyearId!;
         concept = entity.concept;
         amount = entity.amount;
         dueDate = entity.getDateString();

@@ -7,7 +7,7 @@ public class DegreeEntity
 {
     public string? degreeId { get; set; }
     public string label { get; set; } = null!;
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public int quantity { get; set; }
     public string educationalLevel { get; set; } = null!;
     public string tag { get; set; } = null!;
@@ -33,9 +33,9 @@ public class DegreeEntity
         }
     }
 
-    public DegreeEntity(DegreeDataEntity degreeData, string schoolYear)
+    public DegreeEntity(DegreeDataEntity degreeData, string schoolyearId)
     {
-        this.schoolYear = schoolYear;
+        this.schoolyearId = schoolyearId;
         label = degreeData.label;
         educationalLevel = degreeData.getModalityName();
         tag = degreeData.tag;
@@ -64,7 +64,7 @@ public class DegreeEntity
         enrollmentList = [];
         for (var i = 0; i < quantityToCreate; i++)
         {
-            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, $"{label} {typeLabels[i]}", $"0{i}");
+            var enrollment = new EnrollmentEntity(degreeId!, schoolyearId, $"{label} {typeLabels[i]}", $"0{i}");
             enrollment.setSubjectList(subjectList);
             enrollmentList.Add(enrollment);
         }

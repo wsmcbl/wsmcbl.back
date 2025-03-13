@@ -22,7 +22,7 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
 
         var tariffs = await entities
             .AsNoTracking()
-            .Where(e => e.schoolYear == schoolyear.id)
+            .Where(e => e.schoolyearId == schoolyear.id)
             .Where(e => e.type == Const.TARIFF_MONTHLY)
             .Where(e => e.isLate == false)
             .ToListAsync();
@@ -49,7 +49,7 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
     public async Task<TariffEntity> getRegistrationTariff(string schoolyearId, int level)
     {
         var tariff = await entities
-            .FirstOrDefaultAsync(e => e.schoolYear == schoolyearId
+            .FirstOrDefaultAsync(e => e.schoolyearId == schoolyearId
                                       && e.educationalLevel == level && e.type == Const.TARIFF_REGISTRATION);
         
         if (tariff == null)
@@ -65,7 +65,7 @@ public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffD
     {
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
         return await entities
-            .Where(e => e.schoolYear == schoolyear.id && e.type == Const.TARIFF_REGISTRATION)
+            .Where(e => e.schoolyearId == schoolyear.id && e.type == Const.TARIFF_REGISTRATION)
             .ToListAsync();
     }
 

@@ -14,7 +14,7 @@ public class DegreeForCreateEnrollmentDto
     {
         degreeId = degree.degreeId;
         label = degree.label;
-        schoolYear = degree.schoolYear;
+        schoolYear = degree.schoolyearId;
         quantity = degree.quantity;
         
         enrollmentList = [];
