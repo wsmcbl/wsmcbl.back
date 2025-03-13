@@ -6,30 +6,59 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateSchoolyearController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class CreateSchoolyearController: BaseController
 {
-    public async Task<List<SchoolYearEntity>> getSchoolYearList()
+    public CreateSchoolyearController(DaoFactory daoFactory) : base(daoFactory)
+    {
+        schoolyear = new SchoolYearEntity();
+    }
+    
+    public async Task<List<SchoolYearEntity>> getSchoolyearList()
     {
         return await daoFactory.schoolyearDao!.getAll();
     }
+
+    private SchoolYearEntity schoolyear { get; set; }
+    public SchoolYearEntity getSchoolyearCreated() => schoolyear;
     
-    public async Task<SchoolYearEntity> getNewSchoolYearInformation()
+    public async Task createSchoolyear()
+    {
+        schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+    }
+
+    public async Task<SchoolYearEntity> getSchoolyearById(string schoolyearId)
     {
         var degreeList = await daoFactory.degreeDataDao!.getAll();
         var tariffList = await daoFactory.tariffDataDao!.getAll();
 
-        var newSchoolYear = await daoFactory.schoolyearDao!.getOrCreateNew();
-        newSchoolYear.setDegreeDataList(degreeList);
-        newSchoolYear.setTariffDataList(tariffList);
+        var result = await daoFactory.schoolyearDao!.getById(schoolyearId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
+        }
+        
+        result.setDegreeDataList(degreeList);
+        result.setTariffDataList(tariffList);
 
-        return newSchoolYear;
+        return result;
     }
 
-    public async Task<SchoolYearEntity> createSchoolYear(List<DegreeEntity> degreeList, List<TariffEntity> tariffList)
+    public async Task createSubjectList()
     {
-        if (degreeList.Count == 0 || tariffList.Count == 0)
+        var degreeList = new List<DegreeEntity>();
+        if (degreeList.Count == 0)
         {
-            throw new BadRequestException("DegreeList or TariffList are not valid");
+            throw new BadRequestException("DegreeList are not valid");
+        }
+
+        await daoFactory.degreeDao!.createRange(degreeList);
+    }
+
+    public async Task createTariffList(List<TariffEntity> tariffList)
+    {
+        if (tariffList.Count == 0)
+        {
+            throw new BadRequestException("TariffList are not valid");
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
@@ -38,30 +67,27 @@ public class CreateSchoolyearController(DaoFactory daoFactory) : BaseController(
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
         }
 
-        await daoFactory.degreeDao!.createRange(degreeList);
         await daoFactory.tariffDao!.createRange(tariffList);
-
-        return await daoFactory.schoolyearDao!.getOrCreateNew();
     }
-    
-    public async Task createSemester(SchoolYearEntity schoolyear, List<PartialEntity> partialList)
+
+    public async Task createPartialList(List<PartialEntity> partialList)
     {
-        var firstSemester = createSemester(schoolyear.id!, 1, partialList);
-        var secondSemester = createSemester(schoolyear.id!, 2, partialList);
+        var firstSemester = createSemester(1, partialList);
+        var secondSemester = createSemester(2, partialList);
         
         daoFactory.semesterDao!.create(firstSemester);
         daoFactory.semesterDao!.create(secondSemester);
         await daoFactory.execute();
     }
-
-    private static SemesterEntity createSemester(string schoolyearId, int semester, IEnumerable<PartialEntity> partialList)
+    
+    private SemesterEntity createSemester(int semester, IEnumerable<PartialEntity> partialList)
     {
         var result = new SemesterEntity
         {
             isActive = false,
             label = semester == 1 ? "I Semester" : "II Semester",
             semester = semester,
-            schoolyear = schoolyearId,
+            schoolyear = schoolyear.id!,
             partialList = partialList.Where(e => e.semester == semester).ToList()
         };
         result.updateDeadLine();
@@ -69,12 +95,12 @@ public class CreateSchoolyearController(DaoFactory daoFactory) : BaseController(
         return result;
     }
 
-    public async Task createExchangeRate(SchoolYearEntity schoolyear, double exchangeRate)
+    public async Task createExchangeRate()
     {
         var entity = new ExchangeRateEntity
         {
             schoolyear = schoolyear.id!,
-            value = exchangeRate
+            value = 0
         };
         
         daoFactory.exchangeRateDao!.create(entity);
