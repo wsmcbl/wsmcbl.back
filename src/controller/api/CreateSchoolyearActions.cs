@@ -41,7 +41,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> createSchoolyear(SchoolYearToCreateDto dto)
+    public async Task<IActionResult> createSchoolyear(SchoolyearToCreateDto dto)
     {
         await controller.createSchoolyear();
         await controller.createPartialList(dto.getPartialList());

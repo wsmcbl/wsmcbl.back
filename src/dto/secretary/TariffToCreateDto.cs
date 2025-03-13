@@ -6,12 +6,11 @@ namespace wsmcbl.src.dto.secretary;
 
 public class TariffToCreateDto : IBaseDto<TariffEntity>
 {
-    [Required] public string schoolYear { get; set; } = null!;
     [Required] public string concept { get; set; } = null!;
     [JsonRequired] public float amount { get; set; }
     public DateOnlyDto? dueDate { get; set; }
     [JsonRequired] public int type { get; set; }
-    [JsonRequired] public int modality { get; set; }
+    [JsonRequired] public int educationalLevel { get; set; }
 
     public TariffToCreateDto()
     {
@@ -19,11 +18,10 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
 
     public TariffToCreateDto(TariffEntity tariff)
     {
-        schoolYear = tariff.schoolYear!;
         concept = tariff.concept;
         amount = tariff.amount;
         type = tariff.type;
-        modality = tariff.educationalLevel;
+        educationalLevel = tariff.educationalLevel;
 
         if (tariff.dueDate != null)
         {
@@ -35,11 +33,10 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
     {
         var tariff = new TariffEntity
         {
-            schoolYear = schoolYear,
             concept = concept,
             amount = amount,
             type = type,
-            educationalLevel = modality
+            educationalLevel = educationalLevel
         };
 
         if (dueDate != null)
