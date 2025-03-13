@@ -78,8 +78,11 @@ internal class AccountingContext
             entity.ToTable("exchangerate", "accounting");
 
             entity.Property(e => e.rateId).HasColumnName("rateid");
-            entity.Property(e => e.schoolyear).HasColumnName("value");
-            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("value");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
+            
+            entity.HasOne<model.secretary.SchoolyearEntity>().WithOne(e => e.exchangeRate)
+                .HasForeignKey<ExchangeRateEntity>(e => e.schoolyearId);
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -116,7 +119,7 @@ internal class AccountingContext
             entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
-            entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });

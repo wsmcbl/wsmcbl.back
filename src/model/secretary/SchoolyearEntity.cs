@@ -1,8 +1,9 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.model.secretary;
 
-public class SchoolYearEntity
+public class SchoolyearEntity
 {
     public string? id { get; set; }
     public string label { get; set; } = null!;
@@ -10,18 +11,10 @@ public class SchoolYearEntity
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<DegreeEntity>? degreeList { get; private set; }
-    public List<TariffEntity>? tariffList { get; private set; }
-
-    public void setGradeList(List<DegreeEntity> list)
-    {
-        degreeList = list;
-    }
-    
-    public void setTariffList(List<TariffEntity> list)
-    {
-        tariffList = list;
-    }
+    public List<DegreeEntity>? degreeList { get; set; }
+    public List<TariffEntity>? tariffList { get; set; }
+    public ExchangeRateEntity? exchangeRate { get; set; }
+    public List<SemesterEntity>? semesterList { get; set; }
     
     public void setDegreeDataList(List<DegreeDataEntity> list)
     {

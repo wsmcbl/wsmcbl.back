@@ -82,7 +82,7 @@ internal class AcademyContext
             entity.ToTable("semester", "academy");
 
             entity.Property(e => e.semesterId).HasColumnName("semesterid");
-            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");

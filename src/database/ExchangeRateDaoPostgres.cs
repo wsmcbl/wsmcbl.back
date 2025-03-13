@@ -13,7 +13,7 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
         var daoFactory = new DaoFactoryPostgres(context);
         var schoolyear = await daoFactory.schoolyearDao.getNewOrCurrent();
 
-        var result = await entities.FirstOrDefaultAsync(e => e.schoolyear == schoolyear.id);
+        var result = await entities.FirstOrDefaultAsync(e => e.schoolyearId == schoolyear.id);
         if (result == null)
         {
             throw new EntityNotFoundException("Exchange rate not found");

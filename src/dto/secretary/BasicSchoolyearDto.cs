@@ -11,7 +11,7 @@ public class BasicSchoolyearDto
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
 
-    public BasicSchoolyearDto(SchoolYearEntity schoolyear)
+    public BasicSchoolyearDto(SchoolyearEntity schoolyear)
     {
         schoolyearId = schoolyear.id!;
         label = schoolyear.label;

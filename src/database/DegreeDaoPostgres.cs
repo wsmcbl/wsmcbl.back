@@ -63,7 +63,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
         var list = await entities
-            .Where(e => e.schoolYear == schoolyear.id)
+            .Where(e => e.schoolyearId == schoolyear.id)
             .Include(e => e.enrollmentList)
             .ToListAsync();
 
@@ -72,7 +72,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
 
     public async Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment = false)
     {
-        var query = entities.Where(e => e.schoolYear == schoolyearId);
+        var query = entities.Where(e => e.schoolyearId == schoolyearId);
 
         if (withStudentsInEnrollment)
         {
@@ -117,6 +117,6 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
             EF.Functions.Like(e.degreeId!, value) ||
             EF.Functions.Like(e.label.ToLower(), value) ||
             EF.Functions.Like(e.educationalLevel.ToLower(), value) ||
-            EF.Functions.Like(e.schoolYear, value));
+            EF.Functions.Like(e.schoolyearId, value));
     }
 }
