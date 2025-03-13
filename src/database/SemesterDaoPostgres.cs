@@ -10,7 +10,7 @@ public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<S
     public async Task<List<SemesterEntity>> getListInCurrentSchoolyear()
     {
         DaoFactory daoFactory = new DaoFactoryPostgres(context);
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent(false);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         
         return await entities.Where(e => e.schoolyearId == schoolyear.id).AsNoTracking().ToListAsync();
     }
