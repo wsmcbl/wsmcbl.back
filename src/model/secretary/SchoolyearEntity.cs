@@ -15,16 +15,6 @@ public class SchoolyearEntity
     public List<TariffEntity>? tariffList { get; set; }
     public ExchangeRateEntity? exchangeRate { get; set; }
     public List<SemesterEntity>? semesterList { get; set; }
-
-    public void setDegreeList(List<DegreeEntity> list)
-    {
-        degreeList = list;
-    }
-    
-    public void setTariffList(List<TariffEntity> list)
-    {
-        tariffList = list;
-    }
     
     public void setDegreeDataList(List<DegreeDataEntity> list)
     {
