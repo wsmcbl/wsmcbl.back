@@ -87,7 +87,7 @@ public class CreateSchoolyearController: BaseController
             isActive = false,
             label = semester == 1 ? "I Semester" : "II Semester",
             semester = semester,
-            schoolyear = schoolyear.id!,
+            schoolyearId = schoolyear.id!,
             partialList = partialList.Where(e => e.semester == semester).ToList()
         };
         result.updateDeadLine();

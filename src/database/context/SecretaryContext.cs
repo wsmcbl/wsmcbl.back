@@ -54,7 +54,7 @@ internal class SecretaryContext
             
             entity.HasMany(e => e.degreeList).WithOne().HasForeignKey(e => e.schoolyearId);
             entity.HasMany(e => e.tariffList).WithOne().HasForeignKey(e => e.schoolyearId);
-            entity.HasMany(e => e.semesterList).WithOne().HasForeignKey(e => e.schoolyear);
+            entity.HasMany(e => e.semesterList).WithOne().HasForeignKey(e => e.schoolyearId);
         });
 
         modelBuilder.Entity<StudentEntity>(entity =>
