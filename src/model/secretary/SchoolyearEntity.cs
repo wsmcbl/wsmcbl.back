@@ -14,7 +14,7 @@ public class SchoolyearEntity
     public List<DegreeEntity>? degreeList { get; set; }
     public List<TariffEntity>? tariffList { get; set; }
     public ExchangeRateEntity? exchangeRate { get; set; }
-    public List<PartialEntity>? partialList { get; set; }
+    public List<SemesterEntity>? semesterList { get; set; }
 
     public void setDegreeList(List<DegreeEntity> list)
     {
