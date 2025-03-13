@@ -11,55 +11,45 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateSchoolyearActions(CreateSchoolyearController controller) : ControllerBase
 {
-    /// <summary>Returns the search results based on the provided query.</summary>
-    /// <param name="q">
-    /// The query string in the format "value".
-    /// Supported values are "all" and "new".
-    /// </param>
-    /// <response code="200">Returns the search results.</response>
-    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
+    /// <summary>Returns the list of schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getSchoolYears([Required] [FromQuery] string q)
+    public async Task<IActionResult> getSchoolyearList()
     {
-        switch (q.ToLower())
-        {
-            case "all":
-            {
-                var list = await controller.getSchoolYearList();
-                return Ok(list.mapListToDto());
-            }
-            case "new":
-            {
-                var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-                return Ok(schoolyearBaseInformation.mapToDto());
-            }
-            default:
-                return NotFound("Unknown type value.");
-        }
+        var list = await controller.getSchoolyearList();
+        return Ok(list.mapListToDto());
     }
-
-
+    
+    /// <summary>Returns the list of schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("{schoolyearId}")]
+    public async Task<IActionResult> getSchoolyearById([Required] string schoolyearId)
+    {
+        return Ok(await controller.getSchoolyearById(schoolyearId));
+    }
+    
     /// <summary>Create new schoolyear.</summary>
-    /// <remarks>
-    /// Property semester in partialList can be 1 or 2.
-    /// Property exchangeRate can be double.
-    /// </remarks>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
+    public async Task<IActionResult> createSchoolyear(SchoolYearToCreateDto dto)
     {
-        var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
-        await controller.createSemester(result, dto.getPartialList());
-        await controller.createExchangeRate(result, dto.exchangeRate);
+        await controller.createSchoolyear();
+        await controller.createPartialList(dto.getPartialList());
+        await controller.createSubjectList();
+        await controller.createTariffList(dto.getTariffList());
+        await controller.createExchangeRate();
 
-        return CreatedAtAction(null, result);
+        return CreatedAtAction(null, controller.getSchoolyearCreated());
     }
 
     /// <summary>Create new subject catalog.</summary>
@@ -86,5 +76,5 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     {
         var result = await controller.createTariff(dto.toEntity());
         return CreatedAtAction(null, result);
-    }    
+    }
 }
