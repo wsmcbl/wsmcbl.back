@@ -22,20 +22,23 @@ public class SchoolyearDaoPostgres(PostgresContext context)
     
     public async Task<SchoolyearEntity> getCurrent(bool withProperties = true)
     {
-        var result = await getByLabel(DateTime.Today.Year);
-        if (!withProperties)
+        var year = DateTime.Today.Year.ToString();
+        var query = entities.Where(e => e.label == year);
+        
+        if (withProperties)
         {
-            return result;
+            query = query.Include(e => e.exchangeRate)
+                .Include(e => e.semesterList)
+                .Include(e => e.degreeList)
+                .Include(e => e.tariffList);
+        }
+
+        var result = await query.FirstOrDefaultAsync();
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"Entity of type (SchoolyearEntity) with label ({year}) not found.");
         }
         
-        var gradeList = await context.Set<DegreeEntity>()
-            .Where(e => e.schoolyearId == result.id).ToListAsync();
-        result.setDegreeList(gradeList);
-
-        var tariffList = await context.Set<TariffEntity>()
-            .Where(e => e.schoolyearId == result.id).ToListAsync();
-        result.setTariffList(tariffList);
-
         return result;
     }
     
