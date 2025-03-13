@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.model.secretary;
@@ -12,6 +13,8 @@ public class SchoolYearEntity
     
     public List<DegreeEntity>? degreeList { get; private set; }
     public List<TariffEntity>? tariffList { get; private set; }
+    public ExchangeRateEntity? exchangeRate { get; set; }
+    public List<PartialEntity>? partialList { get; set; }
 
     public void setGradeList(List<DegreeEntity> list)
     {
