@@ -1,4 +1,5 @@
 using wsmcbl.src.dto.management;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 
@@ -21,35 +22,51 @@ public class SchoolyearDto
     
     public List<TariffToCreateDto>? tariffList { get; set; }
 
-    public SchoolyearDto(SchoolYearEntity schoolYear)
+    public SchoolyearDto(SchoolYearEntity schoolyear)
     {
-        schoolyearId = schoolYear.id!;
-        label = schoolYear.label;
-        isActive = schoolYear.isActive;
-        startDate = schoolYear.startDate;
-        deadLine = schoolYear.deadLine;
+        schoolyearId = schoolyear.id!;
+        label = schoolyear.label;
+        isActive = schoolyear.isActive;
+        startDate = schoolyear.startDate;
+        deadLine = schoolyear.deadLine;
 
-        degreeList = getGrades(schoolYear.degreeList);
-        tariffList = getTariffs(schoolYear.tariffList);
+        exchangeRate = schoolyear.exchangeRate;
+
+        setPartialList(schoolyear.partialList);
+        setDegreeList(schoolyear.degreeList);
+        setTariffList(schoolyear.tariffList);
     }
 
-    private static List<DegreeToCreateDto> getGrades(List<DegreeEntity>? list)
+    private void setPartialList(List<PartialEntity>? list)
     {
         if (list == null || list.Count == 0)
         {
-            return [];
+            partialList = [];
+            return;
         }
 
-        return list.mapListToDto();
+        partialList = list.mapListToDto();
     }
 
-    private static List<TariffToCreateDto> getTariffs(List<TariffEntity>? list)
+    private void setDegreeList(List<DegreeEntity>? list)
     {
         if (list == null || list.Count == 0)
         {
-            return [];
+            degreeList = [];
+            return;
         }
 
-        return list.mapListToDto();
+        degreeList = list.mapListToDto();
+    }
+
+    private void setTariffList(List<TariffEntity>? list)
+    {
+        if (list == null || list.Count == 0)
+        {
+            tariffList = [];
+            return;
+        }
+
+        tariffList = list.mapListToDto();
     }
 }
