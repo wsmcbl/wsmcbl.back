@@ -11,12 +11,12 @@ public class SchoolyearEntity
     public DateOnly deadLine { get; set; }
     public bool isActive { get; set; }
     
-    public List<DegreeEntity>? degreeList { get; private set; }
-    public List<TariffEntity>? tariffList { get; private set; }
+    public List<DegreeEntity>? degreeList { get; set; }
+    public List<TariffEntity>? tariffList { get; set; }
     public ExchangeRateEntity? exchangeRate { get; set; }
     public List<PartialEntity>? partialList { get; set; }
 
-    public void setGradeList(List<DegreeEntity> list)
+    public void setDegreeList(List<DegreeEntity> list)
     {
         degreeList = list;
     }

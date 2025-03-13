@@ -30,7 +30,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         
         var gradeList = await context.Set<DegreeEntity>()
             .Where(e => e.schoolYear == result.id).ToListAsync();
-        result.setGradeList(gradeList);
+        result.setDegreeList(gradeList);
 
         var tariffList = await context.Set<TariffEntity>()
             .Where(e => e.schoolYear == result.id).ToListAsync();
