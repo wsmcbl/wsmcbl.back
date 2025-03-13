@@ -9,6 +9,23 @@ namespace wsmcbl.src.database;
 public class SchoolyearDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SchoolyearEntity, string>(context), ISchoolyearDao
 {
+    public async Task<SchoolyearEntity?> getById(string schoolyearId, bool withProperty = false)
+    {  
+        var query = entities.Where(e => e.id == schoolyearId);
+        
+        if (withProperty)
+        {
+            query = query.Include(e => e.exchangeRate)
+                .Include(e => e.semesterList)!
+                .ThenInclude(e => e.partialList)
+                .Include(e => e.degreeList)!
+                .ThenInclude(e => e.subjectList)
+                .Include(e => e.tariffList);
+        }
+
+        return await query.FirstOrDefaultAsync();
+    }
+
     public async Task<SchoolyearEntity> getByLabel(int year)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.label == year.ToString());
