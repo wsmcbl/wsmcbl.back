@@ -55,48 +55,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
         var result = controller.getSchoolyearCreated();
         return CreatedAtAction(null, result.mapToDto());
     }
-
-    /// <summary>Returns subject catalog.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("subjects")]
-    [ResourceAuthorizer("schoolyear:read")]
-    public async Task<IActionResult> getSubjectList()
-    {
-        var result = await controller.getSubjectList();
-        return Ok(result);
-    }
-
-    /// <summary>Update subject.</summary>
-    /// <response code="200">If the resource is updated.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource not found.</response>
-    [HttpPut]
-    [Route("subjects/{subjectId:int}")]
-    [ResourceAuthorizer("schoolyear:read")]
-    public async Task<IActionResult> updateSubject(int subjectId, SubjectDataDto dto)
-    {
-        var result = await controller.updateSubject(dto.toEntity(subjectId));
-        return Ok(result);
-    }
-
-    /// <summary>Create new subject catalog.</summary>
-    /// <response code="201">If the resource is created.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
-    [HttpPost]
-    [Route("subjects")]
-    [ResourceAuthorizer("schoolyear:read")]
-    public async Task<IActionResult> createSubject(SubjectDataDto dto)
-    {
-        var result = await controller.createSubject(dto.toEntity());
-        return CreatedAtAction(null, result);
-    }
-
+    
     /// <summary>Create new tariff catalog.</summary>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
