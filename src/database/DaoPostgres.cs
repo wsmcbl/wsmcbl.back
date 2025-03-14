@@ -9,7 +9,7 @@ public class TariffDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffDataEntity, string>(context), ITariffDataDao;
 
 public class SubjectDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<SubjectDataEntity, string>(context), ISubjectDataDao;
+    : GenericDaoPostgres<SubjectDataEntity, int>(context), ISubjectDataDao;
 
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
