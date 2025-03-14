@@ -3,6 +3,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -112,5 +113,24 @@ public class CreateSchoolyearController: BaseController
         daoFactory.subjectDataDao!.create(subject);
         await daoFactory.execute();
         return subject;
+    }
+
+    public async Task<List<SubjectDataEntity>> getSubjectList()
+    {
+        return await daoFactory.subjectDataDao!.getAll();
+    }
+
+    public async Task<SubjectDataEntity> updateSubject(SubjectEntity value)
+    {
+        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectId!);
+        if (existedEntity == null)
+        {
+            throw new EntityNotFoundException("SubjectDataEntity", value.subjectId!);
+        }
+
+        existedEntity.initials = value.initials;
+        await daoFactory.execute();
+        
+        return existedEntity;
     }
 }
