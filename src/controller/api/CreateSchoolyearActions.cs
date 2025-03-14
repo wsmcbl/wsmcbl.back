@@ -75,9 +75,9 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("subjects/{subjectId}")]
+    [Route("subjects/{subjectId:int}")]
     [ResourceAuthorizer("schoolyear:read")]
-    public async Task<IActionResult> updateSubject(string subjectId, SubjectToCreateDto dto)
+    public async Task<IActionResult> updateSubject(int subjectId, SubjectDataDto dto)
     {
         var result = await controller.updateSubject(dto.toEntity(subjectId));
         return Ok(result);

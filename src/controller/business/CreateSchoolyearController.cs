@@ -120,12 +120,12 @@ public class CreateSchoolyearController: BaseController
         return await daoFactory.subjectDataDao!.getAll();
     }
 
-    public async Task<SubjectDataEntity> updateSubject(SubjectEntity value)
+    public async Task<SubjectDataEntity> updateSubject(SubjectDataEntity value)
     {
-        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectId!);
+        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId!);
         if (existedEntity == null)
         {
-            throw new EntityNotFoundException("SubjectDataEntity", value.subjectId!);
+            throw new EntityNotFoundException("SubjectDataEntity", value.subjectDataId.ToString());
         }
 
         existedEntity.initials = value.initials;
