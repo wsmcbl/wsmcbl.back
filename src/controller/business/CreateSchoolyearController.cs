@@ -28,30 +28,25 @@ public class CreateSchoolyearController: BaseController
 
     public async Task<SchoolyearEntity> getSchoolyearById(string schoolyearId)
     {
-        var degreeList = await daoFactory.degreeDataDao!.getAll();
-        var tariffList = await daoFactory.tariffDataDao!.getAll();
-
         var result = await daoFactory.schoolyearDao!.getById(schoolyearId, true);
         if (result == null)
         {
             throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
         }
-        
-        result.setDegreeDataList(degreeList);
-        result.setTariffDataList(tariffList);
 
         return result;
     }
 
     public async Task createSubjectList()
     {
-        var degreeList = new List<DegreeEntity>();
-        if (degreeList.Count == 0)
+        var list = await daoFactory.degreeDataDao!.getAll();
+        if (list.Count == 0)
         {
             throw new BadRequestException("DegreeList are not valid");
         }
-
-        await daoFactory.degreeDao!.createRange(degreeList);
+        
+        schoolyear.setDegreeDataList(list);
+        await daoFactory.degreeDao!.createRange(schoolyear.degreeList!);
     }
 
     public async Task createTariffList(List<TariffEntity> tariffList)
@@ -67,7 +62,9 @@ public class CreateSchoolyearController: BaseController
             throw new BadRequestException($"{tariffsNotValid} tariffs do not have a valid Amount.");
         }
 
-        await daoFactory.tariffDao!.createRange(tariffList);
+        schoolyear.setTariffList(tariffList);
+
+        await daoFactory.tariffDao!.createRange(schoolyear.tariffList);
     }
 
     public async Task createPartialList(List<PartialEntity> partialList)
@@ -97,14 +94,7 @@ public class CreateSchoolyearController: BaseController
 
     public async Task createExchangeRate()
     {
-        var entity = new ExchangeRateEntity
-        {
-            schoolyearId = schoolyear.id!,
-            value = 0
-        };
-        
-        daoFactory.exchangeRateDao!.create(entity);
-        await daoFactory.execute();
+        await schoolyear.createExchangeRate(daoFactory.exchangeRateDao);
     }
 
     public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
