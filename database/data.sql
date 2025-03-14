@@ -46,7 +46,10 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('teacher:read', 'Ver docentes', 'academy', 'Permission for reading teachers.'),
        ('grade:update', 'Modificar calificaciones', 'academy', 'Permission for update grades.'),
        ('register:read', 'Ver padrón', 'secretary', 'Permission for reading student register.'),
-       ('teacher:enrollment:guide', 'Ver sección guidada', 'academy', 'Permission for reading enrollment guide (teacher).');
+       ('teacher:enrollment:guide', 'Ver sección guidada', 'academy', 'Permission for reading enrollment guide (teacher).'),
+       ('schoolyear:create', 'Crear año lectivos', 'secretary', 'Permission for creations schoolyears.'),
+       ('schoolyear:update', 'Modificar año lectivos', 'secretary', 'Permission for update schoolyears.'),
+       ('schoolyear:read', 'Ver año lectivos', 'secretary', 'Permission for reading schoolyears.');
 
 -- Admin --
 -- There are permissions that do not correspond to this role, they are temporary --
@@ -57,7 +60,8 @@ SELECT 1, p.permissionid FROM config.permission p;
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 2, p.permissionid FROM config.permission p
 WHERE p.name in ('student:create', 'student:read', 'student:update', 'user:read', 'report:read', 'enrollment:create',
-                 'enrollment:update','enrollment:read','teacher:read', 'register:read');
+                 'enrollment:update','enrollment:read','teacher:read', 'register:read', 'schoolyear:create',
+                 'schoolyear:update', 'schoolyear:read');
 
 -- Cashier --
 INSERT INTO config.role_permission(roleid, permissionid)

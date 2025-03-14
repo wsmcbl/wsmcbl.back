@@ -18,24 +18,28 @@ public class SchoolyearEntity
     
     public void setDegreeDataList(List<DegreeDataEntity> list)
     {
-        degreeList = [];
-        foreach (var item in list)
+        degreeList = list.Select(e => new DegreeEntity(e, id!)).ToList();
+    }
+
+    public void setTariffList(List<TariffEntity> tariffEntities)
+    {
+        tariffList = [];
+        foreach (var item in tariffEntities)
         {
-            degreeList.Add(new DegreeEntity(item, id!));
+            item.schoolyearId = id!;
+            tariffList.Add(item);
         }
     }
 
-    public void setTariffDataList(List<TariffDataEntity> list)
+    public async Task createExchangeRate(IExchangeRateDao exchangeRateDao)
     {
-        tariffList = [];
-        foreach (var item in list)
+        exchangeRate = new ExchangeRateEntity
         {
-            if (item.dueDate != null)
-            {
-                item.dueDate = new DateOnly(int.Parse(label), item.dueDate.Value.Month, item.dueDate.Value.Day);   
-            }
-            
-            tariffList.Add(new TariffEntity(item, id!));
-        }
+            schoolyearId = id!,
+            value = 0
+        };
+        
+        exchangeRateDao.create(exchangeRate);
+        await exchangeRateDao.saveAsync();
     }
 }
