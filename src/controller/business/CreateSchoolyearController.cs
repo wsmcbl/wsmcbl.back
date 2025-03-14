@@ -64,7 +64,7 @@ public class CreateSchoolyearController: BaseController
 
         schoolyear.setTariffList(tariffList);
 
-        await daoFactory.tariffDao!.createRange(schoolyear.tariffList);
+        await daoFactory.tariffDao!.createRange(schoolyear.tariffList!);
     }
 
     public async Task createPartialList(List<PartialEntity> partialList)
@@ -75,6 +75,8 @@ public class CreateSchoolyearController: BaseController
         daoFactory.semesterDao!.create(firstSemester);
         daoFactory.semesterDao!.create(secondSemester);
         await daoFactory.execute();
+
+        schoolyear.semesterList = [firstSemester, secondSemester];
     }
     
     private SemesterEntity createSemester(int semester, IEnumerable<PartialEntity> partialList)
@@ -87,6 +89,7 @@ public class CreateSchoolyearController: BaseController
             schoolyearId = schoolyear.id!,
             partialList = partialList.Where(e => e.semester == semester).ToList()
         };
+        
         result.updateDeadLine();
 
         return result;
@@ -94,7 +97,7 @@ public class CreateSchoolyearController: BaseController
 
     public async Task createExchangeRate()
     {
-        await schoolyear.createExchangeRate(daoFactory.exchangeRateDao);
+        await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
 
     public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)

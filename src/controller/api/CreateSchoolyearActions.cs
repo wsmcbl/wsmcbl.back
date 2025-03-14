@@ -31,7 +31,8 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     [Route("{schoolyearId}")]
     public async Task<IActionResult> getSchoolyearById([Required] string schoolyearId)
     {
-        return Ok(await controller.getSchoolyearById(schoolyearId));
+        var result = await controller.getSchoolyearById(schoolyearId);
+        return Ok(result.mapToDto());
     }
     
     /// <summary>Create new schoolyear.</summary>
@@ -49,7 +50,8 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
         await controller.createTariffList(dto.getTariffList());
         await controller.createExchangeRate();
 
-        return CreatedAtAction(null, controller.getSchoolyearCreated());
+        var result = controller.getSchoolyearCreated();
+        return CreatedAtAction(null, result.mapToDto());
     }
 
     /// <summary>Create new subject catalog.</summary>
