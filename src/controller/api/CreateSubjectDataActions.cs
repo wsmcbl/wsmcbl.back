@@ -65,4 +65,16 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
         var result = await controller.getDegreeDataList();
         return Ok(result.Select(e => new { e.degreeDataId, e.label, e.tag, e.educationalLevel }));
     }
+
+    /// <summary>Returns subjectAreas list.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("subjects/areas")]
+    [ResourceAuthorizer("catalog:read")]
+    public async Task<IActionResult> getSubjectAreaList()
+    {
+        return Ok(await controller.getSubjectAreaList());
+    }
 }
