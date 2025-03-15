@@ -101,36 +101,16 @@ public class CreateSchoolyearController: BaseController
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
 
-    public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
+    public async Task<List<ExchangeRateEntity>> getExchangeRateList()
     {
-        daoFactory.tariffDataDao!.create(tariff);
-        await daoFactory.execute();
-        return tariff;
+        return await daoFactory.exchangeRateDao!.getAll();
     }
 
-    public async Task<SubjectDataEntity> createSubject(SubjectDataEntity subject)
+    public async Task updateCurrentExchangeRate(decimal value)
     {
-        daoFactory.subjectDataDao!.create(subject);
+        var currentRate = await daoFactory.exchangeRateDao!.getLastRate();
+        currentRate.value = value;
+
         await daoFactory.execute();
-        return subject;
-    }
-
-    public async Task<List<SubjectDataEntity>> getSubjectList()
-    {
-        return await daoFactory.subjectDataDao!.getAll();
-    }
-
-    public async Task<SubjectDataEntity> updateSubject(SubjectDataEntity value)
-    {
-        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId!);
-        if (existedEntity == null)
-        {
-            throw new EntityNotFoundException("SubjectDataEntity", value.subjectDataId.ToString());
-        }
-
-        existedEntity.initials = value.initials;
-        await daoFactory.execute();
-        
-        return existedEntity;
     }
 }
