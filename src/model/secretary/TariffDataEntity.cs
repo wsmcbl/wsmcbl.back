@@ -9,4 +9,14 @@ public class TariffDataEntity
     public DateOnly? dueDate { get; set; }
     public int educationalLevel { get; set; }
     public bool isActive { get; set; }
+
+    public void update(TariffDataEntity value)
+    {
+        typeId = value.typeId;
+        concept = value.concept;
+        amount = value.amount;
+        dueDate = value.dueDate;
+        educationalLevel = value.educationalLevel;
+        isActive = value.isActive;
+    }
 }
