@@ -47,7 +47,7 @@ public interface IStudentMeasurementsDao
 
 public interface IDegreeDataDao : IGenericDao<DegreeDataEntity, string>;
 
-public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, string>;
+public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, int>;
 
 public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
 

@@ -3,6 +3,7 @@ using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -100,17 +101,16 @@ public class CreateSchoolyearController: BaseController
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
 
-    public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
+    public async Task<List<ExchangeRateEntity>> getExchangeRateList()
     {
-        daoFactory.tariffDataDao!.create(tariff);
-        await daoFactory.execute();
-        return tariff;
+        return await daoFactory.exchangeRateDao!.getAll();
     }
 
-    public async Task<SubjectDataEntity> createSubject(SubjectDataEntity subject)
+    public async Task updateCurrentExchangeRate(decimal value)
     {
-        daoFactory.subjectDataDao!.create(subject);
+        var currentRate = await daoFactory.exchangeRateDao!.getLastRate();
+        currentRate.value = value;
+
         await daoFactory.execute();
-        return subject;
     }
 }
