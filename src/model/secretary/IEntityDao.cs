@@ -51,7 +51,7 @@ public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, int>;
 
 public interface ISubjectAreaDao : IGenericDao<SubjectAreaEntity, int>;
 
-public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
+public interface ITariffDataDao : IGenericDao<TariffDataEntity, int>;
 
 
 
