@@ -45,6 +45,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
         value.subjectDataId = subjectId;
-        return Ok(await controller.updateSubjectData(value));
+        await controller.updateSubjectData(value);
+        return Ok();
     }
 }
