@@ -6,7 +6,7 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("secretary/catalogs")]
+[Route("secretary/catalogs/tariffs")]
 [ApiController]
 public class CreateTariffDataActions(CreateTariffDataController controller) : ControllerBase
 {
@@ -15,7 +15,7 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("tariffs")]
+    [Route("")]
     [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> getTariffDataList()
     {
@@ -29,13 +29,11 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("tariffs/{tariffId:int}")]
+    [Route("{tariffId:int}")]
     [ResourceAuthorizer("catalog:update")]
     public async Task<IActionResult> updateTariffData(int tariffId, TariffDataDto dto)
     {
-        var value = dto.toEntity();
-        value.tariffDataId = tariffId;
-        await controller.updateTariffData(value);
+        await controller.updateTariffData(dto.toEntity(tariffId));
         return Ok();
     }
 
@@ -45,11 +43,23 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
-    [Route("tariffs")]
+    [Route("")]
     [ResourceAuthorizer("catalog:create")]
     public async Task<IActionResult> createTariffData(TariffDataDto dto)
     {
         var result = await controller.createTariffData(dto.toEntity());
         return CreatedAtAction(null, result);
+    }
+    
+    /// <summary>Returns tariff type list.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("types")]
+    [ResourceAuthorizer("catalog:read")]
+    public async Task<IActionResult> getTariffTypeList()
+    {
+        return Ok(await controller.getTariffTypeList());
     }
 }

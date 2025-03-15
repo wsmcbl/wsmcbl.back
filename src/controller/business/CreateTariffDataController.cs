@@ -17,7 +17,7 @@ public class CreateTariffDataController : BaseController
     
     public async Task updateTariffData(TariffDataEntity value)
     {
-        var exitingTariff = await daoFactory.tariffTypeDao!.getById(value.tariffDataId);
+        var exitingTariff = await daoFactory.tariffDataDao!.getById(value.tariffDataId);
         if (exitingTariff == null)
         {
             throw new EntityNotFoundException("TariffDataEntity", value.tariffDataId.ToString());
