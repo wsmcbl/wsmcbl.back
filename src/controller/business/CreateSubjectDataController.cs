@@ -46,6 +46,11 @@ public class CreateSubjectDataController : BaseController
 
     public async Task updateSubjectArea(int areaId, string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BadRequestException("Name must be not empty.");
+        }
+        
         var existingEntity = await daoFactory.subjectAreaDao!.getById(areaId);
         if (existingEntity == null)
         {
@@ -57,5 +62,19 @@ public class CreateSubjectDataController : BaseController
             existingEntity.name = name;
             await daoFactory.execute();
         }
+    }
+
+    public async Task<SubjectAreaEntity> createSubjectArea(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BadRequestException("Name must be not empty.");
+        }
+
+        var value = new SubjectAreaEntity{ name = name };
+        daoFactory.subjectAreaDao!.create(value);
+        await daoFactory.execute();
+        
+        return value;
     }
 }
