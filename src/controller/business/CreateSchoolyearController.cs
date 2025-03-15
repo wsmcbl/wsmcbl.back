@@ -100,4 +100,17 @@ public class CreateSchoolyearController: BaseController
     {
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
+
+    public async Task<List<ExchangeRateEntity>> getExchangeRateList()
+    {
+        return await daoFactory.exchangeRateDao!.getAll();
+    }
+
+    public async Task updateCurrentExchangeRate(decimal value)
+    {
+        var currentRate = await daoFactory.exchangeRateDao!.getLastRate();
+        currentRate.value = value;
+
+        await daoFactory.execute();
+    }
 }
