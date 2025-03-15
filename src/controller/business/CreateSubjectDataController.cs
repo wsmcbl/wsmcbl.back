@@ -24,13 +24,13 @@ public class CreateSubjectDataController : BaseController
     
     public async Task updateSubjectData(SubjectDataEntity value)
     {
-        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId);
-        if (existedEntity == null)
+        var existingEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId);
+        if (existingEntity == null)
         {
             throw new EntityNotFoundException("SubjectDataEntity", value.subjectDataId.ToString());
         }
 
-        existedEntity.update(value);
+        existingEntity.update(value);
         await daoFactory.execute();
     }
 
@@ -42,5 +42,20 @@ public class CreateSubjectDataController : BaseController
     public async Task<List<SubjectAreaEntity>> getSubjectAreaList()
     {
         return await daoFactory.subjectAreaDao!.getAll();
+    }
+
+    public async Task updateSubjectArea(int areaId, string name)
+    {
+        var existingEntity = await daoFactory.subjectAreaDao!.getById(areaId);
+        if (existingEntity == null)
+        {
+            throw new EntityNotFoundException("SubjectAreaEntity", areaId.ToString());
+        }
+
+        if (existingEntity.name != name)
+        {
+            existingEntity.name = name;
+            await daoFactory.execute();
+        }
     }
 }
