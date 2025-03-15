@@ -96,6 +96,6 @@ create table if not exists Accounting.ExchangeRate
 (
     rateId serial not null primary key,
     schoolyear varchar(20) not null,
-    value float not null,
+    value decimal(18, 2) not null,
     foreign key (schoolyear) references secretary.schoolyear
 );

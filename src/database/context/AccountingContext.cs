@@ -78,8 +78,8 @@ internal class AccountingContext
             entity.ToTable("exchangerate", "accounting");
 
             entity.Property(e => e.rateId).HasColumnName("rateid");
-            entity.Property(e => e.schoolyearId).HasColumnName("value");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
+            entity.Property(e => e.value).HasColumnType("decimal(18,2)").HasColumnName("value");
             
             entity.HasOne<model.secretary.SchoolyearEntity>().WithOne(e => e.exchangeRate)
                 .HasForeignKey<ExchangeRateEntity>(e => e.schoolyearId);
