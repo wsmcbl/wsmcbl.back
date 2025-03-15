@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.middleware;
@@ -76,5 +77,19 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     public async Task<IActionResult> getSubjectAreaList()
     {
         return Ok(await controller.getSubjectAreaList());
+    }
+    
+    /// <summary>Update subjectArea.</summary>
+    /// <response code="200">If the resource is updated.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("subjects/areas/{areaId:int}")]
+    [ResourceAuthorizer("catalog:update")]
+    public async Task<IActionResult> updateSubjectArea([Required] int areaId, [Required] [FromQuery] string name)
+    {
+        await controller.updateSubjectArea(areaId, name);
+        return Ok();
     }
 }
