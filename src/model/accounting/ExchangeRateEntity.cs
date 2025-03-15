@@ -4,5 +4,5 @@ public class ExchangeRateEntity
 {
     public int rateId { get; set; }
     public string schoolyearId { get; set; } = null!;
-    public double value { get; set; }
+    public decimal value { get; set; }
 }
