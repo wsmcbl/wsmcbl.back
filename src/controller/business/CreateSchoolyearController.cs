@@ -100,11 +100,4 @@ public class CreateSchoolyearController: BaseController
     {
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
-
-    public async Task<TariffDataEntity> createTariff(TariffDataEntity tariff)
-    {
-        daoFactory.tariffDataDao!.create(tariff);
-        await daoFactory.execute();
-        return tariff;
-    }
 }

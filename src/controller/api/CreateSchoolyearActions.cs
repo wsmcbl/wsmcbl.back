@@ -55,18 +55,4 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
         var result = controller.getSchoolyearCreated();
         return CreatedAtAction(null, result.mapToDto());
     }
-    
-    /// <summary>Create new tariff catalog.</summary>
-    /// <response code="201">If the resource is created.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
-    [HttpPost]
-    [Route("tariffs")]
-    [ResourceAuthorizer("schoolyear:read")]
-    public async Task<IActionResult> createTariff(TariffDataDto dto)
-    {
-        var result = await controller.createTariff(dto.toEntity());
-        return CreatedAtAction(null, result);
-    }
 }
