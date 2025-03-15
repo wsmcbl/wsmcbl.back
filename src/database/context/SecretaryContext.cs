@@ -227,11 +227,12 @@ internal class SecretaryContext
             entity.ToTable("tariffcatalog", "secretary");
 
             entity.Property(e => e.tariffDataId).HasColumnName("tariffcatalogid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
             entity.Property(e => e.concept).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.typeId).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
         });
 
         createView();

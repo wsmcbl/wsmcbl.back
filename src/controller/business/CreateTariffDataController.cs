@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -17,7 +18,7 @@ public class CreateTariffDataController : BaseController
     
     public async Task updateTariffData(TariffDataEntity value)
     {
-        var exitingTariff = await daoFactory.tariffTypeDao!.getById(value.tariffDataId);
+        var exitingTariff = await daoFactory.tariffDataDao!.getById(value.tariffDataId);
         if (exitingTariff == null)
         {
             throw new EntityNotFoundException("TariffDataEntity", value.tariffDataId.ToString());
@@ -32,5 +33,10 @@ public class CreateTariffDataController : BaseController
         daoFactory.tariffDataDao!.create(tariff);
         await daoFactory.execute();
         return tariff;
+    }
+
+    public async Task<List<TariffTypeEntity>> getTariffTypeList()
+    {
+        return await daoFactory.tariffTypeDao!.getAll();
     }
 }
