@@ -49,7 +49,11 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('teacher:enrollment:guide', 'Ver sección guidada', 'academy', 'Permission for reading enrollment guide (teacher).'),
        ('schoolyear:create', 'Crear año lectivos', 'secretary', 'Permission for creations schoolyears.'),
        ('schoolyear:update', 'Modificar año lectivos', 'secretary', 'Permission for update schoolyears.'),
-       ('schoolyear:read', 'Ver año lectivos', 'secretary', 'Permission for reading schoolyears.');
+       ('schoolyear:read', 'Ver año lectivos', 'secretary', 'Permission for reading schoolyears.'),
+       ('catalog:create', 'Crear catalogos', 'secretary', 'Permission for creations catalogs.'),
+       ('catalog:update', 'Modificar catalogos', 'secretary', 'Permission for update catalogs.'),
+       ('catalog:read', 'Ver catalogos', 'secretary', 'Permission for reading catalogs.');
+
 
 -- Admin --
 -- There are permissions that do not correspond to this role, they are temporary --
