@@ -31,8 +31,9 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     [HttpPut]
     [Route("tariffs/{tariffId:int}")]
     [ResourceAuthorizer("catalog:update")]
-    public async Task<IActionResult> updateTariffData(int tariffId, TariffDataEntity value)
+    public async Task<IActionResult> updateTariffData(int tariffId, TariffDataDto dto)
     {
+        var value = dto.toEntity();
         value.tariffDataId = tariffId;
         await controller.updateTariffData(value);
         return Ok();
