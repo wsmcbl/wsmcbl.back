@@ -129,6 +129,7 @@ create table if not exists Secretary.SubjectCatalog
     semester int not null,
     initials varchar(10) not null,
     number int not null,
+    isActive boolean not null,
     foreign key (degreeCatalogId) references Secretary.DegreeCatalog,
     foreign key (areaId) references Secretary.SubjectArea
 );
