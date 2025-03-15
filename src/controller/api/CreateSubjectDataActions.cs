@@ -38,7 +38,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
         return CreatedAtAction(null, result);
     }
 
-    /// <summary>Update subject.</summary>
+    /// <summary>Update subject data.</summary>
     /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="200">If the resource is updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
