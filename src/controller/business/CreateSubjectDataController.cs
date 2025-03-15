@@ -33,4 +33,14 @@ public class CreateSubjectDataController : BaseController
         existedEntity.update(value);
         await daoFactory.execute();
     }
+
+    public async Task<List<DegreeDataEntity>> getDegreeDataList()
+    {
+        return await daoFactory.degreeDataDao!.getAll();
+    }
+
+    public async Task<List<SubjectAreaEntity>> getSubjectAreaList()
+    {
+        return await daoFactory.subjectAreaDao!.getAll();
+    }
 }

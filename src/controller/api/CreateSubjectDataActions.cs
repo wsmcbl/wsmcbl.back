@@ -5,16 +5,16 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("secretary/catalogs/subjects")]
+[Route("secretary/catalogs")]
 [ApiController]
 public class CreateSubjectDataActions(CreateSubjectDataController controller) : ControllerBase
 {
-    /// <summary>Returns subject catalog.</summary>
+    /// <summary>Returns subject catalog list.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("")]
+    [Route("subjects")]
     [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> getSubjectDataList()
     {
@@ -28,7 +28,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
-    [Route("")]
+    [Route("subjects")]
     [ResourceAuthorizer("catalog:create")]
     public async Task<IActionResult> createSubjectData(SubjectDataEntity value)
     {
@@ -44,12 +44,37 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("{subjectId:int}")]
+    [Route("subjects/{subjectId:int}")]
     [ResourceAuthorizer("catalog:update")]
     public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
         value.subjectDataId = subjectId;
         await controller.updateSubjectData(value);
         return Ok();
+    }
+
+    /// <summary>Returns degree catalog list.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("degrees")]
+    [ResourceAuthorizer("catalog:read")]
+    public async Task<IActionResult> getDegreeDataList()
+    {
+        var result = await controller.getDegreeDataList();
+        return Ok(result.Select(e => new { e.degreeDataId, e.label, e.tag, e.educationalLevel }));
+    }
+
+    /// <summary>Returns subjectAreas list.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("subjects/areas")]
+    [ResourceAuthorizer("catalog:read")]
+    public async Task<IActionResult> getSubjectAreaList()
+    {
+        return Ok(await controller.getSubjectAreaList());
     }
 }
