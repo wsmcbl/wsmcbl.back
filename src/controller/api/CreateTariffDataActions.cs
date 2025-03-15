@@ -19,7 +19,7 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> createTariff(TariffDataDto dto)
     {
-        var result = await controller.createTariff(dto.toEntity());
+        var result = await controller.createTariffData(dto.toEntity());
         return CreatedAtAction(null, result);
     }
 }
