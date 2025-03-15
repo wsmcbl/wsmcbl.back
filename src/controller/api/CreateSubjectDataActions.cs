@@ -42,8 +42,9 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{subjectId:int}")]
-    public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataDto dto)
+    public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
-        return Ok(await controller.updateSubjectData(dto.toEntity(subjectId)));
+        value.subjectDataId = subjectId;
+        return Ok(await controller.updateSubjectData(value));
     }
 }
