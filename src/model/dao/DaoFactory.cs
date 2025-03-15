@@ -34,6 +34,7 @@ public abstract class DaoFactory
     
     public virtual IDegreeDataDao? degreeDataDao => null;
     public virtual ISubjectDataDao? subjectDataDao => null;
+    public virtual ISubjectAreaDao? subjectAreaDao => null;
     public virtual ITariffDataDao? tariffDataDao => null;
     
     

@@ -70,6 +70,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override ISubjectDataDao subjectDataDao => _subjectDataDao ??= new SubjectDataDaoPostgres(context);
 
 
+    private ISubjectAreaDao? _subjectAreaDao;
+    public override ISubjectAreaDao subjectAreaDao => _subjectAreaDao ??= new SubjectAreaDaoPostgres(context);
+
+
     private ITariffDataDao? _tariffDataDao;
     public override ITariffDataDao tariffDataDao => _tariffDataDao ??= new TariffDataDaoPostgres(context);
 
