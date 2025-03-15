@@ -46,6 +46,9 @@ public static class DtoMapper
     public static List<StudentRegisterViewDto> mapListToDto(this List<StudentRegisterView> value)
         => value.Select(e => new StudentRegisterViewDto(e)).ToList();
 
+    public static List<TariffDataDto> mapListToDto(this List<TariffDataEntity> value)
+        => value.Select(e => new TariffDataDto(e)).ToList();
+
 
     public static List<SubjectToCreateDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectToCreateDto(e)).ToList();
