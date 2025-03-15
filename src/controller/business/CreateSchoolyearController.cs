@@ -7,7 +7,7 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateSchoolyearController: BaseController
+public class CreateSchoolyearController : BaseController
 {
     public CreateSchoolyearController(DaoFactory daoFactory) : base(daoFactory)
     {

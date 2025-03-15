@@ -75,8 +75,8 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("rates/new")]
-    [ResourceAuthorizer("schoolyear:read")]
+    [Route("rates/current")]
+    [ResourceAuthorizer("schoolyear:update")]
     public async Task<IActionResult> updateCurrentExchangeRate([FromQuery] decimal exchange)
     {
         await controller.updateCurrentExchangeRate(exchange);

@@ -217,6 +217,7 @@ internal class SecretaryContext
             entity.Property(e => e.initials).HasColumnName("initials");
             entity.Property(e => e.areaId).HasColumnName("areaid");
             entity.Property(e => e.number).HasColumnName("number");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
         });
 
         modelBuilder.Entity<TariffDataEntity>(entity =>
