@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.secretary;
 
@@ -8,7 +7,6 @@ namespace wsmcbl.src.controller.api;
 
 [Route("secretary/catalogs/subjects")]
 [ApiController]
-[ResourceAuthorizer("schoolyear:read")]
 public class CreateSubjectDataActions(CreateSubjectDataController controller) : ControllerBase
 {
     /// <summary>Returns subject catalog.</summary>
@@ -17,34 +15,41 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
+    [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> getSubjectDataList()
     {
         return Ok(await controller.getSubjectDataList());
     }
 
     /// <summary>Create new subject catalog.</summary>
+    /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
+    [ResourceAuthorizer("catalog:create")]
     public async Task<IActionResult> createSubjectData(SubjectDataEntity value)
     {
+        value.subjectDataId = 0;
         var result = await controller.createSubjectData(value);
         return CreatedAtAction(null, result);
     }
 
     /// <summary>Update subject.</summary>
+    /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="200">If the resource is updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{subjectId:int}")]
+    [ResourceAuthorizer("catalog:update")]
     public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
         value.subjectDataId = subjectId;
-        return Ok(await controller.updateSubjectData(value));
+        await controller.updateSubjectData(value);
+        return Ok();
     }
 }
