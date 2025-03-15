@@ -7,7 +7,6 @@ namespace wsmcbl.src.controller.api;
 
 [Route("secretary/catalogs/subjects")]
 [ApiController]
-[ResourceAuthorizer("catalog:read")]
 public class CreateSubjectDataActions(CreateSubjectDataController controller) : ControllerBase
 {
     /// <summary>Returns subject catalog.</summary>
@@ -16,6 +15,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
+    [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> getSubjectDataList()
     {
         return Ok(await controller.getSubjectDataList());
@@ -29,6 +29,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
+    [ResourceAuthorizer("catalog:create")]
     public async Task<IActionResult> createSubjectData(SubjectDataEntity value)
     {
         value.subjectDataId = 0;
@@ -44,6 +45,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{subjectId:int}")]
+    [ResourceAuthorizer("catalog:update")]
     public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
         value.subjectDataId = subjectId;
