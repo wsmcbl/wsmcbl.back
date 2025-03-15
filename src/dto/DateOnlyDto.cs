@@ -21,7 +21,7 @@ public class DateOnlyDto : IBaseDto<DateOnly>
     {
     }
 
-    public DateOnlyDto(int year, int month, int day)
+    private DateOnlyDto(int year, int month, int day)
     {
         this.year = year;
         this.month = month;
