@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
-using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.secretary;
 
@@ -8,7 +7,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("secretary/catalogs/subjects")]
 [ApiController]
-[ResourceAuthorizer("schoolyear:read")]
+[ResourceAuthorizer("catalog:read")]
 public class CreateSubjectDataActions(CreateSubjectDataController controller) : ControllerBase
 {
     /// <summary>Returns subject catalog.</summary>
@@ -23,6 +22,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     }
 
     /// <summary>Create new subject catalog.</summary>
+    /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -31,19 +31,23 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     [Route("")]
     public async Task<IActionResult> createSubjectData(SubjectDataEntity value)
     {
+        value.subjectDataId = 0;
         var result = await controller.createSubjectData(value);
         return CreatedAtAction(null, result);
     }
 
     /// <summary>Update subject.</summary>
+    /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="200">If the resource is updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{subjectId:int}")]
-    public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataDto dto)
+    public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
-        return Ok(await controller.updateSubjectData(dto.toEntity(subjectId)));
+        value.subjectDataId = subjectId;
+        await controller.updateSubjectData(value);
+        return Ok();
     }
 }

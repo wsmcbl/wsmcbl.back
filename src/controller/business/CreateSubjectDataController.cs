@@ -22,7 +22,7 @@ public class CreateSubjectDataController : BaseController
         return subject;
     }
     
-    public async Task<SubjectDataEntity> updateSubjectData(SubjectDataEntity value)
+    public async Task updateSubjectData(SubjectDataEntity value)
     {
         var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId);
         if (existedEntity == null)
@@ -30,9 +30,7 @@ public class CreateSubjectDataController : BaseController
             throw new EntityNotFoundException("SubjectDataEntity", value.subjectDataId.ToString());
         }
 
-        existedEntity.initials = value.initials;
+        existedEntity.update(value);
         await daoFactory.execute();
-        
-        return existedEntity;
     }
 }

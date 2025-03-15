@@ -10,4 +10,16 @@ public class SubjectDataEntity
     public int semester { get; set; }
     public string initials { get; set; } = null!;
     public int number { get; set; }
+    public bool isActive { get; set; }
+
+    public void update(SubjectDataEntity value)
+    {
+        areaId = value.areaId;
+        degreeDataId = value.degreeDataId;
+        name = value.name;
+        isMandatory = value.isMandatory;
+        semester = value.semester;
+        initials = value.initials;
+        isActive = value.isActive;
+    }
 }
