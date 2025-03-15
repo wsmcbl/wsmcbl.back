@@ -38,4 +38,9 @@ public class CreateSubjectDataController : BaseController
     {
         return await daoFactory.degreeDataDao!.getAll();
     }
+
+    public async Task<List<SubjectAreaEntity>> getSubjectAreaList()
+    {
+        return await daoFactory.subjectAreaDao!.getAll();
+    }
 }
