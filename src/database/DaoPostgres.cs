@@ -11,6 +11,9 @@ public class TariffDataDaoPostgres(PostgresContext context)
 public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, int>(context), ISubjectDataDao;
 
+public class SubjectAreaDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectAreaEntity, int>(context), ISubjectAreaDao;
+
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;
 
