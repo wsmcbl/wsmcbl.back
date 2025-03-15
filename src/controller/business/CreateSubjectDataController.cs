@@ -10,21 +10,21 @@ public class CreateSubjectDataController : BaseController
     {
     }
 
+    public async Task<List<SubjectDataEntity>> getSubjectDataList()
+    {
+        return await daoFactory.subjectDataDao!.getAll();
+    }
+
     public async Task<SubjectDataEntity> createSubjectData(SubjectDataEntity subject)
     {
         daoFactory.subjectDataDao!.create(subject);
         await daoFactory.execute();
         return subject;
     }
-
-    public async Task<List<SubjectDataEntity>> getSubjectDataList()
-    {
-        return await daoFactory.subjectDataDao!.getAll();
-    }
-
+    
     public async Task<SubjectDataEntity> updateSubjectData(SubjectDataEntity value)
     {
-        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId!);
+        var existedEntity = await daoFactory.subjectDataDao!.getById(value.subjectDataId);
         if (existedEntity == null)
         {
             throw new EntityNotFoundException("SubjectDataEntity", value.subjectDataId.ToString());
