@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using wsmcbl.src.exception;
 
 namespace wsmcbl.src.middleware;
 

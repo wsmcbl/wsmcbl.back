@@ -45,7 +45,7 @@ public class DebtHistoryEntity
     {
         if (isPaid)
         {
-            throw new ConflictException("The debt is already paid.");
+            throw new UpdateConflictException("Debt","The debt is already paid.");
         }
 
         if (debtBalance > subAmount)

@@ -48,7 +48,7 @@ public class CreateSubjectDataController : BaseController
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BadRequestException("Name must be not empty.");
+            throw new IncorrectDataException("Subject name", "Name must be not empty.");
         }
         
         var existingEntity = await daoFactory.subjectAreaDao!.getById(areaId);
@@ -68,7 +68,7 @@ public class CreateSubjectDataController : BaseController
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BadRequestException("Name must be not empty.");
+            throw new IncorrectDataException("Area name", "Name must be not empty.");
         }
 
         var value = new SubjectAreaEntity{ name = name };

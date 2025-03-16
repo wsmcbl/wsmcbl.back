@@ -53,12 +53,12 @@ public class DegreeEntity
     {
         if(enrollmentList != null && enrollmentList.Count != 0)
         {
-            throw new IncorrectDataBadRequestException("DegreeEntity");
+            throw new IncorrectDataException("Degree", "enrollmentList");
         }
 
         if (quantityToCreate is < 1 or > 7)
         {
-            throw new BadRequestException("Quantity invalid. The quantity must be 1 to 7.");
+            throw new IncorrectDataException("Quantity invalid. The quantity must be 1 to 7.");
         }
 
         enrollmentList = [];

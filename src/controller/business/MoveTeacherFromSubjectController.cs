@@ -26,7 +26,7 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
 
         if (subject.teacherId == teacherId)
         {
-            throw new ConflictException("The teacher is already associated with the subject.");
+            throw new UpdateConflictException("teacherId", "The teacher is already associated with the subject.");
         }
 
         subject.teacherId = teacherId;

@@ -84,7 +84,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         var transaction = await daoFactory.transactionDao!.getById(transactionId);
         if (!transaction!.isValid)
         {
-            throw new ConflictException("The transaction is already cancelled.");
+            throw new UpdateConflictException("Transaction", "The transaction is already cancelled.");
         }
 
         var debtList = await getListByStudentId(transaction.studentId, false);

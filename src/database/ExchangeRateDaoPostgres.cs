@@ -16,7 +16,7 @@ public class ExchangeRateDaoPostgres(PostgresContext context)
         var result = await entities.FirstOrDefaultAsync(e => e.schoolyearId == schoolyear.id);
         if (result == null)
         {
-            throw new EntityNotFoundException("Exchange rate not found");
+            throw new EntityNotFoundException("Exchange rate not found.");
         }
         
         return result;

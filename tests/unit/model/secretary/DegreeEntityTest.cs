@@ -51,6 +51,6 @@ public class DegreeEntityTest
         var sut = new DegreeEntity(degreeData, "sch001");
         sut.createEnrollments(1);
 
-        Assert.Throws<IncorrectDataBadRequestException>(() => sut.createEnrollments(1));
+        Assert.Throws<IncorrectDataException>(() => sut.createEnrollments(1));
     }
 }

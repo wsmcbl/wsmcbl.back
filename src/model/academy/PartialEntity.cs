@@ -59,7 +59,7 @@ public class PartialEntity
     {
         if (gradeRecordIsActive)
         {
-            throw new ConflictException("The partial record already has the gradeRecordIsActive attribute active.");
+            throw new UpdateConflictException("Partial", "The gradeRecordIsActive attribute is already active.");
         }
 
         gradeRecordIsActive = true;
