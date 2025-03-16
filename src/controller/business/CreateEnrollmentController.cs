@@ -44,7 +44,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
         enrollment.capacity = value.capacity;
         
         daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return enrollment;
     }    

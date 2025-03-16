@@ -30,7 +30,7 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
         }
 
         subject.teacherId = teacherId;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<bool> isThereAnActivePartial()

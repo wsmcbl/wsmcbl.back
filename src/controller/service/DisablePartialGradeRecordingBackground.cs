@@ -52,7 +52,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
         if (remainingTime.TotalHours < 0)
         {
             item.disableGradeRecording();
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
             await sendNotification(item);
         }
     }

@@ -84,7 +84,7 @@ public class DaoFactoryPostgresTest
     [Fact]
     public async Task execute_CallDbContext()
     {
-        await sut.execute();
+        await sut.ExecuteAsync();
         
         await context.Received().SaveChangesAsync();
     }

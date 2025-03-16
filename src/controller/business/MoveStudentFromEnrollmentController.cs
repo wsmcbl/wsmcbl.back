@@ -17,7 +17,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
 
         enrollment.quantity++;
         daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         await daoFactory.academyStudentDao!.update(studentValue.studentId, enrollment.enrollmentId!);
         studentValue.enrollmentId = enrollment.enrollmentId;
