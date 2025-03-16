@@ -9,6 +9,7 @@ public class PartialDto
     public bool isActive { get; set; }
     public string semester {get; set;}
     public string period { get; set; }
+    public int position { get; set; }
 
     public PartialDto(PartialEntity partial) 
     {
@@ -17,5 +18,6 @@ public class PartialDto
         isActive = partial.isActive;
         period = partial.getPeriodLabel();
         semester = partial.getSemesterLabel();
+        position = 10 * partial.semester + partial.partial;
     }
 }
