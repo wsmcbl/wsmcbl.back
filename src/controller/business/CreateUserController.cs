@@ -33,7 +33,7 @@ public class CreateUserController : BaseController
         userAuthenticator.encodePassword(user, password);
 
         daoFactory.userDao!.create(user);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         daoFactory.Detached(user);
 
         user.password = password;
@@ -50,13 +50,13 @@ public class CreateUserController : BaseController
         if (user.roleId == 3)
         {
             daoFactory.cashierDao!.create(new CashierEntity((Guid)user.userId!));
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
         
         if (user.roleId == 4)
         {
             daoFactory.teacherDao!.create(new TeacherEntity((Guid)user.userId!));
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
     }
 

@@ -32,7 +32,7 @@ public class UpdateUserController : BaseController
         }
 
         user.update(value);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         await assignNextcloudGroup(user, nextCloudGroup);
 
@@ -57,7 +57,7 @@ public class UpdateUserController : BaseController
         var list = user.checkPermissionsAlreadyAssigned(permissionList);
 
         user.updatePermissionList(list, daoFactory.userPermissionDao!);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<string> getNextCloudGroup(UserEntity entity)
@@ -76,7 +76,7 @@ public class UpdateUserController : BaseController
         var password = generatePassword();
         userAuthenticator.encodePassword(user, password);
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         daoFactory.Detached(user);
 
         user.password = password;

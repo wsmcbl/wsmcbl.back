@@ -34,6 +34,6 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
 
         enrollment.update(value);
         daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

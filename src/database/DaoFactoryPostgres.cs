@@ -13,7 +13,7 @@ namespace wsmcbl.src.database;
 
 public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
-    public override async Task execute() => await studentDao.saveAsync();
+    public override async Task ExecuteAsync() => await studentDao.saveAsync();
 
     public override void Detached<T>(T element)
     {

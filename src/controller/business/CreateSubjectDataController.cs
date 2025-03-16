@@ -18,7 +18,7 @@ public class CreateSubjectDataController : BaseController
     public async Task<SubjectDataEntity> createSubjectData(SubjectDataEntity subject)
     {
         daoFactory.subjectDataDao!.create(subject);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return subject;
     }
     
@@ -31,7 +31,7 @@ public class CreateSubjectDataController : BaseController
         }
 
         existingEntity.update(value);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<List<DegreeDataEntity>> getDegreeDataList()
@@ -60,7 +60,7 @@ public class CreateSubjectDataController : BaseController
         if (existingEntity.name != name)
         {
             existingEntity.name = name;
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
     }
 
@@ -73,7 +73,7 @@ public class CreateSubjectDataController : BaseController
 
         var value = new SubjectAreaEntity{ name = name };
         daoFactory.subjectAreaDao!.create(value);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         
         return value;
     }

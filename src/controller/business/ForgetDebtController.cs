@@ -8,7 +8,7 @@ public class ForgetDebtController(DaoFactory daoFactory) : BaseController(daoFac
     public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
     {
         var result = await daoFactory.debtHistoryDao!.forgiveADebt(studentId, tariffId);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return result;
     }
 

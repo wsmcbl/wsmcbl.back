@@ -95,7 +95,7 @@ public class CreateSchoolyearController : BaseController
         
         daoFactory.semesterDao!.create(firstSemester);
         daoFactory.semesterDao!.create(secondSemester);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         schoolyear.semesterList = [firstSemester, secondSemester];
     }
@@ -131,6 +131,6 @@ public class CreateSchoolyearController : BaseController
         var currentRate = await daoFactory.exchangeRateDao!.getLastRate();
         currentRate.value = value;
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

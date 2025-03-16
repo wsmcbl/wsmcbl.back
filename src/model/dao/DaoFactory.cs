@@ -8,7 +8,7 @@ namespace wsmcbl.src.model.dao;
 
 public abstract class DaoFactory
 {
-    public virtual Task execute() => Task.CompletedTask;
+    public virtual Task ExecuteAsync() => Task.CompletedTask;
 
     public virtual void Detached<T>(T element) where T : class
     {}

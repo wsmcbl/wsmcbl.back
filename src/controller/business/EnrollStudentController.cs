@@ -36,7 +36,7 @@ public class EnrollStudentController : BaseController
         academyStudent.setIsRepeating(isRepeating);
         
         daoFactory.academyStudentDao!.create(academyStudent);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return student;
     }
