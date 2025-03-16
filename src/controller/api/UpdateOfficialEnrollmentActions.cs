@@ -132,7 +132,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
         var teacher = await subjectController.getTeacherById(teacherId);
         if (teacher == null)
         {
-            throw new EntityNotFoundException("Teacher", teacherId);
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
 
         await subjectController.updateTeacherFromSubject(subjectId, enrollmentId, teacherId);

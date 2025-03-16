@@ -48,7 +48,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         var result = await getById(studentId, schoolyear.id!);
         if (result == null)
         {
-            throw new EntityNotFoundException("AcademyStudent", studentId);
+            throw new EntityNotFoundException("Academy.StudentEntity", studentId);
         }
 
         return result;
