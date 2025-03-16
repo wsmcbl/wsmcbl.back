@@ -139,7 +139,8 @@ create table if not exists Secretary.TariffCatalog
     tariffCatalogId serial primary key,
     educationalLevel smallint not null,
     concept varchar(100) not null,
-    amount float not null,
+    amount decimal not null,
     dueDate date,
-    typeId int not null
+    typeId int not null,
+    isActive boolean not null
 );
