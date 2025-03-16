@@ -24,8 +24,8 @@ public class CreateSchoolyearController : BaseController
     
     public async Task createSchoolyear(List<PartialEntity> partialList, List<TariffEntity> tariffList)
     {
-        await using var transaction = await daoFactory.GetContextTransaction();
-        if (transaction == null)
+        await using var contextTransaction = await daoFactory.GetContextTransaction();
+        if (contextTransaction == null)
         {
             throw new InternalException();
         }
@@ -38,11 +38,11 @@ public class CreateSchoolyearController : BaseController
             await createTariffList(tariffList);
             await createExchangeRate();
 
-            await transaction.CommitAsync();
+            await contextTransaction.CommitAsync();
         }
         catch
         {
-            await transaction.RollbackAsync();
+            await contextTransaction.RollbackAsync();
             throw new InternalException();
         }
     }
