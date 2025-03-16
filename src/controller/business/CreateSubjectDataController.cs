@@ -63,18 +63,4 @@ public class CreateSubjectDataController : BaseController
             await daoFactory.ExecuteAsync();
         }
     }
-
-    public async Task<SubjectAreaEntity> createSubjectArea(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new IncorrectDataException("Area name", "Name must be not empty.");
-        }
-
-        var value = new SubjectAreaEntity{ name = name };
-        daoFactory.subjectAreaDao!.create(value);
-        await daoFactory.ExecuteAsync();
-        
-        return value;
-    }
 }
