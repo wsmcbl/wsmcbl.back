@@ -41,7 +41,7 @@ public class DegreeEntity
         tag = degreeData.tag;
 
         subjectList ??= [];
-        foreach (var subject in degreeData.subjectList!)
+        foreach (var subject in degreeData.subjectList!.Where(e => e.isActive))
         {
             subjectList.Add(new SubjectEntity(subject));
         }
@@ -79,10 +79,5 @@ public class DegreeEntity
         
         await enrollmentDao.createRange(enrollmentList);
         quantity = enrollmentList.Count;
-    }
-    
-    public void setSubjectList(List<SubjectEntity> subjects)
-    {
-        subjectList = subjects;
     }
 }

@@ -20,7 +20,7 @@ public class SchoolyearDto
     
     public List<DegreeSubjectDto>? degreeList { get; set; }
     
-    public List<TariffToCreateDto>? tariffList { get; set; }
+    public List<TariffDto>? tariffList { get; set; }
 
     public SchoolyearDto(SchoolyearEntity schoolyear)
     {
