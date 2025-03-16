@@ -50,8 +50,8 @@ public static class DtoMapper
         => value.Select(e => new TariffDataDto(e)).ToList();
 
 
-    public static List<SubjectToCreateDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
-        => subjects.Select(e => new SubjectToCreateDto(e)).ToList();
+    public static List<SubjectDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
+        => subjects.Select(e => new SubjectDto(e)).ToList();
 
     public static List<BasicDegreeDto> mapListToBasicDto(this IEnumerable<DegreeEntity> grades)
         => grades.Select(e => e.mapToBasicDto()).ToList();
