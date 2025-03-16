@@ -38,7 +38,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
         return CreatedAtAction(null, result);
     }
 
-    /// <summary>Update subject data.</summary>
+    /// <summary>Update subject catalog.</summary>
     /// <remarks>The subjectDataId is not necessary.</remarks>
     /// <response code="200">If the resource is updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -67,7 +67,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
         return Ok(result.Select(e => new { e.degreeDataId, e.label, e.tag, e.educationalLevel }));
     }
 
-    /// <summary>Returns subjectAreas list.</summary>
+    /// <summary>Returns subjectArea list.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>

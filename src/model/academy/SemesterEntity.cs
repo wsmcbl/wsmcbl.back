@@ -16,4 +16,9 @@ public class SemesterEntity
         var secondPartial = partialList!.First(e => e.partial == 2);
         deadLine = secondPartial.deadLine;
     }
+
+    public void updateLabel()
+    {
+        label = semester == 1 ? "I Semester" : "II Semester";
+    }
 }
