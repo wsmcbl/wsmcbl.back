@@ -24,7 +24,11 @@ public class CreateSchoolyearController : BaseController
     
     public async Task createSchoolyear(List<PartialEntity> partialList, List<TariffEntity> tariffList)
     {
-        var transaction = await daoFactory.getTransactionObject();
+        await using var transaction = await daoFactory.GetContextTransaction();
+        if (transaction == null)
+        {
+            throw new InternalException();
+        }
         
         try
         {
