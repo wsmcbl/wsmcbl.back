@@ -23,7 +23,7 @@ public class UserAuthenticator
         var result = passwordHasher.VerifyHashedPassword(entity, entity.password, user.password);
         if (result != PasswordVerificationResult.Success)
         {
-            throw new IncorrectDataBadRequestException("User not authenticated.");
+            throw new UnauthorizedException("User not authenticated.");
         }
 
         return entity;

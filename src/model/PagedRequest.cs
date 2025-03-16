@@ -25,7 +25,7 @@ public class PagedRequest
 
         if (!sortByList.Contains(sortBy))
         {
-            throw new IncorrectDataBadRequestException("sortBy");
+            throw new IncorrectDataException("sortBy", "value");
         }
     }
 }
