@@ -6,7 +6,7 @@ public class IncorrectDataException : BadRequestException
     {
     }
 
-    public IncorrectDataException(string parameter, string value) : base($"Incorrect {parameter} data. Check the {value}.")
+    public IncorrectDataException(string parameter, string value) : base($"Incorrect {parameter} data. Check the {value}.") 
     {
     }
 }

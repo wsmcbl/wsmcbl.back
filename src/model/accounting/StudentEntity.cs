@@ -26,7 +26,7 @@ public class StudentEntity
     {
         if (string.IsNullOrWhiteSpace(studentId))
         {
-            throw new InternalException("The studentId property is required.");
+            throw new IncorrectDataException("studentId", "value");
         }
         
         this.studentId = studentId;
