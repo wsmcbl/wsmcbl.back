@@ -92,16 +92,4 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
         await controller.updateSubjectArea(areaId, name);
         return Ok();
     }
-
-    /// <summary>Create new subjectArea.</summary>
-    /// <response code="201">If the resource is created.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpPost]
-    [Route("subjects/areas")]
-    [ResourceAuthorizer("catalog:create")]
-    public async Task<IActionResult> createSubjectArea([Required] [FromQuery] string name)
-    {
-        return Ok(await controller.createSubjectArea(name));
-    }
 }
