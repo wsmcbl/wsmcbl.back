@@ -64,6 +64,7 @@ create table if not exists Academy.Partial
     partialId serial not null primary key,
     semesterId int not null,
     partial int not null,
+    semester int not null,
     startDate date not null,
     deadLine date not null,
     isActive boolean not null,
