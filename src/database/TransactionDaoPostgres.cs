@@ -19,7 +19,7 @@ public class TransactionDaoPostgres(PostgresContext context)
 
         if (transaction == null)
         {
-            throw new EntityNotFoundException("transaction", id);
+            throw new EntityNotFoundException("TransactionEntity", id);
         }
 
         return transaction;

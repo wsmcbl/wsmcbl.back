@@ -11,7 +11,7 @@ public class ActionsBase : ControllerBase
         var userId = User.FindFirstValue("userid");
         if (userId == null)
         {
-            throw new EntityNotFoundException("user", userId);
+            throw new EntityNotFoundException("UserEntity", userId);
         }
 
         return userId;

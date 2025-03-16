@@ -64,7 +64,7 @@ public class StudentEntity
     {
         if (educationalLevel == value)
         {
-            throw new UpdateConflictException("Student", "The student has the same level.");
+            throw new UpdateConflictException("Student EducationalLevel", "The student has the same level.");
         }
         
         educationalLevel = value;
