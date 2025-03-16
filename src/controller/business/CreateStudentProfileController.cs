@@ -35,7 +35,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
         var value = await daoFactory.studentDao!.findDuplicateOrNull(student);
         if (value == null)
         {
-            throw new InternalException();
+            throw new ConflictException($"The student profile already exist with id ({student.studentId}).");
         }
         
         student.studentId = value.studentId!;

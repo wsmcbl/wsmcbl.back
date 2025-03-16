@@ -36,7 +36,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         
         if (!hasDateFormat(request.from) || !hasDateFormat(request.to))
         {
-            throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
+            throw new IncorrectDataException("Some of the dates are not in the correct format.");
         }
         
         request.parseRangeToDatetime();

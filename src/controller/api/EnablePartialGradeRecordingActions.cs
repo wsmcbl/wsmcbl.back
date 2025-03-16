@@ -46,7 +46,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
         
         if (deadline == null)
         {
-            throw new BadRequestException("The deadline must be provided.");
+            throw new IncorrectDataException("deadline", "Check that the value is not null.");
         }
 
         await controller.checkForPartialEnabledOrFail();

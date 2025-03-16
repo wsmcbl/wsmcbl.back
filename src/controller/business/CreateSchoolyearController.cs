@@ -27,9 +27,9 @@ public class CreateSchoolyearController : BaseController
         await using var contextTransaction = await daoFactory.GetContextTransaction();
         if (contextTransaction == null)
         {
-            throw new InternalException();
+            throw new InternalException("The database is not available to perform this action.");
         }
-        
+
         try
         {
             schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
@@ -40,10 +40,15 @@ public class CreateSchoolyearController : BaseController
 
             await contextTransaction.CommitAsync();
         }
+        catch (BadHttpRequestException)
+        {
+            await contextTransaction.RollbackAsync();
+            throw;
+        }
         catch
         {
             await contextTransaction.RollbackAsync();
-            throw new InternalException();
+            throw new BadHttpRequestException("An error occurred while saving the data, please review the data entered.", 500);
         }
     }
 
@@ -63,7 +68,7 @@ public class CreateSchoolyearController : BaseController
         var list = await daoFactory.degreeDataDao!.getAll();
         if (list.Count == 0)
         {
-            throw new BadRequestException("DegreeList are not valid");
+            throw new InternalException("No degreeData available.");
         }
         
         schoolyear.setDegreeDataList(list);
@@ -74,7 +79,7 @@ public class CreateSchoolyearController : BaseController
     {
         if (tariffList.Count == 0)
         {
-            throw new BadRequestException("TariffList are not valid");
+            throw new IncorrectDataException("TariffList", "The list must be no empty.");
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;

@@ -56,7 +56,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
         catch (Exception)
         {
-            throw new EntityNotFoundException("There is not valid schoolyear.");
+            throw new InternalException("There is not valid schoolyear.");
         }
     }
 
@@ -72,7 +72,7 @@ public class SchoolyearDaoPostgres(PostgresContext context)
         }
         catch (Exception)
         {
-            throw new EntityNotFoundException("There is not valid schoolyear.");
+            throw new InternalException("There is not valid schoolyear.");
         }
     }
 

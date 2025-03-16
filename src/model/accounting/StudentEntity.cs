@@ -26,7 +26,7 @@ public class StudentEntity
     {
         if (string.IsNullOrWhiteSpace(studentId))
         {
-            throw new InternalException("The studentId property is required.");
+            throw new IncorrectDataException("studentId", "value");
         }
         
         this.studentId = studentId;
@@ -64,7 +64,7 @@ public class StudentEntity
     {
         if (educationalLevel == value)
         {
-            throw new ConflictException("The student has the same level.");
+            throw new UpdateConflictException("Student", "The student has the same level.");
         }
         
         educationalLevel = value;

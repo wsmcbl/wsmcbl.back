@@ -29,7 +29,7 @@ public class TransactionDaoPostgres(PostgresContext context)
     {
         if (!entity.haveValidContent())
         {
-            throw new IncorrectDataBadRequestException("Transaction");
+            throw new IncorrectDataException("Transaction", "cashier, student and details");
         }
 
         entity.computeTotal();

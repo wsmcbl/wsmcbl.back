@@ -33,12 +33,6 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
             throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
-        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
-        if (student.schoolYear != schoolyear.id)
-        {
-            throw new ConflictException("This student cannot move from enrollment.");
-        }
-
         return student;
     }
 
