@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
@@ -17,6 +18,11 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     public override void Detached<T>(T element)
     {
         context.Entry(element).State = EntityState.Detached;
+    }
+
+    public override async Task<IDbContextTransaction?> GetContextTransaction()
+    {
+        return await context.Database.BeginTransactionAsync();
     }
 
     private IPartialDao? _partialDao;
