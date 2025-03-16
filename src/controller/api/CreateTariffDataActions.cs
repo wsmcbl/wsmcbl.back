@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.middleware;
-using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
@@ -19,10 +18,11 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     [ResourceAuthorizer("catalog:read")]
     public async Task<IActionResult> getTariffDataList()
     {
-        return Ok(await controller.getTariffDataList());
+        var result = await controller.getTariffDataList();
+        return Ok(result.mapListToDto());
     }
 
-    /// <summary>Update tariff data.</summary>
+    /// <summary>Update tariff catalog.</summary>
     /// <remarks>The tariffDataId is not necessary.</remarks>
     /// <response code="200">If the resource is updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
