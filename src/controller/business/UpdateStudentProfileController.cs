@@ -24,7 +24,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return student;
     }
@@ -38,7 +38,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         }
 
         student.profilePicture = picture;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task updateStudentDiscount(string studentId, int discountId)
@@ -51,7 +51,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         
         accountingStudent.updateDiscountId(discountId);
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)

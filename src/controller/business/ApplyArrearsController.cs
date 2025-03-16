@@ -32,7 +32,7 @@ public class ApplyArrearsController(DaoFactory daoFactory) : BaseController(daoF
         tariff.isLate = true;
         
         daoFactory.tariffDao!.update(tariff);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         
         return tariff;
     }

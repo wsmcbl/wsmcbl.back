@@ -48,7 +48,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         {
             oldTeacher.forgetEnrollment();
             daoFactory.teacherDao.update(oldTeacher);
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
 
         teacher.isGuide = true;
@@ -57,6 +57,6 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         enrollment.teacherId = teacher.teacherId;
         daoFactory.enrollmentDao!.update(enrollment);
         
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

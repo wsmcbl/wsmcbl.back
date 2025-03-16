@@ -22,7 +22,7 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
         }
         
         result.update(media);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return result;
     }
@@ -30,7 +30,7 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     public async Task<MediaEntity> createMedia(MediaEntity media)
     {
         daoFactory.mediaDao!.create(media);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return media;
     }
 

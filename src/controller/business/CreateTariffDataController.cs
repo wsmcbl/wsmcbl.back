@@ -25,13 +25,13 @@ public class CreateTariffDataController : BaseController
         }
         
         exitingTariff.update(value);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<TariffDataEntity> createTariffData(TariffDataEntity tariff)
     {
         daoFactory.tariffDataDao!.create(tariff);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return tariff;
     }
 

@@ -28,7 +28,7 @@ public class AddingStudentGradesController : BaseController
     public async Task addGrades(SubjectPartialEntity parameter, List<GradeEntity> gradeList)
     {
         await daoFactory.gradeDao!.addRange(parameter, gradeList);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<List<PartialEntity>> getPartialList()

@@ -27,7 +27,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
         var partial = await getPartialById(partialId);
         partial.enableGradeRecording(deadline);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     private bool checkDateOrFail(DateTime deadline)
@@ -41,7 +41,7 @@ public class EnablePartialGradeRecordingController : BaseController
     {
         var partial = await getPartialById(partialId);
         partial.disableGradeRecording();
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     private async Task<PartialEntity> getPartialById(int partialId)
@@ -101,6 +101,6 @@ public class EnablePartialGradeRecordingController : BaseController
         }
         
         partial.isActive = isActive;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }
