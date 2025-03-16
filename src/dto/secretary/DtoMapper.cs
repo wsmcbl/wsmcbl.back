@@ -37,8 +37,8 @@ public static class DtoMapper
     public static List<BasicSchoolyearDto> mapListToDto(this IEnumerable<SchoolyearEntity> list)
         => list.Select(e => new BasicSchoolyearDto(e)).ToList();
 
-    public static List<TariffToCreateDto> mapListToDto(this IEnumerable<model.accounting.TariffEntity> tariffs)
-        => tariffs.Select(e => new TariffToCreateDto(e)).ToList();
+    public static List<TariffDto> mapListToDto(this IEnumerable<model.accounting.TariffEntity> tariffs)
+        => tariffs.Select(e => new TariffDto(e)).ToList();
 
     public static List<DegreeSubjectDto> mapListToDto(this IEnumerable<DegreeEntity> grades)
         => grades.Select(e => new DegreeSubjectDto(e)).ToList();
