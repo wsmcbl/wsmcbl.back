@@ -22,9 +22,25 @@ public class CreateSchoolyearController : BaseController
     private SchoolyearEntity schoolyear { get; set; }
     public SchoolyearEntity getSchoolyearCreated() => schoolyear;
     
-    public async Task createSchoolyear()
+    public async Task createSchoolyear(List<PartialEntity> partialList, List<TariffEntity> tariffList)
     {
-        schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+        var transaction = await daoFactory.getTransactionObject();
+        
+        try
+        {
+            schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+            await createPartialList(partialList);
+            await createSubjectList();
+            await createTariffList(tariffList);
+            await createExchangeRate();
+
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw new InternalException();
+        }
     }
 
     public async Task<SchoolyearEntity> getSchoolyearById(string schoolyearId)
@@ -38,7 +54,7 @@ public class CreateSchoolyearController : BaseController
         return result;
     }
 
-    public async Task createSubjectList()
+    private async Task createSubjectList()
     {
         var list = await daoFactory.degreeDataDao!.getAll();
         if (list.Count == 0)
@@ -50,7 +66,7 @@ public class CreateSchoolyearController : BaseController
         await daoFactory.degreeDao!.createRange(schoolyear.degreeList!);
     }
 
-    public async Task createTariffList(List<TariffEntity> tariffList)
+    private async Task createTariffList(List<TariffEntity> tariffList)
     {
         if (tariffList.Count == 0)
         {
@@ -68,7 +84,7 @@ public class CreateSchoolyearController : BaseController
         await daoFactory.tariffDao!.createRange(schoolyear.tariffList!);
     }
 
-    public async Task createPartialList(List<PartialEntity> partialList)
+    private async Task createPartialList(List<PartialEntity> partialList)
     {
         var firstSemester = createSemester(1, partialList);
         var secondSemester = createSemester(2, partialList);
@@ -96,7 +112,7 @@ public class CreateSchoolyearController : BaseController
         return result;
     }
 
-    public async Task createExchangeRate()
+    private async Task createExchangeRate()
     {
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }

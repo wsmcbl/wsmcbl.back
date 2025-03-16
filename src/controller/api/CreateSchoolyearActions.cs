@@ -46,11 +46,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     [ResourceAuthorizer("schoolyear:create")]
     public async Task<IActionResult> createSchoolyear(SchoolyearToCreateDto dto)
     {
-        await controller.createSchoolyear();
-        await controller.createPartialList(dto.getPartialList());
-        await controller.createSubjectList();
-        await controller.createTariffList(dto.getTariffList());
-        await controller.createExchangeRate();
+        await controller.createSchoolyear(dto.getPartialList(), dto.getTariffList());
 
         var result = controller.getSchoolyearCreated();
         return CreatedAtAction(null, result.mapToDto());
