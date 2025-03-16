@@ -66,7 +66,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
         if (list.Where(e => e.gradeRecordIsActive).ToList().Count != 0)
         {
-            throw new ConflictException("There is already a partial with the grade recording period active.");
+            throw new UpdateConflictException("Partial", "There is already a partial with the grade recording period active.");
         }
     }
 
