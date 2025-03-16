@@ -23,7 +23,7 @@ public class TariffEntity
         this.schoolyearId = schoolyearId;
         type = tariffData.typeId;
         concept = tariffData.concept;
-        amount = tariffData.amount;
+        amount = (float)tariffData.amount;
         dueDate = tariffData.dueDate;
         educationalLevel = tariffData.educationalLevel;
     }

@@ -28,9 +28,9 @@ public static class TestDtoInputGenerator
         };
     }
     
-    public static SubjectToCreateDto aSubjectDto()
+    public static SubjectDto aSubjectDto()
     {
-        return new SubjectToCreateDto
+        return new SubjectDto
         {
             name = "Lengua y Literatura",
             isMandatory = true,

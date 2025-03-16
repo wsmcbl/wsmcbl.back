@@ -6,10 +6,13 @@ using wsmcbl.src.model.secretary;
 namespace wsmcbl.src.database;
 
 public class TariffDataDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<TariffDataEntity, string>(context), ITariffDataDao;
+    : GenericDaoPostgres<TariffDataEntity, int>(context), ITariffDataDao;
 
 public class SubjectDataDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectDataEntity, int>(context), ISubjectDataDao;
+
+public class SubjectAreaDaoPostgres(PostgresContext context)
+    : GenericDaoPostgres<SubjectAreaEntity, int>(context), ISubjectAreaDao;
 
 public class TariffTypeDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<TariffTypeEntity, int>(context), ITariffTypeDao;

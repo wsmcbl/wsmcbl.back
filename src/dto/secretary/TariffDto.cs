@@ -1,26 +1,24 @@
-using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.secretary;
 
-public class TariffToCreateDto : IBaseDto<TariffEntity>
+public class TariffDto
 {
-    [Required] public string concept { get; set; } = null!;
-    [JsonRequired] public float amount { get; set; }
+    public string concept { get; set; } = null!;
+    public decimal amount { get; set; }
     public DateOnlyDto? dueDate { get; set; }
-    [JsonRequired] public int type { get; set; }
-    [JsonRequired] public int educationalLevel { get; set; }
+    public int typeId { get; set; }
+    public int educationalLevel { get; set; }
 
-    public TariffToCreateDto()
+    public TariffDto()
     {
     }
 
-    public TariffToCreateDto(TariffEntity tariff)
+    public TariffDto(TariffEntity tariff)
     {
         concept = tariff.concept;
-        amount = tariff.amount;
-        type = tariff.type;
+        amount = (decimal)tariff.amount;
+        typeId = tariff.type;
         educationalLevel = tariff.educationalLevel;
 
         if (tariff.dueDate != null)
@@ -34,9 +32,10 @@ public class TariffToCreateDto : IBaseDto<TariffEntity>
         var tariff = new TariffEntity
         {
             concept = concept,
-            amount = amount,
-            type = type,
-            educationalLevel = educationalLevel
+            amount = (float)amount,
+            type = typeId,
+            educationalLevel = educationalLevel,
+            isLate = false
         };
 
         if (dueDate != null)
