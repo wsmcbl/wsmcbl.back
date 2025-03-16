@@ -68,7 +68,7 @@ public class CreateSchoolyearController : BaseController
         var list = await daoFactory.degreeDataDao!.getAll();
         if (list.Count == 0)
         {
-            throw new BadRequestException("DegreeList are not valid.");
+            throw new InternalException("No degreeData available.");
         }
         
         schoolyear.setDegreeDataList(list);
@@ -79,7 +79,7 @@ public class CreateSchoolyearController : BaseController
     {
         if (tariffList.Count == 0)
         {
-            throw new BadRequestException("TariffList are not valid.");
+            throw new IncorrectDataException("TariffList", "The list must be no empty.");
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;

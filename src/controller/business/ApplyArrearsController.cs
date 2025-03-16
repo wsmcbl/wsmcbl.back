@@ -26,7 +26,7 @@ public class ApplyArrearsController(DaoFactory daoFactory) : BaseController(daoF
 
         if (tariff.isLate)
         {
-            throw new BadRequestException("The tariff is already overdue.");
+            throw new UpdateConflictException("Tariff", "The tariff is already overdue.");
         }
         
         tariff.isLate = true;

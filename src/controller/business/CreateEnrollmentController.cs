@@ -17,7 +17,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
     {
         if (quantity is > 7 or < 1)
         {
-            throw new BadRequestException("Quantity in not valid.");
+            throw new IncorrectDataException("Quantity", "The value must be between 1 and 7.");
         }
 
         var degree = await daoFactory.degreeDao!.getById(degreeId);
