@@ -34,9 +34,4 @@ public class CreateTariffDataController : BaseController
         await daoFactory.ExecuteAsync();
         return tariff;
     }
-
-    public async Task<List<TariffTypeEntity>> getTariffTypeList()
-    {
-        return await daoFactory.tariffTypeDao!.getAll();
-    }
 }
