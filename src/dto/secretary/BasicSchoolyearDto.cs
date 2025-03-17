@@ -7,8 +7,8 @@ public class BasicSchoolyearDto
 {
     public string schoolyearId { get; set; }
     public string label { get; set; }
-    public DateOnly startDate { get; set; }
-    public DateOnly deadLine { get; set; }
+    public DateOnlyDto startDate { get; set; }
+    public DateOnlyDto deadLine { get; set; }
     public bool isActive { get; set; }
 
     public BasicSchoolyearDto(SchoolyearEntity schoolyear)
@@ -16,7 +16,7 @@ public class BasicSchoolyearDto
         schoolyearId = schoolyear.id!;
         label = schoolyear.label;
         isActive = schoolyear.isActive;
-        startDate = schoolyear.startDate;
-        deadLine = schoolyear.deadLine;
+        startDate = new DateOnlyDto(schoolyear.startDate);
+        deadLine = new DateOnlyDto(schoolyear.deadLine);
     }
 }
