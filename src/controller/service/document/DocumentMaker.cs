@@ -64,7 +64,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var cashier = await daoFactory.cashierDao!.getById(transaction!.cashierId);
         if (cashier is null)
         {
-            throw new EntityNotFoundException("Cashier", transaction.cashierId);
+            throw new EntityNotFoundException("CashierEntity", transaction.cashierId);
         }
         
         var student = await daoFactory.accountingStudentDao!.getFullById(transaction.studentId);

@@ -18,7 +18,7 @@ public class CreateSubjectDataController : BaseController
     public async Task<SubjectDataEntity> createSubjectData(SubjectDataEntity subject)
     {
         daoFactory.subjectDataDao!.create(subject);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return subject;
     }
     
@@ -31,7 +31,7 @@ public class CreateSubjectDataController : BaseController
         }
 
         existingEntity.update(value);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<List<DegreeDataEntity>> getDegreeDataList()
@@ -48,7 +48,7 @@ public class CreateSubjectDataController : BaseController
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BadRequestException("Name must be not empty.");
+            throw new IncorrectDataException("Subject name", "Name must be not empty.");
         }
         
         var existingEntity = await daoFactory.subjectAreaDao!.getById(areaId);
@@ -60,21 +60,7 @@ public class CreateSubjectDataController : BaseController
         if (existingEntity.name != name)
         {
             existingEntity.name = name;
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
-    }
-
-    public async Task<SubjectAreaEntity> createSubjectArea(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new BadRequestException("Name must be not empty.");
-        }
-
-        var value = new SubjectAreaEntity{ name = name };
-        daoFactory.subjectAreaDao!.create(value);
-        await daoFactory.execute();
-        
-        return value;
     }
 }

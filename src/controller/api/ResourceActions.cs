@@ -85,7 +85,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     {
         if (!TransactionReportByDateActions.hasDateFormat(from) || !TransactionReportByDateActions.hasDateFormat(to))
         {
-            throw new IncorrectDataBadRequestException("Some of the dates are not in the correct format.");
+            throw new IncorrectDataException("Some of the dates are not in the correct format.");
         }
 
         var range = TransactionReportViewPagedRequest.parseToDateTime(from, to);

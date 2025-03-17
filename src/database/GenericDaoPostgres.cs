@@ -55,7 +55,7 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
         }
         catch (Exception e)
         {
-            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
+            throw new InternalException("Failed to perform transaction. Error: " + e.Message);
         }
     }
 }

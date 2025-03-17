@@ -48,18 +48,6 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     public async Task<IActionResult> createTariffData(TariffDataDto dto)
     {
         var result = await controller.createTariffData(dto.toEntity());
-        return CreatedAtAction(null, result);
-    }
-    
-    /// <summary>Returns tariff type list.</summary>
-    /// <response code="200">Returns a list, the list can be empty.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("types")]
-    [ResourceAuthorizer("catalog:read")]
-    public async Task<IActionResult> getTariffTypeList()
-    {
-        return Ok(await controller.getTariffTypeList());
+        return CreatedAtAction(null, new TariffDataDto(result));
     }
 }

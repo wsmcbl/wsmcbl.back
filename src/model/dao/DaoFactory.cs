@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
@@ -7,10 +8,16 @@ namespace wsmcbl.src.model.dao;
 
 public abstract class DaoFactory
 {
-    public virtual Task execute() => Task.CompletedTask;
+    public virtual Task ExecuteAsync() => Task.CompletedTask;
 
     public virtual void Detached<T>(T element) where T : class
     {}
+
+    public virtual async Task<IDbContextTransaction?> GetContextTransaction()
+    {
+        await Task.CompletedTask;
+        return null;
+    }
 
     public virtual ITariffDao? tariffDao => null;
     public virtual ICashierDao? cashierDao => null;

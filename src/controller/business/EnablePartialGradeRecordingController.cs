@@ -27,7 +27,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
         var partial = await getPartialById(partialId);
         partial.enableGradeRecording(deadline);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     private bool checkDateOrFail(DateTime deadline)
@@ -41,7 +41,7 @@ public class EnablePartialGradeRecordingController : BaseController
     {
         var partial = await getPartialById(partialId);
         partial.disableGradeRecording();
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     private async Task<PartialEntity> getPartialById(int partialId)
@@ -66,7 +66,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
         if (list.Where(e => e.gradeRecordIsActive).ToList().Count != 0)
         {
-            throw new ConflictException("There is already a partial with the grade recording period active.");
+            throw new UpdateConflictException("Partial", "There is already a partial with the grade recording period active.");
         }
     }
 
@@ -101,6 +101,6 @@ public class EnablePartialGradeRecordingController : BaseController
         }
         
         partial.isActive = isActive;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

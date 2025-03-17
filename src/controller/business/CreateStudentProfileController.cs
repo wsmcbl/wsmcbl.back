@@ -20,7 +20,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
         if (existingTutor == null)
         {
             daoFactory.studentTutorDao!.create(tutor);
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
             existingTutor = tutor;
         }
 
@@ -29,13 +29,13 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
         student.studentId = string.Empty;
         daoFactory.studentDao!.create(student);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         daoFactory.Detached(student);
         
         var value = await daoFactory.studentDao!.findDuplicateOrNull(student);
         if (value == null)
         {
-            throw new InternalException();
+            throw new ConflictException($"The student profile already exist with id ({student.studentId}).");
         }
         
         student.studentId = value.studentId!;
@@ -59,6 +59,6 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
     {
         var accountingStudent = new model.accounting.StudentEntity(student.studentId!, educationalLevel);
         daoFactory.accountingStudentDao!.create(accountingStudent);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

@@ -17,17 +17,17 @@ public class CancelTransactionController(DaoFactory daoFactory) : BaseController
         var exitingTransaction = await daoFactory.transactionDao!.getById(transactionId);
         if (exitingTransaction == null)
         {
-            throw new EntityNotFoundException("transaction", transactionId);
+            throw new EntityNotFoundException("TransactionEntity", transactionId);
         }
 
         if (!exitingTransaction.isValid)
         {
-            throw new ConflictException("The transaction is already cancelled.");
+            throw new UpdateConflictException("Transaction", "The transaction is already cancelled.");
         }
 
         await daoFactory.debtHistoryDao!.restoreDebt(transactionId);
         exitingTransaction.setAsInvalid();
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return exitingTransaction;
     }
 }

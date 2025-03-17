@@ -17,7 +17,7 @@ public class TransactionDaoPostgresTest : BaseDaoPostgresTest
         
         var sut = new TransactionDaoPostgres(context);
 
-        Assert.Throws<IncorrectDataBadRequestException>(() => sut.create(transaction));
+        Assert.Throws<IncorrectDataException>(() => sut.create(transaction));
     }
     
     [Fact]

@@ -6,20 +6,20 @@ values ('Desarrollo de las habilidades de la comunicación y Talento Artístico 
        ('Desarrollo del Pensamiento Lógico y Científico');
 
 
-insert into secretary.tariffcatalog(concept, amount, duedate, typeid, educationallevel)
-values ('Pago de matrícula', 0, null, 2, 3),
-       ('Pago mes febrero', 0, '28/02/2024', 1, 3),
-       ('Pago mes marzo', 0, '28/03/2024', 1, 3),
-       ('Pago mes abril', 0, '28/04/2024', 1, 3),
-       ('Pago mes mayo', 0, '28/05/2024', 1, 3),
-       ('Pago mes junio', 0, '28/06/2024', 1, 3),
-       ('Pago mes julio', 0, '28/07/2024', 1, 3),
-       ('Pago mes agosto', 0, '28/08/2024', 1, 3),
-       ('Pago mes septiembre', 0, '28/09/2024', 1, 3),
-       ('Pago mes octubre', 0, '28/10/2024', 1, 3),
-       ('Pago mes noviembre', 0, '28/11/2024', 1, 3),
-       ('Pago mes diciembre', 0, '28/12/2024', 1, 3),
-       ('Pago treceavo mes', 0, '28/12/2024', 1, 3);
+insert into secretary.tariffcatalog(concept, amount, duedate, typeid, educationallevel, isactive)
+values ('Pago de matrícula', 0, null, 2, 3, true),
+       ('Pago mes febrero', 0, '28/02/2024', 1, 3, true),
+       ('Pago mes marzo', 0, '28/03/2024', 1, 3, true),
+       ('Pago mes abril', 0, '28/04/2024', 1, 3, true),
+       ('Pago mes mayo', 0, '28/05/2024', 1, 3, true),
+       ('Pago mes junio', 0, '28/06/2024', 1, 3, true),
+       ('Pago mes julio', 0, '28/07/2024', 1, 3, true),
+       ('Pago mes agosto', 0, '28/08/2024', 1, 3, true),
+       ('Pago mes septiembre', 0, '28/09/2024', 1, 3, true),
+       ('Pago mes octubre', 0, '28/10/2024', 1, 3, true),
+       ('Pago mes noviembre', 0, '28/11/2024', 1, 3, true),
+       ('Pago mes diciembre', 0, '28/12/2024', 1, 3, true),
+       ('Pago treceavo mes', 0, '28/12/2024', 1, 3, true);
 
 insert into secretary.degreecatalog(label, educationalLevel, tag)
 values ('Primer Nivel', 1, '01'),

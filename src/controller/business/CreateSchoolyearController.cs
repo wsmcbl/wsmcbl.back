@@ -22,9 +22,34 @@ public class CreateSchoolyearController : BaseController
     private SchoolyearEntity schoolyear { get; set; }
     public SchoolyearEntity getSchoolyearCreated() => schoolyear;
     
-    public async Task createSchoolyear()
+    public async Task createSchoolyear(List<PartialEntity> partialList, List<TariffEntity> tariffList)
     {
-        schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+        await using var contextTransaction = await daoFactory.GetContextTransaction();
+        if (contextTransaction == null)
+        {
+            throw new InternalException("The database is not available to perform this action.");
+        }
+
+        try
+        {
+            schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+            await createPartialList(partialList);
+            await createSubjectList();
+            await createTariffList(tariffList);
+            await createExchangeRate();
+
+            await contextTransaction.CommitAsync();
+        }
+        catch (BadHttpRequestException)
+        {
+            await contextTransaction.RollbackAsync();
+            throw;
+        }
+        catch
+        {
+            await contextTransaction.RollbackAsync();
+            throw new BadHttpRequestException("An error occurred while saving the data, please review the data entered.", 500);
+        }
     }
 
     public async Task<SchoolyearEntity> getSchoolyearById(string schoolyearId)
@@ -38,23 +63,23 @@ public class CreateSchoolyearController : BaseController
         return result;
     }
 
-    public async Task createSubjectList()
+    private async Task createSubjectList()
     {
         var list = await daoFactory.degreeDataDao!.getAll();
         if (list.Count == 0)
         {
-            throw new BadRequestException("DegreeList are not valid");
+            throw new InternalException("No degreeData available.");
         }
         
         schoolyear.setDegreeDataList(list);
         await daoFactory.degreeDao!.createRange(schoolyear.degreeList!);
     }
 
-    public async Task createTariffList(List<TariffEntity> tariffList)
+    private async Task createTariffList(List<TariffEntity> tariffList)
     {
         if (tariffList.Count == 0)
         {
-            throw new BadRequestException("TariffList are not valid");
+            throw new IncorrectDataException("TariffList", "The list must be no empty.");
         }
 
         var tariffsNotValid = tariffList.Where(e => e.amount < 1).ToList().Count;
@@ -68,14 +93,14 @@ public class CreateSchoolyearController : BaseController
         await daoFactory.tariffDao!.createRange(schoolyear.tariffList!);
     }
 
-    public async Task createPartialList(List<PartialEntity> partialList)
+    private async Task createPartialList(List<PartialEntity> partialList)
     {
         var firstSemester = createSemester(1, partialList);
         var secondSemester = createSemester(2, partialList);
         
         daoFactory.semesterDao!.create(firstSemester);
         daoFactory.semesterDao!.create(secondSemester);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         schoolyear.semesterList = [firstSemester, secondSemester];
     }
@@ -96,7 +121,7 @@ public class CreateSchoolyearController : BaseController
         return result;
     }
 
-    public async Task createExchangeRate()
+    private async Task createExchangeRate()
     {
         await schoolyear.createExchangeRate(daoFactory.exchangeRateDao!);
     }
@@ -111,6 +136,6 @@ public class CreateSchoolyearController : BaseController
         var currentRate = await daoFactory.exchangeRateDao!.getLastRate();
         currentRate.value = value;
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }
