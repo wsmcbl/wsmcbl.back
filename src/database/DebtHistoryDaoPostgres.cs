@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
@@ -15,16 +16,25 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
     {
         daoFactory = new DaoFactoryPostgres(context);
     }
-    
-    public async Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
+
+    public async Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, PagedRequest request)
     {
-        var query = entities.Where(e => e.studentId == studentId);
-        if (withTariff)
-        {
-            query = query.Include(e => e.tariff);
-        }
+        var query = context
+            .GetQueryable<DebtHistoryEntity>().Where(e => e.studentId == studentId);
         
-        return await query.ToListAsync();
+        var pagedService = new PagedService<DebtHistoryEntity>(query, searchInDebtHistory);
+        
+        request.setDefaultSort("tariffId");   
+        return await pagedService.getPaged(request);
+    }
+    
+    private static IQueryable<DebtHistoryEntity> searchInDebtHistory(IQueryable<DebtHistoryEntity> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+            EF.Functions.Like(e.tariffId.ToString(), value) ||
+            EF.Functions.Like(e.schoolyear.ToLower(), value));
     }
 
     public async Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId)
@@ -158,5 +168,16 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         }
 
         return balance;
+    }
+    
+    private async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
+    {
+        var query = entities.Where(e => e.studentId == studentId);
+        if (withTariff)
+        {
+            query = query.Include(e => e.tariff);
+        }
+        
+        return await query.ToListAsync();
     }
 }
