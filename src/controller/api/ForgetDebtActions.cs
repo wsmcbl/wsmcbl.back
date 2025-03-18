@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
@@ -15,12 +17,16 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("")]
+    [Route("/{studentId}")]
     [ResourceAuthorizer("debt:read")]
-    public async Task<IActionResult> getDebtListByStudent([FromQuery] string studentId)
+    public async Task<IActionResult> getDebtListByStudent([Required] string studentId, PagedRequest request)
     {
-        var result = await controller.getDebtListByStudent(studentId);
-        return Ok(result.mapToListDto());
+        var result = await controller.getDebtListByStudent(studentId, request);
+        
+        var pagedResult = new PagedResult<DebtDto>(result.data.mapToListDto());
+        pagedResult.setup(result);
+        
+        return Ok(pagedResult);
     }
     
     /// <summary>Update forgive a debt.</summary>
