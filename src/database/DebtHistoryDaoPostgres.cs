@@ -16,7 +16,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         daoFactory = new DaoFactoryPostgres(context);
     }
     
-    public async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
+    public async Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
     {
         var query = entities.Where(e => e.studentId == studentId);
         if (withTariff)
