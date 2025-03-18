@@ -1,4 +1,3 @@
-using System.Globalization;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
