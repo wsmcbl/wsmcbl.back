@@ -38,11 +38,16 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     [HttpPut]
     [Route("")]
     [ResourceAuthorizer("debt:update")]
-    public async Task<IActionResult> forgiveADebt([Required] string studentId, [FromQuery] int tariffId, [FromQuery] string authorizationToken)
+    public async Task<IActionResult> forgiveADebt([Required] string studentId, [Required] [FromQuery] int tariffId, [Required] [FromQuery] string authorizationToken)
     {
         if (!authorizationToken.Equals("36987"))
         {
             throw new ForbiddenException("Incorrect authorization code.");
+        }
+
+        if (tariffId < 1)
+        {
+            throw new IncorrectDataException("TariffId", "Tariff id must be not 0 or less.");
         }
         
         return Ok(await controller.forgiveADebt(studentId, tariffId));
