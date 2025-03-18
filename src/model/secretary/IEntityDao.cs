@@ -19,7 +19,7 @@ public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>
     public Task<SchoolyearEntity> getCurrent();
     public Task<SchoolyearEntity> getCurrentOrNew();
     public Task<SchoolyearEntity> getNewOrCurrent();
-    public Task<SchoolyearEntity> getOrCreateNew();
+    public Task<SchoolyearEntity> createNewOrFail();
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
