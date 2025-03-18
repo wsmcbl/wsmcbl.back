@@ -1,3 +1,4 @@
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -12,8 +13,8 @@ public class ForgetDebtController(DaoFactory daoFactory) : BaseController(daoFac
         return result;
     }
 
-    public async Task<List<DebtHistoryEntity>> getDebtListByStudent(string studentId)
+    public async Task<PagedResult<DebtHistoryEntity>> getDebtListByStudent(string studentId, PagedRequest request)
     {
-        return await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
+        return await daoFactory.debtHistoryDao!.getListByStudentId(studentId, request);
     }
 }
