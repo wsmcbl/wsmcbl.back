@@ -56,6 +56,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
 
     private async Task<StudentEntity?> getById(string studentId, string schoolyearId)
     {
-        return await entities.FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
+        return await entities.Include(e => e.student)
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
     }
 }
