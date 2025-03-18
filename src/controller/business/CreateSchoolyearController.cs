@@ -32,7 +32,7 @@ public class CreateSchoolyearController : BaseController
 
         try
         {
-            schoolyear = await daoFactory.schoolyearDao!.getOrCreateNew();
+            schoolyear = await daoFactory.schoolyearDao!.createNewOrFail();
             await createPartialList(partialList);
             await createSubjectList();
             await createTariffList(tariffList);
