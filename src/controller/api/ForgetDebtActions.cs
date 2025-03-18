@@ -8,7 +8,7 @@ using wsmcbl.src.model;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("accounting/debts")]
+[Route("accounting/students/{studentId}/debts")]
 [ApiController]
 public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
 {
@@ -17,7 +17,7 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("/{studentId}")]
+    [Route("")]
     [ResourceAuthorizer("debt:read")]
     public async Task<IActionResult> getDebtListByStudent([Required] string studentId, PagedRequest request)
     {
@@ -33,18 +33,18 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="200">Returns the edited resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">If resource not exist(student or tariff).</response>
+    /// <response code="404">If resource not exist (student or tariff).</response>
     /// <response code="409">If the debt is already paid.</response>
     [HttpPut]
     [Route("")]
     [ResourceAuthorizer("debt:update")]
-    public async Task<IActionResult> forgiveADebt(ForgetDebtDto dto)
+    public async Task<IActionResult> forgiveADebt([Required] string studentId, [FromQuery] int tariffId, [FromQuery] string authorizationToken)
     {
-        if (!dto.authorizationToken.Equals("36987"))
+        if (!authorizationToken.Equals("36987"))
         {
             throw new ForbiddenException("Incorrect authorization code.");
         }
         
-        return Ok(await controller.forgiveADebt(dto.studentId, dto.tariffId));
+        return Ok(await controller.forgiveADebt(studentId, tariffId));
     }
 }
