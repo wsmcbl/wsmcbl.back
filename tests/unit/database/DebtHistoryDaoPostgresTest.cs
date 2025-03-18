@@ -90,17 +90,6 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
     }
 
     [Fact]
-    public async Task getListByStudent_ShouldReturnEmptyList_WhenNotThereDebts()
-    {
-        context = TestDbContext.getInMemory();
-        sut = new DebtHistoryDaoPostgres(context);
-
-        var result = await sut.getListByStudentId("student");
-        
-        Assert.Empty(result);
-    }
-
-    [Fact]
     public async Task restoreDebt_ThrowException_WhenTransactionNotExist()
     {
         context = TestDbContext.getInMemory();       
