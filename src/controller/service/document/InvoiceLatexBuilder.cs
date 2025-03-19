@@ -9,7 +9,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     private TransactionEntity transaction = null!;
     private List<DebtHistoryEntity> debtList = null!;
     private CashierEntity cashier = null!;
-    private float[] generalBalance = null!;
+    private decimal[] generalBalance = null!;
     private int number;
     private string series = null!;
     private string exchangeRate = null!;
@@ -112,7 +112,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             return this;
         }
 
-        public Builder withGeneralBalance(float[] parameter)
+        public Builder withGeneralBalance(decimal[] parameter)
         {
             latexBuilder.generalBalance = parameter;
             return this;

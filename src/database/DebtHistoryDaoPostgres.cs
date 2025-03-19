@@ -148,7 +148,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         await saveAsync();
     }
     
-    public async Task<float[]> getGeneralBalance(string studentId)
+    public async Task<decimal[]> getGeneralBalance(string studentId)
     {
         var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
@@ -159,7 +159,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
-        float[] balance = [0, 0];
+        decimal[] balance = [0, 0];
 
         foreach (var debt in debtList)
         {
