@@ -200,7 +200,7 @@ internal class AccountingContext
             entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
         });
         
         modelBuilder.Entity<TransactionInvoiceView>(entity =>

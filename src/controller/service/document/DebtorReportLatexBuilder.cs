@@ -37,7 +37,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
     {
         if (value == 1)
         {
-            return (decimal)studentList.Where(e => e.schoolyearId == aDegree!.schoolyearId)
+            return studentList.Where(e => e.schoolyearId == aDegree!.schoolyearId)
                 .Sum(item => item.total);
         }
 
@@ -46,7 +46,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
             return getTotal(0) - getTotal(1);
         }
         
-        return (decimal)studentList.Sum(item => item.total);
+        return studentList.Sum(item => item.total);
     }
 
     private string getDegreeContent()
@@ -113,7 +113,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         {
             counter++;
             result +=
-                $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total.ToString("N2")}\\\\\\hline\n";
+                $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total:N2}\\\\\\hline\n";
         }
 
         return result;

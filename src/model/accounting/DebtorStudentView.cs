@@ -9,5 +9,5 @@ public class DebtorStudentView
     public string enrollmentId { get; set; } = null!;
     public string enrollment { get; set; } = null!;
     public int quantity { get; set; }
-    public double total {get; set;}
+    public decimal total {get; set;}
 }
