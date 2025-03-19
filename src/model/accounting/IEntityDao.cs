@@ -44,7 +44,7 @@ public interface ITariffDao : IGenericDao<TariffEntity, int>
 public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
 {
     public Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId);
-    public Task<List<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true);
+    public Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, PagedRequest request);
     public Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId);
     public Task<List<DebtHistoryEntity>> getListByTransaction(TransactionEntity transaction);
     
