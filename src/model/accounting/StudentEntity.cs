@@ -55,9 +55,9 @@ public class StudentEntity
         return discount != null ? discount!.amount : 0;
     }
     
-    public float calculateDiscount(float amount)
+    public decimal calculateDiscount(decimal amount)
     {
-        return discount != null ? amount*getDiscount() : amount;
+        return discount != null ? amount*(decimal)getDiscount() : amount;
     }
 
     public void updateEducationalLevel(int value)

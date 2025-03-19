@@ -39,9 +39,9 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     private string getDiscountTotal() => $"C$ {discountTotal:F2}";
     private string getAuxTotal() => $"C$ {(total + arrearsTotal - discountTotal):F2}";
 
-    private float discountTotal;
-    private float arrearsTotal;
-    private float total;
+    private decimal discountTotal;
+    private decimal arrearsTotal;
+    private decimal total;
 
     private string getDetail()
     {
