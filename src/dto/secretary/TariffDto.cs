@@ -32,7 +32,7 @@ public class TariffDto
         var tariff = new TariffEntity
         {
             concept = concept,
-            amount = (float)amount,
+            amount = amount,
             type = typeId,
             educationalLevel = educationalLevel,
             isLate = false

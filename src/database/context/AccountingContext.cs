@@ -115,7 +115,7 @@ internal class AccountingContext
             entity.ToTable("tariff", "accounting");
 
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
             entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
