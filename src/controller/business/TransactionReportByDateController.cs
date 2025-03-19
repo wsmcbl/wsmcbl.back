@@ -12,12 +12,12 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
         return await daoFactory.transactionDao!.getAll(request);
     }
     
-    public async Task<List<(int quantity, double total)>> getSummary(DateTime start, DateTime end)
+    public async Task<List<(int quantity, decimal total)>> getSummary(DateTime start, DateTime end)
     {
         var transactionList = await daoFactory.transactionDao!.getByRange(start, end);
         
-        (int quantity, double total) validSummary = (0, 0);
-        (int quantity, double total) invalidSummary = (0, 0);
+        (int quantity, decimal total) validSummary = (0, 0);
+        (int quantity, decimal total) invalidSummary = (0, 0);
         foreach (var item in transactionList)
         {
             if (item.isValid)

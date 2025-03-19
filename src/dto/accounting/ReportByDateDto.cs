@@ -8,8 +8,8 @@ public class ReportByDateDto
     public DateTime startDate { get; set; }
     public DateTime endDate { get; set; }
     public int validQuantity { get; set; }
-    public double validTotal { get; set; }
+    public decimal validTotal { get; set; }
     public int invalidQuantity { get; set; }
-    public double invalidTotal { get; set; }
+    public decimal invalidTotal { get; set; }
     public DateTime consultedIn { get; set; } = DateTime.UtcNow.toUTC6();
 }
