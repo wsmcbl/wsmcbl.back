@@ -211,7 +211,7 @@ internal class AccountingContext
             entity.Property(e => e.isValid).HasColumnName("isvalid");
             entity.Property(e => e.dateTime).HasColumnName("date");
             entity.Property(e => e.concept).HasColumnName("concept");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
             entity.Property(e => e.cashier).HasColumnName("cashier");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.student).HasColumnName("student");
