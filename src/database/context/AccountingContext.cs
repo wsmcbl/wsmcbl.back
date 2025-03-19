@@ -150,7 +150,7 @@ internal class AccountingContext
             entity.Property(e => e.studentId).HasMaxLength(100).HasColumnName("studentid");
             entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
             entity.Property(e => e.date).HasColumnName("date");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
             entity.Property(e => e.isValid).HasColumnName("isvalid");
 
             entity.HasMany(t => t.details).WithOne()

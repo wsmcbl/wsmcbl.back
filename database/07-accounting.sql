@@ -55,7 +55,7 @@ create table  if not exists Accounting.Transaction
 (
     transactionId varchar(20) primary key default accounting.generate_transaction_id(),
     number int default NEXTVAL('accounting.transaction_number_seq'),
-    total float not null,
+    total decimal(18, 2) not null,
     date timestamp with time zone not null,
     isValid bool default true not null,
     studentId varchar(15) not null,

@@ -6,7 +6,7 @@ public class TransactionEntity
     public int number { get; set; }
     public string cashierId { get; set; } = null!;
     public string studentId { get; set; } = null!;
-    public float total { get; set; }
+    public decimal total { get; set; }
     public DateTime date { get; set; }
     public ICollection<TransactionTariffEntity> details { get; set; } = [];
     public bool isValid { get; set; }
