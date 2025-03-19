@@ -5,16 +5,16 @@ namespace wsmcbl.src.dto.accounting;
 public class PaymentItemDto
 {
     public int tariffId { get; set; }
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public string concept { get; set; } = null!;
-    public float amount { get; set; }
-    public float discount { get; set; }
-    public float arrears { get; set; }
-    public float subTotal { get; set; }
-    public float debtBalance { get; set; }
+    public decimal amount { get; set; }
+    public decimal discount { get; set; }
+    public decimal arrears { get; set; }
+    public decimal subTotal { get; set; }
+    public decimal debtBalance { get; set; }
     public bool itPaidLate { get; set; }
     
-    public void setDiscount(float value)
+    public void setDiscount(decimal value)
     {
         discount = amount - value;
     }
@@ -27,13 +27,13 @@ public class PaymentItemDto
     {
         tariffId = entity.tariffId;
         concept = entity.tariff.concept;
-        amount = entity.tariff.amount;
+        amount = (decimal)entity.tariff.amount;
         itPaidLate = entity.tariff.isLate;
-        schoolYear = entity.tariff.schoolyearId!;
-        arrears = entity.arrears;
-        subTotal = entity.amount;
-        debtBalance = entity.getDebtBalance();
+        schoolyearId = entity.tariff.schoolyearId!;
+        arrears = (decimal)entity.arrears;
+        subTotal = (decimal)entity.amount;
+        debtBalance = (decimal)entity.getDebtBalance();
         
-        setDiscount(entity.subAmount);
+        setDiscount((decimal)entity.subAmount);
     }
 }
