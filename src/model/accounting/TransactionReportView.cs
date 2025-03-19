@@ -6,7 +6,7 @@ public class TransactionReportView
     public int number { get; set; }
     public string studentId { get; set; } = null!;
     public string studentName { get; set; } = null!;
-    public double total { get; set; }
+    public decimal total { get; set; }
     public bool isValid { get; set; }
     public string? enrollmentLabel { get; set; }
     public int type { get; set; }

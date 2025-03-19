@@ -48,7 +48,7 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId);
     public Task<List<DebtHistoryEntity>> getListByTransaction(TransactionEntity transaction);
     
-    public Task<float[]> getGeneralBalance(string studentId);
+    public Task<decimal[]> getGeneralBalance(string studentId);
     public Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction);
     
     public Task restoreDebt(string transactionId);

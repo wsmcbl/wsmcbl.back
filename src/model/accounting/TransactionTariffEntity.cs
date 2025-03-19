@@ -4,14 +4,14 @@ public class TransactionTariffEntity
 {
     public string transactionId { get; set; } = null!;
     public int tariffId { get; set; }
-    public float amount { get; set; }
+    public decimal amount { get; set; }
 
     public TariffEntity tariff { get; set; } = null!;
 
     public TransactionTariffEntity()
     {}
     
-    public TransactionTariffEntity(int tariffId, float amount, string? transactionId = null)
+    public TransactionTariffEntity(int tariffId, decimal amount, string? transactionId = null)
     {
         this.transactionId = transactionId ?? "";
         this.tariffId = tariffId;
@@ -28,7 +28,7 @@ public class TransactionTariffEntity
         return tariff.concept;
     }
 
-    public float officialAmount()
+    public decimal officialAmount()
     {
         return tariff.amount;
     }
@@ -38,8 +38,8 @@ public class TransactionTariffEntity
         return tariff.isLate;
     }
 
-    public float calculateArrears()
+    public decimal calculateArrears()
     {
-        return (float)(tariff.type == 1 && itPaidLate() ? officialAmount()*0.1 : 0);
+        return tariff.type == 1 && itPaidLate() ? officialAmount()*(decimal)0.1 : 0;
     }
 }

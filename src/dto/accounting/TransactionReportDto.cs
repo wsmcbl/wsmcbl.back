@@ -8,7 +8,7 @@ public class TransactionReportDto
     public int number { get; set; }
     public string studentName { get; set; }
     public string datetime { get; set; }
-    public double amount { get; set; }
+    public decimal amount { get; set; }
     public int type { get; set; }
     public bool isValid { get; set; }
     
