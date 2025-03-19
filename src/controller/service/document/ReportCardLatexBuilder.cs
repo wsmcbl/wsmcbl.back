@@ -7,7 +7,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     private StudentEntity student = null!;
     private TeacherEntity teacher = null!;
     private List<SemesterEntity> _semesters = null!;
-    private List<(string initials, string subjectId)> subjects = null!;
+    private List<SubjectEntity> subjects = null!;
     
     private string degree = null!; 
     
@@ -40,7 +40,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         foreach (var item in subjects)
         {
-            result = $"{result} & {item.initials}";
+            result = $"{result} & {item.getInitials}";
         }
 
         return $"{result}\\\\";
@@ -102,6 +102,11 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             var result = partial.subjectPartialList!
                 .FirstOrDefault(e => e.subjectId == subject.subjectId);
 
+            if (result != null)
+            {
+                result.setStudentGrade(student.studentId);
+            }
+            
             var label = result == null ? "" : result.studentGrade!.label;
             var grade = result == null ? "" : result.studentGrade!.grade.ToString();
 
@@ -152,7 +157,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             return this;
         }
         
-        public Builder withSubjectList(List<(string, string)> parameter)
+        public Builder withSubjectList(List<SubjectEntity> parameter)
         {
             latexBuilder.subjects = parameter;
             return this;

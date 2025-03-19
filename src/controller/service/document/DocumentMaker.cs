@@ -23,7 +23,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withStudent(student)
             .withTeacher(teacher)
             .withDegree(enrollment.label)
-            .withSubjectList(await getSubjectSort(student.enrollmentId!))
+            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
             .build();
         
