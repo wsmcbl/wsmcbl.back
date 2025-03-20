@@ -18,7 +18,7 @@ public class TariffDto
         tariffId = entity.tariffId;
         schoolyearId = entity.schoolyearId!;
         concept = entity.concept;
-        amount = (decimal)entity.amount;
+        amount = entity.amount;
         dueDate = entity.dueDate == null ? null : new DateOnlyDto((DateOnly)entity.dueDate!);
         isLate = entity.isLate;
         type = entity.type;

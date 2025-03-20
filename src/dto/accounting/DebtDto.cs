@@ -5,7 +5,7 @@ namespace wsmcbl.src.dto.accounting;
 public class DebtDto
 {
     public int tariffId { get; set; }
-    public string? schoolYear { get; set; }
+    public string? schoolyearId { get; set; }
     public string? concept { get; set; }
     public decimal subTotal { get; set; }
     public decimal arrears { get; set; }
@@ -17,10 +17,10 @@ public class DebtDto
     public DebtDto(DebtHistoryEntity entity)
     {
         tariffId = entity.tariffId;
-        schoolYear = entity.schoolyear;
+        schoolyearId = entity.schoolyear;
         concept = entity.tariff.concept;
         subTotal = entity.subAmount;
-        discount = subTotal != 0 ? entity.tariff.amount - subTotal : 0;
+        discount = subTotal != 0 ? entity.calculateDiscount() : 0;
         arrears = entity.arrears;
         total = entity.amount;
         debtBalance = entity.getDebtBalance();
