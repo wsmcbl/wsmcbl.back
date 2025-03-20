@@ -19,8 +19,9 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
 
     public async Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, PagedRequest request)
     {
-        var query = context
-            .GetQueryable<DebtHistoryEntity>().Where(e => e.studentId == studentId);
+        var query = context.GetQueryable<DebtHistoryEntity>()
+            .Where(e => e.studentId == studentId)
+            .Include(e => e.tariff);
         
         var pagedService = new PagedService<DebtHistoryEntity>(query, searchInDebtHistory);
         
