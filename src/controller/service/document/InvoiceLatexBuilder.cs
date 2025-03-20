@@ -22,10 +22,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.ReplaceInLatexFormat("customer.id.value", student.studentId);
         content = content.Replace("detail.value", getDetail());
         content = content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
+        content = content.Replace("detail.other.value", getOtherDetailOrEmpty());
         content = content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
         content = content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
         content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
         content = content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
+        content = content.Replace("balance.other.value", getBalanceOrEmpty());
         content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
         content = content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
         content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
@@ -36,11 +38,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getArrearsTotal() => $"C$ {arrearsTotal:F2}";
     private string getDiscountTotal() => $"C$ {discountTotal:F2}";
-    private string getAuxTotal() => $"C$ {total + arrearsTotal - discountTotal:F2}";
+    private string getAuxTotal() => $"C$ {total + arrearsTotal - discountTotal - detailTotal:F2}";
 
     private decimal discountTotal;
     private decimal arrearsTotal;
-    private decimal total;
+    private decimal total { get; set; }
+    private decimal detailTotal;
 
     private string getDetail()
     {
@@ -65,6 +68,36 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     {
         var value = generalBalance[1] - generalBalance[0];
         return $"C$ {value:F2}";
+    }
+
+    private string getBalanceOrEmpty()
+    {
+        var value = total + arrearsTotal - discountTotal - detailTotal;
+        value -= transaction.total;
+
+        return value > 0 ? $"\\multicolumn{{2}}{{l}}{{Pendiente: C\\$ {value:F2}}}\\\\" : string.Empty;
+    }
+
+    private string getOtherDetailOrEmpty()
+    {
+        var detailList = transaction.details.Where(e => e.debtBalance > 0).ToList();
+        if (detailList.Count == 0)
+        {
+            return string.Empty;
+        }
+        
+        var content = "\\multicolumn{2}{c}{\\textbf{Abonos realizados}}\\\\[2mm]";
+        
+        detailTotal = 0;
+        foreach (var item in detailList)
+        {
+            detailTotal += item.debtBalance;
+            var tariffConcept = item.concept().ReplaceLatexSpecialSymbols();
+            content = $@"{content} {tariffConcept} & C\$ {item.debtBalance:F2}\\";
+        }
+        
+        content = $"{content}[2mm] \\textbf{{Abonado}} & C\\$ {detailTotal:F2}\\\\\\hline";
+        return content;
     }
 
     public class Builder
