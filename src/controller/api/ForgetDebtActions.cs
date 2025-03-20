@@ -19,9 +19,9 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("debt:read")]
-    public async Task<IActionResult> getDebtListByStudent([Required] string studentId, PagedRequest request)
+    public async Task<IActionResult> getDebtListByStudentId([Required] string studentId, [FromQuery] PagedRequest request)
     {
-        var result = await controller.getDebtListByStudent(studentId, request);
+        var result = await controller.getDebtListByStudentId(studentId, request);
         
         var pagedResult = new PagedResult<DebtDto>(result.data.mapToListDto());
         pagedResult.setup(result);
