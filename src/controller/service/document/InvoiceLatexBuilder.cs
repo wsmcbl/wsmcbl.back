@@ -36,7 +36,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getArrearsTotal() => $"C$ {arrearsTotal:F2}";
     private string getDiscountTotal() => $"C$ {discountTotal:F2}";
-    private string getAuxTotal() => $"C$ {(total + arrearsTotal - discountTotal):F2}";
+    private string getAuxTotal() => $"C$ {total + arrearsTotal - discountTotal:F2}";
 
     private decimal discountTotal;
     private decimal arrearsTotal;
@@ -50,12 +50,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         {
             discountTotal += item.discount;
             arrearsTotal += item.arrears;
-            total += item.amount;
+            total += item.officialAmount();
 
             var tariffConcept = item.concept().ReplaceLatexSpecialSymbols();
 
-            content = item.paidLate() ? $@"{content} *{tariffConcept} & C\$ {item.amount:F2}\\" :
-                $@"{content} {tariffConcept} & C\$ {item.amount:F2}\\";
+            content = item.paidLate() ? $@"{content} *{tariffConcept} & C\$ {item.officialAmount():F2}\\" :
+                $@"{content} {tariffConcept} & C\$ {item.officialAmount():F2}\\";
         }
 
         return content;
