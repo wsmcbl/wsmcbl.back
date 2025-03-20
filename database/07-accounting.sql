@@ -71,6 +71,9 @@ create table if not exists Accounting.Transaction_Tariff
     transactionId varchar(15) not null,
     tariffId int not null,
     amount decimal(18, 2) not null,
+    arrears decimal(18, 2) not null,
+    discount decimal(18, 2) not null,
+    debtBalance decimal(18, 2),        
     primary key (transactionId, tariffId),
     foreign key (transactionId) references Accounting.Transaction,
     foreign key (tariffId) references Accounting.Tariff
