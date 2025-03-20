@@ -30,6 +30,9 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
         }
         
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
+        
+        await transaction.setDebtAmountsInDetailList(daoFactory.debtHistoryDao!);
+        
         daoFactory.transactionDao!.create(transaction);
         await daoFactory.ExecuteAsync();
 

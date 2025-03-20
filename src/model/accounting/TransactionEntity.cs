@@ -8,7 +8,7 @@ public class TransactionEntity
     public string studentId { get; set; } = null!;
     public decimal total { get; set; }
     public DateTime date { get; set; }
-    public ICollection<TransactionTariffEntity> details { get; set; } = [];
+    public List<TransactionTariffEntity> details { get; set; } = [];
     public bool isValid { get; set; }
 
     public void computeTotal()
@@ -36,5 +36,21 @@ public class TransactionEntity
     public void setAsInvalid()
     {
         isValid = false;
+    }
+
+    public async Task setDebtAmountsInDetailList(IDebtHistoryDao dao)
+    {
+        var debtList = await dao.getListByTransaction(this);
+        
+        foreach (var item in details)
+        {
+            var debt = debtList.FirstOrDefault(e => e.tariffId == item.tariffId);
+            if (debt == null)
+            {
+                continue;
+            }
+            
+            item.setDebtAmounts(debt);
+        }
     }
 }

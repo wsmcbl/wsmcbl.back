@@ -5,6 +5,9 @@ public class TransactionTariffEntity
     public string transactionId { get; set; } = null!;
     public int tariffId { get; set; }
     public decimal amount { get; set; }
+    public decimal arrears { get; set; }
+    public decimal discount { get; set; }
+    public decimal debtBalance { get; set; }
 
     public TariffEntity tariff { get; set; } = null!;
 
@@ -28,18 +31,15 @@ public class TransactionTariffEntity
         return tariff.concept;
     }
 
-    public decimal officialAmount()
-    {
-        return tariff.amount;
-    }
-
-    public bool itPaidLate()
+    public bool paidLate()
     {
         return tariff.isLate;
     }
 
-    public decimal calculateArrears()
+    public void setDebtAmounts(DebtHistoryEntity value)
     {
-        return tariff.type == 1 && itPaidLate() ? officialAmount()*(decimal)0.1 : 0;
+        arrears = value.arrears;
+        discount = value.calculateDiscount();
+        debtBalance = value.debtBalance;
     }
 }

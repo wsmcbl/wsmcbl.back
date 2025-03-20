@@ -68,7 +68,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         }
         
         var student = await daoFactory.accountingStudentDao!.getFullById(transaction.studentId);
-        var debtList = await daoFactory.debtHistoryDao!.getListByTransaction(transaction);
         var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.debtHistoryDao!.getGeneralBalance(transaction.studentId);
         
@@ -76,7 +75,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .Builder(resource, $"{resource}/out")
             .withStudent(student)
             .withTransaction(transaction)
-            .withDebtList(debtList)
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
             .withNumber(transaction.number)

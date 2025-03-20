@@ -7,7 +7,6 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 {
     private StudentEntity student = null!;
     private TransactionEntity transaction = null!;
-    private List<DebtHistoryEntity> debtList = null!;
     private CashierEntity cashier = null!;
     private decimal[] generalBalance = null!;
     private int number;
@@ -45,36 +44,21 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getDetail()
     {
-        var detail = transaction.details.Select(e => new
-        {
-            concept = e.concept(),
-            amount = e.officialAmount(),
-            amountTransaction = e.amount,
-            arrears = e.calculateArrears(),
-            discount = student.calculateDiscount(e.officialAmount()),
-            isPaidLate = e.itPaidLate(),
-            debt = getDebtByTariff(e.tariffId)
-        });
-
         var content = "";
-        foreach (var item in detail)
+        
+        foreach (var item in transaction.details)
         {
             discountTotal += item.discount;
             arrearsTotal += item.arrears;
             total += item.amount;
 
-            var concept = item.isPaidLate ? $"*{item.concept.ReplaceLatexSpecialSymbols()}" 
-                : item.concept.ReplaceLatexSpecialSymbols();
-            
-            content = $@"{content} {concept} & C\$ {item.amount:F2}\\";
+            var tariffConcept = item.concept().ReplaceLatexSpecialSymbols();
+
+            content = item.paidLate() ? $@"{content} *{tariffConcept} & C\$ {item.amount:F2}\\" :
+                $@"{content} {tariffConcept} & C\$ {item.amount:F2}\\";
         }
 
         return content;
-    }
-
-    private DebtHistoryEntity getDebtByTariff(int tariffId)
-    {
-        return debtList.First(e => e.tariffId == tariffId);
     }
 
     private string getGeneralBalance()
@@ -133,12 +117,6 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         public Builder withExchangeRate(decimal parameter)
         {
             latexBuilder.exchangeRate = $"{parameter:F2}";
-            return this;
-        }
-
-        public Builder withDebtList(List<DebtHistoryEntity> debtList)
-        {
-            latexBuilder.debtList = debtList;
             return this;
         }
     }
