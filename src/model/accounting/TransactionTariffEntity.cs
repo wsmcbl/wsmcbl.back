@@ -42,4 +42,9 @@ public class TransactionTariffEntity
         discount = value.calculateDiscount();
         debtBalance = value.debtBalance;
     }
+
+    public decimal officialAmount()
+    {
+        return tariff.amount;
+    }
 }
