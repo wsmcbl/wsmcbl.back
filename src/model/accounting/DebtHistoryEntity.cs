@@ -62,4 +62,10 @@ public class DebtHistoryEntity
     {
         debtBalance -= value;
     }
+
+    public decimal calculateDiscount()
+    {
+        var result = tariff.amount - subAmount;
+        return result < 0 ? 0 : result;
+    }
 }
