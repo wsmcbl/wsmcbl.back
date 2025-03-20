@@ -63,6 +63,8 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             debt.arrears = 0;
             update(debt);
         }
+
+        await saveAsync();
     }
 
     public async Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction)
