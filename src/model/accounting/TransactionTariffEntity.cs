@@ -5,6 +5,9 @@ public class TransactionTariffEntity
     public string transactionId { get; set; } = null!;
     public int tariffId { get; set; }
     public decimal amount { get; set; }
+    public decimal arrears { get; set; }
+    public decimal discount { get; set; }
+    public decimal debtBalance { get; set; }
 
     public TariffEntity tariff { get; set; } = null!;
 

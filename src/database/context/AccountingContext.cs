@@ -166,6 +166,9 @@ internal class AccountingContext
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
             entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
+            entity.Property(e => e.arrears).HasColumnType("decimal(18,2)").HasColumnName("arrears");
+            entity.Property(e => e.discount).HasColumnType("decimal(18,2)").HasColumnName("discount");
+            entity.Property(e => e.debtBalance).HasColumnType("decimal(18,2)").HasColumnName("debtbalance");
 
             entity.HasOne(d => d.tariff).WithMany()
                 .HasForeignKey(d => d.tariffId);
