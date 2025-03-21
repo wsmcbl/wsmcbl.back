@@ -6,10 +6,10 @@ public class GradeEntity
     public int subjectPartialId { get; set; }
     public string studentId { get; set; } = null!;
     public string? label { get; set; }
-    public double? grade { get; set; }
-    public double? conductGrade { get; set; }
+    public decimal? grade { get; set; }
+    public decimal? conductGrade { get; set; }
 
-    public void updateGrades(double? gradeValue, double? conductGradeValue)
+    public void updateGrades(decimal? gradeValue, decimal? conductGradeValue)
     {
         if (gradeValue == null || conductGradeValue == null)
         {
