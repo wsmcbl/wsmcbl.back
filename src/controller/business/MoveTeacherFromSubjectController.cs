@@ -33,9 +33,9 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
         await daoFactory.ExecuteAsync();
     }
 
-    public async Task<bool> isThereAnActivePartial()
+    public async Task<bool> hasActivePartial()
     {
         var controller = new MoveStudentFromEnrollmentController(daoFactory);
-        return await controller.isThereAnActivePartial();
+        return await controller.hasActivePartial();
     }
 }

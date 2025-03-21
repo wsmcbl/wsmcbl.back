@@ -22,7 +22,7 @@ public class MoveStudentFromEnrollmentActions(MoveStudentFromEnrollmentControlle
     [ResourceAuthorizer("student:update")]
     public async Task<ActionResult> changeStudentEnrollment([FromQuery] string studentId, [FromQuery] string enrollmentId)
     {
-        if (await controller.isThereAnActivePartial())
+        if (await controller.hasActivePartial())
         {
             throw new ConflictException("This operation cannot be performed. The partial is active.");
         }

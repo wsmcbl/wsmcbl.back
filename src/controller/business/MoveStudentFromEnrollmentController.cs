@@ -54,7 +54,7 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         return enrollment;
     }
 
-    public async Task<bool> isThereAnActivePartial()
+    public async Task<bool> hasActivePartial()
     {
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 

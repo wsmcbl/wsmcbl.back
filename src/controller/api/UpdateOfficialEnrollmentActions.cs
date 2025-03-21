@@ -124,7 +124,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
         [Required] string subjectId, [Required] [FromQuery] string teacherId)
     {
-        if (await subjectController.isThereAnActivePartial())
+        if (await subjectController.hasActivePartial())
         {
             throw new ConflictException("This operation cannot be performed. The partial is active.");
         }
