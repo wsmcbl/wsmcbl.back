@@ -114,7 +114,7 @@ public class EnrollStudentController : BaseController
             throw new EntityNotFoundException("StudentEntity", studentId);
         }
         
-        var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var list = await daoFactory.degreeDao!.getValidListForNewOrCurrentSchoolyear();
         var degreeList = list.Where(e => e.educationalLevel == accountingStudent.getEducationalLevelLabel())
             .ToList();
         

@@ -119,7 +119,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         
         var user = await daoFactory.userDao!.getById(userId);
-        var degreeList = await daoFactory.degreeDao!.getAll(schoolyear.id!, true);
+        var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!, true);
         var teacherList = await daoFactory.teacherDao!.getAll();
         
         var latexBuilder = new OfficialEnrollmentListLatexBuilder.Builder(resource,$"{resource}/out")
@@ -136,7 +136,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     {
         var user = await daoFactory.userDao!.getById(userId);
         var studentList = await daoFactory.accountingStudentDao!.getDebtorStudentList();
-        var degreeList = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var degreeList = await daoFactory.degreeDao!.getValidListForNewOrCurrentSchoolyear();
         
         var latexBuilder = new DebtorReportLatexBuilder.Builder(resource, $"{resource}/out")
             .withStudentList(studentList)

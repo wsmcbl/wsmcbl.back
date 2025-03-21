@@ -4,12 +4,12 @@ namespace wsmcbl.src.model.secretary;
 
 public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
-    public Task<PagedResult<DegreeEntity>> getAll(PagedRequest request);
+    public Task<PagedResult<DegreeEntity>> getPaginated(PagedRequest request);
     public Task createRange(List<DegreeEntity> degreeList);
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
-    public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
-    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
-    public Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment);
+    public Task<DegreeEntity?> getFullById(string degreeId);
+    public Task<List<DegreeEntity>> getValidListForNewOrCurrentSchoolyear();
+    public Task<List<DegreeEntity>> getListForSchoolyearId(string schoolyearId, bool withStudentsInEnrollment = false);
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>

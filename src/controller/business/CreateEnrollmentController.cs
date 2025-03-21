@@ -10,7 +10,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
 {
     public async Task<PagedResult<DegreeEntity>> getDegreeList(PagedRequest request)
     {
-        return await daoFactory.degreeDao!.getAll(request);
+        return await daoFactory.degreeDao!.getPaginated(request);
     }
 
     public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
