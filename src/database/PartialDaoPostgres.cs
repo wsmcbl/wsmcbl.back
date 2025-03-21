@@ -29,7 +29,7 @@ public class PartialDaoPostgres : GenericDaoPostgres<PartialEntity, int>, IParti
         foreach (var item in partialList)
         {
             item.subjectPartialList =
-                await daoFactory.subjectPartialDao!.getByPartialAndEnrollmentId(item.partialId, enrollmentId);
+                await daoFactory.subjectPartialDao!.getListByPartialIdAndEnrollmentId(item.partialId, enrollmentId);
         }
 
         return partialList;

@@ -14,14 +14,14 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, string>
 {
     public Task<List<SubjectEntity>> getListByTeacherId(string teacherId);
     public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId);
-    public Task<SubjectEntity?> getBySubjectAndEnrollment(string subjectId, string enrollmentId);
+    public Task<SubjectEntity?> getBySubjectIdAndEnrollmentId(string subjectId, string enrollmentId);
 }
 
 public interface ISubjectPartialDao : IGenericDao<SubjectPartialEntity, int>
 {
     public Task<List<SubjectPartialEntity>> getListBySubject(SubjectPartialEntity subjectPartial);
     public Task<List<int>> getIdListBySubject(SubjectPartialEntity subjectPartial);
-    public Task<List<SubjectPartialEntity>> getByPartialAndEnrollmentId(int partialId, string enrollmentId);
+    public Task<List<SubjectPartialEntity>> getListByPartialIdAndEnrollmentId(int partialId, string enrollmentId);
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>
