@@ -68,4 +68,9 @@ public class DebtHistoryEntity
         var result = tariff.amount - subAmount;
         return result < 0 ? 0 : result;
     }
+
+    public bool isCurrentTariffMonthly()
+    {
+        return tariff.isMonthlyTariff() && tariff.checkDueMonth(DateTime.Today.Month);
+    }
 }
