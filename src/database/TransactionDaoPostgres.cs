@@ -45,7 +45,7 @@ public class TransactionDaoPostgres(PostgresContext context)
             .ToListAsync();
     }
 
-    public async Task<PagedResult<TransactionReportView>> getAll(TransactionReportViewPagedRequest request)
+    public async Task<PagedResult<TransactionReportView>> getPaginated(TransactionReportViewPagedRequest request)
     {
         var query = context.GetQueryable<TransactionReportView>();
 

@@ -9,7 +9,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
 {
     public async Task<PagedResult<TransactionReportView>> getTransactionList(TransactionReportViewPagedRequest request)
     {
-        return await daoFactory.transactionDao!.getAll(request);
+        return await daoFactory.transactionDao!.getPaginated(request);
     }
     
     public async Task<List<(int quantity, decimal total)>> getSummary(DateTime start, DateTime end)

@@ -10,7 +10,7 @@ public class CancelTransactionController(DaoFactory daoFactory) : BaseController
 {
     public async Task<PagedResult<TransactionReportView>> getTransactionList(TransactionReportViewPagedRequest request)
     {
-        return await daoFactory.transactionDao!.getAll(request);
+        return await daoFactory.transactionDao!.getPaginated(request);
     }
 
     public async Task<TransactionEntity> cancelTransaction(string transactionId)
