@@ -36,10 +36,15 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
         return await entities.ToListAsync();
     }
 
-    public async Task delete(T entity)
+    public async Task deleteAsync(T entity)
     {
         entities.Remove(entity);
         await context.SaveChangesAsync();
+    }
+
+    public void delete(T entity)
+    {
+        entities.Remove(entity);
     }
 
     public async Task saveAsync()
@@ -50,7 +55,7 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
         }
         catch (Exception e)
         {
-            throw new ForbiddenException("Failed to perform transaction. Error: " + e.Message);
+            throw new InternalException("Failed to perform transaction. Error: " + e.Message);
         }
     }
 }

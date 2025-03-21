@@ -24,6 +24,11 @@ public class StudentEntity
 
     public StudentEntity(string studentId, int educationalLevel)
     {
+        if (string.IsNullOrWhiteSpace(studentId))
+        {
+            throw new IncorrectDataException("studentId", "value");
+        }
+        
         this.studentId = studentId;
         discountId = 1;
         this.educationalLevel = educationalLevel;
@@ -50,40 +55,40 @@ public class StudentEntity
         return discount != null ? discount!.amount : 0;
     }
     
-    public float calculateDiscount(float amount)
+    public decimal calculateDiscount(decimal amount)
     {
-        return discount != null ? amount*getDiscount() : amount;
+        return discount != null ? amount*(decimal)getDiscount() : amount;
     }
 
     public void updateEducationalLevel(int value)
     {
         if (educationalLevel == value)
         {
-            throw new ConflictException("The student has the same level.");
+            throw new UpdateConflictException("Student EducationalLevel", "The student has the same level.");
         }
         
         educationalLevel = value;
     }
 
-    public void setEnrollmentLabel(string? value)
-    {
-        if (value == null)
-        {
-            enrollmentLabel = "Sin matrícula";
-        }
-
-        enrollmentLabel = value;
-    }
-
     public DebtHistoryEntity getCurrentRegistrationTariffDebt()
     {
-        var result = debtHistory!
-            .FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
+        var result = debtHistory!.FirstOrDefault(e => e.tariff.type == Const.TARIFF_REGISTRATION);
         if (result == null)
         {
-            throw new EntityNotFoundException($"Registration tariff debt not found.");
+            throw new EntityNotFoundException("Registration tariff debt not found.");
         }
 
         return result;
+    }
+
+    public string getEducationalLevelLabel()
+    {
+        return educationalLevel switch
+        {
+            1 => "Preescolar",
+            2 => "Primaria",
+            3 => "Secundaria",
+            _ => ""
+        };
     }
 }

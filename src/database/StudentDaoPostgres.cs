@@ -1,124 +1,108 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
-using IStudentDao = wsmcbl.src.model.secretary.IStudentDao;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.database;
 
-public class StudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
-    public async Task<StudentEntity> getByIdWithProperties(string id)
+    public StudentDaoPostgres(PostgresContext context) : base(context)
     {
-        var entity = await entities.FirstOrDefaultAsync(e => e.studentId == id);
+    }
 
+    public async Task<StudentEntity> getFullById(string id)
+    {
+        var entity = await entities.Where(e => e.studentId == id)
+            .Include(e => e.tutor)
+            .Include(e => e.file)
+            .Include(e => e.parents)
+            .Include(e => e.measurements)
+            .FirstOrDefaultAsync();
+        
         if (entity == null)
         {
-            throw new EntityNotFoundException("Student", id);
+            throw new EntityNotFoundException("StudentEntity", id);
         }
-
-        var tutor = await context.Set<StudentTutorEntity>()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.tutorId == entity.tutorId);
-
-        if (tutor == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (Tutor) with StudentId ({id}) not found.");
-        }
-
-        entity.tutor = tutor;
-
-        entity.measurements = await context.Set<StudentMeasurementsEntity>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
-
-        entity.file = await context.Set<StudentFileEntity>().AsNoTracking()
-            .FirstOrDefaultAsync(e => e.studentId == id);
-
-        entity.parents = await context.Set<StudentParentEntity>()
-            .Where(e => e.studentId == id)
-            .AsNoTracking()
-            .ToListAsync();
 
         return entity;
     }
 
-    public async Task<StudentEntity?> getByInformation(StudentEntity student)
+    public async Task<StudentEntity?> findDuplicateOrNull(StudentEntity student)
     {
-        return (await context.Set<StudentEntity>().Where(e => student.name == e.name).ToListAsync())
-            .Find(e => student.getStringData().Equals(e.getStringData()));
+        var list = await entities.Where(e => student.name == e.name)
+            .AsNoTracking().ToListAsync();
+        return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment()
+    public async Task<PagedResult<StudentRegisterView>> getStudentRegisterViewList(StudentPagedRequest request)
     {
-        var studentList = await getAll();
-        var academyList = await context.Set<model.academy.StudentEntity>().ToListAsync();
-        var result = new List<(StudentEntity student, string schoolyear, string enrollment)>();
-        foreach (var item in studentList)
+        var query = context.GetQueryable<StudentRegisterView>();
+        
+        if (request.isActive != null)
         {
-            var academyStudent = academyList.Where(e => e.studentId == item.studentId)
-                .MaxBy(e => GetNumericPart(e.schoolYear));
-
-            var schoolyearLabel = "";
-            var enrollmentLabel = "Sin matrícula";
-            if (academyStudent == null)
-            {
-                result.Add((item, schoolyearLabel, enrollmentLabel));
-                continue;
-            }
-
-            var schoolyear = await context.Set<SchoolYearEntity>()
-                .FirstOrDefaultAsync(e => e.id == academyStudent.schoolYear);
-            if (schoolyear != null)
-                schoolyearLabel = schoolyear.label;
-
-            var enrollment = await context.Set<EnrollmentEntity>()
-                .FirstOrDefaultAsync(e => e.enrollmentId == academyStudent.enrollmentId);
-            if (enrollment != null)
-                enrollmentLabel = enrollment.label;
-            
-            result.Add((item, schoolyearLabel, enrollmentLabel));
+            query = query.Where(e => e.isActive == (bool)request.isActive);
         }
+        
+        var pagedService = new PagedService<StudentRegisterView>(query, searchInStudentRecordView);
+        
+        request.setDefaultSort("fullName");   
+        return await pagedService.getPaged(request);
+    }
 
-        return result;
+    public async Task<List<StudentRegisterView>> getStudentRegisterInCurrentSchoolyear()
+    {
+        var daoFactory = new DaoFactoryPostgres(context);
+
+        var current = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        return await context.Set<StudentRegisterView>().Where(e => e.schoolyearId == current.id).ToListAsync();
+    }
+
+    public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
+    {
+        var query = context.GetQueryable<StudentView>();
+        
+        if (request.isActive != null)
+        {
+            query = query.Where(e => e.isActive == (bool)request.isActive);
+        }
+        
+        var pagedService = new PagedService<StudentView>(query, searchInStudentView);
+        
+        request.setDefaultSort("fullName");   
+        return await pagedService.getPaged(request);
     }
     
-
-    private static int GetNumericPart(string item)
-    {
-        var numericPart = item.Substring(3);
-        return int.Parse(numericPart);
+    private static IQueryable<StudentView> searchInStudentView(IQueryable<StudentView> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+           EF.Functions.Like(e.studentId, value) ||
+           EF.Functions.Like(e.fullName.ToLower(), value) ||
+           EF.Functions.Like(e.tutor.ToLower(), value) ||
+           (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
+           (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
     }
 
-    public async Task<List<StudentEntity>> getAllWithSolvency()
+    private static IQueryable<StudentRegisterView> searchInStudentRecordView(IQueryable<StudentRegisterView> query, string search)
     {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
-
-        var tariffList = await context.Set<model.accounting.TariffEntity>()
-            .Where(e => e.schoolYear == ID.currentSchoolyear || e.schoolYear == ID.newSchoolyear)
-            .Where(e => e.type == Const.TARIFF_REGISTRATION).ToListAsync();
-
-        if (tariffList.Count == 0)
-        {
-            throw new EntityNotFoundException(
-                $"Entities of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
-        }
-
-        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
-        var query = $@"SELECT s.* FROM secretary.student s
-                    INNER JOIN accounting.debthistory d ON d.studentid = s.studentid
-                    LEFT JOIN academy.student aca on aca.studentid = s.studentid
-                    WHERE ({tariffsId}) AND aca.enrollmentid is NULL AND
-                          CASE
-                              WHEN d.amount = 0 THEN 1
-                              ELSE (d.debtbalance / d.amount)
-                          END >= 0.4;";
+        var value = $"%{search}%";
         
-        return await entities.FromSqlRaw(query).AsNoTracking().ToListAsync();
+        return query.Where(e =>
+            EF.Functions.Like(e.studentId, value) ||
+            EF.Functions.Like(e.fullName.ToLower(), value) ||
+            EF.Functions.Like(e.tutor.ToLower(), value) ||
+            EF.Functions.Like(e.address.ToLower(), value) ||
+            (e.minedId != null && EF.Functions.Like(e.minedId.ToLower(), value)) ||
+            (e.father != null && EF.Functions.Like(e.father.ToLower(), value)) ||
+            (e.mother != null && EF.Functions.Like(e.mother.ToLower(), value)) ||
+            (e.schoolyear != null && EF.Functions.Like(e.schoolyear.ToLower(), value)) ||
+            (e.degree != null && EF.Functions.Like(e.degree.ToLower(), value)) ||
+            (e.diseases != null && EF.Functions.Like(e.diseases.ToLower(), value)) ||
+            (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
     public async Task updateAsync(StudentEntity? entity)
@@ -138,12 +122,11 @@ public class StudentDaoPostgres(PostgresContext context)
         update(existingStudent);
     }
 
-    public new async Task delete(StudentEntity entity)
+    public new async Task deleteAsync(StudentEntity entity)
     {
-        FormattableString query =
-            $@"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
+        FormattableString query =$"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
         await context.Database.ExecuteSqlAsync(query);
         
-        await base.delete(entity);
+        await base.deleteAsync(entity);
     }
 }

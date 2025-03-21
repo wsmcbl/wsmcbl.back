@@ -17,10 +17,6 @@ public class UserDtoValidator : AbstractValidator<UserDto>
             .MinimumLength(2).WithMessage("Name be at least 2 characters long.")
             .Matches(@"^[a-zA-ZÀ-ÿñÑ]+$").WithMessage("Name must contain only letter");
         
-        RuleFor(e => e.email)
-            .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-            .WithMessage("The email must be the valid format");
-        
         RuleFor(e => e.secondName)
             .Must(e => e == null || !string.IsNullOrEmpty(e.Trim()))
             .WithMessage("The second surname must be not empty.")

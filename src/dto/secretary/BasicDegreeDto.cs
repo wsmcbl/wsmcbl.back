@@ -17,7 +17,7 @@ public class BasicDegreeDto
         label = degree.label;
         educationalLevel = degree.educationalLevel;
         quantity = degree.quantity;
-        schoolYear = degree.schoolYear;
+        schoolYear = degree.schoolyearId;
         position = degree.getTag();
     }
 }

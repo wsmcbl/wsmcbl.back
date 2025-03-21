@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
@@ -12,11 +13,16 @@ namespace wsmcbl.src.database;
 
 public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 {
-    public override async Task execute() => await studentDao.saveAsync();
+    public override async Task ExecuteAsync() => await studentDao.saveAsync();
 
     public override void Detached<T>(T element)
     {
         context.Entry(element).State = EntityState.Detached;
+    }
+
+    public override async Task<IDbContextTransaction?> GetContextTransaction()
+    {
+        return await context.Database.BeginTransactionAsync();
     }
 
     private IPartialDao? _partialDao;
@@ -68,6 +74,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private ISubjectDataDao? _subjectDataDao;
     public override ISubjectDataDao subjectDataDao => _subjectDataDao ??= new SubjectDataDaoPostgres(context);
+
+
+    private ISubjectAreaDao? _subjectAreaDao;
+    public override ISubjectAreaDao subjectAreaDao => _subjectAreaDao ??= new SubjectAreaDaoPostgres(context);
 
 
     private ITariffDataDao? _tariffDataDao;
@@ -134,4 +144,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IUserPermissionDao? _userPermissionDao;
     public override IUserPermissionDao userPermissionDao => _userPermissionDao ??= new UserPermissionDaoPostgres(context);
+
+    private IRoleDao? _roleDao;
+    public override IRoleDao roleDao => _roleDao ??= new RoleDaoPostgres(context);
+
+    private IRolePermissionDao? _rolePermissionDao;
+    public override IRolePermissionDao rolePermissionDao => _rolePermissionDao ??= new RolePermissionDaoPostgres(context);
 }

@@ -28,38 +28,13 @@ public static class TestDtoInputGenerator
         };
     }
     
-    
-    public static DegreeToCreateDto aGradeDto()
+    public static SubjectDto aSubjectDto()
     {
-        return new DegreeToCreateDto()
-        {
-            label = "5to",
-            schoolYear = "sch01",
-            modality = "primaria",
-            subjects = []
-        };
-    }
-    
-    public static SubjectToCreateDto aSubjectDto()
-    {
-        return new SubjectToCreateDto
+        return new SubjectDto
         {
             name = "Lengua y Literatura",
             isMandatory = true,
             semester = 2
-        };
-    }
-    
-    public static TariffToCreateDto aTariffDto()
-    {
-        return new TariffToCreateDto
-        {
-            schoolYear = "sch001",
-            amount = 700,
-            concept = "Pago febrero",
-            type = 1,
-            modality = 1,
-            dueDate = new DateOnlyDto(2024,1,1)
         };
     }
 }

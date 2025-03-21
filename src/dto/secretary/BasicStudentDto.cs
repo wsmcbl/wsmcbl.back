@@ -1,4 +1,4 @@
-using wsmcbl.src.model.secretary;
+using wsmcbl.src.model;
 
 namespace wsmcbl.src.dto.secretary;
 
@@ -9,13 +9,15 @@ public class BasicStudentDto
     public bool isActive { get; set; }
     public string schoolyear { get; set; }
     public string enrollment { get; set; }
-    
-    public BasicStudentDto(StudentEntity entity, string schoolyear, string enrollment)
+
+    public BasicStudentDto(StudentView value)
     {
-        studentId = entity.studentId!;
-        fullName = entity.fullName();
-        isActive = entity.isActive;
-        this.schoolyear = schoolyear;
-        this.enrollment = enrollment;
+        value.initLabels();
+        
+        studentId = value.studentId;
+        fullName = value.fullName;
+        isActive = value.isActive;
+        schoolyear = value.schoolyear!;
+        enrollment = value.enrollment!;
     }
-} 
+}

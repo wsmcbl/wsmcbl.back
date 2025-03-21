@@ -5,14 +5,11 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary","cashier")]
 [Route("accounting")]
 [ApiController]
 public class CreateStudentProfileActions(CreateStudentProfileController controller) : ControllerBase
 {
-    /// <summary>
-    /// Create a new student profile to collect tariff
-    /// </summary>
+    /// <summary>Create a new student profile to collect tariff.</summary>
     /// <remarks>
     /// The educationalLevel property can only take the values 1 (Preescolar), 2 (Primaria) and 3 (Secundaria).
     /// The studentId must be null or empty.
@@ -22,6 +19,7 @@ public class CreateStudentProfileActions(CreateStudentProfileController controll
     /// <response code="409">If the student profile already exists.</response>
     [HttpPost]
     [Route("students")]
+    [ResourceAuthorizer("student:create")]
     public async Task<IActionResult> createStudent(CreateStudentProfileDto dto)
     {
         var result = await controller.createStudent(dto.student.toEntity(), dto.tutor.toEntity());

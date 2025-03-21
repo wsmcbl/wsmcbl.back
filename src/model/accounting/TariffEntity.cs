@@ -1,4 +1,3 @@
-using System.Globalization;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.model.accounting;
@@ -6,9 +5,9 @@ namespace wsmcbl.src.model.accounting;
 public class TariffEntity
 {
     public int tariffId { get; set; }
-    public string? schoolYear { get; set; }
+    public string? schoolyearId { get; set; }
     public string concept { get; set; }  = null!;
-    public float amount { get; set; }
+    public decimal amount { get; set; }
     public DateOnly? dueDate { get; set; }
     public bool isLate { get; set; }
     public int type { get; set; }
@@ -18,9 +17,9 @@ public class TariffEntity
     {
     }
     
-    public TariffEntity(TariffDataEntity tariffData, string schoolYear)
+    public TariffEntity(TariffDataEntity tariffData, string schoolyearId)
     {
-        this.schoolYear = schoolYear;
+        this.schoolyearId = schoolyearId;
         type = tariffData.typeId;
         concept = tariffData.concept;
         amount = tariffData.amount;
@@ -39,11 +38,5 @@ public class TariffEntity
         {
             isLate = true;
         }
-    }
-
-    public string getDateString()
-    {
-        var result = dueDate?.ToString("dd / MMM / yyyy" ,new CultureInfo("es-ES"));
-        return result ?? string.Empty;
     }
 }

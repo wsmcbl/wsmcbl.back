@@ -6,8 +6,6 @@ help: ## Show this help message
 	@echo 'targets:'
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
-
-
 b = unknown
 
 mer-b2dev: ## Merge branch (b) into develop
@@ -53,7 +51,6 @@ remake: ## Stop, build and run the containers
 
 
 
-
 logs: ## Show all logs
 	docker-compose logs
 
@@ -63,31 +60,42 @@ api-bash: ## Entry api bash
 delete-containers: ## Remove all containers 
 	docker-compose down
 
-## --------------------------------------------------------------------------------------------------------------##
+
+
+
+
+pg-restore:
+	docker exec -i database_restore pg_restore -U $(DATABASE_USER) -d $(DATABASE_NAME) /backup.sql
+
+restore.stop:
+	docker-compose -f docker-compose.restore.yml stop
+
+restore.build:
+	docker build -t custom-base-image config/base
+	docker-compose -f docker-compose.restore.yml build
+
+restore.run:
+	docker-compose -f docker-compose.restore.yml up -d	
+
+remake-restore:
+	$(MAKE) restore.stop && $(MAKE) restore.build && $(MAKE) restore.run
 
 delete-all-services: ## Remove all containers and volumes (***CAUTION***)
-	docker-compose down --volumes --remove-orphans
+	docker-compose -f docker-compose.yml -f docker-compose.restore.yml down --volumes --remove-orphans
 	docker system prune
 	docker network create app-network || true
 
 
-
-
-run-test: ## Run test
-	docker-compose -f docker-compose.test.yml build
-	docker-compose -f docker-compose.test.yml run api-test
-	dotnet build
-
 SONAR_TOKEN=$(shell echo $$SONAR_TOKEN)
 .PHONY: dn-ss
 
-current_dir=$(shell pwd)
-
 dn-ss: ## Run SonarCloud Scanner
-	sed -i 's|/app/|$(current_dir)/|g' coverage.xml
-	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs, tests/**/*.*' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+	dotnet sonarscanner begin /k:'wsmcbl_wsmcbl.back' /o:'wsmcblproyect2024' /d:sonar.token='$(SONAR_TOKEN)' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.exclusions='**/*.sql, **/*Context.cs' /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
 	dotnet build --no-incremental
 	dotnet sonarscanner end /d:sonar.token='$(SONAR_TOKEN)'
+
+run-test: ## Run test
+	dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
 
 sonar: ## Update sonar
 	$(MAKE) run-test || $(MAKE) dn-ss

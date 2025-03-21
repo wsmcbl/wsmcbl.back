@@ -1,125 +1,125 @@
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using wsmcbl.src.database.context;
+using wsmcbl.src.database.service;
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class AccountingStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<StudentEntity, string>(context), IStudentDao
+public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, IStudentDao
 {
-    public new async Task<List<StudentEntity>> getAll()
+    private DaoFactory daoFactory { get; set; }
+
+    public AccountingStudentDaoPostgres(PostgresContext context) : base(context)
     {
-        FormattableString query = $@"select std.* from accounting.student std 
-        join secretary.student as sec_std on sec_std.studentid = std.studentid
-        where sec_std.studentstate = 'true'";
-
-        var list = await context.Set<StudentEntity>()
-            .FromSqlInterpolated(query)
-            .AsNoTracking()
-            .Include(e => e.student)
-            .ThenInclude(e => e.tutor)
-            .ToListAsync();
-        
-        if(list.Count != 0)
-        {
-            await setEnrollmentLabelsForStudents(list);
-        }
-
-        return list;
+        daoFactory = new DaoFactoryPostgres(context);
     }
 
-    public async Task<StudentEntity> getWithoutPropertiesById(string studentId)
+    public async Task<StudentEntity> getFullById(string studentId)
     {
-        return (await entities.FirstOrDefaultAsync(e => e.studentId == studentId))!;
-    }
-
-    public new async Task<StudentEntity?> getById(string id)
-    {
-        var student = await entities
+        var student = await entities.Where(e => e.studentId == studentId)
             .Include(e => e.discount)
             .Include(e => e.student)
             .ThenInclude(d => d.tutor)
-            .Include(e => e.transactions)!
-            .ThenInclude(t => t.details)
             .Include(e => e.debtHistory)!
             .ThenInclude(e => e.tariff)
-            .FirstOrDefaultAsync(e => e.studentId == id);
-        
-        if (student is null)
+            .Include(e => e.transactions)!
+            .ThenInclude(t => t.details)
+            .ThenInclude(a => a.tariff)
+            .FirstOrDefaultAsync();
+
+        if (student == null)
         {
-            throw new EntityNotFoundException("Student", id);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
-        await setEnrollmentLabel(student);
-        
-        foreach (var transaction in student.transactions!)
-        {
-            foreach (var item in transaction.details)
-            {
-                var tariff = await context.Set<TariffEntity>().FirstOrDefaultAsync(t => t.tariffId == item.tariffId);
-                item.setTariff(tariff);
-            }
-        }
-        
+        student.enrollmentLabel = await getEnrollmentLabel(studentId);
         return student;
     }
     
-    private async Task setEnrollmentLabel(StudentEntity student)
+    private async Task<string> getEnrollmentLabel(string studentId)
     {
-        const string sql = @"SELECT enroll.label
-                       FROM academy.student AS std
-                       JOIN academy.enrollment AS enroll ON enroll.enrollmentid = std.enrollmentid
-                       WHERE std.studentid = @p0
-                       LIMIT 1";
-
-        await using var command = context.Database.GetDbConnection().CreateCommand();
-        command.CommandText = sql;
-        command.Parameters.Add(new NpgsqlParameter("@p0", student.studentId));
-        await context.Database.OpenConnectionAsync();
-
-        await using (var reader = await command.ExecuteReaderAsync())
-        {
-            student.setEnrollmentLabel(await reader.ReadAsync() ? reader.GetString(0) : null);
-        }
+        var result = await context.Set<StudentView>().AsNoTracking()
+            .Where(e => e.studentId == studentId).FirstOrDefaultAsync();
         
-        await context.Database.CloseConnectionAsync();
+        if(result == null) return "Sin matrícula";
+        
+        result.initLabels();
+        return result.enrollment!;
     }
     
-    private async Task setEnrollmentLabelsForStudents(List<StudentEntity> students)
+    public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
     {
-        var studentIds = students.Select(s => s.studentId).ToList();
-        var studentIdsInSql = string.Join(",", studentIds.Select(id => $"'{id}'"));
+        var query = context.GetQueryable<StudentView>().Where(e => e.isActive);
 
-        var sql = $@"
-        SELECT std.studentid, enroll.label
-        FROM academy.student AS std
-        JOIN academy.enrollment AS enroll ON enroll.enrollmentid = std.enrollmentid
-        WHERE std.studentid IN ({studentIdsInSql})";
+        var pagedService = new PagedService<StudentView>(query, search);
 
-        await context.Database.OpenConnectionAsync();
-        await using (var command = context.Database.GetDbConnection().CreateCommand())
+        request.setDefaultSort("fullName");
+        return await pagedService.getPaged(request);
+    }
+    
+    private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
+    { 
+        var value = $"%{search}%";
+        
+        return query.Where(e =>
+            EF.Functions.Like(e.studentId, value) ||
+            EF.Functions.Like(e.fullName.ToLower(), value) ||
+            EF.Functions.Like(e.tutor.ToLower(), value) ||
+            (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
+    }
+
+    public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
+    {
+        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
+        if (tariffList.Count == 0)
         {
-            command.CommandText = sql;
-            await using (var reader = await command.ExecuteReaderAsync())
-            {
-                var enrollmentLabels = new Dictionary<string, string>();
-                while (await reader.ReadAsync())
-                {
-                    var studentId = reader.GetString(0);
-                    var enrollmentLabel = reader.GetString(1);
-
-                    enrollmentLabels[studentId] = enrollmentLabel;
-                }
-
-                foreach (var student in students)
-                {
-                    student.enrollmentLabel = enrollmentLabels
-                        .GetValueOrDefault(student.studentId!, "Sin matrícula");
-                }
-            }
+            throw new EntityNotFoundException(
+                $"Entities of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
         }
 
-        await context.Database.CloseConnectionAsync();
+        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
+        var query = "SELECT s.* FROM accounting.student s";
+        query += " JOIN secretary.student ss ON ss.studentid = s.studentid";
+        query += " JOIN accounting.debthistory d ON d.studentid = s.studentid";
+        query += " LEFT JOIN academy.student aca on aca.studentid = s.studentid";
+        query += $" WHERE ss.studentstate = true AND ({tariffsId}) AND aca.enrollmentid is NULL AND";
+        query += " CASE";
+        query += "   WHEN d.amount = 0 THEN 1";
+        query += "   ELSE (d.debtbalance / d.amount)";
+        query += " END >= 0.4";
+
+        return await entities.FromSqlRaw(query)
+            .Include(e => e.student).AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<List<DebtorStudentView>> getDebtorStudentList()
+    {
+        return await context.Set<DebtorStudentView>().ToListAsync();
+    }
+
+    public async Task<bool> hasSolvencyInRegistration(string studentId)
+    {
+        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
+        if (tariffList.Count == 0)
+        {
+            throw new EntityNotFoundException(
+                $"Entities of type (TariffEntity) with type ({Const.TARIFF_REGISTRATION}) not found.");
+        }
+
+        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
+        var query = "SELECT s.* FROM accounting.student s";
+        query += " JOIN secretary.student ss ON ss.studentid = s.studentid";
+        query += " JOIN accounting.debthistory d ON d.studentid = s.studentid";
+        query += $" WHERE ss.studentstate = true AND s.studentid = '{studentId}' AND ({tariffsId}) AND";
+        query += " CASE";
+        query += "   WHEN d.amount = 0 THEN 1";
+        query += "   ELSE (d.debtbalance / d.amount)";
+        query += " END >= 0.4";
+
+        return await entities.FromSqlRaw(query).AsNoTracking().FirstOrDefaultAsync() != null;
     }
 }

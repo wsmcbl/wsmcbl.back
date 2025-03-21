@@ -24,7 +24,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
         if (enrollment == null)
         {
-            throw new EntityNotFoundException("Enrollment", enrollmentId);
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
         }
 
         return enrollment;
@@ -35,7 +35,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         var result = await controller.getTeacherById(teacherId);
         if (result == null)
         {
-            throw new EntityNotFoundException("Teacher", teacherId);
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
         }
 
         return result;
@@ -48,7 +48,7 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         {
             oldTeacher.forgetEnrollment();
             daoFactory.teacherDao.update(oldTeacher);
-            await daoFactory.execute();
+            await daoFactory.ExecuteAsync();
         }
 
         teacher.isGuide = true;
@@ -57,6 +57,6 @@ public class MoveTeacherGuideFromEnrollmentController : BaseController
         enrollment.teacherId = teacher.teacherId;
         daoFactory.enrollmentDao!.update(enrollment);
         
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 }

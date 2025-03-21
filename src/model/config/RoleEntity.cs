@@ -5,17 +5,38 @@ public class RoleEntity
     public int roleId { get; set; }
     public string name { get; set; } = null!;
     public string description { get; set; } = null!;
-    public List<PermissionEntity> permissionList { get; set; } = [];
 
-    public string getSpanishName()
+    public List<RolePermissionEntity> rolePermissionList { get; set; } = null!;
+
+    public List<PermissionEntity> getPermissionList()
     {
-        return name switch
+        return rolePermissionList.Select(e => e.permission!).ToList();
+    }
+
+    public void updatePermissionList(List<RolePermissionEntity> list, IRolePermissionDao rolePermissionDao)
+    {
+        foreach (var item in rolePermissionList)
         {
-            "admin" => "Administrador",
-            "secretary" => "Secretario",
-            "cashier" => "Cajero",
-            "teacher" => "Docente",
-            _ => "Sin roles"
-        };
+            if (!list.Any(e => e.equals(item)))
+            {
+                rolePermissionDao.delete(item);
+            }
+        }
+
+        foreach (var item in list)
+        {
+            if (!rolePermissionList.Any(e => e.equals(item)))
+            {
+                rolePermissionDao.create(item);
+            }
+        }
+    }
+
+    public void setDescription(string value)
+    {
+        if (description != value)
+        {
+            description = value;
+        }
     }
 }

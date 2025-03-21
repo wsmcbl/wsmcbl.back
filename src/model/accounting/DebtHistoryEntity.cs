@@ -7,10 +7,10 @@ public class DebtHistoryEntity
     public string studentId { get; set; } = null!;
     public int tariffId { get; set; }
     public string schoolyear { get; set; } = null!;
-    public float arrears { get; set; }
-    public float subAmount { get; set; }
-    public float amount { get; set; }
-    public float debtBalance { get; set; }
+    public decimal arrears { get; set; }
+    public decimal subAmount { get; set; }
+    public decimal amount { get; set; }
+    public decimal debtBalance { get; set; }
     public bool isPaid { get; set; }
     
     public TariffEntity tariff { get; set; } = null!;
@@ -35,7 +35,7 @@ public class DebtHistoryEntity
         return debtBalance > 0;
     }
 
-    public float getDebtBalance()
+    public decimal getDebtBalance()
     {
         var debt = amount - debtBalance;
         return debt > 0 ? debt : 0;
@@ -45,15 +45,27 @@ public class DebtHistoryEntity
     {
         if (isPaid)
         {
-            throw new ConflictException("The debt is already paid.");
+            throw new UpdateConflictException("Debt","The debt is already paid.");
+        }
+
+        if (debtBalance > subAmount)
+        {
+            arrears = debtBalance - subAmount;
+            return;
         }
         
-        subAmount = 0;
         arrears = 0;
+        subAmount = debtBalance;
     }
 
-    public void restoreDebt(float value)
+    public void restoreDebt(decimal value)
     {
         debtBalance -= value;
+    }
+
+    public decimal calculateDiscount()
+    {
+        var result = tariff.amount - subAmount;
+        return result < 0 ? 0 : result;
     }
 }

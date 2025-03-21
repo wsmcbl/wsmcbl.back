@@ -84,7 +84,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         
         await sut.assignTeacherGuide(newTeacher, enrollment);
 
-        await daoFactory.Received().execute();
+        await daoFactory.Received().ExecuteAsync();
     }
 
     [Fact]
@@ -105,6 +105,6 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         
         await sut.assignTeacherGuide(newTeacher, enrollment);
 
-        await daoFactory.Received(2).execute();
+        await daoFactory.Received(2).ExecuteAsync();
     }
 }

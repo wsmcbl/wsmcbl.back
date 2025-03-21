@@ -13,4 +13,5 @@ Migrations/
 
 *.pdf
 *.user
+backup.sql
 coverage.xml

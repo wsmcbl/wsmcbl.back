@@ -32,10 +32,12 @@
 \newcommand{\customerId}{customer.id.value}
 \newcommand{\detail}{detail.value}
 \newcommand{\total}{total.value}
+\newcommand{\otherDetail}{detail.other.value}
 \newcommand{\discountTotal}{discount.value}
 \newcommand{\arrearsTotal}{arrears.value}
 \newcommand{\auxTotal}{total.aux.value}
 \newcommand{\finalTotal}{total.final.value}
+\newcommand{\balance}{balance.other.value}
 \newcommand{\cashier}{cashier.value}
 \newcommand{\datetime}{datetime.value}
 \newcommand{\exchangeRate}{exchange.rate.value}
@@ -43,7 +45,7 @@
 
 \begin{document}
     \begin{center}
-        \textbf{ASOCIACIÓN DE IGLESIAS BAUTISTA INDEPENDIENTES DE NICARAGUA}\par
+        \textbf{ASOCIACIÓN DE IGLESIAS BAUTISTA INDEPENDIENTES DE NICARAGUA}\\Colegio Baustista Libertad\par
         {
             \small
             RUC: J0810000088325\\
@@ -58,16 +60,18 @@
 
     \begin{longtable}{p{3.8cm} p{1.8cm}}
         \hline
-        \multicolumn{2}{c}{\textbf{Concepto de recibo}} \\\\
-        \textbf{Arancel} & \textbf{Monto} \\\\
-        \detail\\
+        \multicolumn{2}{c}{\textbf{Concepto de recibo}} \\[2mm]
+        \textbf{Arancel} & \textbf{Monto} \\[2mm]
+        \detail[2mm]
         \textbf{Total} & \total\\
         \hline
-        \multicolumn{2}{c}{\textbf{Detalle de pago}} \\\\
+        \otherDetail
+        \multicolumn{2}{c}{\textbf{Detalle de pago}} \\[2mm]
         Descuento & \discountTotal\\
         Mora & \arrearsTotal\\
-        Total & \auxTotal\\\\
+        Total a pagar & \auxTotal\\\\
         \textbf{Pago en efectivo} & \finalTotal\\
+        \balance
         \hline
         \multicolumn{2}{c}{\textbf{Otros datos}}\\\\
         \multicolumn{2}{c}{\textbf{Tasa de cambio:} \$ 1 $\implies$ C\$ \exchangeRate}\\

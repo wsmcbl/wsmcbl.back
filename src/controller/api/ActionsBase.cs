@@ -11,25 +11,9 @@ public class ActionsBase : ControllerBase
         var userId = User.FindFirstValue("userid");
         if (userId == null)
         {
-            throw new EntityNotFoundException("user", userId);
+            throw new EntityNotFoundException("UserEntity", userId);
         }
 
         return userId;
-    }
-    
-    protected string[] validateQueryValue(string q)
-    {
-        if (string.IsNullOrWhiteSpace(q))
-        {
-            throw new BadRequestException("Query parameter 'q' is required.");
-        }
-        
-        var parts = q.Split(':');
-        if (parts.Length != 2)
-        {
-            throw new BadRequestException("Query parameter 'q' is not in the correct format.");
-        }
-
-        return parts;
     }
 }

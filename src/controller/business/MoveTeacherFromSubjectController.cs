@@ -21,16 +21,16 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
         var subject = await daoFactory.subjectDao!.getBySubjectAndEnrollment(subjectId, enrollmentId);
         if (subject == null)
         {
-            throw new EntityNotFoundException("Subject", subjectId);
+            throw new EntityNotFoundException("SubjectEntity", subjectId);
         }
 
         if (subject.teacherId == teacherId)
         {
-            throw new ConflictException("The teacher is already associated with the subject.");
+            throw new UpdateConflictException("Subject TeacherId", "The teacher is already associated with the subject.");
         }
 
         subject.teacherId = teacherId;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<bool> isThereAnActivePartial()

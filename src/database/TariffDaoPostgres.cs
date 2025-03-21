@@ -3,36 +3,28 @@ using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<TariffEntity, int>(context), ITariffDao
+public class TariffDaoPostgres : GenericDaoPostgres<TariffEntity, int>, ITariffDao
 {
-    private string? currentSchoolyearId { get; set; }
-    private string? newSchoolyearId { get; set; }
-    private string? schoolyearLabel { get; set; }
+    private DaoFactory daoFactory { get; set; }
 
-    private async Task setSchoolyearIds()
+    public TariffDaoPostgres(PostgresContext context) : base(context)
     {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var ID = await schoolyearDao.getCurrentAndNewSchoolyearIds();
-        currentSchoolyearId = ID.currentSchoolyear;
-        newSchoolyearId = ID.newSchoolyear;
-
-        if (currentSchoolyearId != "")
-        {
-            var currentSchoolyear = await schoolyearDao.getCurrentSchoolyear();
-            schoolyearLabel = currentSchoolyear.label;
-        }
+        daoFactory = new DaoFactoryPostgres(context);
     }
 
     public async Task<List<TariffEntity>> getOverdueList()
     {
-        await setSchoolyearIds();
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
         var tariffs = await entities
-            .Where(e => e.schoolYear == currentSchoolyearId)
-            .Where(e => e.isLate && e.type == Const.TARIFF_MONTHLY)
+            .AsNoTracking()
+            .Where(e => e.schoolyearId == schoolyear.id)
+            .Where(e => e.type == Const.TARIFF_MONTHLY)
+            .Where(e => e.isLate == false)
             .ToListAsync();
 
         tariffs.ForEach(t => t.checkDueDate());
@@ -42,74 +34,40 @@ public class TariffDaoPostgres(PostgresContext context) : GenericDaoPostgres<Tar
 
     public async Task<List<TariffEntity>> getListByStudent(string studentId)
     {
-        await setSchoolyearIds();
+        var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
-        var debts = await context.Set<DebtHistoryEntity>()
+        var debtList = await context.Set<DebtHistoryEntity>()
             .Where(e => e.studentId == studentId)
-            .Where(e => e.schoolyear == currentSchoolyearId || e.schoolyear == newSchoolyearId || !e.isPaid)
+            .Where(e => e.schoolyear == currentSch.id || e.schoolyear == newSch.id || !e.isPaid)
             .Include(e => e.tariff)
             .ToListAsync();
 
-        
-        return debts.Select(e => updateTariffSchoolyear(e.tariff)).ToList();
+        return debtList.Select(e => e.tariff).ToList();
     }
 
-    private TariffEntity updateTariffSchoolyear(TariffEntity entity)
+    public async Task<TariffEntity> getRegistrationTariff(string schoolyearId, int level)
     {
-        if (entity.schoolYear == currentSchoolyearId)
-        {
-            entity.schoolYear = schoolyearLabel;
-            return entity;
-        }
-
-        var dao = new SchoolyearDaoPostgres(context);
-        var schoolyear = dao.getById(entity.schoolYear!).GetAwaiter().GetResult();
-        if (schoolyear != null)
-        {
-            entity.schoolYear = schoolyear.label;
-        }
-
-        return entity;
-    }
-
-    public async Task<float[]> getGeneralBalance(string studentId)
-    {
-        await setSchoolyearIds();
-
-        var debts = await context.Set<DebtHistoryEntity>()
-            .Where(d => d.studentId == studentId)
-            .Where(d => d.schoolyear == currentSchoolyearId || d.schoolyear == newSchoolyearId)
-            .Include(d => d.tariff)
-            .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
-            .ToListAsync();
-
-        float[] balance = [0, 0];
-
-        foreach (var debt in debts)
-        {
-            balance[0] += debt.debtBalance;
-            balance[1] += debt.amount;
-        }
-
-        return balance;
-    }
-
-    public async Task<TariffEntity> getInCurrentSchoolyearByType(int level)
-    {
-        var schoolyearDao = new SchoolyearDaoPostgres(context);
-        var schoolyear = await schoolyearDao.getValidSchoolyearId();
-        
         var tariff = await entities
-            .FirstOrDefaultAsync(e => e.educationalLevel == level && e.schoolYear == schoolyear);
-
+            .FirstOrDefaultAsync(e => e.schoolyearId == schoolyearId
+                                      && e.educationalLevel == level && e.type == Const.TARIFF_REGISTRATION);
+        
         if (tariff == null)
         {
-            throw new EntityNotFoundException($"Tariff with educationalLevel ({level}) in current schoolyear not found.");
+            throw new EntityNotFoundException(
+                $"Tariff with educationalLevel ({level}) in current schoolyear not found.");
         }
 
         return tariff;
     }
-    
+
+    public async Task<List<TariffEntity>> getCurrentRegistrationTariffList()
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        return await entities
+            .Where(e => e.schoolyearId == schoolyear.id && e.type == Const.TARIFF_REGISTRATION)
+            .ToListAsync();
+    }
 
     public async Task createRange(List<TariffEntity> tariffList)
     {

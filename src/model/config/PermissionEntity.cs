@@ -7,4 +7,17 @@ public class PermissionEntity
     public string name { get; set; } = null!;
     public string spanishName { get; set; } = null!;
     public string description { get; set; } = null!;
+
+    public PermissionEntity()
+    {
+    }
+
+    public PermissionEntity(int id)
+    {
+        permissionId = id;
+        area = string.Empty;
+        name = string.Empty;
+        spanishName = string.Empty;
+        description = string.Empty;
+    }
 }

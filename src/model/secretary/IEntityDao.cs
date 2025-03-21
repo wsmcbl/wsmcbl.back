@@ -4,27 +4,31 @@ namespace wsmcbl.src.model.secretary;
 
 public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 {
+    public Task<PagedResult<DegreeEntity>> getAll(PagedRequest request);
     public Task createRange(List<DegreeEntity> degreeList);
-    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
     public Task<DegreeEntity?> getByEnrollmentId(string enrollmentId);
     public Task<DegreeEntity?> getWithAllPropertiesById(string degreeId);
+    public Task<List<DegreeEntity>> getValidListForTheSchoolyear();
+    public Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment);
 }
 
-public interface ISchoolyearDao : IGenericDao<SchoolYearEntity, string>
+public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>
 {
-    public Task<SchoolYearEntity> getCurrentSchoolyear();
-    public Task<SchoolYearEntity> getOrCreateNewSchoolyear();
-    public Task<string> getValidSchoolyearId();
-    public Task<(string currentSchoolyear, string newSchoolyear)> getCurrentAndNewSchoolyearIds();
-    public Task<SchoolYearEntity> getSchoolYearByLabel(int year);
+    public Task<SchoolyearEntity?> getById(string schoolyearId, bool withProperty = false);
+    public Task<SchoolyearEntity> getByLabel(int year);
+    public Task<SchoolyearEntity> getCurrent();
+    public Task<SchoolyearEntity> getCurrentOrNew();
+    public Task<SchoolyearEntity> getNewOrCurrent();
+    public Task<SchoolyearEntity> createNewOrFail();
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
 {
-    public Task<List<StudentEntity>> getAllWithSolvency();
-    public Task<StudentEntity> getByIdWithProperties(string id);
-    Task<StudentEntity?> getByInformation(StudentEntity student);
-    Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getListWhitSchoolyearAndEnrollment();
+    public Task<StudentEntity> getFullById(string id);
+    public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);
+    public Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request);
+    public Task<PagedResult<StudentRegisterView>> getStudentRegisterViewList(StudentPagedRequest request);
+    public Task<List<StudentRegisterView>> getStudentRegisterInCurrentSchoolyear();
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudentElement<StudentFileEntity>;
@@ -43,9 +47,11 @@ public interface IStudentMeasurementsDao
 
 public interface IDegreeDataDao : IGenericDao<DegreeDataEntity, string>;
 
-public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, string>;
+public interface ISubjectDataDao : IGenericDao<SubjectDataEntity, int>;
 
-public interface ITariffDataDao : IGenericDao<TariffDataEntity, string>;
+public interface ISubjectAreaDao : IGenericDao<SubjectAreaEntity, int>;
+
+public interface ITariffDataDao : IGenericDao<TariffDataEntity, int>;
 
 
 

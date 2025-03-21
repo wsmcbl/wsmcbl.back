@@ -1,3 +1,4 @@
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -8,12 +9,12 @@ public class ForgetDebtController(DaoFactory daoFactory) : BaseController(daoFac
     public async Task<DebtHistoryEntity> forgiveADebt(string studentId, int tariffId)
     {
         var result = await daoFactory.debtHistoryDao!.forgiveADebt(studentId, tariffId);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         return result;
     }
 
-    public async Task<List<DebtHistoryEntity>> getDebtListByStudent(string studentId)
+    public async Task<PagedResult<DebtHistoryEntity>> getDebtListByStudentId(string studentId, PagedRequest request)
     {
-        return await daoFactory.debtHistoryDao!.getListByStudent(studentId);
+        return await daoFactory.debtHistoryDao!.getListByStudentId(studentId, request);
     }
 }

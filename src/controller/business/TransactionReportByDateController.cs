@@ -1,4 +1,5 @@
 using System.Security.Authentication;
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
 
@@ -6,18 +7,17 @@ namespace wsmcbl.src.controller.business;
 
 public class TransactionReportByDateController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    private List<TransactionReportView> transactionList = [];
-    
-    public async Task<List<TransactionReportView>> getTransactionList(DateTime start, DateTime end)
+    public async Task<PagedResult<TransactionReportView>> getTransactionList(TransactionReportViewPagedRequest request)
     {
-        transactionList = await daoFactory.transactionDao!.getByRange(start, end);
-        return transactionList;
+        return await daoFactory.transactionDao!.getAll(request);
     }
     
-    public List<(int quantity, double total)> getSummary()
+    public async Task<List<(int quantity, decimal total)>> getSummary(DateTime start, DateTime end)
     {
-        (int quantity, double total) validSummary = (0, 0);
-        (int quantity, double total) invalidSummary = (0, 0);
+        var transactionList = await daoFactory.transactionDao!.getByRange(start, end);
+        
+        (int quantity, decimal total) validSummary = (0, 0);
+        (int quantity, decimal total) invalidSummary = (0, 0);
         foreach (var item in transactionList)
         {
             if (item.isValid)
@@ -37,7 +37,7 @@ public class TransactionReportByDateController(DaoFactory daoFactory) : BaseCont
 
     public async Task<List<TariffTypeEntity>> getTariffTypeList()
     {
-        var controller = new CollectTariffController(daoFactory);
+        var controller = new ApplyArrearsController(daoFactory);
 
         var result = await controller.getTariffTypeList();
         result.Add(new TariffTypeEntity

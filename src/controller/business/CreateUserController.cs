@@ -1,5 +1,7 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -17,9 +19,9 @@ public class CreateUserController : BaseController
         this.userAuthenticator = userAuthenticator;
     }
 
-    public async Task<List<UserEntity>> getUserList()
+    public async Task<PagedResult<UserEntity>> getUserList(PagedRequest request)
     {
-        return await daoFactory.userDao!.getAll();
+        return await daoFactory.userDao!.getAll(request);
     }
 
     public async Task<UserEntity> createUser(UserEntity user, string groupName)
@@ -31,33 +33,31 @@ public class CreateUserController : BaseController
         userAuthenticator.encodePassword(user, password);
 
         daoFactory.userDao!.create(user);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
         daoFactory.Detached(user);
 
         user.password = password;
 
+        await createRole(user);
         await createEmailAccount(user);
         await createNextcloudAccount(user, groupName);
-        await createUserRole(user);
         
         return user;
     }
 
-    private async Task createUserRole(UserEntity user)
+    private async Task createRole(UserEntity user)
     {
-        if (user.roleId != 4)
+        if (user.roleId == 3)
         {
-            return;
+            daoFactory.cashierDao!.create(new CashierEntity((Guid)user.userId!));
+            await daoFactory.ExecuteAsync();
         }
-
-        var teacher = new TeacherEntity
-        {
-            userId = (Guid)user.userId!,
-            isGuide = false
-        };
         
-        daoFactory.teacherDao!.create(teacher);
-        await daoFactory.execute();
+        if (user.roleId == 4)
+        {
+            daoFactory.teacherDao!.create(new TeacherEntity((Guid)user.userId!));
+            await daoFactory.ExecuteAsync();
+        }
     }
 
     private async Task createNextcloudAccount(UserEntity user, string groupName)

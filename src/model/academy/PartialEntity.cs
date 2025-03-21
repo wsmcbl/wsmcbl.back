@@ -1,3 +1,6 @@
+using System.Globalization;
+using wsmcbl.src.exception;
+
 namespace wsmcbl.src.model.academy;
 
 public class PartialEntity
@@ -12,14 +15,10 @@ public class PartialEntity
     
     public bool isActive { get; set; }
     public bool gradeRecordIsActive { get; set; }
+    public DateTime? gradeRecordDeadline { get; set; }
     
     public ICollection<SubjectPartialEntity>? subjectPartialList { get; set; }
     
-    public bool isClosed()
-    {
-        return deadLine < DateOnly.FromDateTime(DateTime.Today);
-    }
-
     public bool recordIsActive()
     {
         return isActive && gradeRecordIsActive;
@@ -33,7 +32,7 @@ public class PartialEntity
         }
         else
         {
-            label = partial == 2 ? "III Parcial" : "IV Parcial";
+            label = partial == 1 ? "III Parcial" : "IV Parcial";
         }
     }
 
@@ -43,5 +42,38 @@ public class PartialEntity
         {
             item.setStudentGrade(studentId);
         }
+    }
+
+    public string getPeriodLabel()
+    {
+        var culture = new CultureInfo("es-ES");
+        return $"{startDate.ToString("dd/MMM/yyyy", culture)} - {deadLine.ToString("dd/MMM/yyyy", culture)}";
+    }
+
+    public string getSemesterLabel()
+    {
+        return semester == 1 ? "I Semestre" : "II Semestre";
+    }
+
+    public void enableGradeRecording(DateTime deadline)
+    {
+        if (gradeRecordIsActive)
+        {
+            throw new UpdateConflictException("Partial", "The gradeRecordIsActive attribute is already active.");
+        }
+
+        gradeRecordIsActive = true;
+        gradeRecordDeadline = deadline;
+    }
+
+    public void disableGradeRecording()
+    {
+        if (!gradeRecordIsActive)
+        {
+            return;
+        }
+ 
+        gradeRecordIsActive = false;
+        gradeRecordDeadline = null;
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using wsmcbl.src.model;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.database.context;
@@ -25,7 +26,7 @@ internal class SecretaryContext
                 .HasDefaultValueSql("secretary.generate_degree_id()")
                 .HasColumnName("degreeid");
             entity.Property(e => e.label).HasColumnName("label");
-            entity.Property(e => e.schoolYear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
             entity.Property(e => e.quantity).HasColumnName("quantity");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
             entity.Property(e => e.tag).HasColumnName("tag");
@@ -37,25 +38,23 @@ internal class SecretaryContext
                 .HasForeignKey(d => d.degreeId);
         });
 
-        modelBuilder.Entity<SchoolYearEntity>(entity =>
+        modelBuilder.Entity<SchoolyearEntity>(entity =>
         {
             entity.HasKey(e => e.id).HasName("schoolyear_pkey");
 
             entity.ToTable("schoolyear", "secretary");
 
-            entity.Ignore(e => e.degreeList);
-            entity.Ignore(e => e.tariffList);
-
-            entity.Property(e => e.id)
-                .HasMaxLength(15)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("secretary.generate_schoolyear_id()")
-                .HasColumnName("schoolyearid");
+            entity.Property(e => e.id).ValueGeneratedOnAdd()
+                .HasDefaultValueSql("secretary.generate_schoolyear_id()").HasColumnName("schoolyearid");
 
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasColumnName("label");
             entity.Property(e => e.startDate).HasColumnName("startdate");
+            
+            entity.HasMany(e => e.degreeList).WithOne().HasForeignKey(e => e.schoolyearId);
+            entity.HasMany(e => e.tariffList).WithOne().HasForeignKey(e => e.schoolyearId);
+            entity.HasMany(e => e.semesterList).WithOne().HasForeignKey(e => e.schoolyearId);
         });
 
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -85,12 +84,7 @@ internal class SecretaryContext
             entity.Property(e => e.profilePicture).HasColumnName("profileimage");
             entity.Property(e => e.accessToken).HasMaxLength(20).HasColumnName("accesstoken");
             
-            entity.HasOne(e => e.tutor).WithMany()
-                .HasForeignKey(e => e.tutorId);
-
-            entity.Ignore(e => e.file);
-            entity.Ignore(e => e.parents);
-            entity.Ignore(e => e.measurements);
+            entity.HasOne(e => e.tutor).WithMany().HasForeignKey(e => e.tutorId);
         });
 
         modelBuilder.Entity<StudentFileEntity>(entity =>
@@ -108,6 +102,9 @@ internal class SecretaryContext
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.transferSheet).HasColumnName("transfersheet");
             entity.Property(e => e.updatedDegreeReport).HasColumnName("updatedgradereport");
+            
+            entity.HasOne<StudentEntity>().WithOne(e => e.file)
+                .HasForeignKey<StudentFileEntity>(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentMeasurementsEntity>(entity =>
@@ -120,6 +117,9 @@ internal class SecretaryContext
             entity.Property(e => e.height).HasColumnName("height");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.weight).HasColumnName("weight");
+            
+            entity.HasOne<StudentEntity>().WithOne(e => e.measurements)
+                .HasForeignKey<StudentMeasurementsEntity>(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentParentEntity>(entity =>
@@ -137,6 +137,9 @@ internal class SecretaryContext
             entity.Property(e => e.occupation).HasColumnName("occupation");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.sex).HasColumnName("sex");
+            
+            entity.HasOne<StudentEntity>().WithMany(e => e.parents)
+                .HasForeignKey(e => e.studentId);
         });
 
         modelBuilder.Entity<StudentTutorEntity>(entity =>
@@ -214,6 +217,7 @@ internal class SecretaryContext
             entity.Property(e => e.initials).HasColumnName("initials");
             entity.Property(e => e.areaId).HasColumnName("areaid");
             entity.Property(e => e.number).HasColumnName("number");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
         });
 
         modelBuilder.Entity<TariffDataEntity>(entity =>
@@ -223,11 +227,58 @@ internal class SecretaryContext
             entity.ToTable("tariffcatalog", "secretary");
 
             entity.Property(e => e.tariffDataId).HasColumnName("tariffcatalogid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
             entity.Property(e => e.concept).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.typeId).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+        });
+
+        createView();
+    }
+
+    private void createView()
+    {
+        modelBuilder.Entity<StudentView>(entity =>
+        {
+            entity.ToView("student_to_list_view", "secretary").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.isActive).HasColumnName("studentstate");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.enrollment).HasColumnName("enrollment");
+        });
+        
+        modelBuilder.Entity<StudentRegisterView>(entity =>
+        {
+            entity.ToView("student_register_view", "secretary").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.minedId).HasColumnName("minedid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.sex).HasColumnName("sex");
+            entity.Property(e => e.birthday).HasColumnName("birthday");
+            entity.Property(e => e.diseases).HasColumnName("diseases");
+            entity.Property(e => e.address).HasColumnName("address");
+            entity.Property(e => e.height).HasColumnName("height");
+            entity.Property(e => e.weight).HasColumnName("weight");
+            entity.Property(e => e.tutor).HasColumnName("tutor");
+            entity.Property(e => e.phone).HasColumnName("phone");
+            entity.Property(e => e.father).HasColumnName("fathername");
+            entity.Property(e => e.fatherIdCard).HasColumnName("fatheridcard");
+            entity.Property(e => e.mother).HasColumnName("mothername");
+            entity.Property(e => e.motherIdCard).HasColumnName("motheridcard");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+            entity.Property(e => e.degree).HasColumnName("degree");
+            entity.Property(e => e.degreePosition).HasColumnName("degreeposition");
+            entity.Property(e => e.section).HasColumnName("section");
+            entity.Property(e => e.sectionPosition).HasColumnName("sectionposition");
+            entity.Property(e => e.enrollDate).HasColumnName("enrolldate");
+            entity.Property(e => e.isRepeating).HasColumnName("isrepeating");
         });
     }
 }

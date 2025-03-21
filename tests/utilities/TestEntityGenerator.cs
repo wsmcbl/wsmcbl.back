@@ -1,3 +1,4 @@
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
@@ -70,9 +71,9 @@ public class TestEntityGenerator
     }
 
 
-    public static SchoolYearEntity aSchoolYear()
+    public static SchoolyearEntity aSchoolYear()
     {
-        return new SchoolYearEntity
+        return new SchoolyearEntity
         {
             id = "sch001",
             label = DateTime.Now.Year.ToString(),
@@ -82,7 +83,7 @@ public class TestEntityGenerator
         };
     }
 
-    public static List<SchoolYearEntity> aSchoolYearList()
+    public static List<SchoolyearEntity> aSchoolYearList()
     {
         return [aSchoolYear()];
     }
@@ -125,7 +126,7 @@ public class TestEntityGenerator
             degreeId = degreeId,
             label = "11vo",
             educationalLevel = "secundaria",
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             enrollmentList = [],
             subjectList = [aSubject()],
             tag = "01"
@@ -198,7 +199,7 @@ public class TestEntityGenerator
             concept = "pago mes de abril",
             isLate = true,
             educationalLevel = 1,
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             type = 1,
             dueDate = new DateOnly(2024,1,1)
         };
@@ -213,7 +214,7 @@ public class TestEntityGenerator
             concept = "Pago excursion",
             isLate = true,
             educationalLevel = 1,
-            schoolYear = "sch001",
+            schoolyearId = "sch001",
             type = 2
         };
     }
@@ -286,35 +287,9 @@ public class TestEntityGenerator
     }
 
 
-    public static List<AccountingStudentEntity> aStudentList() =>
+    public static List<StudentView> aStudentList() =>
     [
-        new AccountingStudentEntity()
-        {
-            studentId = "std-10",
-            student = aStudent("std-10"),
-            discount = new DiscountEducationalLevelEntity()
-            {
-                discountId = 1,
-                amount = 0.1f
-            },
-            enrollmentLabel = "",
-            transactions = new List<TransactionEntity>
-            {
-                new TransactionEntity
-                {
-                    transactionId = "tst-1",
-                    cashierId = "e",
-                    date = new DateTime(2024, 7, 10, 1, 1, 1, DateTimeKind.Utc),
-                    studentId = "std-10",
-                    total = 700,
-                    details =
-                    [
-                        new TransactionTariffEntity
-                            { amount = 2, tariffId = aTariff().tariffId, transactionId = "w" }
-                    ]
-                }
-            }
-        }
+        
     ];
 
     public static List<StudentEntity> aSecretaryStudentList() => [aStudent("id1"), aStudent("id2")];

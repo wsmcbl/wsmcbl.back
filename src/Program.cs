@@ -12,7 +12,6 @@ using wsmcbl.src.utilities;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddJWTAuthentication();
-builder.AddAuthorization();
 
 builder.Services.AddControllersOptions();
 builder.Services.AddFluentValidationConfig();
@@ -25,10 +24,11 @@ builder.Services.AddDbContext<PostgresContext>(options => options.UseNpgsql(buil
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
 builder.Services.AddScoped<JwtGenerator>();
-builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<UserAuthenticator>();
+builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+builder.Services.AddScoped<DaoFactory, DaoFactoryPostgres>();
+builder.Services.AddHostedService<DisablePartialGradeRecordingBackground>();
 
 builder.Services.AddTransient<CollectTariffController>();
 builder.Services.AddTransient<UpdateOfficialEnrollmentController>();
@@ -52,7 +52,20 @@ builder.Services.AddTransient<ForgetDebtController>();
 builder.Services.AddTransient<CorrectEducationalLevelController>();
 builder.Services.AddTransient<CreateUserController>();
 builder.Services.AddTransient<CreateEnrollmentController>();
-builder.Services.AddTransient<AssignPermissionsController>();
+builder.Services.AddTransient<UpdateUserController>();
+builder.Services.AddTransient<PrintDocumentController>();//Auxiliary
+builder.Services.AddTransient<ViewUserProfileController>();
+builder.Services.AddTransient<EnablePartialGradeRecordingController>();
+builder.Services.AddTransient<GenerateDebtorReportController>();
+
+builder.Services.AddTransient<ApplyArrearsController>();
+builder.Services.AddTransient<CreateBackupsController>();
+builder.Services.AddTransient<UpdateRolesController>();
+builder.Services.AddTransient<GenerateStudentRegisterController>();
+builder.Services.AddTransient<ViewEnrollmentGuideController>();
+builder.Services.AddTransient<CreateSchoolyearController>();
+builder.Services.AddTransient<CreateSubjectDataController>();
+builder.Services.AddTransient<CreateTariffDataController>();
 
 var app = builder.Build();
 

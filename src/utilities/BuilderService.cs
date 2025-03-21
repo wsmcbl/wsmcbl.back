@@ -18,7 +18,7 @@ public static class BuilderService
     {
         Services.AddControllers(options =>
         {
-            options.Conventions.Add(new RoutePrefixConvention("v4"));
+            options.Conventions.Add(new RoutePrefixConvention("v5"));
         });
     }
     
@@ -30,10 +30,13 @@ public static class BuilderService
         Services.AddValidatorsFromAssemblyContaining<CreateStudentProfileDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollmentToUpdateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<EnrollStudentDtoValidator>();
-        Services.AddValidatorsFromAssemblyContaining<ForgetDebtDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<MediaEntityValidator>();
+        Services.AddValidatorsFromAssemblyContaining<PagedRequestValidator>();
         Services.AddValidatorsFromAssemblyContaining<SchoolyearToCreateDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<SubjectDataEntityValidator>();
+        Services.AddValidatorsFromAssemblyContaining<TariffDataDtoValidator>();
+        Services.AddValidatorsFromAssemblyContaining<TariffDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserToCreateDtoValidator>();

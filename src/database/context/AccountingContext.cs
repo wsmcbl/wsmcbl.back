@@ -18,8 +18,10 @@ internal class AccountingContext
         {
             entity.HasKey(e => e.cashierId);
             entity.ToTable("cashier", "accounting");
-
-            entity.Property(e => e.cashierId).HasMaxLength(15).HasColumnName("cashierid");
+            
+            entity.Property(e => e.cashierId).HasDefaultValueSql("accounting.generate_cashier_id()")
+                .HasColumnName("cashierid");
+            
             entity.Property(e => e.userId).HasMaxLength(15).HasColumnName("userid");
             
             entity.HasOne(c => c.user).WithMany().HasForeignKey(c => c.userId);
@@ -31,9 +33,7 @@ internal class AccountingContext
 
             entity.ToTable("debthistory", "accounting");
 
-            entity.Property(e => e.studentId)
-                .HasMaxLength(20)
-                .HasColumnName("studentid");
+            entity.Property(e => e.studentId).HasMaxLength(20).HasColumnName("studentid");
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
             entity.Property(e => e.arrears).HasColumnName("arrear");
             entity.Property(e => e.debtBalance).HasColumnName("debtbalance");
@@ -78,8 +78,11 @@ internal class AccountingContext
             entity.ToTable("exchangerate", "accounting");
 
             entity.Property(e => e.rateId).HasColumnName("rateid");
-            entity.Property(e => e.schoolyear).HasColumnName("value");
-            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyear");
+            entity.Property(e => e.value).HasColumnType("decimal(18,2)").HasColumnName("value");
+            
+            entity.HasOne<model.secretary.SchoolyearEntity>().WithOne(e => e.exchangeRate)
+                .HasForeignKey<ExchangeRateEntity>(e => e.schoolyearId);
         });
         
         modelBuilder.Entity<StudentEntity>(entity =>
@@ -98,7 +101,7 @@ internal class AccountingContext
                 .HasForeignKey(d => d.discountId);
 
             entity.HasOne(d => d.student).WithOne()
-                .HasForeignKey<StudentEntity>(d => d.studentId);
+                .HasForeignKey<model.secretary.StudentEntity>(d => d.studentId);
             
             entity.HasMany(s => s.transactions)
                 .WithOne()
@@ -112,11 +115,11 @@ internal class AccountingContext
             entity.ToTable("tariff", "accounting");
 
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
             entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
-            entity.Property(e => e.schoolYear).HasMaxLength(4).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(4).HasColumnName("schoolyear");
             entity.Property(e => e.type).HasColumnName("typeid");
             entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
         });
@@ -147,7 +150,7 @@ internal class AccountingContext
             entity.Property(e => e.studentId).HasMaxLength(100).HasColumnName("studentid");
             entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
             entity.Property(e => e.date).HasColumnName("date");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
             entity.Property(e => e.isValid).HasColumnName("isvalid");
 
             entity.HasMany(t => t.details).WithOne()
@@ -162,7 +165,13 @@ internal class AccountingContext
 
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
+            entity.Property(e => e.arrears).HasColumnType("decimal(18,2)").HasColumnName("arrears");
+            entity.Property(e => e.discount).HasColumnType("decimal(18,2)").HasColumnName("discount");
+            entity.Property(e => e.debtBalance).HasColumnType("decimal(18,2)").HasColumnName("debtbalance");
+
+            entity.HasOne(d => d.tariff).WithMany()
+                .HasForeignKey(d => d.tariffId);
         });
         
         createView();
@@ -182,6 +191,35 @@ internal class AccountingContext
             entity.Property(e => e.total).HasColumnName("total");
             entity.Property(e => e.isValid).HasColumnName("isvalid");
             entity.Property(e => e.dateTime).HasColumnName("datetime");
+        });
+        
+        modelBuilder.Entity<DebtorStudentView>(entity =>
+        {
+            entity.ToView("debtor_student_view", "accounting").HasNoKey();
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.fullName).HasColumnName("fullname");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.schoolyear).HasColumnName("schoolyear");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.enrollment).HasColumnName("enrollment");
+            entity.Property(e => e.quantity).HasColumnName("quantity");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
+        });
+        
+        modelBuilder.Entity<TransactionInvoiceView>(entity =>
+        {
+            entity.ToView("transaction_invoice_view", "accounting").HasNoKey();
+            entity.Property(e => e.transactionId).HasColumnName("transactionid");
+            entity.Property(e => e.number).HasColumnName("number");
+            entity.Property(e => e.isValid).HasColumnName("isvalid");
+            entity.Property(e => e.dateTime).HasColumnName("date");
+            entity.Property(e => e.concept).HasColumnName("concept");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
+            entity.Property(e => e.cashier).HasColumnName("cashier");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.student).HasColumnName("student");
+
+            entity.Ignore(e => e.date);
         });
     }
 }

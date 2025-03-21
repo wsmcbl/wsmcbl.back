@@ -6,85 +6,76 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("admin","secretary")]
-[Route("secretary/configurations/schoolyears")]
+[Route("secretary/schoolyears")]
 [ApiController]
-public class CreateSchoolyearActions(UpdateOfficialEnrollmentController controller) : ControllerBase
+public class CreateSchoolyearActions(CreateSchoolyearController controller) : ControllerBase
 {
-    /// <summary>Returns the search results based on the provided query.</summary>
-    /// <param name="q">
-    /// The query string in the format "value".
-    /// Supported values are "all" and "new".
-    /// </param>
-    /// <response code="200">Returns the search results.</response>
-    /// <response code="400">If the query parameter is missing or not in the correct format.</response>
+    /// <summary>Returns the list of schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getSchoolYears([Required] [FromQuery] string q)
+    [ResourceAuthorizer("schoolyear:read")]
+    public async Task<IActionResult> getSchoolyearList()
     {
-        switch (q.ToLower())
-        {
-            case "all":
-            {
-                var list = await controller.getSchoolYearList();
-                return Ok(list.mapListToDto());
-            }
-            case "new":
-            {
-                var schoolyearBaseInformation = await controller.getNewSchoolYearInformation();
-                return Ok(schoolyearBaseInformation.mapToDto());
-            }
-            default:
-                return NotFound("Unknown type value.");
-        }
+        var list = await controller.getSchoolyearList();
+        return Ok(list.mapListToDto());
     }
-
-
+    
+    /// <summary>Returns schoolyear by id.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("{schoolyearId}")]
+    [ResourceAuthorizer("schoolyear:read")]
+    public async Task<IActionResult> getSchoolyearById([Required] string schoolyearId)
+    {
+        var result = await controller.getSchoolyearById(schoolyearId);
+        return Ok(result.mapToDto());
+    }
+    
     /// <summary>Create new schoolyear.</summary>
-    /// <remarks>
-    /// Property semester in partialList can be 1 or 2.
-    /// Property exchangeRate can be double.
-    /// </remarks>
     /// <response code="201">If the resource is created.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> createSchoolYear(SchoolYearToCreateDto dto)
+    [ResourceAuthorizer("schoolyear:create")]
+    public async Task<IActionResult> createSchoolyear(SchoolyearToCreateDto dto)
     {
-        var result = await controller.createSchoolYear(dto.getGradeList(), dto.getTariffList());
-        await controller.createSemester(result, dto.getPartialList());
-        await controller.createExchangeRate(result, dto.exchangeRate);
+        await controller.createSchoolyear(dto.getPartialList(), dto.getTariffList());
 
-        return CreatedAtAction(null, result);
+        var result = controller.getSchoolyearCreated();
+        return CreatedAtAction(null, result.mapToDto());
     }
-
-    /// <summary>Create new subject catalog.</summary>
-    /// <response code="201">If the resource is created.</response>
+    
+    /// <summary>Returns the list of exchange rate.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
-    [HttpPost]
-    [Route("subjects")]
-    public async Task<IActionResult> createSubject(SubjectDataDto dto)
+    [HttpGet]
+    [Route("rates")]
+    [ResourceAuthorizer("schoolyear:read")]
+    public async Task<IActionResult> getExchangeRateList()
     {
-        var result = await controller.createSubject(dto.toEntity());
-        return CreatedAtAction(null, result);
+        return Ok(await controller.getExchangeRateList());
     }
-
-    /// <summary>Create new tariff catalog.</summary>
-    /// <response code="201">If the resource is created.</response>
+    
+    /// <summary>Update current exchange rate.</summary>
+    /// <response code="200">If the resource was modified correctly.</response>
+    /// <response code="400">Parameter is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found (degree).</response>
-    [HttpPost]
-    [Route("tariffs")]
-    public async Task<IActionResult> createTariff(TariffDataDto dto)
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("rates/current")]
+    [ResourceAuthorizer("schoolyear:update")]
+    public async Task<IActionResult> updateCurrentExchangeRate([FromQuery] decimal exchange)
     {
-        var result = await controller.createTariff(dto.toEntity());
-        return CreatedAtAction(null, result);
-    }    
+        await controller.updateCurrentExchangeRate(exchange);
+        return Ok();
+    }
 }

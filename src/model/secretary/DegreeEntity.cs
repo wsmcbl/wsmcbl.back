@@ -7,7 +7,7 @@ public class DegreeEntity
 {
     public string? degreeId { get; set; }
     public string label { get; set; } = null!;
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public int quantity { get; set; }
     public string educationalLevel { get; set; } = null!;
     public string tag { get; set; } = null!;
@@ -33,15 +33,15 @@ public class DegreeEntity
         }
     }
 
-    public DegreeEntity(DegreeDataEntity degreeData, string schoolYear)
+    public DegreeEntity(DegreeDataEntity degreeData, string schoolyearId)
     {
-        this.schoolYear = schoolYear;
+        this.schoolyearId = schoolyearId;
         label = degreeData.label;
         educationalLevel = degreeData.getModalityName();
         tag = degreeData.tag;
 
         subjectList ??= [];
-        foreach (var subject in degreeData.subjectList!)
+        foreach (var subject in degreeData.subjectList!.Where(e => e.isActive))
         {
             subjectList.Add(new SubjectEntity(subject));
         }
@@ -53,18 +53,18 @@ public class DegreeEntity
     {
         if(enrollmentList != null && enrollmentList.Count != 0)
         {
-            throw new IncorrectDataBadRequestException("DegreeEntity");
+            throw new IncorrectDataException("Degree", "enrollmentList");
         }
 
         if (quantityToCreate is < 1 or > 7)
         {
-            throw new BadRequestException("Quantity invalid. The quantity must be 1 to 7.");
+            throw new IncorrectDataException("Quantity invalid. The quantity must be 1 to 7.");
         }
 
         enrollmentList = [];
         for (var i = 0; i < quantityToCreate; i++)
         {
-            var enrollment = new EnrollmentEntity(degreeId!, schoolYear, $"{label} {typeLabels[i]}", $"0{i}");
+            var enrollment = new EnrollmentEntity(degreeId!, schoolyearId, $"{label} {typeLabels[i]}", $"0{i}");
             enrollment.setSubjectList(subjectList);
             enrollmentList.Add(enrollment);
         }
@@ -79,10 +79,5 @@ public class DegreeEntity
         
         await enrollmentDao.createRange(enrollmentList);
         quantity = enrollmentList.Count;
-    }
-    
-    public void setSubjectList(List<SubjectEntity> subjects)
-    {
-        subjectList = subjects;
     }
 }

@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
+using wsmcbl.src.model;
 using wsmcbl.src.model.config;
 
 namespace wsmcbl.src.controller.api;
@@ -25,7 +27,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(new {value = result});
     }
     
-    /// <summary>Returns the list of all students.</summary>
+    /// <summary>Returns the list of all media.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     [ResourceAuthorizer("admin")]
     [HttpGet]
@@ -64,29 +66,29 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(result);
     }
     
-    /// <summary>Returns the tutor list.</summary>
+    /// <summary>Returns the transaction invoice view list.</summary>
+    /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
+    /// <remarks> A date before 2,000 is not accepted.</remarks>
+    /// <param name="from">The default time is set to 00:00 hours.</param>
+    /// <param name="to">
+    /// The default time is set to 23:59.
+    /// If the date entered corresponds to the current date,
+    /// the time will be adjusted to the time at which the query is made.
+    /// </param>
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [ResourceAuthorizer("admin")]
     [HttpGet]
-    [Route("tutors")]
-    public async Task<IActionResult> getTutorList()
+    [Route("transactions/invoices")]
+    public async Task<IActionResult> getTransactionInvoiceViewList([FromQuery] [Required] string from, [FromQuery] string to)
     {
-        var result = await controller.getTutorList();
-        
-        return Ok(result);
-    }  
-    
-    /// <summary>Delete student profile by id (TEMPORAL).</summary>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin")]
-    [HttpDelete]
-    [Route("students/{studentId}")]
-    public async Task<IActionResult> deleteStudent([Required] string studentId)
-    {
-        await controller.deleteStudentById(studentId);
-        return Ok();
-    }  
+        if (!TransactionReportByDateActions.hasDateFormat(from) || !TransactionReportByDateActions.hasDateFormat(to))
+        {
+            throw new IncorrectDataException("Some of the dates are not in the correct format.");
+        }
+
+        var range = TransactionReportViewPagedRequest.parseToDateTime(from, to);
+        return Ok(await controller.getTransactionInvoiceViewList(range.from, range.to));
+    } 
 }

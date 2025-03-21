@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -23,7 +24,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
             await daoFactory.studentParentDao!.updateAsync(parent);
         }
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return student;
     }
@@ -33,28 +34,33 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
         {
-            throw new EntityNotFoundException("Student", studentId);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
         student.profilePicture = picture;
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task updateStudentDiscount(string studentId, int discountId)
     {
-        var accountingStudent = await daoFactory.accountingStudentDao!.getWithoutPropertiesById(studentId);
+        var accountingStudent = await daoFactory.accountingStudentDao!.getById(studentId);
+        if (accountingStudent == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
+        
         accountingStudent.updateDiscountId(discountId);
 
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
     }
 
     public async Task<StudentEntity> getStudentById(string studentId)
     {
-        return await daoFactory.studentDao!.getByIdWithProperties(studentId);
+        return await daoFactory.studentDao!.getFullById(studentId);
     }
 
-    public async Task<List<(StudentEntity student, string schoolyear, string enrollment)>> getStudentList()
+    public async Task<PagedResult<StudentView>> getStudentList(StudentPagedRequest request)
     {
-        return await daoFactory.studentDao!.getListWhitSchoolyearAndEnrollment();
+        return await daoFactory.studentDao!.getStudentViewList(request);
     }
 }

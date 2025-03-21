@@ -1,4 +1,5 @@
 using wsmcbl.src.exception;
+using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -7,16 +8,16 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<DegreeEntity>> getDegreeList()
+    public async Task<PagedResult<DegreeEntity>> getDegreeList(PagedRequest request)
     {
-        return await daoFactory.degreeDao!.getAll();
+        return await daoFactory.degreeDao!.getAll(request);
     }
 
     public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
     {
         if (quantity is > 7 or < 1)
         {
-            throw new BadRequestException("Quantity in not valid.");
+            throw new IncorrectDataException("Quantity", "The value must be between 1 and 7.");
         }
 
         var degree = await daoFactory.degreeDao!.getById(degreeId);
@@ -43,7 +44,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
         enrollment.capacity = value.capacity;
         
         daoFactory.enrollmentDao!.update(enrollment);
-        await daoFactory.execute();
+        await daoFactory.ExecuteAsync();
 
         return enrollment;
     }    

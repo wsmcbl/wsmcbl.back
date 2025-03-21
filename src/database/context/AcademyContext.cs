@@ -20,8 +20,7 @@ internal class AcademyContext
 
             entity.ToTable("enrollment", "academy");
 
-            entity.Property(e => e.enrollmentId).HasMaxLength(15)
-                .HasDefaultValueSql("academy.generate_enrollment_id()")
+            entity.Property(e => e.enrollmentId).HasDefaultValueSql("academy.generate_enrollment_id()")
                 .HasColumnName("enrollmentid");
 
             entity.Property(e => e.teacherId).HasMaxLength(20).HasColumnName("teacherid");
@@ -38,9 +37,6 @@ internal class AcademyContext
 
             entity.HasMany(d => d.subjectList).WithOne()
                 .HasForeignKey(d => d.enrollmentId);
-
-            entity.HasOne<TeacherEntity>().WithOne(e => e.enrollment)
-                .HasForeignKey<EnrollmentEntity>(e => e.teacherId);
         });
 
         modelBuilder.Entity<GradeEntity>(entity =>
@@ -66,16 +62,16 @@ internal class AcademyContext
             entity.Property(e => e.partialId).HasColumnName("partialid");
             entity.Property(e => e.semesterId).HasColumnName("semesterid");
             entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.semester).HasColumnName("semester");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.startDate).HasColumnName("startdate");
-            entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
             entity.Property(e => e.isActive).HasColumnName("isactive");
+            entity.Property(e => e.gradeRecordIsActive).HasColumnName("graderecordisactive");
+            entity.Property(e => e.gradeRecordDeadline).HasColumnName("graderecorddeadline");
 
-            entity.HasMany(d => d.subjectPartialList)
-                .WithOne()
+            entity.HasMany(d => d.subjectPartialList).WithOne()
                 .HasForeignKey(e => e.partialId);
-            entity.Ignore(e => e.semester);
         });
 
         modelBuilder.Entity<SemesterEntity>(entity =>
@@ -85,14 +81,13 @@ internal class AcademyContext
             entity.ToTable("semester", "academy");
 
             entity.Property(e => e.semesterId).HasColumnName("semesterid");
-            entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.deadLine).HasColumnName("deadline");
             entity.Property(e => e.isActive).HasColumnName("isactive");
             entity.Property(e => e.label).HasMaxLength(20).HasColumnName("label");
             entity.Property(e => e.semester).HasColumnName("semester");
 
-            entity.HasMany(d => d.partialList)
-                .WithOne()
+            entity.HasMany(d => d.partialList).WithOne()
                 .HasForeignKey(e => e.semesterId);
         });
 
@@ -166,6 +161,8 @@ internal class AcademyContext
             entity.HasOne(d => d.user).WithMany()
                 .HasForeignKey(d => d.userId).OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("teacher_userid_fkey");
+            
+            entity.HasMany(e => e.enrollmentList).WithOne().HasForeignKey(e => e.teacherId);
         });
     }
 }

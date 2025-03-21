@@ -1,3 +1,4 @@
+using System.Text;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
 
@@ -18,11 +19,17 @@ public class UserEntity
     public DateTime createdAt { get; set; }
     public DateTime updatedAt { get; set; }
     public RoleEntity? role { get; set; }
-    public List<PermissionEntity> permissionList { get; set; } = [];
+    
+    public List<UserPermissionEntity>? userPermissionList { get; set; }
     
     public string fullName()
     {
-        return $"{name} {secondName} {surname} {secondSurname}";
+        var builder = new StringBuilder(name);
+        builder.AppendName(secondName);
+        builder.Append(' ').Append(surname);
+        builder.AppendName(secondSurname);
+        
+        return builder.ToString();
     }
     
     private void markAsUpdated()
@@ -34,10 +41,15 @@ public class UserEntity
     {
         return role!.name;
     }
-    
-    public List<string> getPermissionList()
+
+    public List<PermissionEntity> getPermissionList()
     {
-        return permissionList.Select(e => e.name).ToList();
+        userPermissionList ??= [];
+        
+        var list = role!.getPermissionList();
+        list.AddRange(userPermissionList!.Select(e => e.permission!).Distinct().ToList());
+
+        return list;
     }
     
     public string getAlias()
@@ -47,13 +59,12 @@ public class UserEntity
 
     public void update(UserEntity user)
     {
-        roleId = user.roleId;
         name = user.name.Trim();
         secondName = user.secondName?.Trim();
         surname = user.surname.Trim();
         secondSurname = user.secondSurname?.Trim();
-        email = user.email.Trim();
         isActive = user.isActive;
+        
         markAsUpdated();
     }
 
@@ -79,15 +90,51 @@ public class UserEntity
     {
         return value.Trim().ToLower().convertToEmailFormat();
     }
-
-
+    
     public async Task getIdFromRole(DaoFactory daoFactory)
     {
         userRoleId = string.Empty;
-        if (roleId is 1 or 4)
+
+        if (roleId == 3)
+        {
+            var result = await daoFactory.cashierDao!.getByUserId((Guid)userId!);
+            userRoleId = result.cashierId;
+        }
+        
+        if (roleId == 4)
         {
             var result = await daoFactory.teacherDao!.getByUserId((Guid)userId!);
             userRoleId = result.teacherId;
+        }
+    }
+
+    public bool isADuplicate(UserEntity value)
+    {
+        return name == value.name &&
+               secondName == value.secondName &&
+               surname == value.surname &&
+               secondSurname == value.secondSurname &&
+               roleId == value.roleId;
+    }
+
+    public List<UserPermissionEntity> checkPermissionsAlreadyAssigned(List<UserPermissionEntity> list)
+    {
+        var permissionList = getPermissionList();
+        return list
+            .Where(e => permissionList.All(p => e.permissionId != p.permissionId))
+            .ToList();
+    }
+    
+    public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
+    {
+        foreach (var item in userPermissionList!.Where(item => !list.Any(e => e.equals(item))))
+        {
+            rolePermissionDao.delete(item);
+        }
+
+        foreach (var item in list.Where(item => !userPermissionList!.Any(e => e.equals(item))))
+        {
+            rolePermissionDao.create(item);
         }
     }
 

@@ -23,7 +23,7 @@ public class PrintReportCardByStudentControllerTest
         const string studentId = "2024-0001-hola";
         var academyStudent = TestEntityGenerator.aAcademyStudent(studentId);
         
-        daoFactory.academyStudentDao!.getByIdInCurrentSchoolyear(studentId).Returns(academyStudent);
+        daoFactory.academyStudentDao!.getCurrentById(studentId).Returns(academyStudent);
         
         var result = await sut.getStudentGradesInformation(studentId);
 

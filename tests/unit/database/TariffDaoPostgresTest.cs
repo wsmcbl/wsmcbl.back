@@ -31,7 +31,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
 
         context = TestDbContext.getInMemory();
         context.Set<TariffEntity>().AddRange(list);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -46,7 +46,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     public async Task getOverdueList_EmptyList()
     {
         context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -64,7 +64,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
 
         context = TestDbContext.getInMemory();
         context.Set<DebtHistoryEntity>().AddRange(debtList);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -79,7 +79,7 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
     public async Task getListByStudent_EmptyList()
     {
         context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
+        context.Set<SchoolyearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
         await context.SaveChangesAsync();
 
         sut = new TariffDaoPostgres(context);
@@ -87,38 +87,5 @@ public class TariffDaoPostgresTest : BaseDaoPostgresTest
         var result = await sut.getListByStudent("std-1");
         
         Assert.Empty(result);
-    }
-    
-    [Fact]
-    public async Task getGeneralBalance_ReturnsFloatArray()
-    {
-        var debtList = TestEntityGenerator.aDebtHistoryList("std-1", false);
-
-        context = TestDbContext.getInMemory();
-        context.Set<DebtHistoryEntity>().AddRange(debtList);
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
-        await context.SaveChangesAsync();
-
-        sut = new TariffDaoPostgres(context);
-        
-        var result = await sut.getGeneralBalance("std-1");
-        
-        Assert.IsType<float[]>(result);
-        Assert.Equal([10,100], result);
-    }
-    
-    [Fact]
-    public async Task getGeneralBalance_EmptyDebList_ReturnsFloatArray()
-    {
-        context = TestDbContext.getInMemory();
-        context.Set<SchoolYearEntity>().AddRange(TestEntityGenerator.aSchoolYearList());
-        await context.SaveChangesAsync();
-
-        sut = new TariffDaoPostgres(context);
-        
-        var result = await sut.getGeneralBalance("std-1");
-        
-        Assert.IsType<float[]>(result);
-        Assert.Equal([0,0], result);
     }
 }

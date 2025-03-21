@@ -1,4 +1,4 @@
-using wsmcbl.src.controller.service;
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 
@@ -17,7 +17,7 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
         {
-            throw new EntityNotFoundException("Student", studentId);
+            throw new EntityNotFoundException("StudentEntity", studentId);
         }
 
         return student.accessToken == token;

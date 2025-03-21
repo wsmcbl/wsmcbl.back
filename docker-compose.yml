@@ -10,6 +10,7 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - database-volume:/var/lib/postgresql/data
+      - postgres_backups:/var/lib/postgresql/backups
     networks:
       - app-network
   
@@ -27,15 +28,20 @@ services:
       - NEXTCLOUD_URL=${NEXTCLOUD_URL}
       - NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME}
       - NEXTCLOUD_PASSWORD=${NEXTCLOUD_PASSWORD}
+      - INFO_EMAIL_PASSWORD=${INFO_EMAIL_PASSWORD}
+      - API_ENVIRONMENT_MODE=${API_ENVIRONMENT_MODE}
     ports:
       - '4000:8080'
     depends_on:
       - database
     networks:
       - app-network
+    volumes:
+      - postgres_backups:/backups
 
 volumes:
   database-volume:
+  postgres_backups:
     
 networks:
   app-network:

@@ -129,6 +129,7 @@ create table if not exists Secretary.SubjectCatalog
     semester int not null,
     initials varchar(10) not null,
     number int not null,
+    isActive boolean not null,
     foreign key (degreeCatalogId) references Secretary.DegreeCatalog,
     foreign key (areaId) references Secretary.SubjectArea
 );
@@ -138,7 +139,8 @@ create table if not exists Secretary.TariffCatalog
     tariffCatalogId serial primary key,
     educationalLevel smallint not null,
     concept varchar(100) not null,
-    amount float not null,
+    amount decimal(18,2) not null,
     dueDate date,
-    typeId int not null
+    typeId int not null,
+    isActive boolean not null
 );

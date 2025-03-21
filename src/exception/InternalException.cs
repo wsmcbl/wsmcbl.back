@@ -2,7 +2,7 @@ namespace wsmcbl.src.exception;
 
 public class InternalException : BadHttpRequestException
 {
-    public InternalException() : base("Unexpected error")
+    public InternalException() : this("Unexpected error")
     {
     }
     

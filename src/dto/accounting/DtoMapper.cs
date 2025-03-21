@@ -1,3 +1,4 @@
+using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
@@ -10,7 +11,7 @@ public static class DtoMapper
     
     private static TariffDto mapToDto(this TariffEntity value) => new(value);
     public static TransactionDto mapToDto(this TransactionEntity value) => new(value);
-    public static StudentToListDto mapToDto(this StudentEntity value) => new(value);
+    public static StudentDto mapToDto(this StudentEntity value) => new(value);
     public static PaymentItemDto mapToDto(this DebtHistoryEntity entity) => new(entity);
     public static CreateStudentProfileDto mapToDto(this model.secretary.StudentEntity student, int modality)
         => new(student, modality);
@@ -18,11 +19,10 @@ public static class DtoMapper
         => new(value);
 
     private static TransactionToListDto mapToListDto(this TransactionReportView value) => new(value);
+     
     
-    private static BasicStudentDto mapToBasicDto(this StudentEntity value) => new(value); 
-    
-    public static List<BasicStudentDto> mapListTo(this IEnumerable<StudentEntity> value)
-        => value.Select(student => student.mapToBasicDto()).ToList();
+    public static List<BasicStudentDto> mapToList(this IEnumerable<StudentView> value)
+        => value.Select(e => new BasicStudentDto(e)).ToList();
     
     public static List<TariffDto> mapToListDto(this IEnumerable<TariffEntity> value)
         => value.Select(e => e.mapToDto()).ToList();
@@ -35,4 +35,7 @@ public static class DtoMapper
 
     public static List<DebtDto> mapToListDto(this IEnumerable<DebtHistoryEntity> value)
         => value.Select(e => new DebtDto(e)).ToList();
+    
+    public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
+        => list.Select(e => new BasicStudentToEnrollDto(e)).ToList();
 }

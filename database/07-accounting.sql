@@ -27,7 +27,7 @@ create table if not exists Accounting.Student
 
 create table  if not exists Accounting.Cashier
 (
-    cashierId varchar(15) primary key,
+    cashierId varchar(15) primary key default accounting.generate_cashier_id(),
     userId uuid not null,
     foreign key (userId) references Config.User
 );
@@ -44,7 +44,7 @@ create table if not exists Accounting.Tariff
     schoolYear varchar(20) not null,
     educationalLevel smallint not null,
     concept varchar(200) not null,
-    amount float not null,
+    amount decimal(18, 2) not null,
     dueDate date,
     late boolean,
     typeId int not null,
@@ -55,7 +55,7 @@ create table  if not exists Accounting.Transaction
 (
     transactionId varchar(20) primary key default accounting.generate_transaction_id(),
     number int default NEXTVAL('accounting.transaction_number_seq'),
-    total float not null,
+    total decimal(18, 2) not null,
     date timestamp with time zone not null,
     isValid bool default true not null,
     studentId varchar(15) not null,
@@ -64,11 +64,16 @@ create table  if not exists Accounting.Transaction
     foreign key (cashierId) references Accounting.Cashier
 );
 
+create index IDX_date ON Accounting.Transaction (date);
+
 create table if not exists Accounting.Transaction_Tariff
 (
     transactionId varchar(15) not null,
     tariffId int not null,
-    amount float not null,
+    amount decimal(18, 2) not null,
+    arrears decimal(18, 2) not null,
+    discount decimal(18, 2) not null,
+    debtBalance decimal(18, 2),        
     primary key (transactionId, tariffId),
     foreign key (transactionId) references Accounting.Transaction,
     foreign key (tariffId) references Accounting.Tariff
@@ -79,10 +84,10 @@ create table if not exists Accounting.DebtHistory
     studentId varchar(20) not null,
     tariffId int not null,
     schoolyear varchar(20) not null,
-    subAmount float not null,
-    arrear float not null,
-    amount float not null GENERATED ALWAYS as (subAmount + arrear) stored,
-    debtBalance float,
+    subAmount decimal(18, 2) not null,
+    arrear decimal(18, 2) not null,
+    amount decimal(18, 2) not null GENERATED ALWAYS as (subAmount + arrear) stored,
+    debtBalance decimal(18, 2),
     isPaid bool not null,
     primary key (studentId, tariffId),
     foreign key (studentId) references Accounting.Student,
@@ -94,6 +99,6 @@ create table if not exists Accounting.ExchangeRate
 (
     rateId serial not null primary key,
     schoolyear varchar(20) not null,
-    value float not null,
+    value decimal(18, 2) not null,
     foreign key (schoolyear) references secretary.schoolyear
 );

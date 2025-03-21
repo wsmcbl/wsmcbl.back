@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using wsmcbl.src.exception;
 
 namespace wsmcbl.src.utilities;
 
@@ -10,6 +11,9 @@ public static class Utility
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
         return TimeZoneInfo.ConvertTimeFromUtc(datetime, timeZoneUTC6);
     }
+
+    public static string toStringUtc6(this DateTime? datetime, bool withDayName = false)
+        => toStringUtc6((DateTime)datetime!, withDayName);
     
     public static string toStringUtc6(this DateTime datetime, bool withDayName = false)
     {
@@ -24,6 +28,11 @@ public static class Utility
 
         var dayFormat = withDayName ? "dddd" : "ddd.";
         return datetime.toUTC6().ToString($"{dayFormat} dd/MMM/yyyy, h:mm tt", culture);
+    }
+    
+    public static string toDateUtc6(this DateTime datetime)
+    {
+        return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
     }
     
     public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
@@ -78,4 +87,25 @@ public static class Utility
     {
         return new DateTime(value.Year, value.Month, value.Day, hour, 0, 0, DateTimeKind.Utc);
     }
+
+    public static void AppendName(this StringBuilder builder, string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            builder.Append(' ').Append(value);
+        }
+    }
+    
+    public static bool inDevelopmentEnvironment()
+    {
+        var value = Environment.GetEnvironmentVariable("API_ENVIRONMENT_MODE");
+        if (value == null)
+        {
+            throw new InternalException("API_ENVIRONMENT_MODE environment not found.");
+        }
+
+        return value == "Development";
+    }
+
+    public static string getOrDefault(this string? value) => string.IsNullOrWhiteSpace(value) ? "N/A" : value;
 }
