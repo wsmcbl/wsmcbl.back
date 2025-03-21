@@ -19,11 +19,11 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     [HttpGet]
     [Route("students")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
+    public async Task<IActionResult> getPaginatedStudentView([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
         
-        var result = await controller.getStudentList(request);
+        var result = await controller.getPaginatedStudentView(request);
         
         var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToList());
         pagedResult.setup(result);

@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<PagedResult<StudentView>> getStudentList(PagedRequest request)
+    public async Task<PagedResult<StudentView>> getPaginatedStudentView(PagedRequest request)
     {
         return await daoFactory.accountingStudentDao!.getPaginatedStudentView(request);
     }

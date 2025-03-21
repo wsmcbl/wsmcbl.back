@@ -19,11 +19,11 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("transaction:read")]
-    public async Task<ActionResult> getTransactionList([FromQuery] TransactionReportViewPagedRequest request)
+    public async Task<ActionResult> getPaginatedTransactionReportView([FromQuery] TransactionReportViewPagedRequest request)
     {
         request.checkSortByValue(["transactionId", "number", "studentId", "studentName", "total", "isValid", "enrollmentLabel", "type", "dateTime"]);
         
-        var result = await controller.getTransactionList(request);
+        var result = await controller.getPaginatedTransactionReportView(request);
 
         var pagedResult = new PagedResult<TransactionToListDto>(result.data.mapToTransactionListDto());
         pagedResult.setup(result);
