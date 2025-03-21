@@ -52,7 +52,7 @@ public class UpdateUserController : BaseController
         }
 
         await daoFactory.permissionDao!
-            .checkListId(permissionList.Select(e => e.permissionId).ToList());
+            .verifyIdListOrFail(permissionList.Select(e => e.permissionId).ToList());
 
         var list = user.checkPermissionsAlreadyAssigned(permissionList);
 
