@@ -20,11 +20,11 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList([FromQuery] StudentPagedRequest request)
+    public async Task<IActionResult> getPaginatedStudentView([FromQuery] StudentPagedRequest request)
     {
         request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
         
-        var result = await controller.getStudentList(request);
+        var result = await controller.getPaginatedStudentView(request);
         
         var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToListBasicDto());
         pagedResult.setup(result);
