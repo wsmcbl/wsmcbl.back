@@ -16,7 +16,7 @@ public class CreateStudentProfileController(DaoFactory daoFactory) : BaseControl
             throw new ConflictException($"The student profile already exist with id ({existingStudent.studentId}).");
         }
         
-        var existingTutor = await daoFactory.studentTutorDao!.getByInformation(tutor);
+        var existingTutor = await daoFactory.studentTutorDao!.getByTutorDetails(tutor);
         if (existingTutor == null)
         {
             daoFactory.studentTutorDao!.create(tutor);

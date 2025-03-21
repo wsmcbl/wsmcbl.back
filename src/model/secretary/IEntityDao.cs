@@ -35,8 +35,7 @@ public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudent
 
 public interface IStudentTutorDao : IGenericDao<StudentTutorEntity, string>, IStudentElement<StudentTutorEntity>
 {
-    public Task<StudentTutorEntity?> getByInformation(StudentTutorEntity tutor);
-    public Task<bool> hasOnlyOneStudent(string tutorId);
+    public Task<StudentTutorEntity?> getByTutorDetails(StudentTutorEntity tutor);
 }
 
 public interface IStudentParentDao : IGenericDao<StudentParentEntity, string>, IStudentElement<StudentParentEntity>;
