@@ -57,12 +57,12 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher, enrollment or partial not found.</response>
-    /// <response code="409">If there not a grade records.</response>
+    /// <response code="409">If there is not a grade records.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
     [ResourceAuthorizer("teacher:read")]
-    public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId,
-        [Required] string enrollmentId, [Required] [FromQuery] int partialId)
+    public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId, [Required] string enrollmentId, 
+        [Required] [FromQuery] int partialId)
     {
         var enrollment = await controller.getEnrollmentById(enrollmentId);
 
