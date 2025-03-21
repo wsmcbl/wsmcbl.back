@@ -8,7 +8,7 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
 {
     public async Task<PagedResult<StudentView>> getStudentList(PagedRequest request)
     {
-        return await daoFactory.accountingStudentDao!.getStudentViewList(request);
+        return await daoFactory.accountingStudentDao!.getPaginatedStudentView(request);
     }
     
     public async Task<StudentEntity> getStudentById(string studentId)
