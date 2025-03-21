@@ -11,7 +11,7 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         
-        var partials = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var partials = await daoFactory.partialDao!.getListForCurrentSchoolyear();
         student.setPartials(partials);
 
         return student;

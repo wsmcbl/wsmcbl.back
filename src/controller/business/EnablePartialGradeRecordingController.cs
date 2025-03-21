@@ -15,7 +15,7 @@ public class EnablePartialGradeRecordingController : BaseController
     
     public async Task<List<PartialEntity>> getPartialList()
     {
-        return await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        return await daoFactory.partialDao!.getListForCurrentSchoolyear();
     }
 
     public async Task enableGradeRecording(int partialId, DateTime deadline)
@@ -62,7 +62,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
     public async Task checkForPartialEnabledOrFail()
     {
-        var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var list = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 
         if (list.Where(e => e.gradeRecordIsActive).ToList().Count != 0)
         {
@@ -72,7 +72,7 @@ public class EnablePartialGradeRecordingController : BaseController
 
     public async Task<PartialEntity> getPartialEnabled()
     {
-        var list = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var list = await daoFactory.partialDao!.getListForCurrentSchoolyear();
         var result = list.Where(e => e.gradeRecordIsActive).ToList();
         if (result.Count == 0)
         {

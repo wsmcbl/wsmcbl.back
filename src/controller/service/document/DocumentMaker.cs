@@ -24,7 +24,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withTeacher(teacher)
             .withDegree(enrollment.label)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
+            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);
@@ -101,7 +101,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withPartialList(partialList)
             .withTeacherName(await getTeacherName(student.enrollmentId!))
             .withSubjectList(await getSubjectSort(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
+            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);

@@ -34,7 +34,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task checkPartials()
     {
-        var partialList = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 
         var item = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
         if (item == null)

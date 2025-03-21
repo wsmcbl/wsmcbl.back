@@ -33,7 +33,7 @@ public class AddingStudentGradesController : BaseController
 
     public async Task<List<PartialEntity>> getPartialList()
     {
-        return await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        return await daoFactory.partialDao!.getListForCurrentSchoolyear();
     }
 
     public async Task<TeacherEntity> getTeacherById(string teacherId)

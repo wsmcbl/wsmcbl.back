@@ -32,20 +32,20 @@ public interface ITeacherDao : IGenericDao<TeacherEntity, string>
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
-    public Task<bool> hasAEnroll(string studentId);
+    public Task<bool> isEnrolled(string studentId);
     public Task update(string studentId, string enrollmentId);
     public Task<StudentEntity> getCurrentById(string studentId);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>
 {
-    public Task<List<PartialEntity>> getListInCurrentSchoolyear();
+    public Task<List<PartialEntity>> getListForCurrentSchoolyear();
     public Task<List<PartialEntity>> getListByEnrollmentId(string enrollmentId);
 }
 
 public interface ISemesterDao : IGenericDao<SemesterEntity, int>
 {
-    public Task<List<SemesterEntity>> getListInCurrentSchoolyear();
+    public Task<List<SemesterEntity>> getListForCurrentSchoolyear();
 }
 
 public interface IGradeDao : IGenericDao<GradeEntity, int>
