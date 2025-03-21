@@ -1,4 +1,3 @@
-using wsmcbl.src.controller.service.document;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -37,11 +36,5 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
         await daoFactory.ExecuteAsync();
 
         return transaction;
-    }
-
-    public async Task<byte[]> getInvoiceDocument(string transactionId)
-    {
-        var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getInvoiceDocument(transactionId);
     }
 }
