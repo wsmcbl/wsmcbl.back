@@ -19,7 +19,7 @@ public class NextcloudUserCreator
 
     public async Task createUser(UserEntity user)
     {
-        if (Utility.inDevelopmentEnvironment()) return;
+        if (!Utility.isInProductionEnvironment()) return;
 
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("userid", user.email),
@@ -38,7 +38,7 @@ public class NextcloudUserCreator
 
     public async Task assignGroup(string email, string groupName)
     {
-        if (Utility.inDevelopmentEnvironment()) return;
+        if (!Utility.isInProductionEnvironment()) return;
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(groupName))
         {
@@ -110,7 +110,7 @@ public class NextcloudUserCreator
 
     public async Task updateUserPassword(UserEntity user)
     {
-        if (Utility.inDevelopmentEnvironment()) return;
+        if (!Utility.isInProductionEnvironment()) return;
         
         var content = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("key", "password"),
