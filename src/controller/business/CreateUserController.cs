@@ -19,7 +19,7 @@ public class CreateUserController : BaseController
         this.userAuthenticator = userAuthenticator;
     }
 
-    public async Task<PagedResult<UserEntity>> getUserList(PagedRequest request)
+    public async Task<PagedResult<UserEntity>> getPaginatedUser(PagedRequest request)
     {
         return await daoFactory.userDao!.getPaginated(request);
     }
