@@ -40,7 +40,7 @@ public class TransactionEntity
 
     public async Task setDebtAmountsInDetailList(IDebtHistoryDao dao)
     {
-        var debtList = await dao.getListByTransaction(this);
+        var debtList = await dao.getListByTransactionId(this);
         
         foreach (var item in details)
         {

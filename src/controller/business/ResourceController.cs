@@ -10,7 +10,7 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     public async Task<string> getMedia(int type, int schoolyear)
     {
         var result = await daoFactory.schoolyearDao!.getByLabel(schoolyear);
-        return await daoFactory.mediaDao!.getByTypeAndSchoolyear(type, result.id!);
+        return await daoFactory.mediaDao!.getByTypeIdAndSchoolyearId(type, result.id!);
     }
 
     public async Task<MediaEntity> updateMedia(MediaEntity media)

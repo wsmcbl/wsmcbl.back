@@ -37,7 +37,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return list.Find(e => student.getStringData().Equals(e.getStringData()));
     }
 
-    public async Task<PagedResult<StudentRegisterView>> getStudentRegisterViewList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentRegisterView>> getPaginatedStudentRegisterView(StudentPagedRequest request)
     {
         var query = context.GetQueryable<StudentRegisterView>();
         
@@ -52,7 +52,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return await pagedService.getPaged(request);
     }
 
-    public async Task<List<StudentRegisterView>> getStudentRegisterInCurrentSchoolyear()
+    public async Task<List<StudentRegisterView>> getStudentRegisterListForCurrentSchoolyear()
     {
         var daoFactory = new DaoFactoryPostgres(context);
 
@@ -60,7 +60,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         return await context.Set<StudentRegisterView>().Where(e => e.schoolyearId == current.id).ToListAsync();
     }
 
-    public async Task<PagedResult<StudentView>> getStudentViewList(StudentPagedRequest request)
+    public async Task<PagedResult<StudentView>> getPaginatedStudentView(StudentPagedRequest request)
     {
         var query = context.GetQueryable<StudentView>();
         

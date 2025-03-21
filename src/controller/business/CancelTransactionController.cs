@@ -8,9 +8,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CancelTransactionController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<PagedResult<TransactionReportView>> getTransactionList(TransactionReportViewPagedRequest request)
+    public async Task<PagedResult<TransactionReportView>> getPaginatedTransactionReportView(TransactionReportViewPagedRequest request)
     {
-        return await daoFactory.transactionDao!.getAll(request);
+        return await daoFactory.transactionDao!.getPaginatedTransactionReportView(request);
     }
 
     public async Task<TransactionEntity> cancelTransaction(string transactionId)

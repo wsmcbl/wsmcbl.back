@@ -19,14 +19,14 @@ public class CreateUserController : BaseController
         this.userAuthenticator = userAuthenticator;
     }
 
-    public async Task<PagedResult<UserEntity>> getUserList(PagedRequest request)
+    public async Task<PagedResult<UserEntity>> getPaginatedUser(PagedRequest request)
     {
-        return await daoFactory.userDao!.getAll(request);
+        return await daoFactory.userDao!.getPaginated(request);
     }
 
     public async Task<UserEntity> createUser(UserEntity user, string groupName)
     {
-        await daoFactory.userDao!.isUserDuplicate(user);
+        await daoFactory.userDao!.checkForDuplicateUser(user);
         await user.generateEmail(daoFactory.userDao!);
 
         var password = generatePassword();

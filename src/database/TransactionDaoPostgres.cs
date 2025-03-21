@@ -36,7 +36,7 @@ public class TransactionDaoPostgres(PostgresContext context)
         base.create(entity);
     }
 
-    public async Task<List<TransactionReportView>> getByRange(DateTime from, DateTime to)
+    public async Task<List<TransactionReportView>> getTransactionReportViewListByRange(DateTime from, DateTime to)
     {
         return await context.Set<TransactionReportView>()
             .AsNoTracking()
@@ -45,7 +45,7 @@ public class TransactionDaoPostgres(PostgresContext context)
             .ToListAsync();
     }
 
-    public async Task<PagedResult<TransactionReportView>> getAll(TransactionReportViewPagedRequest request)
+    public async Task<PagedResult<TransactionReportView>> getPaginatedTransactionReportView(TransactionReportViewPagedRequest request)
     {
         var query = context.GetQueryable<TransactionReportView>();
 

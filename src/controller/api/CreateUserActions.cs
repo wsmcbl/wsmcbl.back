@@ -30,11 +30,11 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     [HttpGet]
     [Route("users")]
     [ResourceAuthorizer("user:read")]
-    public async Task<IActionResult> getUserList([FromQuery] PagedRequest request)
+    public async Task<IActionResult> getPaginatedUser([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["userId", "roleId", "name", "email", "isActive", "createAt", "updateAt"]);
         
-        var result = await controller.getUserList(request);
+        var result = await controller.getPaginatedUser(request);
 
         var pagedResult = new PagedResult<UserToListDto>(result.data.mapToListDto());
         pagedResult.setup(result);

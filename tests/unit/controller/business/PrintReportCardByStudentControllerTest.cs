@@ -25,7 +25,7 @@ public class PrintReportCardByStudentControllerTest
         
         daoFactory.academyStudentDao!.getCurrentById(studentId).Returns(academyStudent);
         
-        var result = await sut.getStudentGradesInformation(studentId);
+        var result = await sut.getStudentWithGrades(studentId);
 
         Assert.NotNull(result);
     }
@@ -37,9 +37,9 @@ public class PrintReportCardByStudentControllerTest
         var debtHistoryList = TestEntityGenerator.aDebtHistoryList(studentId);
         debtHistoryList[0].tariff.dueDate = DateOnly.FromDateTime(DateTime.Today);
         
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns(debtHistoryList);
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns(debtHistoryList);
         
-        var result = await sut.isTheStudentSolvent(studentId);
+        var result = await sut.isStudentSolvent(studentId);
         
         Assert.True(result);
     }
@@ -52,9 +52,9 @@ public class PrintReportCardByStudentControllerTest
         debtHistoryList[0].tariff.dueDate = DateOnly.FromDateTime(DateTime.Today);
         debtHistoryList[0].isPaid = false;
         
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns(debtHistoryList);
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns(debtHistoryList);
         
-        var result = await sut.isTheStudentSolvent(studentId);
+        var result = await sut.isStudentSolvent(studentId);
         
         Assert.False(result);
     }
@@ -63,7 +63,7 @@ public class PrintReportCardByStudentControllerTest
     public async Task getStudentSolvency_ShouldThrowException_WhenStudentHasNotDebtHistory()
     {
         const string studentId = "2024-0001-hola";
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns([]);
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.isTheStudentSolvent(studentId));
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns([]);
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.isStudentSolvent(studentId));
     }
 }

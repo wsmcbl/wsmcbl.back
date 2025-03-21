@@ -39,4 +39,9 @@ public class TariffEntity
             isLate = true;
         }
     }
+
+    public bool isMonthlyTariff()
+    {
+        return type == Const.TARIFF_MONTHLY;
+    }
 }

@@ -10,7 +10,7 @@ public class UpdateOfficialEnrollmentController(DaoFactory daoFactory) : BaseCon
 {
     public async Task<DegreeEntity?> getDegreeById(string degreeId)
     {
-        var degree = await daoFactory.degreeDao!.getWithAllPropertiesById(degreeId);
+        var degree = await daoFactory.degreeDao!.getFullById(degreeId);
         if (degree == null)
         {
             throw new EntityNotFoundException("DegreeEntity", degreeId);

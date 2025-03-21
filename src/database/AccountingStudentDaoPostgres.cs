@@ -50,7 +50,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         return result.enrollment!;
     }
     
-    public async Task<PagedResult<StudentView>> getStudentViewList(PagedRequest request)
+    public async Task<PagedResult<StudentView>> getPaginatedStudentView(PagedRequest request)
     {
         var query = context.GetQueryable<StudentView>().Where(e => e.isActive);
 
@@ -71,7 +71,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
             (e.enrollment != null && EF.Functions.Like(e.enrollment.ToLower(), value)));
     }
 
-    public async Task<List<StudentEntity>> getAllWithSolvencyInRegistration()
+    public async Task<List<StudentEntity>> getAllWithEnrollmentTariffSolvency()
     {
         var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
         if (tariffList.Count == 0)
@@ -101,7 +101,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         return await context.Set<DebtorStudentView>().ToListAsync();
     }
 
-    public async Task<bool> hasSolvencyInRegistration(string studentId)
+    public async Task<bool> hasEnrollmentTariffSolvency(string studentId)
     {
         var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
         if (tariffList.Count == 0)

@@ -67,7 +67,7 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
         
         var sut = new DegreeDaoPostgres(context);
 
-        var result = await sut.getValidListForTheSchoolyear();
+        var result = await sut.getValidListForNewOrCurrentSchoolyear();
         
         Assert.NotEmpty(result);
     }
@@ -77,7 +77,7 @@ public class DegreeDaoPostgresTest : BaseDaoPostgresTest
     {
         var sut = new DegreeDaoPostgres(TestDbContext.getInMemory());
 
-        var result = await sut.getValidListForTheSchoolyear();
+        var result = await sut.getValidListForNewOrCurrentSchoolyear();
         Assert.Empty(result);
     }
 }

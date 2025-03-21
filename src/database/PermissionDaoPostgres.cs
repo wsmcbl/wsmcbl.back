@@ -6,7 +6,7 @@ namespace wsmcbl.src.database;
 
 public class PermissionDaoPostgres(PostgresContext context) : GenericDaoPostgres<PermissionEntity, int>(context), IPermissionDao
 {
-    public async Task checkListId(List<int> permissionIdList)
+    public async Task verifyIdListOrFail(List<int> permissionIdList)
     {
         var list = await getAll();
         var listId = list.Select(e => e.permissionId).ToList();

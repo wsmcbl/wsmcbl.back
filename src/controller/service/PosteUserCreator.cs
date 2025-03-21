@@ -17,7 +17,7 @@ public class PosteUserCreator
 
     public async Task createUser(UserEntity user)
     {
-        if (Utility.inDevelopmentEnvironment()) return;
+        if (!Utility.isInProductionEnvironment()) return;
 
         var authHeaderValue = Convert
             .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));
@@ -39,7 +39,7 @@ public class PosteUserCreator
     
     public async Task updateUserPassword(UserEntity user)
     {
-        if (Utility.inDevelopmentEnvironment()) return;
+        if (!Utility.isInProductionEnvironment()) return;
         
         var authHeaderValue = Convert
             .ToBase64String(Encoding.UTF8.GetBytes($"{getPosteUsername()}:{getPostePassword()}"));

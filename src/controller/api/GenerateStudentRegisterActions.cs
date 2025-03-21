@@ -22,14 +22,14 @@ public class GenerateStudentRegisterActions(GenerateStudentRegisterController co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getStudentRegisterList([FromQuery] StudentPagedRequest request)
+    public async Task<IActionResult> getPaginatedStudentRegisterView([FromQuery] StudentPagedRequest request)
     {
         request.checkSortByValue([
             "studentId", "minedId", "fullName", "isActive", "sex", "birthday", "disease", "address", "tutor", "father",
             "mother", "schoolyear", "educationalLevel", "degreePosition", "enrollDate", "isRepeating"
         ]);
 
-        var result = await controller.getStudentRegisterList(request);
+        var result = await controller.getPaginatedStudentRegisterView(request);
 
         var pagedResult = new PagedResult<StudentRegisterViewDto>(result.data.mapListToDto());
         pagedResult.setup(result);
