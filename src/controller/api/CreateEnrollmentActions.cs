@@ -19,11 +19,11 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     [HttpGet]
     [Route("")]
     [ResourceAuthorizer("degree:read", "enrollment:read")]
-    public async Task<IActionResult> getDegreeList([FromQuery] PagedRequest request)
+    public async Task<IActionResult> getPaginatedDegree([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["degreeId", "label", "schoolYear", "quantity", "educationalLevel", "tag"]);
         
-        var result = await controller.getDegreeList(request);
+        var result = await controller.getPaginatedDegree(request);
 
         var pagedResult = new PagedResult<BasicDegreeDto>(result.data.mapListToBasicDto());
         pagedResult.setup(result);

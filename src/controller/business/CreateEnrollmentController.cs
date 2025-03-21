@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.business;
 
 public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<PagedResult<DegreeEntity>> getDegreeList(PagedRequest request)
+    public async Task<PagedResult<DegreeEntity>> getPaginatedDegree(PagedRequest request)
     {
         return await daoFactory.degreeDao!.getPaginated(request);
     }
