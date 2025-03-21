@@ -1,6 +1,7 @@
 using MailKit.Net.Smtp;
 using MimeKit;
 using wsmcbl.src.exception;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service;
 
@@ -12,6 +13,8 @@ public class EmailNotifierService
 
     public async Task sendEmail(List<string> emailList, string subject, string message)
     {
+        if (!Utility.isInProductionEnvironment()) return;
+        
         try
         {
             using (var client = new SmtpClient())
