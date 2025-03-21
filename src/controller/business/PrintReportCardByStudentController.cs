@@ -17,10 +17,10 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
         return student;
     }
 
-    public async Task<byte[]> getReportCard(string studentId)
+    public async Task<byte[]> getReportCard(string studentId, string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getReportCardByStudent(studentId);
+        return await documentMaker.getReportCardByStudent(studentId, userId);
     }
 
     public async Task<bool> isStudentSolvent(string studentId)
