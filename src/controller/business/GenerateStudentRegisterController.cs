@@ -9,7 +9,7 @@ public class GenerateStudentRegisterController(DaoFactory daoFactory) : BaseCont
 {
     public async Task<PagedResult<StudentRegisterView>> getStudentRegisterList(StudentPagedRequest request)
     {
-        return await daoFactory.studentDao!.getStudentRegisterViewList(request);
+        return await daoFactory.studentDao!.getPaginatedStudentRegisterView(request);
     }
 
     public async Task<byte[]> getStudentRegisterDocument(string userId)

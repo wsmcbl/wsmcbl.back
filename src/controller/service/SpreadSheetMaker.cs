@@ -21,7 +21,7 @@ public class SpreadSheetMaker
     {
         var user = await daoFactory.userDao!.getById(userId);
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
-        var registerList = await daoFactory.studentDao!.getStudentRegisterInCurrentSchoolyear();
+        var registerList = await daoFactory.studentDao!.getStudentRegisterListForCurrentSchoolyear();
 
         var title = $"Padrón {currentSchoolyear.label}";
         
