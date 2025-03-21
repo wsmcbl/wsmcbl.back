@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
@@ -29,5 +30,11 @@ public class CancelTransactionController(DaoFactory daoFactory) : BaseController
         exitingTransaction.setAsInvalid();
         await daoFactory.ExecuteAsync();
         return exitingTransaction;
+    }
+    
+    public async Task<byte[]> getInvoiceDocument(string transactionId)
+    {
+        var documentMaker = new DocumentMaker(daoFactory);
+        return await documentMaker.getInvoiceDocument(transactionId);
     }
 }

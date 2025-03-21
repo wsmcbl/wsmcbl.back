@@ -42,4 +42,18 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     {
         return Ok(await controller.cancelTransaction(transactionId));
     }
+    
+    /// <summary>Returns the invoice document by transactionId.</summary>
+    /// <response code="200">Return existing resources.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource depends on another resource not found.</response>
+    [HttpGet]
+    [Route("{transactionId}/invoices")]
+    [ResourceAuthorizer("transaction:read")]
+    public async Task<IActionResult> getInvoice([Required] string transactionId)
+    {
+        var result = await controller.getInvoiceDocument(transactionId);
+        return File(result, "application/pdf", $"{transactionId}.invoice.pdf");
+    }
 }
