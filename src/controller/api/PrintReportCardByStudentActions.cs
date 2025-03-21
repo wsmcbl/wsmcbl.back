@@ -22,11 +22,11 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
         var student = await controller.getStudentWithGrades(studentId);
-        var solvency = await controller.isStudentSolvent(studentId);
+        var isSolvency = await controller.isStudentSolvent(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
         var result = new StudentScoreInformationDto(student, teacher);
-        result.setSolvencyStateMessage(solvency);
+        result.setSolvencyStateMessage(isSolvency);
         return Ok(result);
     }
     
