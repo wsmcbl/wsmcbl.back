@@ -29,7 +29,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content = content.Replace("student.name.value", student.fullName());
         content = content.Replace("teacher.name.value", teacher.fullName());
         content = content.Replace("principal.name.value", principalName);
-        content = content.Replace("educational.level.value", degree.getEducationalLevelToString());
+        content = content.Replace("educational.level.value", degree.educationalLevel);
         
         content = content.Replace("shift.value", "Matutino");
         content = content.Replace("department.value", "Managua");
