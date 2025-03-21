@@ -21,8 +21,8 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
-        var student = await controller.getStudentGradesInformation(studentId);
-        var solvency = await controller.isTheStudentSolvent(studentId);
+        var student = await controller.getStudentWithGrades(studentId);
+        var solvency = await controller.isStudentSolvent(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
         var result = new StudentScoreInformationDto(student, teacher);
@@ -40,7 +40,7 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
-        var isSolvency = await controller.isTheStudentSolvent(studentId);
+        var isSolvency = await controller.isStudentSolvent(studentId);
         if (!isSolvency)
         {
             throw new ConflictException($"Student with id ({studentId}) has no solvency.");
