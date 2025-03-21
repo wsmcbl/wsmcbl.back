@@ -23,7 +23,7 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     
     public async Task<TransactionEntity> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
-        if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
+        if (await daoFactory.debtHistoryDao!.hasPaidTariffsInTransaction(transaction))
         {
             throw new ArgumentException("Some tariff is already paid.");
         }

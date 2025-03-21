@@ -37,7 +37,7 @@ public class PrintReportCardByStudentControllerTest
         var debtHistoryList = TestEntityGenerator.aDebtHistoryList(studentId);
         debtHistoryList[0].tariff.dueDate = DateOnly.FromDateTime(DateTime.Today);
         
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns(debtHistoryList);
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns(debtHistoryList);
         
         var result = await sut.isTheStudentSolvent(studentId);
         
@@ -52,7 +52,7 @@ public class PrintReportCardByStudentControllerTest
         debtHistoryList[0].tariff.dueDate = DateOnly.FromDateTime(DateTime.Today);
         debtHistoryList[0].isPaid = false;
         
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns(debtHistoryList);
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns(debtHistoryList);
         
         var result = await sut.isTheStudentSolvent(studentId);
         
@@ -63,7 +63,7 @@ public class PrintReportCardByStudentControllerTest
     public async Task getStudentSolvency_ShouldThrowException_WhenStudentHasNotDebtHistory()
     {
         const string studentId = "2024-0001-hola";
-        daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId).Returns([]);
+        daoFactory.debtHistoryDao!.getListByStudentId(studentId).Returns([]);
         await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.isTheStudentSolvent(studentId));
     }
 }
