@@ -5,10 +5,12 @@ namespace wsmcbl.src.controller.service.document;
 
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
-    public async Task<byte[]> getReportCardByStudent(string studentId)
+    public async Task<byte[]> getReportCardByStudent(string studentId, string userId)
     {
+        var user = await daoFactory.userDao!.getById(userId);
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
 
         if (teacher == null)
@@ -22,9 +24,12 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment.label)
+            .withDegree(degree!)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
+            .withPrincipalName("Azucuena Cano")
+            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
+            .withUsername(user.getAlias())
             .build();
         
         setLatexBuilder(latexBuilder);
