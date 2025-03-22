@@ -254,9 +254,9 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withUsername(string paramater)
+        public Builder withUsername(string? paramater)
         {
-            latexBuilder.userName = paramater;
+            latexBuilder.userName = paramater ?? string.Empty;
             return this;
         }
     }

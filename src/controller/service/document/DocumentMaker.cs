@@ -5,9 +5,15 @@ namespace wsmcbl.src.controller.service.document;
 
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
-    public async Task<byte[]> getReportCardByStudent(string studentId, string userId)
+    public async Task<byte[]> getReportCardByStudent(string studentId, string? userId)
     {
-        var user = await daoFactory.userDao!.getById(userId);
+        string? userName = null;
+        if (userId != null)
+        {
+            var user = await daoFactory.userDao!.getById(userId);
+            userName = user.getAlias();
+        }
+        
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
@@ -29,7 +35,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
             .withPrincipalName("Luz Azucena Cano Huerta")
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
-            .withUsername(user.getAlias())
+            .withUsername(userName)
             .build();
         
         setLatexBuilder(latexBuilder);
@@ -85,28 +91,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withNumber(transaction.number)
             .withSeries("A")
             .withExchangeRate(exchangeRate.value)
-            .build();
-        
-        setLatexBuilder(latexBuilder);
-        return getPDF();
-    }
-
-    public async Task<byte[]> getGradeReportByStudent(string studentId)
-    {
-        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-
-        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
-        
-        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(student.enrollmentId!);
-        partialList.ForEach(e => e.setGradeListByStudent(studentId));
-        
-        var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
-            .withStudent(student)
-            .withEnroll(enrollment!.label)
-            .withPartialList(partialList)
-            .withTeacherName(await getTeacherName(student.enrollmentId!))
-            .withSubjectList(await getSubjectSort(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);
