@@ -30,10 +30,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(degree!)
+            .withDegree(degree!.label)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
-            .withPrincipalName("Luz Azucena Cano Huerta")
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
             .withUsername(userName)
             .build();
