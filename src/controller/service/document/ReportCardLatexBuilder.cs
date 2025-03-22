@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -6,8 +7,15 @@ using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.controller.service.document;
 
-public class ReportCardLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
+public class ReportCardLatexBuilder : LatexBuilder
 {
+    private readonly string templatesPath;
+ 
+    private ReportCardLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
+    {
+        this.templatesPath = templatesPath;
+    }
+    
     private StudentEntity student { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private List<SemesterEntity> semesterList { get; set; } = null!;
@@ -22,10 +30,12 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     protected override string updateContent(string content)
     {
+        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        
         content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
         content = content.Replace("degree.value", degree.label);
         
-        content = content.Replace("mined.id.value", student.student.minedId);
+        content = content.Replace("mined.id.value", student.student.minedId ?? "N/A");
         content = content.Replace("student.name.value", student.fullName());
         content = content.Replace("teacher.name.value", teacher.fullName());
         content = content.Replace("principal.name.value", principalName);
@@ -53,7 +63,47 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     private List<string> getAverageList()
     {
-        return ["81", "39", "75", "95", "100"];
+        var finalCounter = 0;
+        decimal finalAccumulator = 0; 
+        var result = new List<string>();
+        foreach (var item in semesterList.OrderBy(e => e.semester))
+        {
+            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
+            {
+                var counter = 0;
+                decimal accumulator = 0;
+                foreach (var subject in partial.subjectPartialList!)
+                {
+                    counter++;
+                    subject.setStudentGrade(student.studentId);
+                    accumulator += (decimal)subject.studentGrade!.grade!;
+                }
+
+                if (counter == 0)
+                {
+                    result.Add("");
+                    continue;
+                }
+
+                var grade = accumulator / counter;
+                result.Add($"{grade:F2}");
+
+                finalCounter++;
+                finalAccumulator += grade;
+            }
+        }
+
+        if (finalCounter < 4)
+        {
+            result.Add("");
+        }
+        else
+        {
+            var grade = finalAccumulator / finalCounter;
+            result.Add($"{grade:F2}");
+        }
+        
+        return result;
     }
 
     private string getDetail()
@@ -62,6 +112,11 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         
         foreach (var item in subjectAreaList)
         {
+            if (subjectList.All(e => e.secretarySubject!.areaId != item.areaId))
+            {
+                continue;
+            }
+            
             content += $"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline";
             content += getSubjectDetail(item.areaId);
             content += "\\hline";
@@ -75,7 +130,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         var content = "";
         foreach (var item in subjectList.Where(e => e.secretarySubject!.areaId == areaId))
         {
-            content += $"{{\\footnotesize {item.secretarySubject!.name}";
+            content += $"{{\\footnotesize {item.secretarySubject!.name}}}";
             content += getGrades(item.subjectId);
             content += "\\\\\\hline";
         }
@@ -90,8 +145,34 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         {
             content += getGradesBySemester(item, subjectId);
         }
+
+        content += getFinalGrade(subjectId);
         
         return content;
+    }
+
+    private string getFinalGrade(string subjectId)
+    {
+        var counter = 0;
+        decimal accumulator = 0;
+        foreach (var item in semesterList.OrderBy(e => e.semester))
+        {
+            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
+            {
+                var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+                if (result == null) continue;
+                
+                counter++;
+                result.setStudentGrade(student.studentId);
+                accumulator += (decimal)result.studentGrade!.grade!;
+            }
+        }
+
+        if (counter < 4) return " & & ";
+
+        var grade = accumulator / counter;
+        var label = GradeEntity.getLabelByGrade(grade);
+        return $" & {label} & {grade}";
     }
 
     private string getGradesBySemester(SemesterEntity semester, string subjectId)
