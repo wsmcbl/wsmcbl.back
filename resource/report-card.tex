@@ -7,13 +7,34 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
+\usepackage{multirow}
 \usepackage{setspace}
 \usepackage[spanish]{babel}
-\usepackage[landscape, margin=2cm]{geometry}
+\usepackage[left=1.5cm, right=1.5cm, top=4cm, bottom=2.5cm, headheight=2cm, headsep=1cm]{geometry}
+
+\newcommand{\schoolYear}{schoolyear.value}
+
+\pagestyle{fancy}
+\fancyhead[C]
+{
+    \makebox[\textwidth]{
+        \hspace{-0.2\textwidth}
+        \begin{minipage}[c][2.5cm]{0.2\textwidth}
+            \includegraphics[width=2.5cm]{logo.value}
+        \end{minipage}
+        \hspace{0.01\textwidth}
+        \begin{minipage}[c][2.5cm]{0.6\textwidth}
+            \centering
+            \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
+            \textbf{\Large Boleta escolar \schoolYear}\\[0.1cm]
+            Contacto: soporte@cbl-edu.com
+        \end{minipage}
+    }
+}
 
 \setlength{\parskip}{1.5mm}
 \setlength{\parindent}{0pt}
-\setlength{\headsep}{3mm}
+\renewcommand{\headrulewidth}{0pt}
 
 \pagenumbering{gobble}
 
@@ -24,36 +45,74 @@
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
 \newcommand{\degree}{degree.value}
-\newcommand{\yearValue}{year.value}
+\newcommand{\minedId}{mined.id.value}
 \newcommand{\studentName}{student.name.value}
 \newcommand{\teacherName}{teacher.name.value}
+\newcommand{\principalName}{principal.name.value}
+\newcommand{\educationalLevel}{educational.level.value}
+\newcommand{\shift}{shift.value}
+\newcommand{\department}{department.value}
+\newcommand{\municipality}{municipality.value}
+\newcommand{\schoolId}{school.id.value}
+
+\newcommand{\firstAverage}{first.average.value}
+\newcommand{\secondAverage}{second.average.value}
+\newcommand{\thirdAverage}{third.average.value}
+\newcommand{\fourthAverage}{fourth.average.value}
+\newcommand{\finalAverage}{final.average.value}
+
+\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\currentDatetime}{current.datetime.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
 
 \begin{document}
-    \hrule
-    \begin{table}[H]
+    \aLine{\aDupleLeft{Estudiante:}{\studentName} \aDupleRight{Código:}{\minedId}}
+    \aDupleCenter{Docente guía:}{\teacherName}\\
+    \aDupleCenter{Director:}{\principalName}\\
+    \aLine{\aDupleLeft{Grado:}{\degree} \aDupleCenter{Turno:}{\shift} \aDupleRight{Modalidad:}{\educationalLevel}}
+    \aLine{\aDupleLeft{Departamento:}{\department} \aDupleCenter{Municipio:}{\municipality} \aDupleRight{Código del centro:}{\schoolId}}
+
+    \begin{table}[h]
         \centering
-        \begin{center}
-            \textbf{\Large Colegio Bautista Libertad}\\
-            \par\vspace{2mm}
-            \textbf{Boleta de Calificaciones \yearValue}
-        \end{center}
-        \aLine{\aDupleLeft{Alumno:}{\studentName} \aDupleRight{Grado:}{\degree}}
-        \par\medskip
-        \begin{tabular}{column.format.value}
+        \begin{tabular}{|l||*{4}{c|}|*{4}{c|}|*{2}{c|}}
             \hline
-            titleLine.value
-            \hline
-            firstSemester.value
-            secondSemester.value
-            finalGrade.value
+            
+            & \multicolumn{4}{c||}{I Semestre} &
+            \multicolumn{4}{c||}{II Semestre} &
+            \multicolumn{2}{c|}{Calificación}\\\cline{2-11}
+            
+            \multirow{3}{*}{\large Áreas/Disciplinas} &
+            \multicolumn{2}{c|}{I Corte} &
+            \multicolumn{2}{c||}{II Corte} &
+            \multicolumn{2}{c|}{III Corte} &
+            \multicolumn{2}{c||}{IV Corte} &
+            \multicolumn{2}{c|}{Final}\\\cline{2-11}
+            
+            & \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} \\\hline\hline
+            
+            detail.value
+            
+            {\footnotesize Promedio} &
+            \multicolumn{2}{r|}{\firstAverage} &
+            \multicolumn{2}{r||}{\secondAverage} &
+            \multicolumn{2}{r|}{\thirdAverage} &
+            \multicolumn{2}{r||}{\fourthAverage} &
+            \multicolumn{2}{r|}{\finalAverage} \\\hline
         \end{tabular}
-        \par\medskip
-        \aLine{ \aDupleLeft{Llegadas Tardes:}{\uline{\hspace{15mm}}}
-                \aDupleCenter{Inasistencias Justificadas:}{\uline{\hspace{15mm}}}
-                \aDupleRight{Inasistencias Injustificadas:}{\uline{\hspace{15mm}}}}
-        
-        \par\vspace{3mm}
-        \aLine{\aDupleCenter{Maestro Guía:}{\teacherName}}
     \end{table}
-    \hrule
+
+    \begin{center}
+        \begin{tabular}{c c c}
+            \rule{5cm}{0.4pt} & \hspace{2cm} & \rule{5cm}{0.4pt}\\
+            Firma del Director &  & Firma del Docente
+        \end{tabular}
+    \end{center}
+
+    \footnotetext{Impreso por wsmcbl el \currentDatetime, \secretaryName.}
 \end{document}

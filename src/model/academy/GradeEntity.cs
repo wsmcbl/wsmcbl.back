@@ -6,10 +6,10 @@ public class GradeEntity
     public int subjectPartialId { get; set; }
     public string studentId { get; set; } = null!;
     public string? label { get; set; }
-    public double? grade { get; set; }
-    public double? conductGrade { get; set; }
+    public decimal? grade { get; set; }
+    public decimal? conductGrade { get; set; }
 
-    public void updateGrades(double? gradeValue, double? conductGradeValue)
+    public void updateGrades(decimal? gradeValue, decimal? conductGradeValue)
     {
         if (gradeValue == null || conductGradeValue == null)
         {
@@ -24,11 +24,18 @@ public class GradeEntity
 
     private void updateLabel()
     {
-        label = grade is >= 76 and < 90 ? "AS" : "AA";
+        label = getLabelByGrade((decimal)grade!);
+    }
+
+    public static string getLabelByGrade(decimal value)
+    {
+        var result = value is >= 76 and < 90 ? "AS" : "AA";
         
-        if (grade < 76)
+        if (value < 76)
         {
-            label = grade >= 60 ? "AF" : "AI";
+            result = value >= 60 ? "AF" : "AI";
         }
+        
+        return result;
     }
 }

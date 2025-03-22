@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy/")]
 [ApiController]
-public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ControllerBase
+public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ActionsBase
 {
     /// <summary>Returns the student by id.</summary>
     /// <response code="200">Returns a resource.</response>
@@ -46,7 +46,7 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
             throw new ConflictException($"Student with id ({studentId}) has no solvency.");
         }
         
-        var result = await controller.getReportCard(studentId);
+        var result = await controller.getReportCard(studentId, getAuthenticatedUserId());
         return File(result, "application/pdf", $"{studentId}.report-card.pdf");
     }
 }

@@ -26,6 +26,6 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
     public async Task<byte[]> getGradeReport(string studentId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getGradeReportByStudent(studentId);
+        return await documentMaker.getReportCardByStudent(studentId, null);
     }
 }
