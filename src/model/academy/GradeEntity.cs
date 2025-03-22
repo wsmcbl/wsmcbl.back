@@ -24,11 +24,18 @@ public class GradeEntity
 
     private void updateLabel()
     {
-        label = grade is >= 76 and < 90 ? "AS" : "AA";
+        label = getLabelByGrade((decimal)grade!);
+    }
+
+    public static string getLabelByGrade(decimal value)
+    {
+        var result = value is >= 76 and < 90 ? "AS" : "AA";
         
-        if (grade < 76)
+        if (value < 76)
         {
-            label = grade >= 60 ? "AF" : "AI";
+            result = value >= 60 ? "AF" : "AI";
         }
+        
+        return result;
     }
 }
