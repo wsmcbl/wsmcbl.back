@@ -27,7 +27,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withDegree(degree!)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
-            .withPrincipalName("Azucuena Cano")
+            .withPrincipalName("Luz Azucena Cano Huerta")
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
             .withUsername(user.getAlias())
             .build();
