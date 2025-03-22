@@ -24,6 +24,7 @@ public class ReportCardLatexBuilder : LatexBuilder
     
     private string degreeLabel { get; set; } = null!;
     private string? userName { get; set; }
+    private string schoolyear { get; set; } = null!;
 
     protected override string getTemplateName() => "report-card";
 
@@ -31,10 +32,10 @@ public class ReportCardLatexBuilder : LatexBuilder
     {
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         
-        content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
+        content = content.Replace("schoolyear.value", schoolyear);
         content = content.Replace("degree.value", degreeLabel);
         
-        content = content.Replace("mined.id.value", student.studentId);
+        content = content.Replace("student.id.value", student.studentId);
         content = content.Replace("student.name.value", student.fullName());
         content = content.Replace("teacher.name.value", teacher.fullName());
         
@@ -47,7 +48,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.Replace("fourth.average.value", averageList[3]);
         content = content.Replace("final.average.value", averageList[4]);
         
-        content = content.ReplaceInLatexFormat("secretary.name.value", userName);
+        content = content.ReplaceInLatexFormat("secretary.name.value", userName != null ? $", {userName}" : string.Empty);
         content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
         return content;
@@ -111,7 +112,6 @@ public class ReportCardLatexBuilder : LatexBuilder
             
             content += $"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline";
             content += getSubjectDetail(item.areaId);
-            content += "\\hline";
         }
 
         return content;
@@ -243,6 +243,12 @@ public class ReportCardLatexBuilder : LatexBuilder
         public Builder withUsername(string? paramater)
         {
             latexBuilder.userName = paramater;
+            return this;
+        }
+        
+        public Builder withSchoolyear(string paramater)
+        {
+            latexBuilder.schoolyear = paramater;
             return this;
         }
     }
