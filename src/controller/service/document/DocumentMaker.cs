@@ -16,8 +16,8 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
-        var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
 
         if (teacher == null)
         {
@@ -30,11 +30,12 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(degree!.label)
+            .withDegree(enrollment!.label)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
             .withUsername(userName)
+            .withSchoolyear(schoolyear.label)
             .build();
         
         setLatexBuilder(latexBuilder);
