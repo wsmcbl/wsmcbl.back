@@ -25,7 +25,7 @@ public class GradeReportLatexBuilder : LatexBuilder
     private DegreeEntity degree { get; set; } = null!;
     private string userName { get; set; } = null!;
 
-    protected override string getTemplateName() => "report-card";
+    protected override string getTemplateName() => "grade-report";
 
     protected override string updateContent(string content)
     {

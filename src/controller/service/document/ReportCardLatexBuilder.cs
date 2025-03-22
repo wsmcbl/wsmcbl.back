@@ -21,10 +21,10 @@ public class ReportCardLatexBuilder : LatexBuilder
     private List<SemesterEntity> semesterList { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
     private List<SubjectAreaEntity> subjectAreaList { get; set; } = null!;
-    private string principalName { get; set; } = null!;
     
-    private DegreeEntity degree { get; set; } = null!;
-    private string userName { get; set; } = null!;
+    private string degreeLabel { get; set; } = null!;
+    private string? userName { get; set; }
+    private string schoolyear { get; set; } = null!;
 
     protected override string getTemplateName() => "report-card";
 
@@ -32,19 +32,12 @@ public class ReportCardLatexBuilder : LatexBuilder
     {
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         
-        content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
-        content = content.Replace("degree.value", degree.label);
+        content = content.Replace("schoolyear.value", schoolyear);
+        content = content.Replace("degree.value", degreeLabel);
         
-        content = content.Replace("mined.id.value", student.student.minedId ?? "N/A");
+        content = content.Replace("student.id.value", student.studentId);
         content = content.Replace("student.name.value", student.fullName());
         content = content.Replace("teacher.name.value", teacher.fullName());
-        content = content.Replace("principal.name.value", principalName);
-        content = content.Replace("educational.level.value", degree.educationalLevel);
-        
-        content = content.Replace("shift.value", "Matutino");
-        content = content.Replace("department.value", "Managua");
-        content = content.Replace("municipality.value", "Managua");
-        content = content.Replace("school.id.value", "14484");
         
         content = content.Replace("detail.value", getDetail());
 
@@ -55,7 +48,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.Replace("fourth.average.value", averageList[3]);
         content = content.Replace("final.average.value", averageList[4]);
         
-        content = content.ReplaceInLatexFormat("secretary.name.value", userName);
+        content = content.ReplaceInLatexFormat("secretary.name.value", userName != null ? $", {userName}" : string.Empty);
         content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
         return content;
@@ -119,7 +112,6 @@ public class ReportCardLatexBuilder : LatexBuilder
             
             content += $"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline";
             content += getSubjectDetail(item.areaId);
-            content += "\\hline";
         }
 
         return content;
@@ -224,9 +216,9 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withDegree(DegreeEntity parameter)
+        public Builder withDegree(string parameter)
         {
-            latexBuilder.degree = parameter;
+            latexBuilder.degreeLabel = parameter;
             return this;
         }
         
@@ -248,15 +240,15 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withPrincipalName(string parameter)
+        public Builder withUsername(string? paramater)
         {
-            latexBuilder.principalName = parameter;
+            latexBuilder.userName = paramater;
             return this;
         }
         
-        public Builder withUsername(string? paramater)
+        public Builder withSchoolyear(string paramater)
         {
-            latexBuilder.userName = paramater ?? string.Empty;
+            latexBuilder.schoolyear = paramater;
             return this;
         }
     }

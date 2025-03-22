@@ -26,7 +26,7 @@
         \begin{minipage}[c][2.5cm]{0.6\textwidth}
             \centering
             \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
-            \textbf{\Large Boleta escolar \schoolYear}\\[0.1cm]
+            \textbf{\Large Boleta \schoolYear}\\[0.1cm]
             Contacto: soporte@cbl-edu.com
         \end{minipage}
     }
@@ -45,15 +45,9 @@
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
 \newcommand{\degree}{degree.value}
-\newcommand{\minedId}{mined.id.value}
+\newcommand{\studentId}{student.id.value}
 \newcommand{\studentName}{student.name.value}
 \newcommand{\teacherName}{teacher.name.value}
-\newcommand{\principalName}{principal.name.value}
-\newcommand{\educationalLevel}{educational.level.value}
-\newcommand{\shift}{shift.value}
-\newcommand{\department}{department.value}
-\newcommand{\municipality}{municipality.value}
-\newcommand{\schoolId}{school.id.value}
 
 \newcommand{\firstAverage}{first.average.value}
 \newcommand{\secondAverage}{second.average.value}
@@ -68,11 +62,9 @@
 \makeatother
 
 \begin{document}
-    \aLine{\aDupleLeft{Estudiante:}{\studentName} \aDupleRight{Código:}{\minedId}}
-    \aDupleCenter{Docente guía:}{\teacherName}\\
-    \aDupleCenter{Director:}{\principalName}\\
-    \aLine{\aDupleLeft{Grado:}{\degree} \aDupleCenter{Turno:}{\shift} \aDupleRight{Modalidad:}{\educationalLevel}}
-    \aLine{\aDupleLeft{Departamento:}{\department} \aDupleCenter{Municipio:}{\municipality} \aDupleRight{Código del centro:}{\schoolId}}
+    \aLine{\aDupleLeft{Código:}{\studentId} \aDupleRight{Grado:}{\degree}}
+    \aDupleLeft{Estudiante:}{\studentName}\\
+    \aDupleLeft{Docente guía:}{\teacherName}
 
     \begin{table}[h]
         \centering
@@ -81,20 +73,20 @@
             
             & \multicolumn{4}{c||}{I Semestre} &
             \multicolumn{4}{c||}{II Semestre} &
-            \multicolumn{2}{c|}{Calificación}\\\cline{2-11}
+            \multicolumn{2}{c|}{Calificación}\\\cline{2-9}
             
-            \multirow{3}{*}{\large Áreas/Disciplinas} &
+            \multirow{3}{*}{\large\hspace{1.6cm} Áreas/Disciplinas} &
             \multicolumn{2}{c|}{I Corte} &
             \multicolumn{2}{c||}{II Corte} &
             \multicolumn{2}{c|}{III Corte} &
             \multicolumn{2}{c||}{IV Corte} &
-            \multicolumn{2}{c|}{Final}\\\cline{2-11}
+            \multicolumn{2}{c|}{final}\\\cline{2-11}
             
             & \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } &
-            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
-            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
-            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} &
-            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa} \\\hline\hline
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } &
+            \rotatebox{90}{\tiny Cualitativa} & \rotatebox{90}{\tiny Cuantitativa } \\\hline
             
             detail.value
             
@@ -106,13 +98,5 @@
             \multicolumn{2}{r|}{\finalAverage} \\\hline
         \end{tabular}
     \end{table}
-
-    \begin{center}
-        \begin{tabular}{c c c}
-            \rule{5cm}{0.4pt} & \hspace{2cm} & \rule{5cm}{0.4pt}\\
-            Firma del Director &  & Firma del Docente
-        \end{tabular}
-    \end{center}
-
-    \footnotetext{Impreso por wsmcbl el \currentDatetime, \secretaryName.}
+    \footnotetext{Impreso por wsmcbl el \currentDatetime\secretaryName.}
 \end{document}
