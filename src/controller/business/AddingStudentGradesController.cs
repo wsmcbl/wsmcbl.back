@@ -48,4 +48,11 @@ public class AddingStudentGradesController : BaseController
 
         return result;
     }
+
+    public async Task<byte[]> getEnrollmentToAddGradesDocument(string teacherId, string enrollmentId, int partialId,
+        string userId)
+    {
+        await Task.CompletedTask;
+        return [];
+    }
 }
