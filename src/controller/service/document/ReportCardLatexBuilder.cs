@@ -21,10 +21,9 @@ public class ReportCardLatexBuilder : LatexBuilder
     private List<SemesterEntity> semesterList { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
     private List<SubjectAreaEntity> subjectAreaList { get; set; } = null!;
-    private string principalName { get; set; } = null!;
     
-    private DegreeEntity degree { get; set; } = null!;
-    private string userName { get; set; } = null!;
+    private string degreeLabel { get; set; } = null!;
+    private string? userName { get; set; }
 
     protected override string getTemplateName() => "report-card";
 
@@ -33,18 +32,11 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
         
         content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
-        content = content.Replace("degree.value", degree.label);
+        content = content.Replace("degree.value", degreeLabel);
         
-        content = content.Replace("mined.id.value", student.student.minedId ?? "N/A");
+        content = content.Replace("mined.id.value", student.studentId);
         content = content.Replace("student.name.value", student.fullName());
         content = content.Replace("teacher.name.value", teacher.fullName());
-        content = content.Replace("principal.name.value", principalName);
-        content = content.Replace("educational.level.value", degree.educationalLevel);
-        
-        content = content.Replace("shift.value", "Matutino");
-        content = content.Replace("department.value", "Managua");
-        content = content.Replace("municipality.value", "Managua");
-        content = content.Replace("school.id.value", "14484");
         
         content = content.Replace("detail.value", getDetail());
 
@@ -224,9 +216,9 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withDegree(DegreeEntity parameter)
+        public Builder withDegree(string parameter)
         {
-            latexBuilder.degree = parameter;
+            latexBuilder.degreeLabel = parameter;
             return this;
         }
         
@@ -248,15 +240,9 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withPrincipalName(string parameter)
-        {
-            latexBuilder.principalName = parameter;
-            return this;
-        }
-        
         public Builder withUsername(string? paramater)
         {
-            latexBuilder.userName = paramater ?? string.Empty;
+            latexBuilder.userName = paramater;
             return this;
         }
     }
