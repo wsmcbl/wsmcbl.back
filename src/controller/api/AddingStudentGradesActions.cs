@@ -52,7 +52,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(result.mapListToDto(teacherId));
     }
 
-    /// <summary>Returns the list of subjects, students and grades of an enrollment corresponding to a partial.</summary>
+    /// <summary>Returns subject grades and students for enrollment by partial.</summary>
     /// <response code="200">Returns the list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -72,7 +72,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
 
-    /// <summary>Update the grades of subjects of an enrollment corresponding to a partial.</summary>
+    /// <summary>Update subject grades for enrollment by partial.</summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -89,7 +89,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok();
     }
     
-    /// <summary>Returns the list of subjects, students and grades document by partial .</summary>
+    /// <summary>Returns subject grades and students for enrollment by partial as document.</summary>
     /// <response code="200">Returns the list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -101,7 +101,8 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     public async Task<IActionResult> getEnrollmentToAddGradesDocument([Required] string teacherId, [Required] string enrollmentId, 
         [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getEnrollmentToAddGradesDocument(teacherId, enrollmentId, partialId, getAuthenticatedUserId());
+        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
+        var result = await controller.getEnrollmentToAddGradesDocument(subjectPartial, getAuthenticatedUserId());
         return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{teacherId}.{enrollmentId}.grades.xlsx");
     }
 }
