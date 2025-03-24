@@ -1,12 +1,14 @@
 using ClosedXML.Excel;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.config;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.sheet;
 
 public class SubjectGradesSheetBuilder
 {
+    private UserEntity user { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private EnrollmentEntity enrollment { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
@@ -26,7 +28,7 @@ public class SubjectGradesSheetBuilder
         worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
         
         setTitle(title);
-        setDate(5, teacher.user.getAlias());
+        setDate(5, user.getAlias());
         const int headerRow = 7;
         setHeader(headerRow);
         
@@ -146,24 +148,30 @@ public class SubjectGradesSheetBuilder
     
     public class Builder
     {
-        private readonly SubjectGradesSheetBuilder latexBuilder;
+        private readonly SubjectGradesSheetBuilder sheetBuilder;
 
         public Builder()
         {
-            latexBuilder = new SubjectGradesSheetBuilder();
+            sheetBuilder = new SubjectGradesSheetBuilder();
         }
 
-        public SubjectGradesSheetBuilder build() => latexBuilder;
+        public SubjectGradesSheetBuilder build() => sheetBuilder;
+        
+        public Builder withUser(UserEntity parameter)
+        {
+            sheetBuilder.user = parameter;
+            return this;
+        }
         
         public Builder withTeacher(TeacherEntity parameter)
         {
-            latexBuilder.teacher = parameter;
+            sheetBuilder.teacher = parameter;
             return this;
         }
         
         public Builder withEnrollment(EnrollmentEntity parameter)
         {
-            latexBuilder.enrollment = parameter;
+            sheetBuilder.enrollment = parameter;
             return this;
         }
         
@@ -171,10 +179,10 @@ public class SubjectGradesSheetBuilder
         {
             if (parameter == null)
             {
-                throw new InternalException("There is not student register.");
+                throw new InternalException("There is not subject grades.");
             }
             
-            latexBuilder.subjectPartialList = parameter;
+            sheetBuilder.subjectPartialList = parameter;
             return this;
         }
     }
