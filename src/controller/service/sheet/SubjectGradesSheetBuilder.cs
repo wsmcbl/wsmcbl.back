@@ -13,12 +13,12 @@ public class SubjectGradesSheetBuilder
     private EnrollmentEntity enrollment { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
     
-    private const string lastColumnName = "V";
-    
     private IXLWorksheet? worksheet { get; set; }
     
     public byte[] getSpreadSheet()
     {
+        setLastColumnName();
+        
         var title = $"Calificaciones {enrollment.label}";
         
         using var workbook = new XLWorkbook();
@@ -29,7 +29,7 @@ public class SubjectGradesSheetBuilder
         
         setTitle($"{title}. Docente: {teacher.fullName()}");
         setDate(5, user.getAlias());
-        const int headerRow = 7;
+        const int headerRow = 8;
         setHeader(headerRow);
         
         var list = enrollment.studentList!
@@ -42,7 +42,9 @@ public class SubjectGradesSheetBuilder
             setBody(counter, item, counter - headerRow);
             counter++;
         }
-
+        
+        worksheet.Column(columnQuantity + 1).Hide();
+        
         var lastRow = enrollment.studentList!.Count + headerRow;
         
         setBorder(lastRow, headerRow);
@@ -56,7 +58,7 @@ public class SubjectGradesSheetBuilder
 
         return stream.ToArray();
     }
-    
+
     private void setDate(int row, string alias)
     {
         var dateCell = worksheet!.Range($"B{row}:{lastColumnName}{row}").Merge();
@@ -108,28 +110,34 @@ public class SubjectGradesSheetBuilder
 
     private void setBodyForSubject(int headerRow, int headerColumn, string studentId)
     {
-        foreach (var item in enrollment.subjectList!)
+        foreach (var item in subjectPartialList)
         {
-            var result = subjectPartialList.FirstOrDefault(e => e.subjectId == item.subjectId);
-            if (result == null)
-            {
-                continue;
-            }
-            
-            result.setStudentGrade(studentId);
-            worksheet!.Cell(headerRow, headerColumn++).Value = result.studentGrade!.grade;
+            item.setStudentGrade(studentId);
+            worksheet!.Cell(headerRow, headerColumn++).Value = item.studentGrade!.grade;
         }
+
+        var first = subjectPartialList.FirstOrDefault();
+        if (first == null)
+        {
+            return;
+        }
+        
+        first.setStudentGrade(studentId);
+        worksheet!.Cell(headerRow, headerColumn++).Value = first.studentGrade!.conductGrade;
+        worksheet!.Cell(headerRow, headerColumn).Value = studentId;
     }
 
     private void setHeader(int headerRow)
-    { 
+    {
+        var headerColumn = 2;
+        setHeaderId(headerRow - 1, headerColumn + 4);
+        
         var headerStyle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}");
         headerStyle.Style.Font.Bold = true;
         headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
         
-        var headerColumn = 2;
         worksheet.Cell(headerRow, headerColumn++).Value = "N°";
         worksheet.Cell(headerRow, headerColumn++).Value = "Código";
         worksheet.Cell(headerRow, headerColumn++).Value = "Nombre completo";
@@ -137,14 +145,54 @@ public class SubjectGradesSheetBuilder
         setHeaderForSubject(headerRow, headerColumn);
     }
 
+    private void setHeaderId(int headerRow, int headerColumn)
+    {
+        foreach (var item in subjectPartialList)
+        {
+            worksheet!.Cell(headerRow, headerColumn++).Value = item.subjectId;
+        }
+
+        worksheet!.Row(headerRow).Hide();
+    }
+
     private void setHeaderForSubject(int headerRow, int headerColumn)
     {
-        foreach (var item in enrollment.subjectList!)
+        foreach (var item in subjectPartialList)
         {
-            worksheet!.Cell(headerRow, headerColumn++).Value = item.secretarySubject!.name;
+            var result = enrollment.subjectList!.FirstOrDefault(e => e.subjectId == item.subjectId);
+            if (result == null)
+            {
+                continue;
+            }
+            
+            worksheet!.Cell(headerRow, headerColumn++).Value = result.secretarySubject!.initials;
         }
+        
+        worksheet!.Cell(headerRow, headerColumn).Value = "Conducta";
     }
     
+    private int columnQuantity { get; set; }
+    
+    private string lastColumnName { get; set; } = null!;
+    
+    private void setColumnQuantity()
+    {
+        var quantity = subjectPartialList.Count;
+        columnQuantity = quantity + 6;
+    }
+    
+    private void setLastColumnName()
+    {
+        lastColumnName = "";
+
+        var counter = columnQuantity;
+        while (counter > 0)
+        {
+            var modulo = (counter - 1) % 26;
+            lastColumnName = Convert.ToChar(65 + modulo) + lastColumnName;
+            counter = (counter - 1) / 26;
+        }
+    }
     
     public class Builder
     {
@@ -182,7 +230,8 @@ public class SubjectGradesSheetBuilder
                 throw new InternalException("There is not subject grades.");
             }
             
-            sheetBuilder.subjectPartialList = parameter;
+            sheetBuilder.subjectPartialList = parameter.Distinct().ToList();
+            sheetBuilder.setColumnQuantity();
             return this;
         }
     }
