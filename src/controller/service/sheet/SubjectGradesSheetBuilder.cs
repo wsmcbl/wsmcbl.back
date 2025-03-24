@@ -19,7 +19,7 @@ public class SubjectGradesSheetBuilder
     
     public byte[] getSpreadSheet()
     {
-        var title = $"Calificaciones {enrollment.label}. Docente: {teacher.fullName()}";
+        var title = $"Calificaciones {enrollment.label}";
         
         using var workbook = new XLWorkbook();
         worksheet = workbook.Worksheets.Add(title);
@@ -27,7 +27,7 @@ public class SubjectGradesSheetBuilder
         
         worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
         
-        setTitle(title);
+        setTitle($"{title}. Docente: {teacher.fullName()}");
         setDate(5, user.getAlias());
         const int headerRow = 7;
         setHeader(headerRow);
