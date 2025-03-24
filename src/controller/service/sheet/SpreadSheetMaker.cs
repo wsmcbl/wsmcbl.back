@@ -28,24 +28,30 @@ public class SpreadSheetMaker
         return sheetBuilder.getSpreadSheet();
     }
 
-    public async Task<byte[]> getSubjectGradesByTeacherId(string teacherId, string enrollmentId, int partialId)
+    public async Task<byte[]> getSubjectGradesByTeacherId(SubjectPartialEntity subjectPartial, string userId)
     {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
+        var user = await daoFactory.userDao!.getById(userId);
+        if (user == null)
         {
-            throw new EntityNotFoundException("TeacherEntity", teacherId);
-        }
-
-        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
-        if (enrollment == null)
-        {
-            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
+            throw new EntityNotFoundException("UserEntity", userId);
         }
         
-        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
+        var teacher = await daoFactory.teacherDao!.getById(subjectPartial.teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", subjectPartial.teacherId);
+        }
+
+        var enrollment = await daoFactory.enrollmentDao!.getById(subjectPartial.enrollmentId);
+        if (enrollment == null)
+        {
+            throw new EntityNotFoundException("EnrollmentEntity", subjectPartial.enrollmentId);
+        }
+        
         var subjectPartialList = await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
 
         var sheetBuilder = new SubjectGradesSheetBuilder.Builder()
+            .withUser(user)
             .withTeacher(teacher)
             .withEnrollment(enrollment)
             .withSubjectPartialList(subjectPartialList)
