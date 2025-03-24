@@ -25,4 +25,15 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
+
+    public async Task<byte[]> getSubjectGradesByTeacherId(string teacherId, string enrollmentId, int partialId)
+    {
+        var teacher = await daoFactory.teacherDao!.getById(teacherId);
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var registerList = await daoFactory.studentDao!.getStudentRegisterListForCurrentSchoolyear();
+
+        var sheetBuilder = new SubjectGradesSheetBuilder();
+
+        return sheetBuilder.getSpreadSheet();
+    }
 }
