@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.utilities;
 
@@ -139,6 +140,42 @@ public class SubjectGradesSheetBuilder
         foreach (var item in enrollment.subjectList!)
         {
             worksheet!.Cell(headerRow, headerColumn++).Value = item.secretarySubject!.name;
+        }
+    }
+    
+    
+    public class Builder
+    {
+        private readonly SubjectGradesSheetBuilder latexBuilder;
+
+        public Builder()
+        {
+            latexBuilder = new SubjectGradesSheetBuilder();
+        }
+
+        public SubjectGradesSheetBuilder build() => latexBuilder;
+        
+        public Builder withTeacher(TeacherEntity parameter)
+        {
+            latexBuilder.teacher = parameter;
+            return this;
+        }
+        
+        public Builder withEnrollment(EnrollmentEntity parameter)
+        {
+            latexBuilder.enrollment = parameter;
+            return this;
+        }
+        
+        public Builder withSubjectPartialList(List<SubjectPartialEntity>? parameter)
+        {
+            if (parameter == null)
+            {
+                throw new InternalException("There is not student register.");
+            }
+            
+            latexBuilder.subjectPartialList = parameter;
+            return this;
         }
     }
 }
