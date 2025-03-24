@@ -1,3 +1,5 @@
+using wsmcbl.src.exception;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.service.sheet;
@@ -29,10 +31,25 @@ public class SpreadSheetMaker
     public async Task<byte[]> getSubjectGradesByTeacherId(string teacherId, string enrollmentId, int partialId)
     {
         var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
-        var registerList = await daoFactory.studentDao!.getStudentRegisterListForCurrentSchoolyear();
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
 
-        var sheetBuilder = new SubjectGradesSheetBuilder();
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        if (enrollment == null)
+        {
+            throw new EntityNotFoundException("EnrollmentEntity", enrollmentId);
+        }
+        
+        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
+        var subjectPartialList = await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
+
+        var sheetBuilder = new SubjectGradesSheetBuilder.Builder()
+            .withTeacher(teacher)
+            .withEnrollment(enrollment)
+            .withSubjectPartialList(subjectPartialList)
+            .build();
 
         return sheetBuilder.getSpreadSheet();
     }
