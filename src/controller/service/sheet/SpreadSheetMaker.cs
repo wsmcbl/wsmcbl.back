@@ -42,7 +42,7 @@ public class SpreadSheetMaker
             throw new EntityNotFoundException("TeacherEntity", subjectPartial.teacherId);
         }
 
-        var enrollment = await daoFactory.enrollmentDao!.getById(subjectPartial.enrollmentId);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(subjectPartial.enrollmentId);
         if (enrollment == null)
         {
             throw new EntityNotFoundException("EnrollmentEntity", subjectPartial.enrollmentId);
