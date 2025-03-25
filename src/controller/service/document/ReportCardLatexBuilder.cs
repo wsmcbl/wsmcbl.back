@@ -160,7 +160,10 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     private void getSubjectDetail(StringBuilder content, int areaId)
     {
-        foreach (var item in subjectList.Where(e => e.secretarySubject!.areaId == areaId))
+        var list = subjectList.Where(e => e.secretarySubject!.areaId == areaId)
+            .OrderBy(e => e.secretarySubject!.number).ToList();
+            
+        foreach (var item in list)
         {
             content.Append($"{{\\footnotesize {item.secretarySubject!.name}}}");
             getGrades(content, item.subjectId);
