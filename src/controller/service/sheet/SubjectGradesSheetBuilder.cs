@@ -1,14 +1,14 @@
 using ClosedXML.Excel;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
-using wsmcbl.src.model.config;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.sheet;
 
 public class SubjectGradesSheetBuilder
 {
-    private UserEntity user { get; set; } = null!;
+    private string userAlias { get; set; } = null!;
+    private string schoolyear { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private EnrollmentEntity enrollment { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
@@ -19,17 +19,15 @@ public class SubjectGradesSheetBuilder
     {
         setLastColumnName();
         
-        var title = $"Calificaciones {enrollment.label}";
-        
         using var workbook = new XLWorkbook();
-        worksheet = workbook.Worksheets.Add(title);
+        worksheet = workbook.Worksheets.Add($"Calificaciones {enrollment.label}");
         worksheet.Style.Font.FontSize = 12;
         
         worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
         
-        setTitle($"{title}. Docente: {teacher.fullName()}");
-        setDate(5, user.getAlias());
-        const int headerRow = 8;
+        setTitle();
+        setDate(6, userAlias);
+        const int headerRow = 10;
         setHeader(headerRow);
         
         var list = enrollment.studentList!
@@ -43,13 +41,14 @@ public class SubjectGradesSheetBuilder
             counter++;
         }
         
-        worksheet.Column(columnQuantity + 1).Hide();
+        hideIdValues(headerRow - 1);
         
         var lastRow = enrollment.studentList!.Count + headerRow;
         
         setBorder(lastRow, headerRow);
         
         worksheet.Columns().AdjustToContents();
+        adjustToContents(headerRow, 6);
         worksheet.SheetView.FreezeRows(headerRow);
 
         using var stream = new MemoryStream();
@@ -57,6 +56,27 @@ public class SubjectGradesSheetBuilder
         stream.Position = 0;
 
         return stream.ToArray();
+    }
+
+    private void adjustToContents(int headerRow, int columnSubject)
+    {
+        foreach (var column in worksheet!.ColumnsUsed())
+        {
+            if (column.ColumnNumber() < columnSubject) continue;
+            var cell = column.Cell(headerRow);
+            var textLength = cell.GetString().Length;
+            column.Width = textLength + 2;
+        }
+    }
+
+    private void hideIdValues(int headerRow)
+    {
+        worksheet!.Row(headerRow).Hide();
+        worksheet.Column(columnQuantity + 1).Hide();
+        
+        worksheet!.Row(headerRow).Style.Protection.Locked = true;
+        worksheet.Column(columnQuantity + 1).Style.Protection.Locked = true;
+        worksheet.Protect();
     }
 
     private void setDate(int row, string alias)
@@ -77,25 +97,31 @@ public class SubjectGradesSheetBuilder
         tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
 
-    private void setTitle(string title)
+    private void setTitle()
     { 
         var titleRow = 2;
-        var titleCell = worksheet!.Range($"B{titleRow}:{lastColumnName}{titleRow}").Merge();
-        titleCell.Value = "Colegio Bautista Libertad";
-        titleCell.Style.Font.Bold = true;
-        titleCell.Style.Font.FontSize = 14;
-        titleCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        titleCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        var title = worksheet!.Range($"B{titleRow}:{lastColumnName}{titleRow}").Merge();
+        title.Value = "Colegio Bautista Libertad";
+        title.Style.Font.Bold = true;
+        title.Style.Font.FontSize = 14;
+        title.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        title.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
         worksheet.Row(titleRow).Height = 25;
         
+        var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
+        subTitle.Value = $"Calificaciones {schoolyear}";
+        subTitle.Style.Font.Bold = true;
+        subTitle.Style.Font.FontSize = 13;
+        subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        subTitle.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        worksheet.Row(titleRow + 1).Height = 18;
         
-        var titleCell1 = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        titleCell1.Value = title;
-        titleCell1.Style.Font.Bold = true;
-        titleCell1.Style.Font.FontSize = 13;
-        titleCell1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        titleCell1.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-        worksheet.Row(titleRow + 1).Height = 20;
+        var subTitleTeacher = worksheet.Range($"B{titleRow + 2}:{lastColumnName}{titleRow + 2}").Merge();
+        subTitleTeacher.Value = $"Docente: {teacher.fullName()}";
+        subTitleTeacher.Style.Font.FontSize = 13;
+        subTitleTeacher.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        subTitleTeacher.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        worksheet.Row(titleRow + 1).Height = 18;
     }
 
     private void setBody(int headerRow, StudentEntity item, int pos)
@@ -130,7 +156,9 @@ public class SubjectGradesSheetBuilder
     private void setHeader(int headerRow)
     {
         var headerColumn = 2;
-        setHeaderId(headerRow - 1, headerColumn + 4);
+        setHeaderId(headerRow - 1, headerColumn + 2);
+
+        setHeaderEnrollment(headerRow - 2);
         
         var headerStyle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}");
         headerStyle.Style.Font.Bold = true;
@@ -145,14 +173,26 @@ public class SubjectGradesSheetBuilder
         setHeaderForSubject(headerRow, headerColumn);
     }
 
+    private void setHeaderEnrollment(int headerRow)
+    {
+        var enrollmentTitle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}").Merge();
+        enrollmentTitle.Value = enrollment.label;
+        enrollmentTitle.Style.Font.Bold = true;
+        enrollmentTitle.Style.Font.FontSize = 13;
+        enrollmentTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        enrollmentTitle.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        worksheet.Row(headerRow).Height = 18;
+    }
+
     private void setHeaderId(int headerRow, int headerColumn)
     {
+        worksheet!.Cell(headerRow, headerColumn).Value = teacher.teacherId;
+
+        headerColumn += 2;
         foreach (var item in subjectPartialList)
         {
             worksheet!.Cell(headerRow, headerColumn++).Value = item.subjectId;
         }
-
-        worksheet!.Row(headerRow).Hide();
     }
 
     private void setHeaderForSubject(int headerRow, int headerColumn)
@@ -205,9 +245,15 @@ public class SubjectGradesSheetBuilder
 
         public SubjectGradesSheetBuilder build() => sheetBuilder;
         
-        public Builder withUser(UserEntity parameter)
+        public Builder withUserAlias(string parameter)
         {
-            sheetBuilder.user = parameter;
+            sheetBuilder.userAlias = parameter;
+            return this;
+        }
+        
+        public Builder withSchoolyear(string parameter)
+        {
+            sheetBuilder.schoolyear = parameter;
             return this;
         }
         
