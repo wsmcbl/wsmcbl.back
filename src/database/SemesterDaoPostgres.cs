@@ -7,7 +7,7 @@ namespace wsmcbl.src.database;
 
 public class SemesterDaoPostgres(PostgresContext context) : GenericDaoPostgres<SemesterEntity, int>(context), ISemesterDao
 {
-    public async Task<List<SemesterEntity>> getListInCurrentSchoolyear()
+    public async Task<List<SemesterEntity>> getListForCurrentSchoolyear()
     {
         DaoFactory daoFactory = new DaoFactoryPostgres(context);
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent();

@@ -6,8 +6,8 @@ public class GradeDto
 {
     public int gradeId { get; set; }
     public string? studentId { get; set; }
-    public double? grade { get; set; }
-    public double? conductGrade { get; set; }
+    public decimal? grade { get; set; }
+    public decimal? conductGrade { get; set; }
     public string? label { get; set; }
 
     public GradeDto()

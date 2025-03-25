@@ -19,11 +19,11 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     [HttpGet]
     [Route("students")]
     [ResourceAuthorizer("student:read")]
-    public async Task<IActionResult> getStudentList([FromQuery] PagedRequest request)
+    public async Task<IActionResult> getPaginatedStudentView([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
         
-        var result = await controller.getStudentList(request);
+        var result = await controller.getPaginatedStudentView(request);
         
         var pagedResult = new PagedResult<BasicStudentDto>(result.data.mapToList());
         pagedResult.setup(result);
@@ -71,20 +71,5 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     {
         var transaction = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());
         return CreatedAtAction(nameof(controller.saveTransaction), transaction.mapToDto());
-    }
-
-    
-    /// <summary>Returns the invoice document by transactionId.</summary>
-    /// <response code="200">Return existing resources.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">Resource depends on another resource not found.</response>
-    [HttpGet]
-    [Route("documents/invoices/{transactionId}")]
-    [ResourceAuthorizer("transaction:read")]
-    public async Task<IActionResult> getInvoice([Required] string transactionId)
-    {
-        var result = await controller.getInvoiceDocument(transactionId);
-        return File(result, "application/pdf", $"{transactionId}.invoice.pdf");
     }
 }

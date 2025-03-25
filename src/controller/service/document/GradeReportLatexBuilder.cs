@@ -1,119 +1,205 @@
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
+using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.controller.service.document;
 
-public class GradeReportLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
+public class GradeReportLatexBuilder : LatexBuilder
 {
-    private StudentEntity student = null!;
-    private string teacherName = null!;
-    private List<SemesterEntity> semesterList = null!;
-    private List<PartialEntity> partialList = null!;
-    private List<(string initials, string subjectId)> subjectList = null!;
+    private readonly string templatesPath;
+ 
+    private GradeReportLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
+    {
+        this.templatesPath = templatesPath;
+    }
     
-    private string enroll = null!; 
+    private StudentEntity student { get; set; } = null!;
+    private TeacherEntity teacher { get; set; } = null!;
+    private List<SemesterEntity> semesterList { get; set; } = null!;
+    private List<SubjectEntity> subjectList { get; set; } = null!;
+    private List<SubjectAreaEntity> subjectAreaList { get; set; } = null!;
+    private string principalName { get; set; } = null!;
     
+    private DegreeEntity degree { get; set; } = null!;
+    private string userName { get; set; } = null!;
+
     protected override string getTemplateName() => "grade-report";
 
     protected override string updateContent(string content)
     {
-        content = content.Replace("year.value", DateTime.Today.Year.ToString());
+        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        
+        content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
+        content = content.Replace("degree.value", degree.label);
+        
+        content = content.Replace("mined.id.value", student.student.minedId ?? "N/A");
         content = content.Replace("student.name.value", student.fullName());
-        content = content.Replace("student.minedid.value", student.student.minedId);
-        content = content.Replace("teacher.name.value", teacherName);
-        content = content.Replace("degree.value", enroll);
-        content = content.Replace("column.format.value", getColumnQuantity());
-        content = content.Replace("titleLine.value", getTitleLine());
-        content = content.Replace("firstSemester.value", getSemesterContent(1));
-        content = content.Replace("secondSemester.value", getSemesterContent(2));
-        content = content.Replace("finalGrade.value", getFinalGrade());
+        content = content.Replace("teacher.name.value", teacher.fullName());
+        content = content.Replace("principal.name.value", principalName);
+        content = content.Replace("educational.level.value", degree.educationalLevel);
+        
+        content = content.Replace("shift.value", "Matutino");
+        content = content.Replace("department.value", "Managua");
+        content = content.Replace("municipality.value", "Managua");
+        content = content.Replace("school.id.value", "14484");
+        
+        content = content.Replace("detail.value", getDetail());
+
+        var averageList = getAverageList();
+        content = content.Replace("first.average.value", averageList[0]);
+        content = content.Replace("second.average.value", averageList[1]);
+        content = content.Replace("third.average.value", averageList[2]);
+        content = content.Replace("fourth.average.value", averageList[3]);
+        content = content.Replace("final.average.value", averageList[4]);
+        
+        content = content.ReplaceInLatexFormat("secretary.name.value", userName);
+        content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
         return content;
     }
-    
-    private string getColumnQuantity()
-    {
-        var quantity = (subjectList.Count + 1).ToString();
-        return $"|*{{{quantity}}}{{c|}}";
-    }
-    
-    private string getTitleLine()
-    {
-        var result = subjectList
-            .Aggregate("Parcial", (current, item) => $"{current} & {item.initials}");
 
-        return $@"{result}\\";
-    }
-    
-    private string getFinalGrade()
-    {        
-        var finalGrade = "NF";
-        var quantity = subjectList.Count;
-        
-        while (quantity > 0)
+    private List<string> getAverageList()
+    {
+        var finalCounter = 0;
+        decimal finalAccumulator = 0; 
+        var result = new List<string>();
+        foreach (var item in semesterList.OrderBy(e => e.semester))
         {
-            finalGrade = $"{finalGrade} & ";
-            quantity--;
-        }
-
-        return $@"{finalGrade}\\ \hline";
-    }
-    
-    private string getSemesterContent(int type)
-    {
-        var semester = semesterList.First(e => e.semester == type);
-        var firstPartial = partialList.First(e => e.partial == 1 && e.semesterId == semester.semesterId);
-        var secondPartial = partialList.First(e => e.partial == 2 && e.semesterId == semester.semesterId);
-        
-        var semesterGrade = semester.label;
-
-        foreach (var item in subjectList)
-        {
-            var firstGrade = firstPartial
-                .subjectPartialList!
-                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId))?.studentGrade?.grade;
-            
-            var secondGrade = secondPartial
-                .subjectPartialList!
-                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId))?.studentGrade?.grade;
-            
-            var grade = secondGrade == null ? firstGrade : (firstGrade + secondGrade) / 2;
-            semesterGrade = $"{semesterGrade} & {grade.ToString()}";
-        }
-
-        semesterGrade = $"{semesterGrade}\\\\ \\hline";
-        
-        return $"{getGradeByPartial(firstPartial)} {getGradeByPartial(secondPartial)} {semesterGrade}";
-    }
-
-    private string getGradeByPartial(PartialEntity partial)
-    {
-        var labelLine = partial.label;
-        var gradeLine = " ";
-        
-        foreach (var item in subjectList)
-        {
-            var subjectPartial = partial.subjectPartialList!
-                .FirstOrDefault(e => e.subjectId.Equals(item.subjectId));
-
-            var label = string.Empty;
-            var grade = string.Empty;
-            if (subjectPartial != null)
+            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
             {
-                label = subjectPartial.studentGrade!.label;
-                grade = subjectPartial.studentGrade.grade.ToString();   
-            }
+                var counter = 0;
+                decimal accumulator = 0;
+                foreach (var subject in partial.subjectPartialList!)
+                {
+                    counter++;
+                    subject.setStudentGrade(student.studentId);
+                    accumulator += (decimal)subject.studentGrade!.grade!;
+                }
 
-            labelLine = $"{labelLine} & {label}";
-            gradeLine = $"{gradeLine} & {grade}";
+                if (counter == 0)
+                {
+                    result.Add("");
+                    continue;
+                }
+
+                var grade = accumulator / counter;
+                result.Add($"{grade:F2}");
+
+                finalCounter++;
+                finalAccumulator += grade;
+            }
         }
 
-        var quantity = (subjectList.Count + 1).ToString();
-        labelLine = $"{labelLine}\\\\ \\cline{{2-{quantity}}}\n";
-        gradeLine = $"{gradeLine}\\\\ \\hline \n";
-
-        return $"{labelLine} {gradeLine}";
+        if (finalCounter < 4)
+        {
+            result.Add("");
+        }
+        else
+        {
+            var grade = finalAccumulator / finalCounter;
+            result.Add($"{grade:F2}");
+        }
+        
+        return result;
     }
-    
+
+    private string getDetail()
+    {
+        var content = "";
+        
+        foreach (var item in subjectAreaList)
+        {
+            if (subjectList.All(e => e.secretarySubject!.areaId != item.areaId))
+            {
+                continue;
+            }
+            
+            content += $"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline";
+            content += getSubjectDetail(item.areaId);
+            content += "\\hline";
+        }
+
+        return content;
+    }
+
+    private string getSubjectDetail(int areaId)
+    {
+        var content = "";
+        foreach (var item in subjectList.Where(e => e.secretarySubject!.areaId == areaId))
+        {
+            content += $"{{\\footnotesize {item.secretarySubject!.name}}}";
+            content += getGrades(item.subjectId);
+            content += "\\\\\\hline";
+        }
+
+        return content;
+    }
+
+    private string getGrades(string subjectId)
+    {
+        var content = "";
+        foreach (var item in semesterList.OrderBy(e => e.semester))
+        {
+            content += getGradesBySemester(item, subjectId);
+        }
+
+        content += getFinalGrade(subjectId);
+        
+        return content;
+    }
+
+    private string getFinalGrade(string subjectId)
+    {
+        var counter = 0;
+        decimal accumulator = 0;
+        foreach (var item in semesterList.OrderBy(e => e.semester))
+        {
+            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
+            {
+                var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+                if (result == null) continue;
+                
+                counter++;
+                result.setStudentGrade(student.studentId);
+                accumulator += (decimal)result.studentGrade!.grade!;
+            }
+        }
+
+        if (counter < 4) return " & & ";
+
+        var grade = accumulator / counter;
+        var label = GradeEntity.getLabelByGrade(grade);
+        return $" & {label} & {grade}";
+    }
+
+    private string getGradesBySemester(SemesterEntity semester, string subjectId)
+    {
+        var content = "";
+        foreach (var item in student.partials!.Where(e => e.semester == semester.semester).OrderBy(e => e.partial))
+        {
+            content += getGradesByPartial(item, subjectId);
+        }
+        
+        return content;
+    }
+
+    private string getGradesByPartial(PartialEntity partial, string subjectId)
+    {
+        var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+
+        if (result != null)
+        {
+            result.setStudentGrade(student.studentId);
+        }
+            
+        var label = result == null ? "" : result.studentGrade!.label;
+        var grade = result == null ? "" : result.studentGrade!.grade.ToString();
+        
+        return $" & {label} & {grade}";
+    }
+
     public class Builder
     {
         private readonly GradeReportLatexBuilder latexBuilder;
@@ -131,15 +217,15 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             return this;
         }
 
-        public Builder withTeacherName(string parameter)
+        public Builder withTeacher(TeacherEntity parameter)
         {
-            latexBuilder.teacherName = parameter;
+            latexBuilder.teacher = parameter;
             return this;
         }
         
-        public Builder withEnroll(string parameter)
+        public Builder withDegree(DegreeEntity parameter)
         {
-            latexBuilder.enroll = parameter;
+            latexBuilder.degree = parameter;
             return this;
         }
         
@@ -149,15 +235,27 @@ public class GradeReportLatexBuilder(string templatesPath, string outPath) : Lat
             return this;
         }
         
-        public Builder withSubjectList(List<(string, string)> parameter)
+        public Builder withSubjectList(List<SubjectEntity> parameter)
         {
             latexBuilder.subjectList = parameter;
             return this;
         }
-
-        public Builder withPartialList(List<PartialEntity> parameter)
+        
+        public Builder withSubjectAreaList(List<SubjectAreaEntity> parameter)
         {
-            latexBuilder.partialList = parameter;
+            latexBuilder.subjectAreaList = parameter;
+            return this;
+        }
+        
+        public Builder withPrincipalName(string parameter)
+        {
+            latexBuilder.principalName = parameter;
+            return this;
+        }
+        
+        public Builder withUsername(string? paramater)
+        {
+            latexBuilder.userName = paramater ?? string.Empty;
             return this;
         }
     }

@@ -5,11 +5,19 @@ namespace wsmcbl.src.controller.service.document;
 
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
-    public async Task<byte[]> getReportCardByStudent(string studentId)
+    public async Task<byte[]> getReportCardByStudent(string studentId, string? userId)
     {
+        string? userName = null;
+        if (userId != null)
+        {
+            var user = await daoFactory.userDao!.getById(userId);
+            userName = user.getAlias();
+        }
+        
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
 
         if (teacher == null)
         {
@@ -22,9 +30,12 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment.label)
+            .withDegree(enrollment!.label)
             .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
+            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
+            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
+            .withUsername(userName)
+            .withSchoolyear(schoolyear.label)
             .build();
         
         setLatexBuilder(latexBuilder);
@@ -68,7 +79,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         }
         
         var student = await daoFactory.accountingStudentDao!.getFullById(transaction.studentId);
-        var debtList = await daoFactory.debtHistoryDao!.getListByTransaction(transaction);
         var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.debtHistoryDao!.getGeneralBalance(transaction.studentId);
         
@@ -76,34 +86,11 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .Builder(resource, $"{resource}/out")
             .withStudent(student)
             .withTransaction(transaction)
-            .withDebtList(debtList)
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
             .withNumber(transaction.number)
             .withSeries("A")
             .withExchangeRate(exchangeRate.value)
-            .build();
-        
-        setLatexBuilder(latexBuilder);
-        return getPDF();
-    }
-
-    public async Task<byte[]> getGradeReportByStudent(string studentId)
-    {
-        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-
-        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
-        
-        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(student.enrollmentId!);
-        partialList.ForEach(e => e.setGradeListByStudent(studentId));
-        
-        var latexBuilder = new GradeReportLatexBuilder.Builder(resource,$"{resource}/out")
-            .withStudent(student)
-            .withEnroll(enrollment!.label)
-            .withPartialList(partialList)
-            .withTeacherName(await getTeacherName(student.enrollmentId!))
-            .withSubjectList(await getSubjectSort(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListInCurrentSchoolyear())
             .build();
         
         setLatexBuilder(latexBuilder);
@@ -121,7 +108,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         
         var user = await daoFactory.userDao!.getById(userId);
-        var degreeList = await daoFactory.degreeDao!.getAll(schoolyear.id!, true);
+        var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!, true);
         var teacherList = await daoFactory.teacherDao!.getAll();
         
         var latexBuilder = new OfficialEnrollmentListLatexBuilder.Builder(resource,$"{resource}/out")
@@ -138,7 +125,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     {
         var user = await daoFactory.userDao!.getById(userId);
         var studentList = await daoFactory.accountingStudentDao!.getDebtorStudentList();
-        var degreeList = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var degreeList = await daoFactory.degreeDao!.getValidListForNewOrCurrentSchoolyear();
         
         var latexBuilder = new DebtorReportLatexBuilder.Builder(resource, $"{resource}/out")
             .withStudentList(studentList)

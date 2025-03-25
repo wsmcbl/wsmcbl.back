@@ -9,7 +9,7 @@ public class TransactionToListDto
     public string studentId { get; set; }
     public string studentName { get; set; }
     public string enrollmentLabel { get; set; }
-    public double total { get; set; }
+    public decimal total { get; set; }
     public DateTime dateTime { get; set; }
     public int type { get; set; }
     public bool isValid { get; set; }

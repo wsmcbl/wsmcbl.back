@@ -34,7 +34,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         return degree;
     }
     
-    public async Task<DegreeEntity?> getWithAllPropertiesById(string id)
+    public async Task<DegreeEntity?> getFullById(string id)
     {
         var query = entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
@@ -58,7 +58,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         await saveAsync();
     }
 
-    public async Task<List<DegreeEntity>> getValidListForTheSchoolyear()
+    public async Task<List<DegreeEntity>> getValidListForNewOrCurrentSchoolyear()
     {
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
@@ -70,7 +70,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         return list.Where(e => e.enrollmentList!.Count != 0).ToList();
     }
 
-    public async Task<List<DegreeEntity>> getAll(string schoolyearId, bool withStudentsInEnrollment = false)
+    public async Task<List<DegreeEntity>> getListForSchoolyearId(string schoolyearId, bool withStudentsInEnrollment = false)
     {
         var query = entities.Where(e => e.schoolyearId == schoolyearId);
 
@@ -99,7 +99,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         return await entities.FirstOrDefaultAsync(e => e.degreeId == enrollment.degreeId);
     }
     
-    public async Task<PagedResult<DegreeEntity>> getAll(PagedRequest request)
+    public async Task<PagedResult<DegreeEntity>> getPaginated(PagedRequest request)
     {
         var query = context.GetQueryable<DegreeEntity>();
 

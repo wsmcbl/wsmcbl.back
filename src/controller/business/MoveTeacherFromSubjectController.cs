@@ -18,7 +18,7 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
     
     public async Task updateTeacherFromSubject(string subjectId, string enrollmentId, string teacherId)
     {
-        var subject = await daoFactory.subjectDao!.getBySubjectAndEnrollment(subjectId, enrollmentId);
+        var subject = await daoFactory.subjectDao!.getBySubjectIdAndEnrollmentId(subjectId, enrollmentId);
         if (subject == null)
         {
             throw new EntityNotFoundException("SubjectEntity", subjectId);
@@ -33,9 +33,9 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
         await daoFactory.ExecuteAsync();
     }
 
-    public async Task<bool> isThereAnActivePartial()
+    public async Task<bool> hasActivePartial()
     {
         var controller = new MoveStudentFromEnrollmentController(daoFactory);
-        return await controller.isThereAnActivePartial();
+        return await controller.hasActivePartial();
     }
 }

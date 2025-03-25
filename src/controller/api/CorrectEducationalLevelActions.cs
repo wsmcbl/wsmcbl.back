@@ -34,7 +34,7 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     [HttpPut]
     [Route("")]
     [ResourceAuthorizer("student:update")]
-    public async Task<IActionResult> moveFromEducationLevel([FromQuery] string studentId, [FromQuery] int level)
+    public async Task<IActionResult> changeEducationLevel([FromQuery] string studentId, [FromQuery] int level)
     {
         if (level is < 1 or > 3)
         {

@@ -9,7 +9,7 @@ public class TransactionInvoiceView
     public int number { get; set; }
     public string studentId { get; set; } = null!;
     public string student { get; set; } = null!;
-    public double total { get; set; }
+    public decimal total { get; set; }
     public bool isValid { get; set; }
     public string concept { get; set; } = null!;
     public string cashier { get; set; } = null!;

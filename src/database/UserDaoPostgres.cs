@@ -9,7 +9,7 @@ namespace wsmcbl.src.database;
 
 public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserEntity, Guid>(context), IUserDao
 {
-    public async Task<PagedResult<UserEntity>> getAll(PagedRequest request)
+    public async Task<PagedResult<UserEntity>> getPaginated(PagedRequest request)
     {
         var query = context.GetQueryable<UserEntity>();
         
@@ -71,13 +71,13 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         return result;
     }
 
-    public async Task<bool> isEmailDuplicate(string email)
+    public async Task<bool> isEmailAlreadyRegistered(string email)
     {
         var result = await entities.FirstOrDefaultAsync(e => e.email == email);
         return result != null;
     }
 
-    public async Task isUserDuplicate(UserEntity user)
+    public async Task checkForDuplicateUser(UserEntity user)
     {
         var userList = await entities.Where(e => e.name == user.name).ToListAsync();
         

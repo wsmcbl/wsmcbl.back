@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy")]
 [ApiController]
-public class AddingStudentGradesActions(AddingStudentGradesController controller) : ControllerBase
+public class AddingStudentGradesActions(AddingStudentGradesController controller) : ActionsBase
 {
     /// <summary>Returns the list of partials.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
@@ -52,17 +52,17 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(result.mapListToDto(teacherId));
     }
 
-    /// <summary>Returns the list of subjects, students and grades of an enrollment corresponding to a partial.</summary>
+    /// <summary>Returns subject grades and students for enrollment by partial.</summary>
     /// <response code="200">Returns the list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher, enrollment or partial not found.</response>
-    /// <response code="409">If there not a grade records.</response>
+    /// <response code="409">If there is not a grade records.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
     [ResourceAuthorizer("teacher:read")]
-    public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId,
-        [Required] string enrollmentId, [Required] [FromQuery] int partialId)
+    public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId, [Required] string enrollmentId, 
+        [Required] [FromQuery] int partialId)
     {
         var enrollment = await controller.getEnrollmentById(enrollmentId);
 
@@ -72,7 +72,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         return Ok(new EnrollmentToAddGradesDto(enrollment, subjectPartialList));
     }
 
-    /// <summary>Update the grades of subjects of an enrollment corresponding to a partial.</summary>
+    /// <summary>Update subject grades for enrollment by partial.</summary>
     /// <response code="200">When update is successful.</response>
     /// <response code="400">The dto in is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -87,5 +87,22 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
         var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
         await controller.addGrades(subjectPartial, gradeList.toEntity());
         return Ok();
+    }
+    
+    /// <summary>Returns subject grades and students for enrollment by partial as document.</summary>
+    /// <response code="200">Returns the list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Teacher, enrollment or partial not found.</response>
+    /// <response code="409">If there is not a grade records.</response>
+    [HttpGet]
+    [Route("teachers/{teacherId}/enrollments/{enrollmentId}/documents")]
+    [ResourceAuthorizer("teacher:read")]
+    public async Task<IActionResult> getEnrollmentToAddGradesDocument([Required] string teacherId, [Required] string enrollmentId, 
+        [Required] [FromQuery] int partialId)
+    {
+        var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
+        var result = await controller.getEnrollmentToAddGradesDocument(subjectPartial, getAuthenticatedUserId());
+        return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{teacherId}.{enrollmentId}.grades.xlsx");
     }
 }

@@ -78,7 +78,7 @@ public class UserEntity
         {
             email = $"{name_email}.{surname_email}{random.Next(10, 99)}@cbl-edu.com";
         
-            var isDuplicate = await userDao.isEmailDuplicate(email);
+            var isDuplicate = await userDao.isEmailAlreadyRegistered(email);
             if (!isDuplicate)
             {
                 break;

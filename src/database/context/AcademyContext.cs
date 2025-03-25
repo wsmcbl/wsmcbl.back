@@ -48,8 +48,8 @@ internal class AcademyContext
             entity.Property(e => e.gradeId).HasColumnName("gradeid");
             entity.Property(e => e.studentId).HasMaxLength(15).HasColumnName("studentid");
             entity.Property(e => e.subjectPartialId).HasColumnName("subjectpartialid");
-            entity.Property(e => e.grade).HasColumnName("grade");
-            entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
+            entity.Property(e => e.grade).HasColumnType("decimal(18,2)").HasColumnName("grade");
+            entity.Property(e => e.conductGrade).HasColumnType("decimal(18,2)").HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
         });
 

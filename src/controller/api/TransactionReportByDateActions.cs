@@ -30,7 +30,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     [HttpGet]
     [Route("revenues")]
     [ResourceAuthorizer("report:read")]
-    public async Task<IActionResult> getReportByDate([FromQuery] TransactionReportViewPagedRequest request)
+    public async Task<IActionResult> getPaginatedTransactionReportView([FromQuery] TransactionReportViewPagedRequest request)
     {
         request.checkSortByValue(["transactionId", "number", "studentId", "studentName", "total", "isValid", "enrollmentLabel", "type", "dateTime"]);
         
@@ -41,7 +41,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
         
         request.parseRangeToDatetime();
         
-        var result = await controller.getTransactionList(request);
+        var result = await controller.getPaginatedTransactionReportView(request);
         
         var pagedResult = new PagedReportByDateDto(result.data.mapToListDto());
         pagedResult.setup(result);

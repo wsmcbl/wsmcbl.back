@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.sheet;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
@@ -20,20 +21,20 @@ public class AddingStudentGradesController : BaseController
         return await daoFactory.enrollmentDao!.getListByTeacherId(teacherId);
     }
 
-    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity parameter)
+    public async Task<List<SubjectPartialEntity>> getSubjectPartialList(SubjectPartialEntity subjectPartial)
     {
-        return await daoFactory.subjectPartialDao!.getListBySubject(parameter);
+        return await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
     }
 
-    public async Task addGrades(SubjectPartialEntity parameter, List<GradeEntity> gradeList)
+    public async Task addGrades(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList)
     {
-        await daoFactory.gradeDao!.addRange(parameter, gradeList);
+        await daoFactory.gradeDao!.addRange(subjectPartial, gradeList);
         await daoFactory.ExecuteAsync();
     }
 
     public async Task<List<PartialEntity>> getPartialList()
     {
-        return await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        return await daoFactory.partialDao!.getListForCurrentSchoolyear();
     }
 
     public async Task<TeacherEntity> getTeacherById(string teacherId)
@@ -47,5 +48,11 @@ public class AddingStudentGradesController : BaseController
         await result.setCurrentEnrollment(daoFactory.schoolyearDao!);
 
         return result;
+    }
+
+    public async Task<byte[]> getEnrollmentToAddGradesDocument(SubjectPartialEntity subjectPartial, string userId)
+    {
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getSubjectGrades(subjectPartial, userId);
     }
 }

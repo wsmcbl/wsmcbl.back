@@ -16,7 +16,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         daoFactory = new DaoFactoryPostgres(context);
     }
 
-    public async Task<bool> hasAEnroll(string studentId)
+    public async Task<bool> isEnrolled(string studentId)
     {
         try
         {

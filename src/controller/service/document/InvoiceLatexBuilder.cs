@@ -7,9 +7,8 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 {
     private StudentEntity student = null!;
     private TransactionEntity transaction = null!;
-    private List<DebtHistoryEntity> debtList = null!;
     private CashierEntity cashier = null!;
-    private float[] generalBalance = null!;
+    private decimal[] generalBalance = null!;
     private int number;
     private string series = null!;
     private string exchangeRate = null!;
@@ -23,10 +22,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content = content.ReplaceInLatexFormat("customer.id.value", student.studentId);
         content = content.Replace("detail.value", getDetail());
         content = content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
+        content = content.Replace("detail.other.value", getOtherDetailOrEmpty());
         content = content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
         content = content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
         content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
         content = content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
+        content = content.Replace("balance.other.value", getBalanceOrEmpty());
         content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
         content = content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
         content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
@@ -37,50 +38,66 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     private string getArrearsTotal() => $"C$ {arrearsTotal:F2}";
     private string getDiscountTotal() => $"C$ {discountTotal:F2}";
-    private string getAuxTotal() => $"C$ {(total + arrearsTotal - discountTotal):F2}";
+    private string getAuxTotal() => $"C$ {total + arrearsTotal - discountTotal - detailTotal:F2}";
 
-    private float discountTotal;
-    private float arrearsTotal;
-    private float total;
+    private decimal discountTotal;
+    private decimal arrearsTotal;
+    private decimal total { get; set; }
+    private decimal detailTotal;
 
     private string getDetail()
     {
-        var detail = transaction.details.Select(e => new
-        {
-            concept = e.concept(),
-            amount = e.officialAmount(),
-            amountTransaction = e.amount,
-            arrears = e.calculateArrears(),
-            discount = student.calculateDiscount(e.officialAmount()),
-            isPaidLate = e.itPaidLate(),
-            debt = getDebtByTariff(e.tariffId)
-        });
-
         var content = "";
-        foreach (var item in detail)
+        
+        foreach (var item in transaction.details)
         {
             discountTotal += item.discount;
             arrearsTotal += item.arrears;
-            total += item.amount;
+            total += item.officialAmount();
 
-            var concept = item.isPaidLate ? $"*{item.concept.ReplaceLatexSpecialSymbols()}" 
-                : item.concept.ReplaceLatexSpecialSymbols();
-            
-            content = $@"{content} {concept} & C\$ {item.amount:F2}\\";
+            var tariffConcept = item.concept().ReplaceLatexSpecialSymbols();
+
+            content = item.paidLate() ? $@"{content} *{tariffConcept} & C\$ {item.officialAmount():F2}\\" :
+                $@"{content} {tariffConcept} & C\$ {item.officialAmount():F2}\\";
         }
 
         return content;
-    }
-
-    private DebtHistoryEntity getDebtByTariff(int tariffId)
-    {
-        return debtList.First(e => e.tariffId == tariffId);
     }
 
     private string getGeneralBalance()
     {
         var value = generalBalance[1] - generalBalance[0];
         return $"C$ {value:F2}";
+    }
+
+    private string getBalanceOrEmpty()
+    {
+        var value = total + arrearsTotal - discountTotal - detailTotal;
+        value -= transaction.total;
+
+        return value > 0 ? $"\\multicolumn{{2}}{{l}}{{Pendiente: C\\$ {value:F2}}}\\\\" : string.Empty;
+    }
+
+    private string getOtherDetailOrEmpty()
+    {
+        var detailList = transaction.details.Where(e => e.debtBalance > 0).ToList();
+        if (detailList.Count == 0)
+        {
+            return string.Empty;
+        }
+        
+        var content = "\\multicolumn{2}{c}{\\textbf{Abonos realizados}}\\\\[2mm]";
+        
+        detailTotal = 0;
+        foreach (var item in detailList)
+        {
+            detailTotal += item.debtBalance;
+            var tariffConcept = item.concept().ReplaceLatexSpecialSymbols();
+            content = $@"{content} {tariffConcept} & C\$ {item.debtBalance:F2}\\";
+        }
+        
+        content = $"{content}[2mm] \\textbf{{Abonado}} & C\\$ {detailTotal:F2}\\\\\\hline";
+        return content;
     }
 
     public class Builder
@@ -112,7 +129,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
             return this;
         }
 
-        public Builder withGeneralBalance(float[] parameter)
+        public Builder withGeneralBalance(decimal[] parameter)
         {
             latexBuilder.generalBalance = parameter;
             return this;
@@ -133,12 +150,6 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         public Builder withExchangeRate(decimal parameter)
         {
             latexBuilder.exchangeRate = $"{parameter:F2}";
-            return this;
-        }
-
-        public Builder withDebtList(List<DebtHistoryEntity> debtList)
-        {
-            latexBuilder.debtList = debtList;
             return this;
         }
     }

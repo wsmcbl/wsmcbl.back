@@ -24,7 +24,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.haveTariffsAlreadyPaid(transaction);
+        var result = await sut.hasPaidTariffsInTransaction(transaction);
 
         Assert.True(result);
     }
@@ -38,7 +38,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         context.Set<DebtHistoryEntity>().Returns(debtEntities);
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.getListByStudentWithPayments("std-1");
+        var result = await sut.getListByStudentId("std-1");
 
         Assert.NotEmpty(result);
         Assert.Equal(list, result);
@@ -51,7 +51,7 @@ public class DebtHistoryDaoPostgresTest : BaseDaoPostgresTest
         context.Set<DebtHistoryEntity>().Returns(debtEntities);
         sut = new DebtHistoryDaoPostgres(context);
 
-        var result = await sut.getListByStudentWithPayments("std-1");
+        var result = await sut.getListByStudentId("std-1");
 
         Assert.Empty(result);
     }

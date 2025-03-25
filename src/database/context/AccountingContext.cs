@@ -115,7 +115,7 @@ internal class AccountingContext
             entity.ToTable("tariff", "accounting");
 
             entity.Property(e => e.tariffId).HasColumnName("tariffid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
             entity.Property(e => e.concept).HasMaxLength(200).HasColumnName("concept");
             entity.Property(e => e.dueDate).HasColumnName("duedate");
             entity.Property(e => e.isLate).HasColumnName("late");
@@ -150,7 +150,7 @@ internal class AccountingContext
             entity.Property(e => e.studentId).HasMaxLength(100).HasColumnName("studentid");
             entity.Property(e => e.cashierId).HasMaxLength(100).HasColumnName("cashierid");
             entity.Property(e => e.date).HasColumnName("date");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
             entity.Property(e => e.isValid).HasColumnName("isvalid");
 
             entity.HasMany(t => t.details).WithOne()
@@ -165,7 +165,10 @@ internal class AccountingContext
 
             entity.Property(e => e.transactionId).HasMaxLength(20).HasColumnName("transactionid");
             entity.Property(e => e.tariffId).HasMaxLength(15).HasColumnName("tariffid");
-            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.amount).HasColumnType("decimal(18,2)").HasColumnName("amount");
+            entity.Property(e => e.arrears).HasColumnType("decimal(18,2)").HasColumnName("arrears");
+            entity.Property(e => e.discount).HasColumnType("decimal(18,2)").HasColumnName("discount");
+            entity.Property(e => e.debtBalance).HasColumnType("decimal(18,2)").HasColumnName("debtbalance");
 
             entity.HasOne(d => d.tariff).WithMany()
                 .HasForeignKey(d => d.tariffId);
@@ -200,7 +203,7 @@ internal class AccountingContext
             entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
             entity.Property(e => e.enrollment).HasColumnName("enrollment");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
         });
         
         modelBuilder.Entity<TransactionInvoiceView>(entity =>
@@ -211,7 +214,7 @@ internal class AccountingContext
             entity.Property(e => e.isValid).HasColumnName("isvalid");
             entity.Property(e => e.dateTime).HasColumnName("date");
             entity.Property(e => e.concept).HasColumnName("concept");
-            entity.Property(e => e.total).HasColumnName("total");
+            entity.Property(e => e.total).HasColumnType("decimal(18,2)").HasColumnName("total");
             entity.Property(e => e.cashier).HasColumnName("cashier");
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.student).HasColumnName("student");

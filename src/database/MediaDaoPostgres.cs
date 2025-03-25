@@ -7,7 +7,7 @@ namespace wsmcbl.src.database;
 
 public class MediaDaoPostgres(PostgresContext context) : GenericDaoPostgres<MediaEntity, int>(context), IMediaDao
 {
-    public async Task<string> getByTypeAndSchoolyear(int type, string schoolyearId)
+    public async Task<string> getByTypeIdAndSchoolyearId(int type, string schoolyearId)
     {
         var result = await entities.Where(e => e.type == type && e.schoolyearId == schoolyearId)
             .FirstOrDefaultAsync();

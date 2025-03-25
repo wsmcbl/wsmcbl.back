@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy/")]
 [ApiController]
-public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ControllerBase
+public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ActionsBase
 {
     /// <summary>Returns the student by id.</summary>
     /// <response code="200">Returns a resource.</response>
@@ -21,12 +21,12 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
-        var student = await controller.getStudentGradesInformation(studentId);
-        var solvency = await controller.isTheStudentSolvent(studentId);
+        var student = await controller.getStudentWithGrades(studentId);
+        var isSolvency = await controller.isStudentSolvent(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
 
         var result = new StudentScoreInformationDto(student, teacher);
-        result.setSolvencyStateMessage(solvency);
+        result.setSolvencyStateMessage(isSolvency);
         return Ok(result);
     }
     
@@ -40,13 +40,13 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     [ResourceAuthorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
-        var isSolvency = await controller.isTheStudentSolvent(studentId);
+        var isSolvency = await controller.isStudentSolvent(studentId);
         if (!isSolvency)
         {
             throw new ConflictException($"Student with id ({studentId}) has no solvency.");
         }
         
-        var result = await controller.getReportCard(studentId);
+        var result = await controller.getReportCard(studentId, getAuthenticatedUserId());
         return File(result, "application/pdf", $"{studentId}.report-card.pdf");
     }
 }

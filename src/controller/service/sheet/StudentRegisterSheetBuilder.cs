@@ -1,29 +1,24 @@
 using ClosedXML.Excel;
-using wsmcbl.src.model.dao;
+using wsmcbl.src.exception;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 
-namespace wsmcbl.src.controller.service;
+namespace wsmcbl.src.controller.service.sheet;
 
-public class SpreadSheetMaker
+public class StudentRegisterSheetBuilder
 {
-    private DaoFactory daoFactory {get; set;}
+    private UserEntity user { get; set; } = null!;
+    private SchoolyearEntity schoolyear { get; set; } = null!;
+    private List<StudentRegisterView> registerList { get; set; } = null!;
 
     private const string lastColumnName = "V";
+    
     private IXLWorksheet? worksheet { get; set; }
     
-    public SpreadSheetMaker(DaoFactory daoFactory)
+    public byte[] getSpreadSheet()
     {
-        this.daoFactory = daoFactory;
-    }
-    
-    public async Task<byte[]> getStudentRegisterInCurrentSchoolyear(string userId)
-    {
-        var user = await daoFactory.userDao!.getById(userId);
-        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
-        var registerList = await daoFactory.studentDao!.getStudentRegisterInCurrentSchoolyear();
-
-        var title = $"Padrón {currentSchoolyear.label}";
+        var title = $"Padrón {schoolyear.label}";
         
         using var workbook = new XLWorkbook();
         worksheet = workbook.Worksheets.Add(title);
@@ -124,7 +119,7 @@ public class SpreadSheetMaker
         worksheet.Cell(counter, bodyColumn++).Value = item.tutor; 
         worksheet.Cell(counter, bodyColumn++).Value = item.phone; 
         worksheet.Cell(counter, bodyColumn++).Value = item.getIsRepeatingString();
-        worksheet.Cell(counter, bodyColumn++).Value = item.getEnrollDateString();
+        worksheet.Cell(counter, bodyColumn).Value = item.getEnrollDateString();
     }
 
     private void setHeader(int headerRow)
@@ -156,6 +151,42 @@ public class SpreadSheetMaker
         worksheet.Cell(headerRow, headerColumn++).Value = "Tutor";
         worksheet.Cell(headerRow, headerColumn++).Value = "Teléfono";
         worksheet.Cell(headerRow, headerColumn++).Value = "Repitente";
-        worksheet.Cell(headerRow, headerColumn++).Value = "F. matrícula";
+        worksheet.Cell(headerRow, headerColumn).Value = "F. matrícula";
+    }
+
+
+    public class Builder
+    {
+        private readonly StudentRegisterSheetBuilder latexBuilder;
+
+        public Builder()
+        {
+            latexBuilder = new StudentRegisterSheetBuilder();
+        }
+
+        public StudentRegisterSheetBuilder build() => latexBuilder;
+        
+        public Builder withUser(UserEntity parameter)
+        {
+            latexBuilder.user = parameter;
+            return this;
+        }
+        
+        public Builder withSchoolyear(SchoolyearEntity parameter)
+        {
+            latexBuilder.schoolyear = parameter;
+            return this;
+        }
+        
+        public Builder withRegisterList(List<StudentRegisterView>? parameter)
+        {
+            if (parameter == null)
+            {
+                throw new InternalException("There is not student register.");
+            }
+            
+            latexBuilder.registerList = parameter;
+            return this;
+        }
     }
 }

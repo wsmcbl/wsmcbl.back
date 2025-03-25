@@ -1,4 +1,3 @@
-using wsmcbl.src.controller.service.document;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
@@ -7,9 +6,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CollectTariffController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<PagedResult<StudentView>> getStudentList(PagedRequest request)
+    public async Task<PagedResult<StudentView>> getPaginatedStudentView(PagedRequest request)
     {
-        return await daoFactory.accountingStudentDao!.getStudentViewList(request);
+        return await daoFactory.accountingStudentDao!.getPaginatedStudentView(request);
     }
     
     public async Task<StudentEntity> getStudentById(string studentId)
@@ -24,21 +23,18 @@ public class CollectTariffController(DaoFactory daoFactory) : BaseController(dao
     
     public async Task<TransactionEntity> saveTransaction(TransactionEntity transaction, List<DebtHistoryEntity> debtList)
     {
-        if (await daoFactory.debtHistoryDao!.haveTariffsAlreadyPaid(transaction))
+        if (await daoFactory.debtHistoryDao!.hasPaidTariffsInTransaction(transaction))
         {
             throw new ArgumentException("Some tariff is already paid.");
         }
         
         await daoFactory.debtHistoryDao!.exonerateArrears(transaction.studentId, debtList);
+        
+        await transaction.setDebtAmountsInDetailList(daoFactory.debtHistoryDao!);
+        
         daoFactory.transactionDao!.create(transaction);
         await daoFactory.ExecuteAsync();
 
         return transaction;
-    }
-
-    public async Task<byte[]> getInvoiceDocument(string transactionId)
-    {
-        var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getInvoiceDocument(transactionId);
     }
 }

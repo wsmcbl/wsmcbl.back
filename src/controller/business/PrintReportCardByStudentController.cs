@@ -1,47 +1,34 @@
 using wsmcbl.src.controller.service.document;
 using wsmcbl.src.exception;
-using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
-using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
-using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 
 namespace wsmcbl.src.controller.business;
 
 public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<StudentEntity> getStudentGradesInformation(string studentId)
+    public async Task<StudentEntity> getStudentWithGrades(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-        var partials = await daoFactory.partialDao!.getListInCurrentSchoolyear();
+        
+        var partials = await daoFactory.partialDao!.getListForCurrentSchoolyear();
         student.setPartials(partials);
 
         return student;
     }
 
-    public async Task<byte[]> getReportCard(string studentId)
+    public async Task<byte[]> getReportCard(string studentId, string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getReportCardByStudent(studentId);
+        return await documentMaker.getReportCardByStudent(studentId, userId);
     }
 
-    public async Task<bool> isTheStudentSolvent(string studentId)
+    public async Task<bool> isStudentSolvent(string studentId)
     {
-        var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudentWithPayments(studentId);
+        var debtHistoryList = await daoFactory.debtHistoryDao!.getListByStudentId(studentId);
         
-        var debt = debtHistoryList.Find(isSolvencyInterval);
-        if (debt == null)
-        {
-            throw new EntityNotFoundException("Monthly tariff not found.");
-        }
-        
-        return debt.isPaid;
-    }
-
-    private static bool isSolvencyInterval(DebtHistoryEntity debt)
-    {
-        var currentMonth = DateTime.Today.Month;
-        return debt.tariff.type == Const.TARIFF_MONTHLY && debt.tariff.checkDueMonth(currentMonth);
+        var debt = debtHistoryList.FirstOrDefault(e => e.isCurrentTariffMonthly());
+        return debt != null && debt.isPaid;
     }
 
     public async Task<TeacherEntity> getTeacherByEnrollment(string enrollmentId)

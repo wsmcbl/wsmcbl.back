@@ -19,7 +19,7 @@ public class CorrectEducationalLevelController : BaseController
     
     public async Task<StudentEntity> changeEducationalLevel(string studentId, int level)
     {
-        if (await daoFactory.academyStudentDao!.hasAEnroll(studentId))
+        if (await daoFactory.academyStudentDao!.isEnrolled(studentId))
         {
             throw new ConflictException("The student is already enroll. This operation can not be performed.");
         }

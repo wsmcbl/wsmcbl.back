@@ -17,10 +17,11 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         daoFactory = new DaoFactoryPostgres(context);
     }
 
-    public async Task<PagedResult<DebtHistoryEntity>> getListByStudentId(string studentId, PagedRequest request)
+    public async Task<PagedResult<DebtHistoryEntity>> getPaginatedByStudentId(string studentId, PagedRequest request)
     {
-        var query = context
-            .GetQueryable<DebtHistoryEntity>().Where(e => e.studentId == studentId);
+        var query = context.GetQueryable<DebtHistoryEntity>()
+            .Where(e => e.studentId == studentId)
+            .Include(e => e.tariff);
         
         var pagedService = new PagedService<DebtHistoryEntity>(query, searchInDebtHistory);
         
@@ -37,9 +38,9 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             EF.Functions.Like(e.schoolyear.ToLower(), value));
     }
 
-    public async Task<List<DebtHistoryEntity>> getListByStudentWithPayments(string studentId)
+    public async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId)
     {
-        var debtList = await getListByStudentId(studentId);
+        var debtList = await getList(studentId);
         return debtList.Where(dh => dh.isPaid || dh.havePayments()).ToList();
     }
 
@@ -50,7 +51,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             return;
         }
         
-        var debtList = await getListByStudentId(studentId,false);
+        var debtList = await getList(studentId,false);
         
         foreach (var item in list)
         {
@@ -63,9 +64,11 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             debt.arrears = 0;
             update(debt);
         }
+
+        await saveAsync();
     }
 
-    public async Task<bool> haveTariffsAlreadyPaid(TransactionEntity transaction)
+    public async Task<bool> hasPaidTariffsInTransaction(TransactionEntity transaction)
     {
         var debtList = await entities
             .Where(e => e.studentId == transaction.studentId)
@@ -78,7 +81,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         return detail != null;
     }
 
-    public async Task<List<DebtHistoryEntity>> getListByTransaction(TransactionEntity transaction)
+    public async Task<List<DebtHistoryEntity>> getListByTransactionId(TransactionEntity transaction)
     {
         var tariffIdList = transaction.getTariffIdList();
         return await entities
@@ -97,7 +100,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             throw new UpdateConflictException("Transaction", "The transaction is already cancelled.");
         }
 
-        var debtList = await getListByStudentId(transaction.studentId, false);
+        var debtList = await getList(transaction.studentId, false);
 
         foreach (var item in transaction.details)
         {
@@ -148,7 +151,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         await saveAsync();
     }
     
-    public async Task<float[]> getGeneralBalance(string studentId)
+    public async Task<decimal[]> getGeneralBalance(string studentId)
     {
         var currentSch = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var newSch = await daoFactory.schoolyearDao!.getNewOrCurrent();
@@ -159,7 +162,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             .Where(d => d.tariff.type == Const.TARIFF_MONTHLY)
             .ToListAsync();
 
-        float[] balance = [0, 0];
+        decimal[] balance = [0, 0];
 
         foreach (var debt in debtList)
         {
@@ -170,7 +173,7 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         return balance;
     }
     
-    private async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId, bool withTariff = true)
+    private async Task<List<DebtHistoryEntity>> getList(string studentId, bool withTariff = true)
     {
         var query = entities.Where(e => e.studentId == studentId);
         if (withTariff)

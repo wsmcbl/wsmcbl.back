@@ -96,7 +96,7 @@ public static class Utility
         }
     }
     
-    public static bool inDevelopmentEnvironment()
+    public static bool isInProductionEnvironment()
     {
         var value = Environment.GetEnvironmentVariable("API_ENVIRONMENT_MODE");
         if (value == null)
@@ -104,7 +104,7 @@ public static class Utility
             throw new InternalException("API_ENVIRONMENT_MODE environment not found.");
         }
 
-        return value == "Development";
+        return value == "Production";
     }
 
     public static string getOrDefault(this string? value) => string.IsNullOrWhiteSpace(value) ? "N/A" : value;

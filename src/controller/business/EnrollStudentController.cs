@@ -94,7 +94,7 @@ public class EnrollStudentController : BaseController
 
     private async Task hasSolvencyInRegistrationOrFail(string studentId)
     {
-        var result = await daoFactory.accountingStudentDao!.hasSolvencyInRegistration(studentId);
+        var result = await daoFactory.accountingStudentDao!.hasEnrollmentTariffSolvency(studentId);
         if (!result)
         {
             throw new ConflictException("The student has no solvency in registration.");
@@ -103,7 +103,7 @@ public class EnrollStudentController : BaseController
 
     public async Task<List<model.accounting.StudentEntity>> getStudentListWithSolvencyInRegistration()
     {
-        return await daoFactory.accountingStudentDao!.getAllWithSolvencyInRegistration();
+        return await daoFactory.accountingStudentDao!.getAllWithEnrollmentTariffSolvency();
     }
 
     public async Task<List<DegreeEntity>> getDegreeListByStudentId(string studentId)
@@ -114,7 +114,7 @@ public class EnrollStudentController : BaseController
             throw new EntityNotFoundException("StudentEntity", studentId);
         }
         
-        var list = await daoFactory.degreeDao!.getValidListForTheSchoolyear();
+        var list = await daoFactory.degreeDao!.getValidListForNewOrCurrentSchoolyear();
         var degreeList = list.Where(e => e.educationalLevel == accountingStudent.getEducationalLevelLabel())
             .ToList();
         

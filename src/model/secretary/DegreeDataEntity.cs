@@ -8,9 +8,9 @@ public class DegreeDataEntity
     public int educationalLevel { get; set; }
 
     public ICollection<SubjectDataEntity>? subjectList { get; set; }
-
     
     private readonly List<string> educationalLevels = ["Preescolar", "Primaria", "Secundaria"];
+    
     public string getModalityName()
     {
         return educationalLevels[educationalLevel-1];
