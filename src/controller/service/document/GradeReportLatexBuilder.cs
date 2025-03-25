@@ -8,11 +8,8 @@ namespace wsmcbl.src.controller.service.document;
 
 public class GradeReportLatexBuilder : LatexBuilder
 {
-    private readonly string templatesPath;
- 
     private GradeReportLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
-        this.templatesPath = templatesPath;
     }
     
     private StudentEntity student { get; set; } = null!;
@@ -29,7 +26,7 @@ public class GradeReportLatexBuilder : LatexBuilder
 
     protected override string updateContent(string content)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
         content = content.Replace("schoolyear.value", DateTime.Today.Year.ToString());
         content = content.Replace("degree.value", degree.label);

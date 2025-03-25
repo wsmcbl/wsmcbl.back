@@ -7,29 +7,28 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
     public async Task<byte[]> getReportCardByStudent(string studentId, string? userId)
     {
-        string? userName = null;
-        if (userId != null)
-        {
-            var user = await daoFactory.userDao!.getById(userId);
-            userName = user.getAlias();
-        }
-        
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
-
         if (teacher == null)
         {
             throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
         }
             
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         var partialList = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
+        
+        string? userAlias = null;
+        if (userId != null)
+        {
+            var user = await daoFactory.userDao!.getById(userId);
+            userAlias = user.getAlias();
+        }
         
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withUsername(userName)
+            .withUserAlias(userAlias)
             .withDegree(enrollment.label)
             .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)

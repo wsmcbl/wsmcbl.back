@@ -13,10 +13,8 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     private List<DegreeEntity> degreeList { get; set; } = null!;
     private DateTime now { get; set; }
 
-    private readonly string templatesPath;
     private OfficialEnrollmentListLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
-        this.templatesPath = templatesPath;
         now = DateTime.UtcNow;
     }
     
@@ -24,7 +22,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     
     protected override string updateContent(string content)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
 
         var body = string.Empty;

@@ -1,3 +1,4 @@
+using System.Text;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -6,15 +7,8 @@ using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.controller.service.document;
 
-public class ReportCardLatexBuilder : LatexBuilder
+public class ReportCardLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
 {
-    private readonly string templatesPath;
- 
-    private ReportCardLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
-    {
-        this.templatesPath = templatesPath;
-    }
-    
     private StudentEntity student { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
@@ -22,14 +16,16 @@ public class ReportCardLatexBuilder : LatexBuilder
     private List<PartialEntity> partialList { get; set; } = null!;
     
     private string degreeLabel { get; set; } = null!;
-    private string? userName { get; set; }
+    private string? userAlias { get; set; }
     private string schoolyear { get; set; } = null!;
 
     protected override string getTemplateName() => "report-card";
 
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        var content = new StringBuilder(value);
+        
+        content = content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
         content = content.Replace("schoolyear.value", schoolyear);
         content = content.Replace("degree.value", degreeLabel);
@@ -47,53 +43,53 @@ public class ReportCardLatexBuilder : LatexBuilder
         content = content.Replace("fourth.average.value", averageList[3]);
         content = content.Replace("final.average.value", averageList[4]);
         
-        content = content.ReplaceInLatexFormat("secretary.name.value", userName != null ? $", {userName}" : string.Empty);
-        content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content = content.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
+        content = content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
-        return content;
+        return content.ToString();
     }
 
     private List<string> getAverageList()
     {
-        var finalCounter = 0;
-        decimal finalAccumulator = 0; 
+        var totalQuantity = 0;
+        decimal totalValue = 0; 
         var result = new List<string>();
 
         foreach (var partial in partialList)
         {
-            var counter = 0;
-            decimal accumulator = 0;
-            decimal conductAcumulator = 0;
+            var quantity = 0;
+            decimal value = 0;
+            decimal conductValue = 0;
             
             foreach (var subject in partial.subjectPartialList!)
             {
-                counter++;
                 subject.setStudentGrade(student.studentId);
-                accumulator += (decimal)subject.studentGrade!.grade!;
-                conductAcumulator += (decimal)subject.studentGrade!.conductGrade!;
+                value += (decimal)subject.studentGrade!.grade!;
+                conductValue += (decimal)subject.studentGrade!.conductGrade!;
+                quantity++;
             }
 
-            if (counter == 0)
+            if (quantity == 0)
             {
                 result.Add("");
                 continue;
             }
 
-            var conduct = conductAcumulator / counter;
-            var grade = (accumulator + conduct) / (counter + 1);
+            var conduct = conductValue/quantity;
+            var grade = (value + conduct) / (quantity + 1);
             result.Add($"{grade:F2}");
 
-            finalCounter++;
-            finalAccumulator += grade;   
+            totalQuantity++;
+            totalValue += grade;   
         }
 
-        if (finalCounter < 4)
+        if (totalQuantity < 4)
         {
             result.Add("");
         }
         else
         {
-            var grade = finalAccumulator / finalCounter;
+            var grade = totalValue / totalQuantity;
             result.Add($"{grade:F2}");
         }
         
@@ -102,7 +98,7 @@ public class ReportCardLatexBuilder : LatexBuilder
 
     private string getDetail()
     {
-        var content = "";
+        var content = new StringBuilder();
         
         foreach (var item in subjectAreaList)
         {
@@ -111,119 +107,103 @@ public class ReportCardLatexBuilder : LatexBuilder
                 continue;
             }
             
-            content += $"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline";
-            content += getSubjectDetail(item.areaId);
+            content.Append($"\\multicolumn{{11}}{{|l|}}{{\\textbf{{\\footnotesize {item.name}}}}}\\\\\\hline");
+            getSubjectDetail(content, item.areaId);
         }
 
-        content += addConductGrade();
+        addConductGrade(content);
         
-        return content;
+        return content.ToString();
     }
 
-    private string addConductGrade()
+    private void addConductGrade(StringBuilder content)
     {
-        var content = "{{\\footnotesize Conducta}}";
+        content.Append("{{\\footnotesize Conducta}}");
 
-        decimal conduct = 0;
-        var counter = 0;
+        var conduct = 0m;
+        var quantity = 0;
 
         foreach (var partial in partialList)
         {
-            var result = addConductGradeByPartial(partial);
-            content += result.content;
+            var result = addConductGradeByPartial(content, partial);
             conduct += result.conduct;
-            counter += result.counter;            
+            quantity += result.counter;            
         }
 
-        if (counter != 4)
-        {
-            content += gradeFormat(null);
-        }
-        else
-        {
-            content += gradeFormat(conduct / counter);
-        }
-        
-        content += "\\\\\\hline";
-        return content;
+        content.Append(quantity != 4 ? gradeFormat(null) : gradeFormat(conduct/quantity));
+        content.Append("\\\\\\hline");
     }
 
-    private (string content, decimal conduct, int counter) addConductGradeByPartial(PartialEntity partial)
+    private (decimal conduct, int counter) addConductGradeByPartial(StringBuilder content, PartialEntity partial)
     {
         if (partial.subjectPartialList!.Count == 0)
         {
-            return (gradeFormat(null), 0, 0);
+            content.Append(gradeFormat(null));
+            return (0, 0);
         }
         
-        decimal conduct = 0;
-        var counter = 0;
+        var conduct = 0m;
+        var quantity = 0;
 
         foreach (var item in partial.subjectPartialList!)
         {
             item.setStudentGrade(student.studentId);
             conduct += (decimal)item.studentGrade!.conductGrade!;
-            counter++;
+            quantity++;
         }
         
-        var grade = conduct / counter;
-        
-        return (gradeFormat(grade), grade, counter > 0 ? 1 : 0);
+        var grade = conduct/quantity;
+
+        content.Append(gradeFormat(grade));
+        return (grade, quantity > 0 ? 1 : 0);
     }
 
-    private string getSubjectDetail(int areaId)
+    private void getSubjectDetail(StringBuilder content, int areaId)
     {
-        var content = "";
         foreach (var item in subjectList.Where(e => e.secretarySubject!.areaId == areaId))
         {
-            content += $"{{\\footnotesize {item.secretarySubject!.name}}}";
-            content += getGrades(item.subjectId);
-            content += "\\\\\\hline";
+            content.Append($"{{\\footnotesize {item.secretarySubject!.name}}}");
+            getGrades(content, item.subjectId);
+            content.Append("\\\\\\hline");
         }
-
-        return content;
     }
 
-    private string getGrades(string subjectId)
+    private void getGrades(StringBuilder content, string subjectId)
     {
-        var content = "";
-        
         foreach (var partial in partialList)
         {
             var result = partial.getSubjectPartialById(subjectId);
             if (result == null)
             {
-                content += gradeFormat(null);
+                content.Append(gradeFormat(null));
                 continue;
             }
 
             result.setStudentGrade(student.studentId);
-            content += gradeFormat(result.studentGrade!.grade, result.studentGrade.label);
+            content.Append(gradeFormat(result.studentGrade!.grade, result.studentGrade.label));
         }
 
-        content += getFinalGrade(subjectId);
-        
-        return content;
+        content.Append(getFinalGrade(subjectId));
     }
 
     private string getFinalGrade(string subjectId)
     {
-        var counter = 0;
-        decimal accumulator = 0;
+        var grade = 0m;
+        var quantity = 0;
 
         foreach (var partial in partialList)
         {
             var result = partial.getSubjectPartialById(subjectId);
             if (result == null) continue;
                 
-            counter++;
+            quantity++;
             result.setStudentGrade(student.studentId);
-            accumulator += (decimal)result.studentGrade!.grade!;
+            grade += (decimal)result.studentGrade!.grade!;
         }
 
-        if (counter < 4) return gradeFormat(null);
+        if (quantity != 2 && quantity != 4) return gradeFormat(null);
 
-        var grade = accumulator / counter;
-        return gradeFormat(grade);
+        return gradeFormat(grade/quantity);
     }
     
     private static string gradeFormat(decimal? grade, string? label = null)
@@ -289,15 +269,15 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withUsername(string? paramater)
+        public Builder withUserAlias(string? parameter)
         {
-            latexBuilder.userName = paramater;
+            latexBuilder.userAlias = parameter;
             return this;
         }
         
-        public Builder withSchoolyear(string paramater)
+        public Builder withSchoolyear(string parameter)
         {
-            latexBuilder.schoolyear = paramater;
+            latexBuilder.schoolyear = parameter;
             return this;
         }
     }

@@ -11,11 +11,9 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     private string? newSchoolyear;
     private readonly StudentEntity entity;
     private model.academy.StudentEntity? academyStudent;
-    private readonly string templatesPath;
     
     public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
     {
-        this.templatesPath = templatesPath;
         this.entity = entity;
     }
 
@@ -45,7 +43,7 @@ public class EnrollSheetLatexBuilder : LatexBuilder
     {
         content = content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
         
-        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
         content = content.ReplaceInLatexFormat("student.name.value", entity.fullName());
         content = content.ReplaceInLatexFormat("degree.value", grade!);
