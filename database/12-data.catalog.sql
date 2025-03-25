@@ -72,8 +72,7 @@ VALUES (4, false, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (4, false, 3, 'Conociendo mi Mundo', 'CM', 2, 5, true),
        (4, false, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (4, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (4, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (4, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (4, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 2do grado -- 
@@ -88,8 +87,7 @@ VALUES (5, false, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (5, false, 3, 'Conociendo mi Mundo', 'CM', 2, 5, true),
        (5, false, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (5, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (5, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (5, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (5, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 3er grado -- 
@@ -105,8 +103,7 @@ VALUES (6, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (6, true, 3, 'Ciencias Naturales', 'CN', 3, 1, true),
        (6, true, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (6, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (6, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (6, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (6, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 4to grado -- 
@@ -122,8 +119,7 @@ VALUES (7, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (7, true, 3, 'Ciencias Naturales', 'CN', 3, 1, true),
        (7, true, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (7, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (7, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (7, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (7, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 5to grado -- 
@@ -139,8 +135,7 @@ VALUES (8, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (8, true, 3, 'Ciencias Naturales', 'CN', 3, 1, true),
        (8, true, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (8, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (8, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (8, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (8, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 6to grado -- 
@@ -156,8 +151,7 @@ VALUES (9, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (9, true, 3, 'Ciencias Naturales', 'CN', 3, 1, true),
        (9, true, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (9, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (9, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (9, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (9, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 -- #####################################################################################
 
@@ -175,8 +169,7 @@ VALUES (10, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (10, true, 3, 'Ciencias Naturales', 'CN', 3, 1, true),
        (10, true, 3, 'Matemáticas', 'Mat', 3, 5, true),
        (10, false, 3, 'Educación Cristiana', 'EC', 3, 6, true),
-       (10, false, 3, 'Computación', 'COMP', 3, 7, true),
-       (10, false, 3, 'Conducta', 'COND', 3, 8, true);
+       (10, false, 3, 'Computación', 'COMP', 3, 7, true);
 
 
 -- 8vo grado --
@@ -193,8 +186,7 @@ VALUES (11, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (11, true, 3, 'Ciencias Naturales', 'CN',3,1, true),
        (11, true, 3, 'Matemáticas', 'Mat',3,5, true),
        (11, false, 3, 'Educación Cristiana', 'EC',3,6, true),
-       (11, false, 3, 'Computación', 'COMP',3,7, true),
-       (11, false, 3, 'Conducta', 'COND',3,8, true);
+       (11, false, 3, 'Computación', 'COMP',3,7, true);
 
 
 -- 9no grado --
@@ -211,8 +203,7 @@ VALUES (12, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (12, true, 3, 'Ciencias Naturales', 'CN',3,1, true),
        (12, true, 3, 'Matemáticas', 'Mat',3,5, true),
        (12, false, 3, 'Educación Cristiana', 'EC',3,6, true),
-       (12, false, 3, 'Computación', 'COMP',3,7, true),
-       (12, false, 3, 'Conducta', 'COND',3,8, true);
+       (12, false, 3, 'Computación', 'COMP',3,7, true);
 
 
 -- 10mo grado --
@@ -228,8 +219,7 @@ VALUES (13, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (13, true, 3, 'Física', 'FIS',3,3, true),
        (13, true, 3, 'Matemáticas', 'Mat',3,5, true),
        (13, false, 3, 'Educación Cristiana', 'EC',3,6, true),
-       (13, false, 3, 'Computación', 'COMP',3,7, true),
-       (13, false, 3, 'Conducta', 'COND',3,8, true);
+       (13, false, 3, 'Computación', 'COMP',3,7, true);
 
 -- 11vo grado ---
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
@@ -245,5 +235,4 @@ VALUES (14, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (14, true, 3, 'Biología', 'BIOL',3,4, true),
        (14, true, 3, 'Matemáticas', 'Mat',3,5, true),
        (14, false, 3, 'Educación Cristiana', 'EC',3,6, true),
-       (14, false, 3, 'Computación', 'COMP',3,7, true),
-       (14, false, 3, 'Conducta', 'COND',3,8, true);
+       (14, false, 3, 'Computación', 'COMP',3,7, true);
