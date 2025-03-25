@@ -1,4 +1,3 @@
-using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -142,12 +141,11 @@ public class ReportCardLatexBuilder : LatexBuilder
 
         if (counter != 4)
         {
-            content += " & & ";
+            content += gradeFormat(null);
         }
         else
         {
-            var grade = conduct / counter;
-            content += $" & {GradeEntity.getLabelByGrade(grade)} & {grade}";
+            content += gradeFormat(conduct / counter);
         }
         
         content += "\\\\\\hline";
@@ -158,7 +156,7 @@ public class ReportCardLatexBuilder : LatexBuilder
     {
         if (partial.subjectPartialList!.Count == 0)
         {
-            return (" & &", 0, 0);
+            return (gradeFormat(null), 0, 0);
         }
         
         decimal conduct = 0;
@@ -172,9 +170,8 @@ public class ReportCardLatexBuilder : LatexBuilder
         }
         
         var grade = conduct / counter;
-        var label = GradeEntity.getLabelByGrade(grade);
         
-        return ($" & {label} & {grade}", grade, counter > 0 ? 1 : 0);
+        return (gradeFormat(grade), grade, counter > 0 ? 1 : 0);
     }
 
     private string getSubjectDetail(int areaId)
@@ -220,11 +217,10 @@ public class ReportCardLatexBuilder : LatexBuilder
             }
         }
 
-        if (counter < 4) return " & & ";
+        if (counter < 4) return gradeFormat(null);
 
         var grade = accumulator / counter;
-        var label = GradeEntity.getLabelByGrade(grade);
-        return $" & {label} & {grade}";
+        return gradeFormat(grade);
     }
 
     private string getGradesBySemester(SemesterEntity semester, string subjectId)
@@ -241,19 +237,16 @@ public class ReportCardLatexBuilder : LatexBuilder
     private string getGradesByPartial(PartialEntity partial, string subjectId)
     {
         var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
-
-        if (result != null)
+        if (result == null)
         {
-            result.setStudentGrade(student.studentId);
+            return gradeFormat(null);
         }
-            
-        var label = result == null ? "" : result.studentGrade!.label;
-        var grade = result == null ? "" : result.studentGrade!.grade.ToString();
-        
-        return $" & {label} & {grade}";
+
+        result.setStudentGrade(student.studentId);
+        return gradeFormat(result.studentGrade!.grade, result.studentGrade.label);
     }
     
-    private string gradeFormat(decimal? grade, string? label = null)
+    private static string gradeFormat(decimal? grade, string? label = null)
     {
         if (grade == null)
         {
