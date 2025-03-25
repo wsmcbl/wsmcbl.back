@@ -17,9 +17,9 @@ public class ReportCardLatexBuilder : LatexBuilder
     
     private StudentEntity student { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
-    private List<SemesterEntity> semesterList { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
     private List<SubjectAreaEntity> subjectAreaList { get; set; } = null!;
+    private List<PartialEntity> partialList { get; set; } = null!;
     
     private string degreeLabel { get; set; } = null!;
     private string? userName { get; set; }
@@ -58,34 +58,33 @@ public class ReportCardLatexBuilder : LatexBuilder
         var finalCounter = 0;
         decimal finalAccumulator = 0; 
         var result = new List<string>();
-        foreach (var item in semesterList.OrderBy(e => e.semester))
+
+        foreach (var partial in partialList)
         {
-            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
+            var counter = 0;
+            decimal accumulator = 0;
+            decimal conductAcumulator = 0;
+            
+            foreach (var subject in partial.subjectPartialList!)
             {
-                var counter = 0;
-                decimal accumulator = 0;
-                decimal conductAcumulator = 0;
-                foreach (var subject in partial.subjectPartialList!)
-                {
-                    counter++;
-                    subject.setStudentGrade(student.studentId);
-                    accumulator += (decimal)subject.studentGrade!.grade!;
-                    conductAcumulator += (decimal)subject.studentGrade!.conductGrade!;
-                }
-
-                if (counter == 0)
-                {
-                    result.Add("");
-                    continue;
-                }
-
-                var conduct = conductAcumulator / counter;
-                var grade = (accumulator + conduct) / (counter + 1);
-                result.Add($"{grade:F2}");
-
-                finalCounter++;
-                finalAccumulator += grade;
+                counter++;
+                subject.setStudentGrade(student.studentId);
+                accumulator += (decimal)subject.studentGrade!.grade!;
+                conductAcumulator += (decimal)subject.studentGrade!.conductGrade!;
             }
+
+            if (counter == 0)
+            {
+                result.Add("");
+                continue;
+            }
+
+            var conduct = conductAcumulator / counter;
+            var grade = (accumulator + conduct) / (counter + 1);
+            result.Add($"{grade:F2}");
+
+            finalCounter++;
+            finalAccumulator += grade;   
         }
 
         if (finalCounter < 4)
@@ -127,16 +126,13 @@ public class ReportCardLatexBuilder : LatexBuilder
 
         decimal conduct = 0;
         var counter = 0;
-        
-        foreach (var item in semesterList.OrderBy(e => e.semester))
+
+        foreach (var partial in partialList)
         {
-            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
-            {
-                var result = addConductGradeByPartial(partial);
-                content += result.content;
-                conduct += result.conduct;
-                counter += result.counter;
-            }
+            var result = addConductGradeByPartial(partial);
+            content += result.content;
+            conduct += result.conduct;
+            counter += result.counter;            
         }
 
         if (counter != 4)
@@ -190,9 +186,18 @@ public class ReportCardLatexBuilder : LatexBuilder
     private string getGrades(string subjectId)
     {
         var content = "";
-        foreach (var item in semesterList.OrderBy(e => e.semester))
+        
+        foreach (var partial in partialList)
         {
-            content += getGradesBySemester(item, subjectId);
+            var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+            if (result == null)
+            {
+                content += gradeFormat(null);
+                continue;
+            }
+
+            result.setStudentGrade(student.studentId);
+            content += gradeFormat(result.studentGrade!.grade, result.studentGrade.label);
         }
 
         content += getFinalGrade(subjectId);
@@ -204,46 +209,21 @@ public class ReportCardLatexBuilder : LatexBuilder
     {
         var counter = 0;
         decimal accumulator = 0;
-        foreach (var item in semesterList.OrderBy(e => e.semester))
+
+        foreach (var partial in partialList)
         {
-            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
-            {
-                var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
-                if (result == null) continue;
+            var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+            if (result == null) continue;
                 
-                counter++;
-                result.setStudentGrade(student.studentId);
-                accumulator += (decimal)result.studentGrade!.grade!;
-            }
+            counter++;
+            result.setStudentGrade(student.studentId);
+            accumulator += (decimal)result.studentGrade!.grade!;
         }
 
         if (counter < 4) return gradeFormat(null);
 
         var grade = accumulator / counter;
         return gradeFormat(grade);
-    }
-
-    private string getGradesBySemester(SemesterEntity semester, string subjectId)
-    {
-        var content = "";
-        foreach (var item in student.partials!.Where(e => e.semester == semester.semester).OrderBy(e => e.partial))
-        {
-            content += getGradesByPartial(item, subjectId);
-        }
-        
-        return content;
-    }
-
-    private string getGradesByPartial(PartialEntity partial, string subjectId)
-    {
-        var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
-        if (result == null)
-        {
-            return gradeFormat(null);
-        }
-
-        result.setStudentGrade(student.studentId);
-        return gradeFormat(result.studentGrade!.grade, result.studentGrade.label);
     }
     
     private static string gradeFormat(decimal? grade, string? label = null)
@@ -287,9 +267,13 @@ public class ReportCardLatexBuilder : LatexBuilder
             return this;
         }
         
-        public Builder withSemesterList(List<SemesterEntity> parameter)
+        public Builder withPartialList(List<PartialEntity> parameter)
         {
-            latexBuilder.semesterList = parameter;
+            latexBuilder.partialList = parameter
+                .OrderBy(e => e.semester)
+                .ThenBy(e => e.partial)
+                .ToList();
+            
             return this;
         }
         
