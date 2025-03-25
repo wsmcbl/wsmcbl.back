@@ -65,11 +65,13 @@ public class ReportCardLatexBuilder : LatexBuilder
             {
                 var counter = 0;
                 decimal accumulator = 0;
+                decimal conductAcumulator = 0;
                 foreach (var subject in partial.subjectPartialList!)
                 {
                     counter++;
                     subject.setStudentGrade(student.studentId);
                     accumulator += (decimal)subject.studentGrade!.grade!;
+                    conductAcumulator += (decimal)subject.studentGrade!.conductGrade!;
                 }
 
                 if (counter == 0)
@@ -78,7 +80,8 @@ public class ReportCardLatexBuilder : LatexBuilder
                     continue;
                 }
 
-                var grade = accumulator / counter;
+                var conduct = conductAcumulator / counter;
+                var grade = (accumulator + conduct) / (counter + 1);
                 result.Add($"{grade:F2}");
 
                 finalCounter++;
@@ -114,7 +117,64 @@ public class ReportCardLatexBuilder : LatexBuilder
             content += getSubjectDetail(item.areaId);
         }
 
+        content += addConductGrade();
+        
         return content;
+    }
+
+    private string addConductGrade()
+    {
+        var content = "{{\\footnotesize Conducta}}";
+
+        decimal conduct = 0;
+        var counter = 0;
+        
+        foreach (var item in semesterList.OrderBy(e => e.semester))
+        {
+            foreach (var partial in student.partials!.Where(e => e.semester == item.semester).OrderBy(e => e.partial))
+            {
+                var result = addConductGradeByPartial(partial);
+                content += result.content;
+                conduct += result.conduct;
+                counter += result.counter;
+            }
+        }
+
+        if (counter != 4)
+        {
+            content += " & & ";
+        }
+        else
+        {
+            var grade = conduct / counter;
+            content += $" & {GradeEntity.getLabelByGrade(grade)} & {grade}";
+        }
+        
+        content += "\\\\\\hline";
+        return content;
+    }
+
+    private (string content, decimal conduct, int counter) addConductGradeByPartial(PartialEntity partial)
+    {
+        if (partial.subjectPartialList!.Count == 0)
+        {
+            return (" & &", 0, 0);
+        }
+        
+        decimal conduct = 0;
+        var counter = 0;
+
+        foreach (var item in partial.subjectPartialList!)
+        {
+            item.setStudentGrade(student.studentId);
+            conduct += (decimal)item.studentGrade!.conductGrade!;
+            counter++;
+        }
+        
+        var grade = conduct / counter;
+        var label = GradeEntity.getLabelByGrade(grade);
+        
+        return ($" & {label} & {grade}", grade, counter > 0 ? 1 : 0);
     }
 
     private string getSubjectDetail(int areaId)
