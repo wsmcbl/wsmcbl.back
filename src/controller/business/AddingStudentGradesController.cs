@@ -53,6 +53,6 @@ public class AddingStudentGradesController : BaseController
     public async Task<byte[]> getEnrollmentToAddGradesDocument(SubjectPartialEntity subjectPartial, string userId)
     {
         var sheetMaker = new SpreadSheetMaker(daoFactory);
-        return await sheetMaker.getSubjectGradesByTeacherId(subjectPartial, userId);
+        return await sheetMaker.getSubjectGrades(subjectPartial, userId);
     }
 }

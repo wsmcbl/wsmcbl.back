@@ -28,7 +28,7 @@ public class SpreadSheetMaker
         return sheetBuilder.getSpreadSheet();
     }
 
-    public async Task<byte[]> getSubjectGradesByTeacherId(SubjectPartialEntity subjectPartial, string userId)
+    public async Task<byte[]> getSubjectGrades(SubjectPartialEntity subjectPartial, string userId)
     {
         var user = await daoFactory.userDao!.getById(userId);
         if (user == null)
@@ -49,9 +49,12 @@ public class SpreadSheetMaker
         }
         
         var subjectPartialList = await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
+        
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
         var sheetBuilder = new SubjectGradesSheetBuilder.Builder()
-            .withUser(user)
+            .withUserAlias(user.getAlias())
+            .withSchoolyear(currentSchoolyear.label)
             .withTeacher(teacher)
             .withEnrollment(enrollment)
             .withSubjectPartialList(subjectPartialList)
