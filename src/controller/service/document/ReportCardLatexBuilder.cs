@@ -189,7 +189,7 @@ public class ReportCardLatexBuilder : LatexBuilder
         
         foreach (var partial in partialList)
         {
-            var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+            var result = partial.getSubjectPartialById(subjectId);
             if (result == null)
             {
                 content += gradeFormat(null);
@@ -212,7 +212,7 @@ public class ReportCardLatexBuilder : LatexBuilder
 
         foreach (var partial in partialList)
         {
-            var result = partial.subjectPartialList!.FirstOrDefault(e => e.subjectId == subjectId);
+            var result = partial.getSubjectPartialById(subjectId);
             if (result == null) continue;
                 
             counter++;
