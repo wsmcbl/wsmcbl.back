@@ -24,29 +24,21 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
         }
             
-        var partials = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
-        student.setPartials(partials);
+        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
         
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment!.label)
-            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
-            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
             .withUsername(userName)
+            .withDegree(enrollment.label)
+            .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)
+            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
+            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .build();
         
         setLatexBuilder(latexBuilder);
         return getPDF();
-    }
-
-    private async Task<List<(string initials, string subjectId)>> getSubjectSort(string enrollmentId)
-    {
-        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(enrollmentId);
-        
-        return subjectList.Select(item => (item.getInitials, item.subjectId)).ToList();
     }
     
     public async Task<byte[]> getEnrollDocument(string studentId, string userId)
@@ -95,12 +87,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         
         setLatexBuilder(latexBuilder);
         return getPDF();
-    }
-
-    private async Task<string> getTeacherName(string enrollmentId)
-    {
-        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
-        return teacher != null ? teacher.fullName() : string.Empty;
     }
 
     public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)
