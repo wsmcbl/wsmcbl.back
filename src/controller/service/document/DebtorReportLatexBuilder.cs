@@ -11,13 +11,10 @@ public class DebtorReportLatexBuilder : LatexBuilder
     private List<DebtorStudentView> studentList { get; set; } = null!;
     private List<DegreeEntity> degreeList { get; set; } = null!;
 
-    private readonly string templatesPath;
-
     private DegreeEntity? aDegree { get; set; }
 
     private DebtorReportLatexBuilder(string templatesPath, string outPath) : base(templatesPath, outPath)
     {
-        this.templatesPath = templatesPath;
         now = DateTime.UtcNow;
     }
 
@@ -25,7 +22,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     protected override string updateContent(string content)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{templatesPath}/image/cbl-logo-wb.png");
+        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
         content = content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
         content = content.Replace("body.value", getDegreeContent());

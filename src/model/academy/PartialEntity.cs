@@ -36,12 +36,9 @@ public class PartialEntity
         }
     }
 
-    public void setGradeListByStudent(string studentId)
+    public SubjectPartialEntity? getSubjectPartialById(string subjectId)
     {
-        foreach (var item in subjectPartialList!)
-        {
-            item.setStudentGrade(studentId);
-        }
+        return subjectPartialList?.FirstOrDefault(s => s.subjectId == subjectId);
     }
 
     public string getPeriodLabel()

@@ -7,46 +7,37 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
     public async Task<byte[]> getReportCardByStudent(string studentId, string? userId)
     {
-        string? userName = null;
-        if (userId != null)
-        {
-            var user = await daoFactory.userDao!.getById(userId);
-            userName = user.getAlias();
-        }
-        
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
-
         if (teacher == null)
         {
             throw new EntityNotFoundException($"Teacher with enrollmentId ({student.enrollmentId}) not found.");
         }
             
-        var partials = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
-        student.setPartials(partials);
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
+        
+        string? userAlias = null;
+        if (userId != null)
+        {
+            var user = await daoFactory.userDao!.getById(userId);
+            userAlias = user.getAlias();
+        }
         
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource,$"{resource}/out")
             .withStudent(student)
             .withTeacher(teacher)
-            .withDegree(enrollment!.label)
-            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
-            .withSemesterList(await daoFactory.semesterDao!.getListForCurrentSchoolyear())
-            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
-            .withUsername(userName)
+            .withUserAlias(userAlias)
+            .withDegree(enrollment.label)
+            .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)
+            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
+            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
             .build();
         
         setLatexBuilder(latexBuilder);
         return getPDF();
-    }
-
-    private async Task<List<(string initials, string subjectId)>> getSubjectSort(string enrollmentId)
-    {
-        var subjectList = await daoFactory.subjectDao!.getByEnrollmentId(enrollmentId);
-        
-        return subjectList.Select(item => (item.getInitials, item.subjectId)).ToList();
     }
     
     public async Task<byte[]> getEnrollDocument(string studentId, string userId)
@@ -95,12 +86,6 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         
         setLatexBuilder(latexBuilder);
         return getPDF();
-    }
-
-    private async Task<string> getTeacherName(string enrollmentId)
-    {
-        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
-        return teacher != null ? teacher.fullName() : string.Empty;
     }
 
     public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)

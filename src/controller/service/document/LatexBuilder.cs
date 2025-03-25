@@ -42,8 +42,7 @@ public abstract class LatexBuilder
     private string? fileName;
     public string? getFileName() => fileName;
 
-    public string getImagesPath() => $"{templatesPath}/image";
-    
+    protected string getImagesPath() => $"{templatesPath}/image";
 
     public void build()
     {
@@ -58,5 +57,6 @@ public abstract class LatexBuilder
     }
     
     protected abstract string getTemplateName();
+    
     protected abstract string updateContent(string content);
 }
