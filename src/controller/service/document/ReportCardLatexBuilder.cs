@@ -252,6 +252,18 @@ public class ReportCardLatexBuilder : LatexBuilder
         
         return $" & {label} & {grade}";
     }
+    
+    private string gradeFormat(decimal? grade, string? label = null)
+    {
+        if (grade == null)
+        {
+            return " & & ";
+        }
+
+        label ??= GradeEntity.getLabelByGrade((decimal)grade);
+        
+        return $" & {{\\footnotesize {label}}} & {{\\footnotesize {grade:F2}}}";
+    }
 
     public class Builder
     {
