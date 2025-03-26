@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service;
+using wsmcbl.src.exception;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
@@ -19,6 +20,11 @@ public class LoginController : BaseController
     public async Task<string> getTokenByCredentials(UserEntity user)
     {
         var result = await userAuthenticator.authenticateUser(user);
+        if (!result.isActive)
+        {
+            throw new ConflictException("This user is disabled.");
+        }
+        
         await result.getIdFromRole(daoFactory);
         return jwtGenerator.generateToken(result);
     }
