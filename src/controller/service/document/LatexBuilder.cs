@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace wsmcbl.src.controller.service.document;
 
@@ -8,31 +9,39 @@ public abstract class LatexBuilder
 
     protected LatexBuilder(string templatesPath, string outPath)
     {
-        this.outPath = outPath;
+        setOutPath(outPath);
         this.templatesPath = templatesPath;
         
-        createOutPath(outPath);
+        createOutPath();
+    }
+
+    private void setOutPath(string basePath)
+    {
+        var asciiValue = RandomNumberGenerator.GetInt32(97, 123);
+        var numberValue = RandomNumberGenerator.GetInt32(10, 999);
+        
+        outPath = $"{basePath}/{(char)asciiValue}{numberValue}";
     }
     
-    private static void createOutPath(string path)
+    private void createOutPath()
     {
         using var process = new Process();
         process.StartInfo.FileName = "/bin/bash";
-        process.StartInfo.Arguments = $"-c \"mkdir {path} | true\"";
+        process.StartInfo.Arguments = $"-c \"mkdir -p {outPath} | true\"";
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
 
         process.Start();
         process.WaitForExit();
-
+        
         Console.WriteLine(process.ExitCode == 0
-            ? $"Directory {path} created successfully."
-            : $"Error creating directory {path}.\nExit code: {process.ExitCode}");
+            ? $"Directory {outPath} created successfully."
+            : $"Error creating directory {outPath}.\nExit code: {process.ExitCode}");
     }
     
-    private readonly string outPath;
-    public string getOutPath() => outPath;
+    private string? outPath;
+    public string getOutPath() => outPath!;
     
     
     private string? filePath;
@@ -51,7 +60,7 @@ public abstract class LatexBuilder
         content = updateContent(content);
 
         fileName = $"{getTemplateName()}_output";
-        filePath = Path.Combine(outPath, $"{fileName}.tex");
+        filePath = Path.Combine(outPath!, $"{fileName}.tex");
         
         File.WriteAllText(filePath, content);
     }
