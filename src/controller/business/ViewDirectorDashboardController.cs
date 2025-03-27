@@ -1,3 +1,4 @@
+using wsmcbl.src.dto.management;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -15,25 +16,26 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         var males = studentList.Count(e => e.sex);
 
         var result = new SummaryStudentDto(total, males, 0);
-        setSummaryStudentByArea(result);
+        setSummaryStudentByLevel(result);
         await setSummaryStudentByDegree(result);
         
         return result;
     }
 
-    private void setSummaryStudentByArea(SummaryStudentDto dto)
+    private void setSummaryStudentByLevel(SummaryStudentDto dto)
     {
-        var list = studentList.Where(e => e.educationalLevel!.Equals("Preescolar")).ToList();
-        var area1 = new SummaryByAreaDto(list.Count, list.Count(e => e.sex));
-        dto.areaList.Add(area1);
-        
-        list = studentList.Where(e => e.educationalLevel!.Equals("Primaria")).ToList();
-        var area2 = new SummaryByAreaDto(list.Count, list.Count(e => e.sex));
-        dto.areaList.Add(area2);
-        
-        list = studentList.Where(e => e.educationalLevel!.Equals("Secundaria")).ToList();
-        var area3 = new SummaryByAreaDto(list.Count, list.Count(e => e.sex));
-        dto.areaList.Add(area3);
+        var levelList = new List<(int id, string label)>
+        {
+            (1, "Preescolar"),
+            (2, "Primaria"),
+            (3, "Secundaria")
+        };
+
+        foreach (var level in levelList)
+        {
+            var list = studentList.Where(e => e.educationalLevel == level.label).ToList();
+            dto.addLevel(level.id, list.Count, list.Count(e => e.sex));
+        }
     }
 
     private async Task setSummaryStudentByDegree(SummaryStudentDto dto)
