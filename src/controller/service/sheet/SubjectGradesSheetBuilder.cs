@@ -74,9 +74,10 @@ public class SubjectGradesSheetBuilder
         worksheet!.Row(headerRow).Hide();
         worksheet.Column(columnQuantity + 1).Hide();
         
-        worksheet!.Row(headerRow).Style.Protection.Locked = true;
-        worksheet.Column(columnQuantity + 1).Style.Protection.Locked = true;
-        worksheet.Protect();
+        worksheet.Cells().Style.Protection.SetLocked(false);
+        worksheet.Row(headerRow).Style.Protection.SetLocked(true);
+        worksheet.Column(columnQuantity + 1).Style.Protection.SetLocked(true);
+        worksheet.Protect("wsm");
     }
 
     private void setDate(int row, string alias)

@@ -88,7 +88,7 @@ public class UserEntity
 
     private static string getTextInEmailFormat(string value)
     {
-        return value.Trim().ToLower().convertToEmailFormat();
+        return value.Trim().ToLower().toNormalizeString();
     }
     
     public async Task getIdFromRole(DaoFactory daoFactory)

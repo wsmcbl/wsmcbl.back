@@ -66,7 +66,7 @@ public static class Utility
         return sb.ToString();
     }
     
-    public static string convertToEmailFormat(this string value)
+    public static string toNormalizeString(this string value)
     {
         var text = value.Normalize(NormalizationForm.FormD);
         var stringBuilder = new StringBuilder();
