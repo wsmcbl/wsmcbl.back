@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.dto.academy;
@@ -25,6 +26,11 @@ public class GradeDto
 
     public GradeEntity toEntity()
     {
+        if (grade is < 0 or > 100 || conductGrade is < 0 or > 100)
+        {
+            throw new IncorrectDataException("grade or conductGrade", "The grades must be between 0 and 100.");
+        }
+        
         return new GradeEntity
         {
             gradeId = gradeId,
