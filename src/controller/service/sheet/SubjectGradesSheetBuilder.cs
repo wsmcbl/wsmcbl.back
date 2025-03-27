@@ -41,7 +41,7 @@ public class SubjectGradesSheetBuilder
             counter++;
         }
         
-        hideIdValues(headerRow - 1);
+        hideAndProtectCells(headerRow - 1);
         
         var lastRow = enrollment.studentList!.Count + headerRow;
         
@@ -69,7 +69,7 @@ public class SubjectGradesSheetBuilder
         }
     }
 
-    private void hideIdValues(int headerRow)
+    private void hideAndProtectCells(int headerRow)
     {
         worksheet!.Row(headerRow).Hide();
         worksheet.Column(columnQuantity + 1).Hide();
