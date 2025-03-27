@@ -5,7 +5,7 @@ public class SummaryStudentDto
     public int total { get; set; }
     public int males { get; set; }
     public int withdrawn { get; set; }
-    public List<SummaryByLevelDto> areaList { get; set; }
+    public List<SummaryByLevelDto> levelList { get; set; }
     public List<SummaryByDegreeDto> degreeList { get; set; }
 
     public SummaryStudentDto(int total, int males, int withdrawn)
@@ -13,7 +13,17 @@ public class SummaryStudentDto
         this.total = total;
         this.males = males;
         this.withdrawn = withdrawn;
-        areaList = [];
+        levelList = [];
         degreeList = [];
+    }
+
+    public void addLevel(int level, int count, int man)
+    {
+        levelList.Add(new SummaryByLevelDto(level, count, man));
+    }
+
+    public void addDegree(string label, string position, int level, int count, int man)
+    {
+        degreeList.Add(new SummaryByDegreeDto(label, Convert.ToInt32(position), level, count, man));
     }
 }
