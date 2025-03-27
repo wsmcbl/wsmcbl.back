@@ -1,3 +1,5 @@
+using wsmcbl.src.model.secretary;
+
 namespace wsmcbl.src.dto.management;
 
 public class SummaryStudentDto
@@ -8,13 +10,13 @@ public class SummaryStudentDto
     public List<SummaryByLevelDto> levelList { get; set; }
     public List<SummaryByDegreeDto> degreeList { get; set; }
 
-    public SummaryStudentDto(int total, int males, int withdrawn)
+    public SummaryStudentDto(List<StudentRegisterView> studentList, List<DegreeEntity> degreeList)
     {
         this.total = total;
         this.males = males;
-        droppedOut = withdrawn;
+        droppedOut = 0;
         levelList = [];
-        degreeList = [];
+        this.degreeList = [];
     }
 
     public void addLevel(int level, int count, int man)
