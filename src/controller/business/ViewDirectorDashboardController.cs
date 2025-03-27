@@ -13,10 +13,15 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         
         var total = studentList.Count;
         var males = studentList.Count(e => e.sex);
-        return new SummaryStudentDto(total, males, 0);
+
+        var result = new SummaryStudentDto(total, males, 0);
+        setSummaryStudentByArea(result);
+        await setSummaryStudentByDegree(result);
+        
+        return result;
     }
 
-    private async Task setSummaryStudentByArea(SummaryStudentDto dto)
+    private void setSummaryStudentByArea(SummaryStudentDto dto)
     {
         var list = studentList.Where(e => e.educationalLevel!.Equals("Preescolar")).ToList();
         var area1 = new SummaryByAreaDto(list.Count, list.Count(e => e.sex));
