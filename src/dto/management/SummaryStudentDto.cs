@@ -4,7 +4,7 @@ public class SummaryStudentDto
 {
     public int total { get; set; }
     public int males { get; set; }
-    public int withdrawn { get; set; }
+    public int droppedOut { get; set; }
     public List<SummaryByLevelDto> levelList { get; set; }
     public List<SummaryByDegreeDto> degreeList { get; set; }
 
@@ -12,7 +12,7 @@ public class SummaryStudentDto
     {
         this.total = total;
         this.males = males;
-        this.withdrawn = withdrawn;
+        droppedOut = withdrawn;
         levelList = [];
         degreeList = [];
     }
