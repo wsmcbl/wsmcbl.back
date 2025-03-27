@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
@@ -24,6 +25,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers/grades/summaries")]
+    [ResourceAuthorizer("director:summary:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         return Ok(await controller.getSummaryTeacherGrades());
