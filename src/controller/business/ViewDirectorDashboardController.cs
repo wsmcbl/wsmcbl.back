@@ -34,7 +34,9 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         foreach (var level in levelList)
         {
             var list = studentList.Where(e => e.educationalLevel == level.label).ToList();
-            dto.addLevel(level.id, list.Count, list.Count(e => e.sex));
+            dto.addLevel(level.id,
+                list.Count,
+                list.Count(e => e.sex));
         }
     }
 
@@ -44,8 +46,28 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!);
 
         degreeList = degreeList.OrderBy(e => e.educationalLevel).ThenBy(e => e.tag).ToList();
+
+        foreach (var item in degreeList)
+        {
+            var list = studentList.Where(e => e.degree == item.label).ToList();
+            dto.addDegree(item.label,
+                item.tag,
+                getLevel(item.educationalLevel),
+                list.Count,
+                list.Count(e => e.sex));
+        }
     }
-    
+
+    private static int getLevel(string educationalLevel)
+    {
+        return educationalLevel switch
+        {
+            "Preescolar" => 1,
+            "Primaria" => 2,
+            "Secundaria" => 3,
+            _ => 0
+        };
+    }
 
     public async Task<object?> getSummaryTeacherGrades()
     {
