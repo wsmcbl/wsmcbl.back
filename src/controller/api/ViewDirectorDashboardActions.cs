@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.management;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -16,7 +17,11 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     [Route("students/summaries")]
     public async Task<IActionResult> getSummaryStudentQuantity()
     {
-        return Ok(await controller.getSummaryStudentQuantity());
+        var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
+        var degreeList = await controller.getDegreeListForCurrentSchoolyear();
+        
+        var result = new SummaryStudentDto(studentList, degreeList);
+        return Ok(result);
     }
     
     /// <summary>Get summary of the teachers who entered grades.</summary>
