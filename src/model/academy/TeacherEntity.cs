@@ -64,4 +64,22 @@ public class TeacherEntity
         var current = await schoolyearDao.getCurrentOrNew();
         enrollment = enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
     }
+
+    public bool hasSubmittedGrades()
+    {
+        if (subjectGradedList == null)
+        {
+            return false;
+        }
+
+        foreach (var subject in subjectGradedList)
+        {
+            if (subject.areAllStudentsGraded())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
