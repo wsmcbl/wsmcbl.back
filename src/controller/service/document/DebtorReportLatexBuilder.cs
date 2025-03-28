@@ -1,3 +1,5 @@
+using System.Text;
+using Microsoft.Extensions.Primitives;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
@@ -32,18 +34,12 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     private decimal getTotal(int value)
     {
-        if (value == 1)
+        return value switch
         {
-            return studentList.Where(e => e.schoolyearId == aDegree!.schoolyearId)
-                .Sum(item => item.total);
-        }
-
-        if (value == 2)
-        {
-            return getTotal(0) - getTotal(1);
-        }
-        
-        return studentList.Sum(item => item.total);
+            1 => studentList.Where(e => e.schoolyearId == aDegree!.schoolyearId).Sum(item => item.total),
+            2 => getTotal(0) - getTotal(1),
+            _ => studentList.Sum(item => item.total)
+        };
     }
 
     private string getDegreeContent()
@@ -54,10 +50,11 @@ public class DebtorReportLatexBuilder : LatexBuilder
         }
         
         var std = studentList.First(e => e.schoolyearId == aDegree!.schoolyearId);
-        var body = $"\\textbf{{Año lectivo {std.schoolyear}}} \\hfill\\textbf{{Total:}} C\\$ {getTotal(1):N2}";
-        body += "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
-        body +=
-            "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
+
+        var body = new StringBuilder();
+        body.Append($"\\textbf{{Año lectivo {std.schoolyear}}} \\hfill\\textbf{{Total:}} C\\$ {getTotal(1):N2}");
+        body.Append("\\begin{longtable}{| l | l | l | c | l |}\n\\hline ");
+        body.Append("\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n");
 
         foreach (var degree in degreeList.OrderBy(e => e.tag))
         {
@@ -70,18 +67,18 @@ public class DebtorReportLatexBuilder : LatexBuilder
                     continue;
                 }
 
-                body += $"\\multicolumn{{5}}{{l}}{{\\textbf{{\\small -- {enrollment.label} --}}}}\\\\\\hline\n";
-                body += getEnrollmentContent(list);
+                body.Append($"\\multicolumn{{5}}{{l}}{{\\textbf{{\\small -- {enrollment.label} --}}}}\\\\\\hline\n");
+                body.Append(getEnrollmentContent(list));
             }
         }
-        body += "\\end{longtable}\n\n";
+        body.Append("\\end{longtable}\n\n");
         
-        body += getFromOtherSchoolyear();
+        body.Append(getFromOtherSchoolyear());
         
-        body += $"\\hfill\\textbf{{Super total:}} C\\$ {getTotal(0):N2}";
-        body += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+        body.Append($"\\hfill\\textbf{{Super total:}} C\\$ {getTotal(0):N2}");
+        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
 
-        return body;
+        return body.ToString();
     }
     
     private string getFromOtherSchoolyear()
@@ -91,29 +88,31 @@ public class DebtorReportLatexBuilder : LatexBuilder
         {
             return string.Empty;
         }
-        
-        var body = $"\\textbf{{Año lectivo anteriores}}\\hfill\\textbf{{Total:}} C\\$ {getTotal(2):N2}";
-        body += "\\begin{longtable}{| l | l | l | c | l |}\n\\hline ";
-        body += "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n";
-        body += getEnrollmentContent(list);
-        body += "\\end{longtable}\n\n";
 
-        return body;
+        var body = new StringBuilder();
+        
+        body.Append($"\\textbf{{Año lectivo anteriores}}\\hfill\\textbf{{Total:}} C\\$ {getTotal(2):N2}");
+        body.Append("\\begin{longtable}{| l | l | l | c | l |}\n\\hline ");
+        body.Append(
+            "\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre} & \\textbf{Cant.} & \\textbf{Total}\\\\\\hline\n");
+        body.Append(getEnrollmentContent(list));
+        body.Append("\\end{longtable}\n\n");
+
+        return body.ToString();
     }
 
     private int counter;
 
     private string getEnrollmentContent(List<DebtorStudentView> list)
     {
-        var result = string.Empty;
+        var result = new StringBuilder();
         foreach (var item in list.OrderBy(e => e.fullName))
         {
             counter++;
-            result +=
-                $"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total:N2}\\\\\\hline\n";
+            result.Append($"{counter} & {item.studentId} & {item.fullName} & {item.quantity} & C\\$ {item.total:N2}\\\\\\hline\n");
         }
 
-        return result;
+        return result.ToString();
     }
 
     public class Builder
@@ -136,7 +135,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         public Builder withDegreeList(List<DegreeEntity> parameter)
         {
             latexBuilder.degreeList = parameter;
-            latexBuilder.aDegree = latexBuilder.degreeList.First();
+            latexBuilder.aDegree = latexBuilder.degreeList.FirstOrDefault();
             return this;
         }
 
