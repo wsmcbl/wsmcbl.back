@@ -130,3 +130,14 @@ LEFT JOIN (SELECT DISTINCT ON (a.studentid) * FROM academy.student a ORDER BY a.
 LEFT JOIN secretary.schoolyear sch ON sch.schoolyearid = a.schoolyear
 LEFT JOIN academy.enrollment e ON e.enrollmentid = a.enrollmentid
 LEFT JOIN secretary.degree d on d.degreeid = e.degreeid;
+
+
+-- subject_graded_view view
+CREATE VIEW academy.subject_graded_view as
+SELECT sp.subjectid, sp.teacherid, sp.partialid,
+       COUNT(*) AS studentCount,
+       SUM(CASE WHEN g.grade > 0 and g.conductgrade > 0 THEN 1 ELSE 0 END) AS gradedStudentCount
+FROM academy.grade g
+         join academy.subject_partial sp
+              on sp.subjectpartialid = g.subjectpartialid
+GROUP BY sp.subjectid, sp.teacherid, sp.partialid;
