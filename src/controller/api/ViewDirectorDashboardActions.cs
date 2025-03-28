@@ -20,7 +20,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
         var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
         var degreeList = await controller.getDegreeListForCurrentSchoolyear();
         
-        var result = new SummaryStudentDto(studentList, degreeList);
+        var result = new DistributionStudentDto(studentList, degreeList);
         return Ok(result);
     }
     
