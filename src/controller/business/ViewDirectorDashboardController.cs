@@ -23,4 +23,9 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         await Task.CompletedTask;
         return 0;
     }
+
+    public async Task getSummaryRevenue()
+    {
+        await Task.CompletedTask;
+    }
 }
