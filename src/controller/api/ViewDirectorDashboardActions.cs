@@ -15,14 +15,15 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("revenues/")]
+    [ResourceAuthorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryRevenue()
     {
         await controller.getSummaryRevenue();
         return Ok(new
         {
-            expectedMonthlyIncome = 88500,
-            monthlyIncomeReceived = 50100,
-            totalIncomeReceived = 10000
+            expectedIncomeThisMonth = 88500,
+            expectedIncomeReceived = 50100,
+            totalIncomeThisMonth = 100000
         });
     }
     
@@ -32,6 +33,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("incidents/")]
+    [ResourceAuthorizer("report:principal:read")]
     public async Task<IActionResult> getLastIncidents()
     {
         return Ok(await controller.getLastIncidents());
@@ -56,7 +58,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers/grades/summaries")]
-    [ResourceAuthorizer("report:summary:read")]
+    [ResourceAuthorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         return Ok(await controller.getSummaryTeacherGrades());
