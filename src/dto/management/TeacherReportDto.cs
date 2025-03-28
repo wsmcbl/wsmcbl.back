@@ -1,3 +1,5 @@
+using wsmcbl.src.model.academy;
+
 namespace wsmcbl.src.dto.management;
 
 public class TeacherReportDto
@@ -6,10 +8,15 @@ public class TeacherReportDto
     public bool hasSubmittedGrades { get; set; }
     public List<SubjectReportDto> subjectList { get; set; }
 
-    public TeacherReportDto(string Name, bool HasSubmittedGrades, List<object> list)
+    public TeacherReportDto(TeacherEntity teacher)
     {
-        name = Name;
-        hasSubmittedGrades = HasSubmittedGrades;
-        subjectList = new List<SubjectReportDto>();
+        name = teacher.fullName();
+        hasSubmittedGrades = teacher.hasSubmittedGrades();
+
+        subjectList = [];
+        foreach (var item in teacher.subjectGradedList!)
+        {
+            subjectList.Add(new SubjectReportDto(item));
+        }
     }
 }
