@@ -134,7 +134,10 @@ LEFT JOIN secretary.degree d on d.degreeid = e.degreeid;
 
 -- subject_graded_view view
 CREATE VIEW academy.subject_graded_view as
-SELECT sp.subjectid, sp.teacherid, sp.partialid,
+SELECT row_number() OVER (ORDER BY sp.subjectid) AS id,
+       sp.subjectid,
+       sp.teacherid,
+       sp.partialid,
        COUNT(*) AS studentCount,
        SUM(CASE WHEN g.grade > 0 and g.conductgrade > 0 THEN 1 ELSE 0 END) AS gradedStudentCount
 FROM academy.grade g
