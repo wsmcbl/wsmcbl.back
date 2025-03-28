@@ -165,5 +165,20 @@ internal class AcademyContext
             entity.HasMany(e => e.enrollmentList).WithOne().HasForeignKey(e => e.teacherId);
             entity.HasMany(e => e.subjectGradedList).WithOne().HasForeignKey(e => e.teacherId);
         });
+
+        createView();
+    }
+
+    private void createView()
+    {
+        modelBuilder.Entity<SubjectGradedView>(entity =>
+        {
+            entity.ToView("student_graded_view", "academy").HasNoKey();
+            entity.Property(e => e.subjectId).HasColumnName("subjectid");
+            entity.Property(e => e.teacherId).HasColumnName("teacherid");
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.studentCount).HasColumnName("studentcount");
+            entity.Property(e => e.gradedStudentCount).HasColumnName("gradedstudentcount");
+        });
     }
 }
