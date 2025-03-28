@@ -73,13 +73,13 @@ public class EnablePartialGradeRecordingController : BaseController
     public async Task<PartialEntity> getPartialEnabled()
     {
         var list = await daoFactory.partialDao!.getListForCurrentSchoolyear();
-        var result = list.Where(e => e.gradeRecordIsActive).ToList();
-        if (result.Count == 0)
+        var result = list.FirstOrDefault(e => e.gradeRecordIsActive);
+        if (result == null)
         {
             throw new EntityNotFoundException("Partial entity with gradeRecordIsActive enabled not found.");
         }
-        
-        return result.First();
+
+        return result;
     }
 
     public async Task activatePartial(int partialId, bool isActive)
