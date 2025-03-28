@@ -73,7 +73,9 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     [ResourceAuthorizer("report:principal:read")]
     public async Task<IActionResult> getSubjectList()
     {
-        var result = await controller.getSubjectList();
-        return Ok(result);
+        var subjectList = await controller.getSubjectList();
+        var degreeList = await controller.getDegreeList();
+        
+        return Ok(subjectList.mapListToDto(degreeList));
     }
 }
