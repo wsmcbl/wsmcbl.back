@@ -163,7 +163,7 @@ internal class AcademyContext
                 .HasConstraintName("teacher_userid_fkey");
             
             entity.HasMany(e => e.enrollmentList).WithOne().HasForeignKey(e => e.teacherId);
-            entity.HasMany(e => e.subjectGradedList).WithOne().HasForeignKey(e => e.teacherId);
+            entity.Ignore(e => e.subjectGradedList);
         });
 
         createView();
@@ -173,7 +173,10 @@ internal class AcademyContext
     {
         modelBuilder.Entity<SubjectGradedView>(entity =>
         {
-            entity.ToView("student_graded_view", "academy").HasNoKey();
+            entity.HasKey(e => e.id);
+            
+            entity.ToView("subject_graded_view", "academy");
+            entity.Property(e => e.id).HasColumnName("id");
             entity.Property(e => e.subjectId).HasColumnName("subjectid");
             entity.Property(e => e.teacherId).HasColumnName("teacherid");
             entity.Property(e => e.partialId).HasColumnName("partialid");

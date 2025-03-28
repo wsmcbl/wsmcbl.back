@@ -55,6 +55,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         return result;
     }
 
+
     public async Task<List<TeacherEntity>> getListWithSubjectGradedForCurrentPartial()
     {
         var daoFactory = new DaoFactoryPostgres(context);
@@ -66,14 +67,16 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
             return [];
         }
         
-        var result = await entities.Include(e => e.user)
-            .Include(e => e.subjectGradedList).ToListAsync();
-
-        foreach (var item in result)
-        {
-            item.setSubjectGradeListByPartial(currentPartial.partialId);
-        }
-        
-        return result;
+        return await entities.AsNoTracking().GroupJoin(context.Set<SubjectGradedView>(),
+            e => e.teacherId,
+            s => s.teacherId,
+            (item, subjectList) => new TeacherEntity
+            {
+                userId = item.userId,
+                teacherId = item.teacherId,
+                isGuide = item.isGuide,
+                user = item.user,
+                subjectGradedList = subjectList.ToList()
+            }).ToListAsync();
     }
 }
