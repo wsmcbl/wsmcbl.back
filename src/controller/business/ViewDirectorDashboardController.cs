@@ -1,6 +1,7 @@
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
@@ -37,5 +38,16 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
             new { id = "inc100", studentId = "2025-0001-aswc", description = "Mal comportamiento", type = 1 },
             new { id = "inc101", studentId = "2025-0061-qrdc", description = "Mal comportamiento", type = 2 }
         ];
+    }
+
+    public async Task<List<SubjectEntity>> getSubjectList()
+    {
+        return await daoFactory.subjectDao!.getAll();
+    }
+
+    public async Task<List<DegreeEntity>> getDegreeList()
+    {
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        return await daoFactory.degreeDao!.getListForSchoolyearId(currentSchoolyear.id!);
     }
 }

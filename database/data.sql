@@ -52,7 +52,8 @@ values ('student:create', 'Crear estudiantes', 'secretary','Permission for the c
        ('schoolyear:read', 'Ver año lectivos', 'secretary', 'Permission for reading schoolyears.'),
        ('catalog:create', 'Crear catalogos', 'secretary', 'Permission for creations catalogs.'),
        ('catalog:update', 'Modificar catalogos', 'secretary', 'Permission for update catalogs.'),
-       ('catalog:read', 'Ver catalogos', 'secretary', 'Permission for reading catalogs.');
+       ('catalog:read', 'Ver catalogos', 'secretary', 'Permission for reading catalogs.'),
+       ('report:principal:read', 'Ver reporte de director', 'secretary', 'Permission for reading principal report.');
 
 
 -- Admin --
@@ -81,7 +82,7 @@ WHERE p.name in ('user:read', 'partial:read', 'degree:read', 'teacher:read', 'gr
 -- Principal --
 INSERT INTO config.role_permission(roleid, permissionid)
 SELECT 5, p.permissionid FROM config.permission p
-WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read', 'register:read');
+WHERE p.name in ('user:read', 'partial:read', 'partial:update', 'student:read', 'report:read', 'register:read', 'report:principal:read');
 
 
 -- ############################## ---
