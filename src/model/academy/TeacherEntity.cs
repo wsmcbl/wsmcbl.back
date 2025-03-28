@@ -67,19 +67,6 @@ public class TeacherEntity
 
     public bool hasSubmittedGrades()
     {
-        if (subjectGradedList == null)
-        {
-            return false;
-        }
-
-        foreach (var subject in subjectGradedList)
-        {
-            if (subject.areAllStudentsGraded())
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return subjectGradedList != null && subjectGradedList.All(e => e.areAllStudentsGraded());
     }
 }
