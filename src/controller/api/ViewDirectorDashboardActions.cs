@@ -64,7 +64,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
         return Ok(result.mapListToDto());
     }
     
-    /// <summary>Returns subject list for current schoolyear.</summary>
+    /// <summary>Returns subject name list for current schoolyear.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
