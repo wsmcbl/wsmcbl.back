@@ -46,14 +46,13 @@ public static class DtoMapper
         gradeList.Select(e => e.mapToDto()).ToList();
 
 
+    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
+        studentList.Select(e => new SubjectDto(e)).ToList();
+
+
     public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> studentList) =>
         studentList.Select(e => e.secretarySubject).ToList()!.mapListToBasicDto();
 
-    public static List<BasicSubjectDto>
-        mapListToBasicDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
+    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
         studentList.Select(e => e.mapToBasicDto()).ToList();
-
-
-    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
-        studentList.Select(e => new SubjectDto(e)).ToList();
 }

@@ -21,18 +21,6 @@ public class DegreeEntity
         subjectList = [];
     }
 
-    public int getTag()
-    {
-        try
-        {
-            return Convert.ToInt32(tag);
-        }
-        catch (Exception)
-        {
-            return 1;
-        }
-    }
-
     public DegreeEntity(DegreeDataEntity degreeData, string schoolyearId)
     {
         this.schoolyearId = schoolyearId;
@@ -44,6 +32,18 @@ public class DegreeEntity
         foreach (var subject in degreeData.subjectList!.Where(e => e.isActive))
         {
             subjectList.Add(new SubjectEntity(subject));
+        }
+    }
+
+    public int getTag()
+    {
+        try
+        {
+            return Convert.ToInt32(tag);
+        }
+        catch (Exception)
+        {
+            return 1;
         }
     }
 
