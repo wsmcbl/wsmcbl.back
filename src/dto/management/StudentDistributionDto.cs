@@ -2,30 +2,65 @@ using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.management;
 
-public class SummaryStudentDto
+public class DistributionStudentDto
 {
     public int total { get; set; }
     public int males { get; set; }
     public int droppedOut { get; set; }
-    public List<DistributionByLevelDto> levelList { get; set; }
-    public List<SummaryByDegreeDto> degreeList { get; set; }
+    public List<DistributionByLevelDto> levelList { get; set; } = null!;
+    public List<DistributionByDegreeDto> degreeList { get; set; } = null!;
 
-    public SummaryStudentDto(List<StudentRegisterView> studentList, List<DegreeEntity> degreeList)
+    public DistributionStudentDto(List<StudentRegisterView> studentList, List<DegreeEntity> degreeList)
     {
-        this.total = total;
-        this.males = males;
+        total = studentList.Count;
+        males = studentList.Count(e => e.sex);
         droppedOut = 0;
-        levelList = [];
-        this.degreeList = [];
+
+        setSummaryStudentByLevel(studentList);
+        setSummaryStudentByDegree(studentList, degreeList);
     }
 
-    public void addLevel(int level, int count, int man)
+    private void setSummaryStudentByLevel(List<StudentRegisterView> studentList)
+    {
+        List<string> LevelList = [ "Preescolar", "Primaria", "Secundaria"];
+
+        levelList = [];
+        foreach (var level in LevelList)
+        {
+            var list = studentList.Where(e => e.educationalLevel == level).ToList();
+            addLevel(getLevel(level), list.Count,list.Count(e => e.sex));
+        }
+    }
+
+    private void setSummaryStudentByDegree(List<StudentRegisterView> studentList, List<DegreeEntity> DegreeList)
+    {
+        degreeList = [];
+        foreach (var item in DegreeList)
+        {
+            var list = studentList.Where(e => e.degree == item.label).ToList();
+            addDegree(item.label,item.tag, item.educationalLevel, list.Count,list.Count(e => e.sex));
+        }
+    }
+
+    private void addLevel(int level, int count, int man)
     {
         levelList.Add(new DistributionByLevelDto(level, count, man));
     }
 
-    public void addDegree(string label, string position, int level, int count, int man)
+    private void addDegree(string label, string position, string educationalLevel, int count, int man)
+    { 
+        degreeList.Add(new DistributionByDegreeDto(label,Convert.ToInt32(position), getLevel(educationalLevel),
+            count, man));
+    }
+
+    private static int getLevel(string educationalLevel)
     {
-        degreeList.Add(new SummaryByDegreeDto(label, Convert.ToInt32(position), level, count, man));
+        return educationalLevel switch
+        {
+            "Preescolar" => 1,
+            "Primaria" => 2,
+            "Secundaria" => 3,
+            _ => 0
+        };
     }
 }

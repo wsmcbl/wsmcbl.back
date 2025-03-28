@@ -1,6 +1,6 @@
 namespace wsmcbl.src.dto.management;
 
-public class SummaryByDegreeDto
+public class DistributionByDegreeDto
 {
     public string label { get; set; }
     public int educationalLevel { get; set; }
@@ -8,7 +8,7 @@ public class SummaryByDegreeDto
     public int total { get; set; }
     public int males { get; set; }
 
-    public SummaryByDegreeDto(string label, int position, int educationalLevel, int total, int males)
+    public DistributionByDegreeDto(string label, int position, int educationalLevel, int total, int males)
     {
         this.educationalLevel = educationalLevel;
         this.label = label;
