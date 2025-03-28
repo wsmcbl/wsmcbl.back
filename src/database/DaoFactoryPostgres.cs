@@ -116,8 +116,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
         => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
     
     
-    private SubjectDaoPostgres? _subjectDao;
-    public override ISubjectDao academySubjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
+    private AcademySubjectDaoPostgres? _subjectDao;
+    public override model.academy.ISubjectDao academySubjectDao => _subjectDao ??= new AcademySubjectDaoPostgres(context);
 
 
     private SubjectPartialDaoPostgres? _subjectPartialDao;
