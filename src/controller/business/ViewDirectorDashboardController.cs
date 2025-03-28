@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
 
@@ -18,10 +19,9 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         return degreeList.OrderBy(e => e.educationalLevel).ThenBy(e => e.tag).ToList();
     }
 
-    public async Task<object?> getSummaryTeacherGrades()
+    public async Task<List<TeacherEntity>> getSummaryTeacherGrades()
     {
-        await Task.CompletedTask;
-        return 0;
+        return await daoFactory.teacherDao!.getListWithSubjectGradedForCurrentPartial();
     }
 
     public async Task getSummaryRevenue()
