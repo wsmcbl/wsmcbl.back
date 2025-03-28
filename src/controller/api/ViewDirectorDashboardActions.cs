@@ -62,6 +62,6 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         var result = await controller.getSummaryTeacherGrades();
-        return Ok(result.mapToListDto());
+        return Ok(result.mapListToDto());
     }
 }
