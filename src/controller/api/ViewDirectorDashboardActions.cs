@@ -9,10 +9,36 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class ViewDirectorDashboardActions(ViewDirectorDashboardController controller) : ActionsBase
 {
-    /// <summary>Get summary of the students for current schoolyear.</summary>
+    /// <summary>Get summary of the revenue for current month.</summary>
     /// <response code="200">Return the value</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("revenues/")]
+    public async Task<IActionResult> getSummaryRevenue()
+    {
+        await controller.getSummaryRevenue();
+        return Ok(new
+        {
+            expectedMonthlyIncome = 88500,
+            monthlyIncomeReceived = 50100,
+            totalIncomeReceived = 10000
+        });
+    }
+    
+    /// <summary>Get last ten incidents.</summary>
+    /// <response code="200">Return the value</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("incidents/")]
+    public async Task<IActionResult> getLastIncidents()
+    {
+        return Ok(await controller.getLastIncidents());
+    }
+    
+    /// <summary>Get summary of the students for current schoolyear.</summary>
+    /// <response code="200">Return the value</response>
     [HttpGet]
     [Route("students/distributions")]
     public async Task<IActionResult> getStudentDistribution()
@@ -34,22 +60,5 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         return Ok(await controller.getSummaryTeacherGrades());
-    }
-    
-    /// <summary>Get summary of the students for current schoolyear.</summary>
-    /// <response code="200">Return the value</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    [HttpGet]
-    [Route("revenues/")]
-    public async Task<IActionResult> getSummaryRevenue()
-    {
-        await controller.getSummaryRevenue();
-        return Ok(new
-        {
-            expectedMonthlyIncome = 88500,
-            monthlyIncomeReceived = 50100,
-            totalIncomeReceived = 10000
-        });
     }
 }
