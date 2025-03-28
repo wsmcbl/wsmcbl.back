@@ -1,3 +1,5 @@
+using wsmcbl.src.model.academy;
+
 namespace wsmcbl.src.dto.management;
 
 public class SubjectReportDto
@@ -6,10 +8,10 @@ public class SubjectReportDto
     public int studentCount { get; set; }
     public int gradedStudentCount { get; set; }
 
-    public SubjectReportDto(string subjectId, int studentCount, int gradedStudentCount)
+    public SubjectReportDto(SubjectGradedView view)
     {
-        this.subjectId = subjectId;
-        this.studentCount = studentCount;
-        this.gradedStudentCount = gradedStudentCount;
+        subjectId = view.subjectId;
+        studentCount = view.studentCount;
+        gradedStudentCount = view.gradedStudentCount;
     }
 }
