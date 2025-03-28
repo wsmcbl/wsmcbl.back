@@ -12,6 +12,8 @@ public class TeacherEntity
     public UserEntity user { get; set; } = null!;
 
     public List<EnrollmentEntity>? enrollmentList { get; set; }
+    
+    public List<SubjectGradedView>? subjectGradedList { get; set; }
 
     public TeacherEntity()
     {
