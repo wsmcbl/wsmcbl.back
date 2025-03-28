@@ -37,7 +37,7 @@ public interface ITariffDao : IGenericDao<TariffEntity, int>
     public Task createRange(List<TariffEntity> tariffList);
     public Task<List<TariffEntity>> getOverdueList();
     public Task<List<TariffEntity>> getListByStudent(string studentId);
-    public Task<TariffEntity> getRegistrationTariff(string schoolyear, int level);
+    public Task<TariffEntity> getRegistrationTariff(string schoolyearId, int level);
     public Task<List<TariffEntity>> getCurrentRegistrationTariffList();
 }
 

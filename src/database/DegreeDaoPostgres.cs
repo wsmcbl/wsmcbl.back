@@ -34,7 +34,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         return degree;
     }
     
-    public async Task<DegreeEntity?> getFullById(string id)
+    public async Task<DegreeEntity?> getFullById(string degreeId)
     {
         var query = entities.Include(e => e.subjectList)
             .Include(e => e.enrollmentList)!
@@ -44,10 +44,10 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
                 .ThenInclude(e => e.subjectList)
             .AsNoTracking();
 
-        var degree = await query.FirstOrDefaultAsync(e => e.degreeId == id);
+        var degree = await query.FirstOrDefaultAsync(e => e.degreeId == degreeId);
         if (degree == null)
         {
-            throw new EntityNotFoundException("DegreeEntity", id);
+            throw new EntityNotFoundException("DegreeEntity", degreeId);
         }
 
         return degree;
