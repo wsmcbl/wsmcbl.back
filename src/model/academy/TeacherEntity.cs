@@ -12,6 +12,8 @@ public class TeacherEntity
     public UserEntity user { get; set; } = null!;
 
     public List<EnrollmentEntity>? enrollmentList { get; set; }
+    
+    public List<SubjectGradedView>? subjectGradedList { get; set; }
 
     public TeacherEntity()
     {
@@ -61,5 +63,21 @@ public class TeacherEntity
 
         var current = await schoolyearDao.getCurrentOrNew();
         enrollment = enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
+    }
+
+    public bool hasSubmittedGrades()
+    {
+        return subjectGradedList != null && subjectGradedList.All(e => e.areAllStudentsGraded());
+    }
+
+    public void setSubjectGradeListByPartial(int partialId)
+    {
+        if (subjectGradedList == null)
+        {
+            subjectGradedList = [];
+            return;
+        }
+        
+        subjectGradedList = subjectGradedList.Where(e => e.partialId == partialId).ToList();
     }
 }

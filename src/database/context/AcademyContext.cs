@@ -163,6 +163,7 @@ internal class AcademyContext
                 .HasConstraintName("teacher_userid_fkey");
             
             entity.HasMany(e => e.enrollmentList).WithOne().HasForeignKey(e => e.teacherId);
+            entity.HasMany(e => e.subjectGradedList).WithOne().HasForeignKey(e => e.teacherId);
         });
     }
 }

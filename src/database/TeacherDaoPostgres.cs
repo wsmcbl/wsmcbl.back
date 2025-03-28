@@ -54,4 +54,26 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
 
         return result;
     }
+
+    public async Task<List<TeacherEntity>> getListWithSubjectGradedForCurrentPartial()
+    {
+        var daoFactory = new DaoFactoryPostgres(context);
+        var partialList = await daoFactory.partialDao.getListForCurrentSchoolyear();
+        
+        var currentPartial = partialList.FirstOrDefault(e => e.recordIsActive());
+        if (currentPartial == null)
+        {
+            return [];
+        }
+        
+        var result = await entities.Include(e => e.user)
+            .Include(e => e.subjectGradedList).ToListAsync();
+
+        foreach (var item in result)
+        {
+            item.setSubjectGradeListByPartial(currentPartial.partialId);
+        }
+        
+        return result;
+    }
 }
