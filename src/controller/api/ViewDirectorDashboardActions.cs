@@ -14,8 +14,8 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("students/summaries")]
-    public async Task<IActionResult> getSummaryStudentQuantity()
+    [Route("students/distributions")]
+    public async Task<IActionResult> getStudentDistribution()
     {
         var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
         var degreeList = await controller.getDegreeListForCurrentSchoolyear();
@@ -30,9 +30,26 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers/grades/summaries")]
-    [ResourceAuthorizer("director:summary:read")]
+    [ResourceAuthorizer("report:summary:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         return Ok(await controller.getSummaryTeacherGrades());
+    }
+    
+    /// <summary>Get summary of the students for current schoolyear.</summary>
+    /// <response code="200">Return the value</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("revenues/")]
+    public async Task<IActionResult> getSummaryRevenue()
+    {
+        await controller.getSummaryRevenue();
+        return Ok(new
+        {
+            expectedMonthlyIncome = 88500,
+            monthlyIncomeReceived = 50100,
+            totalIncomeReceived = 10000
+        });
     }
 }
