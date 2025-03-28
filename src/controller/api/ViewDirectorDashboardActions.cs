@@ -61,6 +61,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     [ResourceAuthorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
-        return Ok(await controller.getSummaryTeacherGrades());
+        var result = await controller.getSummaryTeacherGrades();
+        return Ok(result.mapToListDto());
     }
 }
