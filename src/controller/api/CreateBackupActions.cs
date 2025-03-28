@@ -16,9 +16,9 @@ public class CreateBackupActions(CreateBackupsController controller) : ActionsBa
     [HttpGet]
     [Route("current")]
     [ResourceAuthorizer("admin")]
-    public IActionResult getBackupDocument()
+    public async Task<IActionResult> getBackupDocument()
     {
-        var result = controller.getCurrentBackupDocument();
+        var result = await controller.getCurrentBackupDocument(getAuthenticatedUserId());
         return File(result.data, "application/pdf", result.name);
     }
 }

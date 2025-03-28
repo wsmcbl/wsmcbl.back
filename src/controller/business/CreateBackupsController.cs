@@ -7,8 +7,10 @@ public class CreateBackupsController(DaoFactory daoFactory) : BaseController(dao
 {
     private const string backupDirectory = "/backups";
 
-    public (byte[] data, string name) getCurrentBackupDocument()
+    public async Task<(byte[] data, string name)> getCurrentBackupDocument(string userId)
     {
+        await checkUser(userId);
+        
         if (!Directory.Exists(backupDirectory))
         {
             throw new NotFoundException("The backup directory does not exist.");
@@ -24,7 +26,25 @@ public class CreateBackupsController(DaoFactory daoFactory) : BaseController(dao
             throw new NotFoundException("No backups available.");
         }
 
-        var fileBytes = File.ReadAllBytes(latestBackup.FullName);
+        var fileBytes = await File.ReadAllBytesAsync(latestBackup.FullName);
         return (fileBytes, latestBackup.Name);
+    }
+    
+    private const int ADMIN_ROLE_ID = 1;
+    private async Task checkUser(string userId)
+    {
+        try
+        {
+            var user = await daoFactory.userDao!.getById(userId);
+
+            if (!user.isActive && user.role!.roleId != ADMIN_ROLE_ID)
+            {
+                throw new ArgumentException();
+            }
+        }
+        catch (Exception)
+        {
+            throw new ForbiddenException("This user cannot perform this action.");
+        }
     }
 }
