@@ -69,4 +69,15 @@ public class TeacherEntity
     {
         return subjectGradedList != null && subjectGradedList.All(e => e.areAllStudentsGraded());
     }
+
+    public void setSubjectGradeListByPartial(int partialId)
+    {
+        if (subjectGradedList == null)
+        {
+            subjectGradedList = [];
+            return;
+        }
+        
+        subjectGradedList = subjectGradedList.Where(e => e.partialId == partialId).ToList();
+    }
 }
