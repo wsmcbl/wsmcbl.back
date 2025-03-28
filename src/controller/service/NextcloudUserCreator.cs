@@ -53,7 +53,7 @@ public class NextcloudUserCreator
         var response = await httpClient.PostAsync(url, content);
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception($"Error assigning user to group.");
+            throw new InternalException("Error assigning user to group.");
         }
     }
 

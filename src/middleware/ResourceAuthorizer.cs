@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace wsmcbl.src.middleware;
 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class ResourceAuthorizer : ActionFilterAttribute
 {
     private readonly string[] _roles;

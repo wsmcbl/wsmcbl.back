@@ -8,8 +8,8 @@ public class GradeDto
 {
     [JsonRequired] public int gradeId { get; set; }
     public string studentId { get; set; } = null!;
-    public decimal grade { get; set; }
-    public decimal conductGrade { get; set; } 
+    [JsonRequired] public decimal grade { get; set; }
+    [JsonRequired] public decimal conductGrade { get; set; } 
     public string label { get; set; } = null!;
 
     public GradeDto()
