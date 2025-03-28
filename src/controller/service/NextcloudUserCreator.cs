@@ -99,8 +99,8 @@ public class NextcloudUserCreator
             var json = await response.Content.ReadAsStringAsync();
             var parsedJson = JObject.Parse(json);
             var groupsArray = (JArray)parsedJson["ocs"]?["data"]?["groups"]!;
-            var list = groupsArray.ToObject<List<string>>();
-            return list!.First();
+            
+            return groupsArray.ToObject<List<string>>()!.FirstOrDefault()!;
         }
         catch (Exception)
         {
