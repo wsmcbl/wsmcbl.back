@@ -48,8 +48,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
         var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
         var degreeList = await controller.getDegreeListForCurrentSchoolyear();
         
-        var result = new DistributionStudentDto(studentList, degreeList);
-        return Ok(result);
+        return Ok(new DistributionStudentDto(studentList, degreeList));
     }
     
     /// <summary>Get summary of the teachers who entered grades.</summary>
@@ -63,5 +62,18 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     {
         var result = await controller.getSummaryTeacherGrades();
         return Ok(result.mapListToDto());
+    }
+    
+    /// <summary>Returns subject list for current schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("subjects")]
+    [ResourceAuthorizer("report:principal:read")]
+    public async Task<IActionResult> getSubjectList()
+    {
+        var result = await controller.getSubjectList();
+        return Ok(result);
     }
 }
