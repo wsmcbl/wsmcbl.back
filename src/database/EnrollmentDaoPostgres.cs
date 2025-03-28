@@ -66,7 +66,7 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
             .Include(e => e.subjectList)
             .ToListAsync();
 
-        var subjectList = await daoFactory.subjectDao!.getListByTeacherId(teacherId);
+        var subjectList = await daoFactory.academySubjectDao!.getListByTeacherId(teacherId);
         
         var result = new List<EnrollmentEntity>();
         foreach (var item in subjectList)

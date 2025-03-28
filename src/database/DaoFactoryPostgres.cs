@@ -117,7 +117,7 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
     
     
     private SubjectDaoPostgres? _subjectDao;
-    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
+    public override ISubjectDao academySubjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
 
 
     private SubjectPartialDaoPostgres? _subjectPartialDao;
