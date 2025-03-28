@@ -29,7 +29,7 @@ public abstract class DaoFactory
     
     public virtual IEnrollmentDao? enrollmentDao => null;
     public virtual ITeacherDao? teacherDao => null;
-    public virtual ISubjectDao? subjectDao => null;
+    public virtual academy.ISubjectDao? academySubjectDao => null;
     public virtual ISemesterDao? semesterDao => null;
     public virtual IPartialDao? partialDao => null;
     public virtual IGradeDao? gradeDao => null;
@@ -37,6 +37,7 @@ public abstract class DaoFactory
     
     
     public virtual IDegreeDao? degreeDao => null;
+    public virtual secretary.ISubjectDao? subjectDao => null;
     public virtual ISchoolyearDao? schoolyearDao => null;
     
     public virtual IDegreeDataDao? degreeDataDao => null;

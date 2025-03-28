@@ -4,7 +4,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.database;
 
-public class SubjectDaoPostgres(PostgresContext context)
+public class AcademySubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectEntity, string>(context), ISubjectDao
 {
     public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId)

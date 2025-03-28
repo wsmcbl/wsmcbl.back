@@ -33,7 +33,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
-            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
+            .withSubjectList(await daoFactory.academySubjectDao!.getByEnrollmentId(student.enrollmentId!))
             .build();
 
         setLatexBuilder(latexBuilder);
