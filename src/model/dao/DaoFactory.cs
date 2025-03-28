@@ -37,6 +37,7 @@ public abstract class DaoFactory
     
     
     public virtual IDegreeDao? degreeDao => null;
+    public virtual secretary.ISubjectDao? subjectDao => null;
     public virtual ISchoolyearDao? schoolyearDao => null;
     
     public virtual IDegreeDataDao? degreeDataDao => null;
