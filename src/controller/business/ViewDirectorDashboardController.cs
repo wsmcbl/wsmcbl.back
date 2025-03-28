@@ -23,4 +23,19 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         await Task.CompletedTask;
         return 0;
     }
+
+    public async Task getSummaryRevenue()
+    {
+        await Task.CompletedTask;
+    }
+
+    public async Task<List<object>> getLastIncidents()
+    {
+        await Task.CompletedTask;
+        return
+        [
+            new { id = "inc100", studentId = "2025-0001-aswc", description = "Mal comportamiento", type = 1 },
+            new { id = "inc101", studentId = "2025-0061-qrdc", description = "Mal comportamiento", type = 2 }
+        ];
+    }
 }
