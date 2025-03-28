@@ -6,4 +6,5 @@ public class SubjectGradedView
     public string teacherId { get; set; } = null!;
     public int partialId { get; set; }
     public int studentCount { get; set; }
+    public int gradedStudentCount { get; set; }
 }
