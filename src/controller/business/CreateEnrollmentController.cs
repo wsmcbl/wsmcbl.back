@@ -15,7 +15,7 @@ public class CreateEnrollmentController(DaoFactory daoFactory) : BaseController(
 
     public async Task<DegreeEntity> createEnrollments(string degreeId, int quantity)
     {
-        if (quantity is > 7 or < 1)
+        if (!DegreeEntity.isValidQuantity(quantity))
         {
             throw new IncorrectDataException("Quantity", "The value must be between 1 and 7.");
         }

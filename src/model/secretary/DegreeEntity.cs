@@ -49,6 +49,14 @@ public class DegreeEntity
 
     private readonly string[] typeLabels = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 
+    private const int MIN_BOUNDARY = 1;
+    private const int MAX_BOUNDARY = 7;
+
+    public static bool isValidQuantity(int quantityToCreate)
+    {
+        return quantityToCreate is >= MIN_BOUNDARY and <= MAX_BOUNDARY;
+    }
+    
     public void createEnrollments(int quantityToCreate)
     {
         if(enrollmentList != null && enrollmentList.Count != 0)
@@ -56,10 +64,8 @@ public class DegreeEntity
             throw new IncorrectDataException("Degree", "enrollmentList");
         }
 
-        if (quantityToCreate is < 1 or > 7)
-        {
-            throw new IncorrectDataException("Quantity invalid. The quantity must be 1 to 7.");
-        }
+        if (quantityToCreate > MAX_BOUNDARY) quantityToCreate = MAX_BOUNDARY;
+        if (quantityToCreate < MIN_BOUNDARY) quantityToCreate = MIN_BOUNDARY;
 
         enrollmentList = [];
         for (var i = 0; i < quantityToCreate; i++)
