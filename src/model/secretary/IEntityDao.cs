@@ -12,6 +12,8 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
     public Task<List<DegreeEntity>> getListForSchoolyearId(string schoolyearId, bool withStudentsInEnrollment = false);
 }
 
+public interface ISubjectDao : IGenericDao<SubjectEntity, string>;
+
 public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>
 {
     public Task<SchoolyearEntity?> getById(string schoolyearId, bool withProperty = false);

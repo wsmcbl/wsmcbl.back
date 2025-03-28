@@ -18,7 +18,7 @@ public class MoveTeacherFromSubjectController(DaoFactory daoFactory) : BaseContr
     
     public async Task updateTeacherFromSubject(string subjectId, string enrollmentId, string teacherId)
     {
-        var subject = await daoFactory.subjectDao!.getBySubjectIdAndEnrollmentId(subjectId, enrollmentId);
+        var subject = await daoFactory.academySubjectDao!.getBySubjectIdAndEnrollmentId(subjectId, enrollmentId);
         if (subject == null)
         {
             throw new EntityNotFoundException("SubjectEntity", subjectId);
