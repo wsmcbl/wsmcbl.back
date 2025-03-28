@@ -206,7 +206,7 @@ public class SubjectGradesSheetBuilder
                 continue;
             }
             
-            worksheet!.Cell(headerRow, headerColumn++).Value = result.secretarySubject!.initials;
+            worksheet!.Cell(headerRow, headerColumn++).Value = result.getInitials;
         }
         
         worksheet!.Cell(headerRow, headerColumn).Value = "Conducta";
