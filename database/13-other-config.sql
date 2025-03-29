@@ -148,12 +148,12 @@ GROUP BY sp.subjectid, sp.teacherid, sp.partialid;
 
 -- student_enroll_payment_view view
 CREATE VIEW accounting.student_enroll_payment_view as
-SELECT s.*, t.schoolyear as schoolyearid FROM accounting.student s
+SELECT s.studentid, t.schoolyear as schoolyearid, aca.enrollmentid FROM accounting.student s
 JOIN secretary.student ss ON ss.studentid = s.studentid
 JOIN accounting.debthistory d ON d.studentid = s.studentid
 JOIN accounting.tariff t ON t.tariffid = d.tariffid
 LEFT JOIN academy.student aca on aca.studentid = s.studentid
-WHERE ss.studentstate = true AND t.typeid = 2 AND aca.enrollmentid is NULL AND
+WHERE ss.studentstate = true AND t.typeid = 2 AND
 CASE
     WHEN d.amount = 0 THEN 1
     ELSE (d.debtbalance / d.amount)
