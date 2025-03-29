@@ -228,9 +228,7 @@ internal class AccountingContext
 
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
-            entity.Property(e => e.discountId).HasColumnName("discountel");
-            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
-            entity.Ignore(d => d.enrollmentLabel);
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
         });
     }
 }
