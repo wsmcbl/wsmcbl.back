@@ -38,18 +38,21 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         student.enrollmentLabel = await getEnrollmentLabel(studentId);
         return student;
     }
-    
+
     private async Task<string> getEnrollmentLabel(string studentId)
     {
         var result = await context.Set<StudentView>().AsNoTracking()
             .Where(e => e.studentId == studentId).FirstOrDefaultAsync();
-        
-        if(result == null) return "Sin matrícula";
-        
+
+        if (result == null)
+        {
+            return "Sin matrícula";
+        }
+
         result.initLabels();
         return result.enrollment!;
     }
-    
+
     public async Task<PagedResult<StudentView>> getPaginatedStudentView(PagedRequest request)
     {
         var query = context.GetQueryable<StudentView>().Where(e => e.isActive);
@@ -59,11 +62,11 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         request.setDefaultSort("fullName");
         return await pagedService.getPaged(request);
     }
-    
+
     private static IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
-    { 
+    {
         var value = $"%{search}%";
-        
+
         return query.Where(e =>
             EF.Functions.Like(e.studentId, value) ||
             EF.Functions.Like(e.fullName.ToLower(), value) ||
@@ -73,27 +76,16 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
 
     public async Task<List<StudentEntity>> getAllWithEnrollmentTariffSolvency()
     {
-        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
-        if (tariffList.Count == 0)
-        {
-            throw new EntityNotFoundException(
-                $"Entities of type (Tariff) with type ({Const.TARIFF_REGISTRATION}) not found.");
-        }
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
-        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
-        var query = "SELECT s.* FROM accounting.student s";
-        query += " JOIN secretary.student ss ON ss.studentid = s.studentid";
-        query += " JOIN accounting.debthistory d ON d.studentid = s.studentid";
-        query += " LEFT JOIN academy.student aca on aca.studentid = s.studentid";
-        query += $" WHERE ss.studentstate = true AND ({tariffsId}) AND aca.enrollmentid is NULL AND";
-        query += " CASE";
-        query += "   WHEN d.amount = 0 THEN 1";
-        query += "   ELSE (d.debtbalance / d.amount)";
-        query += " END >= 0.4";
-
-        return await entities.FromSqlRaw(query)
-            .Include(e => e.student).AsNoTracking()
-            .ToListAsync();
+        return await entities.AsNoTracking().Join
+        (
+            context.Set<StudentEnrollPaymentView>()
+                .Where(e => e.schoolyearId == schoolyear.id && e.enrollmentId == null),
+            e => e.studentId,
+            view => view.studentId,
+            (e, view) => e
+        ).Include(e => e.student).ToListAsync();
     }
 
     public async Task<List<DebtorStudentView>> getDebtorStudentList()
@@ -103,23 +95,12 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
 
     public async Task<bool> hasEnrollmentTariffSolvency(string studentId)
     {
-        var tariffList = await daoFactory.tariffDao!.getCurrentRegistrationTariffList();
-        if (tariffList.Count == 0)
-        {
-            throw new EntityNotFoundException(
-                $"Entities of type (TariffEntity) with type ({Const.TARIFF_REGISTRATION}) not found.");
-        }
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
 
-        var tariffsId = string.Join(" OR ", tariffList.Select(item => $"d.tariffid = {item.tariffId}"));
-        var query = "SELECT s.* FROM accounting.student s";
-        query += " JOIN secretary.student ss ON ss.studentid = s.studentid";
-        query += " JOIN accounting.debthistory d ON d.studentid = s.studentid";
-        query += $" WHERE ss.studentstate = true AND s.studentid = '{studentId}' AND ({tariffsId}) AND";
-        query += " CASE";
-        query += "   WHEN d.amount = 0 THEN 1";
-        query += "   ELSE (d.debtbalance / d.amount)";
-        query += " END >= 0.4";
+        var result = await context.Set<StudentEnrollPaymentView>()
+            .Where(e => e.studentId == studentId && e.schoolyearId == schoolyear.id)
+            .FirstOrDefaultAsync();
 
-        return await entities.FromSqlRaw(query).AsNoTracking().FirstOrDefaultAsync() != null;
+        return result != null;
     }
 }
