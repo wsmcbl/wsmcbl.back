@@ -19,7 +19,7 @@ public class CreateStudentProfileActions(CreateStudentProfileController controll
     /// <response code="409">If the student profile already exists.</response>
     [HttpPost]
     [Route("students")]
-    [ResourceAuthorizer("student:create")]
+    [Authorizer("student:create")]
     public async Task<IActionResult> createStudent(CreateStudentProfileDto dto)
     {
         var result = await controller.createStudent(dto.student.toEntity(), dto.tutor.toEntity());

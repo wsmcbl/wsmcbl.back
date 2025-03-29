@@ -29,7 +29,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     
     /// <summary>Returns the list of all media.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
-    [ResourceAuthorizer("admin")]
+    [Authorizer("admin")]
     [HttpGet]
     [Route("medias/lists")]
     public async Task<IActionResult> getMediaList()
@@ -42,7 +42,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
-    [ResourceAuthorizer("admin")]
+    [Authorizer("admin")]
     [HttpPost]
     [Route("medias")]
     public async Task<IActionResult> createMedia(MediaEntity media)
@@ -57,7 +57,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
-    [ResourceAuthorizer("admin")]
+    [Authorizer("admin")]
     [HttpPut]
     [Route("medias")]
     public async Task<IActionResult> updateMedia(MediaEntity media)
@@ -78,7 +78,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin")]
+    [Authorizer("admin")]
     [HttpGet]
     [Route("transactions/invoices")]
     public async Task<IActionResult> getTransactionInvoiceViewList([FromQuery] [Required] string from, [FromQuery] string to)

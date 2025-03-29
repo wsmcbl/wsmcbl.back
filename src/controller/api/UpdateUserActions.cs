@@ -16,7 +16,7 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("permissions")]
-    [ResourceAuthorizer("permission:read")]
+    [Authorizer("permission:read")]
     public async Task<IActionResult> getPermissionList()
     {
         var result = await controller.getPermissionList();
@@ -34,7 +34,7 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
     /// <response code="404">If the user not exist.</response>
     [HttpPut]
     [Route("users/{userId}")]
-    [ResourceAuthorizer("user:update")]
+    [Authorizer("user:update")]
     public async Task<IActionResult> updateUser([Required] string userId, UserToUpdateDto dto)
     {
         var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
@@ -54,7 +54,7 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
     /// <response code="404">If the user not exist.</response>
     [HttpPut]
     [Route("users/{userId}/passwords")]
-    [ResourceAuthorizer("user:update")]
+    [Authorizer("user:update")]
     public async Task<IActionResult> updateUserPassword([Required] string userId)
     {
         var result = await controller.updateUserPassword(userId);

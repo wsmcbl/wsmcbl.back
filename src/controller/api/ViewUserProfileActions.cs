@@ -17,7 +17,7 @@ public class ViewUserProfileActions(ViewUserProfileController controller) : Acti
     /// <response code="404">If the user not exist.</response>
     [HttpGet]
     [Route("users/{userId}")]
-    [ResourceAuthorizer("user:read")]
+    [Authorizer("user:read")]
     public async Task<IActionResult> getUser([Required] string userId)
     {
         var result = await controller.getUserById(userId);

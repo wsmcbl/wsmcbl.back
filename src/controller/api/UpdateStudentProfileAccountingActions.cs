@@ -18,7 +18,7 @@ public class UpdateStudentProfileAccountingActions(UpdateStudentProfileControlle
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("students")]
-    [ResourceAuthorizer("student:update")]
+    [Authorizer("student:update")]
     public async Task<IActionResult> updateDiscount(ChangeStudentDiscountDto dto)
     {
         if (!dto.authorizationToken.Equals("36987"))

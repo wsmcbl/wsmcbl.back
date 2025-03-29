@@ -15,7 +15,7 @@ public class ApplyArrearsActions(ApplyArrearsController controller) : ActionsBas
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("overdues")]
-    [ResourceAuthorizer("tariff:read")]
+    [Authorizer("tariff:read")]
     public async Task<IActionResult> getOverdueTariffList()
     {
         var result = await controller.getOverdueTariffList();
@@ -30,7 +30,7 @@ public class ApplyArrearsActions(ApplyArrearsController controller) : ActionsBas
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{tariffId:int}")]
-    [ResourceAuthorizer("tariff:update")]
+    [Authorizer("tariff:update")]
     public async Task<IActionResult> applyArrears(int tariffId)
     {
         return Ok(await controller.applyArrears(tariffId));
@@ -42,7 +42,7 @@ public class ApplyArrearsActions(ApplyArrearsController controller) : ActionsBas
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("types")]
-    [ResourceAuthorizer("tariff:read")]
+    [Authorizer("tariff:read")]
     public async Task<ActionResult> getTariffTypeList()
     {
         return Ok(await controller.getTariffTypeList());

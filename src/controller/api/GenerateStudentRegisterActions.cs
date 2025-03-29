@@ -9,7 +9,7 @@ namespace wsmcbl.src.controller.api;
 
 [ApiController]
 [Route("secretary/students/registers")]
-[ResourceAuthorizer("register:read")]
+[Authorizer("register:read")]
 public class GenerateStudentRegisterActions(GenerateStudentRegisterController controller) : ActionsBase
 {
     /// <summary>Returns paged student register.</summary>

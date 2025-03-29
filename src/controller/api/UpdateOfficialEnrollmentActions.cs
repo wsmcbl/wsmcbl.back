@@ -33,7 +33,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers")]
-    [ResourceAuthorizer("teacher:read")]
+    [Authorizer("teacher:read")]
     public async Task<IActionResult> getTeacherList([Required] [FromQuery] string q)
     {
         List<TeacherEntity> list;
@@ -64,7 +64,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">Degree not found.</response>
     [HttpGet]
     [Route("degrees/{degreeId}/enrollments")]
-    [ResourceAuthorizer("degree:read")]
+    [Authorizer("degree:read")]
     public async Task<IActionResult> getDegreeById([Required] string degreeId)
     {
         var degree = await enrollmentController.getDegreeById(degreeId);
@@ -81,7 +81,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">Enrollment or internal record not found.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}")]
-    [ResourceAuthorizer("enrollment:update")]
+    [Authorizer("enrollment:update")]
     public async Task<IActionResult> updateEnrollment([Required] string enrollmentId, EnrollmentToUpdateDto dto)
     {
         await enrollmentController.updateEnrollment(dto.toEntity(enrollmentId));
@@ -98,7 +98,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="404">If the enrollment or teacher does not exist.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}/teachers")]
-    [ResourceAuthorizer("enrollment:update")]
+    [Authorizer("enrollment:update")]
     public async Task<IActionResult> setTeacherGuide([Required] string enrollmentId,
         [Required] [FromQuery] string teacherId)
     {
@@ -120,7 +120,7 @@ public class UpdateOfficialEnrollmentActions : ControllerBase
     /// <response code="409">If there is an active partial.</response>
     [HttpPut]
     [Route("enrollments/{enrollmentId}/subjects/{subjectId}")]
-    [ResourceAuthorizer("enrollment:update")]
+    [Authorizer("enrollment:update")]
     public async Task<IActionResult> updateTeacherFromSubject([Required] string enrollmentId,
         [Required] string subjectId, [Required] [FromQuery] string teacherId)
     {

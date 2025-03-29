@@ -15,7 +15,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("revenues/")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryRevenue()
     {
         await controller.getSummaryRevenue();
@@ -33,7 +33,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("incidents/")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getLastIncidents()
     {
         return Ok(await controller.getLastIncidents());
@@ -57,7 +57,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers/grades/summaries")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         var result = await controller.getSummaryTeacherGrades();
@@ -70,7 +70,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("subjects")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSubjectList()
     {
         var subjectList = await controller.getSubjectList();

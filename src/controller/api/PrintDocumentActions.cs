@@ -15,7 +15,7 @@ public class PrintDocumentActions(PrintDocumentController controller) : ActionsB
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("degrees/documents")]
-    [ResourceAuthorizer("report:read")]
+    [Authorizer("report:read")]
     public async Task<IActionResult> getOfficialEnrollmentListDocument()
     {
         var result = await controller.getOfficialEnrollmentListDocument(getAuthenticatedUserId());

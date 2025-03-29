@@ -18,7 +18,7 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("transaction:read")]
+    [Authorizer("transaction:read")]
     public async Task<ActionResult> getPaginatedTransactionReportView([FromQuery] TransactionReportViewPagedRequest request)
     {
         request.checkSortByValue(["transactionId", "number", "studentId", "studentName", "total", "isValid", "enrollmentLabel", "type", "dateTime"]);
@@ -37,7 +37,7 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpPut]
     [Route("{transactionId}")]
-    [ResourceAuthorizer("transaction:update")]
+    [Authorizer("transaction:update")]
     public async Task<ActionResult> cancelTransaction([Required] string transactionId)
     {
         return Ok(await controller.cancelTransaction(transactionId));
@@ -50,7 +50,7 @@ public class CancelTransactionActions(CancelTransactionController controller) : 
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("{transactionId}/invoices")]
-    [ResourceAuthorizer("transaction:read")]
+    [Authorizer("transaction:read")]
     public async Task<IActionResult> getInvoice([Required] string transactionId)
     {
         var result = await controller.getInvoiceDocument(transactionId);

@@ -15,7 +15,7 @@ public class CreateBackupActions : ActionsBase
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
     [Route("current")]
-    [ResourceAuthorizer("admin")]
+    [Authorizer("admin")]
     public async Task<IActionResult> getBackupDocument()
     {
         var result = await CreateBackupsController.getCurrentBackupDocument();

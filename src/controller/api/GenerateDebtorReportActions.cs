@@ -4,7 +4,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[ResourceAuthorizer("report:read")]
+[Authorizer("report:read")]
 [Route("accounting")]
 [ApiController]
 public class GenerateDebtorReportActions(GenerateDebtorReportController controller) : ActionsBase

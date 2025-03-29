@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy/teachers/{teacherId}/enrollments/guide")]
 [ApiController]
-[ResourceAuthorizer("teacher:enrollment:guide")]
+[Authorizer("teacher:enrollment:guide")]
 public class ViewEnrollmentGuideActions(ViewEnrollmentGuideController controller) : ActionsBase
 {
     /// <summary>Returns enrollment guide by teacher.</summary>

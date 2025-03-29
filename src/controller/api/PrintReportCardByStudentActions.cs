@@ -18,7 +18,7 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId)
     {
         var student = await controller.getStudentWithGrades(studentId);
@@ -37,7 +37,7 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     /// <response code="500">Error creating document.</response>
     [HttpGet]
     [Route("documents/report-cards/{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
         var isSolvency = await controller.isStudentSolvent(studentId);

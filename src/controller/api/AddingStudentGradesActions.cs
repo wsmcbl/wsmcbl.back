@@ -17,7 +17,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("partials")]
-    [ResourceAuthorizer("partial:read")]
+    [Authorizer("partial:read")]
     public async Task<IActionResult> getPartialList()
     {
         var result = await controller.getPartialList();
@@ -31,7 +31,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}")]
-    [ResourceAuthorizer("teacher:read")]
+    [Authorizer("teacher:read")]
     public async Task<IActionResult> getTeacherById([Required] string teacherId)
     {
         var result = await controller.getTeacherById(teacherId);
@@ -45,7 +45,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher not found.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments")]
-    [ResourceAuthorizer("teacher:read")]
+    [Authorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentListByTeacherId([Required] string teacherId)
     {
         var result = await controller.getEnrollmentListByTeacherId(teacherId);
@@ -60,7 +60,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="409">If there is not a grade records.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
-    [ResourceAuthorizer("teacher:read")]
+    [Authorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentToAddGrades([Required] string teacherId, [Required] string enrollmentId, 
         [Required] [FromQuery] int partialId)
     {
@@ -80,7 +80,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="404">Teacher or internal record not found.</response>
     [HttpPut]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
-    [ResourceAuthorizer("grade:update")]
+    [Authorizer("grade:update")]
     public async Task<IActionResult> addGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId, List<GradeDto> gradeList)
     {
@@ -97,7 +97,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="409">If there is not a grade records.</response>
     [HttpGet]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}/documents")]
-    [ResourceAuthorizer("teacher:read")]
+    [Authorizer("teacher:read")]
     public async Task<IActionResult> getEnrollmentToAddGradesDocument([Required] string teacherId, [Required] string enrollmentId, 
         [Required] [FromQuery] int partialId)
     {

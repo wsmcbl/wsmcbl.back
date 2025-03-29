@@ -16,7 +16,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("schoolyear:read")]
+    [Authorizer("schoolyear:read")]
     public async Task<IActionResult> getSchoolyearList()
     {
         var list = await controller.getSchoolyearList();
@@ -29,7 +29,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("{schoolyearId}")]
-    [ResourceAuthorizer("schoolyear:read")]
+    [Authorizer("schoolyear:read")]
     public async Task<IActionResult> getSchoolyearById([Required] string schoolyearId)
     {
         var result = await controller.getSchoolyearById(schoolyearId);
@@ -43,7 +43,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
-    [ResourceAuthorizer("schoolyear:create")]
+    [Authorizer("schoolyear:create")]
     public async Task<IActionResult> createSchoolyear(SchoolyearToCreateDto dto)
     {
         await controller.createSchoolyear(dto.getPartialList(), dto.getTariffList());
@@ -58,7 +58,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("rates")]
-    [ResourceAuthorizer("schoolyear:read")]
+    [Authorizer("schoolyear:read")]
     public async Task<IActionResult> getExchangeRateList()
     {
         return Ok(await controller.getExchangeRateList());
@@ -72,7 +72,7 @@ public class CreateSchoolyearActions(CreateSchoolyearController controller) : Co
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("rates/current")]
-    [ResourceAuthorizer("schoolyear:update")]
+    [Authorizer("schoolyear:update")]
     public async Task<IActionResult> updateCurrentExchangeRate([FromQuery] decimal exchange)
     {
         await controller.updateCurrentExchangeRate(exchange);
