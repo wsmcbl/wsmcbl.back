@@ -14,7 +14,7 @@ public class MediaDaoPostgres(PostgresContext context) : GenericDaoPostgres<Medi
 
         if (result == null)
         {
-            throw new EntityNotFoundException($"Media with type ({type}) and schoolyearid ({schoolyearId}) not found.");
+            throw new EntityNotFoundException($"Media with schoolyearid ({schoolyearId}) and type ({type}) not found.");
         }
 
         return result.value;
