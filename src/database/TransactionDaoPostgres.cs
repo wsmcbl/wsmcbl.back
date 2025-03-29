@@ -60,7 +60,7 @@ public class TransactionDaoPostgres(PostgresContext context)
         return await pagedService.getPaged(request);
     }
     
-    private IQueryable<TransactionReportView> search(IQueryable<TransactionReportView> query, string search)
+    private static IQueryable<TransactionReportView> search(IQueryable<TransactionReportView> query, string search)
     { 
         var value = $"%{search}%";
         

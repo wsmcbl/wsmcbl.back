@@ -60,7 +60,7 @@ public class AccountingStudentDaoPostgres : GenericDaoPostgres<StudentEntity, st
         return await pagedService.getPaged(request);
     }
     
-    private IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
+    private static IQueryable<StudentView> search(IQueryable<StudentView> query, string search)
     { 
         var value = $"%{search}%";
         

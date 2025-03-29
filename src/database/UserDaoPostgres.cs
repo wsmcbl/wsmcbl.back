@@ -19,7 +19,7 @@ public class UserDaoPostgres(PostgresContext context) : GenericDaoPostgres<UserE
         return await pagedService.getPaged(request);
     }
     
-    private IQueryable<UserEntity> search(IQueryable<UserEntity> query, string search)
+    private static IQueryable<UserEntity> search(IQueryable<UserEntity> query, string search)
     { 
         var value = $"%{search}%";
         

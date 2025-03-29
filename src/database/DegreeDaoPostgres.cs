@@ -109,7 +109,7 @@ public class DegreeDaoPostgres : GenericDaoPostgres<DegreeEntity, string>, IDegr
         return await pagedService.getPaged(request);
     }
     
-    private IQueryable<DegreeEntity> search(IQueryable<DegreeEntity> query, string search)
+    private static IQueryable<DegreeEntity> search(IQueryable<DegreeEntity> query, string search)
     { 
         var value = $"%{search}%";
         
