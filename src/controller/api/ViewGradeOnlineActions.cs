@@ -32,7 +32,7 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     /// <response code="404">Student not found.</response>
     /// <response code="409">Student has no solvency.</response>
     [HttpGet]
-    [Route("grades")]
+    [Route("grades/export")]
     public async Task<IActionResult> getGradesReport(string studentId, [FromQuery] string token)
     {
         if (!await controller.isTokenValid(studentId, token))

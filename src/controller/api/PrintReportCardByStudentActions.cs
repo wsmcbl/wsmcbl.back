@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("academy/")]
+[Route("academy")]
 [ApiController]
 public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ActionsBase
 {
@@ -16,7 +16,7 @@ public class PrintReportCardByStudentActions(PrintReportCardByStudentController 
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="500">Error creating document.</response>
     [HttpGet]
-    [Route("documents/report-cards/{studentId}")]
+    [Route("students/{studentId}/report-card/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId)
     {
