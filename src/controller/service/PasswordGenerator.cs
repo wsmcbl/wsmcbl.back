@@ -36,25 +36,24 @@ public class PasswordGenerator
             }
         }
         
-        var random = new Random();
-        return new string(password.ToString().OrderBy(c => random.Next()).ToArray());
+        return new string(password.ToString()
+            .OrderBy(c => RandomNumberGenerator.GetInt32(password.Length)).ToArray());
     }
 
     private void setMinimumChars(bool includeSpecialChars)
     {
         password = new StringBuilder();
         
-        var random = new Random();
-        password.Append(Digits[random.Next(Digits.Length)]);
-        password.Append(Digits[random.Next(Digits.Length)]);
+        password.Append(Digits[RandomNumberGenerator.GetInt32(Digits.Length)]);
+        password.Append(Digits[RandomNumberGenerator.GetInt32(Digits.Length)]);
         
-        password.Append(LowerCase[random.Next(Digits.Length)]);
-        password.Append(UpperCase[random.Next(Digits.Length)]);
+        password.Append(LowerCase[RandomNumberGenerator.GetInt32(Digits.Length)]);
+        password.Append(UpperCase[RandomNumberGenerator.GetInt32(Digits.Length)]);
 
         if (!includeSpecialChars)
             return;
         
-        password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
-        password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
+        password.Append(SpecialChars[RandomNumberGenerator.GetInt32(SpecialChars.Length)]);
+        password.Append(SpecialChars[RandomNumberGenerator.GetInt32(SpecialChars.Length)]);
     }
 }
