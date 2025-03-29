@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("config/backups")]
 [ApiController]
-public class CreateBackupActions(CreateBackupsController controller) : ActionsBase
+public class CreateBackupActions : ActionsBase
 {
     /// <summary>Returns current backup document.</summary>
     /// <response code="200">Return existing resources.</response>
@@ -18,7 +18,7 @@ public class CreateBackupActions(CreateBackupsController controller) : ActionsBa
     [ResourceAuthorizer("admin")]
     public async Task<IActionResult> getBackupDocument()
     {
-        var result = await controller.getCurrentBackupDocument(getAuthenticatedUserId());
+        var result = await CreateBackupsController.getCurrentBackupDocument();
         return File(result.data, "application/pdf", result.name);
     }
 }

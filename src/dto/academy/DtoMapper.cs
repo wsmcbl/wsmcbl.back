@@ -19,7 +19,7 @@ public static class DtoMapper
         => new(value);
 
 
-    public static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
+    private static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
 
     private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student);
 
@@ -46,13 +46,13 @@ public static class DtoMapper
         gradeList.Select(e => e.mapToDto()).ToList();
 
 
-    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
-        studentList.Select(e => new SubjectDto(e)).ToList();
+    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> list) =>
+        list.Select(e => new SubjectDto(e)).ToList();
 
 
-    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> studentList) =>
-        studentList.Select(e => e.secretarySubject).ToList()!.mapListToBasicDto();
-
-    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
-        studentList.Select(e => e.mapToBasicDto()).ToList();
+    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> list)
+    {
+        var result = list.Select(e => e.secretarySubject).ToList();
+        return result.Select(e => e!.mapToBasicDto()).ToList();
+    }
 }
