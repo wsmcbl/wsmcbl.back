@@ -21,32 +21,32 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     protected override string getTemplateName() => "report-card";
 
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        var stringValue = new StringBuilder(content);
+        var content = new StringBuilder(value);
         
-        stringValue = stringValue.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
-        stringValue = stringValue.Replace("schoolyear.value", schoolyear);
-        stringValue = stringValue.Replace("degree.value", degreeLabel);
+        content.Replace("schoolyear.value", schoolyear);
+        content.Replace("degree.value", degreeLabel);
         
-        stringValue = stringValue.Replace("student.id.value", student.studentId);
-        stringValue = stringValue.Replace("student.name.value", student.fullName());
-        stringValue = stringValue.Replace("teacher.name.value", teacher.fullName());
+        content.Replace("student.id.value", student.studentId);
+        content.Replace("student.name.value", student.fullName());
+        content.Replace("teacher.name.value", teacher.fullName());
         
-        stringValue = stringValue.Replace("detail.value", getDetail());
+        content.Replace("detail.value", getDetail());
 
         var averageList = getAverageList();
-        stringValue = stringValue.Replace("first.average.value", averageList[0]);
-        stringValue = stringValue.Replace("second.average.value", averageList[1]);
-        stringValue = stringValue.Replace("third.average.value", averageList[2]);
-        stringValue = stringValue.Replace("fourth.average.value", averageList[3]);
-        stringValue = stringValue.Replace("final.average.value", averageList[4]);
+        content.Replace("first.average.value", averageList[0]);
+        content.Replace("second.average.value", averageList[1]);
+        content.Replace("third.average.value", averageList[2]);
+        content.Replace("fourth.average.value", averageList[3]);
+        content.Replace("final.average.value", averageList[4]);
         
-        stringValue = stringValue.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
-        stringValue = stringValue.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
-        return stringValue.ToString();
+        return content.ToString();
     }
 
     private List<string> getAverageList()

@@ -35,9 +35,9 @@ public static class Utility
         return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
     }
     
-    public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
+    public static void ReplaceInLatexFormat(this StringBuilder text, string oldValue, string? newValue)
     {
-        return text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
+        text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
     }
     
     private static readonly string[] specialSymbols = ["$", "€", "£", "¥", "#", "%", "&", "_", "{", "}"];

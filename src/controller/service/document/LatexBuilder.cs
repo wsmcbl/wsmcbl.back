@@ -62,10 +62,10 @@ public abstract class LatexBuilder
         fileName = $"{getTemplateName()}_output";
         filePath = Path.Combine(outPath!, $"{fileName}.tex");
         
-        File.WriteAllText(filePath, content);
+        File.WriteAllText(filePath,content);
     }
     
     protected abstract string getTemplateName();
     
-    protected abstract string updateContent(string content);
+    protected abstract string updateContent(string value);
 }

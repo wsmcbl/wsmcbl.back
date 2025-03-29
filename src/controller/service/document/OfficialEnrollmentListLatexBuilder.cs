@@ -1,4 +1,4 @@
-using System.Globalization;
+using System.Text;
 using wsmcbl.src.model;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
@@ -20,75 +20,71 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     
     protected override string getTemplateName() => "official-enrollment-list";
     
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
+        var content = new StringBuilder(value);
+        content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
 
-        var body = string.Empty;
+        var body = new StringBuilder();
         foreach (var item in degreeList.OrderBy(e => e.getTag()))
         {
-            body += getDegreeContent(item);
+            getDegreeContent(body, item);
         }
         
-        content = content.Replace("body.value", body);
+        content.Replace("body.value", body.ToString());
         
-        return content;
+        return content.ToString();
     }
 
-    private string getDegreeContent(DegreeEntity degree)
+    private void getDegreeContent(StringBuilder body, DegreeEntity degree)
     {
-        var result = string.Empty;
-        
         var list = degree.enrollmentList!.Where(e => e.studentList!.Count != 0).ToList();
         foreach (var item in list.OrderBy(e => e.tag))
         {
-            result += getEnrollmentContent(item);
+            getEnrollmentContent(body, item);
         }
-        
-        return result;
     }
 
-    private string getEnrollmentContent(EnrollmentEntity enrollment)
+    private void getEnrollmentContent(StringBuilder body, EnrollmentEntity enrollment)
     {
-        var result = $"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n";
-        result += $"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}";
-        result += $"\\hfill \\textbf{{Fecha}}: {now.toDateUtc6()}\n";
-        result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+        body.Append($"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n");
+        body.Append($"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}");
+        body.Append($"\\hfill \\textbf{{Fecha}}: {now.toDateUtc6()}\n");
+        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
 
-        result += "\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n";
-        result += "\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n";
+        body.Append("\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n");
+        body.Append("\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n");
         
         var counter = 0;
         var womanList = enrollment.studentList!.Where(e => !e.student.sex).ToList();
         foreach (var item in womanList.OrderBy(e => e.fullName()))
         {
             counter++;
-            result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n";
+            body.Append($"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n");
         }
 
-        result += "\\hline\n";
+        body.Append("\\hline\n");
         
         var menList = enrollment.studentList!.Where(e => e.student.sex).ToList();
         foreach (var item in menList.OrderBy(e => e.fullName()))
         {
             counter++;
-            result += $"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n";
+            body.Append($"{counter} & {item.studentId} & {item.fullName()}\\\\\\hline\n");
         }
-        
-        result += "\\end{longtable}\n\n";
-        result += "Si encuentra algún error, por favor repórtelo a secretaría para realizar la corrección.\n";
-        result += $"Esta es la lista oficial de {enrollment.label}, si alguna hoja de matrícula no coincide, es posible que dicha hoja no esté actualizada.\n";
+
+        body.Append("\\end{longtable}\n\n");
+        body.Append("Si encuentra algún error, por favor repórtelo a secretaría para realizar la corrección.\n");
+        body.Append($"Esta es la lista oficial de {enrollment.label}, si alguna hoja de matrícula no coincide, es posible que dicha hoja no esté actualizada.\n");
         
         if (counter > 24)
         {
-            result += $"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n";
+            body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
         }
-        
-        result += "\\newpage\n";
-        
-        result += "\\setcounter{page}{1}\n\n\n";
-        return result;
+
+        body.Append("\\newpage\n");
+
+        body.Append("\\setcounter{page}{1}\n\n\n");
     }
 
     private string getTeacherName(string? teacherId)

@@ -22,14 +22,15 @@ public class DebtorReportLatexBuilder : LatexBuilder
 
     protected override string getTemplateName() => "debtor-report";
 
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
-        content = content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
-        content = content.Replace("body.value", getDegreeContent());
+        var content = new StringBuilder(value);
+        content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
+        content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
+        content.Replace("body.value", getDegreeContent());
 
-        return content;
+        return content.ToString();
     }
 
     private decimal getTotal(int value)
