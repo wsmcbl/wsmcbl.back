@@ -3,12 +3,11 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model;
-using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
 [ApiController]
-[Route("secretary/students/registers")]
+[Route("management/students/registers")]
 [Authorizer("register:read")]
 public class GenerateStudentRegisterActions(GenerateStudentRegisterController controller) : ActionsBase
 {
@@ -22,14 +21,14 @@ public class GenerateStudentRegisterActions(GenerateStudentRegisterController co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getPaginatedStudentRegisterView([FromQuery] StudentPagedRequest request)
+    public async Task<IActionResult> getPaginatedStudentsRegisterView([FromQuery] StudentPagedRequest request)
     {
         request.checkSortByValue([
             "studentId", "minedId", "fullName", "isActive", "sex", "birthday", "disease", "address", "tutor", "father",
             "mother", "schoolyear", "educationalLevel", "degreePosition", "enrollDate", "isRepeating"
         ]);
 
-        var result = await controller.getPaginatedStudentRegisterView(request);
+        var result = await controller.getPaginatedStudentsRegisterView(request);
 
         var pagedResult = new PagedResult<StudentRegisterViewDto>(result.data.mapListToDto());
         pagedResult.setup(result);
