@@ -8,13 +8,13 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class CreateBackupActions : ActionsBase
 {
-    /// <summary>Returns current backup document.</summary>
+    /// <summary>Returns current backup in SQL format.</summary>
     /// <response code="200">Return existing resources.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
-    [Route("current")]
+    [Route("current/export")]
     [Authorizer("admin")]
     public async Task<IActionResult> getBackupDocument()
     {

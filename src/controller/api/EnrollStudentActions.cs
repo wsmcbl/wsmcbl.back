@@ -74,13 +74,13 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
         return Ok(result.mapToDto(ids));
     }
 
-    /// <summary>Returns the enroll document of student.</summary>
+    /// <summary>Returns enroll-sheet by student id in PDF format.</summary>
     /// <response code="200">Return existing resources.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
-    [Route("documents/{studentId}")]
+    [Route("students/{studentId}/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {

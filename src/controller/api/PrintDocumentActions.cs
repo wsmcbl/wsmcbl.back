@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class PrintDocumentActions(PrintDocumentController controller) : ActionsBase
 {
-    /// <summary>Returns the official enrollment list document of all degrees.</summary>
+    /// <summary>Returns the official list of students by degree in PDF format.</summary>
     /// <response code="200">Return existing resources.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>

@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ActionsBase
 {
-    /// <summary>Returns the report-card by student.</summary>
+    /// <summary>Returns report-card by student id in PDF format.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>

@@ -26,7 +26,7 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
         return Ok(result);
     }
     
-    /// <summary>Return the grade report by student.</summary>
+    /// <summary>Return grade report by student id in PDF format.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the student unauthorized.</response>
     /// <response code="404">Student not found.</response>
