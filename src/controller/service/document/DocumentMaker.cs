@@ -46,7 +46,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var student = await daoFactory.studentDao!.getFullById(studentId);
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId!);
-        var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolYear);
+        var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolyearId);
 
         var latexBuilder = new EnrollSheetLatexBuilder.Builder(resource, $"{resource}/out/enroll")
             .withStudent(student)

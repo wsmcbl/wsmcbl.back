@@ -46,7 +46,7 @@ public class EnrollStudentController : BaseController
         var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
 
-        return academyStudent != null && academyStudent.schoolYear == schoolyear.id;
+        return academyStudent != null && academyStudent.schoolyearId == schoolyear.id;
     }
 
     private async Task<model.academy.StudentEntity> getNewAcademyStudent(string studentId, string enrollmentId)
