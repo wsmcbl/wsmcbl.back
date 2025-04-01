@@ -86,17 +86,4 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
         entities.AddRange(enrollmentList);
         await saveAsync();
     }
-
-    public async Task<EnrollmentEntity> getFullByTeacherIdForCurrentSchoolyear(string teacherId)
-    {
-        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
-        
-        var result = await getFullById(enrollmentId);
-        if (result == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");
-        }
-
-        return result;
-    }
 }
