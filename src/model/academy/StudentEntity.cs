@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.academy;
@@ -63,5 +64,21 @@ public class StudentEntity
         }
 
         return averageList.Sum(item => item.grade) / 4;
+    }
+
+    public GradeAverageView getAverage(int partial)
+    {
+        if (averageList == null)
+        {
+            throw new InternalException("The averageList must be not null.");
+        }
+        
+        var result = averageList.FirstOrDefault(e => e.partial == partial);
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"The GradeAverageEntity for partial ({partial}) in StudentEntity not found.");
+        }
+
+        return result;
     }
 }
