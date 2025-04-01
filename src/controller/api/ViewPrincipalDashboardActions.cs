@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("management")]
 [ApiController]
-public class ViewDirectorDashboardActions(ViewDirectorDashboardController controller) : ActionsBase
+public class ViewPrincipalDashboardActions(ViewDirectorDashboardController controller) : ActionsBase
 {
     /// <summary>Get summary of the revenue for current month.</summary>
     /// <response code="200">Return the value</response>
