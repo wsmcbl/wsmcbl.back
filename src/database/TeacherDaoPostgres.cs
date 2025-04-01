@@ -92,7 +92,7 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         await teacher.setCurrentEnrollment(daoFactory.schoolyearDao);
         if (!teacher.hasCurrentEnrollment())
         {
-            throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");
+            throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) for current schoolyear not found.");
         }
 
         return teacher.getCurrentEnrollmentId();

@@ -8,7 +8,7 @@ public interface IEnrollmentDao : IGenericDao<EnrollmentEntity, string>
     public Task<EnrollmentEntity> getByStudentId(string studentId);
     public Task<List<EnrollmentEntity>> getListByTeacherId(string teacherId);
     public Task createRange(ICollection<EnrollmentEntity> enrollmentList);
-    public Task<EnrollmentEntity> getByTeacherIdForCurrentSchoolyear(string teacherId, bool isFull = false);
+    public Task<EnrollmentEntity> getFullByTeacherIdForCurrentSchoolyear(string teacherId);
 }
 
 public interface ISubjectDao : IGenericDao<SubjectEntity, string>
