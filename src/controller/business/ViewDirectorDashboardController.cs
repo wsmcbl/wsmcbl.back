@@ -50,4 +50,10 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
         return await daoFactory.degreeDao!.getListForSchoolyearId(currentSchoolyear.id!);
     }
+
+    public async Task<byte[]> getGradeSummaryByEnrollmentId(string enrollmentId, int partialId, string userId)
+    {
+        await Task.CompletedTask;
+        return [];
+    }
 }
