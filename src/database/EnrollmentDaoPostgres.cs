@@ -89,7 +89,7 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
 
     public async Task<EnrollmentEntity> getByTeacherIdForCurrentSchoolyear(string teacherId, bool isFull = false)
     {
-        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentIdById(teacherId);
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         
         var result = isFull ? await getFullById(enrollmentId) : await getById(enrollmentId);
         if (result == null)

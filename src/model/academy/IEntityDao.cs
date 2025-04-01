@@ -30,6 +30,7 @@ public interface ITeacherDao : IGenericDao<TeacherEntity, string>
     public Task<TeacherEntity?> getByEnrollmentId(string enrollmentId);
     public Task<TeacherEntity> getByUserId(Guid userId);
     public Task<List<TeacherEntity>> getListWithSubjectGradedForCurrentPartial();
+    public Task<string> getCurrentEnrollmentId(string teacherId);
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>
