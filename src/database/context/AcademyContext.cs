@@ -201,5 +201,20 @@ internal class AcademyContext
             entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
         });
+        
+        modelBuilder.Entity<GradeAverageView>(entity =>
+        {
+            entity.HasKey(e => e.id);
+            
+            entity.ToView("grade_average_view", "academy");
+            entity.Property(e => e.id).HasColumnName("id");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.grade).HasColumnName("grade");
+            entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
+        });
     }
 }
