@@ -58,27 +58,28 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
 
     public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partial)
     {
-        return await entities
+        return await entities.AsNoTracking()
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.student)
+            .Include(e => e.averageList)
             .GroupJoin(
                 context.Set<GradeView>().Where(e => e.enrollmentId == enrollmentId && e.partial == partial),
                 s => s.studentId,
-                g => g.studentId, 
-                (std, gradeList) => new {std, gradeList})
-            .GroupJoin(
-                context.Set<GradeAverageView>().Where(e => e.enrollmentId == enrollmentId && e.partial == partial),
-                temp => temp.std.studentId,
                 g => g.studentId,
-                (temp, average) => new StudentEntity
+                (std, gradeList) => new StudentEntity
                 {
-                    studentId = temp.std.studentId,
-                    enrollmentId = temp.std.enrollmentId,
-                    schoolyearId = temp.std.schoolyearId,
-                    isApproved = temp.std.isApproved,
-                    isRepeating = temp.std.isRepeating,
-                    createdAt = temp.std.createdAt,
-                    gradeList = temp.gradeList.ToList(),
-                    averageList = average.ToList()
-                }).Include(e => e.student)
+                    studentId = std.studentId,
+                    enrollmentId = std.enrollmentId,
+                    schoolyearId = std.schoolyearId,
+                    isApproved = std.isApproved,
+                    isRepeating = std.isRepeating,
+                    createdAt = std.createdAt,
+                    student = std.student,
+                    averageList = std.averageList!.Where(e => e.enrollmentId == enrollmentId && e.partial == partial).ToList(),
+                    gradeList = gradeList.ToList()
+                })
+            .OrderBy(e => e.student.sex)
+            .ThenBy(e => e.student.name)
             .ToListAsync();
     }
 

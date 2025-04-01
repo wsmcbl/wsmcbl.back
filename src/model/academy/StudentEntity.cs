@@ -41,11 +41,6 @@ public class StudentEntity
         return student.fullName();
     }
 
-    public void setPartials(List<PartialEntity> list)
-    {
-        partials = list;
-    }
-
     public void setIsRepeating(bool repeating)
     {
         isRepeating = repeating;
