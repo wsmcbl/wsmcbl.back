@@ -34,6 +34,6 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     public async Task<IActionResult> getGradeSummaryEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partial)
     {
         var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(result.mapListToGradeSummaryDto());
+        return Ok(result.mapListToStudentGradeDto());
     }
 }

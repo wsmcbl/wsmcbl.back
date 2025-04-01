@@ -12,6 +12,6 @@ public class GradeAverageDto
     {
         partial = parameter.partial;
         grade = parameter.grade;
-        label = parameter.label;
+        label = parameter.getLabel();
     }
 }
