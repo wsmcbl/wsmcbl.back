@@ -159,12 +159,25 @@ CASE
     ELSE (d.debtbalance / d.amount)
     END >= 0.4;
 
+
+
 -- grade_view view
-CREATE VIEW academy.grade_view as 
-SELECT g.studentId, sp.partialId, sp.subjectId, sp.teacherId,
+CREATE VIEW academy.grade_view AS 
+SELECT row_number() OVER (ORDER BY g.gradeid) AS id,
+       g.studentId, sp.partialId, sp.subjectId, sp.teacherId,
        sp.enrollmentId, e.schoolyear as schoolyearId, p.partial,
        g.grade, g.conductGrade, g.label
 FROM academy.grade g 
 JOIN academy.subject_partial sp ON sp.subjectpartialid = g.subjectpartialid
-JOIN academy.partial p on p.partialid = sp.partialid
-JOIN academy.enrollment e on e.enrollmentid = sp.enrollmentid;
+JOIN academy.partial p ON p.partialid = sp.partialid
+JOIN academy.enrollment e ON e.enrollmentid = sp.enrollmentid;
+
+
+
+-- grade_average_view view
+CREATE VIEW academy.grade_average_view AS
+SELECT row_number() OVER (ORDER BY gv.studentid) AS id,
+       gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid,
+       gv.partial, AVG(gv.grade) as grade, AVG(gv.conductgrade) as conductgrade   
+FROM academy.grade_view gv
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;
