@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.management;
@@ -77,5 +78,21 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
         var degreeList = await controller.getDegreeList();
         
         return Ok(subjectList.mapListToDto(degreeList));
+    }
+    
+    
+    /// <summary>Returns enrollment grade summary by partial in XLSX format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or partial not found.</response>
+    [HttpGet]
+    [Route("enrollments/{enrollmentId}/grades")]
+    [Authorizer("report:principal:read")]
+    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partialId)
+    {
+        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partialId, getAuthenticatedUserId());
+        
+        return File(result, getContentType(2), $"{enrollmentId}.grades-summary.xlsx");
     }
 }
