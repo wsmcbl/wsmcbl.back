@@ -10,4 +10,9 @@ public class GradeAverageView
     public int partial { get; set; }
     public decimal grade { get; set; }
     public decimal conductGrade { get; set; }
+
+    public string getLabel()
+    {
+        return GradeEntity.getLabelByGrade(grade);
+    }
 }
