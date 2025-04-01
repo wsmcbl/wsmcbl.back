@@ -18,9 +18,9 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("performance")]
-    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId)
+    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partial)
     {
-        var result = await controller.getEnrollmentPerformanceByTeacherId(teacherId);
+        var result = await controller.getEnrollmentPerformanceByTeacherId(teacherId, partial);
         return Ok(result.mapListToDto());
     }
 }
