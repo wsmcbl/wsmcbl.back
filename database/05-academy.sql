@@ -91,8 +91,8 @@ create table if not exists Academy.Grade
     gradeId serial not null primary key,
     studentId varchar(15) not null,
     subjectPartialId int not null,
-    grade float,
-    conductGrade float,
+    grade decimal(18, 2),
+    conductGrade decimal(18, 2),
     label varchar(10),
     foreign key (subjectPartialId) references Academy.Subject_Partial,
     foreign key (studentId) references secretary.student 

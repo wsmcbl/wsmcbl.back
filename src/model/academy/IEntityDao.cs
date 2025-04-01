@@ -29,6 +29,7 @@ public interface ITeacherDao : IGenericDao<TeacherEntity, string>
     public Task<TeacherEntity?> getByEnrollmentId(string enrollmentId);
     public Task<TeacherEntity> getByUserId(Guid userId);
     public Task<List<TeacherEntity>> getListWithSubjectGradedForCurrentPartial();
+    public Task<string> getCurrentEnrollmentId(string teacherId);
 }
 
 public interface IStudentDao : IGenericDao<StudentEntity, string>
@@ -36,6 +37,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<bool> isEnrolled(string studentId);
     public Task update(string studentId, string enrollmentId);
     public Task<StudentEntity> getCurrentById(string studentId);
+    public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partial);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>

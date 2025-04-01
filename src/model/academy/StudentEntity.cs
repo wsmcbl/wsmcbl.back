@@ -6,7 +6,7 @@ public class StudentEntity
 {
     public string studentId { get; set; } = null!;
     public string? enrollmentId { get; set; }
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public bool isApproved { get; set; }
     public bool isRepeating { get; set; }
     public DateTime createdAt { get; set; }
@@ -14,6 +14,8 @@ public class StudentEntity
     
     public secretary.StudentEntity student { get; set; } = null!;
     public List<PartialEntity>? partials { get; private set; }
+    public List<GradeView>? gradeList { get; set; }
+    public List<GradeAverageView>? averageList { get; set; }
     
     public StudentEntity()
     {
@@ -30,7 +32,7 @@ public class StudentEntity
 
     public void setSchoolyear(string schoolYearId)
     {
-        schoolYear = schoolYearId;
+        schoolyearId = schoolYearId;
     }
 
     public string fullName()
@@ -51,5 +53,15 @@ public class StudentEntity
     public DateOnly getCreateAtByDateOnly()
     {
         return DateOnly.FromDateTime(createdAt.toUTC6());
+    }
+
+    public decimal? computeFinalGrade()
+    {
+        if (averageList is not { Count: 4 })
+        {
+            return null;
+        }
+
+        return averageList.Sum(item => item.grade) / 4;
     }
 }
