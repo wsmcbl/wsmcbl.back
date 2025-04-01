@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.academy;
@@ -6,7 +7,7 @@ public class StudentEntity
 {
     public string studentId { get; set; } = null!;
     public string? enrollmentId { get; set; }
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public bool isApproved { get; set; }
     public bool isRepeating { get; set; }
     public DateTime createdAt { get; set; }
@@ -32,17 +33,12 @@ public class StudentEntity
 
     public void setSchoolyear(string schoolYearId)
     {
-        schoolYear = schoolYearId;
+        schoolyearId = schoolYearId;
     }
 
     public string fullName()
     {
         return student.fullName();
-    }
-
-    public void setPartials(List<PartialEntity> list)
-    {
-        partials = list;
     }
 
     public void setIsRepeating(bool repeating)
@@ -63,5 +59,21 @@ public class StudentEntity
         }
 
         return averageList.Sum(item => item.grade) / 4;
+    }
+
+    public GradeAverageView getAverage(int partial)
+    {
+        if (averageList == null)
+        {
+            throw new InternalException("The averageList must be not null.");
+        }
+        
+        var result = averageList.FirstOrDefault(e => e.partial == partial);
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"The GradeAverageEntity for partial ({partial}) in StudentEntity not found.");
+        }
+
+        return result;
     }
 }

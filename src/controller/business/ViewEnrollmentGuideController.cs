@@ -12,19 +12,9 @@ public class ViewEnrollmentGuideController : BaseController
     
     public async Task<EnrollmentEntity?> getEnrollmentGuideByTeacherId(string teacherId)
     {
-        var teacher = await daoFactory.teacherDao!.getById(teacherId);
-        if (teacher == null)
-        {
-            throw new EntityNotFoundException("TeacherEntity", teacherId);
-        }
-
-        await teacher.setCurrentEnrollment(daoFactory.schoolyearDao!);
-        if (!teacher.hasCurrentEnrollment())
-        {
-            return null;
-        }
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(teacher.getCurrentEnrollmentId());
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(enrollmentId);
         if (enrollment == null)
         {
             throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) not found.");

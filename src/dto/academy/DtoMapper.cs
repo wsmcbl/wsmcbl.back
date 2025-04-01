@@ -50,6 +50,9 @@ public static class DtoMapper
     
     public static List<StudentAverageDto> mapListToDto(this List<StudentEntity> list) =>
         list.Select(e => new StudentAverageDto(e)).ToList();
+    
+    public static List<StudentGradeSummaryDto> mapListToDto(this List<StudentEntity> list, int partial) =>
+        list.Select(e => new StudentGradeSummaryDto(e, partial)).ToList();
 
 
     public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> list)
