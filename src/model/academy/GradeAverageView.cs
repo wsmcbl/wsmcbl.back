@@ -4,10 +4,10 @@ public class GradeAverageView
 {
     public string studentId { get; set; } = null!;
     public int partialId { get; set; }
-    public string subjectId { get; set; } = null!;
     public string enrollmentId { get; set; } = null!;
     public string schoolyearId { get; set; } = null!;
     public int partial { get; set; }
     public decimal grade { get; set; }
+    public decimal conductGrade { get; set; }
     public string label { get; set; } = null!;
 }
