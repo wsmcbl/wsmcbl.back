@@ -9,11 +9,9 @@ public class GeneratePerformanceReportBySectionController : BaseController
     {
     }
 
-    public async Task<List<StudentEntity>> getEnrollmentPerformanceByTeacherId(string teacherId, int partial)
+    public async Task<List<StudentEntity>> getStudentListByTeacherId(string teacherId, int partial)
     { 
-        var enrollment = await daoFactory.enrollmentDao!.getByTeacherIdForCurrentSchoolyear(teacherId);
-        
-        return await daoFactory
-            .academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollment.enrollmentId, partial);
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
+        return await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
     }
 }
