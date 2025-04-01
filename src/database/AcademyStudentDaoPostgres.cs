@@ -72,7 +72,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
                 {
                     studentId = temp.std.studentId,
                     enrollmentId = temp.std.enrollmentId,
-                    schoolYear = temp.std.schoolYear,
+                    schoolyearId = temp.std.schoolyearId,
                     isApproved = temp.std.isApproved,
                     isRepeating = temp.std.isRepeating,
                     createdAt = temp.std.createdAt,
@@ -85,6 +85,6 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
     private async Task<StudentEntity?> getById(string studentId, string schoolyearId)
     {
         return await entities.Include(e => e.student)
-            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolYear == schoolyearId);
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolyearId == schoolyearId);
     }
 }
