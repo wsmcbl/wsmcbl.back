@@ -5,7 +5,7 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
-public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<StudentRegisterView>> getStudentRegisterViewListForCurrentSchoolyear()
     {

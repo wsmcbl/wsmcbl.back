@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("management")]
 [ApiController]
-public class ViewPrincipalDashboardActions(ViewDirectorDashboardController controller) : ActionsBase
+public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController controller) : ActionsBase
 {
     /// <summary>Get summary of the revenue for current month.</summary>
     /// <response code="200">Return the value</response>
@@ -87,7 +87,7 @@ public class ViewPrincipalDashboardActions(ViewDirectorDashboardController contr
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
-    [Route("enrollments/{enrollmentId}/grades")]
+    [Route("enrollments/{enrollmentId}/grades/export")]
     [Authorizer("report:principal:read")]
     public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partialId)
     {
