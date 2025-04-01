@@ -62,4 +62,19 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
+
+    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partialId, string userId)
+    {
+        var user = await daoFactory.userDao!.getById(userId);
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(enrollmentId);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
+        
+        var sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
+            .withUser(user)
+            .withEnrollment(enrollment)
+            .withStudentList(studentList)
+            .build();
+
+        return sheetBuilder.getSpreadSheet();
+    }
 }
