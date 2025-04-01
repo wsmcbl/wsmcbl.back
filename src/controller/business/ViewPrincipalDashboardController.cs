@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.sheet;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -53,7 +54,7 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
 
     public async Task<byte[]> getGradeSummaryByEnrollmentId(string enrollmentId, int partialId, string userId)
     {
-        await Task.CompletedTask;
-        return [];
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partialId, userId);
     }
 }
