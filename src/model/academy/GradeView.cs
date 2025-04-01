@@ -2,6 +2,7 @@ namespace wsmcbl.src.model.academy;
 
 public class GradeView
 {
+    public int id { get; set; }
     public string studentId { get; set; } = null!;
     public int partialId { get; set; }
     public string subjectId { get; set; } = null!;
