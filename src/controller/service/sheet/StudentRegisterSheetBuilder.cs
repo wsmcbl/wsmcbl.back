@@ -157,24 +157,24 @@ public class StudentRegisterSheetBuilder
 
     public class Builder
     {
-        private readonly StudentRegisterSheetBuilder latexBuilder;
+        private readonly StudentRegisterSheetBuilder sheetBuilder;
 
         public Builder()
         {
-            latexBuilder = new StudentRegisterSheetBuilder();
+            sheetBuilder = new StudentRegisterSheetBuilder();
         }
 
-        public StudentRegisterSheetBuilder build() => latexBuilder;
+        public StudentRegisterSheetBuilder build() => sheetBuilder;
         
         public Builder withUser(UserEntity parameter)
         {
-            latexBuilder.user = parameter;
+            sheetBuilder.user = parameter;
             return this;
         }
         
         public Builder withSchoolyear(SchoolyearEntity parameter)
         {
-            latexBuilder.schoolyear = parameter;
+            sheetBuilder.schoolyear = parameter;
             return this;
         }
         
@@ -185,7 +185,7 @@ public class StudentRegisterSheetBuilder
                 throw new InternalException("There is not student register.");
             }
             
-            latexBuilder.registerList = parameter;
+            sheetBuilder.registerList = parameter;
             return this;
         }
     }
