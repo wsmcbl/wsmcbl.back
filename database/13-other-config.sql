@@ -158,3 +158,13 @@ CASE
     WHEN d.amount = 0 THEN 1
     ELSE (d.debtbalance / d.amount)
     END >= 0.4;
+
+-- grade_view view
+CREATE VIEW academy.grade_view as 
+SELECT g.studentId, sp.partialId, sp.subjectId, sp.teacherId,
+       sp.enrollmentId, e.schoolyear as schoolyearId, p.partial,
+       g.grade, g.conductGrade, g.label
+FROM academy.grade g 
+JOIN academy.subject_partial sp ON sp.subjectpartialid = g.subjectpartialid
+JOIN academy.partial p on p.partialid = sp.partialid
+JOIN academy.enrollment e on e.enrollmentid = sp.enrollmentid;
