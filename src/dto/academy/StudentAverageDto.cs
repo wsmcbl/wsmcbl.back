@@ -13,7 +13,7 @@ public class StudentAverageDto
     {
         studentId = parameter.studentId;
         fullName = parameter.fullName();
-        averageList = parameter.averageList.Select(e => new GradeAverageDto(e)).ToList();
+        averageList = parameter.averageList!.Select(e => new GradeAverageDto(e)).ToList();
         finalGrade = parameter.computeFinalGrade();
     }
 }

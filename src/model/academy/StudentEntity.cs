@@ -14,6 +14,8 @@ public class StudentEntity
     
     public secretary.StudentEntity student { get; set; } = null!;
     public List<PartialEntity>? partials { get; private set; }
+    public List<GradeView>? gradeList { get; set; }
+    public List<GradeAverageView>? averageList { get; set; }
     
     public StudentEntity()
     {
@@ -51,5 +53,15 @@ public class StudentEntity
     public DateOnly getCreateAtByDateOnly()
     {
         return DateOnly.FromDateTime(createdAt.toUTC6());
+    }
+
+    public decimal? computeFinalGrade()
+    {
+        if (averageList is not { Count: 4 })
+        {
+            return null;
+        }
+
+        return averageList.Sum(item => item.grade) / 4;
     }
 }
