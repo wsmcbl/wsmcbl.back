@@ -7,4 +7,9 @@ public class GeneratePerformanceReportBySectionController : BaseController
     public GeneratePerformanceReportBySectionController(DaoFactory daoFactory) : base(daoFactory)
     {
     }
+
+    public async Task<object?> getEnrollmentPerformanceByTeacherId(string teacherId)
+    {
+        return await daoFactory.teacherDao!.getById(teacherId);
+    }
 }

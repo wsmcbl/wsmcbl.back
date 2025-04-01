@@ -10,7 +10,7 @@ namespace wsmcbl.src.controller.api;
 [Authorizer("teacher:enrollment:guide")]
 public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReportBySectionController controller) : ActionsBase 
 {
-    /// <summary>Returns performance enrollment guide by teacher.</summary>
+    /// <summary>Returns enrollment performance by teacher.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -19,7 +19,7 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     [Route("performance")]
     public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId)
     {
-        var result = await controller.getPerformanceEnrollmentGuideByTeacherId(teacherId);
-        return Ok(result.mapToDto());
+        var result = await controller.getEnrollmentPerformanceByTeacherId(teacherId);
+        return Ok(result);
     }
 }
