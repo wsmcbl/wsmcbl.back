@@ -11,8 +11,8 @@ namespace wsmcbl.src.controller.api;
 [Authorizer("teacher:enrollment:guide")]
 public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReportBySectionController controller) : ActionsBase 
 {
-    /// <summary>Returns enrollment performance by teacher.</summary>
-    /// <response code="200">Returns a resource.</response>
+    /// <summary>Returns performance enrollment by teacher.</summary>
+    /// <response code="200">Returns a list.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher or enrollment not found.</response>
@@ -22,5 +22,18 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     {
         var result = await controller.getStudentListByTeacherId(teacherId, partial);
         return Ok(result.mapListToDto());
+    }
+    
+    /// <summary>Returns grade summary enrollment by teacher.</summary>
+    /// <response code="200">Returns a list.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Teacher or enrollment not found.</response>
+    [HttpGet]
+    [Route("grades/summary")]
+    public async Task<IActionResult> getGradeSummaryEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partial)
+    {
+        var result = await controller.getStudentListByTeacherId(teacherId, partial);
+        return Ok(result.mapListToGradeSummaryDto());
     }
 }
