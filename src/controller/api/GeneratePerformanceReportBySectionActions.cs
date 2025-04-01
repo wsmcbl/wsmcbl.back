@@ -20,6 +20,6 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId)
     {
         var result = await controller.getEnrollmentPerformanceByTeacherId(teacherId);
-        return Ok(result);
+        return Ok(result.mapListToDto());
     }
 }
