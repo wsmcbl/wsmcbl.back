@@ -6,7 +6,7 @@ public class StudentEntity
 {
     public string studentId { get; set; } = null!;
     public string? enrollmentId { get; set; }
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public bool isApproved { get; set; }
     public bool isRepeating { get; set; }
     public DateTime createdAt { get; set; }
@@ -32,7 +32,7 @@ public class StudentEntity
 
     public void setSchoolyear(string schoolYearId)
     {
-        schoolYear = schoolYearId;
+        schoolyearId = schoolYearId;
     }
 
     public string fullName()
