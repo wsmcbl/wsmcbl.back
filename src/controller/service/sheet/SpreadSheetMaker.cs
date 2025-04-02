@@ -70,7 +70,8 @@ public class SpreadSheetMaker
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
         
         var user = await daoFactory.userDao!.getById(userId);
-        var enrollment = await daoFactory.enrollmentDao!.getFullById(enrollmentId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        var subjectList = await daoFactory.academySubjectDao!.getListByEnrollmentId(enrollmentId, partial);
         var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
         
         var sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
@@ -78,7 +79,8 @@ public class SpreadSheetMaker
             .withSchoolyear(schoolyear.label)
             .withTeacher(teacher!)
             .withUserAlias(user.getAlias())
-            .withEnrollment(enrollment)
+            .withEnrollment(enrollment!.label)
+            .withSubjectList(subjectList)
             .withStudentList(studentList)
             .build();
 
