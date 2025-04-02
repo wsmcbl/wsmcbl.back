@@ -44,7 +44,6 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
     [Route("export")]
-    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string teacherId, [Required] [FromQuery] int partial)
     {
         var result = await controller.getEnrollmentGradeSummary(teacherId, partial, getAuthenticatedUserId());
