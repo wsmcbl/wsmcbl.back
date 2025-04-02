@@ -4,7 +4,7 @@ using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.sheet;
 
-public class EnrollmentGradeSummarySheetBuilder
+public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 {
     private int partial { get; set; }
     private string schoolyear { get; set; } = null!;
@@ -15,20 +15,13 @@ public class EnrollmentGradeSummarySheetBuilder
     private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     private List<StudentEntity> studentList { get; set; } = null!;
     
-    private IXLWorksheet? worksheet { get; set; }
-    
-    public byte[] getSpreadSheet()
+    public override byte[] getSpreadSheet()
     {
-        lastColumnName = getColumnName(columnQuantity);
-        
         using var workbook = new XLWorkbook();
-        worksheet = workbook.Worksheets.Add(enrollmentLabel);
-        worksheet.Style.Font.FontSize = 12;
-        
-        worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
+        initWorksheet(workbook, enrollmentLabel);
         
         setTitle();
-        setDate(6);
+        setDate(6, userAlias);
         const int headerRow = 9;
         setHeader(headerRow);
         
@@ -57,7 +50,7 @@ public class EnrollmentGradeSummarySheetBuilder
 
     private void setWith(int headerRow, int lastRow)
     {
-        var range = worksheet!.Range($"{getColumnName(7)}{headerRow}:{lastColumnName}{lastRow}");
+        var range = worksheet.Range($"{getColumnName(7)}{headerRow}:{lastColumnName}{lastRow}");
         range.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         
         foreach (var column in worksheet.Columns($"{getColumnName(6)}:{getColumnName(columnQuantity - 1)}")) 
@@ -66,21 +59,10 @@ public class EnrollmentGradeSummarySheetBuilder
         }
     }
 
-    private void setBorder(int lastRow, int headerRow)
-    {
-        var tableRange = worksheet!.Range($"B{headerRow}:{lastColumnName}{lastRow}");
-
-        tableRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
-    }
-
     private void setBody(int headerRow, StudentEntity student, int pos)
     {
         var bodyColumn = 2;
-        worksheet!.Cell(headerRow, bodyColumn++).Value = pos;
+        worksheet.Cell(headerRow, bodyColumn++).Value = pos;
         worksheet.Cell(headerRow, bodyColumn++).Value = student.studentId;
         worksheet.Cell(headerRow, bodyColumn++).Value = student.student.minedId.getOrDefault();  
         worksheet.Cell(headerRow, bodyColumn++).Value = student.fullName(); 
@@ -91,15 +73,15 @@ public class EnrollmentGradeSummarySheetBuilder
         
         foreach (var result in gradeList)
         {
-            worksheet!.Cell(headerRow, bodyColumn).Value = result.label;
-            worksheet!.Cell(headerRow, bodyColumn + 1).Value = result.grade;
+            worksheet.Cell(headerRow, bodyColumn).Value = result.label;
+            worksheet.Cell(headerRow, bodyColumn + 1).Value = result.grade;
             bodyColumn += 2;
         }
 
-        worksheet!.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).getConductLabel();
-        worksheet!.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).conductGrade.ToString("F2");
+        worksheet.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).getConductLabel();
+        worksheet.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).conductGrade.ToString("F2");
         
-        worksheet!.Cell(headerRow, bodyColumn ).Value = student.getAverage(1).grade.ToString("F2");
+        worksheet.Cell(headerRow, bodyColumn ).Value = student.getAverage(1).grade.ToString("F2");
     }
 
     private void setHeader(int headerRow)
@@ -107,7 +89,7 @@ public class EnrollmentGradeSummarySheetBuilder
         var headerColumn = 2;
         setHeaderEnrollment(headerRow - 1);
         
-        var headerStyle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}");
+        var headerStyle = worksheet.Range($"B{headerRow}:{lastColumnName}{headerRow}");
         headerStyle.Style.Font.Bold = true;
         headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -126,7 +108,7 @@ public class EnrollmentGradeSummarySheetBuilder
         IXLRange? result;
         foreach (var item in subjectList)
         {
-            result = worksheet!
+            result = worksheet
                 .Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}")
                 .Merge();
             result.Value = item.initials;
@@ -134,18 +116,18 @@ public class EnrollmentGradeSummarySheetBuilder
             headerColumn += 2;
         }
         
-        result = worksheet!
+        result = worksheet
             .Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}")
             .Merge();
         result.Value = "Conducta";
             
         headerColumn += 2;
-        worksheet!.Cell(headerRow, headerColumn).Value = "Promedio";
+        worksheet.Cell(headerRow, headerColumn).Value = "Promedio";
     }
 
     private void setHeaderEnrollment(int headerRow)
     {
-        var enrollmentTitle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}").Merge();
+        var enrollmentTitle = worksheet.Range($"B{headerRow}:{lastColumnName}{headerRow}").Merge();
         enrollmentTitle.Value = enrollmentLabel;
         enrollmentTitle.Style.Font.Bold = true;
         enrollmentTitle.Style.Font.FontSize = 13;
@@ -157,7 +139,7 @@ public class EnrollmentGradeSummarySheetBuilder
     private void setTitle()
     {
         var titleRow = 2;
-        var title = worksheet!.Range($"B{titleRow}:{lastColumnName}{titleRow}").Merge();
+        var title = worksheet.Range($"B{titleRow}:{lastColumnName}{titleRow}").Merge();
         title.Value = "Colegio Bautista Libertad";
         title.Style.Font.Bold = true;
         title.Style.Font.FontSize = 14;
@@ -180,35 +162,11 @@ public class EnrollmentGradeSummarySheetBuilder
         subTitleTeacher.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
         worksheet.Row(titleRow + 1).Height = 18;
     }
-
-    private void setDate(int row)
-    {
-        var dateCell = worksheet!.Range($"B{row}:{lastColumnName}{row}").Merge();
-        dateCell.Value = $"Generado por wsmcbl el {DateTime.UtcNow.toStringUtc6()}, {userAlias}.";
-        dateCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-    }
     
-    private int columnQuantity { get; set; }
-    
-    private string lastColumnName { get; set; } = null!;
-    
-    private void setColumnQuantity()
+    protected override void setColumnQuantity()
     {
         var quantity = subjectList.Count;
         columnQuantity = 6 + 2*quantity + 2 + 1;
-    }
-    
-    private static string getColumnName(int counter)
-    {
-        var result = "";
-        while (counter > 0)
-        {
-            var modulo = (counter - 1) % 26;
-            result = Convert.ToChar(65 + modulo) + result;
-            counter = (counter - 1) / 26;
-        }
-
-        return result;
     }
 
     public class Builder
