@@ -118,7 +118,13 @@ SELECT s.studentid,
        d.tag as degreePosition,
        RIGHT(e.label, 1) AS section,
        e.tag as sectionPosition,
-       a.createdAt as enrollDate,
+       a.createdAt as enro-- grade_average_view view
+CREATE VIEW academy.grade_average_view AS
+SELECT row_number() OVER (ORDER BY gv.studentid) AS id,
+       gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid,
+       gv.partial, AVG(gv.grade) as grade, AVG(gv.conductgrade) as conductgrade   
+FROM academy.grade_view gv
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;llDate,
        a.isRepeating
 FROM secretary.student s 
 JOIN secretary.studenttutor t on t.tutorid = s.tutorid
@@ -174,10 +180,23 @@ JOIN academy.enrollment e ON e.enrollmentid = sp.enrollmentid;
 
 
 
+
+-- conduct_grade_average_view view
+CREATE VIEW academy.conduct_grade_average_view AS
+SELECT gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, AVG(gv.conductgrade) as conductgrade
+FROM academy.grade_view gv
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;
+
+
 -- grade_average_view view
 CREATE VIEW academy.grade_average_view AS
 SELECT row_number() OVER (ORDER BY gv.studentid) AS id,
        gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid,
-       gv.partial, AVG(gv.grade) as grade, AVG(gv.conductgrade) as conductgrade   
+       gv.partial, (SUM(gv.grade) + cd.conductgrade) / (COUNT(gv.grade) + 1) as grade, cd.conductgrade
 FROM academy.grade_view gv
-GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;
+         LEFT JOIN academy.conduct_grade_average_view cd ON
+    cd.studentid = gv.studentid AND
+    cd.partialid = gv.partialid AND
+    cd.enrollmentid = gv.enrollmentid AND
+    cd.schoolyearid = gv.schoolyearid
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial, cd.conductgrade;

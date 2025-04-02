@@ -15,4 +15,9 @@ public class GradeAverageView
     {
         return GradeEntity.getLabelByGrade(grade);
     }
+
+    public string getConductLabel()
+    {
+        return GradeEntity.getLabelByGrade(conductGrade);
+    }
 }

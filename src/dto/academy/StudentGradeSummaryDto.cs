@@ -9,10 +9,11 @@ public class StudentGradeSummaryDto
     public string minedId { get; set; }
     public string fullName { get; set; }
     public bool sex { get; set; }
-    public List<StudentGradeViewDto> averageList {get; set;}
-    public decimal grade { get; set; }
-    public string label { get; set; }
+    public List<StudentGradeViewDto> gradeList {get; set;}
+    public decimal gradeAverage { get; set; }
+    public string labelAverage { get; set; }
     public decimal conductGrade { get; set; }
+    public string conductGradeLabel { get; set; }
 
     public StudentGradeSummaryDto(StudentEntity parameter, int partial)
     {
@@ -21,11 +22,12 @@ public class StudentGradeSummaryDto
         fullName = parameter.fullName();
         sex = parameter.student.sex;
         
-        averageList = parameter.gradeList!.Select(e => new StudentGradeViewDto(e)).ToList();
+        gradeList = parameter.gradeList!.Select(e => new StudentGradeViewDto(e)).ToList();
         
         var average = parameter.getAverage(partial);
-        grade = average.grade;
-        label = average.getLabel();
+        gradeAverage = average.grade;
+        labelAverage = average.getLabel();
         conductGrade = average.conductGrade;
+        conductGradeLabel = average.getConductLabel();
     }
 }
