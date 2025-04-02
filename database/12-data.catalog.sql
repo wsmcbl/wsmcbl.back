@@ -64,37 +64,35 @@ VALUES (3, false, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (4, false, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (4, false, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (4, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (4, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (4, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (4, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (4, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
        (4, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM', 2, 4, true),
        (4, false, 3, 'Conociendo mi Mundo', 'CM', 2, 5, true),
        (4, false, 3, 'Matemáticas', 'Mat', 3, 6, true),
-       (4, false, 3, 'Educación Cristiana', 'EC', 2, 9, true),
-       (4, false, 3, 'Computación', 'COMP', 3, 1, true);
+       (4, false, 3, 'Educación Cristiana', 'EC', 2, 9, true);
 
 
 -- 2do grado -- 
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (5, false, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (5, false, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (5, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (5, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (5, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (5, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (5, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
        (5, false, 3, 'Derecho y Dignidad de las mujeres', 'DDM', 2, 4, true),
        (5, false, 3, 'Conociendo mi Mundo', 'CM', 2, 5, true),
        (5, false, 3, 'Matemáticas', 'Mat', 3, 6, true),
-       (5, false, 3, 'Educación Cristiana', 'EC', 2, 9, true),
-       (5, false, 3, 'Computación', 'COMP', 3, 1, true);
+       (5, false, 3, 'Educación Cristiana', 'EC', 2, 9, true);
 
 
 -- 3er grado -- 
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (6, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (6, true, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (6, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (6, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (6, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (6, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (6, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
@@ -102,15 +100,14 @@ VALUES (6, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (6, true, 3, 'Estudios Sociales', 'ES', 2, 5, true),
        (6, true, 3, 'Ciencias Naturales', 'CN', 3, 2, true),
        (6, true, 3, 'Matemáticas', 'Mat', 3, 6, true),
-       (6, false, 3, 'Educación Cristiana', 'EC', 2, 9, true),
-       (6, false, 3, 'Computación', 'COMP', 3, 1, true);
+       (6, false, 3, 'Educación Cristiana', 'EC', 2, 9, true);
 
 
 -- 4to grado -- 
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (7, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (7, true, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (7, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (7, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (7, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (7, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (7, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
@@ -118,15 +115,14 @@ VALUES (7, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (7, true, 3, 'Estudios Sociales', 'ES', 2, 5, true),
        (7, true, 3, 'Ciencias Naturales', 'CN', 3, 2, true),
        (7, true, 3, 'Matemáticas', 'Mat', 3, 6, true),
-       (7, false, 3, 'Educación Cristiana', 'EC', 2, 9, true),
-       (7, false, 3, 'Computación', 'COMP', 3, 1, true);
+       (7, false, 3, 'Educación Cristiana', 'EC', 2, 9, true);
 
 
 -- 5to grado -- 
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (8, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (8, true, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (8, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (8, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (8, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (8, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (8, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
@@ -142,7 +138,7 @@ VALUES (8, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (9, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (9, true, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (9, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (9, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (9, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (9, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (9, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
@@ -159,7 +155,7 @@ VALUES (9, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (10, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
        (10, true, 3, 'Lengua Extranjera (Inglés)', 'Ing', 1, 2, true),
-       (10, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC', 1, 3, true),
+       (10, false, 3, 'Taller de Arte y Cultura', 'TAC', 1, 3, true),
        (10, false, 3, 'Creciendo en Valores', 'C en V', 2, 1, true),
        (10, false, 3, 'Educación Física', 'EF', 2, 2, true),
        (10, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP', 2, 3, true),
@@ -176,7 +172,7 @@ VALUES (10, true, 3, 'Lengua y Literatura', 'L y L', 1, 1, true),
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (11, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (11, true, 3, 'Lengua Extranjera (Inglés)', 'Ing',1,2, true),
-       (11, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC',1,3, true),
+       (11, false, 3, 'Taller de Arte y Cultura', 'TAC',1,3, true),
        (11, false, 3, 'Creciendo en Valores', 'C en V',2,1, true),
        (11, false, 3, 'Educación Física', 'EF',2,2, true),
        (11, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP',2,3, true),
@@ -193,7 +189,7 @@ VALUES (11, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
 INSERT INTO secretary.subjectcatalog(degreecatalogid, ismandatory, semester, name, initials, areaid, number, isactive)
 VALUES (12, true, 3, 'Lengua y Literatura', 'L y L',1,1, true),
        (12, true, 3, 'Lengua Extranjera (Inglés)', 'Ing',1,2, true),
-       (12, false, 3, 'Taller de Arte y Cultura (Música)', 'TAC',1,3, true),
+       (12, false, 3, 'Taller de Arte y Cultura', 'TAC',1,3, true),
        (12, false, 3, 'Creciendo en Valores', 'C en V',2,1, true),
        (12, false, 3, 'Educación Física', 'EF',2,2, true),
        (12, false, 3, 'Educación para Aprender, Emprender, Prosperar', 'AEP',2,3, true),
