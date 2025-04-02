@@ -97,9 +97,9 @@ public class EnrollmentGradeSummarySheetBuilder
         }
 
         worksheet!.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).getConductLabel();
-        worksheet!.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).conductGrade;
+        worksheet!.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).conductGrade.ToString("F2");
         
-        worksheet!.Cell(headerRow, bodyColumn ).Value = student.getAverage(1).grade;
+        worksheet!.Cell(headerRow, bodyColumn ).Value = student.getAverage(1).grade.ToString("F2");
     }
 
     private void setHeader(int headerRow)
