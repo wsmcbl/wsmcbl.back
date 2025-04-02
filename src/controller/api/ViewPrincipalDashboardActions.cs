@@ -89,9 +89,9 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     [HttpGet]
     [Route("enrollments/{enrollmentId}/grades/export")]
     [Authorizer("report:principal:read")]
-    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partialId)
+    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partial)
     {
-        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partialId, getAuthenticatedUserId());
+        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partial, getAuthenticatedUserId());
         
         return File(result, getContentType(2), $"{enrollmentId}.grades-summary.xlsx");
     }

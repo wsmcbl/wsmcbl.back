@@ -1,5 +1,6 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.service.sheet;
@@ -63,14 +64,20 @@ public class SpreadSheetMaker
         return sheetBuilder.getSpreadSheet();
     }
 
-    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partialId, string userId)
+    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partial, string userId)
     {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        
         var user = await daoFactory.userDao!.getById(userId);
         var enrollment = await daoFactory.enrollmentDao!.getFullById(enrollmentId);
-        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
         
         var sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
-            .withUser(user)
+            .withPartial(partial)
+            .withSchoolyear(schoolyear.label)
+            .withTeacher(teacher!)
+            .withUserAlias(user.getAlias())
             .withEnrollment(enrollment)
             .withStudentList(studentList)
             .build();
