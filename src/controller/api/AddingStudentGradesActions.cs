@@ -90,7 +90,7 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     }
     
     /// <summary>Returns subject grades and students for enrollment by partial in XLSX format.</summary>
-    /// <response code="200">Returns the list, the list can be empty.</response>
+    /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher, enrollment or partial not found.</response>
@@ -103,6 +103,6 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     {
         var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
         var result = await controller.getEnrollmentToAddGradesDocument(subjectPartial, getAuthenticatedUserId());
-        return File(result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{teacherId}.{enrollmentId}.grades.xlsx");
+        return File(result, getContentType(2), $"{teacherId}.{enrollmentId}.grades.xlsx");
     }
 }
