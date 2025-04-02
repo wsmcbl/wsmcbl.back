@@ -8,11 +8,11 @@ public class EnrollmentGradeSummarySheetBuilder
 {
     private int partial { get; set; }
     private string schoolyear { get; set; } = null!;
+    private string enrollmentLabel { get; set; } = null!;
     private string userAlias { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
-    private EnrollmentEntity enrollment { get; set; } = null!;
 
-    private List<SubjectEntity> subjectList { get; set; } = null!;
+    private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     private List<StudentEntity> studentList { get; set; } = null!;
     
     private IXLWorksheet? worksheet { get; set; }
@@ -22,7 +22,7 @@ public class EnrollmentGradeSummarySheetBuilder
         lastColumnName = getColumnName(columnQuantity);
         
         using var workbook = new XLWorkbook();
-        worksheet = workbook.Worksheets.Add(enrollment.label);
+        worksheet = workbook.Worksheets.Add(enrollmentLabel);
         worksheet.Style.Font.FontSize = 12;
         
         worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
@@ -129,7 +129,7 @@ public class EnrollmentGradeSummarySheetBuilder
             result = worksheet!
                 .Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}")
                 .Merge();
-            result.Value = item.getInitials;
+            result.Value = item.initials;
             
             headerColumn += 2;
         }
@@ -146,7 +146,7 @@ public class EnrollmentGradeSummarySheetBuilder
     private void setHeaderEnrollment(int headerRow)
     {
         var enrollmentTitle = worksheet!.Range($"B{headerRow}:{lastColumnName}{headerRow}").Merge();
-        enrollmentTitle.Value = enrollment.label;
+        enrollmentTitle.Value = enrollmentLabel;
         enrollmentTitle.Style.Font.Bold = true;
         enrollmentTitle.Style.Font.FontSize = 13;
         enrollmentTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -166,7 +166,7 @@ public class EnrollmentGradeSummarySheetBuilder
         worksheet.Row(titleRow).Height = 25;
         
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Sabana {getPartial()} {schoolyear}";
+        subTitle.Value = $"Sabana {PartialEntity.getLabel(partial)} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -246,10 +246,16 @@ public class EnrollmentGradeSummarySheetBuilder
             return this;
         }
         
-        public Builder withEnrollment(EnrollmentEntity parameter)
+        public Builder withEnrollment(string parameter)
         {
-            sheetBuilder.enrollment = parameter;
-            sheetBuilder.setSubjectList();
+            sheetBuilder.enrollmentLabel = parameter;
+            return this;
+        }
+        
+        public Builder withSubjectList(List<SubjectEntity> parameter)
+        {
+            sheetBuilder.subjectList = parameter.Select(e => e.secretarySubject!).ToList();
+            sheetBuilder.setColumnQuantity();
             return this;
         }
         
@@ -258,29 +264,5 @@ public class EnrollmentGradeSummarySheetBuilder
             sheetBuilder.studentList = parameter;
             return this;
         }
-    }
-
-    private void setSubjectList()
-    {
-        subjectList = enrollment.subjectList!
-            .Where(e => e.secretarySubject!.semester == 3 || e.secretarySubject!.semester == getSemester())
-            .OrderBy(e => e.secretarySubject!.areaId)
-            .ThenBy(e => e.secretarySubject!.number).ToList();
-        
-        setColumnQuantity();
-    }
-
-    private int getSemester() => partial <= 2 ? 1 : 2;
-
-    private string getPartial()
-    {
-        return partial switch
-        {
-            1 => "I parcial",
-            2 => "II parcial",
-            3 => "III parcial",
-            4 => "IV parcial",
-            _ => "Parcial desconocido"
-        };
     }
 }
