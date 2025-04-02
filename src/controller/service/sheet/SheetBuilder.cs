@@ -1,3 +1,4 @@
+using System.Text;
 using ClosedXML.Excel;
 using wsmcbl.src.utilities;
 
@@ -24,15 +25,15 @@ public abstract class SheetBuilder
     
     protected static string getColumnName(int value)
     {
-        var result = "";
+        var result = new StringBuilder();
         while (value > 0)
         {
             var modulo = (value - 1) % 26;
-            result = Convert.ToChar(65 + modulo) + result;
+            result.Insert(0, Convert.ToChar(65 + modulo));
             value = (value - 1) / 26;
         }
 
-        return result;
+        return result.ToString();
     }
     
     protected void setBorder(int lastRow, int headerRow)

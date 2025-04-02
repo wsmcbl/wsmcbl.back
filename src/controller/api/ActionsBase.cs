@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.api;
 
 public class ActionsBase : ControllerBase
 {
-    protected string getContentType(int value)
+    protected static string getContentType(int value)
     {
         return value switch
         {
