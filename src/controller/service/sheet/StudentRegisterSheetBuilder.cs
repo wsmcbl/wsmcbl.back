@@ -6,25 +6,18 @@ using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.sheet;
 
-public class StudentRegisterSheetBuilder
+public class StudentRegisterSheetBuilder : SheetBuilder
 {
     private UserEntity user { get; set; } = null!;
     private SchoolyearEntity schoolyear { get; set; } = null!;
     private List<StudentRegisterView> registerList { get; set; } = null!;
-
-    private const string lastColumnName = "V";
     
-    private IXLWorksheet? worksheet { get; set; }
-    
-    public byte[] getSpreadSheet()
+    public override byte[] getSpreadSheet()
     {
         var title = $"Padrón {schoolyear.label}";
         
         using var workbook = new XLWorkbook();
-        worksheet = workbook.Worksheets.Add(title);
-        worksheet.Style.Font.FontSize = 12;
-        
-        worksheet.CellsUsed().Style.NumberFormat.SetFormat("@");
+        initWorksheet(workbook, title);
         
         setTitle(title);
         setDate(5, user.getAlias());
@@ -55,24 +48,6 @@ public class StudentRegisterSheetBuilder
         stream.Position = 0;
 
         return stream.ToArray();
-    }
-
-    private void setDate(int row, string alias)
-    {
-        var dateCell = worksheet!.Range($"B{row}:{lastColumnName}{row}").Merge();
-        dateCell.Value = $"Generado por wsmcbl el {DateTime.UtcNow.toStringUtc6()}, {alias}.";
-        dateCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-    }
-
-    private void setBorder(int lastRow, int headerRow)
-    {
-        var tableRange = worksheet!.Range($"B{headerRow}:{lastColumnName}{lastRow}");
-
-        tableRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
 
     private void setTitle(string title)
@@ -154,27 +129,32 @@ public class StudentRegisterSheetBuilder
         worksheet.Cell(headerRow, headerColumn).Value = "F. matrícula";
     }
 
+    protected override void setColumnQuantity()
+    {
+        columnQuantity = 22;
+    }
 
     public class Builder
     {
-        private readonly StudentRegisterSheetBuilder latexBuilder;
+        private readonly StudentRegisterSheetBuilder sheetBuilder;
 
         public Builder()
         {
-            latexBuilder = new StudentRegisterSheetBuilder();
+            sheetBuilder = new StudentRegisterSheetBuilder();
+            sheetBuilder.setColumnQuantity();
         }
 
-        public StudentRegisterSheetBuilder build() => latexBuilder;
+        public StudentRegisterSheetBuilder build() => sheetBuilder;
         
         public Builder withUser(UserEntity parameter)
         {
-            latexBuilder.user = parameter;
+            sheetBuilder.user = parameter;
             return this;
         }
         
         public Builder withSchoolyear(SchoolyearEntity parameter)
         {
-            latexBuilder.schoolyear = parameter;
+            sheetBuilder.schoolyear = parameter;
             return this;
         }
         
@@ -185,7 +165,7 @@ public class StudentRegisterSheetBuilder
                 throw new InternalException("There is not student register.");
             }
             
-            latexBuilder.registerList = parameter;
+            sheetBuilder.registerList = parameter;
             return this;
         }
     }

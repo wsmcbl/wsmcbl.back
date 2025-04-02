@@ -65,7 +65,7 @@ builder.Services.AddTransient<ViewEnrollmentGuideController>();
 builder.Services.AddTransient<CreateSchoolyearController>();
 builder.Services.AddTransient<CreateSubjectDataController>();
 builder.Services.AddTransient<CreateTariffDataController>();
-builder.Services.AddTransient<ViewDirectorDashboardController>();
+builder.Services.AddTransient<ViewPrincipalDashboardController>();
 
 builder.Services.AddTransient<GeneratePerformanceReportBySectionController>();
 

@@ -7,6 +7,7 @@ namespace wsmcbl.src.controller.service.sheet;
 public class SpreadSheetMaker
 {
     private DaoFactory daoFactory { get; set; }
+    private SheetBuilder sheetBuilder { get; set; } = null!;
 
     public SpreadSheetMaker(DaoFactory daoFactory)
     {
@@ -19,7 +20,7 @@ public class SpreadSheetMaker
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var registerList = await daoFactory.studentDao!.getStudentRegisterListForCurrentSchoolyear();
         
-        var sheetBuilder = new StudentRegisterSheetBuilder.Builder()
+        sheetBuilder = new StudentRegisterSheetBuilder.Builder()
             .withUser(user)
             .withSchoolyear(currentSchoolyear)
             .withRegisterList(registerList)
@@ -52,12 +53,35 @@ public class SpreadSheetMaker
         
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
-        var sheetBuilder = new SubjectGradesSheetBuilder.Builder()
+        sheetBuilder = new SubjectGradesSheetBuilder.Builder()
             .withUserAlias(user.getAlias())
             .withSchoolyear(currentSchoolyear.label)
             .withTeacher(teacher)
             .withEnrollment(enrollment)
             .withSubjectPartialList(subjectPartialList)
+            .build();
+
+        return sheetBuilder.getSpreadSheet();
+    }
+
+    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partial, string userId)
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        
+        var user = await daoFactory.userDao!.getById(userId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        var subjectList = await daoFactory.academySubjectDao!.getListByEnrollmentId(enrollmentId, partial);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+        
+        sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
+            .withPartial(partial)
+            .withSchoolyear(schoolyear.label)
+            .withTeacher(teacher!)
+            .withUserAlias(user.getAlias())
+            .withEnrollment(enrollment!.label)
+            .withSubjectList(subjectList)
+            .withStudentList(studentList)
             .build();
 
         return sheetBuilder.getSpreadSheet();

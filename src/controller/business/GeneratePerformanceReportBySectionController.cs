@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.sheet;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
@@ -13,5 +14,13 @@ public class GeneratePerformanceReportBySectionController : BaseController
     { 
         var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         return await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+    }
+
+    public async Task<byte[]> getEnrollmentGradeSummary(string teacherId, int partial, string userId)
+    {
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
+        
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partial, userId);
     }
 }
