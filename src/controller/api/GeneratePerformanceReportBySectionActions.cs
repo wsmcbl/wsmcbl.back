@@ -43,11 +43,11 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
-    [Route("export")]
+    [Route("grades/summary/export")]
     public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string teacherId, [Required] [FromQuery] int partial)
     {
         var result = await controller.getEnrollmentGradeSummary(teacherId, partial, getAuthenticatedUserId());
         
-        return File(result, getContentType(2), "grades-summary.xlsx");
+        return File(result, getContentType(2), $"{teacherId}.grades-summary.xlsx");
     }
 }
