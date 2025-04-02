@@ -1,6 +1,5 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
-using wsmcbl.src.model.config;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.service.sheet;
@@ -8,6 +7,7 @@ namespace wsmcbl.src.controller.service.sheet;
 public class SpreadSheetMaker
 {
     private DaoFactory daoFactory { get; set; }
+    private SheetBuilder sheetBuilder { get; set; } = null!;
 
     public SpreadSheetMaker(DaoFactory daoFactory)
     {
@@ -20,7 +20,7 @@ public class SpreadSheetMaker
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var registerList = await daoFactory.studentDao!.getStudentRegisterListForCurrentSchoolyear();
         
-        var sheetBuilder = new StudentRegisterSheetBuilder.Builder()
+        sheetBuilder = new StudentRegisterSheetBuilder.Builder()
             .withUser(user)
             .withSchoolyear(currentSchoolyear)
             .withRegisterList(registerList)
@@ -53,7 +53,7 @@ public class SpreadSheetMaker
         
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
-        var sheetBuilder = new SubjectGradesSheetBuilder.Builder()
+        sheetBuilder = new SubjectGradesSheetBuilder.Builder()
             .withUserAlias(user.getAlias())
             .withSchoolyear(currentSchoolyear.label)
             .withTeacher(teacher)
@@ -74,7 +74,7 @@ public class SpreadSheetMaker
         var subjectList = await daoFactory.academySubjectDao!.getListByEnrollmentId(enrollmentId, partial);
         var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
         
-        var sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
+        sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
             .withPartial(partial)
             .withSchoolyear(schoolyear.label)
             .withTeacher(teacher!)
