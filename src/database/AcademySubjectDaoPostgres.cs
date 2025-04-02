@@ -14,6 +14,18 @@ public class AcademySubjectDaoPostgres(PostgresContext context)
             .ToListAsync();
     }
 
+    public async Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId, int partial)
+    {
+        var partialSemester = partial <= 2 ? 1 : 2;
+        
+        return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.secretarySubject)
+            .Where(e => e.secretarySubject!.semester == 3 || e.secretarySubject.semester == partialSemester)
+            .OrderBy(e => e.secretarySubject!.areaId)
+            .ThenBy(e => e.secretarySubject!.number)
+            .ToListAsync();
+    }
+
     public async Task<SubjectEntity?> getBySubjectIdAndEnrollmentId(string subjectId, string enrollmentId)
     {
         return await entities.Where(e => e.subjectId == subjectId && e.enrollmentId == enrollmentId)
