@@ -202,6 +202,7 @@ internal class AcademyContext
             entity.Property(e => e.teacherId).HasColumnName("teacherid");
             entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.semester).HasColumnName("semester");
             entity.Property(e => e.partial).HasColumnName("partial");
             entity.Property(e => e.grade).HasColumnName("grade");
             entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
