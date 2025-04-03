@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
@@ -8,9 +9,9 @@ public class GenerateEvaluationStatsBySectionController : BaseController
     {
     }
     
-    public async Task<object?> getEvaluationStatsByTeacherId(string teacherId, int partial)
+    public async Task<List<StudentEntity>> getStudentListByTeacherId(string teacherId, int partial)
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        var controller = new GeneratePerformanceReportBySectionController(daoFactory);
+        return await controller.getStudentListByTeacherId(teacherId, partial);
     }
 }
