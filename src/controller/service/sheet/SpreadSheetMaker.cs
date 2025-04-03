@@ -86,4 +86,35 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
+
+    public async Task<byte[]> getEvaluationStatisticsByTeacher(string enrollmentId, int partial, string userId)
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        
+        var user = await daoFactory.userDao!.getById(userId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial);
+        
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
+        var currentPartial = partialList.FirstOrDefault(e => e.isPartialPosition(partial));
+        if (currentPartial == null)
+        {
+            throw new EntityNotFoundException($"Entity of type (Partial) with partial ({partial}) not found.");
+        }
+        var subjectPartialList = await daoFactory.subjectPartialDao!
+            .getListByPartialIdAndEnrollmentId(currentPartial.partialId, enrollmentId);
+        
+        sheetBuilder = new EvaluationStatisticsByTeacherSheetBuilder.Builder()
+            .withPartial(partial)
+            .withSchoolyear(schoolyear.label)
+            .withTeacher(teacher!)
+            .withUserAlias(user.getAlias())
+            .withEnrollment(enrollment!.label)
+            .withSubjectList(subjectList)
+            .withSubjectPartialList(subjectPartialList)
+            .build();
+
+        return sheetBuilder.getSpreadSheet();
+    }
 }
