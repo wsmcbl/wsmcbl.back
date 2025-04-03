@@ -10,9 +10,9 @@ public class EvaluatedSummaryDto
     public EvaluationStatsDto failedFromOneToTwo { get; set; }
     public EvaluationStatsDto failedFromThreeToMore { get; set; }
 
-    public EvaluatedSummaryDto(List<StudentEntity> parameter, List<StudentEntity> intial, int partial)
+    public EvaluatedSummaryDto(List<StudentEntity> parameter, List<StudentEntity> initial)
     {
-        initialQuantity = new EvaluationStatsDto(intial);
+        initialQuantity = new EvaluationStatsDto(initial);
         currentQuantity = new EvaluationStatsDto(parameter);
 
         var approvedList = parameter.Where(e => e.passedAllSubjects()).ToList();
