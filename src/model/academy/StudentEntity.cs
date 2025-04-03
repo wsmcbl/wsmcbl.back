@@ -90,7 +90,7 @@ public class StudentEntity
 
     public bool hasNotEvaluated()
     {
-        return gradeList!.All(e => e.grade == 0);
+        return gradeList!.All(e => e.grade == 0 && e.conductGrade == 0);
     }
 
     public bool isWithInRange(string label, int partial)

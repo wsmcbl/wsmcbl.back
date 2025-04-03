@@ -8,6 +8,8 @@ public class GradeEntity
     public string? label { get; set; }
     public decimal? grade { get; set; }
     public decimal? conductGrade { get; set; }
+    
+    public model.secretary.StudentEntity? student { get; set; }
 
     public void updateGrades(decimal? gradeValue, decimal? conductGradeValue)
     {
