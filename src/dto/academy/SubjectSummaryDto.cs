@@ -8,15 +8,15 @@ public class SubjectSummaryDto
     public EvaluationStatsDto failed { get; set; }
     public EvaluationStatsDto notEvaluated { get; set; }
 
-    public SubjectSummaryDto(List<SubjectPartialEntity> parameter)
+    public SubjectSummaryDto(SubjectPartialEntity parameter)
     {
-        var approvedList = parameter.Where(e => e.isApproved()).ToList();
+        var approvedList = parameter.gradeList.Where(e => e.isApproved()).ToList();
         approved = new EvaluationStatsDto(approvedList);
         
-        var failedList = parameter.Where(e => !e.isApproved()).ToList();
+        var failedList = parameter.gradeList.Where(e => !e.isApproved()).ToList();
         failed = new EvaluationStatsDto(failedList);
         
-        var notEvaluatedList = parameter.Where(e => e.isNotEvaluated()).ToList();
+        var notEvaluatedList = parameter.gradeList.Where(e => e.isNotEvaluated()).ToList();
         notEvaluated = new EvaluationStatsDto(notEvaluatedList);
     }
 }
