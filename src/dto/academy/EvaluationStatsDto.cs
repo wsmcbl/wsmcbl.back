@@ -19,7 +19,7 @@ public class EvaluationStatsDto
     {
     }
 
-    public EvaluationStatsDto(List<GradeEntity> list) : this(list.Count, list.Count(e => e.student.sex))
+    public EvaluationStatsDto(List<GradeEntity> list) : this(list.Count, list.Count(e => e.student!.sex))
     {
     }
 }
