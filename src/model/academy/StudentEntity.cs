@@ -76,4 +76,15 @@ public class StudentEntity
 
         return result;
     }
+
+    public bool passedAllSubjects()
+    {
+        return gradeList!.All(e => e.grade >= 60);
+    }
+
+    public bool isFailed(int type)
+    {
+        var count = gradeList!.Count(e => e.grade < 60);
+        return type == 1 ? count <= 2 : count > 2;
+    }
 }
