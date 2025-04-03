@@ -29,4 +29,10 @@ public class GenerateEvaluationStatsBySectionController : BaseController
         
         return await daoFactory.subjectPartialDao!.getListByPartialIdAndEnrollmentId(currentPartial.partialId, enrollmentId);
     }
+
+    public async Task<byte[]> getEvaluationStatistics(string teacherId, int partial, string userId)
+    {
+        await Task.CompletedTask;
+        throw new NotImplementedException();
+    }
 }
