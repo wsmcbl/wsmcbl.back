@@ -38,4 +38,14 @@ public class GradeEntity
         
         return result;
     }
+
+    public bool isApproved()
+    {
+        return grade >= 60;
+    }
+
+    public bool isNotEvaluated()
+    {
+        return grade == 0 && conductGrade == 0;
+    }
 }
