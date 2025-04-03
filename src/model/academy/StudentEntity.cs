@@ -92,4 +92,10 @@ public class StudentEntity
     {
         return gradeList!.All(e => e.grade == 0);
     }
+
+    public bool isWithInRange(string label, int partial)
+    {
+        var average = getAverage(partial);
+        return GradeEntity.getLabelByGrade(average.grade).Equals(label); 
+    }
 }
