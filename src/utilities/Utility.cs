@@ -108,4 +108,7 @@ public static class Utility
     }
 
     public static string getOrDefault(this string? value) => string.IsNullOrWhiteSpace(value) ? "N/A" : value;
+    
+    public static decimal round(this decimal value) => Math.Round(value, 2);
+    public static decimal? round(this decimal? value) => value == null ? null : Math.Round((decimal)value, 2);
 }

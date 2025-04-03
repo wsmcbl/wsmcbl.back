@@ -25,9 +25,9 @@ public class StudentGradeSummaryDto
         gradeList = parameter.gradeList!.Select(e => new StudentGradeViewDto(e)).ToList();
         
         var average = parameter.getAverage(partial);
-        gradeAverage = average.grade;
+        gradeAverage = average.grade.round();
         labelAverage = average.getLabel();
-        conductGrade = average.conductGrade;
+        conductGrade = average.conductGrade.round();
         conductGradeLabel = average.getConductLabel();
     }
 }
