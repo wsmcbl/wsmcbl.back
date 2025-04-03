@@ -1,3 +1,5 @@
+using wsmcbl.src.model.academy;
+
 namespace wsmcbl.src.dto.academy;
 
 public class EvaluationStatsDto
@@ -11,5 +13,9 @@ public class EvaluationStatsDto
         total = parameter;
         this.males = males;
         females = parameter - males;
+    }
+
+    public EvaluationStatsDto(List<StudentEntity> list) : this(list.Count, list.Count(e => e.student.sex))
+    {
     }
 }
