@@ -12,16 +12,16 @@ public class EvaluatedSummaryDto
 
     public EvaluatedSummaryDto(List<StudentEntity> parameter, List<StudentEntity> intial, int partial)
     {
-        initialQuantity = new EvaluationStatsDto(intial.Count, intial.Count(e => e.student.sex));
-        currentQuantity = new EvaluationStatsDto(parameter.Count, parameter.Count(e => e.student.sex));
+        initialQuantity = new EvaluationStatsDto(intial);
+        currentQuantity = new EvaluationStatsDto(parameter);
 
         var approvedList = parameter.Where(e => e.isApproved(partial)).ToList();
-        approved = new EvaluationStatsDto(approvedList.Count, approvedList.Count(e => e.student.sex));
+        approved = new EvaluationStatsDto(approvedList);
         
         var failedFromOneToTwoList = parameter.Where(e => e.isFailed(1)).ToList();
-        failedFromOneToTwo = new EvaluationStatsDto(failedFromOneToTwoList.Count, failedFromOneToTwoList.Count(e => e.student.sex));
+        failedFromOneToTwo = new EvaluationStatsDto(failedFromOneToTwoList);
         
         var failedFromThreeToMoreList = parameter.Where(e => e.isFailed(2)).ToList();
-        failedFromThreeToMore = new EvaluationStatsDto(failedFromThreeToMoreList.Count, failedFromThreeToMoreList.Count(e => e.student.sex));
+        failedFromThreeToMore = new EvaluationStatsDto(failedFromThreeToMoreList);
     }
 }
