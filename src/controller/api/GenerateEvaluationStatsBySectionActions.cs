@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [ApiController]
 [Route("academy/teachers/{teacherId}/enrollments/guide/stats/evaluated")]
-//[Authorizer("teacher:enrollment:guide")]
+[Authorizer("teacher:enrollment:guide")]
 public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySectionController controller) : ActionsBase
 {
     /// <summary>Returns evaluated summary stats enrollment by teacher.</summary>
@@ -33,8 +33,8 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     [Route("subjects")]
     public async Task<IActionResult> getSubjectStats([Required] string teacherId, [Required] [FromQuery] int partial)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(new EvaluatedSummaryDto(result, result));
+        var result = await controller.getSubjectListByTeacherId(teacherId, partial);
+        return Ok(result.mapListToSummaryDto());
     }
     
     /// <summary>Returns distribution evaluated stats enrollment by teacher.</summary>
@@ -47,6 +47,6 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     public async Task<IActionResult> getDistributionStats([Required] string teacherId, [Required] [FromQuery] int partial)
     {
         var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(new DistributionSummaryDto(result, result));
+        return Ok(new DistributionSummaryDto(result, partial));
     }
 }
