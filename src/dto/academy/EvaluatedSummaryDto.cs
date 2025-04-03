@@ -9,6 +9,7 @@ public class EvaluatedSummaryDto
     public EvaluationStatsDto approved { get; set; }
     public EvaluationStatsDto failedFromOneToTwo { get; set; }
     public EvaluationStatsDto failedFromThreeToMore { get; set; }
+    public EvaluationStatsDto notEvaluated { get; set; }
 
     public EvaluatedSummaryDto(List<StudentEntity> parameter, List<StudentEntity> initial)
     {
@@ -23,5 +24,8 @@ public class EvaluatedSummaryDto
         
         var failedFromThreeToMoreList = parameter.Where(e => e.isFailed(2)).ToList();
         failedFromThreeToMore = new EvaluationStatsDto(failedFromThreeToMoreList);
+
+        var notEvaluatedList = parameter.Where(e => e.hasEvaluated()).ToList();
+        notEvaluated = new EvaluationStatsDto(notEvaluatedList);
     }
 }
