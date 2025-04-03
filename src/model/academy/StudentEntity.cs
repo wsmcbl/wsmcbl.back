@@ -87,4 +87,9 @@ public class StudentEntity
         var count = gradeList!.Count(e => e.grade < 60);
         return type == 1 ? count <= 2 : count > 2;
     }
+
+    public bool hasNotEvaluated()
+    {
+        return gradeList!.All(e => e.grade == 0);
+    }
 }

@@ -25,7 +25,7 @@ public class EvaluatedSummaryDto
         var failedFromThreeToMoreList = parameter.Where(e => e.isFailed(2)).ToList();
         failedFromThreeToMore = new EvaluationStatsDto(failedFromThreeToMoreList);
 
-        var notEvaluatedList = parameter.Where(e => e.hasEvaluated()).ToList();
+        var notEvaluatedList = parameter.Where(e => e.hasNotEvaluated()).ToList();
         notEvaluated = new EvaluationStatsDto(notEvaluatedList);
     }
 }
