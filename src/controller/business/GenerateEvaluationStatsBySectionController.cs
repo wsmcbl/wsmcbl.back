@@ -21,7 +21,7 @@ public class GenerateEvaluationStatsBySectionController : BaseController
         var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
-        var currentPartial = partialList.FirstOrDefault(e => e.partial == partial);
+        var currentPartial = partialList.FirstOrDefault(e => e.isPartialPosition(partial));
         if (currentPartial == null)
         {
             throw new EntityNotFoundException($"Entity of type (Partial) with partial ({partial}) not found.");
