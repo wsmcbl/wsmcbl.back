@@ -51,6 +51,8 @@ internal class AcademyContext
             entity.Property(e => e.grade).HasColumnType("decimal(18,2)").HasColumnName("grade");
             entity.Property(e => e.conductGrade).HasColumnType("decimal(18,2)").HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
+            
+            entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
         });
 
         modelBuilder.Entity<PartialEntity>(entity =>
@@ -200,6 +202,7 @@ internal class AcademyContext
             entity.Property(e => e.teacherId).HasColumnName("teacherid");
             entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.semester).HasColumnName("semester");
             entity.Property(e => e.partial).HasColumnName("partial");
             entity.Property(e => e.grade).HasColumnName("grade");
             entity.Property(e => e.conductGrade).HasColumnName("conductgrade");

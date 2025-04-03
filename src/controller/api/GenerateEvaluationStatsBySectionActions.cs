@@ -34,7 +34,7 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     public async Task<IActionResult> getSubjectStats([Required] string teacherId, [Required] [FromQuery] int partial)
     {
         var result = await controller.getSubjectListByTeacherId(teacherId, partial);
-        return Ok(new SubjectSummaryDto(result, result));
+        return Ok(result.mapListToSummaryDto());
     }
     
     /// <summary>Returns distribution evaluated stats enrollment by teacher.</summary>

@@ -8,7 +8,7 @@ public class EvaluationStatsDto
     public int males { get; set; }
     public int females { get; set; }
 
-    public EvaluationStatsDto(int parameter, int males)
+    private EvaluationStatsDto(int parameter, int males)
     {
         total = parameter;
         this.males = males;
@@ -16,6 +16,10 @@ public class EvaluationStatsDto
     }
 
     public EvaluationStatsDto(List<StudentEntity> list) : this(list.Count, list.Count(e => e.student.sex))
+    {
+    }
+
+    public EvaluationStatsDto(List<GradeEntity> list) : this(list.Count, list.Count(e => e.student!.sex))
     {
     }
 }
