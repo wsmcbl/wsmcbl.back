@@ -15,7 +15,7 @@ public class EvaluatedSummaryDto
         initialQuantity = new EvaluationStatsDto(intial);
         currentQuantity = new EvaluationStatsDto(parameter);
 
-        var approvedList = parameter.Where(e => e.isApproved(partial)).ToList();
+        var approvedList = parameter.Where(e => e.passedAllSubjects()).ToList();
         approved = new EvaluationStatsDto(approvedList);
         
         var failedFromOneToTwoList = parameter.Where(e => e.isFailed(1)).ToList();
