@@ -8,6 +8,8 @@ public class GradeEntity
     public string? label { get; set; }
     public decimal? grade { get; set; }
     public decimal? conductGrade { get; set; }
+    
+    public model.secretary.StudentEntity? student { get; set; }
 
     public void updateGrades(decimal? gradeValue, decimal? conductGradeValue)
     {
@@ -37,5 +39,15 @@ public class GradeEntity
         }
         
         return result;
+    }
+
+    public bool isApproved()
+    {
+        return grade >= 60;
+    }
+
+    public bool isNotEvaluated()
+    {
+        return grade == 0 && conductGrade == 0;
     }
 }
