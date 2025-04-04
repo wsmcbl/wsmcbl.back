@@ -109,14 +109,14 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
        
         addRow(headerRow++, bodyColumn, "Matrícula inicial", maleCount, total);
         addRow(headerRow++, bodyColumn, "Matrícula actual", maleCount, total);
-        addRowPercentage(headerRow++, bodyColumn, "Retención de matrícula",0.99m, 0.99m, 1);
+        addRowPercentage(headerRow++, bodyColumn, "Retención de matrícula (%)",1, 1, 1);
         
         var approvedList = studentList.Where(e => e.passedAllSubjects()).ToList();
         var approvedTotal = approvedList.Count;
         var approvedMaleCount = approvedList.Count(e => e.student.sex);
         
         addRow(headerRow++, bodyColumn, "Aprobados", approvedMaleCount, approvedTotal);
-        addRowPercentage(headerRow++, bodyColumn, "Rendimiento académico",
+        addRowPercentage(headerRow++, bodyColumn, "Rendimiento académico (%)",
             approvedMaleCount/maleCount, (approvedTotal - approvedMaleCount)/(total - maleCount), approvedTotal/total);
         
         var failedFromOneToTwoList = studentList.Where(e => e.isFailed(1)).ToList();
@@ -180,22 +180,26 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
     private void setSubject(int headerRow)
     {
-        foreach (var item in subjectPartialList)
+        foreach (var item in subjectList)
         {
             setBody(item, headerRow++);
         }
     }
 
-    private void setBody(SubjectPartialEntity item, int headerRow)
+    private void setBody(model.secretary.SubjectEntity item, int headerRow)
     {
         var bodyColumn = 8;
-        var result = subjectList.First(e => e.subjectId == item.subjectId);
+        var result = subjectPartialList.FirstOrDefault(e => e.subjectId == item.subjectId);
+        if (result == null)
+        {
+            return;
+        }
         
-        var approvedList = item.gradeList.Where(e => e.isApproved()).ToList();
-        var failedList = item.gradeList.Where(e => !e.isApproved()).ToList();
-        var notEvaluatedList = item.gradeList.Where(e => e.isNotEvaluated()).ToList();
+        var approvedList = result.gradeList.Where(e => e.isApproved()).ToList();
+        var failedList = result.gradeList.Where(e => !e.isApproved()).ToList();
+        var notEvaluatedList = result.gradeList.Where(e => e.isNotEvaluated()).ToList();
         
-        worksheet.Cell(headerRow, bodyColumn++).Value = result.initials;
+        worksheet.Cell(headerRow, bodyColumn++).Value = item.initials;
         worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count;
         worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count(e => e.student!.sex);
         worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count(e => !e.student!.sex);
@@ -219,10 +223,10 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
     private void addRowPercentage(int headerRow, int bodyColumn, string title, decimal male, decimal female, decimal total)
     {
-        worksheet.Cell(headerRow, bodyColumn).Value = title; 
-        worksheet.Cell(headerRow, bodyColumn + 1).Value = $"{100*total:F2}%";
-        worksheet.Cell(headerRow, bodyColumn + 2).Value = $"{100*male:F2}%";
-        worksheet.Cell(headerRow, bodyColumn + 3).Value = $"{100*female:F2}%";
+        worksheet.Cell(headerRow, bodyColumn).Value = title;
+        worksheet.Cell(headerRow, bodyColumn + 1).Value = Math.Round(100 * total, 2);
+        worksheet.Cell(headerRow, bodyColumn + 2).Value = Math.Round(100 * male, 2);
+        worksheet.Cell(headerRow, bodyColumn + 3).Value = Math.Round(100 * female, 2);
     }
 
     private void setDistribution(int headerRow)
