@@ -105,6 +105,8 @@ public class SpreadSheetMaker
         var subjectPartialList = await daoFactory.subjectPartialDao!
             .getListByPartialIdAndEnrollmentId(currentPartial.partialId, enrollmentId);
         
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+        
         sheetBuilder = new EvaluationStatisticsByTeacherSheetBuilder.Builder()
             .withPartial(partial)
             .withSchoolyear(schoolyear.label)
@@ -113,6 +115,7 @@ public class SpreadSheetMaker
             .withEnrollment(enrollment!.label)
             .withSubjectList(subjectList)
             .withSubjectPartialList(subjectPartialList)
+            .withStudentList(studentList)
             .build();
 
         return sheetBuilder.getSpreadSheet();
