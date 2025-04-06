@@ -5,14 +5,14 @@ namespace wsmcbl.src.controller.service.sheet;
 
 public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 {
-    private int partial { get; set; }
+    private PartialEntity partial { get; set; } = null!;
     private string schoolyear { get; set; } = null!;
     private string enrollmentLabel { get; set; } = null!;
     private string userAlias { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
 
     private List<StudentEntity> studentList { get; set; } = null!;
-    private List<StudentEntity> initialStudentList { get; set; } = null!;
+    private List<model.secretary.StudentEntity> initialStudentList { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
     private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
 
@@ -59,7 +59,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         worksheet.Row(titleRow).Height = 25;
 
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Datos estadísticos {PartialEntity.getLabel(partial)} {schoolyear}";
+        subTitle.Value = $"Datos estadísticos {partial.label} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -106,7 +106,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         const int bodyColumn = 2;
 
         var initialTotal = initialStudentList.Count;
-        var initialMaleCount = initialStudentList.Count(e => e.student.sex);
+        var initialMaleCount = initialStudentList.Count(e => e.sex);
         addRow(headerRow++, bodyColumn, "Matrícula inicial", initialMaleCount, initialTotal);
         
         var total = studentList.Count;
@@ -142,6 +142,14 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         total = notEvaluatedList.Count;
         maleCount = notEvaluatedList.Count(e => e.student.sex);
         addRow(headerRow, bodyColumn,"No evaluados", maleCount, total);
+        
+        var headerStyle = worksheet.Range("B11:E18");
+        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
 
     private void setHeaderSubject(int headerRow)
@@ -159,7 +167,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
         headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
 
-        worksheet.Cell(headerRow, headerColumn).Value = "Asignatura";
+        worksheet.Cell(headerRow, headerColumn).Value = "Asignaturas";
         
         var cells = worksheet.Range($"{getColumnName(headerColumn + 1)}{headerRow}:{getColumnName(headerColumn + 3)}{headerRow}").Merge();
         cells.Value = "Aprobados";
@@ -193,6 +201,14 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         {
             setBody(item, headerRow++);
         }
+        
+        var headerStyle = worksheet.Range($"H12:Q{subjectList.Count + 11}");
+        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
 
     private void setBody(model.secretary.SubjectEntity item, int headerRow)
@@ -249,22 +265,22 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-        var list = studentList.Where(e => e.isWithInRange("AA", partial)).ToList();
+        var list = studentList.Where(e => e.isWithInRange("AA", partial.partialId)).ToList();
         var total = list.Count;
         var maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AA", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AS", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AS", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AS", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AF", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AF", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AF", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AI", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AI", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AI", maleCount, total);
@@ -272,6 +288,14 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         total = studentList.Count;
         maleCount = studentList.Count(e => e.student.sex);
         addRow(headerRow, bodyColumn, "Totales", maleCount, total);
+        
+        headerStyle = worksheet.Range("B21:E26");
+        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
 
     public class Builder
@@ -285,7 +309,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
         public EvaluationStatisticsByTeacherSheetBuilder build() => sheetBuilder;
 
-        public Builder withPartial(int parameter)
+        public Builder withPartial(PartialEntity parameter)
         {
             sheetBuilder.partial = parameter;
             return this;
@@ -334,7 +358,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
             return this;
         }
         
-        public Builder withInitialStudentList(List<StudentEntity> parameter)
+        public Builder withInitialStudentList(List<model.secretary.StudentEntity> parameter)
         {
             sheetBuilder.initialStudentList = parameter;
             return this;

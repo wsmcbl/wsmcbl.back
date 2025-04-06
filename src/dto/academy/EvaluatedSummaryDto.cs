@@ -11,7 +11,7 @@ public class EvaluatedSummaryDto
     public EvaluationStatsDto failedFromThreeToMore { get; set; }
     public EvaluationStatsDto notEvaluated { get; set; }
 
-    public EvaluatedSummaryDto(List<StudentEntity> parameter, List<StudentEntity> initial)
+    public EvaluatedSummaryDto(List<StudentEntity> parameter, List<model.secretary.StudentEntity> initial)
     {
         initialQuantity = new EvaluationStatsDto(initial);
         currentQuantity = new EvaluationStatsDto(parameter);

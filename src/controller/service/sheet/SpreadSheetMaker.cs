@@ -87,27 +87,27 @@ public class SpreadSheetMaker
         return sheetBuilder.getSpreadSheet();
     }
 
-    public async Task<byte[]> getEvaluationStatisticsByTeacher(string enrollmentId, int partial, string userId)
+    public async Task<byte[]> getEvaluationStatisticsByTeacher(string enrollmentId, int partialId, string userId)
     {
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
         
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+        
         var user = await daoFactory.userDao!.getById(userId);
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
-        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial);
+        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial.semester);
         
-        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
-        var currentPartial = partialList.FirstOrDefault(e => e.isPartialPosition(partial));
-        if (currentPartial == null)
-        {
-            throw new EntityNotFoundException($"Entity of type (Partial) with partial ({partial}) not found.");
-        }
         var subjectPartialList = await daoFactory.subjectPartialDao!
-            .getListByPartialIdAndEnrollmentId(currentPartial.partialId, enrollmentId);
+            .getListByPartialIdAndEnrollmentId(partialId, enrollmentId);
         
-        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
 
-        var withdrawnStudentList = await getInitialList(enrollmentId);
+        var withdrawnStudentList = await getListBeforeFirstPartial(enrollmentId);
         
         sheetBuilder = new EvaluationStatisticsByTeacherSheetBuilder.Builder()
             .withPartial(partial)
@@ -123,14 +123,15 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
-
-    private async Task<List<StudentEntity>> getInitialList(string enrollmentId)
+    
+    private async Task<List<model.secretary.StudentEntity>> getListBeforeFirstPartial(string enrollmentId)
     {
-        var initialList = await daoFactory.academySubjectDao!.getInitiaList(enrollmentId);
+        var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartial(enrollmentId);
+        var initialList = result.Select(e => e.student).ToList();
         
-        var withdrawnStudentList = (await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId))
-            .Select(e => e.student).ToList();
+        var list = await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId, true);
+        var withdrawnStudentList = list.Select(e => e.student!).ToList();
         
-        return initialList.Where(e => withdrawnStudentList.All(b => b!.studentId != e.studentId)).ToList();
+        return initialList.Union(withdrawnStudentList).ToList();
     }
 }
