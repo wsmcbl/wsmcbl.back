@@ -20,9 +20,9 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     [Route("summary")]
     public async Task<IActionResult> getEvaluationStats([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
-        var initial = await controller.getInitialListByTeacherId(teacherId);
-        return Ok(new EvaluatedSummaryDto(result, initial));
+        var studentList = await controller.getStudentListByTeacherId(teacherId, partialId);
+        var initialList = await controller.getInitialListByTeacherId(teacherId);
+        return Ok(new EvaluatedSummaryDto(studentList, initialList));
     }
     
     /// <summary>Returns subject evaluated stats enrollment by teacher.</summary>

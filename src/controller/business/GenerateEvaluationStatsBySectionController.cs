@@ -16,6 +16,19 @@ public class GenerateEvaluationStatsBySectionController : BaseController
         var controller = new GeneratePerformanceReportBySectionController(daoFactory);
         return await controller.getStudentListByTeacherId(teacherId, partialId);
     }
+    
+    public async Task<List<model.secretary.StudentEntity>> getInitialListByTeacherId(string teacherId)
+    {
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
+        
+        var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartial(enrollmentId);
+        var initialList = result.Select(e => e.student).ToList();
+        
+        var list = await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId, true);
+        var withdrawnStudentList = list.Select(e => e.student!).ToList();
+        
+        return initialList.Union(withdrawnStudentList).ToList();
+    }
 
     public async Task<List<SubjectPartialEntity>> getSubjectListByTeacherId(string teacherId, int partialId)
     {
@@ -30,24 +43,11 @@ public class GenerateEvaluationStatsBySectionController : BaseController
         return await daoFactory.subjectPartialDao!.getListByPartialIdAndEnrollmentId(partial.partialId, enrollmentId);
     }
 
-    public async Task<byte[]> getEvaluationStatistics(string teacherId, int partial, string userId)
+    public async Task<byte[]> getEvaluationStatistics(string teacherId, int partialId, string userId)
     {
         var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         
         var sheetMaker = new SpreadSheetMaker(daoFactory);
-        return await sheetMaker.getEvaluationStatisticsByTeacher(enrollmentId, partial, userId);
-    }
-
-    public async Task<List<model.secretary.StudentEntity>> getInitialListByTeacherId(string teacherId)
-    {
-        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
-        
-        var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartial(enrollmentId);
-        var initialList = result.Select(e => e.student).ToList();
-        
-        var list = await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId, true);
-        var withdrawnStudentList = list.Select(e => e.student!).ToList();
-        
-        return initialList.Union(withdrawnStudentList).ToList();
+        return await sheetMaker.getEvaluationStatisticsByTeacher(enrollmentId, partialId, userId);
     }
 }
