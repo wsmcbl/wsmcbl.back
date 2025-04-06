@@ -57,4 +57,7 @@ public interface IGradeDao : IGenericDao<GradeEntity, int>
     public Task addRange(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList);
 }
 
-public interface IWithdrawnStudentDao : IGenericDao<WithdrawnStudentEntity, int>;
+public interface IWithdrawnStudentDao : IGenericDao<WithdrawnStudentEntity, int>
+{
+    public Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId);
+}

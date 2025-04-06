@@ -28,6 +28,3 @@ public class RolePermissionDaoPostgres(PostgresContext context)
 
 public class SubjectDaoPostgres(PostgresContext context)
     : GenericDaoPostgres<SubjectEntity, string>(context), ISubjectDao;
-    
-public class WithdrawnStudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<WithdrawnStudentEntity, int>(context), IWithdrawnStudentDao;
