@@ -18,10 +18,11 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("summary")]
-    public async Task<IActionResult> getEvaluationStats([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getEvaluationStats([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(new EvaluatedSummaryDto(result, result));
+        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
+        var initial = await controller.getInitialListByTeacherId(teacherId);
+        return Ok(new EvaluatedSummaryDto(result, initial));
     }
     
     /// <summary>Returns subject evaluated stats enrollment by teacher.</summary>
@@ -31,9 +32,9 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("subjects")]
-    public async Task<IActionResult> getSubjectStats([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getSubjectStats([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getSubjectListByTeacherId(teacherId, partial);
+        var result = await controller.getSubjectListByTeacherId(teacherId, partialId);
         return Ok(result.mapListToSummaryDto());
     }
     
@@ -44,10 +45,10 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("distribution")]
-    public async Task<IActionResult> getDistributionStats([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getDistributionStats([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(new DistributionSummaryDto(result, partial));
+        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
+        return Ok(new DistributionSummaryDto(result, partialId));
     }
     
     /// <summary>Returns evaluation stats in XLSX format.</summary>
@@ -57,9 +58,9 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
     [Route("export")]
-    public async Task<IActionResult> getEvaluationStatistics([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getEvaluationStatistics([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getEvaluationStatistics(teacherId, partial, getAuthenticatedUserId());
+        var result = await controller.getEvaluationStatistics(teacherId, partialId, getAuthenticatedUserId());
         
         return File(result, getContentType(2), $"{teacherId}.evaluation-statistics.xlsx");
     }
