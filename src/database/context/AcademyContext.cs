@@ -119,6 +119,19 @@ internal class AcademyContext
                 .HasForeignKey(d =>  new { d.studentId, d.enrollmentId });
         });
 
+        modelBuilder.Entity<WithdrawnStudentEntity>(entity =>
+        {
+            entity.HasKey(e => e.withdrawnId);
+
+            entity.ToTable("withdrawnstudent", "academy");
+
+            entity.Property(e => e.withdrawnId).HasColumnName("withdrawnid");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.lastEnrollmentId).HasColumnName("lastenrollmentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.withdrawnAt).HasColumnName("withdrawnat");
+        });
+
         modelBuilder.Entity<SubjectEntity>(entity =>
         {
             entity.HasKey(e => new { Subjectid = e.subjectId, Enrollmentid = e.enrollmentId }).HasName("subject_pkey");
