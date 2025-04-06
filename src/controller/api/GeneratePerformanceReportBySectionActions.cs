@@ -18,9 +18,9 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("performance")]
-    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partial);
+        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
         return Ok(result.mapListToDto());
     }
     
@@ -31,10 +31,10 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("grades/summary")]
-    public async Task<IActionResult> getGradeSummaryEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getGradeSummaryEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partial);
-        return Ok(result.mapListToDto(partial));
+        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
+        return Ok(result.mapListToDto(partialId));
     }
     
     /// <summary>Returns enrollment grade summary by partial in XLSX format.</summary>
@@ -44,9 +44,9 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
     [Route("grades/summary/export")]
-    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string teacherId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string teacherId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getEnrollmentGradeSummary(teacherId, partial, getAuthenticatedUserId());
+        var result = await controller.getEnrollmentGradeSummary(teacherId, partialId, getAuthenticatedUserId());
         
         return File(result, getContentType(2), $"{teacherId}.grades-summary.xlsx");
     }
