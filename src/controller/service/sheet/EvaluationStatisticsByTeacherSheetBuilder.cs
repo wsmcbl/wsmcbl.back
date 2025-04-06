@@ -289,7 +289,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         maleCount = studentList.Count(e => e.student.sex);
         addRow(headerRow, bodyColumn, "Totales", maleCount, total);
         
-        headerStyle = worksheet.Range("B21:E26");
+        headerStyle = worksheet.Range("B21:E25");
         headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
         headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
         headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
