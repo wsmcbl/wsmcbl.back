@@ -14,7 +14,7 @@ public interface ISubjectDao : IGenericDao<SubjectEntity, string>
 {
     public Task<List<SubjectEntity>> getListByTeacherId(string teacherId);
     public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId);
-    public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId, int partial);
+    public Task<List<SubjectEntity>> getByEnrollmentId(string enrollmentId, int semester);
     public Task<SubjectEntity?> getBySubjectIdAndEnrollmentId(string subjectId, string enrollmentId);
 }
 
@@ -38,7 +38,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<bool> isEnrolled(string studentId);
     public Task update(string studentId, string enrollmentId);
     public Task<StudentEntity> getCurrentById(string studentId);
-    public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partial);
+    public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partialId);
     public Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null);
 }
 
