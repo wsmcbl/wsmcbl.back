@@ -48,6 +48,19 @@ create table if not exists Academy.Student
     foreign key (enrollmentId) references Academy.Enrollment
 );
 
+create table if not exists Academy.WithdrawnStudent
+(
+    withdrawnId serial not null primary key,
+    studentId varchar(15) not null,
+    lastEnrollmentId varchar(15) not null,
+    schoolyearId varchar(20) not null,
+    enrolledAt timestamp with time zone not null,
+    withdrawnAt timestamp with time zone not null,
+    foreign key (studentId) references Secretary.Student,
+    foreign key (lastEnrollmentId) references Academy.Enrollment,
+    foreign key (schoolyearId) references Secretary.Schoolyear
+);
+
 create table if not exists Academy.Semester
 (
     semesterId serial not null primary key,
