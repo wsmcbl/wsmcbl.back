@@ -83,6 +83,30 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .ToListAsync();
     }
 
+    public async Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null)
+    {
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
+        
+        var firstPartial = partialList.FirstOrDefault(e => e is { semester: 1, partial: 1 });
+        if (firstPartial == null)
+        {
+            throw new ConflictException("There is not initial partial.");
+        }
+
+        if (enrollmentId == null)
+        {
+            return await entities
+                .Where(e => firstPartial.startDate >= DateOnly.FromDateTime(e.createdAt))
+                .Include(e => e.student)
+                .ToListAsync();
+        }
+
+        return await entities.Where(e => e.enrollmentId == enrollmentId)
+            .Where(e => firstPartial.startDate > DateOnly.FromDateTime(e.createdAt))
+            .Include(e => e.student)
+            .ToListAsync();
+    }
+
     private async Task<StudentEntity?> getById(string studentId, string schoolyearId)
     {
         return await entities.Include(e => e.student)

@@ -39,6 +39,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task update(string studentId, string enrollmentId);
     public Task<StudentEntity> getCurrentById(string studentId);
     public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partial);
+    public Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>
