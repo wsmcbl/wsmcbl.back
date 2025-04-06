@@ -78,4 +78,9 @@ public class PartialEntity
             _ => "Parcial desconocido"
         };
     }
+
+    public bool isPartialPosition(int value)
+    {
+        return getLabel(value).Equals(label);
+    }
 }

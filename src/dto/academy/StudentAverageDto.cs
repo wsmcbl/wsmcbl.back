@@ -1,4 +1,5 @@
 using wsmcbl.src.model.academy;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.dto.academy;
 
@@ -14,6 +15,6 @@ public class StudentAverageDto
         studentId = parameter.studentId;
         fullName = parameter.fullName();
         averageList = parameter.averageList!.Select(e => new GradeAverageDto(e)).ToList();
-        finalGrade = parameter.computeFinalGrade();
+        finalGrade = parameter.computeFinalGrade().round();
     }
 }

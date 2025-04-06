@@ -68,6 +68,7 @@ builder.Services.AddTransient<CreateTariffDataController>();
 builder.Services.AddTransient<ViewPrincipalDashboardController>();
 
 builder.Services.AddTransient<GeneratePerformanceReportBySectionController>();
+builder.Services.AddTransient<GenerateEvaluationStatsBySectionController>();
 
 var app = builder.Build();
 
