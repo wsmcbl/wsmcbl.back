@@ -107,7 +107,7 @@ public class SpreadSheetMaker
         
         var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
 
-        var withdrawnStudentList = await getInitialList(enrollmentId);
+        var withdrawnStudentList = await getListBeforeFirstPartial(enrollmentId);
         
         sheetBuilder = new EvaluationStatisticsByTeacherSheetBuilder.Builder()
             .withPartial(partial)
@@ -123,14 +123,15 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
-
-    private async Task<List<StudentEntity>> getInitialList(string enrollmentId)
+    
+    private async Task<List<model.secretary.StudentEntity>> getListBeforeFirstPartial(string enrollmentId)
     {
-        var initialList = await daoFactory.academySubjectDao!.getInitiaList(enrollmentId);
+        var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartial(enrollmentId);
+        var initialList = result.Select(e => e.student).ToList();
         
-        var withdrawnStudentList = (await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId))
-            .Select(e => e.student).ToList();
+        var list = await daoFactory.withdrawnStudentDao!.getListByEnrollmentId(enrollmentId, true);
+        var withdrawnStudentList = list.Select(e => e.student!).ToList();
         
-        return initialList.Where(e => withdrawnStudentList.All(b => b!.studentId != e.studentId)).ToList();
+        return initialList.Union(withdrawnStudentList).ToList();
     }
 }
