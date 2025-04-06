@@ -5,7 +5,7 @@ namespace wsmcbl.src.controller.service.sheet;
 
 public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 {
-    private int partial { get; set; }
+    private PartialEntity partial { get; set; } = null!;
     private string schoolyear { get; set; } = null!;
     private string enrollmentLabel { get; set; } = null!;
     private string userAlias { get; set; } = null!;
@@ -59,7 +59,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         worksheet.Row(titleRow).Height = 25;
 
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Datos estadísticos {PartialEntity.getLabel(partial)} {schoolyear}";
+        subTitle.Value = $"Datos estadísticos {partial.label} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -265,22 +265,22 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-        var list = studentList.Where(e => e.isWithInRange("AA", partial)).ToList();
+        var list = studentList.Where(e => e.isWithInRange("AA", partial.partialId)).ToList();
         var total = list.Count;
         var maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AA", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AS", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AS", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AS", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AF", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AF", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AF", maleCount, total);
         
-        list = studentList.Where(e => e.isWithInRange("AI", partial)).ToList();
+        list = studentList.Where(e => e.isWithInRange("AI", partial.partialId)).ToList();
         total = list.Count;
         maleCount = list.Count(e => e.student.sex);
         addRow(headerRow++, bodyColumn, "AI", maleCount, total);
@@ -309,7 +309,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
         public EvaluationStatisticsByTeacherSheetBuilder build() => sheetBuilder;
 
-        public Builder withPartial(int parameter)
+        public Builder withPartial(PartialEntity parameter)
         {
             sheetBuilder.partial = parameter;
             return this;
