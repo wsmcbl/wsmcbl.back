@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.sheet;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
@@ -28,5 +29,13 @@ public class GenerateEvaluationStatsBySectionController : BaseController
         }
         
         return await daoFactory.subjectPartialDao!.getListByPartialIdAndEnrollmentId(currentPartial.partialId, enrollmentId);
+    }
+
+    public async Task<byte[]> getEvaluationStatistics(string teacherId, int partial, string userId)
+    {
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
+        
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEvaluationStatisticsByTeacher(enrollmentId, partial, userId);
     }
 }

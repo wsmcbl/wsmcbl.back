@@ -49,4 +49,18 @@ public class GenerateEvaluationStatsBySectionActions(GenerateEvaluationStatsBySe
         var result = await controller.getStudentListByTeacherId(teacherId, partial);
         return Ok(new DistributionSummaryDto(result, partial));
     }
+    
+    /// <summary>Returns evaluation stats in XLSX format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or partial not found.</response>
+    [HttpGet]
+    [Route("export")]
+    public async Task<IActionResult> getEvaluationStatistics([Required] string teacherId, [Required] [FromQuery] int partial)
+    {
+        var result = await controller.getEvaluationStatistics(teacherId, partial, getAuthenticatedUserId());
+        
+        return File(result, getContentType(2), $"{teacherId}.evaluation-statistics.xlsx");
+    }
 }
