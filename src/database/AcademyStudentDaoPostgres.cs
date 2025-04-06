@@ -56,14 +56,14 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return result;
     }
 
-    public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partial)
+    public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partialId)
     {
         return await entities.AsNoTracking()
             .Where(e => e.enrollmentId == enrollmentId)
             .Include(e => e.student)
             .Include(e => e.averageList)
             .GroupJoin(
-                context.Set<GradeView>().Where(e => e.enrollmentId == enrollmentId && e.partial == partial),
+                context.Set<GradeView>().Where(e => e.enrollmentId == enrollmentId && e.partialId == partialId),
                 s => s.studentId,
                 g => g.studentId,
                 (std, gradeList) => new StudentEntity
@@ -75,7 +75,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
                     isRepeating = std.isRepeating,
                     createdAt = std.createdAt,
                     student = std.student,
-                    averageList = std.averageList!.Where(e => e.enrollmentId == enrollmentId && e.partial == partial).ToList(),
+                    averageList = std.averageList!.Where(e => e.enrollmentId == enrollmentId && e.partialId == partialId).ToList(),
                     gradeList = gradeList.ToList()
                 })
             .OrderBy(e => e.student.sex)
