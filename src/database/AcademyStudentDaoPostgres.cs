@@ -102,7 +102,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         }
 
         return await entities.Where(e => e.enrollmentId == enrollmentId)
-            .Where(e => firstPartial.startDate > DateOnly.FromDateTime(e.createdAt))
+            .Where(e => firstPartial.startDate >= DateOnly.FromDateTime(e.createdAt))
             .Include(e => e.student)
             .ToListAsync();
     }

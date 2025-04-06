@@ -60,5 +60,5 @@ public interface IGradeDao : IGenericDao<GradeEntity, int>
 
 public interface IWithdrawnStudentDao : IGenericDao<WithdrawnStudentEntity, int>
 {
-    public Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId);
+    public Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId,  bool hasBeforeFirstPartial = false);
 }
