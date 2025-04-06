@@ -12,6 +12,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
     private TeacherEntity teacher { get; set; } = null!;
 
     private List<StudentEntity> studentList { get; set; } = null!;
+    private List<StudentEntity> initialStudentList { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
     private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
 
@@ -102,22 +103,30 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
     private void setSummary(int headerRow)
     {
-        var bodyColumn = 2;
+        const int bodyColumn = 2;
 
+        var initialTotal = initialStudentList.Count;
+        var initialMaleCount = initialStudentList.Count(e => e.student.sex);
+        addRow(headerRow++, bodyColumn, "Matrícula inicial", initialMaleCount, initialTotal);
+        
         var total = studentList.Count;
         var maleCount = studentList.Count(e => e.student.sex);
-       
-        addRow(headerRow++, bodyColumn, "Matrícula inicial", maleCount, total);
         addRow(headerRow++, bodyColumn, "Matrícula actual", maleCount, total);
-        addRowPercentage(headerRow++, bodyColumn, "Retención de matrícula (%)",1, 1, 1);
+        
+        var malePercentage = (decimal) maleCount / initialMaleCount;
+        var femalePercentage = (decimal) (total - maleCount) / (initialTotal - initialMaleCount);
+        var totalPercentage = (decimal) total / initialTotal;
+        addRowPercentage(headerRow++, bodyColumn, "Retención de matrícula (%)", malePercentage, femalePercentage, totalPercentage);
         
         var approvedList = studentList.Where(e => e.passedAllSubjects()).ToList();
         var approvedTotal = approvedList.Count;
         var approvedMaleCount = approvedList.Count(e => e.student.sex);
-        
         addRow(headerRow++, bodyColumn, "Aprobados", approvedMaleCount, approvedTotal);
-        addRowPercentage(headerRow++, bodyColumn, "Rendimiento académico (%)",
-            approvedMaleCount/maleCount, (approvedTotal - approvedMaleCount)/(total - maleCount), approvedTotal/total);
+
+        malePercentage = (decimal) approvedMaleCount / maleCount;
+        femalePercentage = (decimal) (approvedTotal - approvedMaleCount) / (total - maleCount);
+        totalPercentage = (decimal) approvedTotal / total;
+        addRowPercentage(headerRow++, bodyColumn, "Rendimiento académico (%)", malePercentage, femalePercentage, totalPercentage);
         
         var failedFromOneToTwoList = studentList.Where(e => e.isFailed(1)).ToList();
         total = failedFromOneToTwoList.Count;
@@ -322,6 +331,12 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         public Builder withStudentList(List<StudentEntity> parameter)
         {
             sheetBuilder.studentList = parameter;
+            return this;
+        }
+        
+        public Builder withInitialStudentList(List<StudentEntity> parameter)
+        {
+            sheetBuilder.initialStudentList = parameter;
             return this;
         }
     }
