@@ -7,4 +7,6 @@ public class WithdrawnStudentEntity
     public string lastEnrollmentId { get; set; } = null!;
     public string schoolyearId { get; set; } = null!;
     public DateTime withdrawnAt { get; set; }
+    
+    public secretary.StudentEntity? student { get; set; }
 }

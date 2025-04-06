@@ -130,6 +130,8 @@ internal class AcademyContext
             entity.Property(e => e.lastEnrollmentId).HasColumnName("lastenrollmentid");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
             entity.Property(e => e.withdrawnAt).HasColumnName("withdrawnat");
+            
+            entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>
