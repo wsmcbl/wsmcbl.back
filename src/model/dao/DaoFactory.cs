@@ -34,6 +34,7 @@ public abstract class DaoFactory
     public virtual IPartialDao? partialDao => null;
     public virtual IGradeDao? gradeDao => null;
     public virtual ISubjectPartialDao? subjectPartialDao => null;
+    public virtual IWithdrawnStudentDao? withdrawnStudentDao => null;
     
     
     public virtual IDegreeDao? degreeDao => null;

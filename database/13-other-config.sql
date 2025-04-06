@@ -171,7 +171,7 @@ CASE
 CREATE VIEW academy.grade_view AS 
 SELECT row_number() OVER (ORDER BY g.gradeid) AS id,
        g.studentId, sp.partialId, sp.subjectId, sp.teacherId,
-       sp.enrollmentId, e.schoolyear as schoolyearId, p.partial,
+       sp.enrollmentId, e.schoolyear as schoolyearId, p.semester, p.partial,
        g.grade, g.conductGrade, g.label
 FROM academy.grade g 
 JOIN academy.subject_partial sp ON sp.subjectpartialid = g.subjectpartialid
