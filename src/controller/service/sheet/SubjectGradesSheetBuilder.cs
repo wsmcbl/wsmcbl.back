@@ -10,7 +10,10 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     private string schoolyear { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private EnrollmentEntity enrollment { get; set; } = null!;
+
+    private PartialEntity partial { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
+    private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     
     public override byte[] getSpreadSheet()
     {
@@ -84,7 +87,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         worksheet.Row(titleRow).Height = 25;
         
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Calificaciones {schoolyear}";
+        subTitle.Value = $"Calificaciones {partial.label} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -174,13 +177,13 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     {
         foreach (var item in subjectPartialList)
         {
-            var result = enrollment.subjectList!.FirstOrDefault(e => e.subjectId == item.subjectId);
+            var result = subjectList!.FirstOrDefault(e => e.subjectId == item.subjectId);
             if (result == null)
             {
                 continue;
             }
             
-            worksheet.Cell(headerRow, headerColumn++).Value = result.getInitials;
+            worksheet.Cell(headerRow, headerColumn++).Value = result.initials;
         }
         
         worksheet.Cell(headerRow, headerColumn).Value = "Conducta";
@@ -221,12 +224,6 @@ public class SubjectGradesSheetBuilder : SheetBuilder
             return this;
         }
         
-        public Builder withEnrollment(EnrollmentEntity parameter)
-        {
-            sheetBuilder.enrollment = parameter;
-            return this;
-        }
-        
         public Builder withSubjectPartialList(List<SubjectPartialEntity>? parameter)
         {
             if (parameter == null)
@@ -235,8 +232,37 @@ public class SubjectGradesSheetBuilder : SheetBuilder
             }
             
             sheetBuilder.subjectPartialList = parameter.Distinct().ToList();
-            sheetBuilder.setColumnQuantity();
             return this;
         }
+        
+        public Builder withPartial(PartialEntity parameter)
+        {
+            sheetBuilder.partial = parameter;
+            return this;
+        }
+        
+        public Builder withEnrollment(EnrollmentEntity parameter)
+        {
+            sheetBuilder.enrollment = parameter;
+            sheetBuilder.setSubjectList();
+            
+            return this;
+        }
+    }
+
+    private void setSubjectList()
+    {
+        subjectList = enrollment.subjectList!.Select(e => e.secretarySubject!)
+            .Where(e => e.semester == 3 || e.semester == partial.semester)
+            .OrderBy(e => e.areaId)
+            .ThenBy(e => e.number)
+            .ToList();
+
+        var list = subjectList.Select(e => e.subjectId).ToList();
+        
+        subjectPartialList = subjectPartialList.OrderBy(x => list.IndexOf(x.subjectId))
+            .ToList();
+        
+        setColumnQuantity();
     }
 }

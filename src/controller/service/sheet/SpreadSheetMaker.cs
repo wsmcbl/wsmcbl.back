@@ -51,31 +51,41 @@ public class SpreadSheetMaker
         
         var subjectPartialList = await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
         
+        var partial = await daoFactory.partialDao!.getById(subjectPartial.partialId);
+        
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
 
         sheetBuilder = new SubjectGradesSheetBuilder.Builder()
+            .withPartial(partial!)
             .withUserAlias(user.getAlias())
             .withSchoolyear(currentSchoolyear.label)
             .withTeacher(teacher)
-            .withEnrollment(enrollment)
             .withSubjectPartialList(subjectPartialList)
+            .withEnrollment(enrollment)
             .build();
 
         return sheetBuilder.getSpreadSheet();
     }
 
-    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partial, string userId)
+    public async Task<byte[]> getEnrollmentGradeSummary(string enrollmentId, int partialId, string userId)
     {
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
         
         var user = await daoFactory.userDao!.getById(userId);
         var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
-        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial);
-        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+        
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+        
+        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial.semester);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
         
         sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
-            .withPartial(partial)
+            .withPartial(partial.label)
             .withSchoolyear(schoolyear.label)
             .withTeacher(teacher!)
             .withUserAlias(user.getAlias())
