@@ -61,8 +61,6 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 
 
     private List<string> orderedSubjectIdList { get; set; } = [];
-
-    private readonly XLColor redColor = XLColor.FromHtml("#FFA6A6");
     
     private void setBody(int headerRow, StudentEntity student, int pos)
     {

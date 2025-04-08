@@ -9,6 +9,7 @@ public abstract class SheetBuilder
     protected int columnQuantity { get; set; }
     protected IXLWorksheet worksheet { get; set; } = null!;
     protected string lastColumnName { get; set; } = null!;
+    protected XLColor redColor { get; set; } = XLColor.FromHtml("#FFA6A6");
 
     protected abstract void setColumnQuantity();
     public abstract byte[] getSpreadSheet();
