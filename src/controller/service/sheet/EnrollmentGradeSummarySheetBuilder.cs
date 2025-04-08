@@ -59,6 +59,11 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
         }
     }
 
+
+    private List<string> orderedSubjectIdList { get; set; } = [];
+
+    private readonly XLColor redColor = XLColor.FromHtml("#FFA6A6");
+    
     private void setBody(int headerRow, StudentEntity student, int pos)
     {
         var bodyColumn = 2;
@@ -68,20 +73,26 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
         worksheet.Cell(headerRow, bodyColumn++).Value = student.fullName(); 
         worksheet.Cell(headerRow, bodyColumn++).Value = student.student.sex ? "M" : "F";
 
-        var gradeList = subjectList
-            .Select(item => student.gradeList!.First(e => e.subjectId == item.subjectId)).ToList();
+        var gradeList = student.gradeList!.OrderBy(e => orderedSubjectIdList.IndexOf(e.subjectId)).ToList();
         
         foreach (var result in gradeList)
         {
             worksheet.Cell(headerRow, bodyColumn).Value = result.label;
             worksheet.Cell(headerRow, bodyColumn + 1).Value = result.grade;
+            
+            if (result.grade < 60)
+            {
+                worksheet.Cell(headerRow, bodyColumn + 1).Style.Fill.BackgroundColor = redColor;
+            }
+            
             bodyColumn += 2;
         }
 
-        worksheet.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).getConductLabel();
-        worksheet.Cell(headerRow, bodyColumn++).Value = student.getAverage(1).conductGrade.ToString("F2");
+        var average = student.getAverage(1);
+        worksheet.Cell(headerRow, bodyColumn++).Value = average.getConductLabel();
+        worksheet.Cell(headerRow, bodyColumn++).Value = average.conductGrade.ToString("F2");
         
-        worksheet.Cell(headerRow, bodyColumn ).Value = student.getAverage(1).grade.ToString("F2");
+        worksheet.Cell(headerRow, bodyColumn ).Value = average.grade.ToString("F2");
     }
 
     private void setHeader(int headerRow)
@@ -105,21 +116,17 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 
     private void setHeaderForSubject(int headerRow, int headerColumn)
     {
-        IXLRange? result;
+        string rangeString;
+        
         foreach (var item in subjectList)
         {
-            result = worksheet
-                .Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}")
-                .Merge();
-            result.Value = item.initials;
-            
+            rangeString = $"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}";
+            worksheet.Range(rangeString).Merge().Value = item.initials;
             headerColumn += 2;
         }
-        
-        result = worksheet
-            .Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}")
-            .Merge();
-        result.Value = "Conducta";
+
+        rangeString = $"{getColumnName(headerColumn)}{headerRow}:{getColumnName(headerColumn + 1)}{headerRow}";
+        worksheet.Range(rangeString).Merge().Value = "Conducta";
             
         headerColumn += 2;
         worksheet.Cell(headerRow, headerColumn).Value = "Promedio";
@@ -138,7 +145,7 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 
     private void setTitle()
     {
-        var titleRow = 2;
+        const int titleRow = 2;
         var title = worksheet.Range($"B{titleRow}:{lastColumnName}{titleRow}").Merge();
         title.Value = "Colegio Bautista Libertad";
         title.Style.Font.Bold = true;
@@ -214,6 +221,7 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
         {
             sheetBuilder.subjectList = parameter.Select(e => e.secretarySubject!).ToList();
             sheetBuilder.setColumnQuantity();
+            sheetBuilder.setOrderedSubjectIdList();
             return this;
         }
         
@@ -222,5 +230,10 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
             sheetBuilder.studentList = parameter;
             return this;
         }
+    }
+
+    private void setOrderedSubjectIdList()
+    {
+        orderedSubjectIdList = subjectList.Select(e => e.subjectId).ToList()!;
     }
 }
