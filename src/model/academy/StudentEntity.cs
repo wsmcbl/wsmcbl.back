@@ -85,12 +85,12 @@ public class StudentEntity
     public bool isFailed(int type)
     {
         var count = gradeList!.Count(e => e.grade < 60);
-        return type == 1 ? count <= 2 : count > 2;
+        return type == 1 ? count is 1 or 2 : count >= 3;
     }
 
     public bool hasNotEvaluated()
     {
-        return gradeList!.All(e => e.grade == 0 && e.conductGrade == 0);
+        return gradeList!.All(item => item is { grade: 0, conductGrade: 0 });
     }
 
     public bool isWithInRange(string label, int partialId)
