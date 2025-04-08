@@ -1,5 +1,4 @@
 using ClosedXML.Excel;
-using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.controller.service.sheet;
@@ -12,7 +11,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     private EnrollmentEntity enrollment { get; set; } = null!;
 
     private PartialEntity partial { get; set; } = null!;
-    private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
+    private List<StudentEntity> studentList { get; set; } = null!;
     private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     
     public override byte[] getSpreadSheet()
@@ -25,27 +24,23 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         const int headerRow = 10;
         setHeader(headerRow);
         
-        var list = enrollment.studentList!
-            .OrderBy(e => e.student.sex)
-            .ThenBy(e => e.student.fullName());
-        
         var counter = headerRow + 1;
-        foreach (var item in list)
+        foreach (var item in studentList)
         {
             setBody(counter, item, counter - headerRow);
             counter++;
         }
         
-        hideAndProtectCells(headerRow - 1);
-        
-        var lastRow = enrollment.studentList!.Count + headerRow;
+        var lastRow = studentList.Count + headerRow;
         
         setBorder(lastRow, headerRow);
         
         worksheet.Columns().AdjustToContents();
         adjustToContents(headerRow, 6);
         worksheet.SheetView.FreezeRows(headerRow);
-
+        
+        hideAndProtectCells(headerRow - 1);
+        
         using var stream = new MemoryStream();
         workbook.SaveAs(stream);
         stream.Position = 0;
@@ -57,10 +52,12 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     {
         foreach (var column in worksheet.ColumnsUsed())
         {
-            if (column.ColumnNumber() < columnSubject) continue;
-            var cell = column.Cell(headerRow);
-            var textLength = cell.GetString().Length;
-            column.Width = textLength + 2;
+            if (column.ColumnNumber() < columnSubject)
+            {
+                continue;
+            }
+            
+            column.Width = column.Cell(headerRow).GetString().Length + 2;
         }
     }
 
@@ -68,11 +65,6 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     {
         worksheet.Row(headerRow).Hide();
         worksheet.Column(columnQuantity + 1).Hide();
-        
-        worksheet.Cells().Style.Protection.SetLocked(false);
-        worksheet.Row(headerRow).Style.Protection.SetLocked(true);
-        worksheet.Column(columnQuantity + 1).Style.Protection.SetLocked(true);
-        worksheet.Protect("wsm");
     }
 
     private void setTitle()
@@ -101,34 +93,36 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         subTitleTeacher.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
         worksheet.Row(titleRow + 1).Height = 18;
     }
-
-    private void setBody(int headerRow, StudentEntity item, int pos)
+    
+    private List<string> orderedSubjectIdList { get; set; } = [];
+    
+    private void setBody(int row, StudentEntity student, int pos)
     {
-        var bodyColumn = 2;
-        worksheet.Cell(headerRow, bodyColumn++).Value = pos;
-        worksheet.Cell(headerRow, bodyColumn++).Value = item.studentId;  
-        worksheet.Cell(headerRow, bodyColumn++).Value = item.fullName(); 
-        worksheet.Cell(headerRow, bodyColumn++).Value = item.student.sex ? "M" : "F";
-        setBodyForSubject(headerRow, bodyColumn, item.studentId);
-    }
-
-    private void setBodyForSubject(int headerRow, int headerColumn, string studentId)
-    {
-        foreach (var item in subjectPartialList)
+        var column = 2;
+        worksheet.Cell(row, column++).Value = pos;
+        worksheet.Cell(row, column++).Value = student.studentId;  
+        worksheet.Cell(row, column++).Value = student.fullName(); 
+        worksheet.Cell(row, column++).Value = student.student.sex ? "M" : "F";
+        
+        var gradeList = student.gradeList!.OrderBy(e => orderedSubjectIdList.IndexOf(e.subjectId)).ToList();
+        foreach (var grade in gradeList)
         {
-            item.setStudentGrade(studentId);
-            worksheet.Cell(headerRow, headerColumn++).Value = item.studentGrade!.grade;
+            worksheet.Cell(row, column++).Value = grade.grade;
         }
 
-        var first = subjectPartialList.FirstOrDefault();
+        var first = gradeList.FirstOrDefault();
         if (first == null)
         {
             return;
         }
         
-        first.setStudentGrade(studentId);
-        worksheet.Cell(headerRow, headerColumn++).Value = first.studentGrade!.conductGrade;
-        worksheet.Cell(headerRow, headerColumn).Value = studentId;
+        worksheet.Cell(row, column++).Value = first.conductGrade;
+        if (first.conductGrade < 60)
+        {
+            worksheet.Cell(row, column - 1).Style.Fill.BackgroundColor = redColor;
+        }
+        
+        worksheet.Cell(row, column).Value = student.studentId;
     }
 
     private void setHeader(int headerRow)
@@ -167,7 +161,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         worksheet.Cell(headerRow, headerColumn).Value = teacher.teacherId;
 
         headerColumn += 2;
-        foreach (var item in subjectPartialList)
+        foreach (var item in subjectList)
         {
             worksheet.Cell(headerRow, headerColumn++).Value = item.subjectId;
         }
@@ -175,15 +169,9 @@ public class SubjectGradesSheetBuilder : SheetBuilder
 
     private void setHeaderForSubject(int headerRow, int headerColumn)
     {
-        foreach (var item in subjectPartialList)
+        foreach (var item in subjectList)
         {
-            var result = subjectList!.FirstOrDefault(e => e.subjectId == item.subjectId);
-            if (result == null)
-            {
-                continue;
-            }
-            
-            worksheet.Cell(headerRow, headerColumn++).Value = result.initials;
+            worksheet.Cell(headerRow, headerColumn++).Value = item.initials;
         }
         
         worksheet.Cell(headerRow, headerColumn).Value = "Conducta";
@@ -191,7 +179,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     
     protected override void setColumnQuantity()
     {
-        var quantity = subjectPartialList.Count;
+        var quantity = subjectList.Count;
         columnQuantity = quantity + 6;
     }
     
@@ -224,17 +212,6 @@ public class SubjectGradesSheetBuilder : SheetBuilder
             return this;
         }
         
-        public Builder withSubjectPartialList(List<SubjectPartialEntity>? parameter)
-        {
-            if (parameter == null)
-            {
-                throw new InternalException("There is not subject grades.");
-            }
-            
-            sheetBuilder.subjectPartialList = parameter.Distinct().ToList();
-            return this;
-        }
-        
         public Builder withPartial(PartialEntity parameter)
         {
             sheetBuilder.partial = parameter;
@@ -244,25 +221,27 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         public Builder withEnrollment(EnrollmentEntity parameter)
         {
             sheetBuilder.enrollment = parameter;
-            sheetBuilder.setSubjectList();
-            
+            return this;
+        }
+        
+        
+        public Builder withSubjectList(List<SubjectEntity> parameter)
+        {
+            sheetBuilder.subjectList = parameter.Select(e => e.secretarySubject!).ToList();
+            sheetBuilder.setColumnQuantity();
+            sheetBuilder.setOrderedSubjectIdList();
+            return this;
+        }
+        
+        public Builder withStudentList(List<StudentEntity> parameter)
+        {
+            sheetBuilder.studentList = parameter;
             return this;
         }
     }
-
-    private void setSubjectList()
+    
+    private void setOrderedSubjectIdList()
     {
-        subjectList = enrollment.subjectList!.Select(e => e.secretarySubject!)
-            .Where(e => e.semester == 3 || e.semester == partial.semester)
-            .OrderBy(e => e.areaId)
-            .ThenBy(e => e.number)
-            .ToList();
-
-        var list = subjectList.Select(e => e.subjectId).ToList();
-        
-        subjectPartialList = subjectPartialList.OrderBy(x => list.IndexOf(x.subjectId))
-            .ToList();
-        
-        setColumnQuantity();
+        orderedSubjectIdList = subjectList.Select(e => e.subjectId).ToList()!;
     }
 }
