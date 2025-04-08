@@ -10,7 +10,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
     private TeacherEntity teacher { get; set; } = null!;
     private EnrollmentEntity enrollment { get; set; } = null!;
 
-    private PartialEntity partial { get; set; } = null!;
+    private string partialLabel { get; set; } = null!;
     private List<StudentEntity> studentList { get; set; } = null!;
     private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     
@@ -79,7 +79,7 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         worksheet.Row(titleRow).Height = 25;
         
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Calificaciones {partial.label} {schoolyear}";
+        subTitle.Value = $"Calificaciones {partialLabel} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -104,7 +104,11 @@ public class SubjectGradesSheetBuilder : SheetBuilder
         worksheet.Cell(row, column++).Value = student.fullName(); 
         worksheet.Cell(row, column++).Value = student.student.sex ? "M" : "F";
         
-        var gradeList = student.gradeList!.OrderBy(e => orderedSubjectIdList.IndexOf(e.subjectId)).ToList();
+        var gradeList = student.gradeList!
+            .Where(e => orderedSubjectIdList.Contains(e.subjectId))
+            .OrderBy(e => orderedSubjectIdList.IndexOf(e.subjectId))
+            .ToList();
+        
         foreach (var grade in gradeList)
         {
             worksheet.Cell(row, column++).Value = grade.grade;
@@ -212,9 +216,9 @@ public class SubjectGradesSheetBuilder : SheetBuilder
             return this;
         }
         
-        public Builder withPartial(PartialEntity parameter)
+        public Builder withPartialLabel(string parameter)
         {
-            sheetBuilder.partial = parameter;
+            sheetBuilder.partialLabel = parameter;
             return this;
         }
         
@@ -223,7 +227,6 @@ public class SubjectGradesSheetBuilder : SheetBuilder
             sheetBuilder.enrollment = parameter;
             return this;
         }
-        
         
         public Builder withSubjectList(List<SubjectEntity> parameter)
         {
