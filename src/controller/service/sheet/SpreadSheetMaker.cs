@@ -48,19 +48,20 @@ public class SpreadSheetMaker
         {
             throw new EntityNotFoundException("EnrollmentEntity", subjectPartial.enrollmentId);
         }
-        
-        var subjectPartialList = await daoFactory.subjectPartialDao!.getListBySubject(subjectPartial);
-        
+
         var partial = await daoFactory.partialDao!.getById(subjectPartial.partialId);
-        
+        var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollment.enrollmentId!, partial!.semester);
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
+        var studentList = await daoFactory
+            .academyStudentDao!.getListWithGradesForCurrentSchoolyear(subjectPartial.enrollmentId, partial.partialId);
 
         sheetBuilder = new SubjectGradesSheetBuilder.Builder()
-            .withPartial(partial!)
+            .withPartialLabel(partial.label)
             .withUserAlias(user.getAlias())
             .withSchoolyear(currentSchoolyear.label)
             .withTeacher(teacher)
-            .withSubjectPartialList(subjectPartialList)
+            .withSubjectList(subjectList.Where(e => e.teacherId == teacher.teacherId).ToList())
+            .withStudentList(studentList)
             .withEnrollment(enrollment)
             .build();
 
