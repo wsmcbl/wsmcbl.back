@@ -18,7 +18,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
     protected override void setColumnQuantity()
     {
-        columnQuantity = 17;
+        columnQuantity = 16;
     }
 
     public override byte[] getSpreadSheet()
@@ -33,7 +33,7 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         setHeaderEnrollment(headerRow - 2);
         setHeaderSummary(headerRow);
         setSummary(headerRow + 1);
-        setDistribution(headerRow + 10);
+        setDistribution(headerRow + 13);
         
         setHeaderSubject(headerRow);
         setSubject(headerRow + 2);
@@ -89,16 +89,34 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
     {
         var headerColumn = 2;
 
-        var headerStyle = worksheet.Range($"B{headerRow}:{getColumnName(5)}{headerRow}");
+        var headerStyle = worksheet.Range($"B{headerRow}:E{headerRow}");
         headerStyle.Style.Font.Bold = true;
         headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
-        headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-        worksheet.Cell(headerRow, headerColumn++).Value = "Evaluación";
-        worksheet.Cell(headerRow, headerColumn++).Value = "Total";
-        worksheet.Cell(headerRow, headerColumn++).Value = "Varones";
-        worksheet.Cell(headerRow, headerColumn).Value = "Mujeres";
+        worksheet.Cell(headerRow, headerColumn).Value = "Matrícula";
+        worksheet.Cell(headerRow, headerColumn + 1).Value = "Total";
+        worksheet.Cell(headerRow, headerColumn + 2).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn + 3).Value = "Mujeres";
+
+        headerRow += 5;
+        headerStyle = worksheet.Range($"B{headerRow}:E{headerRow}");
+        headerStyle.Style.Font.Bold = true;
+        headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+        worksheet.Cell(headerRow, headerColumn).Value = "Asignaturas";
+        worksheet.Cell(headerRow, headerColumn + 1).Value = "Total";
+        worksheet.Cell(headerRow, headerColumn + 2).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn + 3).Value = "Mujeres";
+        
+        headerRow += 7;
+        headerStyle = worksheet.Range($"B{headerRow}:E{headerRow}");
+        headerStyle.Style.Font.Bold = true;
+        headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+        worksheet.Cell(headerRow, headerColumn).Value = "Promedios";
+        worksheet.Cell(headerRow, headerColumn + 1).Value = "Total";
+        worksheet.Cell(headerRow, headerColumn + 2).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn + 3).Value = "Mujeres";
     }
 
     private void setSummary(int headerRow)
@@ -107,21 +125,22 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
 
         var initialTotal = initialStudentList.Count;
         var initialMaleCount = initialStudentList.Count(e => e.sex);
-        addRow(headerRow++, bodyColumn, "Matrícula inicial", initialMaleCount, initialTotal);
+        addRow(headerRow++, bodyColumn, "Inicial", initialMaleCount, initialTotal);
         
         var total = studentList.Count;
         var maleCount = studentList.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "Matrícula actual", maleCount, total);
+        addRow(headerRow++, bodyColumn, "Actual", maleCount, total);
         
         var malePercentage = (decimal) maleCount / initialMaleCount;
         var femalePercentage = (decimal) (total - maleCount) / (initialTotal - initialMaleCount);
         var totalPercentage = (decimal) total / initialTotal;
-        addRowPercentage(headerRow++, bodyColumn, "Retención de matrícula (%)", malePercentage, femalePercentage, totalPercentage);
+        addRowPercentage(headerRow, bodyColumn, "Retención (%)", malePercentage, femalePercentage, totalPercentage);
         
         var approvedList = studentList.Where(e => e.passedAllSubjects()).ToList();
         var approvedTotal = approvedList.Count;
         var approvedMaleCount = approvedList.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "Aprobados", approvedMaleCount, approvedTotal);
+        headerRow += 3;
+        addRow(headerRow++, bodyColumn, "Aprobados limpios", approvedMaleCount, approvedTotal);
 
         malePercentage = (decimal) approvedMaleCount / maleCount;
         femalePercentage = (decimal) (approvedTotal - approvedMaleCount) / (total - maleCount);
@@ -131,68 +150,94 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         var failedFromOneToTwoList = studentList.Where(e => e.isFailed(1)).ToList();
         total = failedFromOneToTwoList.Count;
         maleCount = failedFromOneToTwoList.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn,"Aplazados de 1 a 2", maleCount, total);
+        addRow(headerRow++, bodyColumn,"Reprobados de 1 a 2", maleCount, total);
         
         var failedFromThreeToMoreList = studentList.Where(e => e.isFailed(2)).ToList();
         total = failedFromThreeToMoreList.Count;
         maleCount = failedFromThreeToMoreList.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn,"Aplazados de 3 a más", maleCount, total);
+        addRow(headerRow++, bodyColumn,"Reprobados de 3 a más", maleCount, total);
         
         var notEvaluatedList = studentList.Where(e => e.hasNotEvaluated()).ToList();
         total = notEvaluatedList.Count;
         maleCount = notEvaluatedList.Count(e => e.student.sex);
         addRow(headerRow, bodyColumn,"No evaluados", maleCount, total);
+
+        setBorderByRange("B10:E13");
+        setBorderByRange("B15:E20");
+    }
+    
+    private void setDistribution(int headerRow)
+    {
+        const int bodyColumn = 2;
         
-        var headerStyle = worksheet.Range("B11:E18");
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+        var list = studentList.Where(e => e.isWithInRange("AA", partial.partialId)).ToList();
+        var total = list.Count;
+        var maleCount = list.Count(e => e.student.sex);
+        addRow(headerRow++, bodyColumn, "AA (100 - 90)", maleCount, total);
+        
+        list = studentList.Where(e => e.isWithInRange("AS", partial.partialId)).ToList();
+        total = list.Count;
+        maleCount = list.Count(e => e.student.sex);
+        addRow(headerRow++, bodyColumn, "AS (89  - 76)", maleCount, total);
+        
+        list = studentList.Where(e => e.isWithInRange("AF", partial.partialId)).ToList();
+        total = list.Count;
+        maleCount = list.Count(e => e.student.sex);
+        addRow(headerRow++, bodyColumn, "AF (75  - 60)", maleCount, total);
+        
+        list = studentList.Where(e => e.isWithInRange("AI", partial.partialId)).ToList();
+        total = list.Count;
+        maleCount = list.Count(e => e.student.sex);
+        addRow(headerRow++, bodyColumn, "AI (59  - 0)", maleCount, total);
+        
+        total = studentList.Count;
+        maleCount = studentList.Count(e => e.student.sex);
+        addRow(headerRow, bodyColumn, "Totales", maleCount, total);
+        
+        setBorderByRange("B22:E27");
     }
 
     private void setHeaderSubject(int headerRow)
     {
-        var headerColumn = 8;
-        
-        var headerStyle = worksheet.Range($"{getColumnName(headerColumn)}{headerRow}:{getColumnName(17)}{headerRow+1}");
+        var headerColumn = 7;
+
+        var rangeString = $"{getColumnName(headerColumn)}{headerRow}:{getColumnName(columnQuantity)}{headerRow + 1}";
+        var headerStyle = worksheet.Range(rangeString);
         headerStyle.Style.Font.Bold = true;
         headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+        setBorderByRange(rangeString);
 
         worksheet.Cell(headerRow, headerColumn).Value = "Asignaturas";
-        
-        var cells = worksheet.Range($"{getColumnName(headerColumn + 1)}{headerRow}:{getColumnName(headerColumn + 3)}{headerRow}").Merge();
+
+        rangeString = $"{getColumnName(headerColumn + 1)}{headerRow}:{getColumnName(headerColumn + 3)}{headerRow}";
+        var cells = worksheet.Range(rangeString).Merge();
         cells.Value = "Aprobados";
         cells.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         cells.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-        
-        cells = worksheet.Range($"{getColumnName(headerColumn + 4)}{headerRow}:{getColumnName(headerColumn + 6)}{headerRow}").Merge();
-        cells.Value = "Aplazados";
+
+        rangeString = $"{getColumnName(headerColumn + 4)}{headerRow}:{getColumnName(headerColumn + 6)}{headerRow}";
+        cells = worksheet.Range(rangeString).Merge();
+        cells.Value = "Reprobados";
         cells.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         cells.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-        
-        cells = worksheet.Range($"{getColumnName(headerColumn + 7)}{headerRow}:{getColumnName(headerColumn + 9)}{headerRow++}").Merge();
+
+        rangeString = $"{getColumnName(headerColumn + 7)}{headerRow}:{getColumnName(headerColumn + 9)}{headerRow++}";
+        cells = worksheet.Range(rangeString).Merge();
         cells.Value = "No evaluados";
         cells.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         cells.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-        
-        worksheet.Cell(headerRow, headerColumn + 1).Value = "Total";
-        worksheet.Cell(headerRow, headerColumn + 2).Value = "Varones";
-        worksheet.Cell(headerRow, headerColumn + 3).Value = "Mujeres";
-        worksheet.Cell(headerRow, headerColumn + 4).Value = "Total";
-        worksheet.Cell(headerRow, headerColumn + 5).Value = "Varones";
-        worksheet.Cell(headerRow, headerColumn + 6).Value = "Mujeres";
-        worksheet.Cell(headerRow, headerColumn + 7).Value = "Total";
-        worksheet.Cell(headerRow, headerColumn + 8).Value = "Varones";
-        worksheet.Cell(headerRow, headerColumn + 9).Value = "Mujeres";
+
+        headerColumn++;
+        worksheet.Cell(headerRow, headerColumn++).Value = "  Total  ";
+        worksheet.Cell(headerRow, headerColumn++).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn++).Value = "Mujeres";
+        worksheet.Cell(headerRow, headerColumn++).Value = "  Total  ";
+        worksheet.Cell(headerRow, headerColumn++).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn++).Value = "Mujeres";
+        worksheet.Cell(headerRow, headerColumn++).Value = "  Total  ";
+        worksheet.Cell(headerRow, headerColumn++).Value = "Varones";
+        worksheet.Cell(headerRow, headerColumn).Value = "Mujeres";
     }
 
     private void setSubject(int headerRow)
@@ -202,18 +247,12 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
             setBody(item, headerRow++);
         }
         
-        var headerStyle = worksheet.Range($"H12:Q{subjectList.Count + 11}");
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+        setBorderByRange($"G12:P{subjectList.Count + 11}");
     }
 
     private void setBody(model.secretary.SubjectEntity item, int headerRow)
     {
-        var bodyColumn = 8;
+        var bodyColumn = 7;
         var result = subjectPartialList.FirstOrDefault(e => e.subjectId == item.subjectId);
         if (result == null)
         {
@@ -223,24 +262,30 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
         var approvedList = result.gradeList.Where(e => e.isApproved()).ToList();
         var failedList = result.gradeList.Where(e => !e.isApproved()).ToList();
         var notEvaluatedList = result.gradeList.Where(e => e.isNotEvaluated()).ToList();
+
+        var total = approvedList.Count;
+        var male = approvedList.Count(e => e.student!.sex);
+        addRow(headerRow, bodyColumn, item.initials, male, total);
         
-        worksheet.Cell(headerRow, bodyColumn++).Value = item.initials;
-        worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count;
-        worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count(e => e.student!.sex);
-        worksheet.Cell(headerRow, bodyColumn++).Value = approvedList.Count(e => !e.student!.sex);
+        total = failedList.Count;
+        male = failedList.Count(e => e.student!.sex);
+        bodyColumn += 3;
+        addRow(headerRow, bodyColumn, null, male, total);
         
-        worksheet.Cell(headerRow, bodyColumn++).Value = failedList.Count;
-        worksheet.Cell(headerRow, bodyColumn++).Value = failedList.Count(e => e.student!.sex);
-        worksheet.Cell(headerRow, bodyColumn++).Value = failedList.Count(e => !e.student!.sex);
-        
-        worksheet.Cell(headerRow, bodyColumn++).Value = notEvaluatedList.Count;
-        worksheet.Cell(headerRow, bodyColumn++).Value = notEvaluatedList.Count(e => e.student!.sex);
-        worksheet.Cell(headerRow, bodyColumn).Value = notEvaluatedList.Count(e => !e.student!.sex);
+        total = notEvaluatedList.Count;
+        male = notEvaluatedList.Count(e => e.student!.sex);
+        bodyColumn += 3;
+        addRow(headerRow, bodyColumn, null, male, total);
     }
     
-    private void addRow(int headerRow, int bodyColumn, string title, int male, int total)
+    
+    private void addRow(int headerRow, int bodyColumn, string? title, int male, int total)
     {
-        worksheet.Cell(headerRow, bodyColumn).Value = title; 
+        if (title != null)
+        {
+            worksheet.Cell(headerRow, bodyColumn).Value = title; 
+        }
+        
         worksheet.Cell(headerRow, bodyColumn + 1).Value = total;
         worksheet.Cell(headerRow, bodyColumn + 2).Value = male;
         worksheet.Cell(headerRow, bodyColumn + 3).Value = total - male;
@@ -249,53 +294,14 @@ public class EvaluationStatisticsByTeacherSheetBuilder : SheetBuilder
     private void addRowPercentage(int headerRow, int bodyColumn, string title, decimal male, decimal female, decimal total)
     {
         worksheet.Cell(headerRow, bodyColumn).Value = title;
-        worksheet.Cell(headerRow, bodyColumn + 1).Value = Math.Round(100 * total, 2);
-        worksheet.Cell(headerRow, bodyColumn + 2).Value = Math.Round(100 * male, 2);
-        worksheet.Cell(headerRow, bodyColumn + 3).Value = Math.Round(100 * female, 2);
-    }
-
-    private void setDistribution(int headerRow)
-    {
-        var bodyColumn = 2;
+        worksheet.Cell(headerRow, bodyColumn + 1).Value = $"{Math.Round(100 * total, 2)} %";
+        worksheet.Cell(headerRow, bodyColumn + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+            
+        worksheet.Cell(headerRow, bodyColumn + 2).Value = $"{Math.Round(100 * male, 2)} %";
+        worksheet.Cell(headerRow, bodyColumn + 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
         
-        var headerStyle = worksheet.Range($"B{headerRow}:E{headerRow++}").Merge();
-        headerStyle.Value = "Evaluación cualitativa";
-        headerStyle.Style.Font.Bold = true;
-        headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
-        headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-
-        var list = studentList.Where(e => e.isWithInRange("AA", partial.partialId)).ToList();
-        var total = list.Count;
-        var maleCount = list.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "AA", maleCount, total);
-        
-        list = studentList.Where(e => e.isWithInRange("AS", partial.partialId)).ToList();
-        total = list.Count;
-        maleCount = list.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "AS", maleCount, total);
-        
-        list = studentList.Where(e => e.isWithInRange("AF", partial.partialId)).ToList();
-        total = list.Count;
-        maleCount = list.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "AF", maleCount, total);
-        
-        list = studentList.Where(e => e.isWithInRange("AI", partial.partialId)).ToList();
-        total = list.Count;
-        maleCount = list.Count(e => e.student.sex);
-        addRow(headerRow++, bodyColumn, "AI", maleCount, total);
-        
-        total = studentList.Count;
-        maleCount = studentList.Count(e => e.student.sex);
-        addRow(headerRow, bodyColumn, "Totales", maleCount, total);
-        
-        headerStyle = worksheet.Range("B21:E25");
-        headerStyle.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        headerStyle.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+        worksheet.Cell(headerRow, bodyColumn + 3).Value = $"{Math.Round(100 * female, 2)} %";
+        worksheet.Cell(headerRow, bodyColumn + 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
     }
 
     public class Builder

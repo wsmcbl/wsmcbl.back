@@ -38,13 +38,18 @@ public abstract class SheetBuilder
     
     protected void setBorder(int lastRow, int headerRow)
     {
-        var tableRange = worksheet.Range($"B{headerRow}:{lastColumnName}{lastRow}");
+        setBorderByRange($"B{headerRow}:{lastColumnName}{lastRow}");
+    }
 
-        tableRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
-        tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+    protected void setBorderByRange(string stringRange)
+    {
+        var ixlRange = worksheet.Range(stringRange); 
+        
+        ixlRange.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+        ixlRange.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+        ixlRange.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+        ixlRange.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+        ixlRange.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
     }
     
     protected void setDate(int row, string userAlias)
