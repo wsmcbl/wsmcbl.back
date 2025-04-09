@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
@@ -8,5 +9,9 @@ public class UnenrollStudentController(DaoFactory daoFactory) : BaseController(d
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
         await daoFactory.academyStudentDao.deleteAsync(student);
+
+        var withdrawnStudent = new WithdrawnStudentEntity(student);
+        daoFactory.withdrawnStudentDao!.create(withdrawnStudent);
+        await daoFactory.ExecuteAsync();
     }
 }
