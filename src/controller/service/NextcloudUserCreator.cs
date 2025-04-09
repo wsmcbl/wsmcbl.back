@@ -120,7 +120,23 @@ public class NextcloudUserCreator
         var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}", content);
         if (!response.IsSuccessStatusCode)
         {
-            throw new InternalException("Error creating user to Nextcloud.");
+            throw new InternalException("Error change password user to Nextcloud.");
+        }
+    }
+    
+    public async Task changeState(UserEntity user)
+    {
+        if (!Utility.isInProductionEnvironment()) return;
+        
+        var content = new FormUrlEncodedContent([
+            new KeyValuePair<string, string>("key", "enabled"),
+            new KeyValuePair<string, string>("value", user.isActive.ToString())
+        ]);
+
+        var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}", content);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InternalException("Error disable user to Nextcloud.");
         }
     }
 
