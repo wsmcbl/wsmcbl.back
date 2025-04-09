@@ -82,6 +82,11 @@ public class StudentEntity
 
         return age;
     }
+
+    public void changeState()
+    {
+        isActive = !isActive;
+    }
     
     public class Builder
     {
