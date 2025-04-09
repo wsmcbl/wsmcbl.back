@@ -4,13 +4,12 @@ using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.secretary;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model;
-using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.api;
 
 [Route("secretary/students")]
 [ApiController]
-public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController controller) : ActionsBase
+public class UpdateStudentSecretaryProfileActions(UpdateStudentProfileController controller) : ActionsBase
 {
     /// <summary>Returns paged basic student list.</summary>
     /// <remarks>Values for sortBy: studentId, fullName, isActive, tutor, schoolyear and enrollment.</remarks>
@@ -77,6 +76,20 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
         using var memoryStream = new MemoryStream();
         await profilePicture.CopyToAsync(memoryStream);
         await controller.updateProfilePicture(studentId, memoryStream.ToArray());
+        return Ok();
+    }
+    
+    /// <summary>Update student state (active or inactive).</summary>
+    /// <response code="200">Returns when the resource has been modified.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("{studentId}/states")]
+    [Authorizer("student:update")]
+    public async Task<IActionResult> updateProfileState([Required] string studentId, [Required] [FromQuery] bool state)
+    {
+        await controller.updateProfileState(studentId, state);
         return Ok();
     }
 }
