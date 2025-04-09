@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("accounting")]
 [ApiController]
-public class UpdateStudentProfileAccountingActions(UpdateStudentProfileController controller) : ActionsBase
+public class UpdateStudentAccountingProfileActions(UpdateStudentProfileController controller) : ActionsBase
 {
     /// <summary>Update student discount.</summary>
     /// <response code="200">If the resource was edited correctly.</response>
