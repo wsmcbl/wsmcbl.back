@@ -80,6 +80,18 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
         return Ok(subjectList.mapListToDto(degreeList));
     }
     
+    /// <summary>Returns enrollments list for current schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("enrollments")]
+    [Authorizer("report:principal:read")]
+    public async Task<IActionResult> getEnrollmentList()
+    {
+        return Ok(await controller.getEnrollmentList());
+    }
+    
     
     /// <summary>Returns enrollment grade summary by partial in XLSX format.</summary>
     /// <response code="200">Returns a resource.</response>
