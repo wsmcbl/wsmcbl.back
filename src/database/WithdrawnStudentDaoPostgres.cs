@@ -5,8 +5,7 @@ using wsmcbl.src.model.academy;
 
 namespace wsmcbl.src.database;
 
-public class WithdrawnStudentDaoPostgres(PostgresContext context)
-    : GenericDaoPostgres<WithdrawnStudentEntity, int>(context), IWithdrawnStudentDao
+public class WithdrawnStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<WithdrawnStudentEntity, int>(context), IWithdrawnStudentDao
 {
     public async Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId, bool hasBeforeFirstPartial = false)
     {
@@ -28,5 +27,13 @@ public class WithdrawnStudentDaoPostgres(PostgresContext context)
 
         return await query.Where(e => firstPartial.startDate >= DateOnly.FromDateTime(e.enrolledAt))
             .Include(e => e.student).ToListAsync();
+    }
+
+    public async Task<List<WithdrawnStudentEntity>> getAllForCurrentSchoolyear()
+    {
+        var daoFactory = new DaoFactoryPostgres(context);
+        var currentSchoolyear = await daoFactory.schoolyearDao.getCurrent();
+
+        return await entities.Where(e => e.schoolyearId == currentSchoolyear.id).ToListAsync();
     }
 }
