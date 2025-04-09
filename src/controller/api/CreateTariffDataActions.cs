@@ -15,7 +15,7 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("catalog:read")]
+    [Authorizer("catalog:read")]
     public async Task<IActionResult> getTariffDataList()
     {
         var result = await controller.getTariffDataList();
@@ -30,7 +30,7 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{tariffId:int}")]
-    [ResourceAuthorizer("catalog:update")]
+    [Authorizer("catalog:update")]
     public async Task<IActionResult> updateTariffData(int tariffId, TariffDataDto dto)
     {
         await controller.updateTariffData(dto.toEntity(tariffId));
@@ -44,7 +44,7 @@ public class CreateTariffDataActions(CreateTariffDataController controller) : Co
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("")]
-    [ResourceAuthorizer("catalog:create")]
+    [Authorizer("catalog:create")]
     public async Task<IActionResult> createTariffData(TariffDataDto dto)
     {
         var result = await controller.createTariffData(dto.toEntity());

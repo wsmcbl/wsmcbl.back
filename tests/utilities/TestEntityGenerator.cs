@@ -354,7 +354,7 @@ public class TestEntityGenerator
         {
             studentId = studentId,
             enrollmentId = aEnrollment().enrollmentId,
-            schoolYear = aSchoolYear().id!,
+            schoolyearId = aSchoolYear().id!,
             
         };
     }

@@ -1,20 +1,19 @@
 using wsmcbl.src.exception;
-using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class CreateBackupsController(DaoFactory daoFactory) : BaseController(daoFactory)
+public static class CreateBackupsController
 {
-    private const string backupDirectory = "/backups";
+    private const string BACKUP_DIR = "/backups";
 
-    public (byte[] data, string name) getCurrentBackupDocument()
+    public static async Task<(byte[] data, string name)> getCurrentBackupDocument()
     {
-        if (!Directory.Exists(backupDirectory))
+        if (!Directory.Exists(BACKUP_DIR))
         {
             throw new NotFoundException("The backup directory does not exist.");
         }
 
-        var latestBackup = new DirectoryInfo(backupDirectory)
+        var latestBackup = new DirectoryInfo(BACKUP_DIR)
             .GetFiles("backup_*.sql")
             .OrderByDescending(f => f.CreationTime)
             .FirstOrDefault();
@@ -24,7 +23,7 @@ public class CreateBackupsController(DaoFactory daoFactory) : BaseController(dao
             throw new NotFoundException("No backups available.");
         }
 
-        var fileBytes = File.ReadAllBytes(latestBackup.FullName);
+        var fileBytes = await File.ReadAllBytesAsync(latestBackup.FullName);
         return (fileBytes, latestBackup.Name);
     }
 }

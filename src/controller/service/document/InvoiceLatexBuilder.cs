@@ -1,3 +1,4 @@
+using System.Text;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.utilities;
 
@@ -15,25 +16,26 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
 
     protected override string getTemplateName() => "invoice";
 
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        content = content.ReplaceInLatexFormat("numeration.value", $"{series}{number:00000000}");
-        content = content.ReplaceInLatexFormat("customer.name.value", student.fullName());
-        content = content.ReplaceInLatexFormat("customer.id.value", student.studentId);
-        content = content.Replace("detail.value", getDetail());
-        content = content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
-        content = content.Replace("detail.other.value", getOtherDetailOrEmpty());
-        content = content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
-        content = content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
-        content = content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
-        content = content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
-        content = content.Replace("balance.other.value", getBalanceOrEmpty());
-        content = content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
-        content = content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
-        content = content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
-        content = content.ReplaceInLatexFormat("general.balance.value", getGeneralBalance());
+        var content = new StringBuilder(value);
+        content.ReplaceInLatexFormat("numeration.value", $"{series}{number:00000000}");
+        content.ReplaceInLatexFormat("customer.name.value", student.fullName());
+        content.ReplaceInLatexFormat("customer.id.value", student.studentId);
+        content.Replace("detail.value", getDetail());
+        content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
+        content.Replace("detail.other.value", getOtherDetailOrEmpty());
+        content.ReplaceInLatexFormat("discount.value", getDiscountTotal());
+        content.ReplaceInLatexFormat("arrears.value", getArrearsTotal());
+        content.ReplaceInLatexFormat("total.aux.value", getAuxTotal());
+        content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
+        content.Replace("balance.other.value", getBalanceOrEmpty());
+        content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
+        content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
+        content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
+        content.ReplaceInLatexFormat("general.balance.value", getGeneralBalance());
 
-        return content;
+        return content.ToString();
     }
 
     private string getArrearsTotal() => $"C$ {arrearsTotal:F2}";

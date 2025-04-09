@@ -1,7 +1,10 @@
 using wsmcbl.src.database.context;
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
 using wsmcbl.src.model.secretary;
+using ISubjectDao = wsmcbl.src.model.secretary.ISubjectDao;
+using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.database;
 

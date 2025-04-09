@@ -17,7 +17,7 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     /// <response code="404">If resource not exist.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentInformationLevelById(string studentId)
     {
         var student = await controller.getStudentById(studentId);
@@ -33,7 +33,7 @@ public class CorrectEducationalLevelActions(CorrectEducationalLevelController co
     /// <response code="409">If the student has the same level.</response>
     [HttpPut]
     [Route("")]
-    [ResourceAuthorizer("student:update")]
+    [Authorizer("student:update")]
     public async Task<IActionResult> changeEducationLevel([FromQuery] string studentId, [FromQuery] int level)
     {
         if (level is < 1 or > 3)

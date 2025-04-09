@@ -29,7 +29,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("revenues")]
-    [ResourceAuthorizer("report:read")]
+    [Authorizer("report:read")]
     public async Task<IActionResult> getPaginatedTransactionReportView([FromQuery] TransactionReportViewPagedRequest request)
     {
         request.checkSortByValue(["transactionId", "number", "studentId", "studentName", "total", "isValid", "enrollmentLabel", "type", "dateTime"]);
@@ -84,7 +84,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("types")]
-    [ResourceAuthorizer("tariff:read")]
+    [Authorizer("tariff:read")]
     public async Task<ActionResult> getTariffTypeList()
     {
         return Ok(await controller.getTariffTypeList());

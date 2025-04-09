@@ -18,7 +18,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Registration tariff not found.</response>
     [HttpGet]
     [Route("students")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentsList()
     {
         var result = await controller.getStudentListWithSolvencyInRegistration();
@@ -32,7 +32,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
@@ -48,7 +48,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Schoolyear not found.</response>
     [HttpGet]
     [Route("students/{studentId}/degrees")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getDegreeListByStudentId([Required] string studentId)
     {
         var result = await controller.getDegreeListByStudentId(studentId);
@@ -63,7 +63,7 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("")]
-    [ResourceAuthorizer("student:enroll")]
+    [Authorizer("student:enroll")]
     public async Task<IActionResult> saveEnroll(EnrollStudentDto dto)
     {
         var result = await controller.saveEnroll(dto.getStudent(), dto.enrollmentId!, dto.isRepeating);
@@ -74,14 +74,14 @@ public class EnrollStudentActions(EnrollStudentController controller) : ActionsB
         return Ok(result.mapToDto(ids));
     }
 
-    /// <summary>Returns the enroll document of student.</summary>
+    /// <summary>Returns enroll-sheet by student id in PDF format.</summary>
     /// <response code="200">Return existing resources.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpGet]
-    [Route("documents/{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Route("students/{studentId}/export")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getEnrollDocument([Required] string studentId)
     {
         var result = await controller.getEnrollDocument(studentId, getAuthenticatedUserId());

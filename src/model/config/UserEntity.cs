@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.utilities;
@@ -72,11 +73,10 @@ public class UserEntity
     {
         var name_email = getTextInEmailFormat(name);
         var surname_email = getTextInEmailFormat(surname);
-        var random = new Random();
         
         while (true)
         {
-            email = $"{name_email}.{surname_email}{random.Next(10, 99)}@cbl-edu.com";
+            email = $"{name_email}.{surname_email}{RandomNumberGenerator.GetInt32(10, 100)}@cbl-edu.com";
         
             var isDuplicate = await userDao.isEmailAlreadyRegistered(email);
             if (!isDuplicate)

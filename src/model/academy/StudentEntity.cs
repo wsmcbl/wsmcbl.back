@@ -1,3 +1,4 @@
+using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.model.academy;
@@ -6,14 +7,16 @@ public class StudentEntity
 {
     public string studentId { get; set; } = null!;
     public string? enrollmentId { get; set; }
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public bool isApproved { get; set; }
     public bool isRepeating { get; set; }
     public DateTime createdAt { get; set; }
     public string? enrollmentLabel { get; set; }
     
     public secretary.StudentEntity student { get; set; } = null!;
-    public List<PartialEntity>? partials { get; private set; }
+    public List<PartialEntity>? partials { get; set; }
+    public List<GradeView>? gradeList { get; set; }
+    public List<GradeAverageView>? averageList { get; set; }
     
     public StudentEntity()
     {
@@ -30,17 +33,12 @@ public class StudentEntity
 
     public void setSchoolyear(string schoolYearId)
     {
-        schoolYear = schoolYearId;
+        schoolyearId = schoolYearId;
     }
 
     public string fullName()
     {
         return student.fullName();
-    }
-
-    public void setPartials(List<PartialEntity> list)
-    {
-        partials = list;
     }
 
     public void setIsRepeating(bool repeating)
@@ -51,5 +49,53 @@ public class StudentEntity
     public DateOnly getCreateAtByDateOnly()
     {
         return DateOnly.FromDateTime(createdAt.toUTC6());
+    }
+
+    public decimal? computeFinalGrade()
+    {
+        if (averageList is not { Count: 4 })
+        {
+            return null;
+        }
+
+        return averageList.Sum(item => item.grade) / 4;
+    }
+
+    public GradeAverageView getAverage(int partialId)
+    {
+        if (averageList == null)
+        {
+            throw new InternalException("The averageList must be not null.");
+        }
+        
+        var result = averageList.FirstOrDefault(e => e.partialId == partialId);
+        if (result == null)
+        {
+            throw new EntityNotFoundException($"The GradeAverageEntity for partialId ({partialId}) in StudentEntity not found.");
+        }
+
+        return result;
+    }
+
+    public bool passedAllSubjects()
+    {
+        return gradeList!.All(e => e.grade >= 60);
+    }
+
+    public bool isFailed(int type)
+    {
+        var count = gradeList!.Count(e => e.grade < 60);
+        return type == 1 ? count is 1 or 2 : count >= 3;
+    }
+
+    public bool hasNotEvaluated()
+    {
+        return gradeList!.All(item => item is { grade: 0, conductGrade: 0 });
+    }
+
+    public bool isWithInRange(string label, int partialId)
+    {
+        var average = getAverage(partialId);
+        return GradeEntity.getLabelByGrade(average.grade).Equals(label); 
     }
 }

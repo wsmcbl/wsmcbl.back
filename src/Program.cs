@@ -59,14 +59,16 @@ builder.Services.AddTransient<EnablePartialGradeRecordingController>();
 builder.Services.AddTransient<GenerateDebtorReportController>();
 
 builder.Services.AddTransient<ApplyArrearsController>();
-builder.Services.AddTransient<CreateBackupsController>();
 builder.Services.AddTransient<UpdateRolesController>();
 builder.Services.AddTransient<GenerateStudentRegisterController>();
 builder.Services.AddTransient<ViewEnrollmentGuideController>();
 builder.Services.AddTransient<CreateSchoolyearController>();
 builder.Services.AddTransient<CreateSubjectDataController>();
 builder.Services.AddTransient<CreateTariffDataController>();
-builder.Services.AddTransient<ViewDirectorDashboardController>();
+builder.Services.AddTransient<ViewPrincipalDashboardController>();
+
+builder.Services.AddTransient<GeneratePerformanceReportBySectionController>();
+builder.Services.AddTransient<GenerateEvaluationStatsBySectionController>();
 
 var app = builder.Build();
 

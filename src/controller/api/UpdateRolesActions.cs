@@ -16,7 +16,7 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("rol:read")]
+    [Authorizer("rol:read")]
     public async Task<IActionResult> getRoleList()
     {
         var result = await controller.getRoleList();
@@ -30,7 +30,7 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     /// <response code="404">If the role not exist.</response>
     [HttpGet]
     [Route("{roleId:int}")]
-    [ResourceAuthorizer("rol:read")]
+    [Authorizer("rol:read")]
     public async Task<IActionResult> getRoleById(int roleId)
     {
         var result = await controller.getRoleById(roleId);
@@ -44,7 +44,7 @@ public class UpdateRolesActions(UpdateRolesController controller) : ActionsBase
     /// <response code="404">If the role not exist.</response>
     [HttpPut]
     [Route("{roleId:int}")]
-    [ResourceAuthorizer("rol:update")]
+    [Authorizer("rol:update")]
     public async Task<IActionResult> updateRole(int roleId, [Required] RoleToUpdateDto dto)
     {
         var result = await controller.updateRole(dto.toEntity(roleId));

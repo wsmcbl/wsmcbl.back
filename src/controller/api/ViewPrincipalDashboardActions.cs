@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.management;
@@ -7,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("management")]
 [ApiController]
-public class ViewDirectorDashboardActions(ViewDirectorDashboardController controller) : ActionsBase
+public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController controller) : ActionsBase
 {
     /// <summary>Get summary of the revenue for current month.</summary>
     /// <response code="200">Return the value</response>
@@ -15,7 +16,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("revenues/")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryRevenue()
     {
         await controller.getSummaryRevenue();
@@ -33,7 +34,7 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("incidents/")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getLastIncidents()
     {
         return Ok(await controller.getLastIncidents());
@@ -57,25 +58,53 @@ public class ViewDirectorDashboardActions(ViewDirectorDashboardController contro
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("teachers/grades/summaries")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryTeacherGrades()
     {
         var result = await controller.getSummaryTeacherGrades();
         return Ok(result.mapListToDto());
     }
     
-    /// <summary>Returns subject list for current schoolyear.</summary>
+    /// <summary>Returns subject name list for current schoolyear.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("subjects")]
-    [ResourceAuthorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSubjectList()
     {
         var subjectList = await controller.getSubjectList();
         var degreeList = await controller.getDegreeList();
         
         return Ok(subjectList.mapListToDto(degreeList));
+    }
+    
+    /// <summary>Returns enrollments list for current schoolyear.</summary>
+    /// <response code="200">Returns a list, the list can be empty.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("enrollments")]
+    [Authorizer("report:principal:read")]
+    public async Task<IActionResult> getEnrollmentList()
+    {
+        return Ok(await controller.getEnrollmentList());
+    }
+    
+    
+    /// <summary>Returns enrollment grade summary by partial in XLSX format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or partial not found.</response>
+    [HttpGet]
+    [Route("enrollments/{enrollmentId}/grades/export")]
+    [Authorizer("report:principal:read")]
+    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partial)
+    {
+        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partial, getAuthenticatedUserId());
+        
+        return File(result, getContentType(2), $"{enrollmentId}.grades-summary.xlsx");
     }
 }
