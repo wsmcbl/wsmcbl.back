@@ -60,4 +60,18 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
         var result = await controller.updateUserPassword(userId);
         return Ok(new UserToCreateDto(result, string.Empty));
     }
+    
+    /// <summary>Change user state (active or inactive).</summary>
+    /// <response code="201">If the resource was updated.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If the user not exist.</response>
+    [HttpPut]
+    [Route("users/{userId}/state")]
+    [Authorizer("user:update")]
+    public async Task<IActionResult> changeUserState([Required] string userId)
+    {
+        await controller.changeUserState(userId);
+        return Ok();
+    }
 }
