@@ -48,8 +48,9 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     {
         var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
         var degreeList = await controller.getDegreeListForCurrentSchoolyear();
+        var withdrawnList = await controller.getWithdrawnStudentList();
         
-        return Ok(new DistributionStudentDto(studentList, degreeList));
+        return Ok(new DistributionStudentDto(studentList, degreeList, withdrawnList));
     }
     
     /// <summary>Get summary of the teachers who entered grades.</summary>
@@ -80,7 +81,7 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
         return Ok(subjectList.mapListToDto(degreeList));
     }
     
-    /// <summary>Returns enrollments list for current schoolyear.</summary>
+    /// <summary>Returns enrollment list for current schoolyear.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -89,7 +90,8 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     [Authorizer("report:principal:read")]
     public async Task<IActionResult> getEnrollmentList()
     {
-        return Ok(await controller.getEnrollmentList());
+        var result = await controller.getEnrollmentList();
+        return Ok(result.mapListToDto());
     }
     
     
