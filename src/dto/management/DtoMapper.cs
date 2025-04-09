@@ -11,6 +11,9 @@ public static class DtoMapper
     
     public static List<TeacherReportDto> mapListToDto(this List<TeacherEntity> list) =>
         list.Select(e => new TeacherReportDto(e)).ToList();
+    
+    public static List<BasicEnrollmentDto> mapListToDto(this List<EnrollmentEntity> list) =>
+        list.Select(e => new BasicEnrollmentDto(e)).ToList();
 
     public static List<SubjectNameDto> mapListToDto(this List<SubjectEntity> subjectList, List<DegreeEntity> degreeList)
     {
