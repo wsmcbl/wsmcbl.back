@@ -13,7 +13,15 @@ public class WithdrawnStudentDaoPostgres : GenericDaoPostgres<WithdrawnStudentEn
     {
         daoFactory = new DaoFactoryPostgres(context);
     }
-    
+
+    public new async Task<List<WithdrawnStudentEntity>> getAll()
+    {
+        return await entities.AsNoTracking()
+            .Include(e => e.student)
+            .Include(e => e.lastEnrollment)
+            .ToListAsync();
+    }
+
     public async Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId, bool hasBeforeFirstPartial = false)
     {
         var query = entities.Where(e => e.lastEnrollmentId == enrollmentId);
@@ -38,6 +46,7 @@ public class WithdrawnStudentDaoPostgres : GenericDaoPostgres<WithdrawnStudentEn
     public async Task<List<WithdrawnStudentEntity>> getAllForCurrentSchoolyear()
     {
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
-        return await entities.Where(e => e.schoolyearId == currentSchoolyear.id).ToListAsync();
+        return await entities.AsNoTracking()
+            .Where(e => e.schoolyearId == currentSchoolyear.id).ToListAsync();
     }
 }
