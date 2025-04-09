@@ -12,7 +12,7 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class ResourceActions(ResourceController controller) : ControllerBase
 {
-    /// <summary>Returns the media by type and schoolyear.</summary>
+    /// <summary>Returns the media by type and schoolyear label.</summary>
     /// <param name="type">The type of the media, the default value is 1.</param>
     /// <param name="schoolyear">The schoolyear of the media, for example, "2024", "2025".</param>
     /// <response code="200">Returns a resource.</response>
@@ -20,8 +20,8 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
     [HttpGet]
-    [Route("medias")]
-    public async Task<IActionResult> getMedia([FromQuery] int type, [FromQuery] int schoolyear)
+    [Route("medias/{schoolyear:int}/{type:int}")]
+    public async Task<IActionResult> getMedia([Required] int schoolyear, [Required] int type)
     {
         var result = await controller.getMedia(type, schoolyear);
         return Ok(new {value = result});
@@ -29,9 +29,9 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     
     /// <summary>Returns the list of all media.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
-    [ResourceAuthorizer("admin")]
     [HttpGet]
-    [Route("medias/lists")]
+    [Route("medias")]
+    [Authorizer("admin")]
     public async Task<IActionResult> getMediaList()
     {
         return Ok(await controller.getMediaList());
@@ -42,9 +42,9 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource depends on another resource not found.</response>
-    [ResourceAuthorizer("admin")]
     [HttpPost]
     [Route("medias")]
+    [Authorizer("admin")]
     public async Task<IActionResult> createMedia(MediaEntity media)
     {
         media.mediaId = 0;
@@ -57,9 +57,9 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">If resource not exist.</response>
-    [ResourceAuthorizer("admin")]
     [HttpPut]
     [Route("medias")]
+    [Authorizer("admin")]
     public async Task<IActionResult> updateMedia(MediaEntity media)
     {
         var result = await controller.updateMedia(media);
@@ -78,9 +78,9 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="200">Return list, the list can be empty</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    [ResourceAuthorizer("admin")]
     [HttpGet]
     [Route("transactions/invoices")]
+    [Authorizer("admin")]
     public async Task<IActionResult> getTransactionInvoiceViewList([FromQuery] [Required] string from, [FromQuery] string to)
     {
         if (!TransactionReportByDateActions.hasDateFormat(from) || !TransactionReportByDateActions.hasDateFormat(to))

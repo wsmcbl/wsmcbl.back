@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using wsmcbl.src.database.context;
-using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.config;
@@ -54,6 +53,10 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IDegreeDao? _degreeDao;
     public override IDegreeDao degreeDao => _degreeDao ??= new DegreeDaoPostgres(context);
+    
+    
+    private SubjectDaoPostgres? _subjectDao;
+    public override model.secretary.ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
 
 
     private IEnrollmentDao? _enrollmentDao;
@@ -116,8 +119,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
         => _studentMeasurementsDao ??= new StudentMeasurementsDaoPostgres(context);
     
     
-    private SubjectDaoPostgres? _subjectDao;
-    public override ISubjectDao subjectDao => _subjectDao ??= new SubjectDaoPostgres(context);
+    private AcademySubjectDaoPostgres? _academySubjectDao;
+    public override model.academy.ISubjectDao academySubjectDao => _academySubjectDao ??= new AcademySubjectDaoPostgres(context);
 
 
     private SubjectPartialDaoPostgres? _subjectPartialDao;
@@ -150,4 +153,8 @@ public class DaoFactoryPostgres(PostgresContext context) : DaoFactory
 
     private IRolePermissionDao? _rolePermissionDao;
     public override IRolePermissionDao rolePermissionDao => _rolePermissionDao ??= new RolePermissionDaoPostgres(context);
+
+
+    private IWithdrawnStudentDao? _withdrawnStudentDao;
+    public override IWithdrawnStudentDao withdrawnStudentDao => _withdrawnStudentDao ??= new WithdrawnStudentDaoPostgres(context);
 }

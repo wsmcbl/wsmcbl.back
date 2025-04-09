@@ -9,12 +9,11 @@ public class PasswordGenerator
     private const string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private const string Digits = "0123456789";
     private const string SpecialChars = "!#$%&*-_=+:.";
-    private int length;
+    private StringBuilder? password { get; set; }
 
     public string generatePassword(int passwordLength = 12, bool includeSpecialChars = true)
     {
-        length = passwordLength;
-        if (length < 8)
+        if (passwordLength < 8)
         {
             throw new ArgumentException("Password length must be at least 8 characters.");
         }
@@ -22,12 +21,12 @@ public class PasswordGenerator
         const string characterSet = LowerCase + UpperCase;
         var charArray = characterSet.ToCharArray();
 
-        var password = getMinimumChars(includeSpecialChars);
+        setMinimumChars(includeSpecialChars);
         using (var rng = RandomNumberGenerator.Create())
         {
             var byteBuffer = new byte[sizeof(uint)];
 
-            while (password.Length < length)
+            while (password!.Length < passwordLength)
             {
                 rng.GetBytes(byteBuffer);
                 var num = BitConverter.ToUInt32(byteBuffer, 0);
@@ -37,27 +36,24 @@ public class PasswordGenerator
             }
         }
         
-        var random = new Random();
-        return new string(password.ToString().OrderBy(c => random.Next()).ToArray());
+        return new string(password.ToString()
+            .OrderBy(c => RandomNumberGenerator.GetInt32(password.Length)).ToArray());
     }
 
-    private StringBuilder getMinimumChars(bool includeSpecialChars)
+    private void setMinimumChars(bool includeSpecialChars)
     {
-        var password = new StringBuilder();
+        password = new StringBuilder();
         
-        var random = new Random();
-        password.Append(Digits[random.Next(Digits.Length)]);
-        password.Append(Digits[random.Next(Digits.Length)]);
+        password.Append(Digits[RandomNumberGenerator.GetInt32(Digits.Length)]);
+        password.Append(Digits[RandomNumberGenerator.GetInt32(Digits.Length)]);
         
-        password.Append(LowerCase[random.Next(Digits.Length)]);
-        password.Append(UpperCase[random.Next(Digits.Length)]);
+        password.Append(LowerCase[RandomNumberGenerator.GetInt32(Digits.Length)]);
+        password.Append(UpperCase[RandomNumberGenerator.GetInt32(Digits.Length)]);
+
+        if (!includeSpecialChars)
+            return;
         
-        if (includeSpecialChars)
-        {
-            password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
-            password.Append(SpecialChars[random.Next(SpecialChars.Length)]);
-        }
-        
-        return password;
+        password.Append(SpecialChars[RandomNumberGenerator.GetInt32(SpecialChars.Length)]);
+        password.Append(SpecialChars[RandomNumberGenerator.GetInt32(SpecialChars.Length)]);
     }
 }

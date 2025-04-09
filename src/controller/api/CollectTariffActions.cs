@@ -18,7 +18,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("students")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getPaginatedStudentView([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
@@ -38,7 +38,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var student = await controller.getStudentById(studentId);
@@ -52,7 +52,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("students/{studentId}/tariffs")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getTariffListByStudentId([Required] string studentId)
     {
         var result = await controller.getTariffListByStudent(studentId);
@@ -66,7 +66,7 @@ public class CollectTariffActions(CollectTariffController controller) : ActionsB
     /// <response code="404">Resource depends on another resource not found.</response>
     [HttpPost]
     [Route("transactions")]
-    [ResourceAuthorizer("transaction:create")]
+    [Authorizer("transaction:create")]
     public async Task<IActionResult> saveTransaction([FromBody] TransactionDto dto)
     {
         var transaction = await controller.saveTransaction(dto.toEntity(), dto.getDetailToApplyArrears());

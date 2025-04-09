@@ -18,7 +18,7 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("debt:read")]
+    [Authorizer("debt:read")]
     public async Task<IActionResult> getPaginatedDebtByStudentId([Required] string studentId, [FromQuery] PagedRequest request)
     {
         var result = await controller.getPaginatedDebtByStudentId(studentId, request);
@@ -37,7 +37,7 @@ public class ForgetDebtActions(ForgetDebtController controller) : ActionsBase
     /// <response code="409">If the debt is already paid.</response>
     [HttpPut]
     [Route("")]
-    [ResourceAuthorizer("debt:update")]
+    [Authorizer("debt:update")]
     public async Task<IActionResult> forgiveADebt([Required] string studentId, [Required] [FromQuery] int tariffId, [Required] [FromQuery] string authorizationToken)
     {
         if (!authorizationToken.Equals("36987"))

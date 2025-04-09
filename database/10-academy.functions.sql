@@ -13,14 +13,15 @@ BEGIN
 
         WITH query_aux AS
         (SELECT s.* FROM academy.subject s
-            inner JOIN academy.enrollment e 
-                on s.enrollmentid = e.enrollmentid
-            left join academy.subject_partial sp
-                on sp.subjectid = s.subjectid and
-                   sp.enrollmentid = s.enrollmentid and
-                   sp.partialid = new.partialid and 
-                   s.teacherid = sp.teacherid
-        WHERE e.schoolyear = current_school_year and sp.subjectpartialid is null)
+            JOIN academy.enrollment e ON s.enrollmentid = e.enrollmentid
+            JOIN secretary.subject ss ON ss.subjectid = s.subjectid
+            LEFT JOIN academy.subject_partial sp ON sp.subjectid = s.subjectid
+                AND sp.enrollmentid = s.enrollmentid
+                AND sp.partialid = new.partialid
+                AND s.teacherid = sp.teacherid
+        WHERE e.schoolyear = current_school_year
+          AND (ss.semester = 3 OR ss.semester = NEW.semester)
+          AND sp.subjectpartialid is null)
 
         INSERT INTO academy.subject_partial(subjectid, enrollmentid, partialid, teacherid)
         SELECT qa.subjectid, qa.enrollmentid, new.partialid, qa.teacherid

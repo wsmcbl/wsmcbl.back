@@ -26,14 +26,7 @@ public class PartialEntity
     
     public void updateLabel()
     {
-        if (semester == 1)
-        {
-            label = partial == 1 ? "I Parcial" : "II Parcial";
-        }
-        else
-        {
-            label = partial == 1 ? "III Parcial" : "IV Parcial";
-        }
+        label = semester == 1 ? getLabel(partial) : getLabel(partial + 2);
     }
 
     public SubjectPartialEntity? getSubjectPartialById(string subjectId)
@@ -72,5 +65,22 @@ public class PartialEntity
  
         gradeRecordIsActive = false;
         gradeRecordDeadline = null;
+    }
+
+    public static string getLabel(int value)
+    {
+        return value switch
+        {
+            1 => "I Parcial",
+            2 => "II Parcial",
+            3 => "III Parcial",
+            4 => "IV Parcial",
+            _ => "Parcial desconocido"
+        };
+    }
+
+    public bool isPartialPosition(int value)
+    {
+        return getLabel(value).Equals(label);
     }
 }

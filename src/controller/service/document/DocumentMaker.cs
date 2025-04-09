@@ -33,7 +33,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
-            .withSubjectList(await daoFactory.subjectDao!.getByEnrollmentId(student.enrollmentId!))
+            .withSubjectList(await daoFactory.academySubjectDao!.getByEnrollmentId(student.enrollmentId!))
             .build();
 
         setLatexBuilder(latexBuilder);
@@ -46,14 +46,15 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var student = await daoFactory.studentDao!.getFullById(studentId);
         var academyStudent = await daoFactory.academyStudentDao!.getById(studentId);
         var enrollment = await daoFactory.enrollmentDao!.getByStudentId(student.studentId!);
-        var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolYear);
-        var label = schoolyear != null ? schoolyear.label : "";
+        var schoolyear = await daoFactory.schoolyearDao!.getById(academyStudent!.schoolyearId);
 
-        var latexBuilder = new EnrollSheetLatexBuilder(resource, $"{resource}/out/enroll", student);
-        latexBuilder.setGrade(enrollment.label);
-        latexBuilder.setAcademyStudent(academyStudent);
-        latexBuilder.setUsername(user.getAlias());
-        latexBuilder.setSchoolyear(label);
+        var latexBuilder = new EnrollSheetLatexBuilder.Builder(resource, $"{resource}/out/enroll")
+            .withStudent(student)
+            .withAcademyStudent(academyStudent)
+            .withGrade(enrollment.label)
+            .withSchoolyear(schoolyear?.label)
+            .withUserAlias(user.getAlias())
+            .build();
 
         setLatexBuilder(latexBuilder);
         return getPDF();

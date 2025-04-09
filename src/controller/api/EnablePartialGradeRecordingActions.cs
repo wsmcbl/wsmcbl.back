@@ -18,7 +18,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("partial:read")]
+    [Authorizer("partial:read")]
     public async Task<IActionResult> getPartialList()
     {
         var result = await controller.getPartialList();
@@ -34,7 +34,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpPut]
     [Route("{partialId:int}")]
-    [ResourceAuthorizer("partial:update")]
+    [Authorizer("partial:update")]
     public async Task<IActionResult> enablePartialGradeRecording([Required] int partialId,
         [Required] [FromQuery] bool enable, [FromQuery] DateTime? deadline)
     {
@@ -62,7 +62,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpPut]
     [Route("{partialId:int}/activate")]
-    [ResourceAuthorizer("partial:update")]
+    [Authorizer("partial:update")]
     public async Task<IActionResult> activatePartial([Required] int partialId, [Required] [FromQuery] bool isActive)
     {
         await controller.activatePartial(partialId, isActive);
@@ -76,7 +76,7 @@ public class EnablePartialGradeRecordingActions(EnablePartialGradeRecordingContr
     /// <response code="404">If the partial not found.</response>
     [HttpGet]
     [Route("enables")]
-    [ResourceAuthorizer("partial:read")]
+    [Authorizer("partial:read")]
     public async Task<IActionResult> getPartialEnabled()
     {
         var result = await controller.getPartialEnabled();

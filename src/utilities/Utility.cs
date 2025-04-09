@@ -35,9 +35,9 @@ public static class Utility
         return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
     }
     
-    public static string ReplaceInLatexFormat(this string text, string oldValue, string? newValue)
+    public static void ReplaceInLatexFormat(this StringBuilder text, string oldValue, string? newValue)
     {
-        return text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
+        text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());
     }
     
     private static readonly string[] specialSymbols = ["$", "€", "£", "¥", "#", "%", "&", "_", "{", "}"];
@@ -108,4 +108,7 @@ public static class Utility
     }
 
     public static string getOrDefault(this string? value) => string.IsNullOrWhiteSpace(value) ? "N/A" : value;
+    
+    public static decimal round(this decimal value) => Math.Round(value, 2);
+    public static decimal? round(this decimal? value) => value == null ? null : Math.Round((decimal)value, 2);
 }

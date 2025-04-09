@@ -1,75 +1,52 @@
 using System.Globalization;
+using System.Text;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.document;
 
-public class EnrollSheetLatexBuilder : LatexBuilder
+public class EnrollSheetLatexBuilder(string templatesPath, string outputPath) : LatexBuilder(templatesPath, outputPath)
 {
-    private string? grade;
-    private string? userName;
-    private string? newSchoolyear;
-    private readonly StudentEntity entity;
-    private model.academy.StudentEntity? academyStudent;
-    
-    public EnrollSheetLatexBuilder(string templatesPath, string outputPath, StudentEntity entity) : base(templatesPath, outputPath)
-    {
-        this.entity = entity;
-    }
-
-    public void setGrade(string value)
-    {
-        grade = value;
-    }
-
-    public void setUsername(string value)
-    {
-        userName = value;
-    }
-
-    public void setSchoolyear(string value)
-    {
-        newSchoolyear = value;
-    }
-    
-    public void setAcademyStudent(model.academy.StudentEntity student)
-    {
-        academyStudent = student;
-    }
+    private string? grade { get; set; }
+    private string? userName { get; set; }
+    private string? newSchoolyear { get; set; }
+    private StudentEntity? entity { get; set; }
+    private model.academy.StudentEntity? academyStudent { get; set; }
     
     protected override string getTemplateName() => "enroll-sheet";
     
-    protected override string updateContent(string content)
+    protected override string updateContent(string value)
     {
-        content = content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
+        var content = new StringBuilder(value);
+        content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
         
-        content = content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
-        content = content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
-        content = content.ReplaceInLatexFormat("student.name.value", entity.fullName());
-        content = content.ReplaceInLatexFormat("degree.value", grade!);
-        content = content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
-        content = content.ReplaceInLatexFormat("mined.id.value", entity.minedId ?? "N/A");
-        content = content.ReplaceInLatexFormat("student.age.value", $"{entity.getAge()} años");
-        content = content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
-        content = content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
-        content = content.ReplaceInLatexFormat("tutor.value", entity.tutor.name);
-        content = content.ReplaceInLatexFormat("diseases.value", entity.diseases!);
-        content = content.ReplaceInLatexFormat("phones.value", entity.tutor.phone);
-        content = content.ReplaceInLatexFormat("email.value", entity.tutor.email);
-        content = content.ReplaceInLatexFormat("religion.value", entity.religion);
-        content = content.ReplaceInLatexFormat("address.value", entity.address);
+        content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
+        content.ReplaceInLatexFormat("student.name.value", entity!.fullName());
+        content.ReplaceInLatexFormat("degree.value", grade!);
+        content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
+        content.ReplaceInLatexFormat("mined.id.value", entity.minedId ?? "N/A");
+        content.ReplaceInLatexFormat("student.age.value", $"{entity.getAge()} años");
+        content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
+        content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
+        content.ReplaceInLatexFormat("tutor.value", entity.tutor.name);
+        content.ReplaceInLatexFormat("diseases.value", entity.diseases!);
+        content.ReplaceInLatexFormat("phones.value", entity.tutor.phone);
+        content.ReplaceInLatexFormat("email.value", entity.tutor.email);
+        content.ReplaceInLatexFormat("religion.value", entity.religion);
+        content.ReplaceInLatexFormat("address.value", entity.address);
         
-        content = content.ReplaceInLatexFormat("secretary.name.value", userName);
-        content = content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
-        content = content.ReplaceInLatexFormat("student.id.value", entity.studentId);
-        content = content.ReplaceInLatexFormat("student.token.value", entity.accessToken);
+        content.ReplaceInLatexFormat("secretary.name.value", userName);
+        content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.ReplaceInLatexFormat("student.id.value", entity.studentId);
+        content.ReplaceInLatexFormat("student.token.value", entity.accessToken);
 
-        content = setParents(content, entity.parents);
-        content = setFile(content, entity.file!);
+        setParents(content, entity.parents);
+        setFile(content, entity.file!);
         
-        content = content.ReplaceInLatexFormat("current.year.value", getYearLabel());
+        content.ReplaceInLatexFormat("current.year.value", getYearLabel());
         
-        return content;
+        return content.ToString();
     }
 
     private static string getYearLabel()
@@ -86,54 +63,92 @@ public class EnrollSheetLatexBuilder : LatexBuilder
         return date.ToString(format, culture);
     }
 
-    private static string setParents(string content, ICollection<StudentParentEntity>? entityParents)
+    private static void setParents(StringBuilder content, ICollection<StudentParentEntity>? entityParents)
     {
         if (entityParents == null)
         {
-            content = setParentNull(content, "father");
-            content = setParentNull(content, "mother");
-            return content;
+            setParent(content, "father", null);
+            setParent(content, "mother", null);
+            return;
         }
         
         var father = entityParents.FirstOrDefault(e => e.sex);
-        content = father == null ? setParentNull(content, "father") : setParent(content, "father", father);
+        setParent(content, "father", father);
         
         var mother = entityParents.FirstOrDefault(e => !e.sex);
-        content = mother == null ? setParentNull(content, "mother") : setParent(content, "mother", mother);
-        
-        return content;
-    }
-
-    private static string setParentNull(string content, string typeParent)
-    {
-        content = content.ReplaceInLatexFormat($"{typeParent}.name.value", "");
-        content = content.ReplaceInLatexFormat($"{typeParent}.idcard.value", "");
-        content = content.ReplaceInLatexFormat($"{typeParent}.occupation.value", "");
-
-        return content;
+        setParent(content, "mother", mother);
     }
     
-    private static string setParent(string content, string typeParent, StudentParentEntity parent)
+    private static void setParent(StringBuilder content, string typeParent, StudentParentEntity? parent)
     {
-        content = content.ReplaceInLatexFormat($"{typeParent}.name.value", parent.name);
-        content = content.ReplaceInLatexFormat($"{typeParent}.idcard.value", parent.idCard!);
-        content = content.ReplaceInLatexFormat($"{typeParent}.occupation.value", parent.occupation!);
-
-        return content;
+        if (parent == null)
+        {
+            content.ReplaceInLatexFormat($"{typeParent}.name.value", "");
+            content.ReplaceInLatexFormat($"{typeParent}.idcard.value", "");
+            content.ReplaceInLatexFormat($"{typeParent}.occupation.value", "");
+            return;
+        }
+        
+        content.ReplaceInLatexFormat($"{typeParent}.name.value", parent.name);
+        content.ReplaceInLatexFormat($"{typeParent}.idcard.value", parent.idCard!);
+        content.ReplaceInLatexFormat($"{typeParent}.occupation.value", parent.occupation!);
     }
 
-    private static string setFile(string content, StudentFileEntity file)
+    private static void setFile(StringBuilder content, StudentFileEntity file)
     {
-        content = content.ReplaceInLatexFormat($"birth.document.value", getTextByBool(file.birthDocument));
-        content = content.ReplaceInLatexFormat($"conduct.document.value", getTextByBool(file.conductDocument));
-        content = content.ReplaceInLatexFormat($"financial.solvency.value", getTextByBool(file.financialSolvency));
-        content = content.ReplaceInLatexFormat($"parent.idcard.value", getTextByBool(file.parentIdentifier));
-        content = content.ReplaceInLatexFormat($"transfer.sheet.value", getTextByBool(file.transferSheet));
-        content = content.ReplaceInLatexFormat($"updated.grade.report.value", getTextByBool(file.updatedDegreeReport));
-
-        return content;
+        content.ReplaceInLatexFormat("birth.document.value", getTextByBool(file.birthDocument));
+        content.ReplaceInLatexFormat("conduct.document.value", getTextByBool(file.conductDocument));
+        content.ReplaceInLatexFormat("financial.solvency.value", getTextByBool(file.financialSolvency));
+        content.ReplaceInLatexFormat("parent.idcard.value", getTextByBool(file.parentIdentifier));
+        content.ReplaceInLatexFormat("transfer.sheet.value", getTextByBool(file.transferSheet));
+        content.ReplaceInLatexFormat("updated.grade.report.value", getTextByBool(file.updatedDegreeReport));
     }
 
     private static string getTextByBool(bool isSomething) => isSomething ? "Sí" : "No";
     private static string getTextBySex(bool sex) => sex ? "Hombre" : "Mujer";
+
+    public class Builder
+    {
+        private readonly EnrollSheetLatexBuilder latexBuilder;
+
+        public Builder(string templatesPath, string outPath)
+        {
+            latexBuilder = new EnrollSheetLatexBuilder(templatesPath, outPath)
+            {
+                entity = new StudentEntity()
+            };
+        }
+
+        public EnrollSheetLatexBuilder build() => latexBuilder;
+        
+        public Builder withStudent(StudentEntity parameter)
+        {
+            latexBuilder.entity = parameter;
+            return this;
+        }
+        
+        public Builder withGrade(string parameter)
+        {
+            latexBuilder.grade = parameter;
+            return this;
+        }
+        
+        public Builder withUserAlias(string parameter)
+        {
+            latexBuilder.userName = parameter;
+            return this;
+        }
+        
+        public Builder withSchoolyear(string? parameter)
+        {
+            latexBuilder.newSchoolyear = parameter ?? string.Empty;
+            return this;
+        }
+        
+        public Builder withAcademyStudent(model.academy.StudentEntity parameter)
+        {
+            latexBuilder.academyStudent = parameter;
+            return this;
+        }
+    }
 }

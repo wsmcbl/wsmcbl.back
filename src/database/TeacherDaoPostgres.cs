@@ -79,4 +79,22 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
                 subjectGradedList = subjectList.ToList()
             }).ToListAsync();
     }
+
+    public async Task<string> getCurrentEnrollmentId(string teacherId)
+    {
+        var teacher = await getById(teacherId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException("TeacherEntity", teacherId);
+        }
+
+        var daoFactory = new DaoFactoryPostgres(context);
+        await teacher.setCurrentEnrollment(daoFactory.schoolyearDao);
+        if (!teacher.hasCurrentEnrollment())
+        {
+            throw new EntityNotFoundException($"Entity of type (EnrollmentEntity) with teacher id ({teacherId}) for current schoolyear not found.");
+        }
+
+        return teacher.getCurrentEnrollmentId();
+    }
 }

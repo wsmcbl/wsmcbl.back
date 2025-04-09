@@ -19,7 +19,7 @@ public class MoveStudentFromEnrollmentActions(MoveStudentFromEnrollmentControlle
     /// <response code="404">Resource depends on another resource not found (student or enrollment).</response>
     [HttpPut]
     [Route("students")]
-    [ResourceAuthorizer("student:update")]
+    [Authorizer("student:update")]
     public async Task<ActionResult> changeStudentEnrollment([FromQuery] string studentId, [FromQuery] string enrollmentId)
     {
         if (await controller.hasActivePartial())

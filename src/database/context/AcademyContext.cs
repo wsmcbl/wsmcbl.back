@@ -29,7 +29,7 @@ internal class AcademyContext
             entity.Property(e => e.tag).HasColumnName("tag");
             entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.section).HasMaxLength(10).HasColumnName("section");
 
             entity.HasMany(d => d.studentList).WithOne()
@@ -51,6 +51,8 @@ internal class AcademyContext
             entity.Property(e => e.grade).HasColumnType("decimal(18,2)").HasColumnName("grade");
             entity.Property(e => e.conductGrade).HasColumnType("decimal(18,2)").HasColumnName("conductgrade");
             entity.Property(e => e.label).HasColumnName("label");
+            
+            entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
         });
 
         modelBuilder.Entity<PartialEntity>(entity =>
@@ -102,15 +104,35 @@ internal class AcademyContext
             entity.Property(e => e.isApproved).HasColumnName("isapproved");
             entity.Property(e => e.isRepeating).HasColumnName("isrepeating");
             entity.Property(e => e.createdAt).HasColumnName("createdat");
-            entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(20).HasColumnName("schoolyear");
 
             entity.HasOne(d => d.student).WithMany()
                 .HasForeignKey(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
-
+            
             entity.Ignore(e => e.partials);
+            entity.Ignore(e => e.gradeList);
             entity.Ignore(e => e.enrollmentLabel);
+            
+            entity.HasMany(d => d.averageList).WithOne()
+                .HasForeignKey(d =>  new { d.studentId, d.enrollmentId });
+        });
+
+        modelBuilder.Entity<WithdrawnStudentEntity>(entity =>
+        {
+            entity.HasKey(e => e.withdrawnId);
+
+            entity.ToTable("withdrawnstudent", "academy");
+
+            entity.Property(e => e.withdrawnId).HasColumnName("withdrawnid");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.lastEnrollmentId).HasColumnName("lastenrollmentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.enrolledAt).HasColumnName("enrolledat");
+            entity.Property(e => e.withdrawnAt).HasColumnName("withdrawnat");
+            
+            entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>
@@ -182,6 +204,40 @@ internal class AcademyContext
             entity.Property(e => e.partialId).HasColumnName("partialid");
             entity.Property(e => e.studentCount).HasColumnName("studentcount");
             entity.Property(e => e.gradedStudentCount).HasColumnName("gradedstudentcount");
+        });
+
+        modelBuilder.Entity<GradeView>(entity =>
+        {
+            entity.HasKey(e => e.id);
+            
+            entity.ToView("grade_view", "academy");
+            entity.Property(e => e.id).HasColumnName("id");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.subjectId).HasColumnName("subjectid");
+            entity.Property(e => e.teacherId).HasColumnName("teacherid");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.semester).HasColumnName("semester");
+            entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.grade).HasColumnName("grade");
+            entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
+            entity.Property(e => e.label).HasColumnName("label");
+        });
+        
+        modelBuilder.Entity<GradeAverageView>(entity =>
+        {
+            entity.HasKey(e => e.id);
+            
+            entity.ToView("grade_average_view", "academy");
+            entity.Property(e => e.id).HasColumnName("id");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.partialId).HasColumnName("partialid");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.partial).HasColumnName("partial");
+            entity.Property(e => e.grade).HasColumnName("grade");
+            entity.Property(e => e.conductGrade).HasColumnName("conductgrade");
         });
     }
 }

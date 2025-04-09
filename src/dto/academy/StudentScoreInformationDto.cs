@@ -4,28 +4,22 @@ namespace wsmcbl.src.dto.academy;
 
 public class StudentScoreInformationDto
 {
+    public string studentId { get; set; }
     public string studentName { get; set; }
     public string teacherName { get; set; }
     public string enrollment { get; set; }
-    public List<PartialInformationDto> partials { get; set; }
-    public string solvencyStateMessage { get; set; } = null!;
+    public bool hasSolvency { get; set; }
 
     public StudentScoreInformationDto(StudentEntity student, TeacherEntity teacher)
     {
+        studentId = student.studentId;
         studentName = student.fullName();
         teacherName = teacher.fullName();
         enrollment = teacher.getEnrollmentLabel();
-
-        partials = [];
-        foreach (var item in student.partials!)
-        {
-            partials.Add(new PartialInformationDto(item));
-        }
     }
 
-    public void setSolvencyStateMessage(bool isSolvency)
+    public void setSolvency(bool parameter)
     {
-        solvencyStateMessage = isSolvency ? "Estudiante solvente, seleccionar imprimir." :
-            "Estudiante no solvente, impresión de boleta inhabilitada.";
+        hasSolvency = parameter;
     }
 }

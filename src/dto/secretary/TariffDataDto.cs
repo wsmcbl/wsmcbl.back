@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using wsmcbl.src.model.secretary;
 using DateOnly = System.DateOnly;
 
@@ -5,13 +6,13 @@ namespace wsmcbl.src.dto.secretary;
 
 public class TariffDataDto
 {
-    public int tariffDataId { get; set; }
+    [JsonRequired] public int tariffDataId { get; set; }
     public string concept { get; set; } = null!;
-    public decimal amount { get; set; }
+    [JsonRequired] public decimal amount { get; set; }
     public DateOnlyDto? dueDate { get; set; }
-    public int typeId { get; set; }
-    public int educationalLevel { get; set; }
-    public bool isActive { get; set; }
+    [JsonRequired] public int typeId { get; set; }
+    [JsonRequired] public int educationalLevel { get; set; }
+    [JsonRequired] public bool isActive { get; set; }
     
     public TariffDataEntity toEntity(int id = 0)
     {
