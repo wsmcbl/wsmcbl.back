@@ -127,13 +127,10 @@ public class NextcloudUserCreator
     public async Task changeState(UserEntity user)
     {
         if (!Utility.isInProductionEnvironment()) return;
-        
-        var content = new FormUrlEncodedContent([
-            new KeyValuePair<string, string>("key", "enabled"),
-            new KeyValuePair<string, string>("value", user.isActive.ToString())
-        ]);
 
-        var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}", content);
+        var action = user.isActive ? "enable" : "disable";
+
+        var response = await httpClient.PutAsync($"{getNextcloudUrl()}/users/{user.email}/{action}", null);
         if (!response.IsSuccessStatusCode)
         {
             throw new InternalException("Error disable user to Nextcloud.");
