@@ -98,4 +98,24 @@ public class UpdateUserController : BaseController
         var posteUserCreator = new PosteUserCreator(httpClient);
         await posteUserCreator.updateUserPassword(user);
     }
+
+    public async Task changeUserState(string userId)
+    {
+        var user = await daoFactory.userDao!.getById(userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException("UserEntity", userId);
+        }
+
+        user.changeState();
+        daoFactory.userDao!.update(user);
+        await daoFactory.ExecuteAsync();
+
+        if (!user.isActive)
+        {
+            await updateUserPassword(userId);
+        }
+        
+        await nextcloudUserCreator.changeState(user);
+    }
 }

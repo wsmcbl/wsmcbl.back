@@ -137,6 +137,12 @@ public class UserEntity
             rolePermissionDao.create(item);
         }
     }
+    
+    public void changeState()
+    {
+        isActive = !isActive;
+        markAsUpdated();
+    }
 
     public class Builder
     {
