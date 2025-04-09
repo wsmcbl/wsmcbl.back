@@ -63,4 +63,39 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
     {
         return await daoFactory.studentDao!.getPaginatedStudentView(request);
     }
+
+    public async Task updateProfileState(string studentId, bool state)
+    {
+        var student = await daoFactory.studentDao!.getById(studentId);
+        if (student == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);
+        }
+        
+        if (student.isActive == state)
+        {
+            return;
+        }
+
+        if (await isEnrolled(studentId) && state == false)
+        {
+            throw new ConflictException("The student is enrolled, cannot be disable");
+        }
+        
+        student.isActive = state;
+        await daoFactory.studentDao!.updateAsync(student);
+    }
+
+    private async Task<bool> isEnrolled(string studentId)
+    {
+        try
+        {
+            await daoFactory.academyStudentDao!.getCurrentById(studentId);
+            return false;
+        }
+        catch
+        {
+            return true;
+        }
+    }
 }
