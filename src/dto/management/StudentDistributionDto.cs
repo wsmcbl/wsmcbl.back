@@ -1,3 +1,4 @@
+using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.dto.management;
@@ -10,11 +11,12 @@ public class DistributionStudentDto
     public List<DistributionByLevelDto> levelList { get; set; } = null!;
     public List<DistributionByDegreeDto> degreeList { get; set; } = null!;
 
-    public DistributionStudentDto(List<StudentRegisterView> studentList, List<DegreeEntity> degreeList)
+    public DistributionStudentDto(List<StudentRegisterView> studentList,
+        List<WithdrawnStudentEntity> withdrawnStudentList, List<DegreeEntity> degreeList)
     {
         total = studentList.Count;
         males = studentList.Count(e => e.sex);
-        droppedOut = 0;
+        droppedOut = withdrawnStudentList.Count;
 
         setSummaryStudentByLevel(studentList);
         setSummaryStudentByDegree(studentList, degreeList);

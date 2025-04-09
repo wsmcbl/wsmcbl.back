@@ -34,7 +34,7 @@ public class TestEntityGenerator
             capacity = 20,
             label = "A",
             quantity = 20,
-            schoolYear = "sch22",
+            schoolyearId = "sch22",
             section = "A",
             tag = "02"
         };

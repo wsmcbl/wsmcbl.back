@@ -32,7 +32,7 @@ public class EnrollmentGuideDto
         capacity = entity.capacity;
         quantity = entity.quantity;
         label = entity.label;
-        schoolyear = entity.schoolYear;
+        schoolyear = entity.schoolyearId;
         
         createStudentList(entity.studentList);
         createSubjectList(entity.subjectList);

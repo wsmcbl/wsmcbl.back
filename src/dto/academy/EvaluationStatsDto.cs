@@ -14,7 +14,11 @@ public class EvaluationStatsDto
         this.males = males;
         females = parameter - males;
     }
-
+    
+    public EvaluationStatsDto(List<model.secretary.StudentEntity> list) : this(list.Count, list.Count(e => e.sex))
+    {
+    }
+    
     public EvaluationStatsDto(List<StudentEntity> list) : this(list.Count, list.Count(e => e.student.sex))
     {
     }

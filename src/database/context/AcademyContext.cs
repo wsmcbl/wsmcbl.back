@@ -29,7 +29,7 @@ internal class AcademyContext
             entity.Property(e => e.tag).HasColumnName("tag");
             entity.Property(e => e.degreeId).HasColumnName("degreeid");
             entity.Property(e => e.quantity).HasColumnName("quantity");
-            entity.Property(e => e.schoolYear).HasMaxLength(20).HasColumnName("schoolyear");
+            entity.Property(e => e.schoolyearId).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.section).HasMaxLength(10).HasColumnName("section");
 
             entity.HasMany(d => d.studentList).WithOne()
@@ -129,6 +129,7 @@ internal class AcademyContext
             entity.Property(e => e.studentId).HasColumnName("studentid");
             entity.Property(e => e.lastEnrollmentId).HasColumnName("lastenrollmentid");
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.enrolledAt).HasColumnName("enrolledat");
             entity.Property(e => e.withdrawnAt).HasColumnName("withdrawnat");
             
             entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);

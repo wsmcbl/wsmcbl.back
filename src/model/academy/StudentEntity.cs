@@ -61,17 +61,17 @@ public class StudentEntity
         return averageList.Sum(item => item.grade) / 4;
     }
 
-    public GradeAverageView getAverage(int partial)
+    public GradeAverageView getAverage(int partialId)
     {
         if (averageList == null)
         {
             throw new InternalException("The averageList must be not null.");
         }
         
-        var result = averageList.FirstOrDefault(e => e.partial == partial);
+        var result = averageList.FirstOrDefault(e => e.partialId == partialId);
         if (result == null)
         {
-            throw new EntityNotFoundException($"The GradeAverageEntity for partial ({partial}) in StudentEntity not found.");
+            throw new EntityNotFoundException($"The GradeAverageEntity for partialId ({partialId}) in StudentEntity not found.");
         }
 
         return result;
@@ -85,17 +85,17 @@ public class StudentEntity
     public bool isFailed(int type)
     {
         var count = gradeList!.Count(e => e.grade < 60);
-        return type == 1 ? count <= 2 : count > 2;
+        return type == 1 ? count is 1 or 2 : count >= 3;
     }
 
     public bool hasNotEvaluated()
     {
-        return gradeList!.All(e => e.grade == 0 && e.conductGrade == 0);
+        return gradeList!.All(item => item is { grade: 0, conductGrade: 0 });
     }
 
-    public bool isWithInRange(string label, int partial)
+    public bool isWithInRange(string label, int partialId)
     {
-        var average = getAverage(partial);
+        var average = getAverage(partialId);
         return GradeEntity.getLabelByGrade(average.grade).Equals(label); 
     }
 }

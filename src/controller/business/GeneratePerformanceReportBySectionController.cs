@@ -10,17 +10,17 @@ public class GeneratePerformanceReportBySectionController : BaseController
     {
     }
 
-    public async Task<List<StudentEntity>> getStudentListByTeacherId(string teacherId, int partial)
+    public async Task<List<StudentEntity>> getStudentListByTeacherId(string teacherId, int partialId)
     { 
         var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
-        return await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partial);
+        return await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
     }
 
-    public async Task<byte[]> getEnrollmentGradeSummary(string teacherId, int partial, string userId)
+    public async Task<byte[]> getEnrollmentGradeSummary(string teacherId, int partialId, string userId)
     {
         var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
         
         var sheetMaker = new SpreadSheetMaker(daoFactory);
-        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partial, userId);
+        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partialId, userId);
     }
 }
