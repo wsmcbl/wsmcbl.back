@@ -13,10 +13,11 @@ public class UnenrollStudentController(DaoFactory daoFactory) : BaseController(d
     public async Task unenrollStudent(string studentId)
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
-        await daoFactory.academyStudentDao.deleteAsync(student);
+        daoFactory.academyStudentDao.delete(student);
 
         var withdrawnStudent = new WithdrawnStudentEntity(student);
         daoFactory.withdrawnStudentDao!.create(withdrawnStudent);
+        
         await daoFactory.ExecuteAsync();
     }
 }
