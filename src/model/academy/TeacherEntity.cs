@@ -62,7 +62,7 @@ public class TeacherEntity
         }
 
         var current = await schoolyearDao.getCurrentOrNew();
-        enrollment = enrollmentList.FirstOrDefault(e => e.schoolYear == current.id);
+        enrollment = enrollmentList.FirstOrDefault(e => e.schoolyearId == current.id);
     }
 
     public bool hasSubmittedGrades()

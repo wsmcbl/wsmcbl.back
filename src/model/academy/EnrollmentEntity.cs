@@ -7,7 +7,7 @@ public class EnrollmentEntity
     public string degreeId { get; set; } = null!;
     public string label { get; set; } = null!;
     public string tag { get; set; } = null!;
-    public string schoolYear { get; set; } = null!;
+    public string schoolyearId { get; set; } = null!;
     public string section { get; set; } = null!;
     public int capacity { get; set; }
     public int quantity { get; set; }
@@ -19,10 +19,10 @@ public class EnrollmentEntity
         studentList = [];
     }
     
-    public EnrollmentEntity(string degreeId, string schoolYear, string label, string tag)
+    public EnrollmentEntity(string degreeId, string schoolyearId, string label, string tag)
     {
         this.degreeId = degreeId;
-        this.schoolYear = schoolYear;
+        this.schoolyearId = schoolyearId;
         this.label = label;
         section = "Aula ";
         this.tag = tag;
