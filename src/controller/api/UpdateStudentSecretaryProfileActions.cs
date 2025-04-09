@@ -79,17 +79,17 @@ public class UpdateStudentSecretaryProfileActions(UpdateStudentProfileController
         return Ok();
     }
     
-    /// <summary>Update student state (active or inactive).</summary>
+    /// <summary>Change student state (active or inactive).</summary>
     /// <response code="200">Returns when the resource has been modified.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Resource not found.</response>
     [HttpPut]
-    [Route("{studentId}/states")]
+    [Route("{studentId}/state")]
     [Authorizer("student:update")]
-    public async Task<IActionResult> updateProfileState([Required] string studentId, [Required] [FromQuery] bool state)
+    public async Task<IActionResult> updateProfileState([Required] string studentId)
     {
-        await controller.updateProfileState(studentId, state);
+        await controller.changeProfileState(studentId);
         return Ok();
     }
 }
