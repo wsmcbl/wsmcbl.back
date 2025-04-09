@@ -111,7 +111,11 @@ public class UpdateUserController : BaseController
         daoFactory.userDao!.update(user);
         await daoFactory.ExecuteAsync();
 
-        await updateUserPassword(userId);
+        if (!user.isActive)
+        {
+            await updateUserPassword(userId);
+        }
+        
         await nextcloudUserCreator.changeState(user);
     }
 }
