@@ -62,7 +62,7 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
     {
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
 
-        var enrollmentList = await entities.Where(e => e.schoolYear == currentSchoolyear.id)
+        var enrollmentList = await entities.Where(e => e.schoolyearId == currentSchoolyear.id)
             .Include(e => e.subjectList)
             .ToListAsync();
 
@@ -85,5 +85,11 @@ public class EnrollmentDaoPostgres : GenericDaoPostgres<EnrollmentEntity, string
     {
         entities.AddRange(enrollmentList);
         await saveAsync();
+    }
+
+    public async Task<List<EnrollmentEntity>> getAllForCurrentSchoolyear()
+    {
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        return await entities.Where(e => e.schoolyearId == currentSchoolyear.id).ToListAsync();
     }
 }
