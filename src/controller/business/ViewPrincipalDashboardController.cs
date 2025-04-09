@@ -63,4 +63,9 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         var result = await daoFactory.enrollmentDao!.getAllForCurrentSchoolyear();
         return result.Where(e => e.quantity == 0 || e.capacity == 0).ToList(); 
     }
+
+    public async Task<List<WithdrawnStudentEntity>> getWithdrawnStudentList()
+    {
+        return await daoFactory.withdrawnStudentDao!.getAllForCurrentSchoolyear();
+    }
 }
