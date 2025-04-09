@@ -133,6 +133,7 @@ internal class AcademyContext
             entity.Property(e => e.withdrawnAt).HasColumnName("withdrawnat");
             
             entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
+            entity.HasOne(d => d.lastEnrollment).WithMany().HasForeignKey(d => d.lastEnrollmentId);
         });
 
         modelBuilder.Entity<SubjectEntity>(entity =>

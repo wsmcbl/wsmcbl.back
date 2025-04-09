@@ -10,6 +10,7 @@ public class WithdrawnStudentEntity
     public DateTime withdrawnAt { get; set; }
     
     public secretary.StudentEntity? student { get; set; }
+    public EnrollmentEntity? lastEnrollment { get; set; }
 
     public WithdrawnStudentEntity()
     {
