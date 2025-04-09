@@ -10,4 +10,17 @@ public class WithdrawnStudentEntity
     public DateTime withdrawnAt { get; set; }
     
     public secretary.StudentEntity? student { get; set; }
+
+    public WithdrawnStudentEntity()
+    {
+    }
+
+    public WithdrawnStudentEntity(StudentEntity parameter)
+    {
+        studentId = parameter.studentId;
+        lastEnrollmentId = parameter.studentId;
+        schoolyearId = parameter.schoolyearId;
+        enrolledAt = parameter.createdAt;
+        withdrawnAt = DateTime.UtcNow;
+    }
 }
