@@ -57,4 +57,10 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         var sheetMaker = new SpreadSheetMaker(daoFactory);
         return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partial, userId);
     }
+
+    public async Task<List<EnrollmentEntity>> getEnrollmentList()
+    {
+        var result = await daoFactory.enrollmentDao!.getAllForCurrentSchoolyear();
+        return result.Where(e => e.quantity == 0 || e.capacity == 0).ToList(); 
+    }
 }
