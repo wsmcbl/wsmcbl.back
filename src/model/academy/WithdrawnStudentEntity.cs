@@ -19,7 +19,7 @@ public class WithdrawnStudentEntity
     public WithdrawnStudentEntity(StudentEntity parameter)
     {
         studentId = parameter.studentId;
-        lastEnrollmentId = parameter.studentId;
+        lastEnrollmentId = parameter.enrollmentId!;
         schoolyearId = parameter.schoolyearId;
         enrolledAt = parameter.createdAt;
         withdrawnAt = DateTime.UtcNow;
