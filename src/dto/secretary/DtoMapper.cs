@@ -49,6 +49,9 @@ public static class DtoMapper
     public static List<TariffDataDto> mapListToDto(this List<TariffDataEntity> value)
         => value.Select(e => new TariffDataDto(e)).ToList();
 
+    public static List<WithdrawnStudentDto> mapListToDto(this List<model.academy.WithdrawnStudentEntity> value)
+        => value.Select(e => new WithdrawnStudentDto(e)).ToList();
+
 
     public static List<SubjectDto> mapListToInputDto(this IEnumerable<SubjectEntity> subjects)
         => subjects.Select(e => new SubjectDto(e)).ToList();
