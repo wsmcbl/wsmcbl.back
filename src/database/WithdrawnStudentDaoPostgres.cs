@@ -2,11 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.database;
 
-public class WithdrawnStudentDaoPostgres(PostgresContext context) : GenericDaoPostgres<WithdrawnStudentEntity, int>(context), IWithdrawnStudentDao
+public class WithdrawnStudentDaoPostgres : GenericDaoPostgres<WithdrawnStudentEntity, int>, IWithdrawnStudentDao
 {
+    private DaoFactory daoFactory { get; set; }
+    public WithdrawnStudentDaoPostgres(PostgresContext context) : base(context)
+    {
+        daoFactory = new DaoFactoryPostgres(context);
+    }
+    
     public async Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId, bool hasBeforeFirstPartial = false)
     {
         var query = entities.Where(e => e.lastEnrollmentId == enrollmentId);
@@ -15,9 +22,8 @@ public class WithdrawnStudentDaoPostgres(PostgresContext context) : GenericDaoPo
         {
             return await query.Include(e => e.student).ToListAsync();
         }
-
-        var daoFactory = new DaoFactoryPostgres(context);
-        var partialList = await daoFactory.partialDao.getListForCurrentSchoolyear();
+        
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 
         var firstPartial = partialList.FirstOrDefault(e => e is { semester: 1, partial: 1 });
         if (firstPartial == null)
@@ -31,9 +37,7 @@ public class WithdrawnStudentDaoPostgres(PostgresContext context) : GenericDaoPo
 
     public async Task<List<WithdrawnStudentEntity>> getAllForCurrentSchoolyear()
     {
-        var daoFactory = new DaoFactoryPostgres(context);
-        var currentSchoolyear = await daoFactory.schoolyearDao.getCurrent();
-
+        var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
         return await entities.Where(e => e.schoolyearId == currentSchoolyear.id).ToListAsync();
     }
 }
