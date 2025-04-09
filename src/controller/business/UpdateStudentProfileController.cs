@@ -83,7 +83,8 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         }
         
         student.isActive = state;
-        await daoFactory.studentDao!.updateAsync(student);
+        daoFactory.studentDao!.update(student);
+        await daoFactory.ExecuteAsync();
     }
 
     private async Task<bool> isEnrolled(string studentId)
@@ -91,11 +92,11 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         try
         {
             await daoFactory.academyStudentDao!.getCurrentById(studentId);
-            return false;
+            return true;
         }
         catch
         {
-            return true;
+            return false;
         }
     }
 }

@@ -19,5 +19,8 @@ public class UnenrollStudentController(DaoFactory daoFactory) : BaseController(d
         daoFactory.withdrawnStudentDao!.create(withdrawnStudent);
         
         await daoFactory.ExecuteAsync();
+        
+        var controller = new UpdateStudentProfileController(daoFactory);
+        await controller.updateProfileState(studentId, false);
     }
 }
