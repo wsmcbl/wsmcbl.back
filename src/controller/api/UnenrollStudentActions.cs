@@ -27,7 +27,7 @@ public class UnenrollStudentActions(UnenrollStudentController controller) : Acti
     /// <response code="200">If the resource was updated.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
-    /// <response code="404">If the student is not enrolled in the current year.</response>
+    /// <response code="404">If the student is not enrolled in the current schoolyear.</response>
     [HttpPut]
     [Route("{studentId}")]
     [Authorizer("student:enroll")]
