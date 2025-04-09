@@ -1,3 +1,4 @@
+using wsmcbl.src.controller.service.sheet;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -5,7 +6,7 @@ using SubjectEntity = wsmcbl.src.model.secretary.SubjectEntity;
 
 namespace wsmcbl.src.controller.business;
 
-public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<List<StudentRegisterView>> getStudentRegisterViewListForCurrentSchoolyear()
     {
@@ -49,5 +50,11 @@ public class ViewDirectorDashboardController(DaoFactory daoFactory) : BaseContro
     {
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrent();
         return await daoFactory.degreeDao!.getListForSchoolyearId(currentSchoolyear.id!);
+    }
+
+    public async Task<byte[]> getGradeSummaryByEnrollmentId(string enrollmentId, int partial, string userId)
+    {
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partial, userId);
     }
 }

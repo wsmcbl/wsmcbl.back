@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.academy;
 
@@ -5,11 +6,11 @@ namespace wsmcbl.src.dto.academy;
 
 public class GradeDto
 {
-    public int gradeId { get; set; }
-    public string? studentId { get; set; }
-    public decimal? grade { get; set; }
-    public decimal? conductGrade { get; set; }
-    public string? label { get; set; }
+    [JsonRequired] public int gradeId { get; set; }
+    public string studentId { get; set; } = null!;
+    [JsonRequired] public decimal grade { get; set; }
+    [JsonRequired] public decimal conductGrade { get; set; } 
+    public string label { get; set; } = null!;
 
     public GradeDto()
     {
@@ -19,9 +20,9 @@ public class GradeDto
     {
         gradeId = grade.gradeId;
         studentId = grade.studentId;
-        this.grade = grade.grade;
-        conductGrade = grade.conductGrade;
-        label = grade.label;
+        this.grade = grade.grade ?? 0;
+        conductGrade = grade.conductGrade ?? 0;
+        label = grade.label?? GradeEntity.getLabelByGrade(0);
     }
 
     public GradeEntity toEntity()

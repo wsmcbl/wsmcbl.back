@@ -19,7 +19,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getPaginatedStudentView([FromQuery] StudentPagedRequest request)
     {
         request.checkSortByValue(["studentId", "fullName", "isActive", "tutor", "schoolyear", "enrollment"]);
@@ -39,7 +39,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("{studentId}")]
-    [ResourceAuthorizer("student:read")]
+    [Authorizer("student:read")]
     public async Task<IActionResult> getStudentById([Required] string studentId)
     {
         var result = await controller.getStudentById(studentId);
@@ -54,7 +54,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{studentId}")]
-    [ResourceAuthorizer("student:update")]
+    [Authorizer("student:update")]
     public async Task<IActionResult> updateStudent([Required] string studentId, StudentFullDto dto, [FromQuery] bool withNewToken = false)
     {
         var entity = dto.toEntity();
@@ -71,7 +71,7 @@ public class UpdateStudentProfileSecretaryActions(UpdateStudentProfileController
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("{studentId}/pictures")]
-    [ResourceAuthorizer("student:update")]
+    [Authorizer("student:update")]
     public async Task<IActionResult> updateProfilePicture([Required] string studentId, IFormFile profilePicture)
     {
         using var memoryStream = new MemoryStream();

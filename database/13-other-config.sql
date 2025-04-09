@@ -118,7 +118,13 @@ SELECT s.studentid,
        d.tag as degreePosition,
        RIGHT(e.label, 1) AS section,
        e.tag as sectionPosition,
-       a.createdAt as enrollDate,
+       a.createdAt as enro-- grade_average_view view
+CREATE VIEW academy.grade_average_view AS
+SELECT row_number() OVER (ORDER BY gv.studentid) AS id,
+       gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid,
+       gv.partial, AVG(gv.grade) as grade, AVG(gv.conductgrade) as conductgrade   
+FROM academy.grade_view gv
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;llDate,
        a.isRepeating
 FROM secretary.student s 
 JOIN secretary.studenttutor t on t.tutorid = s.tutorid
@@ -144,3 +150,53 @@ FROM academy.grade g
          join academy.subject_partial sp
               on sp.subjectpartialid = g.subjectpartialid
 GROUP BY sp.subjectid, sp.teacherid, sp.partialid;
+
+
+-- student_enroll_payment_view view
+CREATE VIEW accounting.student_enroll_payment_view as
+SELECT s.studentid, t.schoolyear as schoolyearid, aca.enrollmentid FROM accounting.student s
+JOIN secretary.student ss ON ss.studentid = s.studentid
+JOIN accounting.debthistory d ON d.studentid = s.studentid
+JOIN accounting.tariff t ON t.tariffid = d.tariffid
+LEFT JOIN academy.student aca on aca.studentid = s.studentid
+WHERE ss.studentstate = true AND t.typeid = 2 AND
+CASE
+    WHEN d.amount = 0 THEN 1
+    ELSE (d.debtbalance / d.amount)
+    END >= 0.4;
+
+
+
+-- grade_view view
+CREATE VIEW academy.grade_view AS 
+SELECT row_number() OVER (ORDER BY g.gradeid) AS id,
+       g.studentId, sp.partialId, sp.subjectId, sp.teacherId,
+       sp.enrollmentId, e.schoolyear as schoolyearId, p.semester, p.partial,
+       g.grade, g.conductGrade, g.label
+FROM academy.grade g 
+JOIN academy.subject_partial sp ON sp.subjectpartialid = g.subjectpartialid
+JOIN academy.partial p ON p.partialid = sp.partialid
+JOIN academy.enrollment e ON e.enrollmentid = sp.enrollmentid;
+
+
+
+
+-- conduct_grade_average_view view
+CREATE VIEW academy.conduct_grade_average_view AS
+SELECT gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, AVG(gv.conductgrade) as conductgrade
+FROM academy.grade_view gv
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial;
+
+
+-- grade_average_view view
+CREATE VIEW academy.grade_average_view AS
+SELECT row_number() OVER (ORDER BY gv.studentid) AS id,
+       gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid,
+       gv.partial, (SUM(gv.grade) + cd.conductgrade) / (COUNT(gv.grade) + 1) as grade, cd.conductgrade
+FROM academy.grade_view gv
+         LEFT JOIN academy.conduct_grade_average_view cd ON
+    cd.studentid = gv.studentid AND
+    cd.partialid = gv.partialid AND
+    cd.enrollmentid = gv.enrollmentid AND
+    cd.schoolyearid = gv.schoolyearid
+GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial, cd.conductgrade;

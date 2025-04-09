@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using wsmcbl.src.utilities;
 
@@ -65,8 +66,7 @@ public class StudentEntity
     
     public void generateAccessToken()
     {
-        var random = new Random();
-        accessToken = random.Next(100000, 1000000).ToString();
+        accessToken = RandomNumberGenerator.GetInt32(100000, 1000000).ToString();
     }
 
     public int getAge()

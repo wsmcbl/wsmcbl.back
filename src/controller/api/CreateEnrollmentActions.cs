@@ -18,7 +18,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("")]
-    [ResourceAuthorizer("degree:read", "enrollment:read")]
+    [Authorizer("degree:read", "enrollment:read")]
     public async Task<IActionResult> getPaginatedDegree([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["degreeId", "label", "schoolYear", "quantity", "educationalLevel", "tag"]);
@@ -40,7 +40,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="404">Resource depends on another resource not found (degree) or quantity invalid.</response>
     [HttpPost]
     [Route("{degreeId}/enrollments")]
-    [ResourceAuthorizer("enrollment:create")]
+    [Authorizer("enrollment:create")]
     public async Task<IActionResult> createEnrollment([Required] string degreeId, [Required] [FromQuery] int quantity)
     {
         var degree = await controller.createEnrollments(degreeId, quantity);
@@ -58,7 +58,7 @@ public class CreateEnrollmentActions(CreateEnrollmentController controller) : Ac
     /// <response code="404">Enrollment not found.</response>
     [HttpPut]
     [Route("enrollments")]
-    [ResourceAuthorizer("enrollment:update")]
+    [Authorizer("enrollment:update")]
     public async Task<IActionResult> updateEnrollment(EnrollmentToCreateDto dto)
     {
         var enrollment = await controller.updateEnrollment(dto.toEntity());

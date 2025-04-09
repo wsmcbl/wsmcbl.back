@@ -17,7 +17,7 @@ public class TariffDto
     public TariffDto(TariffEntity tariff)
     {
         concept = tariff.concept;
-        amount = (decimal)tariff.amount;
+        amount = tariff.amount;
         typeId = tariff.type;
         educationalLevel = tariff.educationalLevel;
 

@@ -17,24 +17,22 @@ public static class DtoMapper
         => new(student, modality);
     private static TransactionReportDto mapToDto(this TransactionReportView value)
         => new(value);
-
-    private static TransactionToListDto mapToListDto(this TransactionReportView value) => new(value);
-     
-    
     public static List<BasicStudentDto> mapToList(this IEnumerable<StudentView> value)
         => value.Select(e => new BasicStudentDto(e)).ToList();
+
+    private static TransactionToListDto mapToListDto(this TransactionReportView value) => new(value);
     
     public static List<TariffDto> mapToListDto(this IEnumerable<TariffEntity> value)
         => value.Select(e => e.mapToDto()).ToList();
     
     public static List<TransactionReportDto> mapToListDto(this IEnumerable<TransactionReportView> value)
         => value.Select(e => e.mapToDto()).ToList();
-    
-    public static List<TransactionToListDto> mapToTransactionListDto(this IEnumerable<TransactionReportView> value)
-        => value.Select(e => e.mapToListDto()).ToList();
 
     public static List<DebtDto> mapToListDto(this IEnumerable<DebtHistoryEntity> value)
         => value.Select(e => new DebtDto(e)).ToList();
+    
+    public static List<TransactionToListDto> mapToTransactionListDto(this IEnumerable<TransactionReportView> value)
+        => value.Select(e => e.mapToListDto()).ToList();
     
     public static List<BasicStudentToEnrollDto> mapToListBasicEnrollDto(this IEnumerable<StudentEntity> list)
         => list.Select(e => new BasicStudentToEnrollDto(e)).ToList();

@@ -16,7 +16,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("subjects")]
-    [ResourceAuthorizer("catalog:read")]
+    [Authorizer("catalog:read")]
     public async Task<IActionResult> getSubjectDataList()
     {
         return Ok(await controller.getSubjectDataList());
@@ -30,7 +30,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource depends on another resource not found (degree).</response>
     [HttpPost]
     [Route("subjects")]
-    [ResourceAuthorizer("catalog:create")]
+    [Authorizer("catalog:create")]
     public async Task<IActionResult> createSubjectData(SubjectDataEntity value)
     {
         value.subjectDataId = 0;
@@ -46,7 +46,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("subjects/{subjectId:int}")]
-    [ResourceAuthorizer("catalog:update")]
+    [Authorizer("catalog:update")]
     public async Task<IActionResult> updateSubjectData(int subjectId, SubjectDataEntity value)
     {
         value.subjectDataId = subjectId;
@@ -60,7 +60,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("degrees")]
-    [ResourceAuthorizer("catalog:read")]
+    [Authorizer("catalog:read")]
     public async Task<IActionResult> getDegreeDataList()
     {
         var result = await controller.getDegreeDataList();
@@ -73,7 +73,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("subjects/areas")]
-    [ResourceAuthorizer("catalog:read")]
+    [Authorizer("catalog:read")]
     public async Task<IActionResult> getSubjectAreaList()
     {
         return Ok(await controller.getSubjectAreaList());
@@ -86,7 +86,7 @@ public class CreateSubjectDataActions(CreateSubjectDataController controller) : 
     /// <response code="404">Resource not found.</response>
     [HttpPut]
     [Route("subjects/areas/{areaId:int}")]
-    [ResourceAuthorizer("catalog:update")]
+    [Authorizer("catalog:update")]
     public async Task<IActionResult> updateSubjectArea([Required] int areaId, [Required] [FromQuery] string name)
     {
         await controller.updateSubjectArea(areaId, name);

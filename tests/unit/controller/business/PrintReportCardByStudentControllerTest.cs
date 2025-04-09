@@ -18,19 +18,6 @@ public class PrintReportCardByStudentControllerTest
     }
 
     [Fact]
-    public async Task getStudentGradesInformation_ShouldReturnStudent_WhenStudentExist()
-    {
-        const string studentId = "2024-0001-hola";
-        var academyStudent = TestEntityGenerator.aAcademyStudent(studentId);
-        
-        daoFactory.academyStudentDao!.getCurrentById(studentId).Returns(academyStudent);
-        
-        var result = await sut.getStudentWithGrades(studentId);
-
-        Assert.NotNull(result);
-    }
-
-    [Fact]
     public async Task getStudentSolvency_ShouldReturnTrue_WhenStudentHasSolvency()
     {
         const string studentId = "2024-0001-hola";

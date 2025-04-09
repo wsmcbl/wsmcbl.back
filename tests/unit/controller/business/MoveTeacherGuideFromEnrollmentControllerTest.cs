@@ -59,7 +59,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         teacherDao.getById(teacher.teacherId!).Returns(teacher);
         daoFactory.teacherDao.Returns(teacherDao);
         
-        var result = await sut.getTeacherById(teacher.teacherId);
+        var result = await sut.getTeacherById(teacher.teacherId!);
 
         Assert.NotNull(result);
         Assert.Equal(teacher.teacherId, result.teacherId);
@@ -79,7 +79,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         var enrollment = TestEntityGenerator.aEnrollment();
         
         var teacherDao = Substitute.For<ITeacherDao>();
-        teacherDao.getById(newTeacher.teacherId).Returns(newTeacher);
+        teacherDao.getById(newTeacher.teacherId!).Returns(newTeacher);
         daoFactory.teacherDao.Returns(teacherDao);
         
         await sut.assignTeacherGuide(newTeacher, enrollment);
@@ -98,7 +98,7 @@ public class MoveTeacherGuideFromEnrollmentControllerTest
         oldTeacher.teacherId = "oldTeacher";
         
         var teacherDao = Substitute.For<ITeacherDao>();
-        teacherDao.getById(newTeacher.teacherId).Returns(newTeacher);
+        teacherDao.getById(newTeacher.teacherId!).Returns(newTeacher);
         teacherDao.getByEnrollmentId(enrollment.enrollmentId!).Returns(oldTeacher);
         
         daoFactory.teacherDao.Returns(teacherDao);

@@ -16,7 +16,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("nextcloud/groups")]
-    [ResourceAuthorizer("user:read")]
+    [Authorizer("user:read")]
     public async Task<IActionResult> getNextcloudGroupList()
     {
         return Ok(await controller.getNextcloudGroupList());
@@ -29,7 +29,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("users")]
-    [ResourceAuthorizer("user:read")]
+    [Authorizer("user:read")]
     public async Task<IActionResult> getPaginatedUser([FromQuery] PagedRequest request)
     {
         request.checkSortByValue(["userId", "roleId", "name", "email", "isActive", "createAt", "updateAt"]);
@@ -54,7 +54,7 @@ public class CreateUserActions(CreateUserController controller) : ActionsBase
     /// <response code="409">The email is duplicate.</response>
     [HttpPost]
     [Route("users")]
-    [ResourceAuthorizer("user:create")]
+    [Authorizer("user:create")]
     public async Task<IActionResult> createUser(UserToCreateDto dto)
     {
         var group = dto.nextCloudGroup ?? string.Empty;

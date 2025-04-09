@@ -25,26 +25,26 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     {
         var content = new StringBuilder(value);
         
-        content = content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
-        content = content.Replace("schoolyear.value", schoolyear);
-        content = content.Replace("degree.value", degreeLabel);
+        content.Replace("schoolyear.value", schoolyear);
+        content.Replace("degree.value", degreeLabel);
         
-        content = content.Replace("student.id.value", student.studentId);
-        content = content.Replace("student.name.value", student.fullName());
-        content = content.Replace("teacher.name.value", teacher.fullName());
+        content.Replace("student.id.value", student.studentId);
+        content.Replace("student.name.value", student.fullName());
+        content.Replace("teacher.name.value", teacher.fullName());
         
-        content = content.Replace("detail.value", getDetail());
+        content.Replace("detail.value", getDetail());
 
         var averageList = getAverageList();
-        content = content.Replace("first.average.value", averageList[0]);
-        content = content.Replace("second.average.value", averageList[1]);
-        content = content.Replace("third.average.value", averageList[2]);
-        content = content.Replace("fourth.average.value", averageList[3]);
-        content = content.Replace("final.average.value", averageList[4]);
+        content.Replace("first.average.value", averageList[0]);
+        content.Replace("second.average.value", averageList[1]);
+        content.Replace("third.average.value", averageList[2]);
+        content.Replace("fourth.average.value", averageList[3]);
+        content.Replace("final.average.value", averageList[4]);
         
-        content = content.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
-        content = content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
         return content.ToString();
     }

@@ -221,5 +221,14 @@ internal class AccountingContext
 
             entity.Ignore(e => e.date);
         });
+        
+        modelBuilder.Entity<StudentEnrollPaymentView>(entity =>
+        {
+            entity.ToView("student_enroll_payment_view", "accounting").HasNoKey();
+
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+        });
     }
 }

@@ -13,11 +13,6 @@ public class PaymentItemDto
     public decimal subTotal { get; set; }
     public decimal debtBalance { get; set; }
     public bool itPaidLate { get; set; }
-    
-    public void setDiscount(decimal value)
-    {
-        discount = amount - value;
-    }
 
     public PaymentItemDto()
     {
@@ -27,13 +22,18 @@ public class PaymentItemDto
     {
         tariffId = entity.tariffId;
         concept = entity.tariff.concept;
-        amount = (decimal)entity.tariff.amount;
+        amount = entity.tariff.amount;
         itPaidLate = entity.tariff.isLate;
         schoolyearId = entity.tariff.schoolyearId!;
-        arrears = (decimal)entity.arrears;
-        subTotal = (decimal)entity.amount;
-        debtBalance = (decimal)entity.getDebtBalance();
+        arrears = entity.arrears;
+        subTotal = entity.amount;
+        debtBalance = entity.getDebtBalance();
         
-        setDiscount((decimal)entity.subAmount);
+        setDiscount(entity.subAmount);
+    }
+    
+    private void setDiscount(decimal value)
+    {
+        discount = amount - value;
     }
 }

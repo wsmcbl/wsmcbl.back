@@ -12,14 +12,14 @@ public static class DtoMapper
     private static SubjectPartialDto mapToDto(this SubjectPartialEntity subjectPartial) => new(subjectPartial);
 
     private static GradeDto mapToDto(this GradeEntity grade) => new(grade);
-    
+
     public static TeacherDto mapToDto(this TeacherEntity value) => new(value);
 
     public static EnrollmentGuideDto mapToDto(this EnrollmentEntity? value)
         => new(value);
 
 
-    public static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
+    private static BasicTeacherDto mapToBasicDto(this TeacherEntity teacher) => new(teacher);
 
     private static BasicStudentDto mapToBasicDto(this StudentEntity student) => new(student);
 
@@ -45,15 +45,22 @@ public static class DtoMapper
     public static List<GradeDto> mapListToDto(this IEnumerable<GradeEntity> gradeList) =>
         gradeList.Select(e => e.mapToDto()).ToList();
 
+    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> list) =>
+        list.Select(e => new SubjectDto(e)).ToList();
 
-    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> studentList) =>
-        studentList.Select(e => e.secretarySubject).ToList()!.mapListToBasicDto();
+    public static List<StudentAverageDto> mapListToDto(this List<StudentEntity> list) =>
+        list.Select(e => new StudentAverageDto(e)).ToList();
 
-    public static List<BasicSubjectDto>
-        mapListToBasicDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
-        studentList.Select(e => e.mapToBasicDto()).ToList();
+    public static List<StudentGradeSummaryDto> mapListToDto(this List<StudentEntity> list, int partial) =>
+        list.Select(e => new StudentGradeSummaryDto(e, partial)).ToList();
 
 
-    public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> studentList) =>
-        studentList.Select(e => new SubjectDto(e)).ToList();
+    public static List<SubjectSummaryDto> mapListToSummaryDto(this List<SubjectPartialEntity> value) =>
+        value.Select(e => new SubjectSummaryDto(e)).ToList();
+
+    public static List<BasicSubjectDto> mapListToBasicDto(this IEnumerable<SubjectEntity> list)
+    {
+        var result = list.Select(e => e.secretarySubject).ToList();
+        return result.Select(e => e!.mapToBasicDto()).ToList();
+    }
 }
