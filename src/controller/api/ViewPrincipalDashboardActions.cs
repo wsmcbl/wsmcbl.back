@@ -47,10 +47,10 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     public async Task<IActionResult> getStudentDistribution()
     {
         var studentList = await controller.getStudentRegisterViewListForCurrentSchoolyear();
-        var degreeList = await controller.getDegreeListForCurrentSchoolyear();
         var withdrawnList = await controller.getWithdrawnStudentList();
+        var degreeList = await controller.getDegreeListForCurrentSchoolyear();
         
-        return Ok(new DistributionStudentDto(studentList, degreeList, withdrawnList));
+        return Ok(new DistributionStudentDto(studentList, withdrawnList, degreeList));
     }
     
     /// <summary>Get summary of the teachers who entered grades.</summary>
