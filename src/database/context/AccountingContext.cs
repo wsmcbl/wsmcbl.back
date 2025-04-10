@@ -43,7 +43,6 @@ internal class AccountingContext
             entity.Property(e => e.amount).ValueGeneratedOnAddOrUpdate().HasColumnName("amount");
             
             entity.HasOne(d => d.tariff).WithMany().HasForeignKey(d => d.tariffId);
-            entity.HasOne(d => d.student).WithMany().HasForeignKey(d => d.studentId);
         });
 
         modelBuilder.Entity<DiscountEntity>(entity =>

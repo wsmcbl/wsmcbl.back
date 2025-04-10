@@ -208,6 +208,6 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             debt => debt.tariffId,
             tariff => tariff.tariffId,
             (e, tariff) => e
-        ).ToListAsync();
+        ).Include(e => e.tariff).ToListAsync();
     }
 }
