@@ -5,6 +5,8 @@ using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.database;
 
@@ -182,5 +184,30 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         }
         
         return await query.ToListAsync();
+    }
+
+    public async Task<List<DebtHistoryEntity>> getAllByMonth(DateTime startDate)
+    {
+        SchoolyearEntity schoolyear;
+        
+        try
+        {
+            schoolyear = await daoFactory.schoolyearDao!.getByLabel(startDate.Year);
+        }
+        catch (Exception)
+        {
+            return [];
+        }
+     
+        var from = new DateOnly(startDate.Year, startDate.Month, 1);
+        var to = new DateOnly(startDate.Year, startDate.Month + 1, 1);
+        
+        return await entities.AsNoTracking().Where(e => !e.isPaid).Join
+        (
+            context.Set<TariffEntity>().Where(e => e.schoolyearId == schoolyear.id && e.dueDate >= from && e.dueDate < to),
+            debt => debt.tariffId,
+            tariff => tariff.tariffId,
+            (e, tariff) => e
+        ).ToListAsync();
     }
 }
