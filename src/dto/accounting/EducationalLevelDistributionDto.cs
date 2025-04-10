@@ -8,7 +8,6 @@ public class EducationalLevelDistributionDto
     public AmountByStudentQuantityDto total { get; set; }
     public AmountByStudentQuantityDto regularStudent { get; set; }
     public AmountByStudentQuantityDto discountedStudent { get; set; }
-    public AmountByStudentQuantityDto scholarshipStudent { get; set; }
 
     public EducationalLevelDistributionDto(List<DebtHistoryEntity> parameter)
     {
@@ -19,8 +18,11 @@ public class EducationalLevelDistributionDto
         }
 
         total = new AmountByStudentQuantityDto(parameter);
-        regularStudent = new AmountByStudentQuantityDto(parameter);
-        discountedStudent = new AmountByStudentQuantityDto(parameter);
-        scholarshipStudent = new AmountByStudentQuantityDto(parameter);
+        
+        var list = parameter.Where(e => e.subAmount == tariffAmount).ToList();
+        regularStudent = new AmountByStudentQuantityDto(list);
+        
+        list = parameter.Where(e => e.subAmount < tariffAmount).ToList();
+        discountedStudent = new AmountByStudentQuantityDto(list);
     }
 }
