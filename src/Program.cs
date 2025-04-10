@@ -70,6 +70,7 @@ builder.Services.AddTransient<ViewPrincipalDashboardController>();
 builder.Services.AddTransient<GeneratePerformanceReportBySectionController>();
 builder.Services.AddTransient<GenerateEvaluationStatsBySectionController>();
 builder.Services.AddTransient<UnenrollStudentController>();
+builder.Services.AddTransient<CalculateMonthlyRevenueController>();
 
 var app = builder.Build();
 
