@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.utilities;
@@ -23,7 +24,7 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     public async Task<IActionResult> getExpectedMonthly([Required] [FromQuery] string month)
     {
         var result = await controller.getExpectedMonthly(getStartDate(month));
-        return Ok(result);
+        return Ok(new ExpectedMonthlyReceivedDto(result));
     }
     
     /// <summary>Returns expected monthly received revenue summary for current month.</summary>
