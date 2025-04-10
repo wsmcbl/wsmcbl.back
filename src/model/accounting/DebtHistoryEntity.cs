@@ -14,6 +14,7 @@ public class DebtHistoryEntity
     public bool isPaid { get; set; }
     
     public TariffEntity tariff { get; set; } = null!;
+    public StudentEntity? student { get; set; }
 
     public DebtHistoryEntity()
     {
