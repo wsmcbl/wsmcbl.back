@@ -35,6 +35,11 @@ public static class Utility
         return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
     }
     
+    public static DateTime toDateTime(this string value)
+    {
+        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+    }
+    
     public static void ReplaceInLatexFormat(this StringBuilder text, string oldValue, string? newValue)
     {
         text.Replace(oldValue, newValue.ReplaceLatexSpecialSymbols());

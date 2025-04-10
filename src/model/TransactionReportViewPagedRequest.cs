@@ -1,4 +1,3 @@
-using System.Globalization;
 using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
@@ -25,8 +24,8 @@ public class TransactionReportViewPagedRequest : PagedRequest
     
     public static (DateTime from, DateTime to) parseToDateTime(string from, string to)
     {
-        var startDate = DateTime.ParseExact(from, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-        var endDate = DateTime.ParseExact(to, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        var startDate = from.toDateTime();
+        var endDate = to.toDateTime();
 
         if (startDate.Date > endDate.Date)
         {

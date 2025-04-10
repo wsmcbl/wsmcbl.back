@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.accounting;
@@ -69,8 +68,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
 
         try
         {
-            var date = DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-            return date.Year is >= minYear and <= maxYear;
+            return value.toDateTime().Year is >= minYear and <= maxYear;
         }
         catch (FormatException)
         {
