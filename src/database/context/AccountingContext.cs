@@ -42,10 +42,7 @@ internal class AccountingContext
             entity.Property(e => e.schoolyear).HasMaxLength(20).HasColumnName("schoolyear");
             entity.Property(e => e.amount).ValueGeneratedOnAddOrUpdate().HasColumnName("amount");
             
-            entity.HasOne(d => d.tariff).WithMany()
-                .HasForeignKey(d => d.tariffId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("debthistory_tariffid_fkey");
+            entity.HasOne(d => d.tariff).WithMany().HasForeignKey(d => d.tariffId);
         });
 
         modelBuilder.Entity<DiscountEntity>(entity =>
