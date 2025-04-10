@@ -7,7 +7,7 @@ using wsmcbl.src.middleware;
 namespace wsmcbl.src.controller.api;
 
 [ApiController]
-[Route("secretary/withdrawns/students")]
+[Route("secretary/withdrawals/students")]
 public class UnenrollStudentActions(UnenrollStudentController controller) : ActionsBase
 {
     /// <summary>Returns the withdrawn student list for all schoolyears.</summary>
