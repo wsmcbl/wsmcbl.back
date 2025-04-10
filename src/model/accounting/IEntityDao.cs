@@ -53,5 +53,5 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task restoreDebt(string transactionId);
     public Task createRegistrationDebtByStudent(StudentEntity student);
     public Task exonerateArrears(string studentId, List<DebtHistoryEntity> list);
-    public Task<List<DebtHistoryEntity>> getAllByMonth(DateTime startDate);
+    public Task<List<DebtHistoryEntity>> getAllByMonth(DateTime startDate, bool paid = false);
 }
