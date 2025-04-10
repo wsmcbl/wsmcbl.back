@@ -200,14 +200,25 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         }
      
         var from = new DateOnly(startDate.Year, startDate.Month, 1);
-        var to = new DateOnly(startDate.Year, startDate.Month + 1, 1);
+        var to = from.AddMonths(1);
         
-        return await entities.AsNoTracking().Where(e => !e.isPaid).Join
+        return await entities.AsNoTracking().Join
         (
             context.Set<TariffEntity>().Where(e => e.schoolyearId == schoolyear.id && e.dueDate >= from && e.dueDate < to),
             debt => debt.tariffId,
             tariff => tariff.tariffId,
-            (e, tariff) => e
-        ).Include(e => e.tariff).ToListAsync();
+            (debt, tariff) => new DebtHistoryEntity
+            {
+                studentId = debt.studentId,
+                tariffId = debt.tariffId,
+                schoolyear = debt.schoolyear,
+                arrears = debt.arrears,
+                subAmount = debt.subAmount,
+                amount = debt.amount,
+                debtBalance = debt.debtBalance,
+                isPaid = debt.isPaid,
+                tariff = tariff
+            }
+        ).ToListAsync();
     }
 }
