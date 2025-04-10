@@ -2,14 +2,14 @@ using wsmcbl.src.model.accounting;
 
 namespace wsmcbl.src.dto.accounting;
 
-public class ExpectedMonthlyReceivedDto
+public class ExpectedMonthlyDto
 {
     public AmountByStudentQuantityDto total { get; set; }
     public EducationalLevelDistributionDto preschool { get; set; }
     public EducationalLevelDistributionDto elementary { get; set; }
     public EducationalLevelDistributionDto secondary { get; set; }
 
-    public ExpectedMonthlyReceivedDto(List<DebtHistoryEntity> parameter)
+    public ExpectedMonthlyDto(List<DebtHistoryEntity> parameter)
     {
         total = new AmountByStudentQuantityDto(parameter);
 
