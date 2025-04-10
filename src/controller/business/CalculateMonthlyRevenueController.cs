@@ -5,14 +5,9 @@ namespace wsmcbl.src.controller.business;
 
 public class CalculateMonthlyRevenueController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<DebtHistoryEntity>> getExpectedMonthly(DateTime startDate)
+    public async Task<List<DebtHistoryEntity>> getExpectedMonthly(DateTime startDate, bool paid = false)
     {
-        return await daoFactory.debtHistoryDao!.getAllByMonth(startDate);
-    }
-
-    public async Task<object?> getExpectedMonthlyReceived(DateTime startDate)
-    {
-        return await daoFactory.debtHistoryDao!.getAll();
+        return await daoFactory.debtHistoryDao!.getAllByMonth(startDate, paid);
     }
 
     public async Task<object?> getTotalReceived(DateTime startDate)
