@@ -24,7 +24,7 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     public async Task<IActionResult> getExpectedMonthly([Required] [FromQuery] string month)
     {
         var result = await controller.getExpectedMonthly(getStartDate(month));
-        return Ok(new ExpectedMonthlyReceivedDto(result));
+        return Ok(new ExpectedMonthlyDto(result));
     }
     
     /// <summary>Returns expected monthly received revenue summary for current month.</summary>
@@ -37,8 +37,8 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     [Route("expected-monthly/received")]
     public async Task<IActionResult> getExpectedMonthlyReceived([Required] [FromQuery] string month)
     {
-        var result = await controller.getExpectedMonthlyReceived(getStartDate(month));
-        return Ok(result);
+        var result = await controller.getExpectedMonthly(getStartDate(month), true);
+        return Ok(new ExpectedMonthlyReceivedDto(result));
     }
     
     /// <summary>Returns total revenue received to date.</summary>
