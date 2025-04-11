@@ -88,10 +88,11 @@ public class TransactionDaoPostgres(PostgresContext context)
 
     public async Task<List<TransactionTariffView>> getTransactionTariffViewListByDate(DateTime startDate)
     {
-        var to = startDate.AddMonths(1);
+        var from = TimeZoneInfo.ConvertTimeToUtc(startDate);
+        var to = from.AddMonths(1);
 
         return await context.Set<TransactionTariffView>()
-            .Where(e => e.transactionDate >= startDate && e.transactionDate < to)
+            .Where(e => e.transactionDate >= from && e.transactionDate < to)
             .ToListAsync();
     }
 }
