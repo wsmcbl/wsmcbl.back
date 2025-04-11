@@ -9,12 +9,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 {
     public async Task<StudentEntity> updateStudent(StudentEntity student, bool generateToken = false)
     {
-        if (generateToken)
-        {
-            student.generateAccessToken();
-        }
-        
-        await daoFactory.studentDao!.updateAsync(student);
+        await daoFactory.studentDao!.updateAsync(student, generateToken);
         await daoFactory.studentTutorDao!.updateAsync(student.tutor);
         await daoFactory.studentFileDao!.updateAsync(student.file);
         await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);
