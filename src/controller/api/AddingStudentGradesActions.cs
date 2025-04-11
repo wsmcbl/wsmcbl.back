@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
 using wsmcbl.src.dto.academy;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model.academy;
 
@@ -78,12 +79,18 @@ public class AddingStudentGradesActions(AddingStudentGradesController controller
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher or internal record not found.</response>
+    /// <response code="409">If the grade record is not active.</response>
     [HttpPut]
     [Route("teachers/{teacherId}/enrollments/{enrollmentId}")]
     [Authorizer("grade:update")]
     public async Task<IActionResult> addGrades([Required] string teacherId,
         [Required] string enrollmentId, [Required] [FromQuery] int partialId, List<GradeDto> gradeList)
     {
+        if (await controller.recordIsNotActive(partialId))
+        {
+            throw new ConflictException("The grade record is not active.");
+        }
+        
         var subjectPartial = new SubjectPartialEntity(teacherId, enrollmentId, partialId);
         await controller.addGrades(subjectPartial, gradeList.toEntity());
         return Ok();

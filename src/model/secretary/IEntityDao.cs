@@ -24,13 +24,14 @@ public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>
     public Task<SchoolyearEntity> createNewOrFail();
 }
 
-public interface IStudentDao : IGenericDao<StudentEntity, string>, IStudentElement<StudentEntity>
+public interface IStudentDao : IGenericDao<StudentEntity, string>
 {
     public Task<StudentEntity> getFullById(string id);
     public Task<StudentEntity?> findDuplicateOrNull(StudentEntity student);
     public Task<PagedResult<StudentView>> getPaginatedStudentView(StudentPagedRequest request);
     public Task<PagedResult<StudentRegisterView>> getPaginatedStudentRegisterView(StudentPagedRequest request);
     public Task<List<StudentRegisterView>> getStudentRegisterListForCurrentSchoolyear();
+    public Task updateAsync(StudentEntity? entity, bool withNewToken = false);
 }
 
 public interface IStudentFileDao : IGenericDao<StudentFileEntity, int>, IStudentElement<StudentFileEntity>;
