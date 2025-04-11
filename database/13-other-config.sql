@@ -1,3 +1,5 @@
+-- drop view accounting.***_view;
+
 create table if not exists Config.Multimedia
 (
     multimediaId serial not null primary key,
@@ -200,3 +202,24 @@ FROM academy.grade_view gv
     cd.enrollmentid = gv.enrollmentid AND
     cd.schoolyearid = gv.schoolyearid
 GROUP BY gv.studentid, gv.partialid, gv.enrollmentid, gv.schoolyearid, gv.partial, cd.conductgrade;
+
+
+-- Transaction_Tariff_View view ---
+CREATE VIEW accounting.transaction_tariff_view AS
+SELECT t.tariffId,
+       tra.studentId,
+       t.schoolyear as schoolyearId,
+       e.enrollmentId,
+       t.educationalLevel,
+       DATE_TRUNC('month', tra.date) as transactionDate,
+       t.dueDate as tariffDueDate,
+       SUM(tt.amount) as amount,
+       t.typeid as tariffType
+FROM accounting.transaction tra
+LEFT JOIN accounting.transaction_tariff tt ON tt.transactionId = tra.transactionid
+LEFT JOIN accounting.tariff t ON t.tariffId = tt.tariffId
+LEFT JOIN academy.student asd ON asd.studentId = tra.studentId and asd.schoolyear = t.schoolyear
+LEFT JOIN academy.enrollment e ON e.enrollmentId = asd.enrollmentId
+where tra.isvalid = TRUE
+GROUP BY t.tariffId, tra.studentId, t.schoolyear, e.enrollmentId, t.educationalLevel,
+         DATE_TRUNC('month', tra.date), t.dueDate, t.typeid;
