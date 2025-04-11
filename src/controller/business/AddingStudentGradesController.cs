@@ -32,6 +32,17 @@ public class AddingStudentGradesController : BaseController
         await daoFactory.ExecuteAsync();
     }
 
+    public async Task<bool> recordIsNotActive(int partialId)
+    {
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+
+        return !partial.recordIsActive();
+    }
+    
     public async Task<List<PartialEntity>> getPartialList()
     {
         return await daoFactory.partialDao!.getListForCurrentSchoolyear();

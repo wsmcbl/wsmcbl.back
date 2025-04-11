@@ -23,6 +23,7 @@ public interface ITransactionDao : IGenericDao<TransactionEntity, string>
     public Task<List<TransactionReportView>> getTransactionReportViewListByRange(DateTime from, DateTime to);
     public Task<PagedResult<TransactionReportView>> getPaginatedTransactionReportView(TransactionReportViewPagedRequest request);
     public Task<List<TransactionInvoiceView>> getTransactionInvoiceViewList(DateTime from, DateTime to);
+    public Task<List<TransactionTariffView>> getTransactionTariffViewListByDate(DateTime startDate);
 }
 
 public interface ITariffTypeDao : IGenericDao<TariffTypeEntity, int>;
