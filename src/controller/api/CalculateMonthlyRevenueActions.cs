@@ -13,8 +13,25 @@ namespace wsmcbl.src.controller.api;
 [Route("accounting/revenue")]
 public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController controller) : ActionsBase 
 {
+    /// <summary>Returns total revenue received to date.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="400">If the date is not valid.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <param name="month">The month values must be "month-year" format, example "11-2024", "05-2025".</param>
+    /// <remarks>A date before 2,000 is not accepted.</remarks>
+    [HttpGet]
+    [Route("")]
+    public async Task<IActionResult> getTotalReceived([Required] [FromQuery] string month)
+    {
+        var startDate = getStartDate(month);
+        var result = await controller.getTotalReceived(startDate);
+        return Ok(new RevenueByMonthDto(result, startDate));
+    }
+    
     /// <summary>Returns expected monthly revenue summary by month.</summary>
     /// <response code="200">Returns a resource.</response>
+    /// <response code="400">If the date is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <param name="month">The month values must be "month-year" format, example "11-2024", "05-2025".</param>
@@ -29,6 +46,7 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     
     /// <summary>Returns expected monthly received revenue summary for current month.</summary>
     /// <response code="200">Returns a resource.</response>
+    /// <response code="400">If the date is not valid.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <param name="month">The month values must be "month-year" format, example "11-2024", "05-2025".</param>
@@ -39,21 +57,6 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     {
         var result = await controller.getExpectedMonthly(getStartDate(month), true);
         return Ok(new ExpectedMonthlyReceivedDto(result));
-    }
-    
-    /// <summary>Returns total revenue received to date.</summary>
-    /// <response code="200">Returns a resource.</response>
-    /// <response code="401">If the query was made without authentication.</response>
-    /// <response code="403">If the query was made without proper permissions.</response>
-    /// <param name="month">The month values must be "month-year" format, example "11-2024", "05-2025".</param>
-    /// <remarks>A date before 2,000 is not accepted.</remarks>
-    [HttpGet]
-    [Route("")]
-    public async Task<IActionResult> getTotalReceived([Required] [FromQuery] string month)
-    {
-        var startDate = getStartDate(month);
-        var result = await controller.getTotalReceived(startDate);
-        return Ok(new RevenueByMonthDto(result, startDate));
     }
 
     private static DateTime getStartDate(string month)
