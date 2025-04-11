@@ -10,8 +10,8 @@ public class CalculateMonthlyRevenueController(DaoFactory daoFactory) : BaseCont
         return await daoFactory.debtHistoryDao!.getAllByMonth(startDate, paid);
     }
 
-    public async Task<object?> getTotalReceived(DateTime startDate)
+    public async Task<List<TransactionTariffView>> getTotalReceived(DateTime startDate)
     {
-        return await daoFactory.transactionDao!.getAll();
+        return await daoFactory.transactionDao!.getTransactionTariffViewListByDate(startDate);
     }
 }
