@@ -13,7 +13,7 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
         return await controller.isStudentSolvent(studentId);
     }
 
-    public async Task<bool> isTokenValid(string studentId, string token)
+    public async Task<bool> tokenIsNotValid(string studentId, string token)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
@@ -21,7 +21,7 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
             return false;
         }
 
-        return student.accessToken == token;
+        return student.accessToken != token;
     }
 
     public async Task<byte[]> getGradeReport(string studentId)
