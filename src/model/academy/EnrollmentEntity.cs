@@ -29,11 +29,6 @@ public class EnrollmentEntity
         teacherId = Const.DefaultTeacherId;
     }
 
-    public void setSubjectList(List<SubjectEntity> subjects)
-    {
-        subjectList = subjects;
-    }
-
     public void setSubjectList(ICollection<secretary.SubjectEntity>? subjects)
     {
         if (subjects == null || subjects.Count == 0)
@@ -72,5 +67,10 @@ public class EnrollmentEntity
     public List<SubjectEntity> getSubjectListByTeacherId(string id)
     {
         return subjectList == null ? [] : subjectList.Where(e => e.teacherId == id).Distinct().ToList();
+    }
+
+    public void updateQuantity()
+    {
+        quantity = studentList!.Count;
     }
 }
