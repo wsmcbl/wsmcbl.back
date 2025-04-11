@@ -105,7 +105,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
-    public async Task updateAsync(StudentEntity? entity)
+    public async Task updateAsync(StudentEntity? entity, bool withNewToken = false)
     {
         if (entity == null)
         {
@@ -119,6 +119,12 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         }
 
         existingStudent.update(entity);
+        
+        if (withNewToken)
+        {
+            existingStudent.generateAccessToken();
+        }
+        
         update(existingStudent);
     }
 
