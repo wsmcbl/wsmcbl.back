@@ -12,4 +12,10 @@ public class AmountByStudentQuantityDto
         amount = parameter.Sum(e => e.amount);
         studentQuantity = parameter.Select(e => e.studentId).Distinct().Count();
     }
+
+    public AmountByStudentQuantityDto(List<TransactionTariffView> parameter)
+    {
+        amount = parameter.Sum(e => e.amount);
+        studentQuantity = parameter.Select(e => e.studentId).Distinct().Count();
+    }
 }
