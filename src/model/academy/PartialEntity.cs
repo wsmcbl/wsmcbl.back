@@ -67,7 +67,7 @@ public class PartialEntity
         gradeRecordDeadline = null;
     }
 
-    public static string getLabel(int value)
+    private static string getLabel(int value)
     {
         return value switch
         {
@@ -77,10 +77,5 @@ public class PartialEntity
             4 => "IV Parcial",
             _ => "Parcial desconocido"
         };
-    }
-
-    public bool isPartialPosition(int value)
-    {
-        return getLabel(value).Equals(label);
     }
 }
