@@ -51,8 +51,9 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
     [Route("")]
     public async Task<IActionResult> getTotalReceived([Required] [FromQuery] string month)
     {
-        var result = await controller.getTotalReceived(getStartDate(month));
-        return Ok(result);
+        var startDate = getStartDate(month);
+        var result = await controller.getTotalReceived(startDate);
+        return Ok(new RevenueByMonthDto(result, startDate));
     }
 
     private static DateTime getStartDate(string month)
