@@ -227,5 +227,19 @@ internal class AccountingContext
             entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
             entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
         });
+        
+        modelBuilder.Entity<TransactionTariffView>(entity =>
+        {
+            entity.ToView("transaction_tariff_view", "accounting").HasNoKey();
+            entity.Property(e => e.tariffId).HasColumnName("tariffid");
+            entity.Property(e => e.studentId).HasColumnName("studentid");
+            entity.Property(e => e.schoolyearId).HasColumnName("schoolyearid");
+            entity.Property(e => e.enrollmentId).HasColumnName("enrollmentid");
+            entity.Property(e => e.educationalLevel).HasColumnName("educationallevel");
+            entity.Property(e => e.transactionDate).HasColumnName("transactiondate");
+            entity.Property(e => e.tariffDueDate).HasColumnName("tariffduedate");
+            entity.Property(e => e.amount).HasColumnName("amount");
+            entity.Property(e => e.tariffType).HasColumnName("tarifftype");
+        });
     }
 }
