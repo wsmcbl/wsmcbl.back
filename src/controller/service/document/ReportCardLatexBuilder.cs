@@ -25,7 +25,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     {
         var content = new StringBuilder(value);
         
-        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo.png");
         
         content.Replace("schoolyear.value", schoolyear);
         content.Replace("degree.value", degreeLabel);
@@ -33,6 +33,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content.Replace("student.id.value", student.studentId);
         content.Replace("student.name.value", student.fullName());
         content.Replace("teacher.name.value", teacher.fullName());
+        content.Replace("teacher.mail.value", teacher.user.email);
         
         content.Replace("detail.value", getDetail());
 
