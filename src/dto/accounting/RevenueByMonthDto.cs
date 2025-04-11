@@ -9,8 +9,20 @@ public class RevenueByMonthDto
     public AmountByStudentQuantityDto currentMonth { get; set; }
     public AmountByStudentQuantityDto futureMonth { get; set; }
 
-    public RevenueByMonthDto(List<TransactionTariffView> parameter)
+    public RevenueByMonthDto(List<TransactionTariffView> parameter, DateTime startDate)
     {
         total = new AmountByStudentQuantityDto(parameter);
+        
+        var from = new DateOnly(startDate.Year, startDate.Month, startDate.Day);
+        var to = from.AddMonths(1);
+
+        var list = parameter.Where(e => e.tariffDueDate != null && e.tariffDueDate < from).ToList();
+        pastMonths = new AmountByStudentQuantityDto(list);
+        
+        list = parameter.Where(e => e.tariffDueDate != null && e.tariffDueDate >= from && e.tariffDueDate <= to).ToList();
+        currentMonth = new AmountByStudentQuantityDto(list);
+        
+        list = parameter.Where(e => e.tariffDueDate != null && e.tariffDueDate >= to).ToList();
+        futureMonth = new AmountByStudentQuantityDto(list);
     }
 }
