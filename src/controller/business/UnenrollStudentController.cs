@@ -22,5 +22,10 @@ public class UnenrollStudentController(DaoFactory daoFactory) : BaseController(d
         
         var controller = new UpdateStudentProfileController(daoFactory);
         await controller.changeProfileState(studentId);
+        
+        var enrollment = await daoFactory.enrollmentDao!.getFullById(student.enrollmentId!);
+        enrollment.updateQuantity();
+        daoFactory.enrollmentDao.update(enrollment);
+        await daoFactory.ExecuteAsync();
     }
 }
