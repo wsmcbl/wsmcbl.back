@@ -15,8 +15,10 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     /// <response code="404">Student not found.</response>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> getStudentInformation([Required] string studentId)
+    public async Task<IActionResult> getStudentInformation([Required] string studentId, [Required] [FromQuery] string token)
     {
+        await checkStudentCredentials(studentId, token);
+        
         var student = await controller.getStudent(studentId);
         var isSolvency = await controller.isStudentSolvent(studentId);
         var teacher = await controller.getTeacherByEnrollment(student.enrollmentId!);
@@ -35,28 +37,25 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     [Route("grades/export")]
     public async Task<IActionResult> getGradesReport([Required] string studentId, [Required] [FromQuery] string token, [FromQuery] string? adminToken)
     {
-        if (await controller.tokenIsNotValid(studentId, token) && adminToken == null)
+        if (adminToken == null)
         {
-            throw new UnauthorizedException("Student unauthorized.");
+            await checkStudentCredentials(studentId, token);
         }
-        
-        if (!await controller.isStudentSolvent(studentId) && adminToken == null)
+        else
         {
-            throw new ConflictException($"Student with id ({studentId}) has no solvency.");
-        }
-
-        if (adminTokenIsNotValid(adminToken))
-        {
-            throw new UnauthorizedException("User unauthorized.");
+            checkAdminToken(adminToken);
         }
         
         var result = await controller.getGradeReport(studentId);
         return File(result, "application/pdf", $"{studentId}.grade-report.pdf");
     }
 
-    private static bool adminTokenIsNotValid(string? adminToken)
+    private static void checkAdminToken(string adminToken)
     {
-        return adminToken != null && adminToken != "5896";
+        if(adminToken != "5896")
+        {
+            throw new UnauthorizedException("User unauthorized.");
+        }
     }
 
     private async Task checkStudentCredentials(string studentId, string token)
