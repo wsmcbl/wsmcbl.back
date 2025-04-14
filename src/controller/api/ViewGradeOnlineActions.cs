@@ -58,4 +58,17 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     {
         return adminToken != null && adminToken != "5896";
     }
+
+    private async Task checkStudentCredentials(string studentId, string token)
+    {
+        if (await controller.tokenIsNotValid(studentId, token))
+        {
+            throw new UnauthorizedException("Student unauthorized.");
+        }
+        
+        if (!await controller.isStudentSolvent(studentId))
+        {
+            throw new ConflictException($"Student with id ({studentId}) has no solvency.");
+        }
+    }
 }
