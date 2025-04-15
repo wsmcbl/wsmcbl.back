@@ -33,8 +33,11 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         var date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
         var totalList = await controller.getTotalReceived(date);
         
+        var from = new DateOnly(date.Year, date.Month, date.Day);
+        var to = from.AddMonths(1);
+        var received = totalList.Where(e => e.tariffDueDate != null && e.tariffDueDate >= from && e.tariffDueDate < to).ToList();
+        
         var expected = await controller.getExpectedMonthly(date);
-        var received = await controller.getExpectedMonthly(date, true);
 
         return (expected.Sum(e => e.amount),
             received.Sum(e => e.amount),
