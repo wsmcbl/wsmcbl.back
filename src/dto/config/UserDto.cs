@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using wsmcbl.src.model.config;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.dto.config;
 
@@ -28,6 +29,6 @@ public class UserDto
         isActive = user.isActive;
         roleId = user.roleId;
         permissionList = user.getPermissionList().Select(e => e.permissionId).ToList();
-        nextCloudGroup = nextcloudGroup;
+        nextCloudGroup = nextcloudGroup.getOrDefault();
     }
 }

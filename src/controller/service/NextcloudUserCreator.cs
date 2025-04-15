@@ -91,7 +91,7 @@ public class NextcloudUserCreator
         var response = await httpClient.GetAsync(url);
         if (!response.IsSuccessStatusCode)
         {
-            throw new InternalException("Error getting list of groups by user.");
+            return string.Empty;
         }
 
         try

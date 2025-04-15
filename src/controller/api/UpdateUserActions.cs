@@ -42,9 +42,8 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
         await controller.assignPermissions(result, dto.getUserPermissionList(userId));
 
         var nextCloudGroup = await controller.getNextCloudGroup(result);
-        var response = new UserDto(result, nextCloudGroup);
 
-        return Ok(response);
+        return Ok(new UserDto(result, nextCloudGroup));
     }
     
     /// <summary>Update user password by id.</summary>
