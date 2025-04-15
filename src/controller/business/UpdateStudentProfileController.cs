@@ -90,7 +90,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         }
     }
 
-    public async Task<StudentEntity> changeProfileToken(string studentId)
+    public async Task changeProfileToken(string studentId)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
@@ -101,7 +101,5 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         student.generateAccessToken();
         daoFactory.studentDao!.update(student);
         await daoFactory.ExecuteAsync();
-
-        return student;
     }
 }
