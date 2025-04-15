@@ -30,7 +30,8 @@ public class EnrollStudentController : BaseController
             throw new ConflictException($"The student with id ({student.studentId}) is al ready enroll.");
         }
         
-        await updateStudentProfileController.updateStudent(student, true);
+        await updateStudentProfileController.updateStudent(student);
+        await updateStudentProfileController.changeProfileToken(student.studentId!);
 
         var academyStudent = await getNewAcademyStudent(student.studentId!, enrollmentId);
         academyStudent.setIsRepeating(isRepeating);
