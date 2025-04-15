@@ -87,15 +87,12 @@ public class NextcloudUserCreator
         httpClient.DefaultRequestHeaders.Accept.Clear();
         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        var url = $"{getNextcloudUrl()}users/{mail}/groups";
-        var response = await httpClient.GetAsync(url);
-        if (!response.IsSuccessStatusCode)
-        {
-            return string.Empty;
-        }
-
         try
         {
+            var url = $"{getNextcloudUrl()}users/{mail}/groups";
+            var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            
             var json = await response.Content.ReadAsStringAsync();
             var parsedJson = JObject.Parse(json);
             var groupsArray = (JArray)parsedJson["ocs"]?["data"]?["groups"]!;
