@@ -54,12 +54,12 @@ public class UpdateStudentSecretaryProfileActions(UpdateStudentProfileController
     [HttpPut]
     [Route("{studentId}")]
     [Authorizer("student:update")]
-    public async Task<IActionResult> updateStudent([Required] string studentId, StudentFullDto dto, [FromQuery] bool withNewToken = false)
+    public async Task<IActionResult> updateStudent([Required] string studentId, StudentFullDto dto)
     {
         var entity = dto.toEntity();
         entity.studentId = studentId;
         
-        return Ok(await controller.updateStudent(entity, withNewToken));
+        return Ok(await controller.updateStudent(entity));
     }
     
     /// <summary>Update student profile picture.</summary>
