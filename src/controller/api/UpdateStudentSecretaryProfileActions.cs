@@ -104,7 +104,7 @@ public class UpdateStudentSecretaryProfileActions(UpdateStudentProfileController
     public async Task<IActionResult> getProfileWithToken([Required] string studentId)
     {
         var result = await controller.getProfileWithToken(studentId);
-        return Ok(result);
+        return Ok(new BasicStudentWithTokenDto(result.view, result.accessToken));
     }
     
     /// <summary>Change student access token.</summary>
