@@ -7,9 +7,9 @@ namespace wsmcbl.src.controller.business;
 
 public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<StudentEntity> updateStudent(StudentEntity student, bool generateToken = false)
+    public async Task<StudentEntity> updateStudent(StudentEntity student)
     {
-        await daoFactory.studentDao!.updateAsync(student, generateToken);
+        await daoFactory.studentDao!.updateAsync(student);
         await daoFactory.studentTutorDao!.updateAsync(student.tutor);
         await daoFactory.studentFileDao!.updateAsync(student.file);
         await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);
