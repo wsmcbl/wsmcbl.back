@@ -19,12 +19,12 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     [Authorizer("report:principal:read")]
     public async Task<IActionResult> getSummaryRevenue()
     {
-        await controller.getSummaryRevenue();
+        var result = await controller.getSummaryRevenue();
         return Ok(new
         {
-            expectedIncomeThisMonth = 88500,
-            expectedIncomeReceived = 50100,
-            totalIncomeThisMonth = 100000
+            expectedIncomeThisMonth = result.expectedIncomeThisMonth,
+            expectedIncomeReceived = result.expectedIncomeReceived,
+            totalIncomeThisMonth = result.totalIncomeThisMonth
         });
     }
     
