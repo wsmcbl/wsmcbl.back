@@ -92,4 +92,18 @@ public class UpdateStudentSecretaryProfileActions(UpdateStudentProfileController
         await controller.changeProfileState(studentId);
         return Ok();
     }
+    
+    /// <summary>Change student access token.</summary>
+    /// <response code="200">Returns when the resource has been modified.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">Resource not found.</response>
+    [HttpPut]
+    [Route("{studentId}/token")]
+    [Authorizer("student:update")]
+    public async Task<IActionResult> updateProfileToken([Required] string studentId)
+    {
+        var student = await controller.changeProfileToken(studentId);
+        return Ok();
+    }
 }
