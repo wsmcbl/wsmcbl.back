@@ -44,17 +44,23 @@ public class UpdateUserController : BaseController
         await nextcloudUserCreator.assignGroup(user.email, nextCloudGroup.Trim());
     }
 
-    public async Task assignPermissions(UserEntity user, List<UserPermissionEntity> permissionList)
+    public async Task assignPermissions(string userId, List<int> permissionIdList)
     {
-        if (permissionList.Count == 0)
+        if (permissionIdList.Count == 0)
         {
             return;
         }
 
-        await daoFactory.permissionDao!
-            .verifyIdListOrFail(permissionList.Select(e => e.permissionId).ToList());
+        var user = await daoFactory.userDao!.getById(userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException("UserEntity", userId);
+        } 
+        
+        await daoFactory.permissionDao!.verifyIdListOrFail(permissionIdList);
 
-        var list = user.checkPermissionsAlreadyAssigned(permissionList);
+        var list = permissionIdList.Select(e => new UserPermissionEntity((Guid)user.userId!, e)).ToList();
+        list = user.checkPermissionsAlreadyAssigned(list);
 
         user.updatePermissionList(list, daoFactory.userPermissionDao!);
         await daoFactory.ExecuteAsync();
