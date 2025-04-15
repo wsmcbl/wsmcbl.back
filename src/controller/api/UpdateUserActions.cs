@@ -23,7 +23,7 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
         return Ok(result.mapToListDto());
     }
     
-    /// <summary>Assign permissions and update user.</summary>
+    /// <summary>Update user.</summary>
     /// <remarks>
     /// The secondName and secondSurname can be null or empty.
     /// </remarks>
@@ -37,13 +37,8 @@ public class UpdateUserActions(UpdateUserController controller) : ActionsBase
     [Authorizer("user:update")]
     public async Task<IActionResult> updateUser([Required] string userId, UserToUpdateDto dto)
     {
-        var result = await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
-        
-        await controller.assignPermissions(result, dto.getUserPermissionList(userId));
-
-        var nextCloudGroup = await controller.getNextCloudGroup(result);
-
-        return Ok(new UserDto(result, nextCloudGroup));
+        await controller.updateUser(dto.toEntity(userId), dto.nextCloudGroup ?? string.Empty);
+        return Ok();
     }
     
     /// <summary>Assign permissions user.</summary>
