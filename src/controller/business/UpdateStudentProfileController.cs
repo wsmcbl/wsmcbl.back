@@ -103,7 +103,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         await daoFactory.ExecuteAsync();
     }
 
-    public async Task<(StudentView, string)> getProfileWithToken(string studentId)
+    public async Task<(StudentView view, string? accessToken)> getProfileWithToken(string studentId)
     {
         var student = await daoFactory.studentDao!.getById(studentId);
         if (student == null)
@@ -113,6 +113,6 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 
         var view = await daoFactory.studentDao!.getViewById(studentId);
 
-        return (view, student.accessToken ?? string.Empty);
+        return (view, student.accessToken);
     }
 }
