@@ -23,7 +23,7 @@ public class UpdateUserController : BaseController
         return await daoFactory.permissionDao!.getAll();
     }
 
-    public async Task<UserEntity> updateUser(UserEntity value, string nextCloudGroup)
+    public async Task updateUser(UserEntity value, string nextCloudGroup)
     {
         var user = await daoFactory.userDao!.getById(value.userId.ToString()!);
         if (user == null)
@@ -35,8 +35,6 @@ public class UpdateUserController : BaseController
         await daoFactory.ExecuteAsync();
 
         await assignNextcloudGroup(user, nextCloudGroup);
-
-        return user;
     }
 
     private async Task assignNextcloudGroup(UserEntity user, string nextCloudGroup)
