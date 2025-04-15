@@ -25,10 +25,20 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
     {
         return await daoFactory.teacherDao!.getListWithSubjectGradedForCurrentPartial();
     }
-
-    public async Task getSummaryRevenue()
+    
+    public async Task<(decimal expectedIncomeThisMonth, decimal expectedIncomeReceived, decimal totalIncomeThisMonth)> getSummaryRevenue()
     {
-        await Task.CompletedTask;
+        var controller = new CalculateMonthlyRevenueController(daoFactory);
+        
+        var date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        var totalList = await controller.getTotalReceived(date);
+        
+        var expected = await controller.getExpectedMonthly(date);
+        var received = await controller.getExpectedMonthly(date, true);
+
+        return (expected.Sum(e => e.amount),
+            received.Sum(e => e.amount),
+            totalList.Sum(e => e.amount));
     }
 
     public async Task<List<object>> getLastIncidents()
