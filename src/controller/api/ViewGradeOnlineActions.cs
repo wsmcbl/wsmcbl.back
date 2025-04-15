@@ -35,27 +35,11 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     /// <response code="409">Student has no solvency.</response>
     [HttpGet]
     [Route("grades/export")]
-    public async Task<IActionResult> getGradesReport([Required] string studentId, [Required] [FromQuery] string token, [FromQuery] string? adminToken)
+    public async Task<IActionResult> getGradesReport([Required] string studentId, [Required] [FromQuery] string token)
     {
-        if (adminToken == null)
-        {
-            await checkStudentCredentials(studentId, token);
-        }
-        else
-        {
-            checkAdminToken(adminToken);
-        }
-        
+        await checkStudentCredentials(studentId, token);
         var result = await controller.getGradeReport(studentId);
         return File(result, "application/pdf", $"{studentId}.grade-report.pdf");
-    }
-
-    private static void checkAdminToken(string adminToken)
-    {
-        if(adminToken != "5896")
-        {
-            throw new UnauthorizedException("User unauthorized.");
-        }
     }
 
     private async Task checkStudentCredentials(string studentId, string token)
