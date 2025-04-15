@@ -56,11 +56,6 @@ public class StudentEntity
         religion = entity.religion;
         address = entity.address;
         minedId = entity.minedId;
-
-        if (!string.IsNullOrWhiteSpace(entity.accessToken))
-        {
-            accessToken = entity.accessToken;
-        }
     }
 
     public string getStringData()

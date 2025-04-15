@@ -105,7 +105,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
-    public async Task updateAsync(StudentEntity? entity, bool withNewToken = false)
+    public async Task updateAsync(StudentEntity? entity)
     {
         if (entity == null)
         {
@@ -119,13 +119,21 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         }
 
         existingStudent.update(entity);
+        update(existingStudent);
+    }
+
+    public async Task<StudentView> getViewById(string studentId)
+    {
+        var result = await context.Set<StudentView>().Where(e => e.studentId == studentId)
+            .OrderByDescending(e => e.schoolyear)
+            .FirstOrDefaultAsync();
         
-        if (withNewToken)
+        if (result == null)
         {
-            existingStudent.generateAccessToken();
+            throw new EntityNotFoundException("StudentViewEntity", studentId);
         }
         
-        update(existingStudent);
+        return result;
     }
 
     public new async Task deleteAsync(StudentEntity entity)
