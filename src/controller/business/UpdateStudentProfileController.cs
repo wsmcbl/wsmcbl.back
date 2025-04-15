@@ -102,4 +102,17 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
         daoFactory.studentDao!.update(student);
         await daoFactory.ExecuteAsync();
     }
+
+    public async Task<(StudentView, string)> getProfileWithToken(string studentId)
+    {
+        var student = await daoFactory.studentDao!.getById(studentId);
+        if (student == null)
+        {
+            throw new EntityNotFoundException("StudentEntity", studentId);           
+        }
+
+        var view = await daoFactory.studentDao!.getViewById(studentId);
+
+        return (view, student.accessToken ?? string.Empty);
+    }
 }
