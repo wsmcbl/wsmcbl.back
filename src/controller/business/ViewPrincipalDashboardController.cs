@@ -82,4 +82,10 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
     {
         return await daoFactory.withdrawnStudentDao!.getAllForCurrentSchoolyear();
     }
+
+    public async Task<byte[]> getGradeStatistics(int partial, string userId)
+    {
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEvaluationStatisticsByLevel(partial, userId);
+    }
 }
