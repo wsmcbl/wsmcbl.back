@@ -66,4 +66,28 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         subTitle.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
         sheet.Row(titleRow + 1).Height = 18;
     }
+
+    public class Builder
+    {
+        private readonly EvaluationStatisticsByLevelSheetBuilder sheetBuilder;
+
+        public Builder()
+        {
+            sheetBuilder = new EvaluationStatisticsByLevelSheetBuilder();
+        }
+
+        public EvaluationStatisticsByLevelSheetBuilder build() => sheetBuilder;
+
+        public Builder withPartial(PartialEntity parameter)
+        {
+            sheetBuilder.partial = parameter;
+            return this;
+        }
+
+        public Builder withSchoolyear(string parameter)
+        {
+            sheetBuilder.schoolyear = parameter;
+            return this;
+        }
+    }
 }
