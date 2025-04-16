@@ -145,4 +145,22 @@ public class SpreadSheetMaker
         
         return initialList.Union(withdrawnStudentList).ToList();
     }
+
+    public async Task<byte[]> getEvaluationStatisticsByLevel(int partialId, string userId)
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+        
+        sheetBuilder = new EvaluationStatisticsByLevelSheetBuilder.Builder()
+            .withPartial(partial)
+            .withSchoolyear(schoolyear.label)
+            .build();
+
+        return sheetBuilder.getSpreadSheet();       
+    }
 }
