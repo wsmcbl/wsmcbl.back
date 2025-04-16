@@ -94,7 +94,6 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
         return Ok(result.mapListToDto());
     }
     
-    
     /// <summary>Returns enrollment grade summary by partial in XLSX format.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
@@ -108,5 +107,20 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
         var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partial, getAuthenticatedUserId());
         
         return File(result, getContentType(2), $"{enrollmentId}.grades-summary.xlsx");
+    }
+    
+    /// <summary>Returns statistics summary by partial in XLSX format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or partial not found.</response>
+    [HttpGet]
+    [Route("degrees/report/export")]
+    [Authorizer("report:principal:read")]
+    public async Task<IActionResult> getGradeStatistics([Required] [FromQuery] int partial)
+    {
+        var result = await controller.getGradeStatistics(partial, "getAuthenticatedUserId()");
+        
+        return File(result, getContentType(2), $"statistics-summary.xlsx");
     }
 }
