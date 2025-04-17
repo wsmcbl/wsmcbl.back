@@ -27,6 +27,7 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
 
         await setPrimaryLevel(workbook);
         setSecondaryLevel(workbook);
+        worksheet.Columns().AdjustToContents();
         
         using var stream = new MemoryStream();
         workbook.SaveAs(stream);
@@ -40,13 +41,19 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         const string level = "Primaria";
         initWorksheet(workbook, level);
         setTitle(level);
-        setTitleRow(2);
-        await setSubjectListByLevel(1);
+        
+        await setSubjectListByLevel(2);
+        
+        var column = 2;
+        setTitleRow(column++);
 
-        foreach (var item in degreeList)
+        var list = degreeList.Where(e => e.educationalLevel == level).ToList();
+        foreach (var item in list)
         {
             await setListByDegree(item.degreeId!);
-            setBodyByDegree(item);
+            setBodyByDegree(item, column);
+
+            column += 3;
         }
     }
 
@@ -112,7 +119,7 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
     private void setTitleRow(int column)
     {
         var row = 10;
-        cell(row++, column, "Matrícual");
+        cell(row++, column, "Matrícula");
         worksheet.Cell(row++, column).Value = "Inicial";
         worksheet.Cell(row, column).Value = "Actual";
 
@@ -125,9 +132,9 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         row += 3;
         cell(row++, column,"Asignatura");
         
-        foreach (var item in (List<string>)["Hola", "Qué ta"])
+        foreach (var item in subjectList)
         {
-            worksheet.Cell(row++, column).Value = item;
+            worksheet.Cell(row++, column).Value = item.initials;
         }
 
         row += 2;
@@ -138,6 +145,46 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         worksheet.Cell(row, column).Value = "AI (59 - 0)";
     }
 
+    private void setBodyByDegree(DegreeEntity degree, int column)
+    {
+        var row = 9;
+        degreeTitle(row, column, degree.label);
+
+        row += 2;
+        worksheet.Cell(row, column).Value = 1;
+        worksheet.Cell(row, column + 1).Value = 2;
+        worksheet.Cell(row++, column + 2).Value = 3;
+        
+        worksheet.Cell(row, column).Value = 11;
+        worksheet.Cell(row, column + 1).Value = 22;
+        worksheet.Cell(row, column + 2).Value = 33;
+
+        row += 2;
+        degreeTitle(row, column, degree.label);
+        
+        row += 2;
+        worksheet.Cell(row, column).Value = 781;
+        worksheet.Cell(row, column + 1).Value = 42;
+        worksheet.Cell(row++, column + 2).Value = 543;
+    }
+
+    private void degreeTitle(int row, int column, string value)
+    {
+        var rangeString = $"{getColumnName(column)}{row}:{getColumnName(column + 2)}{row}";
+        
+        worksheet.Range(rangeString).Merge().Value = value;
+        worksheet.Cell(row + 1, column).Value = "Tot.";
+        worksheet.Cell(row + 1, column + 1).Value = "Var.";
+        worksheet.Cell(row + 1, column + 2).Value = "Muj.";
+        
+        rangeString = $"{getColumnName(column)}{row}:{getColumnName(column + 3)}{row + 1}";
+        var headerStyle = worksheet.Range(rangeString);
+        headerStyle.Style.Font.Bold = true;
+        headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
+        headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        setBorderByRange(rangeString);
+    }
+
     private void cell(int row, int column, string value)
     {
         var headerStyle = worksheet.Cell(row, column);
@@ -145,11 +192,6 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         headerStyle.Style.Fill.BackgroundColor = XLColor.LightGray;
         headerStyle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         headerStyle.Value = value;
-    }
-
-    private void setBodyByDegree(DegreeEntity degree)
-    {
-        
     }
 
     public class Builder
@@ -177,7 +219,8 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
 
         public Builder witDegreeList(List<DegreeEntity> parameter)
         {
-            sheetBuilder.degreeList = parameter;
+            sheetBuilder.degreeList = parameter
+                .OrderBy(e => e.educationalLevel).ThenBy(e => e.tag).ToList();
             return this;
         }
 
