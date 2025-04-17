@@ -14,6 +14,12 @@ public abstract class SheetBuilder
     protected abstract void setColumnQuantity();
     public abstract byte[] getSpreadSheet();
 
+    public virtual async Task<byte[]> getSpreadSheetAsync()
+    {
+        await Task.CompletedTask;
+        return getSpreadSheet();
+    }
+
     protected void initWorksheet(XLWorkbook workbook, string title)
     {
         lastColumnName = getColumnName(columnQuantity);
