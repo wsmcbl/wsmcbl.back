@@ -70,8 +70,13 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
 
     private async Task<List<StudentEntity>> getListBeforeFirstPartialByDegree(string degreeId)
     {
-        await Task.CompletedTask;
-        return [];
+        var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartialByDegreeId(degreeId);
+        var initialList = result.Select(e => e.student).ToList();
+        
+        var list = await daoFactory.withdrawnStudentDao!.getListByDegreeId(degreeId, true);
+        var withdrawnStudentList = list.Select(e => e.student!).ToList();
+        
+        return initialList.Union(withdrawnStudentList).ToList();
     }
 
     private void setSecondaryLevel(XLWorkbook workbook)
