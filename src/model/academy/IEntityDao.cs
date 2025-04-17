@@ -24,6 +24,7 @@ public interface ISubjectPartialDao : IGenericDao<SubjectPartialEntity, int>
     public Task<List<SubjectPartialEntity>> getListBySubject(SubjectPartialEntity subjectPartial);
     public Task<List<int>> getIdListBySubject(SubjectPartialEntity subjectPartial);
     public Task<List<SubjectPartialEntity>> getListByPartialIdAndEnrollmentId(int partialId, string enrollmentId);
+    public Task<List<SubjectPartialEntity>> getListByPartialIdAndDegreeId(int partialId, string degreeId);
 }
 
 public interface ITeacherDao : IGenericDao<TeacherEntity, string>
@@ -41,6 +42,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<StudentEntity> getCurrentById(string studentId);
     public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partialId);
     public Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null);
+    public Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyearByDegree(string degreeId, int partialId);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>

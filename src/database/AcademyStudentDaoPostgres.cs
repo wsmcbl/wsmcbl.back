@@ -83,6 +83,20 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .ToListAsync();
     }
 
+    public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyearByDegree(string degreeId, int partialId)
+    {
+        List<StudentEntity> result = [];
+        
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
+        
+        foreach (var enrollment in degree!.enrollmentList!)
+        {
+            result.AddRange(await getListWithGradesForCurrentSchoolyear(enrollment.enrollmentId!, partialId));
+        }
+
+        return result;
+    }
+
     public async Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null)
     {
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
