@@ -13,12 +13,17 @@ public class SubjectDaoPostgres(PostgresContext context) : GenericDaoPostgres<Su
         var schoolyear = await daoFactory.schoolyearDao.getCurrent();
 
         var label = level == 1 ? "Primaria" : "Secundaria";
-        return await entities.AsNoTracking()
+        var result = await entities.AsNoTracking()
             .GroupJoin(
                 context.Set<DegreeEntity>().Where(e => e.schoolyearId == schoolyear.id && e.educationalLevel == label),
                 s => s.degreeId,
                 g => g.degreeId,
                 (std, gradeList) => std)
             .ToListAsync();
+
+        return result.DistinctBy(e => e.initials)
+            .OrderBy(e => e.areaId)
+            .ThenBy(e => e.number)
+            .ToList();
     }
 }
