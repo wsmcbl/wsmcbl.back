@@ -1,5 +1,7 @@
 using ClosedXML.Excel;
 using wsmcbl.src.model.academy;
+using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service.sheet;
 
@@ -7,17 +9,22 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
 {
     private PartialEntity partial { get; set; } = null!;
     private string schoolyear { get; set; } = null!;
+    private DaoFactory daoFactory { get; set; } = null!;
+    private List<DegreeEntity> degreeList { get; set; } = null!;
+    private List<model.secretary.SubjectEntity> subjectList { get; set; } = null!;
     
     protected override void setColumnQuantity()
     {
         columnQuantity = 10;
     }
 
-    public override byte[] getSpreadSheet()
+    public override byte[] getSpreadSheet() => [];
+
+    public override async Task<byte[]> getSpreadSheetAsync()
     {
         using var workbook = new XLWorkbook();
 
-        setPrimaryLevel(workbook);
+        await setPrimaryLevel(workbook);
         setSecondaryLevel(workbook);
         
         using var stream = new MemoryStream();
@@ -27,12 +34,37 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         return stream.ToArray();
     }
 
-    private void setPrimaryLevel(XLWorkbook workbook)
+    private async Task setPrimaryLevel(XLWorkbook workbook)
     {
         const string level = "Primaria";
         initWorksheet(workbook, level);
         setTitle(level);
         setTitleRow(2);
+        await setSubjectListByLevel(1);
+
+        foreach (var item in degreeList)
+        {
+            await setListByDegree(item.degreeId!);
+            setBodyByDegree(item);
+        }
+    }
+
+    private async Task setSubjectListByLevel(int level)
+    {
+        subjectList = await daoFactory.subjectDao.getListForCurrentSchoolyearByLevel(level);
+    }
+
+    private List<model.academy.StudentEntity> studentList { get; set; } = null!;
+    private List<model.secretary.StudentEntity> initialStudentList { get; set; } = null!;
+    private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
+    
+    private async Task setListByDegree(string degreeId)
+    {
+        studentList = await daoFactory
+            .academyStudentDao.getListWithGradesForCurrentSchoolyearByDegree(degreeId, partial.partialId);
+        
+        initialStudentList = await daoFactory.academyStudentDao.getListBeforeFirstPartialByDegree(degreeId);
+        subjectPartialList = await daoFactory.subjectPartialDao.getListByPartialIdAndDegreeId(degreeId);
     }
 
     private void setSecondaryLevel(XLWorkbook workbook)
@@ -103,6 +135,11 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         headerStyle.Value = value;
     }
 
+    private void setBodyByDegree(DegreeEntity degree)
+    {
+        
+    }
+
     public class Builder
     {
         private readonly EvaluationStatisticsByLevelSheetBuilder sheetBuilder;
@@ -123,6 +160,18 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         public Builder withSchoolyear(string parameter)
         {
             sheetBuilder.schoolyear = parameter;
+            return this;
+        }
+
+        public Builder witDegreeList(List<DegreeEntity> parameter)
+        {
+            sheetBuilder.degreeList = parameter;
+            return this;
+        }
+
+        public Builder withDaoFactory(DaoFactory parameter)
+        {
+            sheetBuilder.daoFactory = parameter;
             return this;
         }
     }
