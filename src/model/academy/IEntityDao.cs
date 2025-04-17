@@ -66,4 +66,5 @@ public interface IWithdrawnStudentDao : IGenericDao<WithdrawnStudentEntity, int>
 {
     public Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId,  bool hasBeforeFirstPartial = false);
     public Task<List<WithdrawnStudentEntity>> getAllForCurrentSchoolyear();
+    public Task<List<WithdrawnStudentEntity>> getListByDegreeId(string degreeId);
 }

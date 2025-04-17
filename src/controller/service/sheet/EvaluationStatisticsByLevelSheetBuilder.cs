@@ -73,7 +73,7 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
         var result = await daoFactory.academyStudentDao!.getListBeforeFirstPartialByDegreeId(degreeId);
         var initialList = result.Select(e => e.student).ToList();
         
-        var list = await daoFactory.withdrawnStudentDao!.getListByDegreeId(degreeId, true);
+        var list = await daoFactory.withdrawnStudentDao!.getListByDegreeId(degreeId);
         var withdrawnStudentList = list.Select(e => e.student!).ToList();
         
         return initialList.Union(withdrawnStudentList).ToList();
