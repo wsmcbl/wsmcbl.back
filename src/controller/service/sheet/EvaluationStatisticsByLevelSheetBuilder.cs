@@ -62,7 +62,7 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
     private async Task setListByDegree(string degreeId)
     {
         studentList = await daoFactory
-            .academyStudentDao!.getListWithGradesForCurrentSchoolyearByDegree(degreeId, partial.partialId);
+            .academyStudentDao!.getListWithGradesByDegreeId(degreeId, partial.partialId);
         
         initialStudentList = await getListBeforeFirstPartialByDegree(degreeId);
         subjectPartialList = await daoFactory.subjectPartialDao!.getListByPartialIdAndDegreeId(partial.partialId, degreeId);

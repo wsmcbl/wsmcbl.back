@@ -56,7 +56,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return result;
     }
 
-    public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyear(string enrollmentId, int partialId)
+    public async Task<List<StudentEntity>> getListWithGradesByEnrollmentId(string enrollmentId, int partialId)
     {
         return await entities.AsNoTracking()
             .Where(e => e.enrollmentId == enrollmentId)
@@ -83,7 +83,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .ToListAsync();
     }
 
-    public async Task<List<StudentEntity>> getListWithGradesForCurrentSchoolyearByDegree(string degreeId, int partialId)
+    public async Task<List<StudentEntity>> getListWithGradesByDegreeId(string degreeId, int partialId)
     {
         List<StudentEntity> result = [];
         
@@ -91,7 +91,7 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         
         foreach (var enrollment in degree!.enrollmentList!)
         {
-            result.AddRange(await getListWithGradesForCurrentSchoolyear(enrollment.enrollmentId!, partialId));
+            result.AddRange(await getListWithGradesByEnrollmentId(enrollment.enrollmentId!, partialId));
         }
 
         return result;

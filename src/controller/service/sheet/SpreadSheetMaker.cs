@@ -53,7 +53,7 @@ public class SpreadSheetMaker
         var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollment.enrollmentId!, partial!.semester);
         var currentSchoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
         var studentList = await daoFactory
-            .academyStudentDao!.getListWithGradesForCurrentSchoolyear(subjectPartial.enrollmentId, partial.partialId);
+            .academyStudentDao!.getListWithGradesByEnrollmentId(subjectPartial.enrollmentId, partial.partialId);
 
         sheetBuilder = new SubjectGradesSheetBuilder.Builder()
             .withPartialLabel(partial.label)
@@ -83,7 +83,7 @@ public class SpreadSheetMaker
         }
         
         var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial.semester);
-        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesByEnrollmentId(enrollmentId, partialId);
         
         sheetBuilder = new EnrollmentGradeSummarySheetBuilder.Builder()
             .withPartial(partial.label)
@@ -116,7 +116,7 @@ public class SpreadSheetMaker
         var subjectPartialList = await daoFactory.subjectPartialDao!
             .getListByPartialIdAndEnrollmentId(partialId, enrollmentId);
         
-        var studentList = await daoFactory.academyStudentDao!.getListWithGradesForCurrentSchoolyear(enrollmentId, partialId);
+        var studentList = await daoFactory.academyStudentDao!.getListWithGradesByEnrollmentId(enrollmentId, partialId);
 
         var withdrawnStudentList = await getListBeforeFirstPartial(enrollmentId);
         
