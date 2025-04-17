@@ -43,6 +43,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<List<StudentEntity>> getListWithGradesByEnrollmentId(string enrollmentId, int partialId);
     public Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null);
     public Task<List<StudentEntity>> getListWithGradesByDegreeId(string degreeId, int partialId);
+    public Task<List<StudentEntity>> getListBeforeFirstPartialByDegreeId(string degreeId);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>
