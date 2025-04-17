@@ -2,6 +2,7 @@ using ClosedXML.Excel;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
+using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
 
 namespace wsmcbl.src.controller.service.sheet;
 
@@ -51,20 +52,26 @@ public class EvaluationStatisticsByLevelSheetBuilder : SheetBuilder
 
     private async Task setSubjectListByLevel(int level)
     {
-        subjectList = await daoFactory.subjectDao.getListForCurrentSchoolyearByLevel(level);
+        subjectList = await daoFactory.subjectDao!.getListForCurrentSchoolyearByLevel(level);
     }
 
     private List<model.academy.StudentEntity> studentList { get; set; } = null!;
-    private List<model.secretary.StudentEntity> initialStudentList { get; set; } = null!;
+    private List<StudentEntity> initialStudentList { get; set; } = null!;
     private List<SubjectPartialEntity> subjectPartialList { get; set; } = null!;
     
     private async Task setListByDegree(string degreeId)
     {
         studentList = await daoFactory
-            .academyStudentDao.getListWithGradesForCurrentSchoolyearByDegree(degreeId, partial.partialId);
+            .academyStudentDao!.getListWithGradesForCurrentSchoolyearByDegree(degreeId, partial.partialId);
         
-        initialStudentList = await daoFactory.academyStudentDao.getListBeforeFirstPartialByDegree(degreeId);
-        subjectPartialList = await daoFactory.subjectPartialDao.getListByPartialIdAndDegreeId(degreeId);
+        initialStudentList = await getListBeforeFirstPartialByDegree(degreeId);
+        subjectPartialList = await daoFactory.subjectPartialDao!.getListByPartialIdAndDegreeId(partial.partialId, degreeId);
+    }
+
+    private async Task<List<StudentEntity>> getListBeforeFirstPartialByDegree(string degreeId)
+    {
+        await Task.CompletedTask;
+        return [];
     }
 
     private void setSecondaryLevel(XLWorkbook workbook)

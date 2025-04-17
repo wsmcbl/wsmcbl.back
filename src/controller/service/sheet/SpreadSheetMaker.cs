@@ -155,12 +155,16 @@ public class SpreadSheetMaker
         {
             throw new EntityNotFoundException("PartialEntity", partialId.ToString());
         }
+
+        var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!);
         
         sheetBuilder = new EvaluationStatisticsByLevelSheetBuilder.Builder()
             .withPartial(partial)
             .withSchoolyear(schoolyear.label)
+            .withDaoFactory(daoFactory)
+            .witDegreeList(degreeList)
             .build();
 
-        return sheetBuilder.getSpreadSheet();       
+        return await sheetBuilder.getSpreadSheetAsync();       
     }
 }
