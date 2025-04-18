@@ -171,4 +171,30 @@ public class SpreadSheetMaker
         
         return sheetBuilder.getSpreadSheet();       
     }
+    
+    public async Task<byte[]> getReportFailedStudents(int partialId, string userId)
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        
+        var partial = await daoFactory.partialDao!.getById(partialId);
+        if (partial == null)
+        {
+            throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+        }
+
+        //var user = await daoFactory.userDao!.getById(userId);
+        var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!);
+        
+        sheetBuilder = new ReportFailedStudentsSheetBuilder.Builder()
+            .withPartial(partial)
+            .withSchoolyear(schoolyear.label)
+            .withUserAlias("user.getAlias()")
+            .withDaoFactory(daoFactory)
+            .witDegreeList(degreeList)
+            .build();
+
+        await sheetBuilder.loadSpreadSheetAsync();
+        
+        return sheetBuilder.getSpreadSheet();       
+    }
 }
