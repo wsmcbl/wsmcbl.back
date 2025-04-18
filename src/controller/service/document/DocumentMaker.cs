@@ -124,4 +124,23 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getActiveCertificateByStudent(string studentId, string userId)
+    {
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        
+        var user = await daoFactory.userDao!.getById(userId);
+
+        var latexBuilder = new ActiveCertificateLatexBuilder.Builder(resource, $"{resource}/out/active")
+            .withStudent(student)
+            .withUserAlias(user.getAlias())
+            .withEnrollment(enrollment!.label)
+            .withSchoolyear(schoolyear.label)
+            .build();
+
+        setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
 }
