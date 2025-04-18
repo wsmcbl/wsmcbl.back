@@ -34,7 +34,7 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
         }
 
         var result = await controller.getReportCard(studentId, getAuthenticatedUserId());
-        return File(result, "application/pdf", $"{studentId}.report-card.pdf");
+        return File(result, getContentType(1), $"{studentId}.report-card.pdf");
     }
 
     private static void checkAdminToken(string adminToken)

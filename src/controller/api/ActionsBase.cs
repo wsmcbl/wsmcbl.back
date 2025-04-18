@@ -10,7 +10,7 @@ public class ActionsBase : ControllerBase
     {
         return value switch
         {
-            1 => string.Empty,
+            1 => "application/pdf",
             2 => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             _ => string.Empty
         };
