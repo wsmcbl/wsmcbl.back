@@ -20,12 +20,7 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     public async Task<IActionResult> getSummaryRevenue()
     {
         var result = await controller.getSummaryRevenue();
-        return Ok(new
-        {
-            expectedIncomeThisMonth = result.expectedIncomeThisMonth,
-            expectedIncomeReceived = result.expectedIncomeReceived,
-            totalIncomeThisMonth = result.totalIncomeThisMonth
-        });
+        return Ok(new { result.expectedIncomeThisMonth, result.expectedIncomeReceived, result.totalIncomeThisMonth});
     }
     
     /// <summary>Get last ten incidents.</summary>
@@ -102,14 +97,14 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     [HttpGet]
     [Route("enrollments/{enrollmentId}/grades/export")]
     [Authorizer("report:principal:read")]
-    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partial)
+    public async Task<IActionResult> getGradeSummaryByEnrollmentId([Required] string enrollmentId, [Required] [FromQuery] int partialId)
     {
-        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partial, getAuthenticatedUserId());
+        var result = await controller.getGradeSummaryByEnrollmentId(enrollmentId, partialId, getAuthenticatedUserId());
         
         return File(result, getContentType(2), $"{enrollmentId}.grades-summary.xlsx");
     }
     
-    /// <summary>Returns statistics summary by partial in XLSX format.</summary>
+    /// <summary>Returns statistics summary by partialId in XLSX format.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
@@ -117,10 +112,9 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     [HttpGet]
     [Route("degrees/report/export")]
     [Authorizer("report:principal:read")]
-    public async Task<IActionResult> getGradeStatistics([Required] [FromQuery] int partial)
+    public async Task<IActionResult> getGradeStatistics([Required] [FromQuery] int partialId)
     {
-        var result = await controller.getGradeStatistics(partial, "getAuthenticatedUserId()");
-        
-        return File(result, getContentType(2), $"statistics-summary.xlsx");
+        var result = await controller.getGradeStatistics(partialId, getAuthenticatedUserId());
+        return File(result, getContentType(2), "statistics-summary.xlsx");
     }
 }
