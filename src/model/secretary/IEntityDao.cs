@@ -14,7 +14,7 @@ public interface IDegreeDao : IGenericDao<DegreeEntity, string>
 
 public interface ISubjectDao : IGenericDao<SubjectEntity, string>
 {
-    public Task<List<SubjectEntity>> getListForCurrentSchoolyearByLevel(int level);
+    public Task<List<SubjectEntity>> getListForCurrentSchoolyearByLevel(int level, int semester);
 }
 
 public interface ISchoolyearDao : IGenericDao<SchoolyearEntity, string>
