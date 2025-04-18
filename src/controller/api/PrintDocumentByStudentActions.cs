@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("academy")]
+[Route("academy/students/{studentId}")]
 [ApiController]
 public class PrintDocumentByStudentActions(PrintDocumentByStudentController controller) : ActionsBase
 {
@@ -16,7 +16,7 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="500">Error creating document.</response>
     [HttpGet]
-    [Route("students/{studentId}/report-card/export")]
+    [Route("report-card/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId, [FromQuery] string? adminToken)
     {
@@ -43,5 +43,19 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
         {
             throw new UnauthorizedException("User unauthorized.");
         }
+    }
+    
+    /// <summary>Returns active-certificate by student id in PDF format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="500">Error creating document.</response>
+    [HttpGet]
+    [Route("active-certificate/export")]
+    [Authorizer("student:read")]
+    public async Task<IActionResult> getActiveCertificateDocument([Required] string studentId)
+    {
+        var result = await controller.getActiveCertificateDocument(studentId, getAuthenticatedUserId());
+        return File(result, getContentType(1), $"{studentId}.active-certificate.pdf");
     }
 }
