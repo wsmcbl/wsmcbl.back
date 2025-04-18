@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
@@ -97,5 +98,10 @@ public class StudentEntity
     {
         var average = getAverage(partialId);
         return GradeEntity.getLabelByGrade(average.grade).Equals(label); 
+    }
+
+    public List<string> getSubjectFailedIdList()
+    {
+        return gradeList!.Where(e => e.grade < 60).Select(e => e.subjectId).ToList();
     }
 }
