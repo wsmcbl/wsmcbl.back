@@ -8,7 +8,7 @@ namespace wsmcbl.src.controller.api;
 
 [Route("academy")]
 [ApiController]
-public class PrintReportCardByStudentActions(PrintReportCardByStudentController controller) : ActionsBase
+public class PrintDocumentByStudentActions(PrintDocumentByStudentController controller) : ActionsBase
 {
     /// <summary>Returns report-card by student id in PDF format.</summary>
     /// <response code="200">Returns a resource.</response>
