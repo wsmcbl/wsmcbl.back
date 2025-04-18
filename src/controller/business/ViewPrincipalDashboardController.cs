@@ -66,10 +66,10 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         return await daoFactory.degreeDao!.getListForSchoolyearId(currentSchoolyear.id!);
     }
 
-    public async Task<byte[]> getGradeSummaryByEnrollmentId(string enrollmentId, int partial, string userId)
+    public async Task<byte[]> getGradeSummaryByEnrollmentId(string enrollmentId, int partialId, string userId)
     {
         var sheetMaker = new SpreadSheetMaker(daoFactory);
-        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partial, userId);
+        return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partialId, userId);
     }
 
     public async Task<List<EnrollmentEntity>> getEnrollmentList()
@@ -83,9 +83,9 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         return await daoFactory.withdrawnStudentDao!.getAllForCurrentSchoolyear();
     }
 
-    public async Task<byte[]> getGradeStatistics(int partial, string userId)
+    public async Task<byte[]> getGradeStatistics(int partialId, string userId)
     {
         var sheetMaker = new SpreadSheetMaker(daoFactory);
-        return await sheetMaker.getEvaluationStatisticsByLevel(partial, userId);
+        return await sheetMaker.getEvaluationStatisticsByLevel(partialId, userId);
     }
 }
