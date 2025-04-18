@@ -60,14 +60,9 @@ public class WithdrawnStudentDaoPostgres : GenericDaoPostgres<WithdrawnStudentEn
             throw new ConflictException("There is not initial partial.");
         }
         
-        var query = entities
+        return await entities.AsNoTracking()
+            .Where(std => context.Set<EnrollmentEntity>().Any(e => e.enrollmentId == std.lastEnrollmentId && e.degreeId == degreeId))
             .Where(e => firstPartial.startDate >= DateOnly.FromDateTime(e.enrolledAt))
-            .AsNoTracking().GroupJoin(
-                context.Set<EnrollmentEntity>().Where(e => e.degreeId == degreeId),
-                std => std.lastEnrollmentId,
-                enr => enr.enrollmentId, 
-                (std, gradeList) => std);
-        
-        return await query.Include(e => e.student).ToListAsync();
+            .Include(e => e.student).ToListAsync();
     }
 }
