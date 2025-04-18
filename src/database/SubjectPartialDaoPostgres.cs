@@ -49,13 +49,10 @@ public class SubjectPartialDaoPostgres(PostgresContext context) :
 
     public async Task<List<SubjectPartialEntity>> getListByPartialIdAndDegreeId(int partialId, string degreeId)
     {
-        var query = entities.AsNoTracking().GroupJoin(
-                context.Set<EnrollmentEntity>().Where(e => e.degreeId == degreeId),
-                sp => sp.enrollmentId,
-                e => e.enrollmentId,
-                (sp, e) => sp);
-            
-        return await query.Where(e => e.partialId == partialId)
+        return await entities.AsNoTracking()
+            .Where(e => e.partialId == partialId)
+            .Where(sub => context.Set<EnrollmentEntity>()
+                .Any(e => e.enrollmentId == sub.enrollmentId && e.degreeId == degreeId))
             .Include(e => e.gradeList)
             .ThenInclude(e => e.student)
             .ToListAsync();
