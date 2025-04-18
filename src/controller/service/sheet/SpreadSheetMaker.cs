@@ -182,13 +182,13 @@ public class SpreadSheetMaker
             throw new EntityNotFoundException("PartialEntity", partialId.ToString());
         }
 
-        //var user = await daoFactory.userDao!.getById(userId);
+        var user = await daoFactory.userDao!.getById(userId);
         var degreeList = await daoFactory.degreeDao!.getListForSchoolyearId(schoolyear.id!);
         
         sheetBuilder = new ReportFailedStudentsSheetBuilder.Builder()
             .withPartial(partial)
             .withSchoolyear(schoolyear.label)
-            .withUserAlias("user.getAlias()")
+            .withUserAlias(user.getAlias())
             .withDaoFactory(daoFactory)
             .witDegreeList(degreeList)
             .build();

@@ -20,7 +20,6 @@ public class ReportFailedStudentsSheetBuilder : SheetBuilder
     protected override void setColumnQuantity()
     {
         columnQuantity = 7;
-        lastColumnName = getColumnName(columnQuantity);
     }
 
     private XLWorkbook workbook { get; set; } = null!;
@@ -46,6 +45,7 @@ public class ReportFailedStudentsSheetBuilder : SheetBuilder
     {
         var educationalLevel = level == 2 ? "Primaria" : "Secundaria";
 
+        setColumnQuantity();
         initWorksheet(workbook, educationalLevel);
         setTitle(educationalLevel);
         setDate(7, userAlias);
@@ -69,6 +69,9 @@ public class ReportFailedStudentsSheetBuilder : SheetBuilder
                 setBodyByDegree(enr);
             }
         }
+        
+        var rangeString = $"B9:{lastColumnName}{counter + 9}";
+        setBorderByRange(rangeString);
 
         worksheet.Columns().AdjustToContents();
     }
@@ -130,8 +133,6 @@ public class ReportFailedStudentsSheetBuilder : SheetBuilder
     private int row { get; set; }
     private void setBodyByDegree(EnrollmentEntity enrollment)
     {
-        var column = 2;
-        
         var failedList = studentList
             .Where(e => e.enrollmentId == enrollment.enrollmentId)
             .Where(e => !e.passedAllSubjects())
@@ -144,38 +145,32 @@ public class ReportFailedStudentsSheetBuilder : SheetBuilder
 
         foreach (var std in failedList)
         {
+            var column = 2;
             worksheet.Cell(row, column++).Value = counter++;
             worksheet.Cell(row, column++).Value = std.fullName();
             worksheet.Cell(row, column++).Value = std.student.minedId.getOrDefault();
             worksheet.Cell(row, column++).Value = enrollment.label;
             worksheet.Cell(row, column++).Value = getSubjectName(std, 1);
             worksheet.Cell(row, column).Value = getSubjectName(std, 2);
-        }
 
-        row++;
+            row++;
+        }
     }
 
     private string getSubjectName(StudentEntity std, int type)
     {
         if (!std.isFailed(type))
         {
-            return string.Empty.getOrDefault();
+            return string.Empty;
         }
         
-        var list = std.getSubjectFailedIdList();
-
-        var st = new StringBuilder();
-        foreach (var id in list)
-        {
-            var sub = subjectList.FirstOrDefault(e => e.subjectId == id);
-            if (sub == null)
-            {
-                continue;
-            }
-
-            st.Append(sub.name);
-        }
-        return st.ToString();
+        var idList = std.getSubjectFailedIdList();
+        
+        var listName = subjectList
+            .Where(e => idList.Contains(e.subjectId!))
+            .Select(e => e.name).ToList();
+        
+        return string.Join(", ", listName);
     }
 
     public class Builder
