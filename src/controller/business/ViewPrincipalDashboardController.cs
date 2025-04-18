@@ -88,4 +88,10 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
         var sheetMaker = new SpreadSheetMaker(daoFactory);
         return await sheetMaker.getEvaluationStatisticsByLevel(partialId, userId);
     }
+
+    public async Task<byte[]> getReportFailedStudents(int partialId, string userId)
+    {
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getReportFailedStudents(partialId, userId);
+    }
 }

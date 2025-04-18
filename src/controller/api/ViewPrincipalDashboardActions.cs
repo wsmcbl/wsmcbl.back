@@ -117,4 +117,18 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
         var result = await controller.getGradeStatistics(partialId, getAuthenticatedUserId());
         return File(result, getContentType(2), "statistics-summary.xlsx");
     }
+    
+    /// <summary>Returns failed student by partialId in XLSX format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or partial not found.</response>
+    [HttpGet]
+    [Route("students/failed/report/export")]
+    //[Authorizer("report:principal:read")]
+    public async Task<IActionResult> getReportFailedStudents([Required] [FromQuery] int partialId)
+    {
+        var result = await controller.getReportFailedStudents(partialId, getAuthenticatedUserId());
+        return File(result, getContentType(2), "statistics-summary.xlsx");
+    }
 }
