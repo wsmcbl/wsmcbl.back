@@ -1,11 +1,9 @@
 using wsmcbl.src.controller.service.document;
-using wsmcbl.src.exception;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class PrintDocumentByStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
     public async Task<byte[]> getReportCard(string studentId, string userId)
     {

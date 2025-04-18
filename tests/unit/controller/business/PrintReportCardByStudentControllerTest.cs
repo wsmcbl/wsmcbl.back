@@ -6,15 +6,15 @@ using wsmcbl.tests.utilities;
 
 namespace wsmcbl.tests.unit.controller.business;
 
-public class PrintReportCardByStudentControllerTest
+public class PrintDocumentByStudentControllerTest
 {
-    private PrintReportCardByStudentController sut;
+    private PrintDocumentByStudentController sut;
     private readonly DaoFactory daoFactory;
 
-    public PrintReportCardByStudentControllerTest()
+    public PrintDocumentByStudentControllerTest()
     {
         daoFactory = Substitute.For<DaoFactory>();
-        sut = new PrintReportCardByStudentController(daoFactory);
+        sut = new PrintDocumentByStudentController(daoFactory);
     }
 
     [Fact]
