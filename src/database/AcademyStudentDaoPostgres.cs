@@ -107,15 +107,10 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             throw new ConflictException("There is not initial partial.");
         }
         
-        var query = entities
+        return await entities.AsNoTracking()
+            .Where(std => context.Set<EnrollmentEntity>().Any(e => e.enrollmentId == std.enrollmentId && e.degreeId == degreeId))
             .Where(e => firstPartial.startDate >= DateOnly.FromDateTime(e.createdAt))
-            .AsNoTracking().GroupJoin(
-                context.Set<EnrollmentEntity>().Where(e => e.degreeId == degreeId),
-                std => std.enrollmentId,
-                enr => enr.enrollmentId,
-                (std, gradeList) => std);
-        
-        return await query.Include(e => e.student).ToListAsync();
+            .Include(e => e.student).ToListAsync();
     }
 
     public async Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null)
