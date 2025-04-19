@@ -28,4 +28,19 @@ public class PrintDocumentByStudentController : BaseController
     {
         return await documentMaker.getActiveCertificateByStudent(studentId, userId);
     }
+
+    public async Task<byte[]> getProformaDocument(string studentId, string userId)
+    {
+        return await documentMaker.getProformaByStudent(studentId, userId);
+    }
+
+    public async Task<byte[]> getProformaDocument(string? degreeId, string? name, string userId)
+    {
+        if (degreeId == null || name == null)
+        {
+            throw new InvalidDataException("degreeId and name must be provided.");
+        }
+        
+        return await documentMaker.getProformaByDegree(degreeId, name, userId);
+    }
 }
