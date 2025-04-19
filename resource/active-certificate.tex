@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage[spanish]{babel}
+\usepackage[left=2.5cm, right=2.5cm, top=4cm, bottom=2.5cm, headheight=2cm, headsep=1cm]{geometry}
+\renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
+
+\pagestyle{fancy}
+\fancyhead[C]
+{
+    \makebox[\textwidth]{
+        \hspace{-0.2\textwidth}
+        \begin{minipage}[c][2.5cm]{0.2\textwidth}
+            \includegraphics[width=2.5cm]{logo.value}
+        \end{minipage}
+        \hspace{0.01\textwidth}
+        \begin{minipage}[c][2.5cm]{0.6\textwidth}
+            \centering
+            \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
+            \textbf{\large Amor - Esfuerzo - Disciplina}\\[0.1cm]
+            Contacto: secretaria@cbl-edu.com
+        \end{minipage}
+    }
+}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+
+\newcommand{\aDupleLeft}[2]{\textbf{#1}\hspace{2mm} #2 \hfill}
+\newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
+\newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
+
+\newcommand{\enrollmentName}{enrollment.value}
+\newcommand{\levelName}{level.value}
+\newcommand{\minedId}{mined.id.value}
+\newcommand{\studentName}{student.name.value}
+\newcommand{\schoolYear}{schoolyear.value}
+\newcommand{\currentDate}{current.date.value}
+
+\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\userAlias}{user.alias.value}
+\newcommand{\currentDatetime}{current.datetime.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
+
+\begin{document}
+
+    \hfill\textbf{Managua, \currentDate}
+
+    A quien corresponda.\\
+
+    Por este medio hago constar que el estudiante de nombre \textbf{\studentName} con código estudiantíl \textbf{\minedId}
+    es estudiante activo del Colegio Bautista Libertad, está matrículado y cursando \textbf{\enrollmentName}~de nivel \textbf{\levelName}
+    para el año lectivo \textbf{\schoolYear}.
+
+    A solicitud de la parte interesada extiendo la presente para los fines que la misma convenga.
+
+    \vspace{2cm}
+    \begin{center}
+        \rule{5cm}{0.4pt}\\[1mm]
+        \textbf{Lic. \secretaryName}\\[3mm]
+        \textbf{Secretaria general}
+    \end{center}
+    \vspace{2cm}
+
+    \textbf{Télefono:} 2270-5587\\
+    \textbf{Dirección:} Entrada Norte Centro Comercial Managua, 1 cuadra al oeste, 1/2 cuadra al sur. Managua, Nicaragua.\\\\
+    {\footnotesize Impreso por wsmcbl el \currentDatetime, \userAlias.}
+\end{document}

@@ -9,7 +9,7 @@ public class ViewGradeOnlineController(DaoFactory daoFactory) : BaseController(d
 {
     public async Task<bool> isStudentSolvent(string studentId)
     {
-        var controller = new PrintReportCardByStudentController(daoFactory);
+        var controller = new PrintDocumentByStudentController(daoFactory);
         return await controller.isStudentSolvent(studentId);
     }
 

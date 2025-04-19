@@ -1,15 +1,18 @@
 using wsmcbl.src.controller.service.document;
-using wsmcbl.src.exception;
-using wsmcbl.src.model.academy;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.controller.business;
 
-public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseController(daoFactory)
+public class PrintDocumentByStudentController : BaseController
 {
+    private DocumentMaker documentMaker { get; set; }
+    public PrintDocumentByStudentController(DaoFactory daoFactory) : base(daoFactory)
+    {
+        documentMaker = new DocumentMaker(daoFactory);   
+    }
+    
     public async Task<byte[]> getReportCard(string studentId, string userId)
     {
-        var documentMaker = new DocumentMaker(daoFactory);
         return await documentMaker.getReportCardByStudent(studentId, userId);
     }
 
@@ -19,5 +22,10 @@ public class PrintReportCardByStudentController(DaoFactory daoFactory) : BaseCon
         
         var debt = debtHistoryList.FirstOrDefault(e => e.isCurrentTariffMonthly());
         return debt != null && debt.isPaid;
+    }
+
+    public async Task<byte[]> getActiveCertificateDocument(string studentId, string userId)
+    {
+        return await documentMaker.getActiveCertificateByStudent(studentId, userId);
     }
 }

@@ -33,7 +33,7 @@ builder.Services.AddHostedService<DisablePartialGradeRecordingBackground>();
 builder.Services.AddTransient<CollectTariffController>();
 builder.Services.AddTransient<UpdateOfficialEnrollmentController>();
 builder.Services.AddTransient<EnrollStudentController>();
-builder.Services.AddTransient<PrintReportCardByStudentController>();
+builder.Services.AddTransient<PrintDocumentByStudentController>();
 builder.Services.AddTransient<MoveTeacherGuideFromEnrollmentController>();
 
 builder.Services.AddTransient<CreateStudentProfileController>();
