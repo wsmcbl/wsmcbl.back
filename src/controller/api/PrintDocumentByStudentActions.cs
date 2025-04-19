@@ -6,7 +6,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("academy/students/{studentId}")]
+[Route("academy/students")]
 [ApiController]
 public class PrintDocumentByStudentActions(PrintDocumentByStudentController controller) : ActionsBase
 {
@@ -16,7 +16,7 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="500">Error creating document.</response>
     [HttpGet]
-    [Route("report-card/export")]
+    [Route("{studentId}/report-card/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getReportCard([Required] string studentId, [FromQuery] string? adminToken)
     {
@@ -51,11 +51,25 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="500">Error creating document.</response>
     [HttpGet]
-    [Route("active-certificate/export")]
+    [Route("{studentId}/active-certificate/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getActiveCertificateDocument([Required] string studentId)
     {
         var result = await controller.getActiveCertificateDocument(studentId, getAuthenticatedUserId());
         return File(result, getContentType(1), $"{studentId}.active-certificate.pdf");
+    }
+    
+    /// <summary>Returns proforma document in PDF format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="500">Error creating document.</response>
+    [HttpGet]
+    [Route("proforma/export")]
+    [Authorizer("student:read")]
+    public async Task<IActionResult> getProformaDocument(string? studentId, string? degreeId, string? name)
+    {
+        var result = await controller.getProformaDocument(studentId, degreeId, name, getAuthenticatedUserId());
+        return File(result, getContentType(1), "proforma.pdf");
     }
 }
