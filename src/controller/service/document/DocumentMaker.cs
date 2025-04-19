@@ -159,11 +159,11 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .Where(e => new DegreeDataEntity().getLevelName(e.educationalLevel) == degree!.educationalLevel)
             .OrderBy(e => e.dueDate).ToList();
         
-        //var user = await daoFactory.userDao!.getById(userId);
+        var user = await daoFactory.userDao!.getById(userId);
 
         var latexBuilder = new ProformaLatexBuilder.Builder(resource, $"{resource}/out/proforma")
             .withStudent(student)
-            .withUserAlias("user.getAlias()")
+            .withUserAlias(user.getAlias())
             .withEnrollment(enrollment.label)
             .withLevel(degree!.educationalLevel)
             .withSchoolyear(schoolyear.label)
