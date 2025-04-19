@@ -1,5 +1,6 @@
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
+using wsmcbl.src.model.secretary;
 
 namespace wsmcbl.src.controller.service.document;
 
@@ -144,5 +145,37 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
         setLatexBuilder(latexBuilder);
         return getPDF();
+    }
+
+    public async Task<byte[]> getProformaByStudent(string studentId, string userId)
+    {
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+
+        var tariffList = await daoFactory.tariffDao!.getAll();
+        tariffList = tariffList
+            .Where(e => new DegreeDataEntity().getLevelName(e.educationalLevel) == degree!.educationalLevel)
+            .OrderBy(e => e.dueDate).ToList();
+        
+        var user = await daoFactory.userDao!.getById(userId);
+
+        var latexBuilder = new ProformaLatexBuilder.Builder(resource, $"{resource}/out/proforma")
+            .withStudent(student)
+            .withUserAlias(user.getAlias())
+            .withEnrollment(enrollment.label)
+            .withLevel(degree!.educationalLevel)
+            .withSchoolyear(schoolyear.label)
+            .withTariffList(tariffList)
+            .build();
+
+        setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
+
+    public Task<byte[]> getProformaByDegree(string degreeId, string name, string userId)
+    {
+        throw new NotImplementedException();
     }
 }
