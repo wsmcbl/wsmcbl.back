@@ -148,7 +148,23 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getProformaByStudent(string studentId, string userId)
     {
-        throw new NotImplementedException();
+        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
+        var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        
+        var user = await daoFactory.userDao!.getById(userId);
+
+        var latexBuilder = new ProformaLatexBuilder.Builder(resource, $"{resource}/out/proforma")
+            .withStudent(student)
+            .withUserAlias(user.getAlias())
+            .withEnrollment(enrollment.label)
+            .withLevel(degree!.educationalLevel)
+            .withSchoolyear(schoolyear.label)
+            .build();
+
+        setLatexBuilder(latexBuilder);
+        return getPDF();
     }
 
     public Task<byte[]> getProformaByDegree(string degreeId, string name, string userId)
