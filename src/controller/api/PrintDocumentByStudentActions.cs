@@ -69,7 +69,10 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     [Authorizer("student:read")]
     public async Task<IActionResult> getProformaDocument(string? studentId, string? degreeId, string? name)
     {
-        var result = await controller.getProformaDocument(studentId, degreeId, name, getAuthenticatedUserId());
+        var userId = getAuthenticatedUserId();
+        var result = studentId != null ? await controller.getProformaDocument(studentId, userId) :
+            await controller.getProformaDocument(degreeId, name, userId);
+        
         return File(result, getContentType(1), "proforma.pdf");
     }
 }
