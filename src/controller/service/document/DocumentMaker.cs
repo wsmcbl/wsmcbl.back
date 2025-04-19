@@ -145,4 +145,14 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getProformaByStudent(string studentId, string userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<byte[]> getProformaByDegree(string degreeId, string name, string userId)
+    {
+        throw new NotImplementedException();
+    }
 }
