@@ -9,6 +9,7 @@ public class BasicEnrollmentDto
     public string degreeId { get; set; }
     public string label { get; set; }
     public string tag { get; set; }
+    public int quantity { get; set; }
     
     public BasicEnrollmentDto(EnrollmentEntity parameter)
     {
@@ -17,5 +18,6 @@ public class BasicEnrollmentDto
         degreeId = parameter.degreeId;
         label = parameter.label;
         tag = parameter.tag;
+        quantity = parameter.quantity;
     }
 }
