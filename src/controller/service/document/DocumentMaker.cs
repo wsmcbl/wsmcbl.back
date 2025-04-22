@@ -162,10 +162,9 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var user = await daoFactory.userDao!.getById(userId);
 
         var latexBuilder = new ProformaLatexBuilder.Builder(resource, $"{resource}/out/proforma")
-            .withStudent(student)
+            .withStudent(student.fullName())
             .withUserAlias(user.getAlias())
-            .withEnrollment(enrollment.label)
-            .withLevel(degree!.educationalLevel)
+            .withDegree(degree!)
             .withSchoolyear(schoolyear.label)
             .withTariffList(tariffList)
             .build();
