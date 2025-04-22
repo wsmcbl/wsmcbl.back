@@ -173,8 +173,27 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         return getPDF();
     }
 
-    public Task<byte[]> getProformaByDegree(string degreeId, string name, string userId)
+    public async Task<byte[]> getProformaByDegree(string degreeId, string name, string userId)
     {
-        throw new NotImplementedException();
+        var degree = await daoFactory.degreeDao!.getById(degreeId);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+
+        var tariffList = await daoFactory.tariffDao!.getAll();
+        tariffList = tariffList
+            .Where(e => new DegreeDataEntity().getLevelName(e.educationalLevel) == degree!.educationalLevel)
+            .OrderBy(e => e.dueDate).ToList();
+        
+        var user = await daoFactory.userDao!.getById(userId);
+
+        var latexBuilder = new ProformaLatexBuilder.Builder(resource, $"{resource}/out/proforma")
+            .withStudent(name)
+            .withUserAlias(user.getAlias())
+            .withDegree(degree!)
+            .withSchoolyear(schoolyear.label)
+            .withTariffList(tariffList)
+            .build();
+
+        setLatexBuilder(latexBuilder);
+        return getPDF();
     }
 }
