@@ -129,6 +129,11 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     public async Task<byte[]> getActiveCertificateByStudent(string studentId, string userId)
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        if (!student.student.isActive)
+        {
+            throw new ConflictException($"The student with id ({studentId}) is not active.");
+        }
+        
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var degree = await daoFactory.degreeDao!.getById(enrollment!.degreeId);
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
