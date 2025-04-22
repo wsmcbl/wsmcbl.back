@@ -1,6 +1,7 @@
 using System.Text;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.utilities;
+
 namespace wsmcbl.src.controller.service.document;
 
 public class ActiveCertificateLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
@@ -17,18 +18,18 @@ public class ActiveCertificateLatexBuilder(string templatesPath, string outPath)
     {
         var content = new StringBuilder(value);
         
-        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo.png");
+        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
         content.Replace("schoolyear.value", schoolyear);
         content.Replace("enrollment.value", enrollmentLabel.ToUpper());
-        content.Replace("level.value", level.ToUpper());
+        content.Replace("level.value", level);
         
         content.Replace("mined.id.value", student.student.minedId.getOrDefault());
         content.Replace("student.name.value", student.fullName().ToUpper());
-        content.Replace("secretary.name.value", "Thelma Ríos Zeas");
+        content.Replace("secretary.name.value", Utility.generalSecretary);
         
         content.Replace("user.alias.value", userAlias);
-        content.Replace("current.date.value", DateTime.UtcNow.toDateUtc6());
+        content.Replace("current.date.value", DateTime.UtcNow.toString("d 'de' MMMM 'de' yyyy"));
         content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
 
         return content.ToString();
@@ -75,5 +76,4 @@ public class ActiveCertificateLatexBuilder(string templatesPath, string outPath)
             return this;
         }
     }
-    
 }
