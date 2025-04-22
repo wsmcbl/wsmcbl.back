@@ -15,4 +15,14 @@ public class DegreeDataEntity
     {
         return educationalLevels[educationalLevel-1];
     }
+
+    public string getLevelName(int level)
+    {
+        return level switch
+        {
+            < 1 => educationalLevels[0],
+            > 3 => educationalLevels[2],
+            _ => educationalLevels[level - 1]
+        };
+    }
 }

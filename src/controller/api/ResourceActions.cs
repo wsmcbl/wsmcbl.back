@@ -5,6 +5,7 @@ using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.model;
 using wsmcbl.src.model.config;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.api;
 
@@ -89,6 +90,10 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         }
 
         var range = TransactionReportViewPagedRequest.parseToDateTime(from, to);
-        return Ok(await controller.getTransactionInvoiceViewList(range.from, range.to));
+        
+        var result = await controller.getTransactionInvoiceViewList(range.from, range.to);
+        result.ForEach(e => e.total = e.total.round());
+        
+        return Ok(result);
     } 
 }

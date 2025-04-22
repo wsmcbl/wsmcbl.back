@@ -1,0 +1,96 @@
+
+\documentclass[12pt]{article}
+
+\usepackage{mlmodern}
+\usepackage[T1]{fontenc}
+
+\usepackage{ulem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{eso-pic}
+\usepackage[spanish]{babel}
+\usepackage[left=2.5cm, right=2.5cm, top=4cm, bottom=2.5cm, headheight=2cm, headsep=1cm]{geometry}
+\renewcommand{\normalsize}{\fontsize{12}{16}\selectfont}
+
+\pagestyle{fancy}
+\fancyhead[C]
+{
+    \makebox[\textwidth]{
+        \hspace{-0.2\textwidth}
+        \begin{minipage}[c][2.5cm]{0.2\textwidth}
+            \includegraphics[width=2.5cm]{logo.value}
+        \end{minipage}
+        \hspace{0.01\textwidth}
+        \begin{minipage}[c][2.5cm]{0.6\textwidth}
+            \centering
+            \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
+            \textbf{\large Amor - Esfuerzo - Disciplina}\\[0.1cm]
+            Contacto: secretaria@cbl-edu.com\\
+            Teléfono: 2270-5587
+        \end{minipage}
+    }
+}
+
+\setlength{\parskip}{1.5mm}
+\setlength{\parindent}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+
+\pagenumbering{gobble}
+
+\newcommand{\aLine}[1]{\makebox[\linewidth]{#1}}
+
+\newcommand{\aDupleLeft}[2]{\textbf{#1}\hspace{2mm} #2 \hfill}
+\newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
+\newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
+
+\newcommand{\degreeName}{degree.value}
+\newcommand{\levelName}{level.value}
+\newcommand{\studentName}{student.name.value}
+\newcommand{\schoolYear}{schoolyear.value}
+\newcommand{\currentDate}{current.date.value}
+\newcommand{\totalAmount}{total.value}
+
+\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\userAlias}{user.alias.value}
+\newcommand{\currentDatetime}{current.datetime.value}
+\makeatletter
+\renewcommand\@makefntext[1]{\noindent #1}
+\makeatother
+
+\AddToShipoutPictureBG*{
+    \put(\LenToUnit{2.5cm},\LenToUnit{45}){\footnotesize Impreso por wsmcbl el \currentDatetime, \userAlias.}
+}
+
+\begin{document}
+    \begin{center}
+        \underline{\textbf{\Large Proforma}}
+    \end{center}
+    La suscrita Secretaria del Colegio Bautista Libertad extiende la presente proforma al estudiante \textbf{\studentName},
+    correspondiente al \textbf{\degreeName}~del nivel \levelName~para el año lectivo \schoolYear, detallando a continuación
+    los costos arancelarios asociados:
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{l|l}
+            \hline
+            Concepto & Monto\\\hline
+            body.value \hline
+            Total & \totalAmount
+        \end{tabular}
+    \end{table}
+    En caso de atraso en el pago de cualquier arancel, se aplicará un recargo del 10\% sobre la mensualidad.
+    Este total no considera descuentos.
+    Documento emitido en la cuidad de Managua, el \currentDate.
+
+    \vfill
+    \begin{center}
+        \rule{5cm}{0.4pt}\\[1mm]
+        Lic. \secretaryName\\
+        Secretaria general
+    \end{center}
+    \vfill
+
+    \textbf{Dirección:} Entrada Norte Centro Comercial Managua, 1 cuadra al oeste, 1/2 cuadra al sur. Managua, Nicaragua.
+\end{document}

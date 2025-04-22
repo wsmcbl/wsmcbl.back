@@ -6,6 +6,8 @@ namespace wsmcbl.src.utilities;
 
 public static class Utility
 {
+    public static string generalSecretary => "Thelma Ríos Zeas";
+    
     public static DateTime toUTC6(this DateTime datetime)
     {
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
@@ -17,6 +19,22 @@ public static class Utility
     
     public static string toStringUtc6(this DateTime datetime, bool withDayName = false)
     {
+        var dayFormat = withDayName ? "dddd" : "ddd.";
+        return datetime.toString($"{dayFormat} dd/MMM/yyyy, h:mm tt");
+    }
+    
+    public static string toDateUtc6(this DateTime datetime)
+    {
+        return datetime.toString("dd/MMMM/yyyy");
+    }
+    
+    public static DateTime toDateTime(this string value)
+    {
+        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+    }
+    
+    public static string toString(this DateTime datetime, string format)
+    {
         var culture = new CultureInfo("es-ES")
         {
             DateTimeFormat =
@@ -25,19 +43,8 @@ public static class Utility
                 PMDesignator = "pm"
             }
         };
-
-        var dayFormat = withDayName ? "dddd" : "ddd.";
-        return datetime.toUTC6().ToString($"{dayFormat} dd/MMM/yyyy, h:mm tt", culture);
-    }
-    
-    public static string toDateUtc6(this DateTime datetime)
-    {
-        return datetime.toUTC6().ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"));
-    }
-    
-    public static DateTime toDateTime(this string value)
-    {
-        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        
+        return datetime.toUTC6().ToString(format, culture);
     }
     
     public static void ReplaceInLatexFormat(this StringBuilder text, string oldValue, string? newValue)

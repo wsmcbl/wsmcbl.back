@@ -125,7 +125,7 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     /// <response code="404">If enrollment or partial not found.</response>
     [HttpGet]
     [Route("students/failed/report/export")]
-    //[Authorizer("report:principal:read")]
+    [Authorizer("report:principal:read")]
     public async Task<IActionResult> getReportFailedStudents([Required] [FromQuery] int partialId)
     {
         var result = await controller.getReportFailedStudents(partialId, getAuthenticatedUserId());
