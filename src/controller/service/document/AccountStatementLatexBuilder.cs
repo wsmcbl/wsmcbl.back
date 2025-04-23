@@ -23,11 +23,31 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         content.Replace("student.id.value", student.studentId);
         content.Replace("student.name.value", student.fullName());
         
+        content.Replace("body.value", getDebtBody());
+        
         content.Replace("user.alias.value", userAlias);
         content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
         content.Replace("current.date.value", DateTime.UtcNow.toDateUtc6());
 
         return content.ToString();
+    }
+
+    private decimal total { get; set; }
+    private string getDebtBody()
+    {
+        var sb = new StringBuilder();
+        var list = student.debtHistory!.Where(e => e.tariff.type == 1);
+        foreach (var item in list)
+        {
+            var tariff = item.tariff;
+            sb.Append($"{tariff.tariffId} & {tariff.concept} & {tariff.dueDate} & ");
+            sb.Append($"{tariff.amount:#,0} & {item.arrears:#,0} & {item.amount:#,0} C\\$ & {item.amount - item.debtBalance:#,0} C\\$ & ");
+            sb.Append($"{(item.isPaid ? "C" : "P")} \\\\");
+            sb.Append("\n");                        
+            total += item.amount;
+        }
+
+        return sb.ToString();
     }
     
     public class Builder
