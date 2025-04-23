@@ -6,10 +6,13 @@ namespace wsmcbl.src.controller.business;
 public class PrintDocumentByStudentController : BaseController
 {
     private DocumentMaker documentMaker { get; set; }
+    
     public PrintDocumentByStudentController(DaoFactory daoFactory) : base(daoFactory)
     {
         documentMaker = new DocumentMaker(daoFactory);   
     }
+
+    private async Task<string> getUserAlias(string userId) => (await daoFactory.userDao!.getById(userId)).getAlias();
     
     public async Task<byte[]> getReportCard(string studentId, string userId)
     {
@@ -42,5 +45,10 @@ public class PrintDocumentByStudentController : BaseController
         }
         
         return await documentMaker.getProformaByDegree(degreeId, name, userId);
+    }
+
+    public async Task<byte[]> getAccountStatementDocument(string studentId, string userId)
+    {
+        return await documentMaker.getAccountStatement(studentId, await getUserAlias(userId));
     }
 }
