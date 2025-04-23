@@ -152,7 +152,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
         var tariffList = await daoFactory.tariffDao!.getAll();
         tariffList = tariffList
-            .Where(e => new DegreeDataEntity().getLevelName(e.educationalLevel) == degree!.educationalLevel)
+            .Where(e => DegreeDataEntity.getLevelName(e.educationalLevel) == degree!.educationalLevel)
             .OrderBy(e => e.dueDate).ToList();
 
         var latexBuilder = new ProformaLatexBuilder.Builder(resource,$"{resource}/out/proforma")
@@ -169,7 +169,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getAccountStatement(string studentId, string userAlias)
     {
-        var student = await daoFactory.studentDao!.getById(studentId);
+        var student = await daoFactory.accountingStudentDao!.getFullById(studentId);
         
         var latexBuilder = new AccountStatementLatexBuilder.Builder(resource,$"{resource}/out/statement")
             .withStudent(student!)
