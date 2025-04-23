@@ -9,14 +9,14 @@ public class DegreeDataEntity
 
     public ICollection<SubjectDataEntity>? subjectList { get; set; }
     
-    private readonly List<string> educationalLevels = ["Preescolar", "Primaria", "Secundaria"];
+    private static readonly List<string> educationalLevels = ["Preescolar", "Primaria", "Secundaria"];
     
     public string getModalityName()
     {
         return educationalLevels[educationalLevel-1];
     }
 
-    public string getLevelName(int level)
+    public static string getLevelName(int level)
     {
         return level switch
         {
