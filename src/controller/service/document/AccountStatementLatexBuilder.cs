@@ -1,4 +1,6 @@
+using System.Text;
 using wsmcbl.src.model.secretary;
+using wsmcbl.src.utilities;
 
 namespace wsmcbl.src.controller.service.document;
 
@@ -11,7 +13,19 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
 
     protected override string updateContent(string value)
     {
-        throw new NotImplementedException();
+        var content = new StringBuilder(value);
+        
+        content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
+        
+        content.Replace("schoolyear.value", "schoolyear");
+        content.Replace("level.value", "degree.educationalLevel");
+        
+        content.Replace("student.name.value", student.fullName());
+        
+        content.Replace("user.alias.value", userAlias);
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+
+        return content.ToString();
     }
     
     public class Builder
