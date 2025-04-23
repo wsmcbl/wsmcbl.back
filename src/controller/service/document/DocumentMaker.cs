@@ -201,4 +201,17 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         setLatexBuilder(latexBuilder);
         return getPDF();
     }
+
+    public async Task<byte[]> getAccountStatement(string studentId, string userAlias)
+    {
+        var student = await daoFactory.studentDao!.getById(studentId);
+        
+        var latexBuilder = new AccountStatementLatexBuilder.Builder(resource, $"{resource}/out/statement")
+            .withStudent(student)
+            .withUserAlias(userAlias)
+            .build();
+
+        setLatexBuilder(latexBuilder);
+        return getPDF();
+    }
 }
