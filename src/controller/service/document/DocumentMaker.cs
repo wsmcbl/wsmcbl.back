@@ -207,7 +207,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var student = await daoFactory.studentDao!.getById(studentId);
         
         var latexBuilder = new AccountStatementLatexBuilder.Builder(resource, $"{resource}/out/statement")
-            .withStudent(student)
+            .withStudent(student!)
             .withUserAlias(userAlias)
             .build();
 
