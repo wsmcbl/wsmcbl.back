@@ -54,6 +54,7 @@
 \newcommand{\schoolYear}{schoolyear.value}
 
 \newcommand{\userAlias}{user.alias.value}
+\newcommand{\currentDate}{current.date.value}
 \newcommand{\currentDatetime}{current.datetime.value}
 
 \makeatletter
@@ -65,7 +66,24 @@
 }
 
 \begin{document}
+    \begin{center}
+        \underline{\textbf{\Large Estado de cuenta}}
+    \end{center}
+    \aDupleRight{Fecha}{\currentDate}\\
+    \aDupleLeft{Código:}{\studentId}\\
+    \aDupleLeft{Estudiante:}{\studentName}\\
+    \aDupleRight{Nivel:}{\levelName}
 
-
-
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c | l | r | r | r | r | l}
+            \hline
+            Cód. & Concepto & Vencimiento & Monto &  Mora & Total & Estado\\\hline
+            body.value
+        \end{tabular}
+    \end{table}
+    
+    \vfill
+    \textbf{Nota:} Este documento no es válido sin sello.
+    
 \end{document}
