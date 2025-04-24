@@ -28,6 +28,7 @@ public static class Utility
         return datetime.toString("dd/MMMM/yyyy");
     }
     
+    
     public static DateTime toDateTime(this string value)
     {
         return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
@@ -46,6 +47,12 @@ public static class Utility
         
         return datetime.toUTC6().ToString(format, culture);
     }
+
+    public static string toString(this DateOnly? date, string format = "dd/MM/yyyy")
+        => date == null ? string.Empty : ((DateOnly)date).toString(format);
+    
+    public static string toString(this DateOnly date, string format = "dd/MM/yyyy")
+        => date.ToString(format, new CultureInfo("es-ES"));
     
     public static void ReplaceInLatexFormat(this StringBuilder text, string oldValue, string? newValue)
     {
