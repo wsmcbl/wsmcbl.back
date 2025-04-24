@@ -6,6 +6,8 @@ namespace wsmcbl.src.controller.service.document;
 
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
+    public async Task<string> getUserAlias(string userId) => (await daoFactory.userDao!.getById(userId)).getAlias();
+    
     public async Task<byte[]> getReportCardByStudent(string studentId, string? userAlias)
     {
         var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);

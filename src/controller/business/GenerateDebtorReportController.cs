@@ -8,6 +8,6 @@ public class GenerateDebtorReportController(DaoFactory daoFactory) : BaseControl
     public async Task<byte[]> getDebtorReport(string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getDebtorReport(userId);
+        return await documentMaker.getDebtorReport(await documentMaker.getUserAlias(userId));
     }
 }
