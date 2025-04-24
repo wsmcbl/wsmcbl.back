@@ -1,6 +1,7 @@
 using System.Text;
-using wsmcbl.src.model.accounting;
+using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
+using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
 
 namespace wsmcbl.src.controller.service.document;
 
@@ -8,6 +9,7 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
 {
     private StudentEntity student { get; set; } = null!;
     private string userAlias { get; set; } = null!;
+    private SchoolyearEntity schoolyear { get; set; } = null!;
     
     protected override string getTemplateName() => "account-statement";
 
@@ -17,13 +19,15 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         
         content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
-        content.Replace("schoolyear.value", student.enrollmentLabel);
-        content.Replace("level.value", model.secretary.DegreeDataEntity.getLevelName(student.educationalLevel));
+        content.Replace("schoolyear.value", schoolyear.label);
+        content.Replace("level.value", DegreeDataEntity.getLevelName(student.educationalLevel));
         
         content.Replace("student.id.value", student.studentId);
         content.Replace("student.name.value", student.fullName());
         
         content.Replace("body.value", getDebtBody());
+        content.Replace("total.value", $"{total:#,0.00}");
+        content.Replace("other.value", "");
         
         content.Replace("user.alias.value", userAlias);
         content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
@@ -36,15 +40,17 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
     private string getDebtBody()
     {
         var sb = new StringBuilder();
-        var list = student.debtHistory!.Where(e => e.tariff.type == 1);
+        var list = student.debtHistory!
+            .Where(e => e.tariff.type == 1 && e.schoolyear == schoolyear.id);
+        
         foreach (var item in list)
         {
             var tariff = item.tariff;
-            sb.Append($"{tariff.tariffId} & {tariff.concept} & {tariff.dueDate} & ");
-            sb.Append($"{tariff.amount:#,0} & {item.arrears:#,0} & {item.amount:#,0} C\\$ & {item.amount - item.debtBalance:#,0} C\\$ & ");
-            sb.Append($"{(item.isPaid ? "C" : "P")} \\\\");
-            sb.Append("\n");                        
-            total += item.amount;
+            sb.Append($"{tariff.concept} & {tariff.dueDate.toString()} & ");
+            sb.Append($"{tariff.amount:#,0} & {item.calculateDiscount():#,0.00} &");
+            sb.Append($"{item.arrears:#,0.00} & {item.amount:#,0.00} &");
+            sb.Append($"{item.getDebtBalance():#,0.00} C\\$ \\\\ \n");
+            total += item.getDebtBalance();
         }
 
         return sb.ToString();
@@ -70,6 +76,12 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         public Builder withUserAlias(string parameter)
         {
             latexBuilder.userAlias = parameter;
+            return this;
+        }
+        
+        public Builder withSchoolyear(SchoolyearEntity parameter)
+        {
+            latexBuilder.schoolyear = parameter;
             return this;
         }
     }
