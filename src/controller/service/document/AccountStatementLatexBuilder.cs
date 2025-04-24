@@ -47,7 +47,7 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         {
             var tariff = item.tariff;
             sb.Append($"{tariff.concept} & {tariff.dueDate.toString()} & ");
-            sb.Append($"{tariff.amount:#,0} & {item.calculateDiscount():#,0.00} &");
+            sb.Append($"{tariff.amount:#,0.00} & {item.calculateDiscount():#,0.00} &");
             sb.Append($"{item.arrears:#,0.00} & {item.amount:#,0.00} &");
             sb.Append($"{item.getDebtBalance():#,0.00} C\\$ \\\\ \n");
             total += item.getDebtBalance();
