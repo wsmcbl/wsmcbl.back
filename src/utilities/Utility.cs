@@ -28,12 +28,7 @@ public static class Utility
         return datetime.toString($"{dayFormat} dd/MMM/yyyy, h:mm tt");
     }
     
-    public static string toDateUtc6(this DateTime datetime)
-    {
-        return datetime.toString("dd/MMMM/yyyy");
-    }
-    
-    public static string toString(this DateTime datetime, string format)
+    public static string toString(this DateTime datetime, string format = "dd/MMMM/yyyy")
     {
         var culture = new CultureInfo("es-ES")
         {

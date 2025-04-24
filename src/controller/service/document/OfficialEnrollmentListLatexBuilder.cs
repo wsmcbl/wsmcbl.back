@@ -50,7 +50,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
     {
         body.Append($"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n");
         body.Append($"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}");
-        body.Append($"\\hfill \\textbf{{Fecha}}: {now.toDateUtc6()}\n");
+        body.Append($"\\hfill \\textbf{{Fecha}}: {now.toString()}\n");
         body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
 
         body.Append("\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n");
