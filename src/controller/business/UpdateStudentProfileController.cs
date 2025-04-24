@@ -9,7 +9,7 @@ public class UpdateStudentProfileController(DaoFactory daoFactory) : BaseControl
 {
     public async Task<StudentEntity> updateStudent(StudentEntity student)
     {
-        await daoFactory.studentDao!.updateAsync(student);
+        await daoFactory.studentDao!.updateBy(student);
         await daoFactory.studentTutorDao!.updateAsync(student.tutor);
         await daoFactory.studentFileDao!.updateAsync(student.file);
         await daoFactory.studentMeasurementsDao!.updateAsync(student.measurements);

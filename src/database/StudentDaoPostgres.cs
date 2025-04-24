@@ -105,7 +105,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
-    public async Task updateAsync(StudentEntity? entity)
+    public async Task updateBy(StudentEntity? entity)
     {
         if (entity == null)
         {
