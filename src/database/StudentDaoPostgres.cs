@@ -135,12 +135,4 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         
         return result;
     }
-
-    public new async Task deleteAsync(StudentEntity entity)
-    {
-        FormattableString query =$"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
-        await context.Database.ExecuteSqlAsync(query);
-        
-        await base.deleteAsync(entity);
-    }
 }
