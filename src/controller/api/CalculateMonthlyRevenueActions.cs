@@ -67,6 +67,6 @@ public class CalculateMonthlyRevenueActions(CalculateMonthlyRevenueController co
             throw new IncorrectDataException("The date must be the correct format.");
         }
 
-        return date.toDateTime();
+        return date.parseToDatetime();
     }
 }

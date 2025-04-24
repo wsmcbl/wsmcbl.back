@@ -68,7 +68,7 @@ public class TransactionReportByDateActions(TransactionReportByDateController co
 
         try
         {
-            return value.toDateTime().Year is >= minYear and <= maxYear;
+            return value.parseToDatetime().Year is >= minYear and <= maxYear;
         }
         catch (FormatException)
         {

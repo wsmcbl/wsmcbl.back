@@ -8,6 +8,11 @@ public static class Utility
 {
     public static string generalSecretary => "Thelma Ríos Zeas";
     
+    public static DateTime parseToDatetime(this string value)
+    {
+        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+    }
+    
     public static DateTime toUTC6(this DateTime datetime)
     {
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
@@ -26,12 +31,6 @@ public static class Utility
     public static string toDateUtc6(this DateTime datetime)
     {
         return datetime.toString("dd/MMMM/yyyy");
-    }
-    
-    
-    public static DateTime toDateTime(this string value)
-    {
-        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
     }
     
     public static string toString(this DateTime datetime, string format)
