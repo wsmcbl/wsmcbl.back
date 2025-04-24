@@ -170,10 +170,12 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
     public async Task<byte[]> getAccountStatement(string studentId, string userAlias)
     {
         var student = await daoFactory.accountingStudentDao!.getFullById(studentId);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
         
         var latexBuilder = new AccountStatementLatexBuilder.Builder(resource,$"{resource}/out/statement")
-            .withStudent(student!)
+            .withStudent(student)
             .withUserAlias(userAlias)
+            .withSchoolyear(schoolyear)
             .build();
 
         setLatexBuilder(latexBuilder);
