@@ -45,8 +45,7 @@ public class ProformaLatexBuilder(string templatesPath, string outPath) : LatexB
         var sb = new StringBuilder();
         foreach (var item in tariffList)
         {
-            sb.Append($"{item.concept} & {item.amount:#,0} C\\$ \\\\");
-            sb.Append("\n");
+            sb.Append($"{item.concept} & {item.amount:#,0} C\\$ \\\\ \n");
             total += item.amount;
         }
 
