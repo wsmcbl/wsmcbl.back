@@ -21,14 +21,14 @@ public class EnrollSheetLatexBuilder(string templatesPath, string outputPath) : 
         content.ReplaceInLatexFormat("schoolyear.value", newSchoolyear);
         
         content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
-        content.ReplaceInLatexFormat("enroll.date.value", getDateFormat(academyStudent!.getCreateAtByDateOnly()));
+        content.ReplaceInLatexFormat("enroll.date.value", academyStudent!.getCreateAtByDateOnly().toString("dddd dd/MMM/yyyy"));
         content.ReplaceInLatexFormat("student.name.value", entity!.fullName());
         content.ReplaceInLatexFormat("degree.value", grade!);
         content.ReplaceInLatexFormat("repeating.value", getTextByBool(academyStudent!.isRepeating));
         content.ReplaceInLatexFormat("mined.id.value", entity.minedId ?? "N/A");
         content.ReplaceInLatexFormat("student.age.value", $"{entity.getAge()} años");
         content.ReplaceInLatexFormat("student.sex.value", getTextBySex(entity.sex));
-        content.ReplaceInLatexFormat("student.birthday.value", getDateFormat(entity.birthday, false));
+        content.ReplaceInLatexFormat("student.birthday.value", entity.birthday.toString("dd/MMMM/yyyy"));
         content.ReplaceInLatexFormat("tutor.value", entity.tutor.name);
         content.ReplaceInLatexFormat("diseases.value", entity.diseases!);
         content.ReplaceInLatexFormat("phones.value", entity.tutor.phone);
@@ -54,15 +54,7 @@ public class EnrollSheetLatexBuilder(string templatesPath, string outputPath) : 
         var year = DateTime.Today.Month > 10 ? DateTime.Today.Year : DateTime.Today.Year - 1;
         return year.ToString();
     }
-
-    private static string getDateFormat(DateOnly date, bool withDay = true)
-    {
-        var culture = new CultureInfo("es-ES");
-
-        var format = withDay ? "dddd dd/MMM/yyyy" : "dd/MMMM/yyyy";
-        return date.ToString(format, culture);
-    }
-
+    
     private static void setParents(StringBuilder content, ICollection<StudentParentEntity>? entityParents)
     {
         if (entityParents == null)
