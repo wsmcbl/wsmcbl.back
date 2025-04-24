@@ -51,7 +51,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         body.Append($"\\begin{{center}}\n\\textbf{{\\large {enrollment.label}}}\n\\end{{center}}\n");
         body.Append($"\\textbf{{Docente guía}}: \\aField{{{getTeacherName(enrollment.teacherId)}}}");
         body.Append($"\\hfill \\textbf{{Fecha}}: {now.toString()}\n");
-        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
+        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringFull()}, {userName}.}}\n");
 
         body.Append("\\begin{longtable}{| c || l || p{\\dimexpr\\textwidth-6cm\\relax} |}\n");
         body.Append("\\hline\\textbf{N\u00b0} & \\textbf{Código} & \\textbf{Nombre}\\\\\\hline\\hline\n");
@@ -79,7 +79,7 @@ public class OfficialEnrollmentListLatexBuilder : LatexBuilder
         
         if (counter > 24)
         {
-            body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
+            body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringFull()}, {userName}.}}\n");
         }
 
         body.Append("\\newpage\n");

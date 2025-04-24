@@ -47,7 +47,7 @@ public class GradeReportLatexBuilder : LatexBuilder
         content.Replace("detail.value", string.Empty);
         
         content.ReplaceInLatexFormat("secretary.name.value", userName);
-        content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringFull());
 
         return content.ToString();
     }

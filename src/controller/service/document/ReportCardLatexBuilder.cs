@@ -45,7 +45,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content.Replace("final.average.value", averageList[4]);
         
         content.Replace("secretary.name.value", userAlias != null ? $", {userAlias}" : string.Empty);
-        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringFull());
 
         return content.ToString();
     }

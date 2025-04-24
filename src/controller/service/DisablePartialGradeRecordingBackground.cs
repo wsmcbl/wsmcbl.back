@@ -61,7 +61,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task sendNotification(PartialEntity partial)
     {
-        var date = partial.gradeRecordDeadline!.toStringUtc6();
+        var date = partial.gradeRecordDeadline.toStringFull(false);
         var message =
             $"Estimado docente, ha finalizado el registro de calificaciones para el {partial.label.ToUpper()} el {date}.\n" +
             "Ya no es posible modificar calificaciones en wsm.cbl-edu.com.";
@@ -72,7 +72,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
 
     private async Task sendNotification(PartialEntity partial, double totalHours)
     {
-        var date = partial.gradeRecordDeadline!.toStringUtc6();
+        var date = partial.gradeRecordDeadline.toStringFull(false);
         var message = "Estimado docente, " +
         $"el registro de calificaciones para el {partial.label.ToUpper()} cerrará dentro de {totalHours} horas,  el {date}.\n" +
         "Aún puede modificar calificaciones en wsm.cbl-edu.com.";

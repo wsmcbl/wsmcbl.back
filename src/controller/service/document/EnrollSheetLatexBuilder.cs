@@ -37,7 +37,7 @@ public class EnrollSheetLatexBuilder(string templatesPath, string outputPath) : 
         content.ReplaceInLatexFormat("address.value", entity.address);
         
         content.ReplaceInLatexFormat("secretary.name.value", userName);
-        content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.ReplaceInLatexFormat("current.datetime.value", DateTime.UtcNow.toStringFull());
         content.ReplaceInLatexFormat("student.id.value", entity.studentId);
         content.ReplaceInLatexFormat("student.token.value", entity.accessToken);
 

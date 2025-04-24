@@ -77,7 +77,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         body.Append(getFromOtherSchoolyear());
         
         body.Append($"\\hfill\\textbf{{Super total:}} C\\$ {getTotal(0):N2}");
-        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
+        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringFull()}, {userName}.}}\n");
 
         return body.ToString();
     }

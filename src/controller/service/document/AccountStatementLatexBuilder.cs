@@ -30,7 +30,7 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         content.Replace("other.value", "");
         
         content.Replace("user.alias.value", userAlias);
-        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringFull());
         content.Replace("current.date.value", DateTime.UtcNow.toString());
 
         return content.ToString();
