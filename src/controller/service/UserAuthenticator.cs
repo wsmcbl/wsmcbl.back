@@ -18,7 +18,15 @@ public class UserAuthenticator
 
     public async Task<UserEntity> authenticateUser(UserEntity user)
     {
-        var entity = await userDao.getUserByEmail(user.email);
+        UserEntity entity;
+        try
+        {
+            entity = await userDao.getUserByEmail(user.email);
+        }
+        catch (Exception)
+        {
+            throw new UnauthorizedException("User not authenticated.");
+        }
 
         var result = passwordHasher.VerifyHashedPassword(entity, entity.password, user.password);
         if (result != PasswordVerificationResult.Success)
