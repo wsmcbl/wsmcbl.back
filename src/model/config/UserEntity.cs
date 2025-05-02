@@ -125,16 +125,19 @@ public class UserEntity
             .ToList();
     }
     
-    public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao rolePermissionDao)
+    public void updatePermissionList(List<UserPermissionEntity> list, IUserPermissionDao userPermissionDao)
     {
-        foreach (var item in userPermissionList!.Where(item => !list.Any(e => e.equals(item))))
+        foreach (var item in userPermissionList!
+                     .Where(item => !list.Any(e => e.equals(item))))
         {
-            rolePermissionDao.delete(item);
+            item.permission = null;
+            userPermissionDao.delete(item);
         }
 
-        foreach (var item in list.Where(item => !userPermissionList!.Any(e => e.equals(item))))
+        foreach (var item in list
+                     .Where(item => !userPermissionList!.Any(e => e.equals(item))))
         {
-            rolePermissionDao.create(item);
+            userPermissionDao.create(item);
         }
     }
     
