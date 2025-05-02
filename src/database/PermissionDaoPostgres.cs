@@ -8,15 +8,12 @@ public class PermissionDaoPostgres(PostgresContext context) : GenericDaoPostgres
 {
     public async Task verifyIdListOrFail(List<int> permissionIdList)
     {
-        var list = await getAll();
-        var idList = list.Select(e => e.permissionId).ToList();
-
-        var id = permissionIdList.FirstOrDefault(id => !idList.Contains(id));
-        if (id != 0)
+        var list = (await getAll()).Select(e => e.permissionId).ToList();
+        if (permissionIdList.Count(item => list.Contains(item)) == permissionIdList.Count)
         {
             return;
         }
         
-        throw new EntityNotFoundException("PermissionEntity", id.ToString());
+        throw new EntityNotFoundException("PermissionEntity", $"{permissionIdList.FirstOrDefault(id => !list.Contains(id))}");
     }
 }
