@@ -41,4 +41,15 @@ public static class BuilderService
         Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserToCreateDtoValidator>();
     }
+
+    public static void AddDefaultCors(this IServiceCollection Services)
+    {
+        Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:4200", "http://localhost:4003").AllowAnyMethod().AllowAnyHeader();
+            });
+        });
+    }
 }
