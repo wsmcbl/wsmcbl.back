@@ -19,4 +19,4 @@
 
 ## Version
 
-* 6.5.0 - SNAPSHOT
+* 6.6.0 - SNAPSHOT
