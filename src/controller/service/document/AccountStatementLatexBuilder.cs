@@ -11,6 +11,7 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
     private StudentEntity student { get; set; } = null!;
     private string userAlias { get; set; } = null!;
     private SchoolyearEntity schoolyear { get; set; } = null!;
+    private List<SchoolyearEntity> schoolyearList { get; set; } = null!;
     
     protected override string getTemplateName() => "account-statement";
 
@@ -58,7 +59,9 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         foreach (var item in list)
         {
             var tariff = item.tariff;
-            sb.Append($"{item.schoolyear} & {tariff.concept} & ");
+            var label = schoolyearList.FirstOrDefault(e => e.id == item.schoolyear)?.label;
+            
+            sb.Append($"{label} & {tariff.concept} & ");
             sb.Append($"{tariff.amount:#,0.00} & {item.calculateDiscount():#,0.00} &");
             sb.Append($"{item.arrears:#,0.00} & {item.amount:#,0.00} &");
             sb.Append($"{item.getDebtBalance():#,0.00} C\\$ \\\\ \n");
@@ -114,6 +117,12 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         public Builder withSchoolyear(SchoolyearEntity parameter)
         {
             latexBuilder.schoolyear = parameter;
+            return this;
+        }
+
+        public Builder withSchoolyearList(List<SchoolyearEntity> parameter)
+        {
+            latexBuilder.schoolyearList = parameter;
             return this;
         }
     }
