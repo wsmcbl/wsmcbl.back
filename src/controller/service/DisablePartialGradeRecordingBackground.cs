@@ -44,9 +44,8 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
             return;
         }
 
-        var remainingTime = (TimeSpan)(item.gradeRecordDeadline - DateTime.UtcNow)!;
-
-        if (remainingTime.TotalMinutes < 1)
+        var now = DateTime.UtcNow;
+        if (item.gradeRecordDeadline <= now)
         {
             await sendNotification(item);
             
@@ -57,7 +56,7 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
             return;
         }
 
-        await sendNotificationsByTime(item, remainingTime);
+        await sendNotificationsByTime(item, (TimeSpan)(item.gradeRecordDeadline - now)!);
     }
 
     private async Task sendNotificationsByTime(PartialEntity item, TimeSpan timeSpan)
