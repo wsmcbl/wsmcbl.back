@@ -1,4 +1,5 @@
 using System.Text;
+using wsmcbl.src.model.accounting;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
 using StudentEntity = wsmcbl.src.model.accounting.StudentEntity;
@@ -26,6 +27,7 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         content.Replace("student.name.value", student.fullName());
         
         content.Replace("body.value", getDebtBody());
+        setPastYearDebts(content);
         content.Replace("total.value", $"{total:#,0.00}");
         content.Replace("other.value", "");
         
@@ -34,6 +36,36 @@ public class AccountStatementLatexBuilder(string templatesPath, string outPath) 
         content.Replace("current.date.value", DateTime.UtcNow.toString());
 
         return content.ToString();
+    }
+
+    private void setPastYearDebts(StringBuilder content)
+    {       
+        var list = student.debtHistory!.Where(debt => debt.schoolyear != schoolyear.id)
+            .Where(debt => debt is { isPaid: false, tariff.type: 1 }).ToList();
+
+        if (list.Count == 0)
+        {
+            return;
+        }
+        
+        content.Replace("\\togglefalse{showTable}", "\\toggletrue{showTable}");
+        content.Replace("body.past.years.value", getPastYearsDebtBody(list));
+    }
+
+    private string getPastYearsDebtBody(List<DebtHistoryEntity> list)
+    {
+        var sb = new StringBuilder();        
+        foreach (var item in list)
+        {
+            var tariff = item.tariff;
+            sb.Append($"{item.schoolyear} & {tariff.concept} & ");
+            sb.Append($"{tariff.amount:#,0.00} & {item.calculateDiscount():#,0.00} &");
+            sb.Append($"{item.arrears:#,0.00} & {item.amount:#,0.00} &");
+            sb.Append($"{item.getDebtBalance():#,0.00} C\\$ \\\\ \n");
+            total += item.getDebtBalance();
+        }
+
+        return sb.ToString();
     }
 
     private decimal total { get; set; }

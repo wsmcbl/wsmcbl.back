@@ -1,9 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
-using wsmcbl.src.middleware;
-using wsmcbl.src.middleware.filter;
 using wsmcbl.src.middleware.validator;
 
 namespace wsmcbl.src.utilities;
@@ -45,7 +42,7 @@ public static class BuilderService
 
     public static void AddDefaultCors(this IServiceCollection Services)
     {
-        string[] origins = ["http://localhost:4200", "http://localhost:4003"];
+        string[] origins = ["http://localhost:4200", "http://localhost:4002"];
 
         if (Utility.isInProductionEnvironment())
         {
