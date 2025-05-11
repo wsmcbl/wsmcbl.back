@@ -35,57 +35,75 @@ public class DisablePartialGradeRecordingBackground : BackgroundService
     private async Task checkPartials()
     {
         if (!Utility.isInProductionEnvironment()) return;
-        
+
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 
-        var item = partialList.FirstOrDefault(e => e.gradeRecordIsActive);
+        var item = partialList.FirstOrDefault(e => e.recordIsActive());
         if (item == null)
         {
             return;
         }
-        
+
         var remainingTime = (TimeSpan)(item.gradeRecordDeadline - DateTime.UtcNow)!;
-        
-        if (remainingTime.TotalHours is <= 24 and > 22)
+
+        if (remainingTime.TotalMinutes < 1)
         {
-            await sendNotification(item, remainingTime.TotalHours);
+            await sendNotification(item);
+            
+            item.disableGradeRecording();
+            daoFactory.partialDao.update(item);
+            await daoFactory.ExecuteAsync();
+            
+            return;
+        }
+
+        await sendNotificationsByTime(item, remainingTime);
+    }
+
+    private async Task sendNotificationsByTime(PartialEntity item, TimeSpan timeSpan)
+    {
+        if (timeSpan is { Days: 7, Hours: 0})
+        {
+            await sendNotification(item, timeSpan);
         }
         
-        if (remainingTime.TotalHours < 0)
+        if (timeSpan is { Days: 3, Hours: 0})
         {
-            item.disableGradeRecording();
-            await daoFactory.ExecuteAsync();
-            await sendNotification(item);
+            await sendNotification(item, timeSpan);
+        }
+        
+        if (timeSpan.TotalHours is <= 24 and > 22)
+        {
+            await sendNotification(item, timeSpan);
         }
     }
 
     private async Task sendNotification(PartialEntity partial)
     {
-        var date = partial.gradeRecordDeadline.toStringFull(false);
+        var date = partial.gradeRecordDeadline?.toString("dddd dd/MMMM/yyyy 'a las' h:mm tt");
         var message =
             $"Estimado docente, ha finalizado el registro de calificaciones para el {partial.label.ToUpper()} el {date}.\n" +
             "Ya no es posible modificar calificaciones en wsm.cbl-edu.com.";
 
         var list = await getEmailList();
-        await emailNotifier.sendEmail(list,"Cierre del registro de calificaciones", message);
+        await emailNotifier.sendEmail(list, "Cierre del registro de calificaciones", message);
     }
 
-    private async Task sendNotification(PartialEntity partial, double totalHours)
+    private async Task sendNotification(PartialEntity partial, TimeSpan time)
     {
-        var date = partial.gradeRecordDeadline.toStringFull(false);
-        var message = "Estimado docente, " +
-        $"el registro de calificaciones para el {partial.label.ToUpper()} cerrará dentro de {totalHours} horas,  el {date}.\n" +
-        "Aún puede modificar calificaciones en wsm.cbl-edu.com.";
-     
-        var list = await getEmailList();   
-        await emailNotifier.sendEmail(list,"Registro de calificaciones", message);
+        var date = partial.gradeRecordDeadline?.toString("dddd dd/MMMM/yyyy 'a las' h:mm tt");
+        var message =
+            $"Estimado docente, el registro de calificaciones para el {partial.label.ToUpper()} cerrará el {date}. " +
+            $"Tiempo restante: {time.Days} día(s), {time.Hours} hora(s), {time.Minutes} minuto(s). " +
+            "Aún puede modificar calificaciones en wsm.cbl-edu.com.";
+
+        var list = await getEmailList();
+        await emailNotifier.sendEmail(list, "Registro de calificaciones", message);
     }
 
     private async Task<List<string>> getEmailList()
     {
         var userList = await daoFactory.userDao!.getAll();
-        
-        return userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3)
-            .Select(e => e.email).ToList();
+        return userList.Where(e => e.isActive && e.roleId != 1 && e.roleId != 3).Select(e => e.email).ToList();
     }
 }
