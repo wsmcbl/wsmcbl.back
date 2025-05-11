@@ -49,7 +49,8 @@ public static class BuilderService
 
         if (Utility.isInProductionEnvironment())
         {
-            origins = [getAppUrl()];
+            var url = getAppUrl();
+            origins = [$"https://{url}", $"https://wwww.{url}"];
         }
         
         Services.AddCors(options =>
