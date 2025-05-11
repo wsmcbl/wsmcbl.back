@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   
   <PropertyGroup>
-    <AssemblyTitle>API WSMCBL SNAPSHOT</AssemblyTitle>
+    <AssemblyTitle>API WSMCBL BETA</AssemblyTitle>
     <AssemblyVersion>6.5.0</AssemblyVersion>
     <AssemblyDescription>API del proyecto WSMCBL desarrollado en .NET 8.</AssemblyDescription>
   </PropertyGroup>
