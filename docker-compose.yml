@@ -30,6 +30,7 @@ services:
       - NEXTCLOUD_PASSWORD=${NEXTCLOUD_PASSWORD}
       - INFO_EMAIL_PASSWORD=${INFO_EMAIL_PASSWORD}
       - API_ENVIRONMENT_MODE=${API_ENVIRONMENT_MODE}
+      - APP_URL=${APP_URL}
     ports:
       - '4000:8080'
     depends_on:
