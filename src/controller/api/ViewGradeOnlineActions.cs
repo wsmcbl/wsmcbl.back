@@ -17,7 +17,7 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
     [Route("")]
     public async Task<IActionResult> getStudentInformation([Required] string studentId, [Required] [FromQuery] string token)
     {
-        await checkStudentCredentials(studentId, token);
+        await checkStudentCredentials(studentId, token, true);
         
         var student = await controller.getStudent(studentId);
         var isSolvency = await controller.isStudentSolvent(studentId);
@@ -42,12 +42,14 @@ public class ViewGradeOnlineActions(ViewGradeOnlineController controller) : Cont
         return File(result, "application/pdf", $"{studentId}.grade-report.pdf");
     }
 
-    private async Task checkStudentCredentials(string studentId, string token)
+    private async Task checkStudentCredentials(string studentId, string token, bool withoutSolvency = false)
     {
         if (await controller.tokenIsNotValid(studentId, token))
         {
             throw new UnauthorizedException("Student unauthorized.");
         }
+        
+        if(withoutSolvency) return;
         
         if (!await controller.isStudentSolvent(studentId))
         {

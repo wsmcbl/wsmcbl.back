@@ -86,6 +86,7 @@ app.UseSwaggerUI(c => c.SwaggerUIConfig());
 
 app.MapControllers();
 app.UseHttpsRedirection();
+
 await app.RunAsync();
 
 public abstract partial class Program;
