@@ -8,33 +8,27 @@ public static class Utility
 {
     public static string generalSecretary => "Thelma Ríos Zeas";
     
+    public static DateTime parseToDatetime(this string value)
+    {
+        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+    }
+    
     public static DateTime toUTC6(this DateTime datetime)
     {
         var timeZoneUTC6 = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
         return TimeZoneInfo.ConvertTimeFromUtc(datetime, timeZoneUTC6);
     }
-
-    public static string toStringUtc6(this DateTime? datetime, bool withDayName = false)
-        => toStringUtc6((DateTime)datetime!, withDayName);
     
-    public static string toStringUtc6(this DateTime datetime, bool withDayName = false)
+    public static string toStringFull(this DateTime? datetime, bool withDayName = true)
+     => datetime == null ? string.Empty : ((DateTime)datetime).toStringFull(withDayName);
+    
+    public static string toStringFull(this DateTime datetime, bool withDayName = true)
     {
         var dayFormat = withDayName ? "dddd" : "ddd.";
         return datetime.toString($"{dayFormat} dd/MMM/yyyy, h:mm tt");
     }
     
-    public static string toDateUtc6(this DateTime datetime)
-    {
-        return datetime.toString("dd/MMMM/yyyy");
-    }
-    
-    
-    public static DateTime toDateTime(this string value)
-    {
-        return DateTime.ParseExact(value, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-    }
-    
-    public static string toString(this DateTime datetime, string format)
+    public static string toString(this DateTime datetime, string format = "dd/MMMM/yyyy")
     {
         var culture = new CultureInfo("es-ES")
         {

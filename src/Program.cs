@@ -72,8 +72,11 @@ builder.Services.AddTransient<GenerateEvaluationStatsBySectionController>();
 builder.Services.AddTransient<UnenrollStudentController>();
 builder.Services.AddTransient<CalculateMonthlyRevenueController>();
 
+builder.Services.AddDefaultCors();
+
 var app = builder.Build();
 
+app.UseCors();
 app.UseMiddleware<ApiExceptionHandler>();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -83,6 +86,7 @@ app.UseSwaggerUI(c => c.SwaggerUIConfig());
 
 app.MapControllers();
 app.UseHttpsRedirection();
+
 await app.RunAsync();
 
 public abstract partial class Program;

@@ -31,7 +31,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         content.ReplaceInLatexFormat("total.final.value", $"C$ {transaction.total:F2}");
         content.Replace("balance.other.value", getBalanceOrEmpty());
         content.ReplaceInLatexFormat("cashier.value", cashier.getAlias());
-        content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringUtc6());
+        content.ReplaceInLatexFormat("datetime.value", transaction.date.toStringFull(false));
         content.ReplaceInLatexFormat("exchange.rate.value", exchangeRate);
         content.ReplaceInLatexFormat("general.balance.value", getGeneralBalance());
 

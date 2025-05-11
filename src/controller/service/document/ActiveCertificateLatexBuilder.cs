@@ -30,7 +30,7 @@ public class ActiveCertificateLatexBuilder(string templatesPath, string outPath)
         
         content.Replace("user.alias.value", userAlias);
         content.Replace("current.date.value", DateTime.UtcNow.toString("d 'de' MMMM 'de' yyyy"));
-        content.Replace("current.datetime.value", DateTime.UtcNow.toStringUtc6(true));
+        content.Replace("current.datetime.value", DateTime.UtcNow.toStringFull());
 
         return content.ToString();
     }

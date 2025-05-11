@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using wsmcbl.src.dto.accounting;
+using wsmcbl.src.exception;
 using wsmcbl.src.middleware;
 using wsmcbl.src.middleware.filter;
 using wsmcbl.src.middleware.validator;
@@ -40,5 +41,35 @@ public static class BuilderService
         Services.AddValidatorsFromAssemblyContaining<TransactionToCreateDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserDtoValidator>();
         Services.AddValidatorsFromAssemblyContaining<UserToCreateDtoValidator>();
+    }
+
+    public static void AddDefaultCors(this IServiceCollection Services)
+    {
+        string[] origins = ["http://localhost:4200", "http://localhost:4003"];
+
+        if (Utility.isInProductionEnvironment())
+        {
+            var url = getAppUrl();
+            origins = [$"https://{url}", $"https://wwww.{url}"];
+        }
+        
+        Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader();
+            });
+        });
+    }
+    
+    private static string getAppUrl()
+    {
+        var value = Environment.GetEnvironmentVariable("APP_URL");
+        if (value == null)
+        {
+            throw new InternalException("APP_URL environment not found.");
+        }
+
+        return value;
     }
 }

@@ -27,7 +27,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         var content = new StringBuilder(value);
         content.ReplaceInLatexFormat("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         content.ReplaceInLatexFormat("year.value", DateTime.Today.Year.ToString());
-        content.ReplaceInLatexFormat("today.value", now.toDateUtc6());
+        content.ReplaceInLatexFormat("today.value", now.toString());
         content.Replace("body.value", getDegreeContent());
 
         return content.ToString();
@@ -77,7 +77,7 @@ public class DebtorReportLatexBuilder : LatexBuilder
         body.Append(getFromOtherSchoolyear());
         
         body.Append($"\\hfill\\textbf{{Super total:}} C\\$ {getTotal(0):N2}");
-        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringUtc6(true)}, {userName}.}}\n");
+        body.Append($"\\footnotetext{{Impreso por wsmcbl el {now.toStringFull()}, {userName}.}}\n");
 
         return body.ToString();
     }

@@ -146,12 +146,6 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         create(debt);
         await saveAsync();
     }
-
-    public async Task deleteRange(List<DebtHistoryEntity> debtList)
-    {
-        entities.RemoveRange(debtList);
-        await saveAsync();
-    }
     
     public async Task<decimal[]> getGeneralBalance(string studentId)
     {

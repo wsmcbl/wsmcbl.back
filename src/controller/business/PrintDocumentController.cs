@@ -8,6 +8,6 @@ public class PrintDocumentController(DaoFactory daoFactory) : BaseController(dao
     public async Task<byte[]> getOfficialEnrollmentListDocument(string userId)
     {
         var documentMaker = new DocumentMaker(daoFactory);
-        return await documentMaker.getOfficialEnrollmentListDocument(userId);
+        return await documentMaker.getOfficialEnrollmentListDocument(await documentMaker.getUserAlias(userId));
     }
 }

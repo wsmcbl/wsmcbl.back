@@ -31,7 +31,7 @@ public class ViewPrincipalDashboardController(DaoFactory daoFactory) : BaseContr
     {
         var controller = new CalculateMonthlyRevenueController(daoFactory);
         
-        var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, DateTimeKind.Utc);
         var totalList = await controller.getTotalReceived(date);
         
         var from = new DateOnly(date.Year, date.Month, date.Day);

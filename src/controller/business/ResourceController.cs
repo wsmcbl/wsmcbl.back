@@ -43,4 +43,12 @@ public class ResourceController(DaoFactory daoFactory) : BaseController(daoFacto
     {
         return await daoFactory.transactionDao!.getTransactionInvoiceViewList(from, to);
     }
+    
+    public async Task<List<string>> getTutorList()
+    {
+        var list = await daoFactory.studentTutorDao!.getAll();
+
+        return list.Where(e => e.isValidPhone())
+            .Select(e => e.phone[..8]).Distinct().ToList();
+    }
 }

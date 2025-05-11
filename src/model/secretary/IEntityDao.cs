@@ -34,7 +34,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<PagedResult<StudentView>> getPaginatedStudentView(StudentPagedRequest request);
     public Task<PagedResult<StudentRegisterView>> getPaginatedStudentRegisterView(StudentPagedRequest request);
     public Task<List<StudentRegisterView>> getStudentRegisterListForCurrentSchoolyear();
-    public Task updateAsync(StudentEntity? entity);
+    public Task updateBy(StudentEntity? entity);
     public Task<StudentView> getViewById(string studentId);
 }
 

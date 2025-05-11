@@ -24,8 +24,8 @@ public class TransactionReportViewPagedRequest : PagedRequest
     
     public static (DateTime from, DateTime to) parseToDateTime(string from, string to)
     {
-        var startDate = from.toDateTime();
-        var endDate = to.toDateTime();
+        var startDate = from.parseToDatetime();
+        var endDate = to.parseToDatetime();
 
         if (startDate.Date > endDate.Date)
         {

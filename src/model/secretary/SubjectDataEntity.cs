@@ -23,5 +23,6 @@ public class SubjectDataEntity
         semester = value.semester;
         initials = value.initials;
         isActive = value.isActive;
+        number = value.number;
     }
 }

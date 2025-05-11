@@ -67,6 +67,20 @@ public class ResourceActions(ResourceController controller) : ControllerBase
         return Ok(result);
     }
     
+    /// <summary>Returns the tutor list.</summary>
+    /// <response code="200">Return list, the list can be empty</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [Authorizer("admin")]
+    [HttpGet]
+    [Route("tutors")]
+    public async Task<IActionResult> getTutorList()
+    {
+        var result = await controller.getTutorList();
+        
+        return Ok(result);
+    } 
+    
     /// <summary>Returns the transaction invoice view list.</summary>
     /// <remarks> The date values must be "day-month-year" format, example "25-01-2025".</remarks>
     /// <remarks> A date before 2,000 is not accepted.</remarks>

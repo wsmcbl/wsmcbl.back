@@ -50,7 +50,7 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
 
         var sut = new StudentDaoPostgres(context);
         
-        await sut.updateAsync(student);
+        await sut.updateBy(student);
 
         var existingStudent = await context.Set<StudentEntity>().FirstOrDefaultAsync(e => e.studentId == "std-00");
         Assert.Equal("New name", existingStudent!.name);
@@ -63,6 +63,6 @@ public class StudentDaoPostgresTest : BaseDaoPostgresTest
         
         var sut = new StudentDaoPostgres(TestDbContext.getInMemory());
 
-        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.updateAsync(student));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.updateBy(student));
     }
 }

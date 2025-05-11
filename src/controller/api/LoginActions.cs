@@ -13,7 +13,9 @@ public class LoginActions(LoginController controller) : ActionsBase
     /// <remarks>The token property can be null or empty.</remarks>
     /// <response code="200">Returns a token.</response>
     /// <response code="400">If the dto is not valid.</response>
-    /// <response code="404">Resource depends on another resource not found.</response>
+    /// <response code="401">If the user cannot be authenticated.</response>
+    /// <response code="404">If a resource depends on another resource not found.</response>
+    /// <response code="409">If the user is disabled.</response>
     [AllowAnonymous]
     [HttpPost]
     [Route("tokens")]

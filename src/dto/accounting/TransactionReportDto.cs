@@ -15,7 +15,7 @@ public class TransactionReportDto
     public TransactionReportDto(TransactionReportView view)
     {
         number = view.number;
-        datetime = view.dateTime.toStringUtc6();
+        datetime = view.dateTime.toStringFull(false);
         amount = view.total;
         type = view.type;
         studentName = view.studentName;

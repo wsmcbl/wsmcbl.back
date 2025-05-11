@@ -105,7 +105,7 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
             (e.educationalLevel != null && EF.Functions.Like(e.educationalLevel.ToLower(), value)));
     }
 
-    public async Task updateAsync(StudentEntity? entity)
+    public async Task updateBy(StudentEntity? entity)
     {
         if (entity == null)
         {
@@ -134,13 +134,5 @@ public class StudentDaoPostgres : GenericDaoPostgres<StudentEntity, string>, ISt
         }
         
         return result;
-    }
-
-    public new async Task deleteAsync(StudentEntity entity)
-    {
-        FormattableString query =$"delete from secretary.schoolyear_student where studentid = {entity.studentId};";
-        await context.Database.ExecuteSqlAsync(query);
-        
-        await base.deleteAsync(entity);
     }
 }

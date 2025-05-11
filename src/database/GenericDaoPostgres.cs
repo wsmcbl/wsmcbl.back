@@ -36,12 +36,6 @@ public abstract class GenericDaoPostgres<T, ID> : IGenericDao<T, ID> where T : c
         return await entities.ToListAsync();
     }
 
-    public async Task deleteAsync(T entity)
-    {
-        entities.Remove(entity);
-        await context.SaveChangesAsync();
-    }
-
     public void delete(T entity)
     {
         entities.Remove(entity);
