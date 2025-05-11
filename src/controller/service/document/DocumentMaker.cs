@@ -178,6 +178,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             .withStudent(student)
             .withUserAlias(userAlias)
             .withSchoolyear(schoolyear)
+            .withSchoolyearList(await daoFactory.schoolyearDao!.getAll())
             .build();
 
         setLatexBuilder(latexBuilder);
