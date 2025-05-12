@@ -9,8 +9,9 @@
 \usepackage{fancyhdr}
 \usepackage{multirow}
 \usepackage{setspace}
+\usepackage{eso-pic}
 \usepackage[spanish]{babel}
-\usepackage[left=1.5cm, right=1.5cm, top=4cm, bottom=2.5cm, headheight=2cm, headsep=1cm]{geometry}
+\usepackage[left=1.6cm, right=1.6cm, top=4cm, bottom=1.6cm, headheight=2cm, headsep=1cm]{geometry}
 
 \pagestyle{fancy}
 \fancyhead[C]
@@ -24,7 +25,7 @@
         \begin{minipage}[c][2.5cm]{0.6\textwidth}
             \centering
             \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
-            \textbf{\Large Historial académico}\\[0.1cm]
+            \textbf{\Large Historial académico \schoolYear}\\[0.1cm]
             Contacto: info@cbl-edu.com
         \end{minipage}
     }
@@ -60,11 +61,13 @@
 \renewcommand\@makefntext[1]{\noindent #1}
 \makeatother
 
-\begin{document}
-    \hfill\textbf{Año: }\schoolYear\\
-    
-    El estudiante \textbf{\studentName} con código mined \textbf{\minedId} quien cursa (o cursó) \textbf{\enrollmentName}
-    del plan de estudio de educación secundaria para el año lectivo \textbf{\schoolYear} del turno diurno, obtuvo las calificaciones siguientes.
+\AddToShipoutPictureBG*{
+    \put(\LenToUnit{1.6cm},\LenToUnit{45}){\footnotesize Impreso por wsmcbl el \currentDatetime, \userAlias.}
+}
+
+\begin{document}    
+    El estudiante \textbf{\studentName} con código mined \textbf{\minedId} quien cursó (o cursa) el \textbf{\enrollmentName}
+    del plan de estudio de educación secundaria para el año lectivo \textbf{\schoolYear} del turno diurno, obtuvo las siguientes calificaciones:
 
     \begin{table}[h]
         \centering
@@ -99,21 +102,19 @@
         \end{tabular}
     \end{table}
 
-    Escala de calificaciones en el rango de 0 a 100 puntos, escala utilizada desde 2009 hasta la fecha.
+    Escala de calificaciones en el rango de 0 a 100 puntos, utilizada desde 2009 hasta la fecha.
     La nota mínima para aprobar es \textbf{60 puntos.}
     \begin{table}[h]
         \centering
-        \begin{tabular}{l | l | l}
+        \begin{tabular}{l | c | l}
             \hline
             Nivel de competencias & Cualitativo & Cuantitativo\\\hline
             Aprendizaje avanzado & AA & 90 - 100\\
             Aprendizaje satisfactorio & AS & 76 - 89\\
-            Aprendizaje elemental & AE & 60 - 75\\
+            Aprendizaje elemental & AF & 60 - 75\\
             Aprendizaje inicial & AI & 00 - 59
         \end{tabular}
     \end{table}
 
-    Documento emitido en la cuidad de Managua, el \currentDate.
-    
-    \footnotetext{Impreso por wsmcbl el \currentDatetime, \userAlias.}
+    Este \textbf{no es un documento oficial} y está destinado para el \textbf{uso interno} de la institución, emitido en la cuidad de Managua, el \currentDate.
 \end{document}
