@@ -75,4 +75,19 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
         
         return File(result, getContentType(1), "proforma.pdf");
     }
+    
+    /// <summary>Returns academic report document by schoolyear id in PDF format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="500">Error creating document.</response>
+    [HttpGet]
+    [Route("academic/record/export")]
+    [Authorizer("student:read")]
+    public async Task<IActionResult> getAcademicRecordDocument(string studentId, string schoolyearId)
+    {
+        var userId = getAuthenticatedUserId();
+        var result = await controller.getAcademicRecordDocument(studentId, schoolyearId, userId);
+        return File(result, getContentType(1), "academic-record.pdf");
+    }
 }
