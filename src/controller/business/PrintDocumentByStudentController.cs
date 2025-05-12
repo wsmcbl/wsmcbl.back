@@ -51,4 +51,9 @@ public class PrintDocumentByStudentController : BaseController
     {
         return await documentMaker.getAccountStatement(studentId, await getUserAlias(userId));
     }
+
+    public async Task<byte[]> getAcademicRecordDocument(string studentId, string schoolyearId, string userId)
+    {
+        return await documentMaker.getAcademicRecord(studentId, schoolyearId, await getUserAlias(userId));
+    }
 }
