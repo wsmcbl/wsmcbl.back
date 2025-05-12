@@ -12,8 +12,6 @@
 \usepackage[spanish]{babel}
 \usepackage[left=1.5cm, right=1.5cm, top=4cm, bottom=2.5cm, headheight=2cm, headsep=1cm]{geometry}
 
-\newcommand{\schoolYear}{schoolyear.value}
-
 \pagestyle{fancy}
 \fancyhead[C]
 {
@@ -26,8 +24,8 @@
         \begin{minipage}[c][2.5cm]{0.6\textwidth}
             \centering
             \textbf{\LARGE Colegio Bautista Libertad}\\[0.2cm]
-            \textbf{\Large Boleta \schoolYear}\\[0.1cm]
-            Contacto: secretaria@cbl-edu.com
+            \textbf{\Large Historial académico}\\[0.1cm]
+            Contacto: info@cbl-edu.com
         \end{minipage}
     }
 }
@@ -44,11 +42,10 @@
 \newcommand{\aDupleCenter}[2]{\hfill \aDupleLeft{#1}{#2}}
 \newcommand{\aDupleRight}[2]{\hfill\textbf{#1}\hspace{2mm} #2}
 
-\newcommand{\degree}{degree.value}
-\newcommand{\studentId}{student.id.value}
+\newcommand{\enrollmentName}{enrollment.value}
+\newcommand{\minedId}{mined.id.value}
 \newcommand{\studentName}{student.name.value}
-\newcommand{\teacherName}{teacher.name.value}
-\newcommand{\teacherMail}{teacher.mail.value}
+\newcommand{\schoolYear}{schoolyear.value}
 
 \newcommand{\firstAverage}{first.average.value}
 \newcommand{\secondAverage}{second.average.value}
@@ -56,16 +53,18 @@
 \newcommand{\fourthAverage}{fourth.average.value}
 \newcommand{\finalAverage}{final.average.value}
 
-\newcommand{\secretaryName}{secretary.name.value}
+\newcommand{\userAlias}{user.alias.value}
+\newcommand{\currentDate}{current.date.value}
 \newcommand{\currentDatetime}{current.datetime.value}
 \makeatletter
 \renewcommand\@makefntext[1]{\noindent #1}
 \makeatother
 
 \begin{document}
-    \aLine{\aDupleLeft{Código:}{\studentId} \aDupleRight{Grado:}{\degree}}
-    \aDupleLeft{Estudiante:}{\studentName}\\
-    \aDupleLeft{Docente guía:}{\teacherName}
+    \hfill\textbf{Año: }\schoolYear\\
+    
+    El estudiante \textbf{\studentName} con código mined \textbf{\minedId} quien cursa (o cursó) \textbf{\enrollmentName}
+    del plan de estudio de educación secundaria para el año lectivo \textbf{\schoolYear} del turno diurno, obtuvo las calificaciones siguientes.
 
     \begin{table}[h]
         \centering
@@ -99,6 +98,22 @@
             \multicolumn{2}{r|}{\finalAverage} \\\hline
         \end{tabular}
     \end{table}
-    Cualquier duda o comentario, puede escribir a: \textbf{\teacherMail}
-    \footnotetext{Impreso por wsmcbl el \currentDatetime\secretaryName.}
+
+    Escala de calificaciones en el rango de 0 a 100 puntos, escala utilizada desde 2009 hasta la fecha.
+    La nota mínima para aprobar es \textbf{60 puntos.}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l | l | l}
+            \hline
+            Nivel de competencias & Cualitativo & Cuantitativo\\\hline
+            Aprendizaje avanzado & AA & 90 - 100\\
+            Aprendizaje satisfactorio & AS & 76 - 89\\
+            Aprendizaje elemental & AE & 60 - 75\\
+            Aprendizaje inicial & AI & 00 - 59
+        \end{tabular}
+    \end{table}
+
+    Documento emitido en la cuidad de Managua, el \currentDate.
+    
+    \footnotetext{Impreso por wsmcbl el \currentDatetime, \userAlias.}
 \end{document}
