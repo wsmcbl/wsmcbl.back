@@ -88,6 +88,6 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     {
         var userId = getAuthenticatedUserId();
         var result = await controller.getAcademicRecordDocument(studentId, schoolyearId, userId);
-        return File(result, getContentType(1), "academic-record.pdf");
+        return File(result, getContentType(1), $"{studentId}.academic-record.pdf");
     }
 }
