@@ -195,10 +195,23 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
             throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
         }
 
+        var academic = await daoFactory.academyStudentDao!.getById(studentId, schoolyearId);
+        if (academic == null)
+        {
+            throw new EntityNotFoundException($"The student ({studentId}) has no records for the schoolyear ({schoolyearId}).");
+        }
+        
+        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(academic.enrollmentId!);
+        var enrollment = await daoFactory.enrollmentDao!.getById(academic.enrollmentId!);
+        
         var latexBuilder = new AcademicRecordLatexBuilder.Builder(resource, $"{resource}/out/academic-record")
             .withStudent(student)
             .withUserAlias(userAlias)
             .withSchoolyear(schoolyear)
+            .withPartialList(partialList)
+            .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
+            .withSubjectList(await daoFactory.academySubjectDao!.getByEnrollmentId(academic.enrollmentId!))
+            .withEnrollmentLabel(enrollment!.label)
             .build();
 
         setLatexBuilder(latexBuilder);
