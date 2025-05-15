@@ -32,6 +32,7 @@ public class AcademySubjectDaoPostgres(PostgresContext context)
 
     public async Task<List<SubjectEntity>> getListByTeacherId(string teacherId)
     {
-        return await entities.Where(e => e.teacherId == teacherId).ToListAsync();
+        return await entities.Where(e => e.teacherId == teacherId)
+            .Include(e => e.secretarySubject).ToListAsync();
     }
 }
