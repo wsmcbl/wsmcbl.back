@@ -9,4 +9,17 @@ public class ViewTeacherDashboardController(DaoFactory daoFactory) : BaseControl
     {
         return await daoFactory.academySubjectDao!.getListByTeacherId(teacherId);
     }
+
+    public async Task<List<object?>> getSubjectListByGrade(string teacherId)
+    {
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
+        
+        var firstPartial = partialList.FirstOrDefault(e => e is { semester: 1, partial: 1 });
+        if (firstPartial == null)
+        {
+            return [];
+        }
+        
+        return await daoFactory.subjectPartialDao!.getSubjectList(teacherId, firstPartial.partialId);
+    }
 }

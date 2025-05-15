@@ -4,7 +4,7 @@ using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
 
-[Route("academy")]
+[Route("academy/teachers/{teacherId}/subjects")]
 [ApiController]
 public class ViewTeacherDashboardActions(ViewTeacherDashboardController controller) : ActionsBase
 {
@@ -13,7 +13,7 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("teachers/{teacherId}/subjects")]
+    [Route("")]
     [Authorizer("report:teacher:read")]
     public async Task<IActionResult> getSubjectList(string teacherId)
     {
@@ -21,13 +21,12 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
         return Ok(result);
     }
     
-    /// 
     /// <summary>Get percentage of students evaluated by subjects.</summary>
     /// <response code="200">Return the value</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
-    [Route("teachers/{teacherId}/subjects/summary")]
+    [Route("percentage-evaluated")]
     [Authorizer("report:teacher:read")]
     public async Task<IActionResult> getSummaryPercentageSubjectList(string teacherId)
     {
