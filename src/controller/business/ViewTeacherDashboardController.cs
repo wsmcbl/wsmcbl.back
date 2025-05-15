@@ -14,7 +14,7 @@ public class ViewTeacherDashboardController(DaoFactory daoFactory) : BaseControl
     {
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
         
-        var firstPartial = partialList.FirstOrDefault(e => e is { semester: 1, partial: 1 });
+        var firstPartial = partialList.FirstOrDefault(e=> e.recordIsActive());
         if (firstPartial == null)
         {
             return [];
