@@ -48,6 +48,9 @@ public static class DtoMapper
     public static List<SubjectDto> mapListToDto(this IEnumerable<model.secretary.SubjectEntity> list) =>
         list.Select(e => new SubjectDto(e)).ToList();
 
+    public static List<SubjectTeacherDto> mapListToDto(this IEnumerable<SubjectEntity> list) =>
+        list.Select(e => new SubjectTeacherDto(e)).ToList();
+
     public static List<StudentAverageDto> mapListToDto(this List<StudentEntity> list) =>
         list.Select(e => new StudentAverageDto(e)).ToList();
 
@@ -63,4 +66,7 @@ public static class DtoMapper
         var result = list.Select(e => e.secretarySubject).ToList();
         return result.Select(e => e!.mapToBasicDto()).ToList();
     }
+    
+    public static List<SubjectPercentageByTeacherDto> mapListToSummaryPercentageDto(this List<SubjectPartialEntity> value) =>
+        value.Select(e => new SubjectPercentageByTeacherDto(e)).ToList();
 }
