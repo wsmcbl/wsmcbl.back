@@ -19,7 +19,7 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     public async Task<IActionResult> getSubjectList(string teacherId)
     {
         var result = await controller.getSubjectList(teacherId);
-        return Ok(result.mapToListDto());
+        return Ok(result.mapListToDto());
     }
     
     /// <summary>Get percentage of students evaluated by subjects.</summary>
@@ -32,6 +32,6 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     public async Task<IActionResult> getSummaryPercentageSubjectList(string teacherId)
     {
         var result = await controller.getSubjectListByGrade(teacherId);
-        return Ok(result);
+        return Ok(result.mapListToSummaryPercentageDto());
     }
 }
