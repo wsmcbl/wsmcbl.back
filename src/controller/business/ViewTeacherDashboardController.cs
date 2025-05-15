@@ -20,6 +20,6 @@ public class ViewTeacherDashboardController(DaoFactory daoFactory) : BaseControl
             return [];
         }
         
-        return await daoFactory.subjectPartialDao!.getSubjectList(teacherId, firstPartial.partialId);
+        return await daoFactory.subjectPartialDao!.getListByTeacherAndPartial(teacherId, firstPartial.partialId);
     }
 }
