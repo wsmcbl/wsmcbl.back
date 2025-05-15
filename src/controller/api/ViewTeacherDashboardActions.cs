@@ -15,9 +15,23 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     [HttpGet]
     [Route("teachers/{teacherId}/subjects")]
     [Authorizer("report:teacher:read")]
-    public async Task<IActionResult> getSummarySubjects(string teacherId)
+    public async Task<IActionResult> getSubjectList(string teacherId)
     {
         var result = await controller.getSubjectList(teacherId);
+        return Ok(result);
+    }
+    
+    /// 
+    /// <summary>Get percentage of students evaluated by subjects.</summary>
+    /// <response code="200">Return the value</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    [HttpGet]
+    [Route("teachers/{teacherId}/subjects/summary")]
+    [Authorizer("report:teacher:read")]
+    public async Task<IActionResult> getSummaryPercentageSubjectList(string teacherId)
+    {
+        var result = await controller.getSubjectListByGrade(teacherId);
         return Ok(result);
     }
 }
