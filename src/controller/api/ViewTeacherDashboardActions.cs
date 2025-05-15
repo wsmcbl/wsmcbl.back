@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using wsmcbl.src.controller.business;
+using wsmcbl.src.dto.academy;
 using wsmcbl.src.middleware;
 
 namespace wsmcbl.src.controller.api;
@@ -18,7 +19,7 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     public async Task<IActionResult> getSubjectList(string teacherId)
     {
         var result = await controller.getSubjectList(teacherId);
-        return Ok(result);
+        return Ok(result.mapToListDto());
     }
     
     /// <summary>Get percentage of students evaluated by subjects.</summary>

@@ -10,7 +10,7 @@ public class ViewTeacherDashboardController(DaoFactory daoFactory) : BaseControl
         return await daoFactory.academySubjectDao!.getListByTeacherId(teacherId);
     }
 
-    public async Task<List<object?>> getSubjectListByGrade(string teacherId)
+    public async Task<List<SubjectPartialEntity>> getSubjectListByGrade(string teacherId)
     {
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
         
