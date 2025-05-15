@@ -66,4 +66,7 @@ public static class DtoMapper
         var result = list.Select(e => e.secretarySubject).ToList();
         return result.Select(e => e!.mapToBasicDto()).ToList();
     }
+    
+    public static List<SubjectPercentageByTeacherDto> mapListToSummaryPercentageDto(this List<SubjectPartialEntity> value) =>
+        value.Select(e => new SubjectPercentageByTeacherDto(e)).ToList();
 }
