@@ -17,7 +17,7 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
     [Authorizer("report:teacher:read")]
     public async Task<IActionResult> getSummarySubjects(string teacherId)
     {
-        var result = await controller.getSummarySubject();
+        var result = await controller.getSubjectList(teacherId);
         return Ok(result);
     }
 }

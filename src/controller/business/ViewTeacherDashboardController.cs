@@ -5,8 +5,8 @@ namespace wsmcbl.src.controller.business;
 
 public class ViewTeacherDashboardController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
-    public async Task<List<SubjectEntity>> getSummarySubject()
+    public async Task<List<SubjectEntity>> getSubjectList(string teacherId)
     {
-        return await daoFactory.academySubjectDao!.getAll();
+        return await daoFactory.academySubjectDao!.getListByTeacherId(teacherId);
     }
 }
