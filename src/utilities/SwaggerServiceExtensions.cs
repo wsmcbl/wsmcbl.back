@@ -9,7 +9,7 @@ public static class SwaggerServiceExtensions
 {
     public static void SwaggerUIConfig(this SwaggerUIOptions options)
     {
-        options.SwaggerEndpoint("/swagger/v6/swagger.json", "WSMCBL_API_V6");
+        options.SwaggerEndpoint("/swagger/v7/swagger.json", "WSMCBL_API_V7");
         options.RoutePrefix = string.Empty;
     }
     
@@ -17,10 +17,10 @@ public static class SwaggerServiceExtensions
     {
         services.AddSwaggerGen(setupAction: options =>
         {
-            options.SwaggerDoc(name: "v6",
+            options.SwaggerDoc(name: "v7",
                 info: new OpenApiInfo
                 {
-                    Version = "v6", Title = "WSMCBL_API",
+                    Version = "v7", Title = "WSMCBL_API",
                     Description = "API of the Web System for Management of Colegio Bautista Libertad",
                     Contact = new OpenApiContact
                     {
