@@ -22,7 +22,7 @@ public class ViewTeacherDashboardActions(ViewTeacherDashboardController controll
         return Ok(result.mapListToDto());
     }
     
-    /// <summary>Get percentage of students evaluated by subjects.</summary>
+    /// <summary>Get percentage of students evaluated by subjects for current active partial.</summary>
     /// <response code="200">Return the value</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
