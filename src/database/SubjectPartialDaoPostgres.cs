@@ -61,7 +61,7 @@ public class SubjectPartialDaoPostgres(PostgresContext context) :
     public async Task<List<SubjectPartialEntity>> getListByTeacherAndPartial(string teacherId, int partialId)
     {
         return await entities.AsNoTracking()
-            .Where(e => e.partialId == partialId && e.partialId == partialId)
+            .Where(e => e.teacherId == teacherId && e.partialId == partialId)
             .Include(e => e.gradeList)
             .ThenInclude(e => e.student)
             .ToListAsync();
