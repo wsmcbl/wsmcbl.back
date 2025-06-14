@@ -70,13 +70,13 @@ public class TeacherDaoPostgres(PostgresContext context) : GenericDaoPostgres<Te
         return await entities.AsNoTracking().GroupJoin(context.Set<SubjectGradedView>(),
             e => e.teacherId,
             s => s.teacherId,
-            (item, subjectList) => new TeacherEntity
+            (item, subjectGradedList) => new TeacherEntity
             {
                 userId = item.userId,
                 teacherId = item.teacherId,
                 isGuide = item.isGuide,
                 user = item.user,
-                subjectGradedList = subjectList.ToList()
+                subjectGradedList = subjectGradedList.Where(e => e.partialId == currentPartial.partialId).ToList()
             }).ToListAsync();
     }
 
