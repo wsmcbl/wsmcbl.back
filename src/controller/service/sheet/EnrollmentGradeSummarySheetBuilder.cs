@@ -6,7 +6,7 @@ namespace wsmcbl.src.controller.service.sheet;
 
 public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 {
-    private string partialLabel { get; set; } = null!;
+    private PartialEntity partial { get; set; } = null!;
     private string schoolyear { get; set; } = null!;
     private string enrollmentLabel { get; set; } = null!;
     private string userAlias { get; set; } = null!;
@@ -86,7 +86,7 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
             bodyColumn += 2;
         }
 
-        var average = student.getAverage(1);
+        var average = student.getAverage(partial.partialId);
         worksheet.Cell(headerRow, bodyColumn++).Value = average.getConductLabel();
         worksheet.Cell(headerRow, bodyColumn++).Value = average.conductGrade.ToString("F2");
         
@@ -153,7 +153,7 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
         worksheet.Row(titleRow).Height = 25;
         
         var subTitle = worksheet.Range($"B{titleRow + 1}:{lastColumnName}{titleRow + 1}").Merge();
-        subTitle.Value = $"Sabana {partialLabel} {schoolyear}";
+        subTitle.Value = $"Sabana {partial.label} {schoolyear}";
         subTitle.Style.Font.Bold = true;
         subTitle.Style.Font.FontSize = 13;
         subTitle.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -185,9 +185,9 @@ public class EnrollmentGradeSummarySheetBuilder : SheetBuilder
 
         public EnrollmentGradeSummarySheetBuilder build() => sheetBuilder;
         
-        public Builder withPartial(string parameter)
+        public Builder withPartial(PartialEntity parameter)
         {
-            sheetBuilder.partialLabel = parameter;
+            sheetBuilder.partial = parameter;
             return this;
         }
         
