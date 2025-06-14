@@ -65,8 +65,11 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             foreach (var subject in partial.subjectPartialList!)
             {
                 subject.setStudentGrade(student.studentId);
-                value += (decimal)subject.studentGrade!.grade!;
-                conductValue += (decimal)subject.studentGrade!.conductGrade!;
+                if (subject.studentGrade != null)
+                {
+                    value += (decimal)subject.studentGrade!.grade!;
+                    conductValue += (decimal)subject.studentGrade!.conductGrade!;
+                }
                 quantity++;
             }
 
@@ -149,7 +152,8 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         foreach (var item in partial.subjectPartialList!)
         {
             item.setStudentGrade(student.studentId);
-            conduct += (decimal)item.studentGrade!.conductGrade!;
+            if(item.studentGrade != null)
+                conduct += (decimal)item.studentGrade!.conductGrade!;
             quantity++;
         }
         
@@ -184,7 +188,7 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
             }
 
             result.setStudentGrade(student.studentId);
-            content.Append(gradeFormat(result.studentGrade!.grade, result.studentGrade.label));
+            content.Append(gradeFormat(result.studentGrade?.grade, result.studentGrade?.label));
         }
 
         content.Append(getFinalGrade(subjectId));
@@ -202,7 +206,11 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
                 
             quantity++;
             result.setStudentGrade(student.studentId);
-            grade += (decimal)result.studentGrade!.grade!;
+
+            if (result.studentGrade != null)
+            {
+                grade += (decimal)result.studentGrade!.grade!;
+            }
         }
 
         if (quantity != 2 && quantity != 4) return gradeFormat(null);
