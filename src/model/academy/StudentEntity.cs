@@ -1,4 +1,3 @@
-using ClosedXML.Excel;
 using wsmcbl.src.exception;
 using wsmcbl.src.utilities;
 
@@ -72,7 +71,7 @@ public class StudentEntity
         var result = averageList.FirstOrDefault(e => e.partialId == partialId);
         if (result == null)
         {
-            throw new EntityNotFoundException($"The GradeAverageEntity for partialId ({partialId}) in StudentEntity not found.");
+            throw new EntityNotFoundException($"The GradeAverageEntity for partialId ({partialId}) in StudentEntity.AverageList not found.");
         }
 
         return result;

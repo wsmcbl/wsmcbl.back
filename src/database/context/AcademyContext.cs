@@ -114,9 +114,7 @@ internal class AcademyContext
             entity.Ignore(e => e.partials);
             entity.Ignore(e => e.gradeList);
             entity.Ignore(e => e.enrollmentLabel);
-            
-            entity.HasMany(d => d.averageList).WithOne()
-                .HasForeignKey(d =>  new { d.studentId, d.enrollmentId });
+            entity.Ignore(e => e.averageList);
         });
 
         modelBuilder.Entity<WithdrawnStudentEntity>(entity =>
