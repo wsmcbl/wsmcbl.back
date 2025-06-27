@@ -58,29 +58,36 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
 
     public async Task<List<StudentEntity>> getListWithGradesByEnrollmentId(string enrollmentId, int partialId)
     {
-        return await entities.AsNoTracking()
+        var studentList = await entities.AsNoTracking()
             .Where(e => e.enrollmentId == enrollmentId)
             .Include(e => e.student)
-            .Include(e => e.averageList)
-            .GroupJoin(
-                context.Set<GradeView>().Where(e => e.enrollmentId == enrollmentId && e.partialId == partialId),
-                s => s.studentId,
-                g => g.studentId,
-                (std, gradeList) => new StudentEntity
-                {
-                    studentId = std.studentId,
-                    enrollmentId = std.enrollmentId,
-                    schoolyearId = std.schoolyearId,
-                    isApproved = std.isApproved,
-                    isRepeating = std.isRepeating,
-                    createdAt = std.createdAt,
-                    student = std.student,
-                    averageList = std.averageList!.Where(e => e.enrollmentId == enrollmentId && e.partialId == partialId).ToList(),
-                    gradeList = gradeList.ToList()
-                })
+            .ToListAsync();
+
+        var studentIdSet = new HashSet<string>(studentList.Select(s => s.studentId).ToList());
+
+        var gradeList = await context.Set<GradeView>()
+            .Where(g => g.partialId == partialId && studentIdSet.Contains(g.studentId))
+            .ToListAsync();
+
+        var averageList = await context.Set<GradeAverageView>()
+            .Where(g => g.partialId == partialId && studentIdSet.Contains(g.studentId))
+            .ToListAsync();
+
+        return studentList.Select(std => new StudentEntity
+            {
+                studentId = std.studentId,
+                enrollmentId = std.enrollmentId,
+                schoolyearId = std.schoolyearId,
+                isApproved = std.isApproved,
+                isRepeating = std.isRepeating,
+                createdAt = std.createdAt,
+                student = std.student,
+                gradeList = gradeList.Where(g => g.studentId == std.studentId).ToList(),
+                averageList = averageList.Where(g => g.studentId == std.studentId).ToList()
+            })
             .OrderBy(e => e.student.sex)
             .ThenBy(e => e.student.name)
-            .ToListAsync();
+            .ToList();
     }
 
     public async Task<List<StudentEntity>> getListWithGradesByDegreeId(string degreeId, int partialId)
