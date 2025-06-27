@@ -120,6 +120,37 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .Include(e => e.student).ToListAsync();
     }
 
+    public async Task<List<StudentEntity>> getListWithAverageGradesByEnrollmentId(string enrollmentId)
+    {
+        var studentList = await entities.AsNoTracking()
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.student)
+            .ToListAsync();
+
+        var studentIdSet = new HashSet<string>(studentList.Select(s => s.studentId).ToList());
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+
+        var averageList = await context.Set<GradeAverageView>()
+            .Where(g => studentIdSet.Contains(g.studentId) && g.schoolyearId == schoolyear.id)
+            .ToListAsync();
+
+        return studentList.Select(std => new StudentEntity
+            {
+                studentId = std.studentId,
+                enrollmentId = std.enrollmentId,
+                schoolyearId = std.schoolyearId,
+                isApproved = std.isApproved,
+                isRepeating = std.isRepeating,
+                createdAt = std.createdAt,
+                student = std.student,
+                gradeList = [],
+                averageList = averageList.Where(g => g.studentId == std.studentId).ToList()
+            })
+            .OrderBy(e => e.student.sex)
+            .ThenBy(e => e.student.name)
+            .ToList();
+    }
+
     public async Task<List<StudentEntity>> getListBeforeFirstPartial(string? enrollmentId = null)
     {
         var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
