@@ -110,8 +110,7 @@ internal class AcademyContext
                 .HasForeignKey(d => d.studentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_studentid_fkey");
-            
-            entity.Ignore(e => e.partials);
+
             entity.Ignore(e => e.gradeList);
             entity.Ignore(e => e.enrollmentLabel);
             entity.Ignore(e => e.averageList);

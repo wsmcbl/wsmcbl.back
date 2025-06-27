@@ -14,7 +14,6 @@ public class StudentEntity
     public string? enrollmentLabel { get; set; }
     
     public secretary.StudentEntity student { get; set; } = null!;
-    public List<PartialEntity>? partials { get; set; }
     public List<GradeView>? gradeList { get; set; }
     public List<GradeAverageView>? averageList { get; set; }
     
