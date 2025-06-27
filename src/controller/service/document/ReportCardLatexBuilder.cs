@@ -52,51 +52,29 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     private List<string> getAverageList()
     {
-        var totalQuantity = 0;
-        decimal totalValue = 0; 
         var result = new List<string>();
 
+        var quantity = 0;
+        var gradeAccumulator = 0m;
+        
         foreach (var partial in partialList)
         {
-            var quantity = 0;
-            decimal value = 0;
-            decimal conductValue = 0;
-            
-            foreach (var subject in partial.subjectPartialList!)
-            {
-                subject.setStudentGrade(student.studentId);
-                if (subject.studentGrade != null)
-                {
-                    value += (decimal)subject.studentGrade!.grade!;
-                    conductValue += (decimal)subject.studentGrade!.conductGrade!;
-                }
-                quantity++;
-            }
+            var grade = student.averageList?.FirstOrDefault(e => e.partialId == partial.partialId);
 
-            if (quantity == 0)
+            if (grade != null)
+            {
+                quantity++;
+                gradeAccumulator += grade.grade;
+                result.Add($"{grade.grade:F2}");
+            }
+            else
             {
                 result.Add("");
-                continue;
             }
-
-            var conduct = conductValue/quantity;
-            var grade = (value + conduct) / (quantity + 1);
-            result.Add($"{grade:F2}");
-
-            totalQuantity++;
-            totalValue += grade;   
         }
 
-        if (totalQuantity < 4)
-        {
-            result.Add("");
-        }
-        else
-        {
-            var grade = totalValue / totalQuantity;
-            result.Add($"{grade:F2}");
-        }
-        
+        var average = quantity is 2 or 4 ? $"{gradeAccumulator / quantity:F2}" : string.Empty;  
+        result.Add(average);
         return result;
     }
 
@@ -129,39 +107,22 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
         foreach (var partial in partialList)
         {
-            var result = addConductGradeByPartial(content, partial);
-            conduct += result.conduct;
-            quantity += result.counter;            
+            var grade = student.averageList?.FirstOrDefault(e => e.partialId == partial.partialId);
+            if (grade == null)
+            {
+                content.Append(gradeFormat(null));
+                continue;
+            }
+            
+            quantity++;
+            conduct += grade.conductGrade;
+            content.Append(gradeFormat(grade.conductGrade));
         }
 
-        content.Append(quantity != 4 ? gradeFormat(null) : gradeFormat(conduct/quantity));
+        content.Append(quantity is 2 or 4 ? gradeFormat(conduct / quantity) : gradeFormat(null));
         content.Append("\\\\\\hline");
     }
 
-    private (decimal conduct, int counter) addConductGradeByPartial(StringBuilder content, PartialEntity partial)
-    {
-        if (partial.subjectPartialList!.Count == 0)
-        {
-            content.Append(gradeFormat(null));
-            return (0, 0);
-        }
-        
-        var conduct = 0m;
-        var quantity = 0;
-
-        foreach (var item in partial.subjectPartialList!)
-        {
-            item.setStudentGrade(student.studentId);
-            if(item.studentGrade != null)
-                conduct += (decimal)item.studentGrade!.conductGrade!;
-            quantity++;
-        }
-        
-        var grade = conduct/quantity;
-
-        content.Append(gradeFormat(grade));
-        return (grade, quantity > 0 ? 1 : 0);
-    }
 
     private void getSubjectDetail(StringBuilder content, int areaId)
     {
@@ -171,51 +132,33 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         foreach (var item in list)
         {
             content.Append($"{{\\footnotesize {item.secretarySubject!.name}}}");
-            getGrades(content, item.subjectId);
+            getGradesBySubject(content, item.subjectId);
             content.Append("\\\\\\hline");
         }
     }
 
-    private void getGrades(StringBuilder content, string subjectId)
+    private void getGradesBySubject(StringBuilder content, string subjectId)
     {
+        var quantity = 0;
+        var gradeAccumulator = 0m;
+        
         foreach (var partial in partialList)
         {
-            var result = partial.getSubjectPartialById(subjectId);
-            if (result == null)
+            var grade = student.gradeList?.FirstOrDefault(e => e.partialId == partial.partialId && e.subjectId == subjectId);
+            if (grade == null)
             {
                 content.Append(gradeFormat(null));
                 continue;
             }
 
-            result.setStudentGrade(student.studentId);
-            content.Append(gradeFormat(result.studentGrade?.grade, result.studentGrade?.label));
-        }
-
-        content.Append(getFinalGrade(subjectId));
-    }
-
-    private string getFinalGrade(string subjectId)
-    {
-        var grade = 0m;
-        var quantity = 0;
-
-        foreach (var partial in partialList)
-        {
-            var result = partial.getSubjectPartialById(subjectId);
-            if (result == null) continue;
-                
+            content.Append(gradeFormat(grade.grade, grade.label));
+            
             quantity++;
-            result.setStudentGrade(student.studentId);
-
-            if (result.studentGrade != null)
-            {
-                grade += (decimal)result.studentGrade!.grade!;
-            }
+            gradeAccumulator += grade.grade;
         }
 
-        if (quantity != 2 && quantity != 4) return gradeFormat(null);
-
-        return gradeFormat(grade/quantity);
+        var average = quantity is 2 or 4 ? gradeFormat(gradeAccumulator / quantity) : gradeFormat(null);
+        content.Append(average);
     }
     
     private static string gradeFormat(decimal? grade, string? label = null)
