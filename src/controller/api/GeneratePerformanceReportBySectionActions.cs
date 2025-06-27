@@ -11,16 +11,16 @@ namespace wsmcbl.src.controller.api;
 [Authorizer("teacher:enrollment:guide")]
 public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReportBySectionController controller) : ActionsBase 
 {
-    /// <summary>Returns performance enrollment by teacher.</summary>
+    /// <summary>Returns the enrollment performance by teacher for current schoolyear.</summary>
     /// <response code="200">Returns a list.</response>
     /// <response code="401">If the query was made without authentication.</response>
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="404">Teacher or enrollment not found.</response>
     [HttpGet]
     [Route("performance")]
-    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId, [Required] [FromQuery] int partialId)
+    public async Task<IActionResult> getPerformanceEnrollmentGuide([Required] string teacherId)
     {
-        var result = await controller.getStudentListByTeacherId(teacherId, partialId);
+        var result = await controller.getStudentListByTeacherId(teacherId);
         return Ok(result.mapListToDto());
     }
     
