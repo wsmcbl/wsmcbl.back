@@ -10,7 +10,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getReportCardByStudent(string studentId, string? userAlias)
     {
-        var student = await daoFactory.academyStudentDao!.getCurrentById(studentId);
+        var student = await daoFactory.academyStudentDao!.getCurrentWithGradeById(studentId);
         var teacher = await daoFactory.teacherDao!.getByEnrollmentId(student.enrollmentId!);
         if (teacher == null)
         {
