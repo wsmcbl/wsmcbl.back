@@ -56,6 +56,21 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return result;
     }
 
+    public async Task<StudentEntity> getCurrentWithGradeById(string studentId)
+    {
+        var student = await getCurrentById(studentId);
+        
+        student.gradeList = await context.Set<GradeView>()
+            .Where(g => g.studentId == student.studentId && g.schoolyearId == student.schoolyearId)
+            .ToListAsync();
+
+        student.averageList = await context.Set<GradeAverageView>()
+            .Where(g => g.studentId == student.studentId && g.schoolyearId == student.schoolyearId)
+            .ToListAsync();
+        
+        return student;
+    }
+
     public async Task<List<StudentEntity>> getListWithGradesByEnrollmentId(string enrollmentId, int partialId)
     {
         var studentList = await entities.AsNoTracking()
