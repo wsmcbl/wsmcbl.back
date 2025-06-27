@@ -51,14 +51,14 @@ public class StudentEntity
         return DateOnly.FromDateTime(createdAt.toUTC6());
     }
 
-    public decimal? computeFinalGrade()
+    public decimal? computeAverageGrade()
     {
-        if (averageList is not { Count: 4 })
+        if (averageList != null)
         {
-            return null;
+            return averageList.Sum(item => item.grade) / averageList.Count;
         }
-
-        return averageList.Sum(item => item.grade) / 4;
+        
+        return null;
     }
 
     public GradeAverageView getAverage(int partialId)
