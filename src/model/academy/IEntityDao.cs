@@ -48,6 +48,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<List<StudentEntity>> getListWithGradesByDegreeId(string degreeId, int partialId);
     public Task<List<StudentEntity>> getListBeforeFirstPartialByDegreeId(string degreeId);
     public Task<List<StudentEntity>> getListWithAverageGradesByEnrollmentId(string enrollmentId);
+    public Task<StudentEntity> getByIdWithGrade(string studentId, string schoolyearId);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>
@@ -69,7 +70,7 @@ public interface IGradeDao : IGenericDao<GradeEntity, int>
 
 public interface IWithdrawnStudentDao : IGenericDao<WithdrawnStudentEntity, int>
 {
-    public Task<WithdrawnStudentEntity> getByIdInCurrentSchoolyear(string studentId);
+    public Task<WithdrawnStudentEntity> getBySchoolyearId(string studentId, string schoolyearId);
     public Task<List<WithdrawnStudentEntity>> getAllForCurrentSchoolyear();
     public Task<List<WithdrawnStudentEntity>> getListByDegreeId(string degreeId);
     public Task<List<WithdrawnStudentEntity>> getListByEnrollmentId(string enrollmentId,  bool hasBeforeFirstPartial = false);

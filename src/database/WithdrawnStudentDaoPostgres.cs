@@ -15,16 +15,14 @@ public class WithdrawnStudentDaoPostgres : GenericDaoPostgres<WithdrawnStudentEn
         daoFactory = new DaoFactoryPostgres(context);
     }
     
-    public async Task<WithdrawnStudentEntity> getByIdInCurrentSchoolyear(string studentId)
+    public async Task<WithdrawnStudentEntity> getBySchoolyearId(string studentId, string schoolyearId)
     {
-        var schoolyear = await daoFactory.schoolyearDao!.getCurrentOrNew();
-
         var result = await entities
-            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolyearId == schoolyear.id);
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolyearId == schoolyearId);
         
         if (result == null)
         {
-            throw new EntityNotFoundException("WithdrawnStudentEntity", studentId);
+            throw new EntityNotFoundException("WithdrawnStudentEntity", $"studentId: {studentId}, schoolyearId: {schoolyearId}");
         }
 
         return result;
