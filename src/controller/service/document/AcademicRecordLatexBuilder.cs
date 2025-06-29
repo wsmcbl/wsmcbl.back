@@ -2,7 +2,7 @@ using System.Text;
 using wsmcbl.src.model.academy;
 using wsmcbl.src.model.secretary;
 using wsmcbl.src.utilities;
-using StudentEntity = wsmcbl.src.model.secretary.StudentEntity;
+using StudentEntity = wsmcbl.src.model.academy.StudentEntity;
 using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.controller.service.document;
@@ -11,8 +11,9 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
 {
     private string userAlias { get; set; } = null!;
     private string enrollmentLabel { get; set; } = null!;
+    private string schoolyearLabel { get; set; } = null!;
+    
     private StudentEntity student { get; set; } = null!;
-    private SchoolyearEntity schoolyear { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
     private List<SubjectAreaEntity> subjectAreaList { get; set; } = null!;
     private List<PartialEntity> partialList { get; set; } = null!;
@@ -25,11 +26,11 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
         
         content.Replace("logo.value", $"{getImagesPath()}/cbl-logo-wb.png");
         
-        content.Replace("schoolyear.value", schoolyear.label);
+        content.Replace("schoolyear.value", schoolyearLabel);
         
         content.Replace("student.id.value", student.studentId);
         content.Replace("student.name.value", student.fullName());
-        content.Replace("mined.id.value", student.minedId.getOrDefault());
+        content.Replace("mined.id.value", student.student.minedId.getOrDefault());
         content.Replace("enrollment.value", enrollmentLabel.ToUpper());
         
         content.Replace("detail.value", getDetail());
@@ -48,51 +49,31 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
         return content.ToString();
     }
     
-
     private List<string> getAverageList()
     {
-        var totalQuantity = 0;
-        decimal totalValue = 0; 
         var result = new List<string>();
 
+        var quantity = 0;
+        var gradeAccumulator = 0m;
+        
         foreach (var partial in partialList)
         {
-            var quantity = 0;
-            decimal value = 0;
-            decimal conductValue = 0;
-            
-            foreach (var subject in partial.subjectPartialList!)
-            {
-                subject.setStudentGrade(student.studentId!);
-                value += (decimal)subject.studentGrade!.grade!;
-                conductValue += (decimal)subject.studentGrade!.conductGrade!;
-                quantity++;
-            }
+            var grade = student.averageList?.FirstOrDefault(e => e.partialId == partial.partialId);
 
-            if (quantity == 0)
+            if (grade != null)
+            {
+                quantity++;
+                gradeAccumulator += grade.grade;
+                result.Add($"{grade.grade:F2}");
+            }
+            else
             {
                 result.Add("");
-                continue;
             }
-
-            var conduct = conductValue/quantity;
-            var grade = (value + conduct) / (quantity + 1);
-            result.Add($"{grade:F2}");
-
-            totalQuantity++;
-            totalValue += grade;   
         }
 
-        if (totalQuantity < 4)
-        {
-            result.Add("");
-        }
-        else
-        {
-            var grade = totalValue / totalQuantity;
-            result.Add($"{grade:F2}");
-        }
-        
+        var average = quantity is 2 or 4 ? $"{gradeAccumulator / quantity:F2}" : string.Empty;  
+        result.Add(average);
         return result;
     }
 
@@ -125,39 +106,22 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
 
         foreach (var partial in partialList)
         {
-            var result = addConductGradeByPartial(content, partial);
-            conduct += result.conduct;
-            quantity += result.counter;            
+            var grade = student.averageList?.FirstOrDefault(e => e.partialId == partial.partialId);
+            if (grade == null)
+            {
+                content.Append(gradeFormat(null));
+                continue;
+            }
+            
+            quantity++;
+            conduct += grade.conductGrade;
+            content.Append(gradeFormat(grade.conductGrade));
         }
 
-        content.Append(quantity != 4 ? gradeFormat(null) : gradeFormat(conduct/quantity));
+        content.Append(quantity is 2 or 4 ? gradeFormat(conduct / quantity) : gradeFormat(null));
         content.Append("\\\\\\hline");
     }
-
-    private (decimal conduct, int counter) addConductGradeByPartial(StringBuilder content, PartialEntity partial)
-    {
-        if (partial.subjectPartialList!.Count == 0)
-        {
-            content.Append(gradeFormat(null));
-            return (0, 0);
-        }
-        
-        var conduct = 0m;
-        var quantity = 0;
-
-        foreach (var item in partial.subjectPartialList!)
-        {
-            item.setStudentGrade(student.studentId!);
-            conduct += (decimal)item.studentGrade!.conductGrade!;
-            quantity++;
-        }
-        
-        var grade = conduct/quantity;
-
-        content.Append(gradeFormat(grade));
-        return (grade, quantity > 0 ? 1 : 0);
-    }
-
+    
     private void getSubjectDetail(StringBuilder content, int areaId)
     {
         var list = subjectList.Where(e => e.secretarySubject!.areaId == areaId)
@@ -173,40 +137,26 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
 
     private void getGrades(StringBuilder content, string subjectId)
     {
+        var quantity = 0;
+        var gradeAccumulator = 0m;
+        
         foreach (var partial in partialList)
         {
-            var result = partial.getSubjectPartialById(subjectId);
-            if (result == null)
+            var grade = student.gradeList?.FirstOrDefault(e => e.partialId == partial.partialId && e.subjectId == subjectId);
+            if (grade == null)
             {
                 content.Append(gradeFormat(null));
                 continue;
             }
 
-            result.setStudentGrade(student.studentId!);
-            content.Append(gradeFormat(result.studentGrade!.grade, result.studentGrade.label));
-        }
-
-        content.Append(getFinalGrade(subjectId));
-    }
-
-    private string getFinalGrade(string subjectId)
-    {
-        var grade = 0m;
-        var quantity = 0;
-
-        foreach (var partial in partialList)
-        {
-            var result = partial.getSubjectPartialById(subjectId);
-            if (result == null) continue;
-                
+            content.Append(gradeFormat(grade.grade, grade.label));
+            
             quantity++;
-            result.setStudentGrade(student.studentId!);
-            grade += (decimal)result.studentGrade!.grade!;
+            gradeAccumulator += grade.grade;
         }
 
-        if (quantity != 2 && quantity != 4) return gradeFormat(null);
-
-        return gradeFormat(grade/quantity);
+        var average = quantity is 2 or 4 ? gradeFormat(gradeAccumulator / quantity) : gradeFormat(null);
+        content.Append(average);
     }
     
     private static string gradeFormat(decimal? grade, string? label = null)
@@ -244,9 +194,9 @@ public class AcademicRecordLatexBuilder(string templatesPath, string outPath) : 
             return this;
         }
         
-        public Builder withSchoolyear(SchoolyearEntity parameter)
+        public Builder withSchoolyearLabel(string parameter)
         {
-            latexBuilder.schoolyear = parameter;
+            latexBuilder.schoolyearLabel = parameter;
             return this;
         }
         
