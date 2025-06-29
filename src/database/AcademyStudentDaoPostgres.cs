@@ -56,9 +56,29 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return result;
     }
 
+    private async Task<StudentEntity> getWithdrawnStudentById(string studentId)
+    {
+        var result = await daoFactory.withdrawnStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        
+        return new StudentEntity(studentId, result.lastEnrollmentId)
+        {
+            schoolyearId = result.schoolyearId,
+            student = (await daoFactory.studentDao!.getById(studentId))!
+        };
+    }
+
     public async Task<StudentEntity> getCurrentWithGradeById(string studentId)
     {
-        var student = await getCurrentById(studentId);
+        StudentEntity student;
+        
+        try
+        {
+            student = await getCurrentById(studentId);
+        }
+        catch (Exception)
+        {
+            student = await getWithdrawnStudentById(studentId);
+        }
         
         student.gradeList = await context.Set<GradeView>()
             .Where(g => g.studentId == student.studentId && g.schoolyearId == student.schoolyearId)
