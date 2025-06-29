@@ -53,12 +53,13 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
 public interface IPartialDao : IGenericDao<PartialEntity, int>
 {
     public Task<List<PartialEntity>> getListForCurrentSchoolyear();
-    public Task<List<PartialEntity>> getListByEnrollmentId(string enrollmentId);
+    public Task<List<PartialEntity>> getListBySchoolyearId(string schoolyearId);
 }
 
 public interface ISemesterDao : IGenericDao<SemesterEntity, int>
 {
     public Task<List<SemesterEntity>> getListForCurrentSchoolyear();
+    public Task<List<SemesterEntity>> getListBySchoolyearId(string schoolyearId);
 }
 
 public interface IGradeDao : IGenericDao<GradeEntity, int>
