@@ -19,13 +19,13 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
-        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(enrollment!.enrollmentId!);
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
 
         var latexBuilder = new ReportCardLatexBuilder.Builder(resource, $"{resource}/out/card")
             .withStudent(student)
             .withTeacher(teacher)
             .withUserAlias(userAlias)
-            .withDegree(enrollment.label)
+            .withDegree(enrollment!.label)
             .withPartialList(partialList)
             .withSchoolyear(schoolyear.label)
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
@@ -187,30 +187,23 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 
     public async Task<byte[]> getAcademicRecord(string studentId, string schoolyearId, string userAlias)
     {
-        var student = await daoFactory.studentDao!.getFullById(studentId);
-
         var schoolyear = await daoFactory.schoolyearDao!.getById(schoolyearId);
         if (schoolyear == null)
         {
             throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
         }
-
-        var academic = await daoFactory.academyStudentDao!.getById(studentId, schoolyearId);
-        if (academic == null)
-        {
-            throw new EntityNotFoundException($"The student ({studentId}) has no records for the schoolyear ({schoolyearId}).");
-        }
         
-        var partialList = await daoFactory.partialDao!.getListByEnrollmentId(academic.enrollmentId!);
-        var enrollment = await daoFactory.enrollmentDao!.getById(academic.enrollmentId!);
+        var student = await daoFactory.academyStudentDao!.getByIdWithGrade(studentId, schoolyearId);
+        var partialList = await daoFactory.partialDao!.getListBySchoolyearId(schoolyearId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
         
         var latexBuilder = new AcademicRecordLatexBuilder.Builder(resource, $"{resource}/out/academic-record")
             .withStudent(student)
             .withUserAlias(userAlias)
-            .withSchoolyear(schoolyear)
+            .withSchoolyearLabel(schoolyear.label)
             .withPartialList(partialList)
             .withSubjectAreaList(await daoFactory.subjectAreaDao!.getAll())
-            .withSubjectList(await daoFactory.academySubjectDao!.getByEnrollmentId(academic.enrollmentId!))
+            .withSubjectList(await daoFactory.academySubjectDao!.getByEnrollmentId(student.enrollmentId!))
             .withEnrollmentLabel(enrollment!.label)
             .build();
 
