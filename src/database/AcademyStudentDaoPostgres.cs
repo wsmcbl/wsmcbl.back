@@ -36,11 +36,10 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return await getById(studentId, schoolyear.id!);
     }
 
-    public async Task update(string studentId, string enrollmentId)
+    private async Task<StudentEntity?> getById(string studentId, string schoolyearId)
     {
-        FormattableString query =
-            $"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
-        await context.Database.ExecuteSqlAsync(query);
+        return await entities.Include(e => e.student)
+            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolyearId == schoolyearId);
     }
 
     public async Task<StudentEntity> getCurrentById(string studentId)
@@ -56,39 +55,36 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
         return result;
     }
 
-    private async Task<StudentEntity> getWithdrawnStudentById(string studentId)
+    public async Task<StudentEntity> getCurrentWithGradeById(string studentId)
     {
-        var result = await daoFactory.withdrawnStudentDao!.getByIdInCurrentSchoolyear(studentId);
+        var schoolyear = await daoFactory.schoolyearDao!.getNewOrCurrent();
+        return await getByIdWithGrade(studentId, schoolyear.id!);
+    }
+
+    public async Task<StudentEntity> getByIdWithGrade(string studentId, string schoolyearId)
+    {
+        var student = await getById(studentId, schoolyearId) ?? await getWithdrawnStudentById(studentId, schoolyearId);
+
+        student.gradeList = await context.Set<GradeView>()
+            .Where(g => g.studentId == student.studentId && g.schoolyearId == schoolyearId)
+            .ToListAsync();
+
+        student.averageList = await context.Set<GradeAverageView>()
+            .Where(g => g.studentId == student.studentId && g.schoolyearId == schoolyearId)
+            .ToListAsync();
+        
+        return student;
+    }
+
+    private async Task<StudentEntity> getWithdrawnStudentById(string studentId, string schoolyearId)
+    {
+        var result = await daoFactory.withdrawnStudentDao!.getBySchoolyearId(studentId, schoolyearId);
         
         return new StudentEntity(studentId, result.lastEnrollmentId)
         {
             schoolyearId = result.schoolyearId,
             student = (await daoFactory.studentDao!.getById(studentId))!
         };
-    }
-
-    public async Task<StudentEntity> getCurrentWithGradeById(string studentId)
-    {
-        StudentEntity student;
-        
-        try
-        {
-            student = await getCurrentById(studentId);
-        }
-        catch (Exception)
-        {
-            student = await getWithdrawnStudentById(studentId);
-        }
-        
-        student.gradeList = await context.Set<GradeView>()
-            .Where(g => g.studentId == student.studentId && g.schoolyearId == student.schoolyearId)
-            .ToListAsync();
-
-        student.averageList = await context.Set<GradeAverageView>()
-            .Where(g => g.studentId == student.studentId && g.schoolyearId == student.schoolyearId)
-            .ToListAsync();
-        
-        return student;
     }
 
     public async Task<List<StudentEntity>> getListWithGradesByEnrollmentId(string enrollmentId, int partialId)
@@ -209,10 +205,11 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .Include(e => e.student)
             .ToListAsync();
     }
-
-    public async Task<StudentEntity?> getById(string studentId, string schoolyearId)
+    
+    public async Task update(string studentId, string enrollmentId)
     {
-        return await entities.Include(e => e.student)
-            .FirstOrDefaultAsync(e => e.studentId == studentId && e.schoolyearId == schoolyearId);
+        FormattableString query =
+            $"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
+        await context.Database.ExecuteSqlAsync(query);
     }
 }
