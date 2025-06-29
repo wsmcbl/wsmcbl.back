@@ -17,21 +17,18 @@ public class PartialDaoPostgres : GenericDaoPostgres<PartialEntity, int>, IParti
     public async Task<List<PartialEntity>> getListForCurrentSchoolyear()
     {
         var semesterList = await daoFactory.semesterDao!.getListForCurrentSchoolyear();
-        var idList = semesterList.Select(e => e.semesterId).ToList();
-
-        return await entities.Where(e => idList.Contains(e.semesterId)).ToListAsync();
+        return await getListBySemesterList(semesterList);
     }
 
-    public async Task<List<PartialEntity>> getListByEnrollmentId(string enrollmentId)
+    public async Task<List<PartialEntity>> getListBySchoolyearId(string schoolyearId)
     {
-        var partialList = await getListForCurrentSchoolyear();
+        var semesterList = await daoFactory.semesterDao!.getListBySchoolyearId(schoolyearId);
+        return await getListBySemesterList(semesterList);
+    }
 
-        foreach (var item in partialList)
-        {
-            item.subjectPartialList =
-                await daoFactory.subjectPartialDao!.getListByPartialIdAndEnrollmentId(item.partialId, enrollmentId);
-        }
-
-        return partialList;
+    private async Task<List<PartialEntity>> getListBySemesterList(List<SemesterEntity> list)
+    {
+        var idList = list.Select(e => e.semesterId).ToList();
+        return await entities.Where(e => idList.Contains(e.semesterId)).ToListAsync();
     }
 }
