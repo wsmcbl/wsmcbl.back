@@ -19,4 +19,4 @@
 
 ## Version
 
-* 7.1.0 - SNAPSHOT
+* 7.2.0 - SNAPSHOT
