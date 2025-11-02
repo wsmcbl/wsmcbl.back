@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wsmcbl.src.database.context;
 using wsmcbl.src.database.service;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.model;
 using wsmcbl.src.model.accounting;
@@ -40,6 +41,16 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
             EF.Functions.Like(e.schoolyear.ToLower(), value));
     }
 
+    public async Task<GenerateDebtsResult> generateStudentDebts(string studentId, int educationalLevel, string schoolyearId)  
+    {  
+        var result = await context.Database.SqlQueryRaw<GenerateDebtsResult>(  
+            "SELECT * FROM Accounting.GenerateStudentDebts(@p0, @p1, @p2)",  
+            studentId, educationalLevel, schoolyearId  
+        ).ToListAsync();  
+      
+        return result.FirstOrDefault() ?? new GenerateDebtsResult();  
+    }
+    
     public async Task<List<DebtHistoryEntity>> getListByStudentId(string studentId)
     {
         var debtList = await getList(studentId);

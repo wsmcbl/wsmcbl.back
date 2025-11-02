@@ -11,6 +11,16 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class EnrollStudentActions(EnrollStudentController controller) : ActionsBase
 {
+    /// <summary>Agrega los aranceles para un nuevo año lectivo a un student.</summary>
+    [HttpPost]
+    [Route("new")]
+    [Authorizer("student:read")]
+    public async Task<IActionResult> injectTariff(string studentId, string schoolyearid, int level)  
+    {  
+        var result = await controller.insertTariff(studentId, schoolyearid, level);  
+        return Ok(result);  
+    }
+    
     /// <summary>Returns the list of students with registration solvency.</summary>
     /// <response code="200">Returns a list, the list can be empty.</response>
     /// <response code="401">If the query was made without authentication.</response>

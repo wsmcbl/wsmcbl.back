@@ -1,3 +1,4 @@
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.model.dao;
 
 namespace wsmcbl.src.model.accounting;
@@ -47,6 +48,8 @@ public interface IDebtHistoryDao : IGenericDao<DebtHistoryEntity, string>
     public Task<List<DebtHistoryEntity>> getListByStudentId(string studentId);
     public Task<List<DebtHistoryEntity>> getListByTransactionId(TransactionEntity transaction);
     public Task<PagedResult<DebtHistoryEntity>> getPaginatedByStudentId(string studentId, PagedRequest request);
+    public Task<GenerateDebtsResult> generateStudentDebts(string studentId, int educationalLevel, string schoolyearId);
+
     
     public Task<decimal[]> getGeneralBalance(string studentId);
     public Task<bool> hasPaidTariffsInTransaction(TransactionEntity transaction);
