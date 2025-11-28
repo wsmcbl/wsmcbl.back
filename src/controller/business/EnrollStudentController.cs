@@ -1,4 +1,5 @@
 using wsmcbl.src.controller.service.document;
+using wsmcbl.src.dto.accounting;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -105,6 +106,11 @@ public class EnrollStudentController : BaseController
     public async Task<List<model.accounting.StudentEntity>> getStudentListWithSolvencyInRegistration()
     {
         return await daoFactory.accountingStudentDao!.getAllWithEnrollmentTariffSolvency();
+    }
+    
+    public async Task<GenerateDebtsResult> insertTariff(string studentId, string schoolyearId, int level)  
+    {  
+        return await daoFactory.debtHistoryDao!.generateStudentDebts(studentId, level, schoolyearId);  
     }
 
     public async Task<List<DegreeEntity>> getDegreeListByStudentId(string studentId)
