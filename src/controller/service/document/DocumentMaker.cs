@@ -66,11 +66,14 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         }
 
         var student = await daoFactory.accountingStudentDao!.getFullById(transaction.studentId);
+        var secretaryStudent = await daoFactory.studentDao!.getFullById(transaction.studentId);
         var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.debtHistoryDao!.getGeneralBalance(transaction.studentId);
-
+        secretaryStudent.accessToken ??= string.Empty;
+        
         var latexBuilder = new InvoiceLatexBuilder.Builder(resource, $"{resource}/out/invoice")
             .withStudent(student)
+            .withStudentPwd(secretaryStudent.accessToken)
             .withTransaction(transaction)
             .withCashier(cashier)
             .withGeneralBalance(generalBalance)
