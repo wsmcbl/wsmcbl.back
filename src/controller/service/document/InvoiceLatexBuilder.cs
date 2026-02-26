@@ -13,6 +13,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
     private int number;
     private string series = null!;
     private string exchangeRate = null!;
+    private string password = string.Empty;
 
     protected override string getTemplateName() => "invoice";
 
@@ -21,6 +22,7 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         var content = new StringBuilder(value);
         content.ReplaceInLatexFormat("numeration.value", $"{series}{number:00000000}");
         content.ReplaceInLatexFormat("customer.name.value", student.fullName());
+        content.ReplaceInLatexFormat("student.pwd", password);
         content.ReplaceInLatexFormat("customer.id.value", student.studentId);
         content.Replace("detail.value", getDetail());
         content.ReplaceInLatexFormat("total.value", $"C$ {total:F2}");
@@ -116,6 +118,12 @@ public class InvoiceLatexBuilder(string templatesPath, string outPath) : LatexBu
         public Builder withStudent(StudentEntity parameter)
         {
             latexBuilder.student = parameter;
+            return this;
+        }
+        
+        public Builder withStudentPwd(string parameter)
+        {
+            latexBuilder.password = parameter;
             return this;
         }
 
