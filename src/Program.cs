@@ -72,6 +72,7 @@ builder.Services.AddTransient<GenerateEvaluationStatsBySectionController>();
 builder.Services.AddTransient<UnenrollStudentController>();
 builder.Services.AddTransient<CalculateMonthlyRevenueController>();
 builder.Services.AddTransient<ViewTeacherDashboardController>();
+builder.Services.AddTransient<EmailNotifierService>();
 
 builder.Services.AddDefaultCors();
 
