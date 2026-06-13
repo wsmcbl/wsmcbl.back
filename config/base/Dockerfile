@@ -4,4 +4,5 @@ RUN apt-get update && apt-get install -y \
     texlive-latex-extra \
     texlive-lang-spanish \
     texlive-fonts-recommended \
-    texlive-fonts-extra
+    texlive-fonts-extra \
+    poppler-utils

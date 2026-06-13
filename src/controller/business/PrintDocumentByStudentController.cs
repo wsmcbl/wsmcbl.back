@@ -18,6 +18,11 @@ public class PrintDocumentByStudentController : BaseController
     {
         return await documentMaker.getReportCardByStudent(studentId, await getUserAlias(userId));
     }
+    
+    public async Task<byte[]> getReporGradeByEnrollment(string enrollmentId, string userId)
+    {
+        return await documentMaker.GetReportsCardsByEnrollments(enrollmentId, await getUserAlias(userId));
+    }
 
     public async Task<bool> isStudentSolvent(string studentId)
     {
