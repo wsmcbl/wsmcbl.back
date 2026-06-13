@@ -16,7 +16,7 @@ public class PrintDocumentByStudentActions(PrintDocumentByStudentController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     /// <response code="500">Error creating document.</response>
     [HttpGet]
-    [Route("/report-grade-list/export")]
+    [Route("report-grade-list/export")]
     [Authorizer("student:read")]
     public async Task<IActionResult> getReportGradeListByEnrollment([Required] string enrollmentid)
     {
