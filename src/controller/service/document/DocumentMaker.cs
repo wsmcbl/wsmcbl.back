@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.IO;
 using wsmcbl.src.exception;
 using wsmcbl.src.model.dao;
 using wsmcbl.src.model.secretary;
@@ -7,6 +9,167 @@ namespace wsmcbl.src.controller.service.document;
 public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
 {
     public async Task<string> getUserAlias(string userId) => (await daoFactory.userDao!.getById(userId)).getAlias();
+
+    // NUEVO MÉTODO MASIVO OPTIMIZADO (Zero-Dependencies) - Versión Producción
+    public async Task<byte[]> GetReportsCardsByEnrollments(string enrollmentId, string? userAlias)
+    {
+        // 1. Obtener metadatos comunes de la matrícula y año escolar
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        if (teacher == null)
+        {
+            throw new EntityNotFoundException($"Teacher with enrollmentId ({enrollmentId}) not found.");
+        }
+
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+        var educativonLevel = await daoFactory.degreeDao!.getByEnrollmentId(enrollmentId);
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var partialList = await daoFactory.partialDao!.getListForCurrentSchoolyear();
+
+        var currentPartial = partialList.LastOrDefault();
+        if (currentPartial == null)
+        {
+            throw new ConflictException("No active partial periods found.");
+        }
+
+        // 2. Trae a los 34 alumnos con sus notas de una sola consulta masiva limpia
+        var baseStudentList = await daoFactory.academyStudentDao!
+            .getListWithAllGradesByEnrollmentId(enrollmentId);
+
+        if (baseStudentList == null || !baseStudentList.Any())
+        {
+            throw new EntityNotFoundException($"No students found for enrollmentId ({enrollmentId}).");
+        }
+        
+        // 3. Ordenamos alfabéticamente para mantener la consistencia institucional
+        var orderedStudentList = baseStudentList
+            .OrderBy(e => e.student.sex)
+            .ThenBy(e => e.student.name)
+            .ToList();
+
+        // 4. Catálogos globales para optimizar el Builder
+        var allSubjectAreas = await daoFactory.subjectAreaDao!.getAll();
+        var allSubjects = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId);
+
+        // 5. Directorio temporal único para el lote completo (Batch)
+        string batchId = Guid.NewGuid().ToString();
+        string tempBatchFolder = Path.Combine(resource, "out", $"batch_{batchId}");
+        Directory.CreateDirectory(tempBatchFolder);
+
+        List<string> absolutePdfPaths = new();
+        List<string> directoriesToClean = new();
+
+        try
+        {
+            // 6. Generar los PDFs utilizando los datos ya cargados en memoria
+            foreach (var studentWithAllGrades in orderedStudentList)
+            {
+                if (studentWithAllGrades == null) continue;
+
+                // Creamos un aislamiento total en disco para este estudiante específico
+                string studentSpecificFolder = Path.Combine(tempBatchFolder, studentWithAllGrades.studentId);
+                Directory.CreateDirectory(studentSpecificFolder);
+                directoriesToClean.Add(studentSpecificFolder);
+
+                var latexBuilder = new ReportCardLatexBuilder.Builder(resource, studentSpecificFolder)
+                    .withTemplate("grade-report") // <-- Forzamos el uso de tu nuevo diseño .tex
+                    .withStudent(studentWithAllGrades) // <-- Usamos el objeto en memoria (Sin pegarle a la DB)
+                    .withTeacher(teacher)
+                    .withUserAlias(userAlias)
+                    .withDegree(enrollment!.label)
+                    .withEducationLevel(educativonLevel?.educationalLevel ?? "")
+                    .withPartialList(partialList)
+                    .withSchoolyear(schoolyear.label)
+                    .withSubjectAreaList(allSubjectAreas)
+                    .withSubjectList(allSubjects)
+                    .build();
+
+                string studentOutPath = latexBuilder.getOutPath();
+                if (!directoriesToClean.Contains(studentOutPath))
+                {
+                    directoriesToClean.Add(studentOutPath);
+                }
+
+                // Seteamos el builder e invocamos la compilación nativa en Linux
+                setLatexBuilder(latexBuilder);
+                getPDF();
+
+                // CORRECCIÓN: El PDF de salida ahora adopta el nombre de la plantilla ("grade-report_output.pdf")
+                string expectedPdf = Path.Combine(studentOutPath, "grade-report_output.pdf");
+                if (File.Exists(expectedPdf))
+                {
+                    absolutePdfPaths.Add(expectedPdf);
+                }
+            }
+
+            // 7. Validación de seguridad para pdfunite
+            if (absolutePdfPaths.Count == 0)
+            {
+                throw new ConflictException("No se pudo generar el PDF de ningún estudiante del listado.");
+            }
+
+            // Si solo hay un estudiante, no necesitamos pdfunite
+            if (absolutePdfPaths.Count == 1)
+            {
+                return await File.ReadAllBytesAsync(absolutePdfPaths.First());
+            }
+
+            // 8. Fusionar de forma nativa en Docker Linux usando pdfunite
+            string finalPdfPath = Path.Combine(tempBatchFolder, "reporte_final.pdf");
+            string arguments = $"{string.Join(" ", absolutePdfPaths.Select(p => $"\"{p}\""))} \"{finalPdfPath}\"";
+
+            var processInfo = new ProcessStartInfo
+            {
+                FileName = "pdfunite",
+                Arguments = arguments,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (var process = Process.Start(processInfo))
+            {
+                await process!.WaitForExitAsync();
+                if (process.ExitCode != 0)
+                {
+                    string error = await process.StandardError.ReadToEndAsync();
+                    throw new Exception($"Error en pdfunite: {error}");
+                }
+            }
+
+            return await File.ReadAllBytesAsync(finalPdfPath);
+        }
+        finally
+        {
+            // 9. Limpieza segura de almacenamiento de adentro hacia afuera
+            foreach (var dir in directoriesToClean)
+            {
+                if (Directory.Exists(dir))
+                {
+                    try
+                    {
+                        Directory.Delete(dir, true);
+                    }
+                    catch
+                    {
+                        /* Evitar caídas en el finally */
+                    }
+                }
+            }
+
+            if (Directory.Exists(tempBatchFolder))
+            {
+                try
+                {
+                    Directory.Delete(tempBatchFolder, true);
+                }
+                catch
+                {
+                    /* Evitar caídas en el finally */
+                }
+            }
+        }
+    }
 
     public async Task<byte[]> getReportCardByStudent(string studentId, string? userAlias)
     {
@@ -70,7 +233,7 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         var exchangeRate = await daoFactory.exchangeRateDao!.getLastRate();
         var generalBalance = await daoFactory.debtHistoryDao!.getGeneralBalance(transaction.studentId);
         secretaryStudent.accessToken ??= string.Empty;
-        
+
         var latexBuilder = new InvoiceLatexBuilder.Builder(resource, $"{resource}/out/invoice")
             .withStudent(student)
             .withStudentPwd(secretaryStudent.accessToken)
@@ -195,11 +358,11 @@ public class DocumentMaker(DaoFactory daoFactory) : PdfMaker
         {
             throw new EntityNotFoundException("SchoolyearEntity", schoolyearId);
         }
-        
+
         var student = await daoFactory.academyStudentDao!.getByIdWithGrade(studentId, schoolyearId);
         var partialList = await daoFactory.partialDao!.getListBySchoolyearId(schoolyearId);
         var enrollment = await daoFactory.enrollmentDao!.getById(student.enrollmentId!);
-        
+
         var latexBuilder = new AcademicRecordLatexBuilder.Builder(resource, $"{resource}/out/academic-record")
             .withStudent(student)
             .withUserAlias(userAlias)

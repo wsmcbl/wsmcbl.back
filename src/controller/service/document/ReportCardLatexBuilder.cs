@@ -7,8 +7,8 @@ using SubjectEntity = wsmcbl.src.model.academy.SubjectEntity;
 
 namespace wsmcbl.src.controller.service.document;
 
-public class ReportCardLatexBuilder(string templatesPath, string outPath) : LatexBuilder(templatesPath, outPath)
-{
+public class ReportCardLatexBuilder(string templatesPath, string outPath, string templateName = "report-card") : LatexBuilder(templatesPath, outPath)
+{   
     private StudentEntity student { get; set; } = null!;
     private TeacherEntity teacher { get; set; } = null!;
     private List<SubjectEntity> subjectList { get; set; } = null!;
@@ -16,17 +16,19 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
     private List<PartialEntity> partialList { get; set; } = null!;
     
     private string degreeLabel { get; set; } = null!;
+    private string? educationLevel { get; set; }
     private string? userAlias { get; set; }
     private string schoolyear { get; set; } = null!;
-
-    protected override string getTemplateName() => "report-card";
+    
+    private readonly string _templateName = templateName;
+    protected override string getTemplateName() => _templateName;
 
     protected override string updateContent(string value)
     {
         var content = new StringBuilder(value);
         
+        // Reemplazos universales (Compatibles con ambos formatos)
         content.Replace("logo.value", $"{getImagesPath()}/cbl-logo.png");
-        
         content.Replace("schoolyear.value", schoolyear);
         content.Replace("degree.value", degreeLabel);
         
@@ -35,6 +37,18 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
         content.Replace("teacher.name.value", teacher.fullName());
         content.Replace("teacher.mail.value", teacher.user.email);
         
+        // 4. CONDICIONAL DE SEGURIDAD: Solo si es la nueva plantilla, agregamos sus metadatos
+        if (_templateName == "grade-report")
+        {
+            content.Replace("mined.id.value", (student.student != null && !string.IsNullOrEmpty(student.student.minedId)) ? student.student.minedId : student.studentId);
+            content.Replace("principal.name.value", "Luz Azucena Cano"); 
+            content.Replace("educational.level.value", educationLevel); 
+            content.Replace("shift.value", "Matutino");
+            content.Replace("department.value", "Managua");
+            content.Replace("municipality.value", "Managua");
+            content.Replace("school.id.value", "14484");
+        }
+
         content.Replace("detail.value", getDetail());
 
         var averageList = getAverageList();
@@ -175,64 +189,107 @@ public class ReportCardLatexBuilder(string templatesPath, string outPath) : Late
 
     public class Builder
     {
-        private readonly ReportCardLatexBuilder latexBuilder;
+        private readonly string _templatesPath;
+        private readonly string _outPath;
+        private string _templateName = "report-card"; // Plantilla base por defecto
+
+        // Datos de estado del Builder
+        private StudentEntity _student = null!;
+        private TeacherEntity _teacher = null!;
+        private string _degreeLabel = null!;
+        private List<PartialEntity> _partialList = null!;
+        private List<SubjectEntity> _subjectList = null!;
+        private List<SubjectAreaEntity> _subjectAreaList = null!;
+        private string? _userAlias;
+        private string? _educationLevel;
+        private string _schoolyear = null!;
 
         public Builder(string templatesPath, string outPath)
         {
-            latexBuilder = new ReportCardLatexBuilder(templatesPath, outPath);
+            _templatesPath = templatesPath;
+            _outPath = outPath;
         }
 
-        public ReportCardLatexBuilder build() => latexBuilder;
+        // NUEVO MÉTODO FLUIDO: Permite cambiar la plantilla desde afuera
+        public Builder withTemplate(string templateName)
+        {
+            _templateName = templateName;
+            return this;
+        }
+
+        public ReportCardLatexBuilder build()
+        {
+            // Instanciamos pasando los 3 parámetros al constructor primario
+            var latexBuilder = new ReportCardLatexBuilder(_templatesPath, _outPath, _templateName);
+            
+            // Seteamos las propiedades acumuladas
+            latexBuilder.student = _student;
+            latexBuilder.teacher = _teacher;
+            latexBuilder.degreeLabel = _degreeLabel;
+            latexBuilder.educationLevel = _educationLevel;
+            latexBuilder.partialList = _partialList;
+            latexBuilder.subjectList = _subjectList;
+            latexBuilder.subjectAreaList = _subjectAreaList;
+            latexBuilder.userAlias = _userAlias;
+            latexBuilder.schoolyear = _schoolyear;
+
+            return latexBuilder;
+        }
 
         public Builder withStudent(StudentEntity parameter)
         {
-            latexBuilder.student = parameter;
+            _student = parameter;
             return this;
         }
 
         public Builder withTeacher(TeacherEntity parameter)
         {
-            latexBuilder.teacher = parameter;
+            _teacher = parameter;
             return this;
         }
         
         public Builder withDegree(string parameter)
         {
-            latexBuilder.degreeLabel = parameter;
+            _degreeLabel = parameter;
             return this;
         }
         
         public Builder withPartialList(List<PartialEntity> parameter)
         {
-            latexBuilder.partialList = parameter
+            _partialList = parameter
                 .OrderBy(e => e.semester)
                 .ThenBy(e => e.partial)
                 .ToList();
-            
             return this;
         }
         
         public Builder withSubjectList(List<SubjectEntity> parameter)
         {
-            latexBuilder.subjectList = parameter;
+            _subjectList = parameter;
             return this;
         }
         
         public Builder withSubjectAreaList(List<SubjectAreaEntity> parameter)
         {
-            latexBuilder.subjectAreaList = parameter;
+            _subjectAreaList = parameter;
             return this;
         }
         
         public Builder withUserAlias(string? parameter)
         {
-            latexBuilder.userAlias = parameter;
+            _userAlias = parameter;
             return this;
         }
         
         public Builder withSchoolyear(string parameter)
         {
-            latexBuilder.schoolyear = parameter;
+            _schoolyear = parameter;
+            return this;
+        }
+        
+        public Builder withEducationLevel(string parameter)
+        {
+            _educationLevel = parameter;
             return this;
         }
     }

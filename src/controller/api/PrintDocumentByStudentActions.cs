@@ -10,6 +10,20 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class PrintDocumentByStudentActions(PrintDocumentByStudentController controller) : ActionsBase
 {
+    /// <summary>Returns grade-report of all student by enrollment PDF format.</summary>
+    /// <response code="200">Returns a resource.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="500">Error creating document.</response>
+    [HttpGet]
+    [Route("/report-grade-list/export")]
+    [Authorizer("student:read")]
+    public async Task<IActionResult> getReportGradeListByEnrollment([Required] string enrollmentid)
+    {
+        var result = await controller.getReporGradeByEnrollment(enrollmentid, getAuthenticatedUserId());
+        return File(result, getContentType(1), $"{enrollmentid}.report-card.pdf");
+    }
+    
     /// <summary>Returns report-card by student id in PDF format.</summary>
     /// <response code="200">Returns a resource.</response>
     /// <response code="401">If the query was made without authentication.</response>

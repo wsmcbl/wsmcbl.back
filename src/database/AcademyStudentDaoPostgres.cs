@@ -212,4 +212,45 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             $"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
         await context.Database.ExecuteSqlAsync(query);
     }
+    
+    public async Task<List<StudentEntity>> getListWithAllGradesByEnrollmentId(string enrollmentId)
+    {
+        // 1. Obtenemos los alumnos asignados a la matrícula e incluimos sus datos de Secretaría
+        var studentList = await entities.AsNoTracking()
+            .Where(e => e.enrollmentId == enrollmentId)
+            .Include(e => e.student)
+            .ToListAsync();
+
+        if (!studentList.Any()) return [];
+
+        // 2. Extraemos el SchoolyearId común del grupo (asumimos que todos comparten el mismo año activo)
+        string schoolyearId = studentList.First().schoolyearId;
+        var studentIdSet = new HashSet<string>(studentList.Select(s => s.studentId));
+
+        // 3. Consultamos todas las notas de las vistas que pertenezcan a este año para este grupo de alumnos
+        var gradeList = await context.Set<GradeView>()
+            .Where(g => g.schoolyearId == schoolyearId && studentIdSet.Contains(g.studentId))
+            .ToListAsync();
+
+        var averageList = await context.Set<GradeAverageView>()
+            .Where(g => g.schoolyearId == schoolyearId && studentIdSet.Contains(g.studentId))
+            .ToListAsync();
+
+        // 4. Proyectamos y mapeamos el histórico completo a cada entidad en memoria
+        return studentList.Select(std => new StudentEntity
+            {
+                studentId = std.studentId,
+                enrollmentId = std.enrollmentId,
+                schoolyearId = std.schoolyearId,
+                isApproved = std.isApproved,
+                isRepeating = std.isRepeating,
+                createdAt = std.createdAt,
+                student = std.student,
+                gradeList = gradeList.Where(g => g.studentId == std.studentId).ToList(),
+                averageList = averageList.Where(g => g.studentId == std.studentId).ToList()
+            })
+            .OrderBy(e => e.student.sex)
+            .ThenBy(e => e.student.name)
+            .ToList();
+    }
 }
