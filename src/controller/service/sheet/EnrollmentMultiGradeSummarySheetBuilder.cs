@@ -54,20 +54,7 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
                 .OrderBy(s => s.areaId)
                 .ThenBy(s => s.number)
                 .ToList();
-            
-            // --- FRAGMENTO PARA DEBUGEAR EN CONSOLE ---
-            Console.WriteLine("\n===============================================================================");
-            Console.WriteLine($"DEBUG: Orden de Asignaturas para la hoja [{currentPartial?.label ?? "Resumen"}]");
-            Console.WriteLine("===============================================================================");
-            foreach (var subject in currentSubjectList)
-            {
-                Console.WriteLine($"[Area: {subject.areaId}] [Num: {subject.number}] -> ID: {subject.subjectId,-10} | Initials: {subject.initials,-6} | Name: {subject.name}");
-            }
-            Console.WriteLine("===============================================================================\n");
-            // ------------------------------------------
-            
-            
-            
+
             setColumnQuantityMulti(currentSubjectList.Count);
             orderedSubjectIdList = currentSubjectList.Select(e => e.subjectId).ToList()!;
 
@@ -110,24 +97,28 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
     }
 
     private void buildSummarySheet(XLWorkbook workbook)
-    { 
+    {
+        // 1. Obtener la lista única de estudiantes ordenada por Sexo (F primero) y luego Nombre (A-Z)
         var allStudents = partialsData
             .SelectMany(p => p.StudentList)
             .GroupBy(s => s.studentId)
             .Select(g => g.First())
-            .OrderBy(s => s.student.sex) 
+            .OrderBy(s => s.student.sex)
             .ThenBy(s => s.fullName())
             .ToList();
 
-        // Tomamos el primer parcial solo como molde base de la estructura de asignaturas
+        // 2. Tomamos el primer parcial como molde y ordenamos las asignaturas por areaId y number
         var templateData = partialsData.First();
         currentSubjectList = templateData.SubjectList
             .Select(e => e.secretarySubject!)
-            .OrderBy(s => s.areaId)   // Primero agrupa por el ID del Área Académica
-            .ThenBy(s => s.number)    // Luego las ordena por su número de posición oficial (1, 2, 3...)
-            .ToList();        setColumnQuantityMulti(currentSubjectList.Count);
+            .OrderBy(s => s.areaId) // Primero agrupa por el ID del Área Académica
+            .ThenBy(s => s.number) // Luego las ordena por su número de posición oficial (1, 2, 3...)
+            .ToList();
+
+        setColumnQuantityMulti(currentSubjectList.Count);
         orderedSubjectIdList = currentSubjectList.Select(e => e.subjectId).ToList()!;
-        
+
+        // Concatenación de cadenas correcta (interpolación con $)
         initWorksheet(workbook, $"{currentPartial.semester} Semestre");
 
         setTitleMulti($"{currentPartial.semester} Semestre");
@@ -166,12 +157,12 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
                 {
                     var studentInPartial =
                         pData.StudentList.FirstOrDefault(s => s.studentId == studentTemplate.studentId);
-                    if (studentInPartial == null) continue; // Si el alumno no existía en este parcial, saltar
+                    if (studentInPartial == null)
+                        continue; // Si el alumno no existía en este parcial, saltar de forma segura
 
                     var gradeRecord = studentInPartial.gradeList?.FirstOrDefault(g => g.subjectId == subjectId);
                     if (gradeRecord != null)
                     {
-                        // CORRECCIÓN: grade no es null, se suma directo
                         totalSubjectGrade += gradeRecord.grade;
                         currentLabel = gradeRecord.label ?? currentLabel;
                         subjectPartialCount++;
@@ -201,7 +192,6 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
                 var average = studentInPartial.getAverage(pData.Partial.partialId);
                 if (average != null)
                 {
-                    // CORRECCIÓN: Como no son nullables, sumamos directamente y contamos el parcial activo
                     totalConductSum += average.conductGrade;
                     partialsWithConductCount++;
 
@@ -211,16 +201,22 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
             }
 
             // Divisiones seguras controlando traslados/retiros
-            decimal conductAverage = partialsWithConductCount > 0 ? (totalConductSum / partialsWithConductCount) : 0;
+            decimal conductAverageRaw = partialsWithConductCount > 0 ? (totalConductSum / partialsWithConductCount) : 0;
             decimal finalGradeAverage = partialsWithGradeCount > 0 ? (totalGradeSum / partialsWithGradeCount) : 0;
+
+            decimal conductAverage = Math.Round(conductAverageRaw, 0);
 
             worksheet.Cell(counter, bodyColumn++).Value = partialsWithConductCount > 0
                 ? getQualitativeConductLabel((double)conductAverage)
                 : "-";
-            worksheet.Cell(counter, bodyColumn++).Value =
-                partialsWithConductCount > 0 ? conductAverage.ToString("F2") : "-";
-            worksheet.Cell(counter, bodyColumn).Value =
-                partialsWithGradeCount > 0 ? finalGradeAverage.ToString("F2") : "-";
+
+            worksheet.Cell(counter, bodyColumn++).Value = partialsWithConductCount > 0
+                ? conductAverage.ToString("F0")
+                : "-";
+
+            worksheet.Cell(counter, bodyColumn).Value = partialsWithGradeCount > 0
+                ? finalGradeAverage.ToString("F2")
+                : "-";
 
             counter++;
         }
@@ -243,12 +239,12 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
         worksheet.Cell(headerRow, bodyColumn++).Value = student.fullName();
         worksheet.Cell(headerRow, bodyColumn++).Value = (student.student?.sex ?? true) ? "M" : "F";
 
-        // BUSCAMOS si el estudiante realmente tiene notas en ESTE parcial actual
+        // Buscamos si el estudiante realmente tiene notas en este parcial actual
         var currentPartialData = partialsData.FirstOrDefault(p => p.Partial.partialId == partialId);
         var realStudentInPartial =
             currentPartialData?.StudentList?.FirstOrDefault(s => s.studentId == student.studentId);
 
-        // SI NO TIENE REGISTRO EN ESTE PARCIAL (Traslado/Retiro): Llenamos con guiones de forma limpia
+        // Si no tiene registro en este parcial (Traslado/Retiro): Llenamos con guiones de forma limpia
         if (realStudentInPartial == null)
         {
             foreach (var subId in orderedSubjectIdList)
@@ -261,10 +257,10 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
             worksheet.Cell(headerRow, bodyColumn++).Value = "-";
             worksheet.Cell(headerRow, bodyColumn++).Value = "-";
             worksheet.Cell(headerRow, bodyColumn).Value = "-";
-            return; // Finaliza la fila de este alumno de forma segura
+            return;
         }
 
-        // SI SÍ TIENE NOTAS: Corre el flujo normal que ya tenías
+        // Si sí tiene notas: Corre el flujo normal de asignaturas
         var gradeList = realStudentInPartial.gradeList!.OrderBy(e => orderedSubjectIdList.IndexOf(e.subjectId))
             .ToList();
 
@@ -281,10 +277,28 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
             bodyColumn += 2;
         }
 
+        // --- CORRECCIÓN AQUÍ: REDONDEO Y ESCALA PARA HOJAS INDIVIDUALES (1 y 2) ---
         var average = realStudentInPartial.getAverage(partialId);
-        worksheet.Cell(headerRow, bodyColumn++).Value = average?.getConductLabel() ?? "-";
-        worksheet.Cell(headerRow, bodyColumn++).Value = average?.conductGrade.ToString("F2") ?? "-";
-        worksheet.Cell(headerRow, bodyColumn).Value = average?.grade.ToString("F2") ?? "-";
+        if (average != null)
+        {
+            // Redondeamos la nota de conducta al entero más cercano (Ej: 86.63 -> 87)
+            decimal conductAverage = Math.Round(average.conductGrade, 0);
+
+            // 1. Celda Cualitativa: Evaluamos la letra con la nota ya redondeada
+            worksheet.Cell(headerRow, bodyColumn++).Value = getQualitativeConductLabel((double)conductAverage);
+
+            // 2. Celda Cuantitativa: Forzamos formato entero sin decimales ("F0")
+            worksheet.Cell(headerRow, bodyColumn++).Value = conductAverage.ToString("F0");
+
+            // 3. Promedio final del parcial (Mantiene decimales)
+            worksheet.Cell(headerRow, bodyColumn).Value = average.grade.ToString("F2");
+        }
+        else
+        {
+            worksheet.Cell(headerRow, bodyColumn++).Value = "-";
+            worksheet.Cell(headerRow, bodyColumn++).Value = "-";
+            worksheet.Cell(headerRow, bodyColumn).Value = "-";
+        }
     }
 
     private void setHeaderMulti(int headerRow, List<model.secretary.SubjectEntity> subjects)
@@ -373,16 +387,14 @@ public class EnrollmentMultiGradeSummarySheetBuilder : SheetBuilder
 
     private string getQualitativeConductLabel(double grade)
     {
-        if (grade >= 90) return "E";
-        if (grade >= 80) return "MB";
-        if (grade >= 70) return "B";
-        return "R";
+        if (grade >= 90) return "AA"; // Aprendizaje avanzado
+        if (grade >= 76) return "AS"; // Aprendizaje satisfactorio
+        if (grade >= 60) return "AF"; // Aprendizaje elemental
+        return "AI"; // Aprendizaje inicial
     }
 
     // Cumplimiento obligatorio del contrato abstracto de la clase base SheetBuilder
     protected override void setColumnQuantity()
     {
-        // Intencionalmente vacío. Las columnas se calculan de manera dinámica por pestaña
-        // usando el método setColumnQuantityMulti(int quantity).
     }
 }
