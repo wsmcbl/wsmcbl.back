@@ -50,4 +50,23 @@ public class GeneratePerformanceReportBySectionActions(GeneratePerformanceReport
         
         return File(result, getContentType(2), $"{teacherId}.grades-summary.xlsx");
     }
+    
+    /// <summary>Returns enrollment grade summary for multiple partials in a single XLSX file with separate sheets.</summary>
+    /// <response code="200">Returns the multi-sheet Excel file.</response>
+    /// <response code="401">If the query was made without authentication.</response>
+    /// <response code="403">If the query was made without proper permissions.</response>
+    /// <response code="404">If enrollment or any partial is not found.</response>
+    [HttpGet]
+    [Route("grades/summary/export-multi")]
+    public async Task<IActionResult> getMultiGradeSummaryByEnrollmentId([Required] string teacherId, [Required] [FromQuery] List<int> partialIds)
+    {
+        if (partialIds == null || partialIds.Count == 0)
+        {
+            return BadRequest("Debe proporcionar al menos un ID de parcial.");
+        }
+
+        var result = await controller.getEnrollmentMultiGradeSummary(teacherId, partialIds, getAuthenticatedUserId());
+        
+        return File(result, getContentType(2), $"{teacherId}.grades-summary-accumulated.xlsx");
+    }
 }
