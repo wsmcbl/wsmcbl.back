@@ -29,4 +29,12 @@ public class GeneratePerformanceReportBySectionController : BaseController
         var sheetMaker = new SpreadSheetMaker(daoFactory);
         return await sheetMaker.getEnrollmentGradeSummary(enrollmentId, partialId, userId);
     }
+    
+    public async Task<byte[]> getEnrollmentMultiGradeSummary(string teacherId, List<int> partialIds, string userId)
+    {
+        var enrollmentId = await daoFactory.teacherDao!.getCurrentEnrollmentId(teacherId);
+        
+        var sheetMaker = new SpreadSheetMaker(daoFactory);
+        return await sheetMaker.getEnrollmentMultiGradeSummary(enrollmentId, partialIds, userId);
+    }
 }

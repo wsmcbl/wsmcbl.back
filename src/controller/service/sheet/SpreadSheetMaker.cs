@@ -97,6 +97,52 @@ public class SpreadSheetMaker
 
         return sheetBuilder.getSpreadSheet();
     }
+    
+    public async Task<byte[]> getEnrollmentMultiGradeSummary(string enrollmentId, List<int> partialIds, string userId)
+    {
+        var schoolyear = await daoFactory.schoolyearDao!.getCurrent();
+        var teacher = await daoFactory.teacherDao!.getByEnrollmentId(enrollmentId);
+        var user = await daoFactory.userDao!.getById(userId);
+        var enrollment = await daoFactory.enrollmentDao!.getById(enrollmentId);
+
+        var partialsData = new List<PartialReportData>();
+
+        foreach (var partialId in partialIds)
+        {
+            var partial = await daoFactory.partialDao!.getById(partialId);
+            if (partial == null)
+            {
+                throw new EntityNotFoundException("PartialEntity", partialId.ToString());
+            }
+
+            var subjectList = await daoFactory.academySubjectDao!.getByEnrollmentId(enrollmentId, partial.semester);
+            var studentList = await daoFactory.academyStudentDao!.getListWithGradesByEnrollmentId(enrollmentId, partialId);
+
+            partialsData.Add(new PartialReportData 
+            {
+                Partial = partial,
+                SubjectList = subjectList,
+                StudentList = studentList
+            });
+        }
+
+        var multiSheetBuilder = new EnrollmentMultiGradeSummarySheetBuilder(
+            schoolyear.label,
+            teacher!,
+            user.getAlias(),
+            enrollment!.label,
+            partialsData
+        );
+        
+        return multiSheetBuilder.getSpreadSheet();
+    }
+
+    public class PartialReportData
+    {
+        public PartialEntity Partial { get; set; } = null!;
+        public List<SubjectEntity> SubjectList { get; set; } = null!;
+        public List<StudentEntity> StudentList { get; set; } = null!;
+    }
 
     public async Task<byte[]> getEvaluationStatisticsByTeacher(string enrollmentId, int partialId, string userId)
     {
