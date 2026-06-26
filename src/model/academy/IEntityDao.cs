@@ -48,7 +48,7 @@ public interface IStudentDao : IGenericDao<StudentEntity, string>
     public Task<List<StudentEntity>> getListWithGradesByDegreeId(string degreeId, int partialId);
     public Task<List<StudentEntity>> getListBeforeFirstPartialByDegreeId(string degreeId);
     public Task<List<StudentEntity>> getListWithAverageGradesByEnrollmentId(string enrollmentId);
-    public Task update(string studentId, string enrollmentId);
+    public Task update(string studentId, string oldEnrollmentId, string newEnrollmentId);
 }
 
 public interface IPartialDao : IGenericDao<PartialEntity, int>

@@ -19,7 +19,12 @@ public class MoveStudentFromEnrollmentController(DaoFactory daoFactory) : BaseCo
         daoFactory.enrollmentDao!.update(enrollment);
         await daoFactory.ExecuteAsync();
 
-        await daoFactory.academyStudentDao!.update(studentValue.studentId, enrollment.enrollmentId!);
+        // 1. Guardamos la matrícula vieja de este año escolar antes de sobreescribirla
+        var oldEnrollmentId = studentValue.enrollmentId!;
+
+        // 2. Enviamos el ID viejo al DAO para que el WHERE sea específico
+        await daoFactory.academyStudentDao!.update(studentValue.studentId, oldEnrollmentId, enrollment.enrollmentId!);
+    
         studentValue.enrollmentId = enrollment.enrollmentId;
 
         return studentValue;

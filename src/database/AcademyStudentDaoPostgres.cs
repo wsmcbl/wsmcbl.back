@@ -206,10 +206,10 @@ public class AcademyStudentDaoPostgres : GenericDaoPostgres<StudentEntity, strin
             .ToListAsync();
     }
     
-    public async Task update(string studentId, string enrollmentId)
+    public async Task update(string studentId, string oldEnrollmentId, string newEnrollmentId)
     {
         FormattableString query =
-            $"update academy.student set enrollmentid = {enrollmentId} where studentid = {studentId};";
+            $"update academy.student set enrollmentid = {newEnrollmentId} where studentid = {studentId} and enrollmentid = {oldEnrollmentId};";
         await context.Database.ExecuteSqlAsync(query);
     }
     
