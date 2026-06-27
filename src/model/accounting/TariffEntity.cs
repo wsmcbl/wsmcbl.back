@@ -17,6 +17,11 @@ public class TariffEntity
     {
     }
     
+    public int getDueMonth()
+    {
+        return dueDate != null ? dueDate.Value.Month : 0;
+    }
+    
     public TariffEntity(TariffDataEntity tariffData, string schoolyearId)
     {
         this.schoolyearId = schoolyearId;
