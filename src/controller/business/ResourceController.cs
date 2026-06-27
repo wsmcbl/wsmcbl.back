@@ -7,6 +7,29 @@ namespace wsmcbl.src.controller.business;
 
 public class ResourceController(DaoFactory daoFactory) : BaseController(daoFactory)
 {
+    public async Task updateSolvencyMonthSetting(int month, string schoolyearId)
+    {
+        var mediaList = await getMediaList();
+        var existingMedia = mediaList.FirstOrDefault(m => m.type == 100 && m.schoolyearId == schoolyearId);
+
+        if (existingMedia == null)
+        {
+            var newMedia = new MediaEntity
+            {
+                type = 100,
+                schoolyearId = schoolyearId,
+                value = month.ToString()
+            };
+        
+            await createMedia(newMedia);
+        }
+        else
+        {
+            existingMedia.value = month.ToString();
+            await updateMedia(existingMedia);
+        }
+    }
+    
     public async Task<string> getMedia(int type, int schoolyear)
     {
         var result = await daoFactory.schoolyearDao!.getByLabel(schoolyear);
