@@ -14,6 +14,18 @@ namespace wsmcbl.src.controller.api;
 [ApiController]
 public class ResourceActions(ResourceController controller) : ControllerBase
 {
+    /// <summary>Update the media month for a schoolyear default.</summary>
+    [HttpPut]
+    [Route("media/report-card-month")]
+    [Authorizer("cashier")]
+    public async Task<IActionResult> updateSolvencyMonth([FromQuery] int month)
+    {
+        if (month < 1 || month > 12) return BadRequest("Mes inválido.");
+        var schoolyearId = "sch010"; 
+        await controller.updateSolvencyMonthSetting(month, schoolyearId);
+        return Ok(new { message = $"Mes de solvencia actualizado a {month}." });
+    }
+    
     /// <summary>Returns the media by type and schoolyear label.</summary>
     /// <param name="type">The type of the media, the default value is 1.</param>
     /// <param name="schoolyear">The schoolyear of the media, for example, "2024", "2025".</param>

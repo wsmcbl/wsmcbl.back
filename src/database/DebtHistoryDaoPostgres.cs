@@ -56,6 +56,11 @@ public class DebtHistoryDaoPostgres : GenericDaoPostgres<DebtHistoryEntity, stri
         var debtList = await getList(studentId);
         return debtList.Where(dh => dh.isPaid || dh.havePayments()).ToList();
     }
+    
+    public async Task<List<DebtHistoryEntity>> getAllListByStudentId(string studentId)
+    {
+        return await getList(studentId, withTariff: true);
+    }
 
     public async Task exonerateArrears(string studentId, List<DebtHistoryEntity> list)
     {

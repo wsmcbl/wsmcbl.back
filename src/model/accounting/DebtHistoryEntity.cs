@@ -69,8 +69,8 @@ public class DebtHistoryEntity
         return result < 0 ? 0 : result;
     }
 
-    public bool isCurrentTariffMonthly()
+    public bool isCurrentTariffMonthly(int targetMonth)
     {
-        return tariff.isMonthlyTariff() && tariff.checkDueMonth(DateTime.Today.Month);
+        return tariff.isMonthlyTariff() && tariff.checkDueMonth(targetMonth);
     }
 }
