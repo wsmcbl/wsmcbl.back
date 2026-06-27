@@ -17,7 +17,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <summary>Update the media month for a schoolyear default.</summary>
     [HttpPut]
     [Route("media/report-card-month")]
-    [Authorizer("cashier")]
+    [Authorizer("admin", "cashier")]
     public async Task<IActionResult> updateSolvencyMonth([FromQuery] int month)
     {
         if (month < 1 || month > 12) return BadRequest("Mes inválido.");
@@ -45,7 +45,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="200">Returns a list, the list can be empty.</response>
     [HttpGet]
     [Route("medias")]
-    [Authorizer("admin")]
+    [Authorizer("admin", "cashier")]
     public async Task<IActionResult> getMediaList()
     {
         return Ok(await controller.getMediaList());
@@ -73,7 +73,7 @@ public class ResourceActions(ResourceController controller) : ControllerBase
     /// <response code="404">If resource not exist.</response>
     [HttpPut]
     [Route("medias")]
-    [Authorizer("admin")]
+    [Authorizer("admin", "cashier")]
     public async Task<IActionResult> updateMedia(MediaEntity media)
     {
         var result = await controller.updateMedia(media);
