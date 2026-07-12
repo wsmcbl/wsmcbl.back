@@ -74,6 +74,8 @@ builder.Services.AddTransient<CalculateMonthlyRevenueController>();
 builder.Services.AddTransient<ViewTeacherDashboardController>();
 builder.Services.AddTransient<EmailNotifierService>();
 
+builder.Services.AddTransient<AddGradeToStudentReturningController>();
+
 builder.Services.AddDefaultCors();
 
 var app = builder.Build();
