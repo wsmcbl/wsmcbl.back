@@ -67,7 +67,7 @@ public class ViewPrincipalDashboardActions(ViewPrincipalDashboardController cont
     /// <response code="403">If the query was made without proper permissions.</response>
     [HttpGet]
     [Route("subjects")]
-    [Authorizer("report:principal:read")]
+    [Authorizer("admin", "cashier")]
     public async Task<IActionResult> getSubjectList()
     {
         var subjectList = await controller.getSubjectList();

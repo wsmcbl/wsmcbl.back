@@ -65,6 +65,8 @@ public interface ISemesterDao : IGenericDao<SemesterEntity, int>
 
 public interface IGradeDao : IGenericDao<GradeEntity, int>
 {
+    public Task createGradesBulk(List<GradeEntity> gradeList);
+    Task<List<GradeEntity>> getExistingGrades(string studentId, List<int> subjectPartialIds);
     public Task addRange(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList);
 }
 

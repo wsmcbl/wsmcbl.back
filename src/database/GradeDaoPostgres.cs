@@ -7,6 +7,23 @@ namespace wsmcbl.src.database;
 
 public class GradeDaoPostgres(PostgresContext context) : GenericDaoPostgres<GradeEntity, int>(context), IGradeDao
 {
+    public async Task createGradesBulk(List<GradeEntity> gradeList)
+    {
+        if (gradeList != null && gradeList.Count > 0)
+        {
+            await entities.AddRangeAsync(gradeList);
+        }
+        
+        await saveAsync();
+    }
+    
+    public async Task<List<GradeEntity>> getExistingGrades(string studentId, List<int> subjectPartialIds)
+    {
+        return await entities
+            .Where(e => e.studentId == studentId && subjectPartialIds.Contains(e.subjectPartialId))
+            .ToListAsync();
+    }
+    
     public async Task addRange(SubjectPartialEntity subjectPartial, List<GradeEntity> gradeList)
     {
         DaoFactory daoFactory = new DaoFactoryPostgres(context);
